@@ -80,98 +80,99 @@ class Header extends Component {
       chatModal: false,
       ongoingChatsData: [],
       newChatsData: [],
-      searchCardData: [
-        {
-          id: 1,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 2,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 3,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 4,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 5,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 6,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 7,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 8,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 9,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-        {
-          id: 10,
-          productName: "POWER Black Casual Shoes For Man",
-          productCode: "F808600200",
-          productPrize: "INR 3000/- INR 2799/- (-%30)",
-          productUrl: "www.google.com/productid-F808600200",
-          productImgURL: Bata,
-          isSelect: false,
-        },
-      ],
+      // searchCardData: [
+      //   {
+      //     id: 1,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 2,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 3,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 4,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 5,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 6,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 7,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 8,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 9,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      //   {
+      //     id: 10,
+      //     productName: "POWER Black Casual Shoes For Man",
+      //     productCode: "F808600200",
+      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
+      //     productUrl: "www.google.com/productid-F808600200",
+      //     productImgURL: Bata,
+      //     isSelect: false,
+      //   },
+      // ],
+      searchCardData: [],
       chatId: 0,
       isDownbtn: true,
       customerName: "",
@@ -192,9 +193,12 @@ class Header extends Component {
       daySelect: "",
       datesSelect: "",
       slotID: "",
+      messageSuggestionData: [],
+      messageSuggestion: "",
       scheduleModal: false,
       recommendedModal: false,
       paymentModal: false,
+      selectedCard: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -849,6 +853,7 @@ class Header extends Component {
   ////handle send schedual visit
   handleScheduleVisit() {
     let self = this;
+    debugger;
     var inputParam = {};
     if (this.state.customerId == 0) {
     } else {
@@ -863,71 +868,73 @@ class Header extends Component {
     } else {
       this.setState({ noOfPeopleMax: "" });
     }
-    setTimeout(() => {
-      if (
-        this.state.customerId > 0 &&
-        this.state.noOfPeopleMax == "" &&
-        this.state.isSelectSlot == "" &&
-        Object.keys(this.state.selectedSlot).length !== 0
-      ) {
-        var date = new Date(this.state.selectedDate);
 
-        inputParam.CustomerID = this.state.customerId;
-        inputParam.AppointmentDate =
-          moment(date)
-            .format("YYYY-MM-DD")
-            .toString() || "";
-        inputParam.SlotID = this.state.selectedSlot.timeSlotId;
-        inputParam.NOofPeople = Number(this.state.noOfPeople);
-        inputParam.MobileNo = this.state.mobileNo;
-        inputParam.StoreID = 1;
+    if (
+      this.state.customerId > 0 &&
+      this.state.noOfPeople !== "" &&
+      Object.keys(this.state.selectedSlot).length !== 0
+    ) {
+      var date = new Date(this.state.selectedDate);
 
-        debugger;
-        var messagedata =
-          "Your appointment is booked at " +
-          this.state.selectedDate +
-          " on " +
-          this.state.selectedSlot.timeSlot;
-        this.setState({ message: messagedata });
-        axios({
-          method: "post",
-          url: config.apiUrl + "/CustomerChat/ScheduleVisit",
-          headers: authHeader(),
-          data: inputParam,
+      inputParam.CustomerID = this.state.customerId;
+      inputParam.AppointmentDate =
+        moment(date)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+      inputParam.SlotID = this.state.selectedSlot.timeSlotId;
+      inputParam.NOofPeople = Number(this.state.noOfPeople);
+      inputParam.MobileNo = this.state.mobileNo;
+      inputParam.StoreID = 1;
+
+      var messagedata =
+        "Your appointment is booked at " +
+        this.state.selectedDate +
+        " on " +
+        this.state.selectedSlot.timeSlot;
+      this.setState({ message: messagedata });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/ScheduleVisit",
+        headers: authHeader(),
+        data: inputParam,
+      })
+        .then(function(response) {
+          var message = response.data.message;
+          var timeSlotData = response.data.responseData;
+          if (message == "Success" && timeSlotData) {
+            self.setState({
+              noOfPeople: "",
+              selectSlot: {},
+              scheduleModal: false,
+            });
+            self.handleGetTimeSlot();
+            self.handleSaveChatMessages();
+          }
         })
-          .then(function(response) {
-            debugger;
-            var message = response.data.message;
-            var timeSlotData = response.data.responseData;
-            if (message == "Success" && timeSlotData) {
-              self.setState({ noOfPeople: "", selectSlot: {} });
-              self.handleGetTimeSlot();
-              self.handleSaveChatMessages();
-            }
-          })
-          .catch((response) => {
-            console.log(response, "---handleScheduleVisit");
-          });
-      }
-    }, 500);
+        .catch((response) => {
+          console.log(response, "---handleScheduleVisit");
+        });
+    }
   }
   ////handlecselect card in card tab
   handleSelectCard(id) {
-    if (
-      this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
-      true
-    ) {
-      this.state.searchCardData.filter((x) => x.id === id)[0][
-        "isSelect"
-      ] = false;
-    } else {
-      this.state.searchCardData.filter((x) => x.id === id)[0][
-        "isSelect"
-      ] = true;
-    }
-    this.setState({
-      searchCardData: this.state.searchCardData,
-    });
+    debugger;
+    // if (
+    //   this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
+    //   true
+    // ) {
+    //   this.state.searchCardData.filter((x) => x.id === id)[0][
+    //     "isSelect"
+    //   ] = false;
+    // } else {
+    //   this.state.searchCardData.filter((x) => x.id === id)[0][
+    //     "isSelect"
+    //   ] = true;
+    // }
+    // this.setState({
+    //   searchCardData: this.state.searchCardData,
+    // });
+    this.setState({ selectedCard: id });
   }
   ////handle button down click
   handleDownButtonClick() {
@@ -936,10 +943,68 @@ class Header extends Component {
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
     var message = evt.editor.getData();
+    var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
+    messageSuggestion = messageSuggestion.replace("&nbsp;","").trim();
     this.setState({
       message,
+      messageSuggestion
     });
+    setTimeout(() => {
+      if (this.state.messageSuggestion.length > 2) {
+        this.handleGetMessageSuggestionList();
+      } else {
+        this.setState({
+          messageSuggestionData: []
+        });
+      }
+    }, 1);
   };
+
+  handleGetMessageSuggestionList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/gettitlesuggestions",
+      headers: authHeader(),
+      params: {
+        TikcketTitle: this.state.messageSuggestion
+      }
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ messageSuggestionData: data });
+        } else {
+          self.setState({ messageSuggestionData: [] });
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+  }
+
+  handleAppendMessageSuggestion = e => {
+    this.setState({ toggleTitle: true });
+    var startPoint = this.state.message.length;
+    var textLength = this.state.message.length;
+    var textBefore = this.state.message.substring(0, startPoint);
+    var textBeforeArr = textBefore.split(" ");
+    textBeforeArr.pop();
+    textBeforeArr.push(e.currentTarget.textContent);
+    textBefore = textBeforeArr.join(" ");
+    var textAfter = this.state.message.substring(startPoint, textLength);
+    // alert(textBefore + "....." + textAfter);
+    // let clickedInfo = e.currentTarget.innerText;
+    let clickedInfo = e.currentTarget.textContent;
+    let message = this.state.message;
+    //titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
+    message = "<p>"+textBefore + " " + textAfter+"</p>";
+
+    this.setState({ message });
+    // this.searchInput.focus();
+  };
+
   ////handle on going chat click
   handleOngoingChatClick = (id, name, count, mobileNo, customerId) => {
     this.setState({ chatId: id, customerName: name, mobileNo, customerId });
@@ -974,7 +1039,6 @@ class Header extends Component {
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
-    debugger;
     if (Object.keys(this.state.selectedSlot).length !== 0) {
       if (Number(e.target.value) <= this.state.selectedSlot.remaining) {
         this.setState({ noOfPeople: e.target.value, noOfPeopleMax: "" });
@@ -998,7 +1062,6 @@ class Header extends Component {
   };
   ////handle select slot button
   handleSelectSlot = (data, selectedDate) => {
-    debugger;
     this.setState({
       selectedSlot: data,
       selectedDate,
@@ -1008,11 +1071,12 @@ class Header extends Component {
   };
 
   onCloseScheduleModal = () => {
+    this.handleScheduleVisit();
     this.setState({ scheduleModal: false });
-    this.handleGetTimeSlot();
   };
   onOpenScheduleModal = () => {
     this.setState({ scheduleModal: true });
+    this.handleGetTimeSlot();
   };
 
   onCloseRecommendedModal = () => {
@@ -1613,7 +1677,9 @@ class Header extends Component {
                                   this,
                                   chat.chatID,
                                   chat.cumtomerName,
-                                  chat.messageCount
+                                  chat.messageCount,
+                                  chat.mobileNo,
+                                  chat.customerID
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -1839,6 +1905,7 @@ class Header extends Component {
                             <CKEditor
                               data={this.state.message}
                               onChange={this.handleOnChangeCKEditor}
+                              id="messageSuggestion"
                               config={{
                                 toolbar: [
                                   {
@@ -1874,6 +1941,22 @@ class Header extends Component {
                               >
                                 {this.state.isMessage}
                               </p>
+                            )}
+                            {this.state.messageSuggestionData !== null &&
+                            this.state.messageSuggestionData.length > 0 &&
+                            this.state.messageSuggestionData.length > 0 && (
+                              <div className="custom-ticket-title-suggestions">
+                                {this.state.messageSuggestionData !== null &&
+                                  this.state.messageSuggestionData.map((item, i) => (
+                                    <span
+                                      key={i}
+                                      onClick={this.handleAppendMessageSuggestion}
+                                      title={item.ticketTitleToolTip}
+                                    >
+                                      {item.ticketTitle}
+                                    </span>
+                                  ))}
+                              </div>
                             )}
                             <div
                               className="mobile-ck-send"
@@ -1939,18 +2022,21 @@ class Header extends Component {
                             >
                               {this.state.searchCardData !== null &&
                                 this.state.searchCardData.map((item, i) => {
+                                  debugger;
                                   return (
                                     <div
                                       className="col-md-6"
                                       key={i}
-                                      // onClick={this.handleSelectCard.bind(
-                                      //   this,
-                                      //   // item.id
-                                      // )}
+                                      id={"card" + item.itemID}
+                                      onClick={this.handleSelectCard.bind(
+                                        this,
+                                        item.itemID
+                                      )}
                                     >
                                       <div className="card">
                                         <div className="card-body position-relative">
-                                          {item.isSelect ? (
+                                          {item.itemID ===
+                                          this.state.selectedCard ? (
                                             <div className="selectdot">
                                               <img
                                                 src={CardTick}
@@ -1969,7 +2055,7 @@ class Header extends Component {
                                             <div className="col-md-4">
                                               <img
                                                 className="chat-product-img"
-                                                src={item.productImgURL}
+                                                src={item.imageURL}
                                                 alt="Product Image"
                                                 title="POWER Black Casual Shoes For Man"
                                               />
@@ -1977,23 +2063,24 @@ class Header extends Component {
                                             <div className="col-md-8 bkcprdt">
                                               <div>
                                                 <label className="chat-product-name">
-                                                  {item.productName}
+                                                  {item.label}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-code">
-                                                  Product Code:
-                                                  {item.productCode}
+                                                  {/* Product Code:
+                                                  {item.productCode} */}
+                                                  {item.alternativeText}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-prize">
-                                                  {item.productPrize}
+                                                  {/* {item.productPrize} */}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-url">
-                                                  {item.productUrl}
+                                                  {item.redirectionUrl}
                                                 </label>
                                               </div>
                                             </div>
@@ -2004,18 +2091,30 @@ class Header extends Component {
                                   );
                                 })}
                             </div>
-                            <div className="row">
-                              <button
-                                className="storeUpbtn"
-                                onClick={this.handleDownButtonClick.bind(this)}
-                              >
-                                {this.state.isDownbtn ? (
-                                  <img src={DownBlue} alt="down-arrow" />
-                                ) : (
-                                  <img src={UpBlue} alt="up-arrow" />
-                                )}
-                              </button>
-                            </div>
+                            {this.state.searchCardData.length > 0 ? (
+                              <div className="row">
+                                <button
+                                  className="storeUpbtn"
+                                  onClick={this.handleDownButtonClick.bind(
+                                    this
+                                  )}
+                                >
+                                  {this.state.isDownbtn ? (
+                                    <img src={DownBlue} alt="down-arrow" />
+                                  ) : (
+                                    <img src={UpBlue} alt="up-arrow" />
+                                  )}
+                                </button>
+                                <button className="butn">
+                                  Send
+                                  <img
+                                    src={SendUp}
+                                    alt="send"
+                                    className="send-up"
+                                  />
+                                </button>
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                         {/* --------Recommended List Tab----- */}
@@ -2747,20 +2846,40 @@ class Header extends Component {
                                   <label className="s-lable">
                                     Selected Slot
                                   </label>
-                                  <button className="s-green-btn s-green-active select-slot-cntr mx-0">
-                                    2PM-3PM
-                                    <img
-                                      className="s-img-select"
-                                      src={CircleRight}
-                                      alt="circle-right"
-                                    />
-                                  </button>
+                                  {Object.keys(this.state.selectedSlot)
+                                    .length !== 0 ? (
+                                    <button
+                                      className={
+                                        this.state.selectedSlot.maxCapacity ==
+                                        this.state.selectedSlot.remaining
+                                          ? "s-green-btn s-green-active select-slot-cntr mx-0"
+                                          : this.state.selectedSlot
+                                              .visitedCount <
+                                            this.state.selectedSlot.maxCapacity
+                                          ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                          : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                      }
+                                    >
+                                      {this.state.selectedSlot.timeSlot}
+                                      <img
+                                        className="s-img-select"
+                                        src={CircleRight}
+                                        alt="circle-right"
+                                      />
+                                    </button>
+                                  ) : null}
                                 </div>
                                 <div>
                                   <label className="s-lable">
                                     No of People
                                   </label>
-                                  <input type="text" />
+                                  <input
+                                    type="text"
+                                    value={this.state.noOfPeople}
+                                    onChange={this.handleNoOfPeopleChange.bind(
+                                      this
+                                    )}
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -2773,7 +2892,7 @@ class Header extends Component {
                               </button>
                               <button
                                 className="butn"
-                                onClick={this.onCloseScheduleModal}
+                                onClick={this.handleScheduleVisit.bind(this)}
                               >
                                 Send
                                 <img
