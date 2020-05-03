@@ -937,7 +937,7 @@ class StoreCampaign extends Component {
                     <img
                       src={BroadCastIcon}
                       alt="cancel-icone"
-                      onClick={this.handleBroadCastModalOpen.bind(this)}
+                      // onClick={this.handleBroadCastModalOpen.bind(this)}
                       className="broadcastimg"
                     />
                   </div>
@@ -1083,7 +1083,7 @@ class StoreCampaign extends Component {
                       title: "Actions",
                       render: (row, item) => {
                         return (
-                          <div className="d-flex">
+                          <div>
                             <div>
                               {this.state.responsiveChildTable ? (
                                 <img
@@ -1111,138 +1111,149 @@ class StoreCampaign extends Component {
                                 >
                                   <Card>
                                     <CardBody>
-                                      <div>
-                                        <div className="row">
-                                          <label
-                                            style={{ display: "contents" }}
-                                          >
-                                            Customer Name
-                                          </label>
-                                          <div style={{ display: "contents" }}>
-                                            <label
-                                              style={{ marginLeft: "15px" }}
-                                            >
-                                              {item.customerName}
-                                              <span>{item.customerNumber}</span>
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="row">
-                                          <label
-                                            style={{ display: "contents" }}
-                                          >
-                                            Date
-                                          </label>
-                                          <div style={{ display: "contents" }}>
-                                            <label
-                                              style={{ marginLeft: "15px" }}
-                                            >
-                                              {item.campaignDate}
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="row">
-                                          <label
-                                            style={{ display: "contents" }}
-                                          >
-                                            Response
-                                          </label>
-                                          <div>
-                                            <select
-                                              className="responceDrop-down dropdown-label"
-                                              value={item.responseID}
-                                              onChange={this.onResponseChange.bind(
-                                                this,
-                                                item.id,
-                                                item
-                                              )}
-                                            >
-                                              <option hidden>
-                                                Select Response
-                                              </option>
-                                              {item.hsCampaignResponseList !==
-                                                null &&
-                                                item.hsCampaignResponseList.map(
-                                                  (items, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={items.responseID}
-                                                    >
-                                                      {items.response}
-                                                    </option>
-                                                  )
+                                      <div className="innertabcollapse">
+                                      <table>
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <label>Customer Name</label>
+                                            </td>
+                                            <td>
+                                              <label>
+                                                {item.customerName}
+                                                <span>{item.customerNumber}</span>
+                                              </label>
+                                            </td>
+                                            <td>
+                                              
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                              <label>Date</label>
+                                            </td>
+                                            <td>
+                                              <label>
+                                                {item.campaignDate}
+                                              </label>
+                                            </td>
+                                            <td></td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                              <label>Response</label>
+                                            </td>
+                                            <td>
+                                              <select
+                                                className="responceDrop-down dropdown-label"
+                                                value={item.responseID}
+                                                onChange={this.onResponseChange.bind(
+                                                  this,
+                                                  item.id,
+                                                  item
                                                 )}
-                                            </select>
-                                          </div>
-                                        </div>
-                                        <div className="row">
-                                          <label>Status</label>
-                                          <label className="table-btnlabel notConnectedBtnRed">
-                                            {item.statusName}
-                                          </label>
-                                        </div>
-                                        <div className="row">
-                                          <label>Call Rescheduled to</label>
-                                          <div
-                                            className={
-                                              item.responseID === 3
-                                                ? ""
-                                                : "disabled-input"
-                                            }
-                                          >
-                                            <DatePicker
-                                              id="startDate"
-                                              autoComplete="off"
-                                              showTimeSelect
-                                              name="startDate"
-                                              showMonthDropdown
-                                              showYearDropdown
-                                              selected={
-                                                item.callRescheduledTo !== ""
-                                                  ? new Date(
-                                                      item.callRescheduledTo
+                                              >
+                                                <option hidden>
+                                                  Select Response
+                                                </option>
+                                                {item.hsCampaignResponseList !==
+                                                  null &&
+                                                  item.hsCampaignResponseList.map(
+                                                    (items, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={items.responseID}
+                                                      >
+                                                        {items.response}
+                                                      </option>
                                                     )
-                                                  : new Date()
-                                              }
-                                              dateFormat="MM/dd/yyyy h:mm aa"
-                                              value={
-                                                item.callRescheduledTo !== ""
-                                                  ? moment(
-                                                      item.callRescheduledTo
-                                                    )
-                                                  : ""
-                                              }
-                                              onChange={this.onDateChange.bind(
-                                                this,
-                                                item.id
-                                              )}
-                                              className={
-                                                item.responseID === 3
-                                                  ? "txtStore dateTimeStore"
-                                                  : "txtStore dateTimeStore disabled-link"
-                                              }
-                                              placeholderText="Select Date &amp; Time"
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="row">
-                                          <button
-                                            className="saveBtn saveLabel"
-                                            type="button"
-                                            onClick={this.handleUpdateCampaignResponse.bind(
-                                              this,
-                                              item.id,
-                                              item.responseID,
-                                              item.callRescheduledTo,
-                                              item.campaignScriptID
-                                            )}
-                                          >
-                                            Update
-                                          </button>
-                                          <button style={{ display: "none" }}>
-                                            Raise Ticket
-                                          </button>
-                                        </div>
+                                                  )}
+                                              </select>
+                                            </td>
+                                            <td></td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                              <label>Status</label>
+                                            </td>
+                                            <td>
+                                              <label className="table-btnlabel notConnectedBtnRed">
+                                                {item.statusName}
+                                              </label>
+                                            </td>
+                                            <td></td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                              <label>Call Rescheduled to</label>
+                                            </td>
+                                            <td>
+                                                  <div
+                                                className={
+                                                  item.responseID === 3
+                                                    ? ""
+                                                    : "disabled-input"
+                                                }
+                                              >
+                                                <DatePicker
+                                                  id="startDate"
+                                                  autoComplete="off"
+                                                  showTimeSelect
+                                                  name="startDate"
+                                                  showMonthDropdown
+                                                  showYearDropdown
+                                                  selected={
+                                                    item.callRescheduledTo !== ""
+                                                      ? new Date(
+                                                          item.callRescheduledTo
+                                                        )
+                                                      : new Date()
+                                                  }
+                                                  dateFormat="MM/dd/yyyy h:mm aa"
+                                                  value={
+                                                    item.callRescheduledTo !== ""
+                                                      ? moment(
+                                                          item.callRescheduledTo
+                                                        )
+                                                      : ""
+                                                  }
+                                                  onChange={this.onDateChange.bind(
+                                                    this,
+                                                    item.id
+                                                  )}
+                                                  className={
+                                                    item.responseID === 3
+                                                      ? "txtStore dateTimeStore"
+                                                      : "txtStore dateTimeStore disabled-link"
+                                                  }
+                                                  placeholderText="Select Date &amp; Time"
+                                                />
+                                              </div>
+                                            </td>
+                                            <td></td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                                <button
+                                                  className="saveBtn saveLabel"
+                                                  type="button"
+                                                  onClick={this.handleUpdateCampaignResponse.bind(
+                                                    this,
+                                                    item.id,
+                                                    item.responseID,
+                                                    item.callRescheduledTo,
+                                                    item.campaignScriptID
+                                                  )}
+                                                >
+                                                  Update
+                                                </button>
+                                                <button style={{ display: "none" }}>
+                                                  Raise Ticket
+                                                </button>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
                                       </div>
                                     </CardBody>
                                   </Card>
@@ -1690,6 +1701,7 @@ class StoreCampaign extends Component {
           center
           modalId="sharecamp-popup"
           overlayId="logout-ovrly"
+          overlayClassName="sharepopupmob"
         >
            <img
             src={CancelIcon}

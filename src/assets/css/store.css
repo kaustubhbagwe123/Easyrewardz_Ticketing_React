@@ -2223,6 +2223,39 @@ table tr th:last-child {
 /* .broadcastimg {
   display: none;
 } */
+.broadcastpop .broadcasttitle {
+  font-size: 17px;
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+.broadcastpop .broadcastsubtitle {
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.broadcastpop .ant-radio-checked .ant-radio-inner {
+  border-color: #2561a8;
+}
+.broadcastpop .ant-radio-inner::after {
+  background-color: #2561a8;
+}
+.broadcastpop .ant-radio-wrapper {
+  display: block;
+  margin-bottom: 10px;
+}
+.executebtn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 100%;
+  height: 35px;
+  min-width: 68px !important;
+  cursor: pointer;
+  margin-top: 15px;
+  color: #fff;
+  text-align: center;
+  line-height: 0;
+}
 }
 /* ------------------Campain Css End ------------------------- */
 
