@@ -1051,9 +1051,9 @@ p {
     width: 8px;
     height: 8px;
   }
-  .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
+  /* .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
     padding-left: 2px;
-  }
+  } */
 
   /* card modal starts */
   .mobile-card-img {
