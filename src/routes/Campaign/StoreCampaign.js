@@ -1116,56 +1116,7 @@ class StoreCampaign extends Component {
                                 />
                               )}
                             </div>
-                            <div className="table-coloum-hide status-btn-camp">
-                              <div>
-                                <button
-                                  className="saveBtn saveLabel"
-                                  type="button"
-                                  onClick={this.handleUpdateCampaignResponse.bind(
-                                    this,
-                                    item.id,
-                                    item.responseID,
-                                    item.callRescheduledTo,
-                                    item.campaignScriptID
-                                  )}
-                                >
-                                  Update
-                                </button>
-                              </div>
-                              <div style={{ display: "none" }}>
-                                <button
-                                  className="raisedticket-Btn"
-                                  type="button"
-                                  // onClick={this.handleRaisedTicketModalOpen.bind(
-                                  //   this,
-                                  //   row,
-                                  //   item
-                                  // )}
-                                >
-                                  <label className="raise-ticketLbl">
-                                    Raise Ticket
-                                  </label>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      },
-                    },
-                  ]}
-                  pagination={false}
-                  loading={this.state.ChildTblLoading}
-                />
-              );
-            }}
-            onExpand={this.handleGetCampaignCustomerData}
-            expandIconColumnIndex={5}
-            expandIconAsCell={false}
-            pagination={false}
-            loading={this.state.loading}
-            dataSource={this.state.campaignGridData}
-          />
-        </div>
+                            
         <div className="hidedesk">
           <Collapse isOpen={this.state.responsiveChildTable}>
             <Card>
@@ -1300,6 +1251,57 @@ class StoreCampaign extends Component {
               </CardBody>
             </Card>
           </Collapse>
+        </div>
+
+                            <div className="table-coloum-hide status-btn-camp">
+                              <div>
+                                <button
+                                  className="saveBtn saveLabel"
+                                  type="button"
+                                  onClick={this.handleUpdateCampaignResponse.bind(
+                                    this,
+                                    item.id,
+                                    item.responseID,
+                                    item.callRescheduledTo,
+                                    item.campaignScriptID
+                                  )}
+                                >
+                                  Update
+                                </button>
+                              </div>
+                              <div style={{ display: "none" }}>
+                                <button
+                                  className="raisedticket-Btn"
+                                  type="button"
+                                  // onClick={this.handleRaisedTicketModalOpen.bind(
+                                  //   this,
+                                  //   row,
+                                  //   item
+                                  // )}
+                                >
+                                  <label className="raise-ticketLbl">
+                                    Raise Ticket
+                                  </label>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      },
+                    },
+                  ]}
+                  pagination={false}
+                  loading={this.state.ChildTblLoading}
+                />
+              );
+            }}
+            onExpand={this.handleGetCampaignCustomerData}
+            expandIconColumnIndex={5}
+            expandIconAsCell={false}
+            pagination={false}
+            loading={this.state.loading}
+            dataSource={this.state.campaignGridData}
+          />
         </div>
         <Pagination
           postsPerPage={this.state.postsPerPage}
