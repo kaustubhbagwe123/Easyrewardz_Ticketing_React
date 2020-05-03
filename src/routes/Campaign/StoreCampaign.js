@@ -65,6 +65,7 @@ class StoreCampaign extends Component {
       ChildPostsPerPage: 5,
       childTotalGridRecord: [],
       ResponsiveBroadCast: false,
+      collapseModalDetails:{}
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -671,9 +672,10 @@ class StoreCampaign extends Component {
     });
   };
 
-  handleToggleChildTable() {
+  handleToggleChildTable(data) {
     this.setState({
       responsiveChildTable: !this.state.responsiveChildTable,
+      collapseModalDetails:data
     });
   }
   /// Handle Get Campaign customer details
@@ -701,6 +703,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1043,6 +1046,7 @@ class StoreCampaign extends Component {
                       className: "table-coloum-hide",
                       dataIndex: "pricePaid",
                       render: (row, item) => {
+                        debugger
                         return (
                           <div
                             className={
@@ -1064,7 +1068,7 @@ class StoreCampaign extends Component {
                               dateFormat="MM/dd/yyyy h:mm aa"
                               value={
                                 item.callRescheduledTo !== ""
-                                  ? moment(item.callRescheduledTo)
+                                  ? moment(item.callRescheduledTo).format("MM/dd/yyyy h:mm aa")
                                   : ""
                               }
                               onChange={this.onDateChange.bind(this, item.id)}
