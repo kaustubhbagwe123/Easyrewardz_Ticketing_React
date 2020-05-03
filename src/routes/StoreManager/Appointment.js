@@ -112,7 +112,7 @@ class Appointment extends Component {
     handleUpdateAppointment(appointmentID) {
       debugger;
       let self = this;
-      if(this.state.status!=="")
+      if(this.state.status[appointmentID]!=="" && this.state.status[appointmentID]!==undefined)
       {
         axios({
             method: "post",
@@ -234,7 +234,7 @@ class Appointment extends Component {
                               return (
                                 <div className="d-flex">
                                   <div>
-                                    <button className="statusBtn" type="button"  style={{ minWidth: "5px", marginRight: "10px" }}
+                                    <button className="statusBtn" type="button"  style={{ marginRight: "10px" }}
                                     disabled
                                     >
                                     <label className="statusLabel">{item.status}</label>
@@ -252,6 +252,7 @@ class Appointment extends Component {
                                       <option value="">Select Status</option>
                                       <option value="0">Cancel</option>
                                       <option value="1">Visited</option>
+                                      <option value="2">Not Visited</option>
                                     </select>
                                   </div>
                               </div>);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.600000024">
+        <g id="Android-Copy" transform="translate(-206.000000, -65.000000)" fill="#A8C0DC" fill-rule="nonzero">
+            <g id="Group-21" transform="translate(72.000000, 60.000000)">
+                <g id="Group-20" transform="translate(134.000000, 5.000000)">
+                    <g id="speech-bubble" transform="translate(7.500000, 7.500000) scale(-1, 1) translate(-7.500000, -7.500000) ">
+                        <path d="M7.5,14.3706992 C7.5,14.8221639 7.97021611,15.1263533 8.3925442,14.9484041 C12.2894794,13.3064319 14.9602161,10.3049679 14.9995285,6.37628731 C15,6.34722482 15,6.31778147 15,6.28833811 C15,6.25889476 15,6.22942211 14.9995285,6.20038892 L14.9995285,6.37631661 C15,6.34725411 15,6.31781076 15,6.28836741 C15,6.25892406 15,6.22945141 14.9995285,6.20041822 C14.9430354,2.76805588 11.6069646,0 7.5,0 C3.35790766,0 0,2.81539962 0,6.28830882 C0,9.76121802 3.35790766,12.5766176 7.5,12.5766176 L7.5,14.3706992 Z" id="Path"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

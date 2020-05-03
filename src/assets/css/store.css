@@ -73,7 +73,7 @@
 .closebtn {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 68px;
+  width: 90px;
   height: 31px;
   min-width: 68px !important;
   cursor: pointer;
@@ -110,7 +110,7 @@
   background-color: #9cc541;
   border-radius: 4px;
   box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  width: 81px;
+  width: 105px;
   height: 31px;
 }
 .notConnectedBtnRed {
@@ -125,7 +125,7 @@
   background-color: #f5a623;
   border-radius: 4px;
   /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5); */
-  width: 78px;
+  width: 105px;
   height: 31px;
   text-transform: initial;
 }
@@ -1392,19 +1392,22 @@ table tr th:last-child {
   background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center */
   background-size: 14px;
 }
-.ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow {
+.antcustom .ant-popover-placement-bottom .ant-popover-content .ant-popover-arrow {
   display: none;
 }
-.ant-popover-inner {
+.antcustom .ant-popover-inner {
   border-radius: 20px !important;
 }
-.ant-popover-placement-bottom,
-.ant-popover-placement-bottomLeft,
-.ant-popover-placement-bottomRight {
+.antcustom .ant-popover-placement-bottom,
+.antcustom .ant-popover-placement-bottomLeft,
+.antcustom .ant-popover-placement-bottomRight {
   padding-top: 1px !important;
 }
-.ant-popover-arrow {
+.antcustom .ant-popover-arrow {
   display: none !important;
+}
+.ant-prodesc .ant-popover-arrow {
+  display: inherit !important;
 }
 .custompop .poptitle {
   font-size: 18px;
@@ -1418,6 +1421,10 @@ table tr th:last-child {
 .broadcast-icon img {
   height: 18px;
   cursor: pointer;
+}
+.antbroadcast {
+  left: 950px !important;
+  width: 330px;
 }
 #customername-popup {
   border-radius: 25px;
@@ -1644,6 +1651,7 @@ table tr th:last-child {
   text-align: center;
   color: #888;
   font-size: 15px;
+  cursor: pointer;
 }
 .sharecamp li:last-child {
   margin-right: 0px;
@@ -1753,7 +1761,7 @@ table tr th:last-child {
 .chatbotwid {
   min-width: 300px;
 }
-.ant-table-pagination {
+/* .ant-table-pagination {
   padding: 0 20px;
 }
 .ant-table-pagination .anticon {
@@ -1778,6 +1786,42 @@ table tr th:last-child {
 }
 .ant-pagination-item a {
   font-size: 11px !important;
+} */
+/* .broadcastimg {
+  display: block;
+} */
+.broadcastpop .broadcasttitle {
+  font-size: 17px;
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+.broadcastpop .broadcastsubtitle {
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.broadcastpop .ant-radio-checked .ant-radio-inner {
+  border-color: #2561a8;
+}
+.broadcastpop .ant-radio-inner::after {
+  background-color: #2561a8;
+}
+.broadcastpop .ant-radio-wrapper {
+  display: block;
+  margin-bottom: 10px;
+}
+.executebtn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 100%;
+  height: 35px;
+  min-width: 68px !important;
+  cursor: pointer;
+  margin-top: 15px;
+  color: #fff;
+  text-align: center;
+  line-height: 0;
 }
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
@@ -1840,16 +1884,16 @@ table tr th:last-child {
     right: 0 !important;
     width: 100% !important;
   }
-  .ant-popover-placement-bottom,
-  .ant-popover-placement-bottomLeft,
-  .ant-popover-placement-bottomRight {
+  .antcustom .ant-popover-placement-bottom,
+  .antcustom .ant-popover-placement-bottomLeft,
+  .antcustom .ant-popover-placement-bottomRight {
     padding: 20px !important;
     left: 0 !important;
   }
   .insertpop1 {
     padding: 0px;
   }
-  .ant-popover-inner-content {
+  .antcustom .ant-popover-inner-content {
     padding: 20px;
   }
   .table-coloum-hide {
@@ -1894,7 +1938,7 @@ table tr th:last-child {
     font-size: 11px;
   }
   .custom-tableak .closebtn {
-    width: 42px;
+    width: 60px;
     height: 20px;
     min-width: 42px !important;
   }
@@ -1922,15 +1966,15 @@ table tr th:last-child {
     line-height: 20px;
   }
   .notConnectedBtnRed {
-    width: 80px;
+    width: 95px;
     height: 22px;
   }
   .contactBtnGreen {
-    width: 80px;
+    width: 95px;
     height: 22px;
   }
   .followUpBtnYellow {
-    width: 80px;
+    width: 95px;
     height: 22px;
   }
   .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
@@ -1949,7 +1993,7 @@ table tr th:last-child {
     width: 17px;
     height: 17px;
 }
-.ant-popover-placement-bottom, .ant-popover-placement-bottomLeft, .ant-popover-placement-bottomRight {
+.antcustom .ant-popover-placement-bottom, .antcustom .ant-popover-placement-bottomLeft, .antcustom .ant-popover-placement-bottomRight {
   padding: 20px !important;
   left: 0 !important;
 }
@@ -2137,17 +2181,18 @@ table tr th:last-child {
 #sharecamp-popup .chatbox {
   padding: 10px;
   background: #f2f5f8;
-  margin: 0 10px 10px 0;
+  margin: 0 5px 10px 0;
+  position: relative;
   border-radius: 10px;
 }
 #sharecamp-popup table td:nth-child(2) .chatbox {
-  margin: 0 0px 10px 0;
+  margin: 0 0 10px 5px;
 }
 #sharecamp-popup table td:nth-child(3) .chatbox {
-  margin: 0 10px 0px 0;
+  margin: 0 5px 0px 0;
 }
 #sharecamp-popup table td:nth-child(4) .chatbox {
-  margin: 0 0px 0px 0;
+  margin: 0 0px 0px 5px;
 }
 #sharecamp-popup .ico {
   display: block;
@@ -2161,7 +2206,23 @@ table tr th:last-child {
   font-size: 11px;
   font-weight: normal;
   color: #333;
+  outline: none;
 }
+#sharecamp-popup .tick {
+  height: 13px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.ant-prodesc .ant-popover-arrow {
+  display: none !important;
+}
+.ant-prodesc {
+  left: 15px !important;
+}
+/* .broadcastimg {
+  display: none;
+} */
 }
 /* ------------------Campain Css End ------------------------- */
 
