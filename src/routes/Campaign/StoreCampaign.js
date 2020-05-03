@@ -10,7 +10,7 @@ import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
 // import collapsedown from "./../../assets/Images/collapsedown.png";
-// import collapseUp from "./../../assets/Images/collapseUp.png";
+import Pagination from "react-js-pagination";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
@@ -20,8 +20,8 @@ import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
-import Pagination from "./CampaignPagination";
-import ChildTablePagination from "./ChildTablePagination";
+// import Pagination from "./CampaignPagination";
+// import ChildTablePagination from "./ChildTablePagination";
 
 class StoreCampaign extends Component {
   constructor(props) {
@@ -60,12 +60,14 @@ class StoreCampaign extends Component {
       childTotalGridRecord: [],
       ResponsiveBroadCast: false,
       collapseModalDetails: {},
+      useratvdetails: {},
+      campaignkeyinsight: {},
+      campaignrecommended:[]
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
       this
     );
-   
   }
 
   componentDidMount() {
@@ -213,7 +215,6 @@ class StoreCampaign extends Component {
         console.log(data);
       });
   }
-
 
   handleCreateTicket() {
     if (this.state.modalData.tiketTitle == "") {
@@ -596,21 +597,6 @@ class StoreCampaign extends Component {
     }
   };
 
-  handleCustomerNameModalOpen(data) {
-    debugger;
-    var strTag = data.customerName.split(" ");
-    var sortName = strTag[0].charAt(0).toUpperCase();
-    if (strTag.length === 1) {
-      sortName = strTag[0].charAt(0).toUpperCase();
-    } else {
-      sortName += strTag[1].charAt(0).toUpperCase();
-    }
-    this.setState({
-      custNameModal: true,
-      customerModalDetails: data,
-      sortCustName: sortName,
-    });
-  }
   handleCustomerNameModalClose() {
     this.setState({
       custNameModal: false,
@@ -655,7 +641,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    debugger;
+    // debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -691,14 +677,14 @@ class StoreCampaign extends Component {
             CampChildTableData: currentPosts,
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord:Number(row.customerCount)
+            childTotalGridRecord: Number(row.customerCount),
           });
         } else {
           self.setState({
             CampChildTableData: [],
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord:[]
+            childTotalGridRecord: [],
           });
         }
       })
@@ -708,7 +694,6 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
-    ////debugger;
     // let self = this;
     axios({
       method: "post",
@@ -724,7 +709,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        ////debugger;
         var message = response.data.message;
         // var data = response.data.responseData;
         if (message == "Success") {
@@ -739,7 +723,6 @@ class StoreCampaign extends Component {
   }
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
-    ////debugger;
     // let self = this;
     axios({
       method: "post",
@@ -755,7 +738,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        ////debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -769,6 +751,49 @@ class StoreCampaign extends Component {
       });
   }
 
+  /// Handle Get Customer data
+  handleGetCustomerDataForModal(rowData) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
+      headers: authHeader(),
+      params: {
+        programCode: rowData.programcode,
+        mobileNumber: rowData.customerNumber,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          var strTag = rowData.customerName.split(" ");
+          var sortName = strTag[0].charAt(0).toUpperCase();
+          if (strTag.length === 1) {
+            sortName = strTag[0].charAt(0).toUpperCase();
+          } else {
+            sortName += strTag[1].charAt(0).toUpperCase();
+          }
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: rowData,
+            campaignkeyinsight: data.campaignkeyinsight,
+            useratvdetails:data.useratvdetails,
+            campaignrecommended:data.campaignrecommended,
+            sortCustName: sortName,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
+  handlePageChange(pageNumber) {
+    alert(`active page is ${pageNumber}`);
+    this.setState({activePage: pageNumber});
+  }
   render() {
     return (
       <div className="custom-tableak">
@@ -884,14 +909,16 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row, item) => {
                   return (
-                      <Popover
+                    <Popover
                       overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                           Broadcast to Campaign Customers
+                            Broadcast to Campaign Customers
                           </label>
-                          <label className="broadcastsubtitle">Choose Channel</label>
+                          <label className="broadcastsubtitle">
+                            Choose Channel
+                          </label>
                           <div>
                             <Radio.Group
                               onChange={this.handleBroadcastChange}
@@ -908,23 +935,23 @@ class StoreCampaign extends Component {
                               </Radio>
                             </Radio.Group>
                           </div>
-                          <button type="button" className="executebtn">Execute</button>
+                          <button type="button" className="executebtn">
+                            Execute
+                          </button>
                         </div>
                       }
                       placement="bottom"
                       trigger="click"
                     >
-                    <div className="broadcast-icon">
-                    <img
-                      src={BroadCastIcon}
-                      alt="cancel-icone"
-                      // onClick={this.handleBroadCastModalOpen.bind(this)}
-                      className="broadcastimg"
-                    />
-                  </div>
-                      
+                      <div className="broadcast-icon">
+                        <img
+                          src={BroadCastIcon}
+                          alt="cancel-icone"
+                          // onClick={this.handleBroadCastModalOpen.bind(this)}
+                          className="broadcastimg"
+                        />
+                      </div>
                     </Popover>
-                   
                   );
                 },
               },
@@ -946,7 +973,7 @@ class StoreCampaign extends Component {
                           <div>
                             <p
                               className="cust-name"
-                              onClick={this.handleCustomerNameModalOpen.bind(
+                              onClick={this.handleGetCustomerDataForModal.bind(
                                 this,
                                 item
                               )}
@@ -1048,7 +1075,7 @@ class StoreCampaign extends Component {
                               value={
                                 item.callRescheduledTo !== ""
                                   ? moment(item.callRescheduledTo).format(
-                                      "YYYY-MM-DD HH:mm:ss"
+                                      "DD-MM-YYYY hh:mm:ss"
                                     )
                                   : ""
                               }
@@ -1256,14 +1283,21 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
-        <ChildTablePagination
-                          ChildPostsPerPage={this.state.ChildPostsPerPage}
-                          childTotalGridRecord={this.state.childTotalGridRecord}
-                        />
         <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={this.state.ChildPostsPerPage}
+          totalItemsCount={this.state.childTotalGridRecord}
+          pageRangeDisplayed={10}
+          onChange={this.handlePageChange.bind(this)}
+        />
+        {/* <ChildTablePagination
+          ChildPostsPerPage={this.state.ChildPostsPerPage}
+          childTotalGridRecord={this.state.childTotalGridRecord}
+        /> */}
+        {/* <Pagination
           postsPerPage={this.state.postsPerPage}
           totalGridData={this.state.totalGridRecord}
-        />
+        /> */}
 
         <Modal
           open={this.state.ResponsiveCustModal}
@@ -1352,7 +1386,9 @@ class StoreCampaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>{this.state.customerModalDetails.customerName}</h3>
-                <p>Elite</p>
+                <p>
+                  {this.state.useratvdetails.tiername}
+                </p>
               </div>
             </div>
           </div>
@@ -1364,11 +1400,11 @@ class StoreCampaign extends Component {
                     <tr>
                       <td>
                         <h4>Lifetime Value</h4>
-                        <label>₹16,347</label>
+                        <label>₹{this.state.useratvdetails.lifeTimeValue}</label>
                       </td>
                       <td>
                         <h4>Visit Count</h4>
-                        <label>08</label>
+                        <label>{this.state.useratvdetails.visitCount}</label>
                       </td>
                     </tr>
                   </tbody>
@@ -1376,12 +1412,7 @@ class StoreCampaign extends Component {
               </div>
               <div className="keyinsights">
                 <h4>Key Insights</h4>
-                <p>Naman has an ATV Rs 500 in last quarter</p>
-                <p>Naman's favourite product category is Men Closet</p>
-                <p>
-                  Naman's basket size is reducing, Recommended Brands are: North
-                  Star, Hush Puppies
-                </p>
+                <p>{this.state.campaignkeyinsight.insightText}</p>
                 <img
                   className="keyingsightdrp"
                   src={Dropdown3}
@@ -1473,53 +1504,6 @@ class StoreCampaign extends Component {
                                       alt="Product Image"
                                     />
                                   </Popover>
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
                                   <img
                                     className="whatsappico"
                                     src={Whatsapp}
@@ -1654,7 +1638,7 @@ class StoreCampaign extends Component {
           overlayId="logout-ovrly"
           overlayClassName="sharepopupmob"
         >
-           <img
+          <img
             src={CancelIcon}
             alt="cancel-icone"
             className="cust-icon"
@@ -1705,7 +1689,11 @@ class StoreCampaign extends Component {
                   <td>
                     <a href="#">
                       <div className="chatbox">
-                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
                         <img className="tick" src={Tick} alt="Tick Icon" />
                         Send Via Messanger
                       </div>
@@ -1713,31 +1701,35 @@ class StoreCampaign extends Component {
                   </td>
                   <td>
                     <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                      <div className="chatbox">
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                      Send Via Bot
-                    </div>
+                        Send Via Bot
+                      </div>
                     </a>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Sms1} alt="SMS Icon" />
+                      <div className="chatbox">
+                        <img className="ico" src={Sms1} alt="SMS Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                      SMS
-                    </div>
+                        SMS
+                      </div>
                     </a>
                   </td>
                   <td>
                     <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Sms1} alt="Email Icon" />
+                      <div className="chatbox">
+                        <img className="ico" src={Sms1} alt="Email Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                      Email
-                    </div>
+                        Email
+                      </div>
                     </a>
                   </td>
                 </tr>

@@ -1850,6 +1850,9 @@ table tr th:last-child {
 .midalResponseAction .ant-table-row-collapsed,.midalResponseAction .ant-table-row-expanded{
 display: none;
 }
+.custpagination{
+  margin-top: 0 !important;
+}
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {
