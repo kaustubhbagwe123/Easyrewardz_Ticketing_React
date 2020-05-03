@@ -32,7 +32,7 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    
     if (this.props.location.tabName) {
       let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {

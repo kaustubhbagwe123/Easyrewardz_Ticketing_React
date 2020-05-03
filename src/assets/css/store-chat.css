@@ -562,10 +562,10 @@ p {
 }
 .storeUpbtn {
   background-color: #fff;
-  width: 20px;
-  padding: 10px;
   margin: auto;
   margin-top: 10px;
+  height: 30px;
+  padding: 0;
 }
 .product-card {
   height: 138px;
