@@ -106,6 +106,16 @@ a {
   line-height: 58px;
   text-align: center;
 }
+.bell-icon {
+  flex: 0 0 85px;
+  background: #fff;
+  border-right: 1px solid #e9e9e9;
+  line-height: 53px;
+}
+.bell-icon img {
+  width: 50px;
+  cursor: pointer;
+}
 .hamb-menu {
   width: 20px;
   margin-top: 13px;

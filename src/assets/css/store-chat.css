@@ -98,13 +98,33 @@ p {
   top: 50%;
   transform: translateY(-50%);
 }
+.chats-count {
+  position: relative;
+  display: inline-block;
+  margin-right: 5px;
+}
+.chats-count span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 7px;
+  font-weight: 700;
+  transform: translate(-50%, -50%);
+  margin-left: -0.5px;
+  margin-top: -0.5px;
+  color: #fff;
+}
 .mobile-chat-tabs .nav-tabs .nav-link {
   font-weight: 400;
   font-size: 13px;
   color: rgba(37, 97, 168, 0.4);
-  padding: 6px 10px;
+  padding: 5px 10px;
   border-radius: 20px;
   line-height: 1;
+  min-height: 25px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
 }
 .mobile-chat-tabs .nav-tabs {
   justify-content: center;
@@ -118,6 +138,21 @@ p {
   color: #fff;
   padding-right: 20px;
   padding-left: 20px;
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active .chats-count span {
+  color: #2561a8;
+}
+.chat-bubble-white {
+  display: none;
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active .chats-count .chat-bubble-white {
+  display: block;
+}
+.chat-bubble-blue {
+  display: block;
+}
+.mobile-chat-tabs .nav-tabs .nav-link.active .chats-count .chat-bubble-blue {
+  display: none;
 }
 .mobile-chat-tabs .tab-content {
   padding: 7px 0px 7px 15px;
@@ -147,12 +182,27 @@ p {
 }
 .chat-detail-outer-cntr {
   display: flex;
-  margin-top: 10px;
+  padding-top: 10px;
   overflow: auto;
-  min-height: 71px;
+  min-height: 81px;
+  margin-left: -4px;
 }
 .chat-detail-outer-cntr .chat-detail-middle-cntr:last-child .chat-detail-cntr {
   margin-right: 15px;
+}
+.chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
+  padding-left: 4px;
+}
+.chat-notification-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  font-size: 9px;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  margin-top: 1px;
+  margin-left: -0.5px;
 }
 .chat-detail-cntr {
   margin-right: 25px;
@@ -160,6 +210,12 @@ p {
 }
 .chat-detail-cntr.active .face-name {
   color: #2561a8;
+}
+.chat-notification-cntr {
+  width: 17px;
+  position: absolute;
+  top: -12px;
+  left: -4px;
 }
 /* .chat-detail-cntr.active::after, */
 .online {
@@ -989,11 +1045,14 @@ p {
     height: calc(100vh - 389px);
   }
   .chat-detail-outer-cntr {
-    min-height: 56px;
+    min-height: 66px;
   }
   .online {
     width: 8px;
     height: 8px;
+  }
+  .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
+    padding-left: 2px;
   }
 
   /* card modal starts */

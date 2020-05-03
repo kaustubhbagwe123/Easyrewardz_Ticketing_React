@@ -61,9 +61,10 @@ class StoreCampaign extends Component {
       currentPage: 1,
       postsPerPage: 5,
       totalGridRecord: [],
-      childCurrentPage:1,
+      childCurrentPage: 1,
       ChildPostsPerPage: 5,
       childTotalGridRecord: [],
+      ResponsiveBroadCast: false,
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -85,7 +86,7 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignCustomerID, item, e) {
-    debugger;
+    //debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
@@ -111,7 +112,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -143,7 +144,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    debugger;
+    //debugger;
     if (responseID !== 0) {
       let self = this,
         calculatedCallReScheduledTo;
@@ -171,7 +172,7 @@ class StoreCampaign extends Component {
         },
       })
         .then(function(res) {
-          debugger;
+          //debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Record Updated Successfully.");
@@ -614,7 +615,7 @@ class StoreCampaign extends Component {
   };
 
   handleCustomerNameModalOpen(data) {
-    debugger;
+    //debugger;
     var strTag = data.customerName.split(" ");
     var sortName = strTag[0].charAt(0).toUpperCase();
     if (strTag.length === 1) {
@@ -654,6 +655,16 @@ class StoreCampaign extends Component {
       responsiveShareVia: false,
     });
   }
+  handleBroadCastModalOpen() {
+    this.setState({
+      ResponsiveBroadCast: true,
+    });
+  }
+  handleBroadCastModalClose() {
+    this.setState({
+      ResponsiveBroadCast: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
@@ -667,9 +678,10 @@ class StoreCampaign extends Component {
   }
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    debugger;
+    //debugger;
     this.setState({
       ChildTblLoading: true,
+      CampChildTableData: [],
     });
     var campaignId = 0;
     if (check !== undefined) {
@@ -692,6 +704,11 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
+          const indexOfLastpost =
+            self.state.childCurrentPage * self.state.ChildPostsPerPage;
+          const indexOfFirstpost =
+            indexOfLastpost - self.state.ChildPostsPerPage;
+          const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
           self.setState({
             CampChildTableData: data,
             ChildTblLoading: false,
@@ -711,7 +728,7 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
-    debugger;
+    //debugger;
     // let self = this;
     axios({
       method: "post",
@@ -727,7 +744,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
+        //debugger;
         var message = response.data.message;
         // var data = response.data.responseData;
         if (message == "Success") {
@@ -742,7 +759,7 @@ class StoreCampaign extends Component {
   }
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -758,7 +775,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
+        //debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -916,18 +933,28 @@ class StoreCampaign extends Component {
                       placement="bottom"
                       trigger="click"
                     >
-                      <div className="broadcast-icon">
-                        <img src={BroadCastIcon} alt="cancel-icone" />
-                      </div>
+                    <div className="broadcast-icon">
+                    <img
+                      src={BroadCastIcon}
+                      alt="cancel-icone"
+                      onClick={this.handleBroadCastModalOpen.bind(this)}
+                      className="broadcastimg"
+                    />
+                  </div>
+                      
                     </Popover>
+                   
                   );
                 },
               },
             ]}
-            expandedRowRender={(row) => {
+            expandedRowRender={(row, item) => {
+              //debugger;
               return (
                 <Table
-                  dataSource={this.state.CampChildTableData}
+                  dataSource={this.state.CampChildTableData.filter(
+                    (x) => x.campaignScriptID === row.campaignID
+                  )}
                   columns={[
                     {
                       title: "Customer Name",
@@ -1654,6 +1681,42 @@ class StoreCampaign extends Component {
                   Share Via
                 </label>
               </div>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          open={this.state.ResponsiveBroadCast}
+          onClose={this.handleBroadCastModalClose.bind(this)}
+          center
+          modalId="sharecamp-popup"
+          overlayId="logout-ovrly"
+        >
+           <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleBroadCastModalClose.bind(this)}
+          />
+          <div className="general-popover popover-body broadcastpop">
+            <label>
+              <b>Broadcast to Campaign Customers</b>
+            </label>
+            <label>Choose Channel</label>
+            <div>
+              <Radio.Group
+                onChange={this.handleBroadcastChange}
+                value={this.state.broadcastChannel}
+              >
+                <Radio className="broadChannel" value={1}>
+                  Email
+                </Radio>
+                <Radio className="broadChannel" value={2}>
+                  SMS
+                </Radio>
+                <Radio className="broadChannel" value={3}>
+                  Whatsapp
+                </Radio>
+              </Radio.Group>
             </div>
           </div>
         </Modal>
