@@ -1,10 +1,10 @@
 import React from "react";
 import Demo from "./../../store/Hashtag";
 
-const ChildTablePagination = ({ postsPerPage, totalGridData }) => {
+const ChildTablePagination = ({ ChildPostsPerPage, childTotalGridRecord }) => {
   const pageNumber = [];
 
-  for (let i = 1; i <= Math.ceil(totalGridData / postsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(childTotalGridRecord / ChildPostsPerPage); i++) {
     pageNumber.push(i);
   }
   return (
