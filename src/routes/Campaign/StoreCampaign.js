@@ -87,7 +87,7 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignCustomerID, item, e) {
-    //debugger;
+    ////debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
@@ -113,7 +113,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -145,7 +145,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    //debugger;
+    ////debugger;
     if (responseID !== 0) {
       let self = this,
         calculatedCallReScheduledTo;
@@ -173,7 +173,7 @@ class StoreCampaign extends Component {
         },
       })
         .then(function(res) {
-          //debugger;
+          ////debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Record Updated Successfully.");
@@ -616,7 +616,7 @@ class StoreCampaign extends Component {
   };
 
   handleCustomerNameModalOpen(data) {
-    //debugger;
+    ////debugger;
     var strTag = data.customerName.split(" ");
     var sortName = strTag[0].charAt(0).toUpperCase();
     if (strTag.length === 1) {
@@ -673,7 +673,7 @@ class StoreCampaign extends Component {
   };
 
   handleToggleChildTable(data) {
-    debugger;
+    //debugger;
     this.setState({
       responsiveChildTable: !this.state.responsiveChildTable,
       collapseModalDetails: data,
@@ -681,7 +681,7 @@ class StoreCampaign extends Component {
   }
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    //debugger;
+    ////debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -704,7 +704,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
+        //debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -732,7 +732,7 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
-    //debugger;
+    ////debugger;
     // let self = this;
     axios({
       method: "post",
@@ -748,7 +748,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger;
+        ////debugger;
         var message = response.data.message;
         // var data = response.data.responseData;
         if (message == "Success") {
@@ -763,7 +763,7 @@ class StoreCampaign extends Component {
   }
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
-    //debugger;
+    ////debugger;
     let self = this;
     axios({
       method: "post",
@@ -779,7 +779,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger;
+        ////debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -955,7 +955,7 @@ class StoreCampaign extends Component {
               },
             ]}
             expandedRowRender={(row, item) => {
-              //debugger;
+              ////debugger;
               return (
                 <Table
                   dataSource={this.state.CampChildTableData.filter(
@@ -1049,7 +1049,7 @@ class StoreCampaign extends Component {
                       className: "table-coloum-hide",
                       dataIndex: "pricePaid",
                       render: (row, item) => {
-                        debugger;
+                        //debugger;
                         return (
                           <div
                             className={
