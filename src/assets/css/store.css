@@ -1494,7 +1494,7 @@ table tr th:last-child {
 .keyinsights h4 {
   color: #8694a0;
   font-size: 16px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   font-weight: normal;
 }
 .keyinsights p {
@@ -1507,10 +1507,15 @@ table tr th:last-child {
   background-color: #f2f5f8;
   border-radius: 10px;
   margin: 20px 0 0 0;
-  padding: 18px 30px;
+  padding: 18px 15px;
 }
 .productbox .tab-content {
   padding: 24px 0 0;
+}
+.productbox .prodscro {
+  max-height: 204px;
+  overflow: auto;
+  padding: 0 15px;
 }
 .productbox .nav-tabs .nav-link.active {
   color: #8694a0;
@@ -1635,6 +1640,21 @@ table tr th:last-child {
 .trasactablist .tabscrol::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.productbox .prodscro::-webkit-scrollbar {
+  width: 4px;
+}
+.productbox .prodscro::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.productbox .prodscro::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.productbox .prodscro::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .sharecamp {
   margin-top: 25px;
 }
@@ -1678,6 +1698,7 @@ table tr th:last-child {
 .productbox .nav-tabs {
   overflow: inherit;
   border: none;
+  padding: 0 15px;
 }
 .productdesc {
   padding: 15px;

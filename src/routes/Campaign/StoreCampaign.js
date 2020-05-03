@@ -1402,7 +1402,7 @@ class StoreCampaign extends Component {
               <div className="productbox">
                 <Tabs>
                   <Tab label="Recommended">
-                    <div>
+                    <div className="prodscro">
                       <div className="pro-slidercam">
                         <table className="w-100">
                           <tbody>
