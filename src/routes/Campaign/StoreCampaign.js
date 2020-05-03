@@ -884,16 +884,14 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row, item) => {
                   return (
-                    <Popover
+                      <Popover
                       overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                            Broadcast to Campaign Customers
+                           Broadcast to Campaign Customers
                           </label>
-                          <label className="broadcastsubtitle">
-                            Choose Channel
-                          </label>
+                          <label className="broadcastsubtitle">Choose Channel</label>
                           <div>
                             <Radio.Group
                               onChange={this.handleBroadcastChange}
@@ -910,23 +908,23 @@ class StoreCampaign extends Component {
                               </Radio>
                             </Radio.Group>
                           </div>
-                          <button type="button" className="executebtn">
-                            Execute
-                          </button>
+                          <button type="button" className="executebtn">Execute</button>
                         </div>
                       }
                       placement="bottom"
                       trigger="click"
                     >
-                      <div className="broadcast-icon">
-                        <img
-                          src={BroadCastIcon}
-                          alt="cancel-icone"
-                          // onClick={this.handleBroadCastModalOpen.bind(this)}
-                          className="broadcastimg"
-                        />
-                      </div>
+                    <div className="broadcast-icon">
+                    <img
+                      src={BroadCastIcon}
+                      alt="cancel-icone"
+                      // onClick={this.handleBroadCastModalOpen.bind(this)}
+                      className="broadcastimg"
+                    />
+                  </div>
+                      
                     </Popover>
+                   
                   );
                 },
               },
@@ -1655,7 +1653,7 @@ class StoreCampaign extends Component {
           overlayId="logout-ovrly"
           overlayClassName="sharepopupmob"
         >
-          <img
+           <img
             src={CancelIcon}
             alt="cancel-icone"
             className="cust-icon"
@@ -1706,11 +1704,7 @@ class StoreCampaign extends Component {
                   <td>
                     <a href="#">
                       <div className="chatbox">
-                        <img
-                          className="ico"
-                          src={Whatsapp}
-                          alt="Whatsapp Icon"
-                        />
+                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
                         Send Via Messanger
                       </div>
@@ -1718,35 +1712,31 @@ class StoreCampaign extends Component {
                   </td>
                   <td>
                     <a href="#">
-                      <div className="chatbox">
-                        <img
-                          className="ico"
-                          src={Whatsapp}
-                          alt="Whatsapp Icon"
-                        />
+                    <div className="chatbox">
+                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                        Send Via Bot
-                      </div>
+                      Send Via Bot
+                    </div>
                     </a>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <a href="#">
-                      <div className="chatbox">
-                        <img className="ico" src={Sms1} alt="SMS Icon" />
+                    <div className="chatbox">
+                      <img className="ico" src={Sms1} alt="SMS Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                        SMS
-                      </div>
+                      SMS
+                    </div>
                     </a>
                   </td>
                   <td>
                     <a href="#">
-                      <div className="chatbox">
-                        <img className="ico" src={Sms1} alt="Email Icon" />
+                    <div className="chatbox">
+                      <img className="ico" src={Sms1} alt="Email Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                        Email
-                      </div>
+                      Email
+                    </div>
                     </a>
                   </td>
                 </tr>
