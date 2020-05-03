@@ -65,7 +65,7 @@ class StoreCampaign extends Component {
       ChildPostsPerPage: 5,
       childTotalGridRecord: [],
       ResponsiveBroadCast: false,
-      collapseModalDetails:{}
+      collapseModalDetails: {},
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -113,7 +113,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -673,9 +673,10 @@ class StoreCampaign extends Component {
   };
 
   handleToggleChildTable(data) {
+    debugger;
     this.setState({
       responsiveChildTable: !this.state.responsiveChildTable,
-      collapseModalDetails:data
+      collapseModalDetails: data,
     });
   }
   /// Handle Get Campaign customer details
@@ -703,7 +704,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -906,14 +907,16 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row, item) => {
                   return (
-                      <Popover
+                    <Popover
                       overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                           Broadcast to Campaign Customers
+                            Broadcast to Campaign Customers
                           </label>
-                          <label className="broadcastsubtitle">Choose Channel</label>
+                          <label className="broadcastsubtitle">
+                            Choose Channel
+                          </label>
                           <div>
                             <Radio.Group
                               onChange={this.handleBroadcastChange}
@@ -930,23 +933,23 @@ class StoreCampaign extends Component {
                               </Radio>
                             </Radio.Group>
                           </div>
-                          <button type="button" className="executebtn">Execute</button>
+                          <button type="button" className="executebtn">
+                            Execute
+                          </button>
                         </div>
                       }
                       placement="bottom"
                       trigger="click"
                     >
-                    <div className="broadcast-icon">
-                    <img
-                      src={BroadCastIcon}
-                      alt="cancel-icone"
-                      // onClick={this.handleBroadCastModalOpen.bind(this)}
-                      className="broadcastimg"
-                    />
-                  </div>
-                      
+                      <div className="broadcast-icon">
+                        <img
+                          src={BroadCastIcon}
+                          alt="cancel-icone"
+                          // onClick={this.handleBroadCastModalOpen.bind(this)}
+                          className="broadcastimg"
+                        />
+                      </div>
                     </Popover>
-                   
                   );
                 },
               },
@@ -1046,7 +1049,7 @@ class StoreCampaign extends Component {
                       className: "table-coloum-hide",
                       dataIndex: "pricePaid",
                       render: (row, item) => {
-                        debugger
+                        debugger;
                         return (
                           <div
                             className={
@@ -1068,7 +1071,9 @@ class StoreCampaign extends Component {
                               dateFormat="MM/dd/yyyy h:mm aa"
                               value={
                                 item.callRescheduledTo !== ""
-                                  ? moment(item.callRescheduledTo).format("MM/dd/yyyy h:mm aa")
+                                  ? moment(item.callRescheduledTo).format(
+                                      "MM/dd/yyyy h:mm aa"
+                                    )
                                   : ""
                               }
                               onChange={this.onDateChange.bind(this, item.id)}
@@ -1095,7 +1100,8 @@ class StoreCampaign extends Component {
                                   src={collapseUp}
                                   alt="collapseUp"
                                   onClick={this.handleToggleChildTable.bind(
-                                    this
+                                    this,
+                                    item
                                   )}
                                 />
                               ) : (
@@ -1104,165 +1110,11 @@ class StoreCampaign extends Component {
                                   src={collapsedown}
                                   alt="collapsedown"
                                   onClick={this.handleToggleChildTable.bind(
-                                    this
+                                    this,
+                                    item
                                   )}
                                 />
                               )}
-
-                              <div className="hidedesk">
-                                <Collapse
-                                  isOpen={this.state.responsiveChildTable}
-                                >
-                                  <Card>
-                                    <CardBody>
-                                      <div className="innertabcollapse">
-                                      <table>
-                                        <tbody>
-                                          <tr>
-                                            <td>
-                                              <label>Customer Name</label>
-                                            </td>
-                                            <td>
-                                              <label>
-                                                {item.customerName}
-                                                <span>{item.customerNumber}</span>
-                                              </label>
-                                            </td>
-                                            <td>
-                                              
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <label>Date</label>
-                                            </td>
-                                            <td>
-                                              <label>
-                                                {item.campaignDate}
-                                              </label>
-                                            </td>
-                                            <td></td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <label>Response</label>
-                                            </td>
-                                            <td>
-                                              <select
-                                                className="responceDrop-down dropdown-label"
-                                                value={item.responseID}
-                                                onChange={this.onResponseChange.bind(
-                                                  this,
-                                                  item.id,
-                                                  item
-                                                )}
-                                              >
-                                                <option hidden>
-                                                  Select Response
-                                                </option>
-                                                {item.hsCampaignResponseList !==
-                                                  null &&
-                                                  item.hsCampaignResponseList.map(
-                                                    (items, i) => (
-                                                      <option
-                                                        key={i}
-                                                        value={items.responseID}
-                                                      >
-                                                        {items.response}
-                                                      </option>
-                                                    )
-                                                  )}
-                                              </select>
-                                            </td>
-                                            <td></td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <label>Status</label>
-                                            </td>
-                                            <td>
-                                              <label className="table-btnlabel notConnectedBtnRed">
-                                                {item.statusName}
-                                              </label>
-                                            </td>
-                                            <td></td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <label>Call Rescheduled to</label>
-                                            </td>
-                                            <td>
-                                                  <div
-                                                className={
-                                                  item.responseID === 3
-                                                    ? ""
-                                                    : "disabled-input"
-                                                }
-                                              >
-                                                <DatePicker
-                                                  id="startDate"
-                                                  autoComplete="off"
-                                                  showTimeSelect
-                                                  name="startDate"
-                                                  showMonthDropdown
-                                                  showYearDropdown
-                                                  selected={
-                                                    item.callRescheduledTo !== ""
-                                                      ? new Date(
-                                                          item.callRescheduledTo
-                                                        )
-                                                      : new Date()
-                                                  }
-                                                  dateFormat="MM/dd/yyyy h:mm aa"
-                                                  value={
-                                                    item.callRescheduledTo !== ""
-                                                      ? moment(
-                                                          item.callRescheduledTo
-                                                        )
-                                                      : ""
-                                                  }
-                                                  onChange={this.onDateChange.bind(
-                                                    this,
-                                                    item.id
-                                                  )}
-                                                  className={
-                                                    item.responseID === 3
-                                                      ? "txtStore dateTimeStore"
-                                                      : "txtStore dateTimeStore disabled-link"
-                                                  }
-                                                  placeholderText="Select Date &amp; Time"
-                                                />
-                                              </div>
-                                            </td>
-                                            <td></td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                                <button
-                                                  className="saveBtn saveLabel"
-                                                  type="button"
-                                                  onClick={this.handleUpdateCampaignResponse.bind(
-                                                    this,
-                                                    item.id,
-                                                    item.responseID,
-                                                    item.callRescheduledTo,
-                                                    item.campaignScriptID
-                                                  )}
-                                                >
-                                                  Update
-                                                </button>
-                                                <button style={{ display: "none" }}>
-                                                  Raise Ticket
-                                                </button>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                      </div>
-                                    </CardBody>
-                                  </Card>
-                                </Collapse>
-                              </div>
                             </div>
                             <div className="table-coloum-hide status-btn-camp">
                               <div>
@@ -1314,10 +1166,146 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
+        <div className="hidedesk">
+          <Collapse isOpen={this.state.responsiveChildTable}>
+            <Card>
+              <CardBody>
+                <div className="innertabcollapse">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label>Customer Name</label>
+                        </td>
+                        <td>
+                          <label>
+                            {this.state.collapseModalDetails.customerName}
+                            <span>
+                              {this.state.collapseModalDetails.customerNumber}
+                            </span>
+                          </label>
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>Date</label>
+                        </td>
+                        <td>
+                          <label>
+                            {this.state.collapseModalDetails.campaignDate}
+                          </label>
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>Response</label>
+                        </td>
+                        <td>
+                          {/* <select
+                            className="responceDrop-down dropdown-label"
+                            value={this.state.collapseModalDetails.responseID}
+                            onChange={this.onResponseChange.bind(
+                              this,
+                              this.state.collapseModalDetails.id,
+                              this.state.collapseModalDetails
+                            )}
+                          >
+                            <option hidden>Select Response</option>
+                            {this.state.collapseModalDetails.hsCampaignResponseList !== null &&
+                              this.state.collapseModalDetails.hsCampaignResponseList.map((items, i) => (
+                                <option key={i} value={items.responseID}>
+                                  {items.response}
+                                </option>
+                              ))}
+                          </select> */}
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>Status</label>
+                        </td>
+                        <td>
+                          <label className="table-btnlabel notConnectedBtnRed">
+                            {this.state.collapseModalDetails.statusName}
+                          </label>
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>Call Rescheduled to</label>
+                        </td>
+                        <td>
+                          {/* <div
+                            className={
+                              this.state.collapseModalDetails.responseID === 3 ? "" : "disabled-input"
+                            }
+                          >
+                            <DatePicker
+                              id="startDate"
+                              autoComplete="off"
+                              showTimeSelect
+                              name="startDate"
+                              showMonthDropdown
+                              showYearDropdown
+                              selected={
+                                this.state.collapseModalDetails.callRescheduledTo !== ""
+                                  ? new Date(this.state.collapseModalDetails.callRescheduledTo)
+                                  : new Date()
+                              }
+                              dateFormat="MM/dd/yyyy h:mm aa"
+                              value={
+                                this.state.collapseModalDetails.callRescheduledTo !== ""
+                                  ? moment(this.state.collapseModalDetails.callRescheduledTo)
+                                  : ""
+                              }
+                              onChange={this.onDateChange.bind(this, this.state.collapseModalDetails.id)}
+                              className={
+                                this.state.collapseModalDetails.responseID === 3
+                                  ? "txtStore dateTimeStore"
+                                  : "txtStore dateTimeStore disabled-link"
+                              }
+                              placeholderText="Select Date &amp; Time"
+                            />
+                          </div> */}
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <button
+                            className="saveBtn saveLabel"
+                            type="button"
+                            onClick={this.handleUpdateCampaignResponse.bind(
+                              this,
+                              this.state.collapseModalDetails.id,
+                              this.state.collapseModalDetails.responseID,
+                              this.state.collapseModalDetails.callRescheduledTo,
+                              this.state.collapseModalDetails.campaignScriptID
+                            )}
+                          >
+                            Update
+                          </button>
+                          <button style={{ display: "none" }}>
+                            Raise Ticket
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </CardBody>
+            </Card>
+          </Collapse>
+        </div>
         <Pagination
           postsPerPage={this.state.postsPerPage}
           totalGridData={this.state.totalGridRecord}
         />
+
         <Modal
           open={this.state.ResponsiveCustModal}
           onClose={this.responsiveCustModalClose.bind(this)}
@@ -1707,7 +1695,7 @@ class StoreCampaign extends Component {
           overlayId="logout-ovrly"
           overlayClassName="sharepopupmob"
         >
-           <img
+          <img
             src={CancelIcon}
             alt="cancel-icone"
             className="cust-icon"
@@ -1758,7 +1746,11 @@ class StoreCampaign extends Component {
                   <td>
                     <a href="#">
                       <div className="chatbox">
-                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
                         <img className="tick" src={Tick} alt="Tick Icon" />
                         Send Via Messanger
                       </div>
@@ -1766,31 +1758,35 @@ class StoreCampaign extends Component {
                   </td>
                   <td>
                     <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                      <div className="chatbox">
+                        <img
+                          className="ico"
+                          src={Whatsapp}
+                          alt="Whatsapp Icon"
+                        />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                      Send Via Bot
-                    </div>
+                        Send Via Bot
+                      </div>
                     </a>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Sms1} alt="SMS Icon" />
+                      <div className="chatbox">
+                        <img className="ico" src={Sms1} alt="SMS Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                      SMS
-                    </div>
+                        SMS
+                      </div>
                     </a>
                   </td>
                   <td>
                     <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Sms1} alt="Email Icon" />
+                      <div className="chatbox">
+                        <img className="ico" src={Sms1} alt="Email Icon" />
                         <img className="tick" src={Tick} alt="Tick Icon" />
-                      Email
-                    </div>
+                        Email
+                      </div>
                     </a>
                   </td>
                 </tr>
