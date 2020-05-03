@@ -936,6 +936,7 @@ class StoreCampaign extends Component {
                   dataSource={this.state.CampChildTableData.filter(
                     (x) => x.campaignScriptID === row.campaignID
                   )}
+                  className="midalResponseAction"
                   columns={[
                     {
                       title: "Customer Name",
