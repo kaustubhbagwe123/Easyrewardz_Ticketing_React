@@ -200,6 +200,7 @@ class Header extends Component {
       recommendedModal: false,
       paymentModal: false,
       selectedCard: 0,
+      chkSuggestion: []
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -724,16 +725,30 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages(messageStringData) {
+  handleSaveChatMessages(messageStringData,index) {
     let self = this;
     var messagecontent = "";
-    if (messageStringData) {
-      messagecontent = messageStringData
-        .replace("col-md-4", "col-md-2")
-        .replace("col-md-8", "col-md-10");
-    } else {
-      messagecontent = this.state.message;
+    // if (messageStringData) {
+    //   messagecontent = messageStringData
+    //     .replace("col-md-4", "col-md-2")
+    //     .replace("col-md-8", "col-md-10");
+    // } else {
+      messagecontent = messageStringData;
+    // }
+    if(this.state.chkSuggestion.length > 0)
+    {
+      if(this.state.chkSuggestion[index] === 1){
+        this.state.chkSuggestion[index] = 0;
+        
+      }
+      else{
+        this.state.chkSuggestion[index] = 1;
+      }
     }
+    else{
+      this.state.chkSuggestion[index] = 1;
+    }
+    this.setState({ chkSuggestion: this.state.chkSuggestion });
 
     if (messagecontent !== "" && this.state.chatId > 0) {
       var inputParam = {};
@@ -755,7 +770,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
-            self.setState({ message: "" });
+            self.setState({ message: ""});
           } else {
           }
         })
@@ -962,6 +977,9 @@ class Header extends Component {
       message,
       messageSuggestion,
     });
+  };
+
+  handleMessageSuggestion = (evt) => {
     setTimeout(() => {
       if (this.state.messageSuggestion.length > 2) {
         this.handleGetMessageSuggestionList();
@@ -1978,31 +1996,46 @@ class Header extends Component {
                                 {this.state.isMessage}
                               </p>
                             )}
-                            <div className="suggestions-cntr">
-                              <div className="suggestions-tick">
-                                <span>Men Shoes under 999</span>
-                              </div>
-                              <div className="suggestions-tick">
-                                <span>
-                                  Men Shoes under 999 in black color and laces
-                                </span>
-                              </div>
-                              <div className="">
-                                <span>Men Shoes Casual</span>
-                              </div>
-                              <div className="">
-                                <span>Men Shoes Black</span>
-                              </div>
-                              <div className="suggestions-tick">
-                                <span>Men Shoes Formal</span>
-                              </div>
-                              <div className="">
-                                <span>Men Shoes under 999 sports</span>
-                              </div>
-                              <div className="suggestions-tick">
-                                <span>Men Shoes Party</span>
-                              </div>
-                            </div>
+                            {this.state.messageSuggestionData !== null &&
+                              this.state.messageSuggestionData.length > 0 &&
+                              this.state.messageSuggestionData.length > 0 && (
+                                <div className="suggestions-cntr">
+                                {this.state.messageSuggestionData !== null &&
+                                  this.state.messageSuggestionData.map(
+                                  (item, i) => (
+                                    <div className={this.state.chkSuggestion[i] === 1?"suggestions-tick":""}
+                                      key={i}
+                                      onClick={
+                                        this.handleSaveChatMessages.bind(this,item.ticketTitle,i)
+                                      }
+                                      title={item.ticketTitleToolTip}
+                                    >
+                                      <span>{item.ticketTitle}</span>
+                                    </div>
+                                  )
+                                  )}
+                                  {/* <div className="suggestions-tick">
+                                    <span>
+                                      Men Shoes under 999 in black color and laces
+                                    </span>
+                                  </div>
+                                  <div className="">
+                                    <span>Men Shoes Casual</span>
+                                  </div>
+                                  <div className="">
+                                    <span>Men Shoes Black</span>
+                                  </div>
+                                  <div className="suggestions-tick">
+                                    <span>Men Shoes Formal</span>
+                                  </div>
+                                  <div className="">
+                                    <span>Men Shoes under 999 sports</span>
+                                  </div>
+                                  <div className="suggestions-tick">
+                                    <span>Men Shoes Party</span>
+                                  </div> */}
+                                </div>
+                                )}
                             {/* {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
@@ -2025,7 +2058,7 @@ class Header extends Component {
                               )} */}
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleSaveChatMessages.bind(this)}
+                              onClick={this.handleMessageSuggestion.bind(this)}
                               title={"Send"}
                             >
                               {/* <img src={Assign} alt="send img" /> */}
