@@ -982,7 +982,7 @@ class Header extends Component {
       } else {
         this.setState({
           messageSuggestionData: [],
-          chkSuggestion: []
+          chkSuggestion: [],
         });
       }
     }, 1);

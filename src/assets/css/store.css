@@ -1448,7 +1448,7 @@ table tr th:last-child {
   width: 7%;
   background: #0080ff;
   border-radius: 8px;
-  padding: 12px;
+  padding: 12px 8px;
   text-align: center;
   color: #fff;
   font-size: 17px;
@@ -1579,10 +1579,10 @@ table tr th:last-child {
   padding: 0 0 10px 5px;
 }
 .pro-slidercam table td:nth-child(3) {
-  padding: 0 5px 0px 0;
+  padding: 0 5px 10px 0;
 }
 .pro-slidercam table td:nth-child(4) {
-  padding: 0 0px 0px 5px;
+  padding: 0 0px 10px 5px;
 }
 .whatsappico {
   height: 18px;
@@ -1869,6 +1869,7 @@ table tr th:last-child {
 }
 .lt-single td {
   display: block;
+  padding: 43px 20px;
   text-align: center;
 }
 .tab-single .nav-item {
@@ -1936,6 +1937,12 @@ table tr th:last-child {
 }
 .Camp-pagination {
   margin-top: -22px;
+}
+.Camp-pagination select {
+  background: url("./../Images/dropdown3.png") no-repeat right 4px center;
+  background-size: 8px;
+  padding-right: 17px;
+  padding-left: 7px;
 }
 /* ------------------Campain Media Queries ------------------------- */
 
@@ -2042,6 +2049,7 @@ table tr th:last-child {
   }
   .custom-tableak .hdrcloselabel {
     font-size: 10px;
+    vertical-align: super;
   }
   .custom-tableak {
     padding: 5px 0;
@@ -2400,6 +2408,34 @@ table tr th:last-child {
     display: block;
     border-radius: 20px;
   }
+  .productbox .nav-tabs {
+    padding: 0;
+}
+.productbox .prodscro {
+  padding: 0;
+  max-height: 200px;
+}
+#sharesuccesfullpopup .tick {
+  height: 40px;
+  margin: auto;
+  display: block;
+  margin-bottom: 15px;
+}
+#sharesuccesfullpopup {
+  border-radius: 20px;
+  width: 100%;
+}
+#sharesuccesfullpopup h3 {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+#sharesuccesfullpopup p {
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 15px;
+}
 }
 /* ------------------Campain Css End ------------------------- */
 
