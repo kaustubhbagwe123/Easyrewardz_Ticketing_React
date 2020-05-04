@@ -1513,7 +1513,7 @@ table tr th:last-child {
   padding: 24px 0 0;
 }
 .productbox .prodscro {
-  max-height: 204px;
+  max-height: 210px;
   overflow: auto;
   padding: 0 15px;
 }
@@ -1543,17 +1543,12 @@ table tr th:last-child {
   height: "30px";
   line-height: 30px;
 }
-
-.pro-slidercam td {
-  padding: 0;
-  padding-bottom: 7px;
-}
-.pro-slidercam td:first-child {
+/* .pro-slidercam td:first-child {
   padding-right: 10px;
 }
 .pro-slidercam td:last-child {
   padding-left: 10px;
-}
+} */
 .pro-slidercam .shoeimg {
   height: 100%;
   width: auto;
@@ -1574,6 +1569,20 @@ table tr th:last-child {
   text-align: center;
   margin-top: 5px;
   color: #333;
+}
+.pro-slidercam td {
+  padding: 0 5px 10px 0;
+  width: 50%;
+  display: inline-block;
+}
+.pro-slidercam table td:nth-child(2) {
+  padding: 0 0 10px 5px;
+}
+.pro-slidercam table td:nth-child(3) {
+  padding: 0 5px 0px 0;
+}
+.pro-slidercam table td:nth-child(4) {
+  padding: 0 0px 0px 5px;
 }
 .whatsappico {
   height: 18px;
@@ -1857,6 +1866,49 @@ table tr th:last-child {
 .innertabcollapse td {
   padding: 7px !important;
   font-size: 11px;
+}
+.lt-single td {
+  display: block;
+  text-align: center;
+}
+.tab-single .nav-item {
+  width: 100%;
+}
+.tab-single .nav-tabs .nav-link.active {
+  display: block !important;
+  text-align: center;
+}
+#sharecamp-popupmob {
+  display: none;
+}
+#logout-ovrly-none {
+  background-color: transparent;
+  background: none;
+}
+.custom-tableak .react-pagination-js-bootstrap {
+  background: #f9f9f9;
+}
+.custom-tableak .react-pagination-js-bootstrap ul {
+  margin: auto;
+  display: table;
+  padding: 10px 0;
+  box-shadow: none;
+}
+.custom-tableak .react-pagination-js-bootstrap ul li {
+  border: none;
+}
+.custom-tableak .react-pagination-js-bootstrap .is-active {
+  float: left;
+  padding: 0px 10px;
+  line-height: 25px;
+  color: #fff;
+  background-color: #2561a8;
+  cursor: default;
+  border-radius: 5px;
+}
+.custom-tableak .react-pagination-js-bootstrap .page, .custom-tableak .react-pagination-js-bootstrap .pageElli {
+  line-height: 25px !important;
+  color: #333;
 }
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
@@ -2336,6 +2388,10 @@ display: none;
   font-size: 11px;
   width: 60px;
   height: 28px;
+}
+#sharecamp-popupmob {
+  display: block;
+  border-radius: 20px;
 }
 }
 /* ------------------Campain Css End ------------------------- */
