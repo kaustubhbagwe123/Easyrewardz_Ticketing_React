@@ -1878,6 +1878,13 @@ table tr th:last-child {
   display: block !important;
   text-align: center;
 }
+#sharecamp-popupmob {
+  display: none;
+}
+#logout-ovrly-none {
+  background-color: transparent;
+  background: none;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
@@ -2356,6 +2363,10 @@ display: none;
   font-size: 11px;
   width: 60px;
   height: 28px;
+}
+#sharecamp-popupmob {
+  display: block;
+  border-radius: 20px;
 }
 }
 /* ------------------Campain Css End ------------------------- */

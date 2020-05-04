@@ -137,7 +137,6 @@ class StoreCampaign extends Component {
   ) {
     debugger;
     if (responseID !== 0) {
-     
       let self = this,
         calculatedCallReScheduledTo;
       var check = true;
@@ -946,7 +945,7 @@ class StoreCampaign extends Component {
                         <img
                           src={BroadCastIcon}
                           alt="cancel-icone"
-                          // onClick={this.handleBroadCastModalOpen.bind(this)}
+                          onClick={this.handleBroadCastModalOpen.bind(this)}
                           className="broadcastimg"
                         />
                       </div>
@@ -1294,7 +1293,7 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
-      {/* {ultimatePagination.getPaginationModel({
+        {/* {ultimatePagination.getPaginationModel({
           // Required
           currentPage: this.state.childCurrentPage,
           totalPages: this.state.childTotalGridRecord,
@@ -1764,9 +1763,8 @@ class StoreCampaign extends Component {
           open={this.state.ResponsiveBroadCast}
           onClose={this.handleBroadCastModalClose.bind(this)}
           center
-          modalId="sharecamp-popup"
-          overlayId="logout-ovrly"
-          overlayClassName="sharepopupmob"
+          modalId="sharecamp-popupmob"
+          overlayId="logout-ovrly-none"
         >
           <img
             src={CancelIcon}
@@ -1775,10 +1773,10 @@ class StoreCampaign extends Component {
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
           <div className="general-popover popover-body broadcastpop">
-            <label>
-              <b>Broadcast to Campaign Customers</b>
+            <label className="broadcasttitle">
+              Broadcast to Campaign Customers
             </label>
-            <label>Choose Channel</label>
+            <label className="broadcastsubtitle">Choose Channel</label>
             <div>
               <Radio.Group
                 onChange={this.handleBroadcastChange}
