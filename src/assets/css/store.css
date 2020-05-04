@@ -1448,7 +1448,7 @@ table tr th:last-child {
   width: 7%;
   background: #0080ff;
   border-radius: 8px;
-  padding: 12px;
+  padding: 12px 8px;
   text-align: center;
   color: #fff;
   font-size: 17px;
@@ -2406,6 +2406,12 @@ table tr th:last-child {
     display: block;
     border-radius: 20px;
   }
+  .productbox .nav-tabs {
+    padding: 0;
+}
+.productbox .prodscro {
+  padding: 0;
+}
 }
 /* ------------------Campain Css End ------------------------- */
 
