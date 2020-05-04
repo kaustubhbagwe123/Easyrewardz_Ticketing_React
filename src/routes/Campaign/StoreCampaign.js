@@ -1437,6 +1437,28 @@ class StoreCampaign extends Component {
                   </tbody>
                 </table>
               </div>
+              <div className="lifetimevalue lt-single">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <h4>Lifetime Value</h4>
+                        <label>
+                          ₹{this.state.useratvdetails.lifeTimeValue}
+                        </label>
+                      </td>
+                      <td>
+                        <h4>Visit Count</h4>
+                        <label>
+                          {this.state.useratvdetails.visitCount < 9
+                            ? "0" + this.state.useratvdetails.visitCount
+                            : this.state.useratvdetails.visitCount}
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               {this.state.campaignkeyinsight.insightText !== "" ? (
                 <div className="keyinsights">
                   <h4>Key Insights</h4>
@@ -1450,7 +1472,7 @@ class StoreCampaign extends Component {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="productbox">
+              <div className="productbox tab-single">
                 <Tabs>
                   <Tab label="Recommended">
                     {this.state.campaignrecommended !== null &&
