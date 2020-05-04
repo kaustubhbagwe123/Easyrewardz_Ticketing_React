@@ -57,7 +57,7 @@ class StoreCampaign extends Component {
       totalGridRecord: [],
       childCurrentPage: 1,
       ChildPostsPerPage: 10,
-      childTotalGridRecord: [],
+      childTotalGridRecord: 0,
       ResponsiveBroadCast: false,
       collapseModalDetails: {},
       useratvdetails: {},
@@ -65,6 +65,8 @@ class StoreCampaign extends Component {
       campaignrecommended: [],
       lasttransactiondetails: {},
       ResponsiveShareNow: false,
+      campaignID: 0,
+      ResponsiveChooseChannel: 0,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -137,7 +139,6 @@ class StoreCampaign extends Component {
     debugger;
     let self = this,
       calculatedCallReScheduledTo;
-    var check = true;
     var Updatecheck = "";
     if (responseID === 3) {
       if (callRescheduledTo !== "") {
@@ -165,7 +166,7 @@ class StoreCampaign extends Component {
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
               self.handleGetCampaignCustomerData(
-                check,
+                true,
                 Updatecheck,
                 campaignScriptID
               );
@@ -203,7 +204,7 @@ class StoreCampaign extends Component {
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
               self.handleGetCampaignCustomerData(
-                check,
+                true,
                 Updatecheck,
                 campaignScriptID
               );
@@ -687,22 +688,47 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = (numPage) => {
-    alert(numPage);
-    this.setState({ childCurrentPage: numPage });
+    // debugger
+    this.setState({
+      childCurrentPage: numPage,
+    });
+    setTimeout(() => {
+      this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+    }, 100);
   };
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    // debugger;
+    debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
     });
+    if (data) {
+      this.setState({
+        childCurrentPage: 1,
+        childTotalGridRecord: 0,
+      });
+    }
     var campaignId = 0;
-    if (check !== undefined) {
+    if (check !== undefined || check > 0) {
       campaignId = check;
     } else {
-      campaignId = row.campaignID;
+      if (row !== "") {
+        this.setState({
+          campaignID: row.campaignID,
+        });
+        campaignId = row.campaignID;
+      } else {
+        campaignId = this.state.campaignID;
+      }
     }
+    if (row !== "") {
+      this.setState({
+        childTotalGridRecord: Number(row.customerCount),
+      });
+    } else {
+    }
+
     let self = this;
     axios({
       method: "post",
@@ -715,27 +741,28 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          const indexOfLastpost =
-            self.state.childCurrentPage * self.state.ChildPostsPerPage;
-          const indexOfFirstpost =
-            indexOfLastpost - self.state.ChildPostsPerPage;
-          const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
           self.setState({
-            CampChildTableData: currentPosts,
+            CampChildTableData: data,
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord: Number(row.customerCount),
+            // childTotalGridRecord: Number(row.customerCount),
+            // campaignID: row.campaignID,
           });
+
+          // const indexOfLastpost =
+          //   self.state.childCurrentPage * self.state.ChildPostsPerPage;
+          // const indexOfFirstpost =
+          //   indexOfLastpost - self.state.ChildPostsPerPage;
+          // const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
         } else {
           self.setState({
             CampChildTableData: [],
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord: [],
+            childTotalGridRecord: 0,
           });
         }
       })
@@ -1034,334 +1061,354 @@ class StoreCampaign extends Component {
               },
             ]}
             expandedRowRender={(row, item) => {
-              ////debugger;
               return (
-                <Table
-                  dataSource={this.state.CampChildTableData.filter(
-                    (x) => x.campaignScriptID === row.campaignID
-                  )}
-                  className="midalResponseAction"
-                  columns={[
-                    {
-                      title: "Customer Name",
-                      dataIndex: "id",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            <p
-                              className="cust-name"
-                              onClick={this.handleGetCustomerDataForModal.bind(
-                                this,
-                                item
-                              )}
-                            >
-                              {item.customerName}
-                              <img
-                                className="ico"
-                                src={Whatsapp}
-                                alt="Whatsapp Icon"
-                              />
-                            </p>
-                            <span className="sml-fnt">
-                              {item.customerNumber}
-                            </span>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Date",
-                      dataIndex: "campaignDate",
-                      className: "table-coloum-hide",
-                    },
-                    {
-                      title: "Response",
-                      className: "table-coloum-hide",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            <select
-                              className="responceDrop-down dropdown-label"
-                              value={item.responseID}
-                              onChange={this.onResponseChange.bind(
-                                this,
-                                item.id,
-                                item
-                              )}
-                            >
-                              <option hidden>Select Response</option>
-                              {item.hsCampaignResponseList !== null &&
-                                item.hsCampaignResponseList.map((items, i) => (
-                                  <option key={i} value={items.responseID}>
-                                    {items.response}
-                                  </option>
-                                ))}
-                            </select>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Status",
-                      dataIndex: "statusName",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            {item.statusID === 100 ? (
-                              <label className="table-btnlabel contactBtnGreen">
-                                {item.statusName}
-                              </label>
-                            ) : item.statusID === 101 ? (
-                              <label className="table-btnlabel notConnectedBtnRed">
-                                {item.statusName}
-                              </label>
-                            ) : item.statusID === 102 ? (
-                              <label className="table-btnlabel followUpBtnYellow">
-                                {item.statusName}
-                              </label>
-                            ) : null}
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Call Recheduled To",
-                      className: "table-coloum-hide",
-                      dataIndex: "pricePaid",
-                      render: (row, item) => {
-                        //debugger;
-                        return (
-                          <div
-                            className={
-                              item.responseID === 3 ? "" : "disabled-input"
-                            }
-                          >
-                            <DatePicker
-                              id="startDate"
-                              autoComplete="off"
-                              showTimeSelect
-                              name="startDate"
-                              showMonthDropdown
-                              showYearDropdown
-                              selected={
-                                item.callRescheduledTo !== ""
-                                  ? new Date(item.callRescheduledTo)
-                                  : new Date()
-                              }
-                              dateFormat="MM/dd/yyyy h:mm aa"
-                              value={
-                                item.callRescheduledTo !== ""
-                                  ? moment(item.callRescheduledTo).format(
-                                      "DD-MM-YYYY hh:mm:ss"
-                                    )
-                                  : ""
-                              }
-                              onChange={this.onDateChange.bind(this, item.id)}
-                              className={
-                                item.responseID === 3
-                                  ? "txtStore dateTimeStore"
-                                  : "txtStore dateTimeStore disabled-link"
-                              }
-                              placeholderText="Select Date &amp; Time"
-                            />
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Actions",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            <div className="table-coloum-hide status-btn-camp">
-                              <div>
-                                <button
-                                  className="saveBtn saveLabel"
-                                  type="button"
-                                  onClick={this.handleUpdateCampaignResponse.bind(
-                                    this,
-                                    item.id,
-                                    item.responseID,
-                                    item.callRescheduledTo,
-                                    item.campaignScriptID
-                                  )}
-                                >
-                                  Update
-                                </button>
-                              </div>
-                              <div style={{ display: "none" }}>
-                                <button
-                                  className="raisedticket-Btn"
-                                  type="button"
-                                  // onClick={this.handleRaisedTicketModalOpen.bind(
-                                  //   this,
-                                  //   row,
-                                  //   item
-                                  // )}
-                                >
-                                  <label className="raise-ticketLbl">
-                                    Raise Ticket
-                                  </label>
-                                </button>
-                              </div>
+                <div>
+                  <Table
+                    dataSource={this.state.CampChildTableData.filter(
+                      (x) => x.campaignScriptID === row.campaignID
+                    )}
+                    className="midalResponseAction"
+                    columns={[
+                      {
+                        title: "Customer Name",
+                        dataIndex: "id",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              <p
+                                className="cust-name"
+                                onClick={this.handleGetCustomerDataForModal.bind(
+                                  this,
+                                  item
+                                )}
+                              >
+                                {item.customerName}
+                                <img
+                                  className="ico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
+                                />
+                              </p>
+                              <span className="sml-fnt">
+                                {item.customerNumber}
+                              </span>
                             </div>
-                          </div>
-                        );
+                          );
+                        },
                       },
-                    },
-                  ]}
-                  expandedRowRender={(row, item) => {
-                    return (
-                      <div className="innertabcollapse">
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <label>Customer Name</label>
-                              </td>
-                              <td>
-                                <label className="cust-name">
-                                  {row.customerName}
-                                  <img
-                                    className="ico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </label>
-                                <span className="sml-fnt">
-                                  {row.customerNumber}
-                                </span>
-                              </td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label>Date</label>
-                              </td>
-                              <td>
-                                <label>{row.campaignDate}</label>
-                              </td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label>Response</label>
-                              </td>
-                              <td>
-                                <select
-                                  className="responceDrop-down dropdown-label"
-                                  value={row.responseID}
-                                  onChange={this.onResponseChange.bind(
-                                    this,
-                                    row.id,
-                                    row
+                      {
+                        title: "Date",
+                        dataIndex: "campaignDate",
+                        className: "table-coloum-hide",
+                      },
+                      {
+                        title: "Response",
+                        className: "table-coloum-hide",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              <select
+                                className="responceDrop-down dropdown-label"
+                                value={item.responseID}
+                                onChange={this.onResponseChange.bind(
+                                  this,
+                                  item.id,
+                                  item
+                                )}
+                              >
+                                <option hidden>Select Response</option>
+                                {item.hsCampaignResponseList !== null &&
+                                  item.hsCampaignResponseList.map(
+                                    (items, i) => (
+                                      <option key={i} value={items.responseID}>
+                                        {items.response}
+                                      </option>
+                                    )
                                   )}
-                                >
-                                  <option hidden>Select Response</option>
-                                  {row.hsCampaignResponseList !== null &&
-                                    row.hsCampaignResponseList.map(
-                                      (items, i) => (
-                                        <option
-                                          key={i}
-                                          value={items.responseID}
-                                        >
-                                          {items.response}
-                                        </option>
-                                      )
-                                    )}
-                                </select>
-                              </td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label>Status</label>
-                              </td>
-                              <td>
-                                <label className="table-btnlabel notConnectedBtnRed">
-                                  {row.statusName}
+                              </select>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Status",
+                        dataIndex: "statusName",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.statusID === 100 ? (
+                                <label className="table-btnlabel contactBtnGreen">
+                                  {item.statusName}
                                 </label>
-                              </td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label>Call Rescheduled to</label>
-                              </td>
-                              <td>
-                                <div
-                                  className={
-                                    row.responseID === 3 ? "" : "disabled-input"
-                                  }
-                                >
-                                  <DatePicker
-                                    id="startDate"
-                                    autoComplete="off"
-                                    showTimeSelect
-                                    name="startDate"
-                                    showMonthDropdown
-                                    showYearDropdown
-                                    selected={
-                                      row.callRescheduledTo !== ""
-                                        ? new Date(row.callRescheduledTo)
-                                        : new Date()
-                                    }
-                                    dateFormat="MM/dd/yyyy h:mm aa"
-                                    value={
-                                      row.callRescheduledTo !== ""
-                                        ? moment(row.callRescheduledTo)
-                                        : ""
-                                    }
-                                    onChange={this.onDateChange.bind(
-                                      this,
-                                      row.id
-                                    )}
-                                    className={
-                                      row.responseID === 3
-                                        ? "txtStore dateTimeStore"
-                                        : "txtStore dateTimeStore disabled-link"
-                                    }
-                                    placeholderText="Select Date &amp; Time"
-                                  />
-                                </div>
-                              </td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td colspan="3">
-                                <div style={{ float: "right" }}>
+                              ) : item.statusID === 101 ? (
+                                <label className="table-btnlabel notConnectedBtnRed">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 102 ? (
+                                <label className="table-btnlabel followUpBtnYellow">
+                                  {item.statusName}
+                                </label>
+                              ) : null}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Call Recheduled To",
+                        className: "table-coloum-hide",
+                        dataIndex: "pricePaid",
+                        render: (row, item) => {
+                          //debugger;
+                          return (
+                            <div
+                              className={
+                                item.responseID === 3 ? "" : "disabled-input"
+                              }
+                            >
+                              <DatePicker
+                                id="startDate"
+                                autoComplete="off"
+                                showTimeSelect
+                                name="startDate"
+                                showMonthDropdown
+                                showYearDropdown
+                                selected={
+                                  item.callRescheduledTo !== ""
+                                    ? new Date(item.callRescheduledTo)
+                                    : new Date()
+                                }
+                                dateFormat="MM/dd/yyyy h:mm aa"
+                                value={
+                                  item.callRescheduledTo !== ""
+                                    ? moment(item.callRescheduledTo).format(
+                                        "DD-MM-YYYY hh:mm:ss"
+                                      )
+                                    : ""
+                                }
+                                onChange={this.onDateChange.bind(this, item.id)}
+                                className={
+                                  item.responseID === 3
+                                    ? "txtStore dateTimeStore"
+                                    : "txtStore dateTimeStore disabled-link"
+                                }
+                                placeholderText="Select Date &amp; Time"
+                              />
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Actions",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              <div className="table-coloum-hide status-btn-camp">
+                                <div>
                                   <button
                                     className="saveBtn saveLabel"
                                     type="button"
                                     onClick={this.handleUpdateCampaignResponse.bind(
                                       this,
-                                      row.id,
-                                      row.responseID,
-                                      row.callRescheduledTo,
-                                      row.campaignScriptID
+                                      item.id,
+                                      item.responseID,
+                                      item.callRescheduledTo,
+                                      item.campaignScriptID
                                     )}
                                   >
                                     Update
                                   </button>
+                                </div>
+                                <div style={{ display: "none" }}>
                                   <button
-                                    className="raisedticket-Btn saveLabel"
-                                    style={{ display: "none" }}
+                                    className="raisedticket-Btn"
+                                    type="button"
+                                    // onClick={this.handleRaisedTicketModalOpen.bind(
+                                    //   this,
+                                    //   row,
+                                    //   item
+                                    // )}
                                   >
-                                    Raise Ticket
+                                    <label className="raise-ticketLbl">
+                                      Raise Ticket
+                                    </label>
                                   </button>
                                 </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    );
-                  }}
-                  expandIconColumnIndex={5}
-                  expandIconAsCell={false}
-                  pagination={false}
-                  loading={this.state.ChildTblLoading}
-                />
+                              </div>
+                            </div>
+                          );
+                        },
+                      },
+                    ]}
+                    expandedRowRender={(row, item) => {
+                      return (
+                        <div className="innertabcollapse">
+                          <table>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <label>Customer Name</label>
+                                </td>
+                                <td>
+                                  <label className="cust-name">
+                                    {row.customerName}
+                                    <img
+                                      className="ico"
+                                      src={Whatsapp}
+                                      alt="Whatsapp Icon"
+                                    />
+                                  </label>
+                                  <span className="sml-fnt">
+                                    {row.customerNumber}
+                                  </span>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Date</label>
+                                </td>
+                                <td>
+                                  <label>{row.campaignDate}</label>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Response</label>
+                                </td>
+                                <td>
+                                  <select
+                                    className="responceDrop-down dropdown-label"
+                                    value={row.responseID}
+                                    onChange={this.onResponseChange.bind(
+                                      this,
+                                      row.id,
+                                      row
+                                    )}
+                                  >
+                                    <option hidden>Select Response</option>
+                                    {row.hsCampaignResponseList !== null &&
+                                      row.hsCampaignResponseList.map(
+                                        (items, i) => (
+                                          <option
+                                            key={i}
+                                            value={items.responseID}
+                                          >
+                                            {items.response}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Status</label>
+                                </td>
+                                <td>
+                                  <label className="table-btnlabel notConnectedBtnRed">
+                                    {row.statusName}
+                                  </label>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Call Rescheduled to</label>
+                                </td>
+                                <td>
+                                  <div
+                                    className={
+                                      row.responseID === 3
+                                        ? ""
+                                        : "disabled-input"
+                                    }
+                                  >
+                                    <DatePicker
+                                      id="startDate"
+                                      autoComplete="off"
+                                      showTimeSelect
+                                      name="startDate"
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      selected={
+                                        row.callRescheduledTo !== ""
+                                          ? new Date(row.callRescheduledTo)
+                                          : new Date()
+                                      }
+                                      dateFormat="MM/dd/yyyy h:mm aa"
+                                      value={
+                                        row.callRescheduledTo !== ""
+                                          ? moment(row.callRescheduledTo)
+                                          : ""
+                                      }
+                                      onChange={this.onDateChange.bind(
+                                        this,
+                                        row.id
+                                      )}
+                                      className={
+                                        row.responseID === 3
+                                          ? "txtStore dateTimeStore"
+                                          : "txtStore dateTimeStore disabled-link"
+                                      }
+                                      placeholderText="Select Date &amp; Time"
+                                    />
+                                  </div>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td colspan="3">
+                                  <div style={{ float: "right" }}>
+                                    <button
+                                      className="saveBtn saveLabel"
+                                      type="button"
+                                      onClick={this.handleUpdateCampaignResponse.bind(
+                                        this,
+                                        row.id,
+                                        row.responseID,
+                                        row.callRescheduledTo,
+                                        row.campaignScriptID
+                                      )}
+                                    >
+                                      Update
+                                    </button>
+                                    <button
+                                      className="raisedticket-Btn saveLabel"
+                                      style={{ display: "none" }}
+                                    >
+                                      Raise Ticket
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      );
+                    }}
+                    expandIconColumnIndex={5}
+                    expandIconAsCell={false}
+                    pagination={false}
+                    loading={this.state.ChildTblLoading}
+                  />
+                  <Pagination
+                    currentPage={this.state.childCurrentPage}
+                    totalSize={this.state.childTotalGridRecord}
+                    sizePerPage={this.state.ChildPostsPerPage}
+                    changeCurrentPage={this.PaginationOnChange}
+                    theme="bootstrap"
+                  />
+                   <div className="item-selection">
+                      <select>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>30</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                </div>
               );
             }}
             onExpand={this.handleGetCampaignCustomerData}
@@ -1372,13 +1419,6 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
-        <Pagination
-          currentPage={this.state.childCurrentPage}
-          totalSize={this.state.childTotalGridRecord}
-          sizePerPage={this.state.ChildPostsPerPage}
-          changeCurrentPage={this.PaginationOnChange}
-          theme="bootstrap"
-        />
 
         {/* <Pagination
           postsPerPage={this.state.postsPerPage}
