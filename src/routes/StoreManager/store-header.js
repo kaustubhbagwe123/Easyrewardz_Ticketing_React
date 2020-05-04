@@ -2007,9 +2007,13 @@ class Header extends Component {
                                       onClick={
                                         this.handleSaveChatMessages.bind(this,item.ticketTitle,i)
                                       }
-                                      title={item.ticketTitleToolTip}
                                     >
-                                      <span>{item.ticketTitle}</span>
+                                      <Tooltip
+                                        placement="left"
+                                        title={item.ticketTitle}
+                                      >
+                                        <span>{item.ticketTitle}</span>
+                                      </Tooltip>
                                     </div>
                                   )
                                   )}
@@ -2627,9 +2631,13 @@ class Header extends Component {
                                       onClick={
                                         this.handleSaveChatMessages.bind(this,item.ticketTitle,i)
                                       }
-                                      title={item.ticketTitleToolTip}
                                     >
-                                      <span>{item.ticketTitle}</span>
+                                      <Tooltip
+                                        placement="left"
+                                        title={item.ticketTitle}
+                                      >
+                                        <span>{item.ticketTitle}</span>
+                                      </Tooltip>
                                     </div>
                                   )
                                   )}

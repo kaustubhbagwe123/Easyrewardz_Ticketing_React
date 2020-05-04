@@ -1074,6 +1074,10 @@ p {
   .schedule-left-cntr {
     max-height: calc(100vh - 230px);
   }
+  .ant-tooltip-inner {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
   /* schedule modal ends */
 
   /* payment link mobile starts */
