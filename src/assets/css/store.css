@@ -1869,6 +1869,7 @@ table tr th:last-child {
 }
 .lt-single td {
   display: block;
+  padding: 40px 20px;
   text-align: center;
 }
 .tab-single .nav-item {
@@ -2048,6 +2049,7 @@ table tr th:last-child {
   }
   .custom-tableak .hdrcloselabel {
     font-size: 10px;
+    vertical-align: super;
   }
   .custom-tableak {
     padding: 5px 0;
@@ -2411,6 +2413,27 @@ table tr th:last-child {
 }
 .productbox .prodscro {
   padding: 0;
+}
+#sharesuccesfullpopup .tick {
+  height: 40px;
+  margin: auto;
+  display: block;
+  margin-bottom: 15px;
+}
+#sharesuccesfullpopup {
+  border-radius: 20px;
+  width: 100%;
+}
+#sharesuccesfullpopup h3 {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+#sharesuccesfullpopup p {
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 }
 /* ------------------Campain Css End ------------------------- */

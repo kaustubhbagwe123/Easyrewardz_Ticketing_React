@@ -1762,7 +1762,7 @@ class StoreCampaign extends Component {
                                                   </tr>
                                                 </tbody>
                                               </table>
-                                              <h3>{item.price}/-</h3>
+                                              <h3>INR {item.price}/-</h3>
                                             </div>
                                           }
                                           placement="left"
@@ -1923,10 +1923,20 @@ class StoreCampaign extends Component {
           open={this.state.ResponsiveShareNow}
           onClose={this.handleShareNowCloseModal.bind(this)}
           center
-          modalId="sharecamp-popupmob"
-          overlayId="logout-ovrly-none"
+          modalId="sharesuccesfullpopup"
+          overlayId=""
         >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleShareNowCloseModal.bind(this)}
+          />
+          <div>
+            <img className="tick" src={Tick} alt="Tick Icon" />
           <h3>Shared Successfully!</h3>
+          <p>Your Message has been shared successfully</p>
+          </div>
         </Modal>
         <Modal
           open={this.state.ResponsiveBroadCast}
