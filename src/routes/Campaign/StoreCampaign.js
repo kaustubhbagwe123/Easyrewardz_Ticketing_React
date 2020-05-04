@@ -11,7 +11,7 @@ import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table, Popover, Radio } from "antd";
+import { Table, Popover, Radio, Input, Button } from "antd";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
@@ -67,6 +67,7 @@ class StoreCampaign extends Component {
       ResponsiveShareNow: false,
       campaignID: 0,
       ResponsiveChooseChannel: 0,
+      CheckBoxAllStatus: false
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -897,6 +898,90 @@ class StoreCampaign extends Component {
       });
   }
 
+  checkIndividualStatus(campaignScriptID, customerCount, event){
+    debugger; 
+    var checkboxes = document.getElementsByName("allStatus");
+    var strStatusIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+          strStatusIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    
+    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+  }
+
+  checkAllStatus(campaignScriptID, customerCount, event){
+    this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    var strStatusIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allStatus");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+          strStatusIds = "All";
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strStatusIds = "";
+    }
+
+    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+  }
+
+  handleGetCampaignCustomer(statusId, campaignScriptID, customerCount){
+    let self = this;
+    if (customerCount !== "") {
+      this.setState({
+        childTotalGridRecord: Number(customerCount),
+      });
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+      headers: authHeader(),
+      params: {
+        campaignScriptID: campaignScriptID,
+        pageNo: this.state.childCurrentPage,
+        pageSize: this.state.ChildPostsPerPage,
+        FilterStatus: statusId
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          self.setState({
+            CampChildTableData: data,
+            ChildTblLoading: false,
+            loading: false,
+          });
+        } else {
+          self.setState({
+            CampChildTableData: [],
+            ChildTblLoading: false,
+            loading: false,
+            childTotalGridRecord: 0,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
+
   render() {
     return (
       <div className="custom-tableak">
@@ -1151,6 +1236,171 @@ class StoreCampaign extends Component {
                             </div>
                           );
                         },
+                        filterDropdown: () => (
+                          <div style={{ padding: 8 }}>
+                            {/* <Input
+                              ref={node => {
+                                this.searchInput = node;
+                              }}
+                              value={selectedKeys[0]}
+                              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+                              style={{ width: 188, marginBottom: 8, display: 'block' }}
+                            /> */}
+                            {/* <Space> */}
+                              {/* <Button
+                                type="primary"
+                                onClick={() => this.handleSearch(selectedKeys, confirm)}
+                                size="small"
+                                style={{ width: 90 }}
+                              >
+                                Search
+                              </Button>
+                              <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                                Reset
+                              </Button> */}
+                            {/* </Space> */}
+                            <ul>
+                            <li>
+                              <label htmlFor="all-status">
+                                <input
+                                  type="checkbox"
+                                  id="all-status"
+                                  className="ch1"
+                                  onChange={this.checkAllStatus.bind(this, row.campaignID, row.customerCount)}
+                                  checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                />
+                                <span className="ch1-text">All</span>
+                              </label>
+                            </li>
+                            <li>
+                              <label htmlFor="status100">
+                                <input
+                                  type="checkbox"
+                                  id="status100"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
+                                  // checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                  attrIds={100}
+                                />
+                                <span className="ch1-text">Contacted</span>
+                              </label>
+                            </li>
+                            <li>
+                              <label htmlFor="status101">
+                                <input
+                                  type="checkbox"
+                                  id="status101"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
+                                  // checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                  attrIds={101}
+                                />
+                                <span className="ch1-text">Not Contacted</span>
+                              </label>
+                            </li>
+                            <li>
+                              <label htmlFor="status102">
+                                <input
+                                  type="checkbox"
+                                  id="status102"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
+                                  // checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                  attrIds={102}
+                                />
+                                <span className="ch1-text">Follow Up</span>
+                              </label>
+                            </li>
+                            <li>
+                              <label htmlFor="status103">
+                                <input
+                                  type="checkbox"
+                                  id="status103"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
+                                  // checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                  attrIds={103}
+                                />
+                                <span className="ch1-text">Converted</span>
+                              </label>
+                            </li>
+                            <li>
+                              <label htmlFor="status104">
+                                <input
+                                  type="checkbox"
+                                  id="status104"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
+                                  // checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                  attrIds={104}
+                                />
+                                <span className="ch1-text">Conversation</span>
+                              </label>
+                            </li>
+                            {/* {this.state.BrandData !== null &&
+                              this.state.BrandData.map((item, i) => (
+                                <li key={i}>
+                                  <label htmlFor={"i" + item.brandID}>
+                                    <input
+                                      type="checkbox"
+                                      id={"i" + item.brandID}
+                                      className="ch1"
+                                      name="allBrand"
+                                      attrIds={item.brandID}
+                                      onChange={this.checkIndividualBrand.bind(this)}
+                                    />
+                                    <span className="ch1-text">{item.brandName}</span>
+                                  </label>
+                                </li>
+                              ))} */}
+                          </ul>
+
+                          </div>
+                        ),
+                        filterIcon: filtered => <span style={{ color: filtered ? '#1890ff' : undefined }} ></span>,
+                        // onFilter: (value, record) =>
+                        //   record.statusID.toString().toLowerCase().includes(value.toLowerCase()),
+                        // onFilterDropdownVisibleChange: visible => {
+                        //   if (visible) {
+                        //     // setTimeout(() => this.searchInput.select());
+                        //   }
+                        // },
+                        // filters: [
+                        //   {
+                        //     text: 'Contacted',
+                        //     value: '100',
+                        //   },
+                        //   {
+                        //     text: 'Not Contacted',
+                        //     value: '101',
+                        //   },
+                        //   {
+                        //     text: 'Follow Up',
+                        //     value: '102',
+                        //   },
+                        //   {
+                        //     text: 'Converted',
+                        //     value: '103',
+                        //   },
+                        //   {
+                        //     text: 'Conversation',
+                        //     value: '104',
+                        //   }
+                        // ],
+                        // onFilter: (value, record) => {
+                        //   record.statusID.toString().includes(value)
+                        // },
+                        // onFilterDropdownVisibleChange: (visible) => {
+                        //   debugger;
+                        //   // record.statusID.toString().includes(value)
+                        // },
                       },
                       {
                         title: "Call Recheduled To",
