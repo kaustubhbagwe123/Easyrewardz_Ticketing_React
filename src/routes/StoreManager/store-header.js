@@ -200,7 +200,7 @@ class Header extends Component {
       recommendedModal: false,
       paymentModal: false,
       selectedCard: 0,
-      chkSuggestion: []
+      chkSuggestion: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -725,7 +725,7 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages(messageStringData,index) {
+  handleSaveChatMessages(messageStringData, index) {
     let self = this;
     var messagecontent = "";
     // if (messageStringData) {
@@ -733,19 +733,15 @@ class Header extends Component {
     //     .replace("col-md-4", "col-md-2")
     //     .replace("col-md-8", "col-md-10");
     // } else {
-      messagecontent = messageStringData;
+    messagecontent = messageStringData;
     // }
-    if(this.state.chkSuggestion.length > 0)
-    {
-      if(this.state.chkSuggestion[index] === 1){
+    if (this.state.chkSuggestion.length > 0) {
+      if (this.state.chkSuggestion[index] === 1) {
         this.state.chkSuggestion[index] = 0;
-        
-      }
-      else{
+      } else {
         this.state.chkSuggestion[index] = 1;
       }
-    }
-    else{
+    } else {
       this.state.chkSuggestion[index] = 1;
     }
     this.setState({ chkSuggestion: this.state.chkSuggestion });
@@ -770,7 +766,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
-            self.setState({ message: ""});
+            self.setState({ message: "" });
           } else {
           }
         })
@@ -2000,20 +1996,27 @@ class Header extends Component {
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
                                 <div className="suggestions-cntr">
-                                {this.state.messageSuggestionData !== null &&
-                                  this.state.messageSuggestionData.map(
-                                  (item, i) => (
-                                    <div className={this.state.chkSuggestion[i] === 1?"suggestions-tick":""}
-                                      key={i}
-                                      onClick={
-                                        this.handleSaveChatMessages.bind(this,item.ticketTitle,i)
-                                      }
-                                      title={item.ticketTitleToolTip}
-                                    >
-                                      <span>{item.ticketTitle}</span>
-                                    </div>
-                                  )
-                                  )}
+                                  {this.state.messageSuggestionData !== null &&
+                                    this.state.messageSuggestionData.map(
+                                      (item, i) => (
+                                        <div
+                                          className={
+                                            this.state.chkSuggestion[i] === 1
+                                              ? "suggestions-tick"
+                                              : ""
+                                          }
+                                          key={i}
+                                          onClick={this.handleSaveChatMessages.bind(
+                                            this,
+                                            item.ticketTitle,
+                                            i
+                                          )}
+                                          title={item.ticketTitleToolTip}
+                                        >
+                                          <span>{item.ticketTitle}</span>
+                                        </div>
+                                      )
+                                    )}
                                   {/* <div className="suggestions-tick">
                                     <span>
                                       Men Shoes under 999 in black color and laces
@@ -2035,7 +2038,7 @@ class Header extends Component {
                                     <span>Men Shoes Party</span>
                                   </div> */}
                                 </div>
-                                )}
+                              )}
                             {/* {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
