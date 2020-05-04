@@ -688,7 +688,6 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = (numPage) => {
-    // debugger
     this.setState({
       childCurrentPage: numPage,
     });
@@ -1400,7 +1399,8 @@ class StoreCampaign extends Component {
                     changeCurrentPage={this.PaginationOnChange}
                     theme="bootstrap"
                   />
-                   <div className="item-selection">
+                  <div className="position-relative">
+                    <div className="item-selection Camp-pagination">
                       <select>
                         <option>10</option>
                         <option>20</option>
@@ -1408,6 +1408,7 @@ class StoreCampaign extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
+                  </div>
                 </div>
               );
             }}
