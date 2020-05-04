@@ -26,6 +26,7 @@ import Demo from "./../../store/Hashtag";
 class StoreCampaign extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       campaignGridData: [],
       raisedTicketModal: false,
@@ -66,7 +67,10 @@ class StoreCampaign extends Component {
       lasttransactiondetails: {},
       ResponsiveShareNow: false,
       campaignID: 0,
-      ResponsiveChooseChannel: 0,
+      Respo_ChannelMessanger: false,
+      Respo_ChannelBot: false,
+      Respo_ChannelSMS: false,
+      Respo_ChannelEmail: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -75,6 +79,7 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
+    debugger
     this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
@@ -105,6 +110,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -686,18 +692,27 @@ class StoreCampaign extends Component {
       broadcastChannel: e.target.value,
     });
   };
-  /// Pagination Onchange
-  PaginationOnChange = (numPage) => {
+  /// handle Per page onchange
+  handlePageItemchange = (e) => {
     this.setState({
-      childCurrentPage: numPage,
+      ChildPostsPerPage: e.target.value,
     });
     setTimeout(() => {
       this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
-    }, 100);
+    }, 50);
+  };
+  /// Pagination Onchange
+  PaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      childCurrentPage: numPage,
+    });
+    await setTimeout(() => {
+      this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+    }, 500);
   };
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -740,6 +755,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -747,15 +763,7 @@ class StoreCampaign extends Component {
             CampChildTableData: data,
             ChildTblLoading: false,
             loading: false,
-            // childTotalGridRecord: Number(row.customerCount),
-            // campaignID: row.campaignID,
           });
-
-          // const indexOfLastpost =
-          //   self.state.childCurrentPage * self.state.ChildPostsPerPage;
-          // const indexOfFirstpost =
-          //   indexOfLastpost - self.state.ChildPostsPerPage;
-          // const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
         } else {
           self.setState({
             CampChildTableData: [],
@@ -859,6 +867,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -896,7 +905,41 @@ class StoreCampaign extends Component {
         console.log(response);
       });
   }
-
+  handleSelectChannelsOnchange(check) {
+    debugger;
+    if (check === "Messanger") {
+      this.setState({
+        Respo_ChannelMessanger: true,
+        Respo_ChannelBot: false,
+        Respo_ChannelSMS: false,
+        Respo_ChannelEmail: false,
+      });
+      // this.handleSendViaMessanger.bind(this, this.state.customerModalDetails);
+    } else if (check === "Bot") {
+      this.setState({
+        Respo_ChannelMessanger: false,
+        Respo_ChannelBot: true,
+        Respo_ChannelSMS: false,
+        Respo_ChannelEmail: false,
+      });
+      // this.handleSendViaBotData.bind(this, this.state.customerModalDetails);
+    } else if (check === "SMS") {
+      this.setState({
+        Respo_ChannelMessanger: false,
+        Respo_ChannelBot: false,
+        Respo_ChannelSMS: true,
+        Respo_ChannelEmail: false,
+      });
+      // this.handleSendViaSMS.bind(this, this.state.customerModalDetails);
+    } else if (check === "Email") {
+      this.setState({
+        Respo_ChannelMessanger: false,
+        Respo_ChannelBot: false,
+        Respo_ChannelSMS: false,
+        Respo_ChannelEmail: true,
+      });
+    }
+  }
   render() {
     return (
       <div className="custom-tableak">
@@ -1401,10 +1444,13 @@ class StoreCampaign extends Component {
                   />
                   <div className="position-relative">
                     <div className="item-selection Camp-pagination">
-                      <select>
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
+                      <select
+                        value={this.state.ChildPostsPerPage}
+                        onChange={this.handlePageItemchange}
+                      >
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={30}>30</option>
                       </select>
                       <p>Items per page</p>
                     </div>
@@ -1519,50 +1565,54 @@ class StoreCampaign extends Component {
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-              <div className="lifetimevalue">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <h4>Lifetime Value</h4>
-                        <label>
-                          ₹{this.state.useratvdetails.lifeTimeValue}
-                        </label>
-                      </td>
-                      <td>
-                        <h4>Visit Count</h4>
-                        <label>
-                          {this.state.useratvdetails.visitCount < 9
-                            ? "0" + this.state.useratvdetails.visitCount
-                            : this.state.useratvdetails.visitCount}
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="lifetimevalue lt-single">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <h4>Lifetime Value</h4>
-                        <label>
-                          ₹{this.state.useratvdetails.lifeTimeValue}
-                        </label>
-                      </td>
-                      <td>
-                        <h4>Visit Count</h4>
-                        <label>
-                          {this.state.useratvdetails.visitCount < 9
-                            ? "0" + this.state.useratvdetails.visitCount
-                            : this.state.useratvdetails.visitCount}
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {this.state.campaignkeyinsight.insightText === "" ? (
+                <div className="lifetimevalue lt-single">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h4>Lifetime Value</h4>
+                          <label>
+                            ₹{this.state.useratvdetails.lifeTimeValue}
+                          </label>
+                        </td>
+                        <td>
+                          <h4>Visit Count</h4>
+                          <label>
+                            {this.state.useratvdetails.visitCount < 9
+                              ? "0" + this.state.useratvdetails.visitCount
+                              : this.state.useratvdetails.visitCount}
+                          </label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="lifetimevalue">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h4>Lifetime Value</h4>
+                          <label>
+                            ₹{this.state.useratvdetails.lifeTimeValue}
+                          </label>
+                        </td>
+                        <td>
+                          <h4>Visit Count</h4>
+                          <label>
+                            {this.state.useratvdetails.visitCount < 9
+                              ? "0" + this.state.useratvdetails.visitCount
+                              : this.state.useratvdetails.visitCount}
+                          </label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
               {this.state.campaignkeyinsight.insightText !== "" ? (
                 <div className="keyinsights">
                   <h4>Key Insights</h4>
@@ -1583,7 +1633,7 @@ class StoreCampaign extends Component {
                       this.state.campaignrecommended.map((item, j) => {
                         var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
                         return (
-                          <div className="prodscro">
+                          <div className="prodscro" key={j}>
                             <div className="pro-slidercam">
                               <table className="w-100">
                                 <tbody>
@@ -1938,9 +1988,9 @@ class StoreCampaign extends Component {
                       <a href={Demo.BLANK_LINK}>
                         <div
                           className="chatbox"
-                          onClick={this.handleSendViaMessanger.bind(
+                          onClick={this.handleSelectChannelsOnchange.bind(
                             this,
-                            this.state.customerModalDetails
+                            "Messanger"
                           )}
                         >
                           <img
@@ -1948,7 +1998,9 @@ class StoreCampaign extends Component {
                             src={Whatsapp}
                             alt="Whatsapp Icon"
                           />
-                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          {this.state.Respo_ChannelMessanger === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
                           Send Via Messanger
                         </div>
                       </a>
@@ -1959,9 +2011,9 @@ class StoreCampaign extends Component {
                       <a href={Demo.BLANK_LINK}>
                         <div
                           className="chatbox"
-                          onClick={this.handleSendViaBotData.bind(
+                          onClick={this.handleSelectChannelsOnchange.bind(
                             this,
-                            this.state.customerModalDetails
+                            "Bot"
                           )}
                         >
                           <img
@@ -1969,7 +2021,9 @@ class StoreCampaign extends Component {
                             src={Whatsapp}
                             alt="Whatsapp Icon"
                           />
-                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          {this.state.Respo_ChannelBot === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
                           Send Via Bot
                         </div>
                       </a>
@@ -1982,13 +2036,15 @@ class StoreCampaign extends Component {
                       <a href={Demo.BLANK_LINK}>
                         <div
                           className="chatbox"
-                          onClick={this.handleSendViaSMS.bind(
+                          onClick={this.handleSelectChannelsOnchange.bind(
                             this,
-                            this.state.customerModalDetails
+                            "SMS"
                           )}
                         >
                           <img className="ico" src={Sms1} alt="SMS Icon" />
-                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          {this.state.Respo_ChannelSMS === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
                           SMS
                         </div>
                       </a>
@@ -1997,9 +2053,17 @@ class StoreCampaign extends Component {
                   {this.state.customerModalDetails.emailFlag === true ? (
                     <td>
                       <a href={Demo.BLANK_LINK}>
-                        <div className="chatbox">
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "Email"
+                          )}
+                        >
                           <img className="ico" src={Sms1} alt="Email Icon" />
-                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          {this.state.Respo_ChannelEmail === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
                           Email
                         </div>
                       </a>
