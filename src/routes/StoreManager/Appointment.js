@@ -23,7 +23,6 @@ class Appointment extends Component {
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -171,8 +170,9 @@ class Appointment extends Component {
     }
   }
 
-  handleOnChange(event, index) {
-    const val = event.target.value;
+  handleOnChange(value, index) {
+    debugger;
+    const val = value;
     this.setState((oldState) => {
       const newStatus = oldState.status.slice();
       newStatus[index] = val;
@@ -180,10 +180,6 @@ class Appointment extends Component {
         status: newStatus,
       };
     });
-  }
-
-  handleChange(value) {
-    console.log(`selected ${value}`);
   }
 
   render() {
@@ -337,21 +333,11 @@ class Appointment extends Component {
                         } else {
                           return (
                             <div className="appt-status">
-                              {/* <select
-                                  value={this.state.status[row.appointmentID]}
-                                  onChange={(e) =>
-                                    this.handleOnChange(e, row.appointmentID)
-                                  }
-                                >
-                                  <option value="">Select Status</option>
-                                  <option value="0">Cancel</option>
-                                  <option value="1">Visited</option>
-                                  <option value="2">Not Visited</option>
-                                </select> */}
                               <Select
-                                // defaultValue="0"
                                 placeholder="Select Status"
-                                onChange={this.handleChange}
+                                onChange={(e) =>
+                                  this.handleOnChange(e, row.appointmentID)
+                                }
                                 dropdownClassName="appt-status-dropdown"
                               >
                                 <Option value="0">Cancel</Option>
