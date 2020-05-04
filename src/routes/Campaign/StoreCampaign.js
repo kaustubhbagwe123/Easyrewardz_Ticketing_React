@@ -1626,7 +1626,7 @@ class StoreCampaign extends Component {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="productbox tab-single">
+              <div className="productbox">
                 <Tabs>
                   <Tab label="Recommended">
                     {this.state.campaignrecommended !== null &&

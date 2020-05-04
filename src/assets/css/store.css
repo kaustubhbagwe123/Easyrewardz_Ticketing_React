@@ -2406,6 +2406,12 @@ table tr th:last-child {
     display: block;
     border-radius: 20px;
   }
+  .productbox .nav-tabs {
+    padding: 0;
+}
+.productbox .prodscro {
+  padding: 0;
+}
 }
 /* ------------------Campain Css End ------------------------- */
 
