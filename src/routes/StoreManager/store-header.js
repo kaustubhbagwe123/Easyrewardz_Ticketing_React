@@ -2606,12 +2606,22 @@ class Header extends Component {
                                 <span>Men Shoes under 999</span>
                               </div>
                               <div className="suggestions-tick">
-                                <span>
-                                  Men Shoes under 999 in black color and laces
-                                </span>
+                                <Tooltip
+                                  placement="left"
+                                  title="Men Shoes under 999 in black color and laces"
+                                >
+                                  <span>
+                                    Men Shoes under 999 in black color and laces
+                                  </span>
+                                </Tooltip>
                               </div>
                               <div className="">
-                                <span>Men Shoes Casual</span>
+                                <Tooltip
+                                  placement="left"
+                                  title="Men Shoes Casuals"
+                                >
+                                  <span>Men Shoes Casual</span>
+                                </Tooltip>
                               </div>
                               <div className="">
                                 <span>Men Shoes Black</span>
@@ -2623,7 +2633,12 @@ class Header extends Component {
                                 <span>Men Shoes under 999 sports</span>
                               </div>
                               <div className="suggestions-tick">
-                                <span>Men Shoes Party</span>
+                                <Tooltip
+                                  placement="left"
+                                  title="Men Shoes Party"
+                                >
+                                  <span>Men Shoes Party</span>
+                                </Tooltip>
                               </div>
                             </div>
                             <div
