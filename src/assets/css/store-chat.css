@@ -1088,6 +1088,30 @@ p {
     margin-left: 5px;
   }
   /* payment link mobile ends */
+
+  /* message suggestions starts */
+  .suggestions-cntr span {
+    font-size: 11px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 2px 4px;
+    max-width: 190px;
+  }
+  .suggestions-cntr {
+    margin: 8px 10px 4px;
+  }
+  .suggestions-tick span:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+  }
+  .suggestions-tick span:after {
+    content: "";
+    width: 4px;
+    height: 8px;
+    right: 5.5px;
+  }
+  /* message suggestions ends */
 }
 
 @media all and (max-width: 425px) {
