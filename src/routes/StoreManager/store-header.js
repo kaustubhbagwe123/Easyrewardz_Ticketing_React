@@ -256,7 +256,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    debugger
+    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -375,7 +375,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger
+        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -2634,13 +2634,38 @@ class Header extends Component {
                                 ],
                               }}
                             />
-
+                            <div className="suggestions-cntr">
+                              <div className="suggestions-tick">
+                                <span>Men Shoes under 999</span>
+                              </div>
+                              <div className="suggestions-tick">
+                                <span>
+                                  Men Shoes under 999 in black color and laces
+                                </span>
+                              </div>
+                              <div className="">
+                                <span>Men Shoes Casual</span>
+                              </div>
+                              <div className="">
+                                <span>Men Shoes Black</span>
+                              </div>
+                              <div className="suggestions-tick">
+                                <span>Men Shoes Formal</span>
+                              </div>
+                              <div className="">
+                                <span>Men Shoes under 999 sports</span>
+                              </div>
+                              <div className="suggestions-tick">
+                                <span>Men Shoes Party</span>
+                              </div>
+                            </div>
                             <div
                               className="mobile-ck-send"
                               onClick={this.handleSaveChatMessages.bind(this)}
                               title={"Send"}
                             >
-                              <img src={Assign} alt="send img" />
+                              {/* <img src={Assign} alt="send img" /> */}
+                              <img src={SuggSearch} alt="send img" />
                             </div>
                           </div>
                         </div>
