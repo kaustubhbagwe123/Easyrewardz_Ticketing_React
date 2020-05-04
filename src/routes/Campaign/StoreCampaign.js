@@ -79,7 +79,7 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
-    debugger;
+    //debugger;
     this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
@@ -110,7 +110,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -142,7 +142,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    debugger;
+    //debugger;
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -167,7 +167,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            ////debugger;
+            //////debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -205,7 +205,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            ////debugger;
+            //////debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -678,18 +678,19 @@ class StoreCampaign extends Component {
     });
   }
   handleShareNowOpenModal() {
+    //debugger;
     if (this.state.Respo_ChannelMessanger === true) {
-      this.handleSendViaMessanger.bind(this, this.state.customerModalDetails);
+      this.handleSendViaMessanger(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelBot === true) {
-      this.handleSendViaBotData.bind(this, this.state.customerModalDetails);
+      this.handleSendViaBotData(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelSMS === true) {
-      this.handleSendViaSMS.bind(this, this.state.customerModalDetails);
+      this.handleSendViaSMS(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelEmail === true) {
       console.log("API not ready");
     }
-    this.setState({
-      ResponsiveShareNow: true,
-    });
+    // this.setState({
+    //   ResponsiveShareNow: true,
+    // });
   }
   handleShareNowCloseModal() {
     this.setState({
@@ -712,7 +713,7 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = async (numPage) => {
-    debugger;
+    //debugger;
     await this.setState({
       childCurrentPage: numPage,
     });
@@ -764,7 +765,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -788,8 +788,8 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
-    // let self = this;
-    debugger;
+    let self = this;
+    //debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
@@ -805,11 +805,16 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        // var data = response.data.responseData;
-        if (message == "Success") {
-          NotificationManager.success("Success.");
+        if (this.state.Respo_ChannelBot === true) {
+          self.setState({
+            ResponsiveShareNow: true,
+          });
         } else {
-          NotificationManager.error("Failed");
+          if (message == "Success") {
+            NotificationManager.success("Success.");
+          } else {
+            NotificationManager.error("Failed");
+          }
         }
       })
       .catch((response) => {
@@ -819,6 +824,7 @@ class StoreCampaign extends Component {
 
   ///handle Send Via SMS
   handleSendViaSMS(data) {
+    let self=this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareSMS",
@@ -834,11 +840,18 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if (message == "Success") {
-          NotificationManager.success("SMS Send Successfully.");
-        } else {
-          NotificationManager.error("SMS Send Failed.");
+        if(this.state.Respo_ChannelSMS === true){
+          self.setState({
+            ResponsiveShareNow: true,
+          })
+        }else{
+          if (message == "Success") {
+            NotificationManager.success("SMS Send Successfully.");
+          } else {
+            NotificationManager.error("SMS Send Failed.");
+          }
         }
+       
       })
       .catch((response) => {
         console.log(response);
@@ -847,7 +860,7 @@ class StoreCampaign extends Component {
 
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
-    // let self = this;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareMassanger",
@@ -866,6 +879,9 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message == "Success") {
           window.open("//" + data, "_blank");
+          self.setState({
+            ResponsiveShareNow: true,
+          });
         } else {
           NotificationManager.error("Failed");
         }
@@ -877,7 +893,6 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -889,7 +904,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
+        //debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -916,7 +931,7 @@ class StoreCampaign extends Component {
       });
   }
   handleSelectChannelsOnchange(check) {
-    debugger;
+    //debugger;
     if (check === "Messanger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1210,7 +1225,7 @@ class StoreCampaign extends Component {
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          //debugger;
+                          ////debugger;
                           return (
                             <div
                               className={
@@ -1649,7 +1664,7 @@ class StoreCampaign extends Component {
                                   (item, j) => {
                                     var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
                                     return (
-                                      <td  key={j}> 
+                                      <td key={j}>
                                         <div className="imgbox">
                                           <Popover
                                             overlayClassName="antcustom ant-prodesc"
@@ -1779,7 +1794,7 @@ class StoreCampaign extends Component {
                                                     </tr>
                                                   </tbody>
                                                 </table>
-                                                <h3>{item.price}/-</h3>
+                                                <h3>INR {item.price}/-</h3>
                                               </div>
                                             }
                                             placement="left"
