@@ -986,6 +986,7 @@ class Header extends Component {
       } else {
         this.setState({
           messageSuggestionData: [],
+          chkSuggestion: []
         });
       }
     }, 1);
@@ -1005,9 +1006,9 @@ class Header extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ messageSuggestionData: data });
+          self.setState({ messageSuggestionData: data, chkSuggestion: [] });
         } else {
-          self.setState({ messageSuggestionData: [] });
+          self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
       })
       .catch((res) => {
