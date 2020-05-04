@@ -844,6 +844,7 @@ p {
 .ant-tooltip-inner {
   font-size: 11px;
   max-width: 100px;
+  min-height: auto;
   text-align: center;
   letter-spacing: 0.5px;
   line-height: 1.4;

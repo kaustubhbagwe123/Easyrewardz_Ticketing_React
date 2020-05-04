@@ -1937,6 +1937,12 @@ table tr th:last-child {
 .Camp-pagination {
   margin-top: -22px;
 }
+.Camp-pagination select {
+  background: url("./../Images/dropdown3.png") no-repeat right 4px center;
+  background-size: 8px;
+  padding-right: 17px;
+  padding-left: 7px;
+}
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {
