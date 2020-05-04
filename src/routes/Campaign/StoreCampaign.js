@@ -10,12 +10,12 @@ import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
 // import collapsedown from "./../../assets/Images/collapsedown.png";
-import Pagination from "react-js-pagination";
+import { getPaginationModel, ITEM_TYPES } from "ultimate-pagination";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
-import Shoe from "./../../assets/Images/shoe.jpg";
+import { Link } from "react-router-dom";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
@@ -62,7 +62,8 @@ class StoreCampaign extends Component {
       collapseModalDetails: {},
       useratvdetails: {},
       campaignkeyinsight: {},
-      campaignrecommended:[]
+      campaignrecommended: [],
+      lasttransactiondetails: {},
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -134,8 +135,9 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    ////debugger;
+    debugger;
     if (responseID !== 0) {
+     
       let self = this,
         calculatedCallReScheduledTo;
       var check = true;
@@ -779,8 +781,9 @@ class StoreCampaign extends Component {
             custNameModal: true,
             customerModalDetails: rowData,
             campaignkeyinsight: data.campaignkeyinsight,
-            useratvdetails:data.useratvdetails,
-            campaignrecommended:data.campaignrecommended,
+            useratvdetails: data.useratvdetails,
+            campaignrecommended: data.campaignrecommended,
+            lasttransactiondetails: data.lasttransactiondetails,
             sortCustName: sortName,
           });
         }
@@ -790,10 +793,6 @@ class StoreCampaign extends Component {
       });
   }
 
-  handlePageChange(pageNumber) {
-    alert(`active page is ${pageNumber}`);
-    this.setState({activePage: pageNumber});
-  }
   render() {
     return (
       <div className="custom-tableak">
@@ -1146,12 +1145,14 @@ class StoreCampaign extends Component {
                                 <label className="cust-name">
                                   {row.customerName}
                                   <img
-                                className="ico"
-                                src={Whatsapp}
-                                alt="Whatsapp Icon"
-                              />
+                                    className="ico"
+                                    src={Whatsapp}
+                                    alt="Whatsapp Icon"
+                                  />
                                 </label>
-                                  <span className="sml-fnt">{row.customerNumber}</span>
+                                <span className="sml-fnt">
+                                  {row.customerNumber}
+                                </span>
                               </td>
                               <td></td>
                             </tr>
@@ -1250,25 +1251,26 @@ class StoreCampaign extends Component {
                             </tr>
                             <tr>
                               <td colspan="3">
-                                <div style={{float:"right"}}>
+                                <div style={{ float: "right" }}>
                                   <button
-                                  className="saveBtn saveLabel"
-                                  type="button"
-                                  onClick={this.handleUpdateCampaignResponse.bind(
-                                    this,
-                                    row.id,
-                                    row.responseID,
-                                    row.callRescheduledTo,
-                                    row.campaignScriptID
-                                  )}
-                                >
-                                  Update
-                                </button>
-                                <button 
-                                  className="raisedticket-Btn saveLabel"
-                                  style={{ display: "none" }}>
-                                  Raise Ticket
-                                </button>
+                                    className="saveBtn saveLabel"
+                                    type="button"
+                                    onClick={this.handleUpdateCampaignResponse.bind(
+                                      this,
+                                      row.id,
+                                      row.responseID,
+                                      row.callRescheduledTo,
+                                      row.campaignScriptID
+                                    )}
+                                  >
+                                    Update
+                                  </button>
+                                  <button
+                                    className="raisedticket-Btn saveLabel"
+                                    style={{ display: "none" }}
+                                  >
+                                    Raise Ticket
+                                  </button>
                                 </div>
                               </td>
                             </tr>
@@ -1292,13 +1294,25 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
-        <Pagination
+      {/* {ultimatePagination.getPaginationModel({
+          // Required
+          currentPage: this.state.childCurrentPage,
+          totalPages: this.state.childTotalGridRecord,
+
+          // Optional
+          boundaryPagesRange: 1,
+          siblingPagesRange: 1,
+          hideEllipsis: false,
+          hidePreviousAndNextPageLinks: false,
+          hideFirstAndLastPageLinks: true,
+        })} */}
+        {/* <Pagination
           activePage={this.state.activePage}
           itemsCountPerPage={this.state.ChildPostsPerPage}
           totalItemsCount={this.state.childTotalGridRecord}
           pageRangeDisplayed={10}
           onChange={this.handlePageChange.bind(this)}
-        />
+        /> */}
         {/* <ChildTablePagination
           ChildPostsPerPage={this.state.ChildPostsPerPage}
           childTotalGridRecord={this.state.childTotalGridRecord}
@@ -1395,9 +1409,7 @@ class StoreCampaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>{this.state.customerModalDetails.customerName}</h3>
-                <p>
-                  {this.state.useratvdetails.tiername}
-                </p>
+                <p>{this.state.useratvdetails.tiername}</p>
               </div>
             </div>
           </div>
@@ -1409,123 +1421,202 @@ class StoreCampaign extends Component {
                     <tr>
                       <td>
                         <h4>Lifetime Value</h4>
-                        <label>₹{this.state.useratvdetails.lifeTimeValue}</label>
+                        <label>
+                          ₹{this.state.useratvdetails.lifeTimeValue}
+                        </label>
                       </td>
                       <td>
                         <h4>Visit Count</h4>
-                        <label>{this.state.useratvdetails.visitCount}</label>
+                        <label>
+                          {this.state.useratvdetails.visitCount < 9
+                            ? "0" + this.state.useratvdetails.visitCount
+                            : this.state.useratvdetails.visitCount}
+                        </label>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div className="keyinsights">
-                <h4>Key Insights</h4>
-                <p>{this.state.campaignkeyinsight.insightText}</p>
-                <img
-                  className="keyingsightdrp"
-                  src={Dropdown3}
-                  alt="Down Arrow"
-                />
-              </div>
+              {this.state.campaignkeyinsight.insightText !== "" ? (
+                <div className="keyinsights">
+                  <h4>Key Insights</h4>
+                  <p>{this.state.campaignkeyinsight.insightText}</p>
+                  <img
+                    className="keyingsightdrp"
+                    src={Dropdown3}
+                    alt="Down Arrow"
+                  />
+                </div>
+              ) : null}
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
                 <Tabs>
                   <Tab label="Recommended">
-                    <div className="prodscro">
-                      <div className="pro-slidercam">
-                        <table className="w-100">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <div className="imgbox">
-                                  <Popover
-                                    overlayClassName="antcustom ant-prodesc"
-                                    content={
-                                      <div className="productdesc">
-                                        <h4>Blue Casual Shoes</h4>
-                                        <p>Product Code - F808920000</p>
-                                        <table>
-                                          <tbody>
-                                            <tr>
-                                              <td>
-                                                <label>Colors:</label>
-                                              </td>
-                                              <td>
-                                                <ul>
-                                                  <li>
-                                                    <a className="colorblue">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="colorblack">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="colorgrey">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                </ul>
-                                              </td>
-                                            </tr>
-                                            <tr>
-                                              <td>
-                                                <label>Sizes:</label>
-                                              </td>
-                                              <td>
-                                                <ul className="sizes">
-                                                  <li>
-                                                    <a>6</a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="active">7</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>8</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>9</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>10</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>11</a>
-                                                  </li>
-                                                </ul>
-                                              </td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                        <h3>INR 3499/-</h3>
+                    {this.state.campaignrecommended !== null &&
+                      this.state.campaignrecommended.map((item, j) => {
+                        var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
+                        return (
+                          <div className="prodscro">
+                            <div className="pro-slidercam">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <div className="imgbox">
+                                        <Popover
+                                          overlayClassName="antcustom ant-prodesc"
+                                          content={
+                                            <div className="productdesc">
+                                              <h4>{FullProductName}</h4>
+                                              <p>
+                                                Product Code - {item.itemCode}
+                                              </p>
+                                              <table>
+                                                <tbody>
+                                                  <tr>
+                                                    <td>
+                                                      <label>Colors:</label>
+                                                    </td>
+                                                    <td>
+                                                      <ul>
+                                                        {item.color ===
+                                                        "Blue" ? (
+                                                          <li>
+                                                            <a className="colorblue">
+                                                              <span>1</span>
+                                                            </a>
+                                                          </li>
+                                                        ) : null}
+
+                                                        {item.color ===
+                                                        "Black" ? (
+                                                          <li>
+                                                            <a className="colorblack">
+                                                              <span>1</span>
+                                                            </a>
+                                                          </li>
+                                                        ) : null}
+
+                                                        {item.color ===
+                                                        "Grey" ? (
+                                                          <li>
+                                                            <a className="colorgrey">
+                                                              <span>1</span>
+                                                            </a>
+                                                          </li>
+                                                        ) : null}
+                                                      </ul>
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>
+                                                      <label>Sizes:</label>
+                                                    </td>
+                                                    <td>
+                                                      <ul className="sizes">
+                                                        <li>
+                                                          <a
+                                                            className={
+                                                              item.size === "6"
+                                                                ? "active"
+                                                                : ""
+                                                            }
+                                                          >
+                                                            6
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a
+                                                            className={
+                                                              item.size === "7"
+                                                                ? "active"
+                                                                : ""
+                                                            }
+                                                          >
+                                                            7
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a
+                                                            className={
+                                                              item.size === "8"
+                                                                ? "active"
+                                                                : ""
+                                                            }
+                                                          >
+                                                            8
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a
+                                                            className={
+                                                              item.size === "9"
+                                                                ? "active"
+                                                                : ""
+                                                            }
+                                                          >
+                                                            9
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a
+                                                            className={
+                                                              item.size === "10"
+                                                                ? "active"
+                                                                : ""
+                                                            }
+                                                          >
+                                                            10
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a
+                                                            className={
+                                                              item.size === "11"
+                                                                ? "active"
+                                                                : ""
+                                                            }
+                                                          >
+                                                            11
+                                                          </a>
+                                                        </li>
+                                                      </ul>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                              <h3>{item.price}/-</h3>
+                                            </div>
+                                          }
+                                          placement="left"
+                                        >
+                                          <img
+                                            className="shoeimg"
+                                            src={item.imageURL}
+                                            alt="Product Image"
+                                          />
+                                        </Popover>
+                                        <Link
+                                          to={`//${item.url}`}
+                                          target="_blank"
+                                        >
+                                          <img
+                                            className="whatsappico"
+                                            src={Whatsapp}
+                                            alt="Whatsapp Icon"
+                                          />
+                                        </Link>
                                       </div>
-                                    }
-                                    placement="left"
-                                    trigger="click"
-                                  >
-                                    <img
-                                      className="shoeimg"
-                                      src={Shoe}
-                                      alt="Product Image"
-                                    />
-                                  </Popover>
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                                      <h4>{item.subCategory}</h4>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        );
+                      })}
                   </Tab>
                   <Tab label="Last Transaction">
                     <div>
@@ -1535,21 +1626,29 @@ class StoreCampaign extends Component {
                             <tr>
                               <td>
                                 <h5>Bill No.</h5>
-                                <label>BB332393</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.billNo}
+                                </label>
                               </td>
                               <td>
                                 <h5>Amount</h5>
-                                <label>₹1,499</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.amount}
+                                </label>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <h5>Store</h5>
-                                <label>Bata - Rajouri Garden</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.storeName}
+                                </label>
                               </td>
                               <td>
                                 <h5>Date</h5>
-                                <label>12 Jan 2020</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.billDate}
+                                </label>
                               </td>
                             </tr>
                           </tbody>
