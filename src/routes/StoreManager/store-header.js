@@ -5,6 +5,7 @@ import ChatLogo from "./../../assets/Images/chat.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
+import SuggSearch from "./../../assets/Images/sugg-search.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
@@ -1975,7 +1976,32 @@ class Header extends Component {
                                 {this.state.isMessage}
                               </p>
                             )}
-                            {this.state.messageSuggestionData !== null &&
+                            <div className="suggestions-cntr">
+                              <div className="suggestions-tick">
+                                <span>Men Shoes under 999</span>
+                              </div>
+                              <div className="suggestions-tick">
+                                <span>
+                                  Men Shoes under 999 in black color and laces
+                                </span>
+                              </div>
+                              <div className="">
+                                <span>Men Shoes Casual</span>
+                              </div>
+                              <div className="">
+                                <span>Men Shoes Black</span>
+                              </div>
+                              <div className="suggestions-tick">
+                                <span>Men Shoes Formal</span>
+                              </div>
+                              <div className="">
+                                <span>Men Shoes under 999 sports</span>
+                              </div>
+                              <div className="suggestions-tick">
+                                <span>Men Shoes Party</span>
+                              </div>
+                            </div>
+                            {/* {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
                                 <div className="custom-ticket-title-suggestions">
@@ -1994,13 +2020,14 @@ class Header extends Component {
                                       )
                                     )}
                                 </div>
-                              )}
+                              )} */}
                             <div
                               className="mobile-ck-send"
                               onClick={this.handleSaveChatMessages.bind(this)}
                               title={"Send"}
                             >
-                              <img src={Assign} alt="send img" />
+                              {/* <img src={Assign} alt="send img" /> */}
+                              <img src={SuggSearch} alt="send img" />
                             </div>
                           </div>
                         </div>
@@ -2062,7 +2089,8 @@ class Header extends Component {
                                         this,
                                         item.itemID
                                       )}
-                                    >{item.itemID ===
+                                    >
+                                      {item.itemID ===
                                       this.state.selectedCard ? (
                                         <div className="selectdot">
                                           <img
@@ -2073,7 +2101,6 @@ class Header extends Component {
                                       ) : null}
                                       <div className="card">
                                         <div className="card-body position-relative">
-                                          
                                           {/* <div className="container"> */}
                                           <div
                                             className="row"
@@ -2109,7 +2136,11 @@ class Header extends Component {
                                                 </label>
                                               </div>
                                               <div>
-                                                <a href={item.redirectionUrl} target="_blank" className="chat-product-url">
+                                                <a
+                                                  href={item.redirectionUrl}
+                                                  target="_blank"
+                                                  className="chat-product-url"
+                                                >
                                                   {item.redirectionUrl}
                                                 </a>
                                               </div>
