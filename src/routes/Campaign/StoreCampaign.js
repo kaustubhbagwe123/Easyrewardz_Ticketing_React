@@ -64,6 +64,7 @@ class StoreCampaign extends Component {
       campaignkeyinsight: {},
       campaignrecommended: [],
       lasttransactiondetails: {},
+      ResponsiveShareNow: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -669,19 +670,29 @@ class StoreCampaign extends Component {
       ResponsiveBroadCast: false,
     });
   }
+  handleShareNowOpenModal() {
+    this.setState({
+      ResponsiveShareNow: true,
+    });
+  }
+  handleShareNowCloseModal() {
+    this.setState({
+      ResponsiveShareNow: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
     });
   };
   /// Pagination Onchange
-  PaginationOnChange = numPage => {
-    alert(numPage)
+  PaginationOnChange = (numPage) => {
+    alert(numPage);
     this.setState({ childCurrentPage: numPage });
-   };
+  };
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-     debugger;
+    // debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -1368,7 +1379,7 @@ class StoreCampaign extends Component {
           changeCurrentPage={this.PaginationOnChange}
           theme="bootstrap"
         />
-    
+
         {/* <Pagination
           postsPerPage={this.state.postsPerPage}
           totalGridData={this.state.totalGridRecord}
@@ -1818,6 +1829,15 @@ class StoreCampaign extends Component {
           </div>
         </Modal>
         <Modal
+          open={this.state.ResponsiveShareNow}
+          onClose={this.handleShareNowCloseModal.bind(this)}
+          center
+          modalId="sharecamp-popupmob"
+          overlayId="logout-ovrly-none"
+        >
+          <h3>Shared Successfully!</h3>
+        </Modal>
+        <Modal
           open={this.state.ResponsiveBroadCast}
           onClose={this.handleBroadCastModalClose.bind(this)}
           center
@@ -1872,57 +1892,88 @@ class StoreCampaign extends Component {
             <table className="w-100">
               <tbody>
                 <tr>
-                  <td>
-                    <a href={Demo.BLANK_LINK}>
-                      <div className="chatbox">
-                        <img
-                          className="ico"
-                          src={Whatsapp}
-                          alt="Whatsapp Icon"
-                        />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                        Send Via Messanger
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <a href={Demo.BLANK_LINK}>
-                      <div className="chatbox">
-                        <img
-                          className="ico"
-                          src={Whatsapp}
-                          alt="Whatsapp Icon"
-                        />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                        Send Via Bot
-                      </div>
-                    </a>
-                  </td>
+                  {this.state.customerModalDetails.messengerFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSendViaMessanger.bind(
+                            this,
+                            this.state.customerModalDetails
+                          )}
+                        >
+                          <img
+                            className="ico"
+                            src={Whatsapp}
+                            alt="Whatsapp Icon"
+                          />
+                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          Send Via Messanger
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
+                  {this.state.customerModalDetails.botFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSendViaBotData.bind(
+                            this,
+                            this.state.customerModalDetails
+                          )}
+                        >
+                          <img
+                            className="ico"
+                            src={Whatsapp}
+                            alt="Whatsapp Icon"
+                          />
+                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          Send Via Bot
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
                 </tr>
                 <tr>
-                  <td>
-                    <a href={Demo.BLANK_LINK}>
-                      <div className="chatbox">
-                        <img className="ico" src={Sms1} alt="SMS Icon" />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                        SMS
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <a href={Demo.BLANK_LINK}>
-                      <div className="chatbox">
-                        <img className="ico" src={Sms1} alt="Email Icon" />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                        Email
-                      </div>
-                    </a>
-                  </td>
+                  {this.state.customerModalDetails.smsFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSendViaSMS.bind(
+                            this,
+                            this.state.customerModalDetails
+                          )}
+                        >
+                          <img className="ico" src={Sms1} alt="SMS Icon" />
+                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          SMS
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
+                  {this.state.customerModalDetails.emailFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div className="chatbox">
+                          <img className="ico" src={Sms1} alt="Email Icon" />
+                          <img className="tick" src={Tick} alt="Tick Icon" />
+                          Email
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
                 </tr>
               </tbody>
             </table>
             <div className="sharecampmob">
-              <label className="shareviabtn">Share Now</label>
+              <label
+                className="shareviabtn"
+                onClick={this.handleShareNowOpenModal.bind(this)}
+              >
+                Share Now
+              </label>
             </div>
           </div>
         </Modal>
