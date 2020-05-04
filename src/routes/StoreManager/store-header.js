@@ -770,7 +770,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
-            self.setState({ message: ""});
+            self.setState({ message: "", messageSuggestionData: []});
           } else {
           }
         })
@@ -1959,7 +1959,6 @@ class Header extends Component {
                               }
                               data={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
-                              id="messageSuggestion"
                               config={{
                                 toolbar: [
                                   {
@@ -2014,26 +2013,7 @@ class Header extends Component {
                                     </div>
                                   )
                                   )}
-                                  {/* <div className="suggestions-tick">
-                                    <span>
-                                      Men Shoes under 999 in black color and laces
-                                    </span>
-                                  </div>
-                                  <div className="">
-                                    <span>Men Shoes Casual</span>
-                                  </div>
-                                  <div className="">
-                                    <span>Men Shoes Black</span>
-                                  </div>
-                                  <div className="suggestions-tick">
-                                    <span>Men Shoes Formal</span>
-                                  </div>
-                                  <div className="">
-                                    <span>Men Shoes under 999 sports</span>
-                                  </div>
-                                  <div className="suggestions-tick">
-                                    <span>Men Shoes Party</span>
-                                  </div> */}
+                                  
                                 </div>
                                 )}
                             {/* {this.state.messageSuggestionData !== null &&
@@ -2607,6 +2587,7 @@ class Header extends Component {
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
+                              data={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                               config={{
                                 toolbar: [
@@ -2634,34 +2615,31 @@ class Header extends Component {
                                 ],
                               }}
                             />
-                            <div className="suggestions-cntr">
-                              <div className="suggestions-tick">
-                                <span>Men Shoes under 999</span>
-                              </div>
-                              <div className="suggestions-tick">
-                                <span>
-                                  Men Shoes under 999 in black color and laces
-                                </span>
-                              </div>
-                              <div className="">
-                                <span>Men Shoes Casual</span>
-                              </div>
-                              <div className="">
-                                <span>Men Shoes Black</span>
-                              </div>
-                              <div className="suggestions-tick">
-                                <span>Men Shoes Formal</span>
-                              </div>
-                              <div className="">
-                                <span>Men Shoes under 999 sports</span>
-                              </div>
-                              <div className="suggestions-tick">
-                                <span>Men Shoes Party</span>
-                              </div>
-                            </div>
+                            {this.state.messageSuggestionData !== null &&
+                              this.state.messageSuggestionData.length > 0 &&
+                              this.state.messageSuggestionData.length > 0 && (
+                                <div className="suggestions-cntr">
+                                {this.state.messageSuggestionData !== null &&
+                                  this.state.messageSuggestionData.map(
+                                  (item, i) => (
+                                    <div className={this.state.chkSuggestion[i] === 1?"suggestions-tick":""}
+                                      key={i}
+                                      onClick={
+                                        this.handleSaveChatMessages.bind(this,item.ticketTitle,i)
+                                      }
+                                      title={item.ticketTitleToolTip}
+                                    >
+                                      <span>{item.ticketTitle}</span>
+                                    </div>
+                                  )
+                                  )}
+                                  
+                                </div>
+                                )}
+                       
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleSaveChatMessages.bind(this)}
+                              onClick={this.handleMessageSuggestion.bind(this)}
                               title={"Send"}
                             >
                               {/* <img src={Assign} alt="send img" /> */}
