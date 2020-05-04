@@ -254,6 +254,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
+    debugger
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -372,6 +373,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {

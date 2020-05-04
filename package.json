@@ -75,6 +75,7 @@
     "react-native-fusioncharts": "^4.1.1",
     "react-notifications": "^1.4.3",
     "react-nvd3": "^0.5.7",
+    "react-pagination-js": "^2.0.0",
     "react-power-tooltip": "^1.0.2",
     "react-rangeslider": "^2.2.0",
     "react-responsive-modal": "^4.0.1",
