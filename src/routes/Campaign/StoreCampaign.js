@@ -1013,7 +1013,7 @@ class StoreCampaign extends Component {
                         <img
                           src={BroadCastIcon}
                           alt="cancel-icone"
-                          // onClick={this.handleBroadCastModalOpen.bind(this)}
+                          onClick={this.handleBroadCastModalOpen.bind(this)}
                           className="broadcastimg"
                         />
                       </div>
@@ -1489,6 +1489,28 @@ class StoreCampaign extends Component {
                   </tbody>
                 </table>
               </div>
+              <div className="lifetimevalue lt-single">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <h4>Lifetime Value</h4>
+                        <label>
+                          ₹{this.state.useratvdetails.lifeTimeValue}
+                        </label>
+                      </td>
+                      <td>
+                        <h4>Visit Count</h4>
+                        <label>
+                          {this.state.useratvdetails.visitCount < 9
+                            ? "0" + this.state.useratvdetails.visitCount
+                            : this.state.useratvdetails.visitCount}
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               {this.state.campaignkeyinsight.insightText !== "" ? (
                 <div className="keyinsights">
                   <h4>Key Insights</h4>
@@ -1502,7 +1524,7 @@ class StoreCampaign extends Component {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="productbox">
+              <div className="productbox tab-single">
                 <Tabs>
                   <Tab label="Recommended">
                     {this.state.campaignrecommended !== null &&
@@ -1799,9 +1821,8 @@ class StoreCampaign extends Component {
           open={this.state.ResponsiveBroadCast}
           onClose={this.handleBroadCastModalClose.bind(this)}
           center
-          modalId="sharecamp-popup"
-          overlayId="logout-ovrly"
-          overlayClassName="sharepopupmob"
+          modalId="sharecamp-popupmob"
+          overlayId="logout-ovrly-none"
         >
           <img
             src={CancelIcon}
@@ -1810,10 +1831,10 @@ class StoreCampaign extends Component {
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
           <div className="general-popover popover-body broadcastpop">
-            <label>
-              <b>Broadcast to Campaign Customers</b>
+            <label className="broadcasttitle">
+              Broadcast to Campaign Customers
             </label>
-            <label>Choose Channel</label>
+            <label className="broadcastsubtitle">Choose Channel</label>
             <div>
               <Radio.Group
                 onChange={this.handleBroadcastChange}
