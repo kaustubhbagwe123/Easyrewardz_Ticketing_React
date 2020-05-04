@@ -1906,7 +1906,8 @@ table tr th:last-child {
   cursor: default;
   border-radius: 5px;
 }
-.custom-tableak .react-pagination-js-bootstrap .page, .custom-tableak .react-pagination-js-bootstrap .pageElli {
+.custom-tableak .react-pagination-js-bootstrap .page,
+.custom-tableak .react-pagination-js-bootstrap .pageElli {
   line-height: 25px !important;
   color: #333;
 }
@@ -1926,11 +1927,15 @@ table tr th:last-child {
 .status-btn-camp {
   display: contents;
 }
-.midalResponseAction .ant-table-row-collapsed,.midalResponseAction .ant-table-row-expanded{
-display: none;
+.midalResponseAction .ant-table-row-collapsed,
+.midalResponseAction .ant-table-row-expanded {
+  display: none;
 }
-.custpagination{
+.custpagination {
   margin-top: 0 !important;
+}
+.Camp-pagination {
+  margin-top: -22px;
 }
 /* ------------------Campain Media Queries ------------------------- */
 
@@ -2336,63 +2341,65 @@ display: none;
   /* .broadcastimg {
   display: none;
 } */
-.broadcastpop .broadcasttitle {
-  font-size: 17px;
-  font-weight: bolder;
-  margin-bottom: 10px;
-}
-.broadcastpop .broadcastsubtitle {
-  color: #999;
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-.broadcastpop .ant-radio-checked .ant-radio-inner {
-  border-color: #2561a8;
-}
-.broadcastpop .ant-radio-inner::after {
-  background-color: #2561a8;
-}
-.broadcastpop .ant-radio-wrapper {
-  display: block;
-  margin-bottom: 10px;
-}
-.executebtn {
-  background-color: #2561a8;
-  border-radius: 4px;
-  width: 100%;
-  height: 35px;
-  min-width: 68px !important;
-  cursor: pointer;
-  margin-top: 15px;
-  color: #fff;
-  text-align: center;
-  line-height: 0;
-}
-.midalResponseAction .ant-table-row-collapsed,.midalResponseAction .ant-table-row-expanded{
-  display: block;
-}
-.custom-tableak .txtStore, .custom-tableak .txtStore::placeholder {
-  font-size: 12px;
-}
-.innertabcollapse .dateTimeStore {
-  width: 160px;
-  height: 28px;
-}
-.innertabcollapse .responceDrop-down {
-  width: 160px;
-  height: 28px;
-}
-.custom-tableak .saveLabel {
-  text-align: center;
-  font-size: 11px;
-  width: 60px;
-  height: 28px;
-}
-#sharecamp-popupmob {
-  display: block;
-  border-radius: 20px;
-}
+  .broadcastpop .broadcasttitle {
+    font-size: 17px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+  }
+  .broadcastpop .broadcastsubtitle {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .broadcastpop .ant-radio-checked .ant-radio-inner {
+    border-color: #2561a8;
+  }
+  .broadcastpop .ant-radio-inner::after {
+    background-color: #2561a8;
+  }
+  .broadcastpop .ant-radio-wrapper {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .executebtn {
+    background-color: #2561a8;
+    border-radius: 4px;
+    width: 100%;
+    height: 35px;
+    min-width: 68px !important;
+    cursor: pointer;
+    margin-top: 15px;
+    color: #fff;
+    text-align: center;
+    line-height: 0;
+  }
+  .midalResponseAction .ant-table-row-collapsed,
+  .midalResponseAction .ant-table-row-expanded {
+    display: block;
+  }
+  .custom-tableak .txtStore,
+  .custom-tableak .txtStore::placeholder {
+    font-size: 12px;
+  }
+  .innertabcollapse .dateTimeStore {
+    width: 160px;
+    height: 28px;
+  }
+  .innertabcollapse .responceDrop-down {
+    width: 160px;
+    height: 28px;
+  }
+  .custom-tableak .saveLabel {
+    text-align: center;
+    font-size: 11px;
+    width: 60px;
+    height: 28px;
+  }
+  #sharecamp-popupmob {
+    display: block;
+    border-radius: 20px;
+  }
 }
 /* ------------------Campain Css End ------------------------- */
 
