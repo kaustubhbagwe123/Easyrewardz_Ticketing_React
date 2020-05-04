@@ -1885,6 +1885,31 @@ table tr th:last-child {
   background-color: transparent;
   background: none;
 }
+.custom-tableak .react-pagination-js-bootstrap {
+  background: #f9f9f9;
+}
+.custom-tableak .react-pagination-js-bootstrap ul {
+  margin: auto;
+  display: table;
+  padding: 10px 0;
+  box-shadow: none;
+}
+.custom-tableak .react-pagination-js-bootstrap ul li {
+  border: none;
+}
+.custom-tableak .react-pagination-js-bootstrap .is-active {
+  float: left;
+  padding: 0px 10px;
+  line-height: 25px;
+  color: #fff;
+  background-color: #2561a8;
+  cursor: default;
+  border-radius: 5px;
+}
+.custom-tableak .react-pagination-js-bootstrap .page, .custom-tableak .react-pagination-js-bootstrap .pageElli {
+  line-height: 25px !important;
+  color: #333;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
