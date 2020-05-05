@@ -1023,7 +1023,7 @@ class Header extends Component {
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
     // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     this.setState({
-      message
+      message,
       // messageSuggestion,
     });
   };
@@ -1101,8 +1101,14 @@ class Header extends Component {
       mobileNo: mobileNo,
       customerId: customerId,
     });
-    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo, 
-      message: "", messageSuggestionData: [], chkSuggestion: [] });
+    this.setState({
+      chatId: id,
+      customerName: name,
+      mobileNo: mobileNo,
+      message: "",
+      messageSuggestionData: [],
+      chkSuggestion: [],
+    });
     let self = this;
     // socket.on("connect", () => {
     //   socket.send("hi");
@@ -1269,16 +1275,21 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
       headers: authHeader(),
       params: {
-        CustomerID : this.state.customerId,
-        MobileNumber : this.state.mobileNo
+        CustomerID: this.state.customerId,
+        MobileNumber: this.state.mobileNo,
       },
     })
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
-                                      self.state.mobileNo,self.state.customerId);
+          self.handleOngoingChatClick(
+            self.state.chatId,
+            self.state.customerName,
+            0,
+            self.state.mobileNo,
+            self.state.customerId
+          );
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
@@ -1896,16 +1907,20 @@ class Header extends Component {
                                         src={ChatCount}
                                         alt="notification image"
                                       />
-                                      <span className="chat-notification-count">
-                                        15
-                                      </span>
+                                      {chat.messageCount > 0 ? (
+                                        <span className="chat-notification-count">
+                                          chat.messageCount
+                                        </span>
+                                      ) : null}
                                     </div>
                                     <img
                                       src={DummyFace1}
                                       alt="face image"
                                       title={chat.cumtomerName}
                                     />
-                                    <span className="online"></span>
+                                    {chat.messageCount > 0 ? (
+                                      <span className="online"></span>
+                                    ) : null}
                                   </div>
                                 </div>
                                 <span className="face-name">
@@ -1953,7 +1968,7 @@ class Header extends Component {
                                         alt="notification image"
                                       />
                                       <span className="chat-notification-count">
-                                        15
+                                        {chat.messageCount}
                                       </span>
                                     </div>
                                     <img src={DummyFace1} alt="face image" />
@@ -2122,10 +2137,13 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <span className="message-initial">{this.state.customerName.charAt(0).toUpperCase()}</span>
-                            <textarea placeholder="Search to get suggestions..."
-                            value={this.state.message}
-                            onChange={this.handleOnChangeCKEditor.bind(this)}
+                            <span className="message-initial">
+                              {this.state.customerName.charAt(0).toUpperCase()}
+                            </span>
+                            <textarea
+                              placeholder="Search to get suggestions..."
+                              value={this.state.message}
+                              onChange={this.handleOnChangeCKEditor.bind(this)}
                             ></textarea>
                             {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
@@ -2222,9 +2240,7 @@ class Header extends Component {
                               )} */}
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleMessageSuggestion.bind(
-                                this
-                              )}
+                              onClick={this.handleMessageSuggestion.bind(this)}
                               title={"Send"}
                             >
                               {/* <img src={Assign} alt="send img" /> */}
@@ -2392,8 +2408,11 @@ class Header extends Component {
                           aria-labelledby="recommended-list-tab"
                         >
                           <div className="recommended-cntr">
-                            <button className="butn"
-                            onClick={this.handleSendRecommendedList.bind(this)}
+                            <button
+                              className="butn"
+                              onClick={this.handleSendRecommendedList.bind(
+                                this
+                              )}
                             >
                               Send Recommended List
                               <img
@@ -2778,43 +2797,15 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <span className="message-initial">{this.state.customerName.charAt(0).toUpperCase()}</span>
-                            <textarea placeholder="Search to get suggestions..."
+                            <span className="message-initial">
+                              {this.state.customerName.charAt(0).toUpperCase()}
+                            </span>
+                            <textarea
+                              placeholder="Search to get suggestions..."
                               value={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                             ></textarea>
-                            {/* <CKEditor
-                              onBeforeLoad={(CKEDITOR) =>
-                                (CKEDITOR.disableAutoInline = true)
-                              }
-                              data={this.state.message}
-                              onChange={this.handleOnChangeCKEditor.bind(this)}
-                              config={{
-                                toolbar: [
-                                  {
-                                    name: "basicstyles",
-                                    items: ["Bold", "Italic", "Strike"],
-                                  },
 
-                                  {
-                                    name: "paragraph",
-                                    items: ["NumberedList", "BulletedList"],
-                                  },
-                                  {
-                                    name: "links",
-                                    items: ["Link", "Unlink"],
-                                  },
-                                  {
-                                    name: "insert",
-                                    items: ["Image", "Table"],
-                                  },
-                                  {
-                                    name: "editing",
-                                    items: ["Scayt"],
-                                  },
-                                ],
-                              }}
-                            /> */}
                             {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
@@ -2849,9 +2840,7 @@ class Header extends Component {
 
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleMessageSuggestion.bind(
-                                this
-                              )}
+                              onClick={this.handleMessageSuggestion.bind(this)}
                               title={"Send"}
                             >
                               {/* <img src={Assign} alt="send img" /> */}
@@ -2918,33 +2907,27 @@ class Header extends Component {
                                           <div className="mobile-card-img">
                                             <img
                                               className="chat-product-img"
-                                              src={item.productImgURL}
+                                              src={item.imageURL}
                                               alt="Product Image"
                                               title="POWER Black Casual Shoes For Man"
                                             />
                                           </div>
                                           <div className="bkcprdt">
-                                            {/* <div> */}
                                             <label className="chat-product-name">
-                                              {item.productName}
+                                              {item.label}
                                             </label>
-                                            {/* </div> */}
-                                            {/* <div> */}
                                             <label className="chat-product-code">
                                               Product Code:
-                                              {item.productCode}
+                                              {item.alternativeText}
                                             </label>
-                                            {/* </div> */}
-                                            {/* <div> */}
+
                                             <label className="chat-product-prize">
                                               {item.productPrize}
                                             </label>
-                                            {/* </div> */}
-                                            {/* <div> */}
+
                                             <label className="chat-product-url">
-                                              {item.productUrl}
+                                              {item.imageURL}
                                             </label>
-                                            {/* </div> */}
                                           </div>
                                         </div>
                                       </div>
@@ -2988,7 +2971,9 @@ class Header extends Component {
                             <div className="chat-btn-cntr">
                               <button
                                 className="butn"
-                                onClick={this.handleSendRecommendedList.bind(this)}
+                                onClick={this.handleSendRecommendedList.bind(
+                                  this
+                                )}
                               >
                                 Send Recommended List
                                 <img
