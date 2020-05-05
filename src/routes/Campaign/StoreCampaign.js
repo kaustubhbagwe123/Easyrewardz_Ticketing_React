@@ -73,6 +73,7 @@ class StoreCampaign extends Component {
       Respo_ChannelBot: false,
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
+      filterDropdownVisible: false
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -933,7 +934,7 @@ class StoreCampaign extends Component {
       });
   }
 
-  checkIndividualStatus(campaignScriptID, customerCount, event){
+  checkIndividualStatus = async(campaignScriptID, customerCount, event) => {
     debugger; 
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
@@ -945,11 +946,13 @@ class StoreCampaign extends Component {
         }
       }
     }
-    
-    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+    await this.setState({
+      filterDropdownVisible: false,
+    });
+    await this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
   }
 
-  checkAllStatus(campaignScriptID, customerCount, event){
+  checkAllStatus = async (campaignScriptID, customerCount, event) => {
     this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strStatusIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -970,11 +973,14 @@ class StoreCampaign extends Component {
       }
       strStatusIds = "";
     }
-
+    await this.setState({
+      filterDropdownVisible: false,
+    });
+    
     this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
   }
 
-  handleGetCampaignCustomer(statusId, campaignScriptID, customerCount){
+  handleGetCampaignCustomer = (statusId, campaignScriptID, customerCount) => {
     let self = this;
     if (customerCount !== "") {
       this.setState({
@@ -998,15 +1004,11 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message == "Success") {
           self.setState({
-            CampChildTableData: data,
-            ChildTblLoading: false,
-            loading: false,
+            CampChildTableData: data
           });
         } else {
           self.setState({
             CampChildTableData: [],
-            ChildTblLoading: false,
-            loading: false,
             childTotalGridRecord: 0,
           });
         }
@@ -1306,7 +1308,7 @@ class StoreCampaign extends Component {
                             </div>
                           );
                         },
-                        filterDropdown: () => (
+                        filterDropdown: dataIndex => (
                           <div style={{ padding: 8 }}>
                             {/* <Input
                               ref={node => {
@@ -1434,7 +1436,10 @@ class StoreCampaign extends Component {
 
                           </div>
                         ),
+                        filterDropdownVisible:  this.state.filterDropdownVisible,
+                        onFilterDropdownVisibleChange: visible => this.setState({ filterDropdownVisible: visible }),
                         filterIcon: filtered => <span style={{ color: filtered ? '#1890ff' : undefined }} ></span>,
+                        
                         // onFilter: (value, record) =>
                         //   record.statusID.toString().toLowerCase().includes(value.toLowerCase()),
                         // onFilterDropdownVisibleChange: visible => {
