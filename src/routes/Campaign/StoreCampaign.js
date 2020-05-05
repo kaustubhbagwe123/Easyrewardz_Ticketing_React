@@ -75,7 +75,7 @@ class StoreCampaign extends Component {
       Respo_ChannelBot: false,
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
-      filterDropdownVisible: false
+      filterDropdownVisible: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -967,9 +967,13 @@ class StoreCampaign extends Component {
       }
     }
     this.setState({
-      filterDropdownVisible: false
+      filterDropdownVisible: false,
     });
-    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+    this.handleGetCampaignCustomer(
+      strStatusIds,
+      campaignScriptID,
+      customerCount
+    );
   }
 
   checkAllStatus(campaignScriptID, customerCount, event) {
@@ -996,8 +1000,12 @@ class StoreCampaign extends Component {
     this.setState({
       filterDropdownVisible: false,
     });
-    
-    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+
+    this.handleGetCampaignCustomer(
+      strStatusIds,
+      campaignScriptID,
+      customerCount
+    );
   }
 
   handleGetCampaignCustomer = (statusId, campaignScriptID, customerCount) => {
@@ -1024,7 +1032,7 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message == "Success") {
           self.setState({
-            CampChildTableData: data
+            CampChildTableData: data,
           });
         } else {
           self.setState({
@@ -1036,7 +1044,7 @@ class StoreCampaign extends Component {
       .catch((response) => {
         console.log(response);
       });
-  }
+  };
 
   handleSelectChannelsOnchange(check) {
     //debugger;
@@ -1168,10 +1176,7 @@ class StoreCampaign extends Component {
                 className: "particular-hide",
                 render: (row, item) => {
                   return (
-                    <button
-                      className="closebtn"
-                      type="button"
-                    >
+                    <button className="closebtn" type="button">
                       <label className="hdrcloselabel">{item.status}</label>
                     </button>
                   );
@@ -1320,8 +1325,11 @@ class StoreCampaign extends Component {
                             </div>
                           );
                         },
-                        filterDropdown: dataIndex => (
-                          <div style={{ padding: 8 }}>
+                        filterDropdown: (dataIndex) => (
+                          <div
+                            className="campaign-status-drpdwn"
+                            style={{ padding: 8 }}
+                          >
                             <ul>
                               <li>
                                 <label htmlFor="all-status">
@@ -1427,13 +1435,17 @@ class StoreCampaign extends Component {
                                   <span className="ch1-text">Conversation</span>
                                 </label>
                               </li>
-                             
                             </ul>
                           </div>
                         ),
-                        filterDropdownVisible:  this.state.filterDropdownVisible,
-                        onFilterDropdownVisibleChange: visible => this.setState({ filterDropdownVisible: visible }),
-                        filterIcon: filtered => <span style={{ color: filtered ? '#1890ff' : undefined }} ></span>,
+                        filterDropdownVisible: this.state.filterDropdownVisible,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ filterDropdownVisible: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
                       },
                       {
                         title: "Call Recheduled To",
