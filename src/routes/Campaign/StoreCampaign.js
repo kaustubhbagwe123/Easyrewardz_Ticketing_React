@@ -65,6 +65,7 @@ class StoreCampaign extends Component {
       campaignkeyinsight: {},
       campaignrecommended: [],
       lasttransactiondetails: {},
+      lastTransactionItem: [],
       ResponsiveShareNow: false,
       campaignID: 0,
       ResponsiveChooseChannel: 0,
@@ -907,12 +908,12 @@ class StoreCampaign extends Component {
       url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
       headers: authHeader(),
       params: {
-        programCode: rowData.programcode,
-        mobileNumber: rowData.customerNumber,
+        programCode:rowData.programcode,
+        mobileNumber:rowData.customerNumber,
       },
     })
       .then(function(response) {
-        debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -930,6 +931,7 @@ class StoreCampaign extends Component {
             useratvdetails: data.useratvdetails,
             campaignrecommended: data.campaignrecommended,
             lasttransactiondetails: data.lasttransactiondetails,
+            lastTransactionItem: data.lasttransactiondetails.itemDetails,
             sortCustName: sortName,
           });
         }
@@ -1959,157 +1961,161 @@ class StoreCampaign extends Component {
                                     var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
                                     return (
                                       <td key={j}>
-                                        <div className="imgbox">
-                                          <Popover
-                                            overlayClassName="antcustom ant-prodesc"
-                                            content={
-                                              <div className="productdesc">
-                                                <h4>{FullProductName}</h4>
-                                                <p>
-                                                  Product Code - {item.itemCode}
-                                                </p>
-                                                <table>
-                                                  <tbody>
-                                                    <tr>
-                                                      <td>
-                                                        <label>Colors:</label>
-                                                      </td>
-                                                      <td>
-                                                        <ul>
-                                                          {item.color ===
-                                                          "Blue" ? (
-                                                            <li>
-                                                              <a className="colorblue">
-                                                                <span>1</span>
-                                                              </a>
-                                                            </li>
-                                                          ) : null}
+                                        {item.imageURL !== "" ? (
+                                          <div className="imgbox">
+                                            <Popover
+                                              overlayClassName="antcustom ant-prodesc"
+                                              content={
+                                                <div className="productdesc">
+                                                  <h4>{FullProductName}</h4>
+                                                  <p>
+                                                    Product Code -{" "}
+                                                    {item.itemCode}
+                                                  </p>
+                                                  <table>
+                                                    <tbody>
+                                                      <tr>
+                                                        <td>
+                                                          <label>Colors:</label>
+                                                        </td>
+                                                        <td>
+                                                          <ul>
+                                                            {item.color ===
+                                                            "Blue" ? (
+                                                              <li>
+                                                                <a className="colorblue">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
 
-                                                          {item.color ===
-                                                          "Black" ? (
-                                                            <li>
-                                                              <a className="colorblack">
-                                                                <span>1</span>
-                                                              </a>
-                                                            </li>
-                                                          ) : null}
+                                                            {item.color ===
+                                                            "Black" ? (
+                                                              <li>
+                                                                <a className="colorblack">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
 
-                                                          {item.color ===
-                                                          "Grey" ? (
+                                                            {item.color ===
+                                                            "Grey" ? (
+                                                              <li>
+                                                                <a className="colorgrey">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+                                                          </ul>
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          <label>Sizes:</label>
+                                                        </td>
+                                                        <td>
+                                                          <ul className="sizes">
                                                             <li>
-                                                              <a className="colorgrey">
-                                                                <span>1</span>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "6"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                6
                                                               </a>
                                                             </li>
-                                                          ) : null}
-                                                        </ul>
-                                                      </td>
-                                                    </tr>
-                                                    <tr>
-                                                      <td>
-                                                        <label>Sizes:</label>
-                                                      </td>
-                                                      <td>
-                                                        <ul className="sizes">
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "6"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              6
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "7"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              7
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "8"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              8
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "9"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              9
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "10"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              10
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "11"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              11
-                                                            </a>
-                                                          </li>
-                                                        </ul>
-                                                      </td>
-                                                    </tr>
-                                                  </tbody>
-                                                </table>
-                                                <h3>INR {item.price}/-</h3>
-                                              </div>
-                                            }
-                                            placement="left"
-                                          >
-                                            <img
-                                              className="shoeimg"
-                                              src={item.imageURL}
-                                              alt="Product Image"
-                                            />
-                                          </Popover>
-                                          <Link
-                                            to={`//${item.url}`}
-                                            target="_blank"
-                                          >
-                                            <img
-                                              className="whatsappico"
-                                              src={Whatsapp}
-                                              alt="Whatsapp Icon"
-                                            />
-                                          </Link>
-                                        </div>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "7"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                7
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "8"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                8
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "9"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                9
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "10"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                10
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "11"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                11
+                                                              </a>
+                                                            </li>
+                                                          </ul>
+                                                        </td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                  <h3>INR {item.price}/-</h3>
+                                                </div>
+                                              }
+                                              placement="left"
+                                            >
+                                              <img
+                                                className="shoeimg"
+                                                src={item.imageURL}
+                                                alt="Product Image"
+                                              />
+                                            </Popover>
+                                            <Link
+                                              to={`//${item.url}`}
+                                              target="_blank"
+                                            >
+                                              <img
+                                                className="whatsappico"
+                                                src={Whatsapp}
+                                                alt="Whatsapp Icon"
+                                              />
+                                            </Link>
+                                          </div>
+                                        ) : null}
+
                                         <h4>{item.subCategory}</h4>
                                       </td>
                                     );
@@ -2167,16 +2173,18 @@ class StoreCampaign extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>Beige Sports Shoes</td>
-                                  <td>x1</td>
-                                  <td>₹1,499</td>
-                                </tr>
-                                <tr>
-                                  <td>Black Sandals</td>
-                                  <td>x2</td>
-                                  <td>₹4,998</td>
-                                </tr>
+                                {this.state.lastTransactionItem !== null &&
+                                  this.state.lastTransactionItem.map(
+                                    (item, l) => {
+                                      return (
+                                        <tr key={l}>
+                                          <td>{item.article}</td>
+                                          <td>{item.quantity}</td>
+                                          <td>₹{item.amount}</td>
+                                        </tr>
+                                      );
+                                    }
+                                  )}
                               </tbody>
                             </table>
                           </div>
