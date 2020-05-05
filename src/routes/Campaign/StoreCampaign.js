@@ -11,7 +11,7 @@ import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table, Popover, Radio } from "antd";
+import { Table, Popover, Radio, Input, Button } from "antd";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
@@ -67,6 +67,8 @@ class StoreCampaign extends Component {
       lasttransactiondetails: {},
       ResponsiveShareNow: false,
       campaignID: 0,
+      ResponsiveChooseChannel: 0,
+      CheckBoxAllStatus: false,
       Respo_ChannelMessanger: false,
       Respo_ChannelBot: false,
       Respo_ChannelSMS: false,
@@ -79,7 +81,6 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
-    debugger;
     this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
@@ -110,7 +111,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -142,7 +143,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    debugger;
+    //debugger;
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -167,7 +168,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            ////debugger;
+            //////debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -205,7 +206,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            ////debugger;
+            //////debugger;
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -678,9 +679,19 @@ class StoreCampaign extends Component {
     });
   }
   handleShareNowOpenModal() {
-    this.setState({
-      ResponsiveShareNow: true,
-    });
+    //debugger;
+    if (this.state.Respo_ChannelMessanger === true) {
+      this.handleSendViaMessanger(this.state.customerModalDetails);
+    } else if (this.state.Respo_ChannelBot === true) {
+      this.handleSendViaBotData(this.state.customerModalDetails);
+    } else if (this.state.Respo_ChannelSMS === true) {
+      this.handleSendViaSMS(this.state.customerModalDetails);
+    } else if (this.state.Respo_ChannelEmail === true) {
+      console.log("API not ready");
+    }
+    // this.setState({
+    //   ResponsiveShareNow: true,
+    // });
   }
   handleShareNowCloseModal() {
     this.setState({
@@ -703,7 +714,7 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = async (numPage) => {
-    debugger;
+    //debugger;
     await this.setState({
       childCurrentPage: numPage,
     });
@@ -755,7 +766,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -779,7 +789,8 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
-    // let self = this;
+    let self = this;
+    //debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
@@ -795,11 +806,16 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        // var data = response.data.responseData;
-        if (message == "Success") {
-          NotificationManager.success("Success.");
+        if (this.state.Respo_ChannelBot === true) {
+          self.setState({
+            ResponsiveShareNow: true,
+          });
         } else {
-          NotificationManager.error("Failed");
+          if (message == "Success") {
+            NotificationManager.success("Success.");
+          } else {
+            NotificationManager.error("Failed");
+          }
         }
       })
       .catch((response) => {
@@ -809,6 +825,7 @@ class StoreCampaign extends Component {
 
   ///handle Send Via SMS
   handleSendViaSMS(data) {
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareSMS",
@@ -824,10 +841,16 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if (message == "Success") {
-          NotificationManager.success("SMS Send Successfully.");
+        if (this.state.Respo_ChannelSMS === true) {
+          self.setState({
+            ResponsiveShareNow: true,
+          });
         } else {
-          NotificationManager.error("SMS Send Failed.");
+          if (message == "Success") {
+            NotificationManager.success("SMS Send Successfully.");
+          } else {
+            NotificationManager.error("SMS Send Failed.");
+          }
         }
       })
       .catch((response) => {
@@ -837,7 +860,7 @@ class StoreCampaign extends Component {
 
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
-    // let self = this;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareMassanger",
@@ -856,6 +879,9 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message == "Success") {
           window.open("//" + data, "_blank");
+          self.setState({
+            ResponsiveShareNow: true,
+          });
         } else {
           NotificationManager.error("Failed");
         }
@@ -867,7 +893,6 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -879,7 +904,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
+        //debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -905,8 +930,100 @@ class StoreCampaign extends Component {
         console.log(response);
       });
   }
-  handleSelectChannelsOnchange(check) {
+
+  checkIndividualStatus(campaignScriptID, customerCount, event) {
     debugger;
+    var checkboxes = document.getElementsByName("allStatus");
+    var strStatusIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatusIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+
+    this.handleGetCampaignCustomer(
+      strStatusIds,
+      campaignScriptID,
+      customerCount
+    );
+  }
+
+  checkAllStatus(campaignScriptID, customerCount, event) {
+    this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    var strStatusIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allStatus");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatusIds = "All";
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strStatusIds = "";
+    }
+
+    this.handleGetCampaignCustomer(
+      strStatusIds,
+      campaignScriptID,
+      customerCount
+    );
+  }
+
+  handleGetCampaignCustomer(statusId, campaignScriptID, customerCount) {
+    let self = this;
+    if (customerCount !== "") {
+      this.setState({
+        childTotalGridRecord: Number(customerCount),
+      });
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+      headers: authHeader(),
+      params: {
+        campaignScriptID: campaignScriptID,
+        pageNo: this.state.childCurrentPage,
+        pageSize: this.state.ChildPostsPerPage,
+        FilterStatus: statusId,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          self.setState({
+            CampChildTableData: data,
+            ChildTblLoading: false,
+            loading: false,
+          });
+        } else {
+          self.setState({
+            CampChildTableData: [],
+            ChildTblLoading: false,
+            loading: false,
+            childTotalGridRecord: 0,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
+  handleSelectChannelsOnchange(check) {
+    //debugger;
     if (check === "Messanger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1194,13 +1311,207 @@ class StoreCampaign extends Component {
                             </div>
                           );
                         },
+                        filterDropdown: () => (
+                          <div style={{ padding: 8 }}>
+                            {/* <Input
+                              ref={node => {
+                                this.searchInput = node;
+                              }}
+                              value={selectedKeys[0]}
+                              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+                              style={{ width: 188, marginBottom: 8, display: 'block' }}
+                            /> */}
+                            {/* <Space> */}
+                            {/* <Button
+                                type="primary"
+                                onClick={() => this.handleSearch(selectedKeys, confirm)}
+                                size="small"
+                                style={{ width: 90 }}
+                              >
+                                Search
+                              </Button>
+                              <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                                Reset
+                              </Button> */}
+                            {/* </Space> */}
+                            <ul>
+                              <li>
+                                <label htmlFor="all-status">
+                                  <input
+                                    type="checkbox"
+                                    id="all-status"
+                                    className="ch1"
+                                    onChange={this.checkAllStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                  />
+                                  <span className="ch1-text">All</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status100">
+                                  <input
+                                    type="checkbox"
+                                    id="status100"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={100}
+                                  />
+                                  <span className="ch1-text">Contacted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status101">
+                                  <input
+                                    type="checkbox"
+                                    id="status101"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={101}
+                                  />
+                                  <span className="ch1-text">
+                                    Not Contacted
+                                  </span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status102">
+                                  <input
+                                    type="checkbox"
+                                    id="status102"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={102}
+                                  />
+                                  <span className="ch1-text">Follow Up</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status103">
+                                  <input
+                                    type="checkbox"
+                                    id="status103"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={103}
+                                  />
+                                  <span className="ch1-text">Converted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status104">
+                                  <input
+                                    type="checkbox"
+                                    id="status104"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={104}
+                                  />
+                                  <span className="ch1-text">Conversation</span>
+                                </label>
+                              </li>
+                              {/* {this.state.BrandData !== null &&
+                              this.state.BrandData.map((item, i) => (
+                                <li key={i}>
+                                  <label htmlFor={"i" + item.brandID}>
+                                    <input
+                                      type="checkbox"
+                                      id={"i" + item.brandID}
+                                      className="ch1"
+                                      name="allBrand"
+                                      attrIds={item.brandID}
+                                      onChange={this.checkIndividualBrand.bind(this)}
+                                    />
+                                    <span className="ch1-text">{item.brandName}</span>
+                                  </label>
+                                </li>
+                              ))} */}
+                            </ul>
+                          </div>
+                        ),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
+                        // onFilter: (value, record) =>
+                        //   record.statusID.toString().toLowerCase().includes(value.toLowerCase()),
+                        // onFilterDropdownVisibleChange: visible => {
+                        //   if (visible) {
+                        //     // setTimeout(() => this.searchInput.select());
+                        //   }
+                        // },
+                        // filters: [
+                        //   {
+                        //     text: 'Contacted',
+                        //     value: '100',
+                        //   },
+                        //   {
+                        //     text: 'Not Contacted',
+                        //     value: '101',
+                        //   },
+                        //   {
+                        //     text: 'Follow Up',
+                        //     value: '102',
+                        //   },
+                        //   {
+                        //     text: 'Converted',
+                        //     value: '103',
+                        //   },
+                        //   {
+                        //     text: 'Conversation',
+                        //     value: '104',
+                        //   }
+                        // ],
+                        // onFilter: (value, record) => {
+                        //   record.statusID.toString().includes(value)
+                        // },
+                        // onFilterDropdownVisibleChange: (visible) => {
+                        //   debugger;
+                        //   // record.statusID.toString().includes(value)
+                        // },
                       },
                       {
                         title: "Call Recheduled To",
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          //debugger;
+                          ////debugger;
                           return (
                             <div
                               className={
@@ -1626,173 +1937,181 @@ class StoreCampaign extends Component {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="productbox tab-single">
+              <div className="productbox">
                 <Tabs>
                   <Tab label="Recommended">
-                    {this.state.campaignrecommended !== null &&
-                      this.state.campaignrecommended.map((item, j) => {
-                        var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
-                        return (
-                          <div className="prodscro" key={j}>
-                            <div className="pro-slidercam">
-                              <table className="w-100">
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <div className="imgbox">
-                                        <Popover
-                                          overlayClassName="antcustom ant-prodesc"
-                                          content={
-                                            <div className="productdesc">
-                                              <h4>{FullProductName}</h4>
-                                              <p>
-                                                Product Code - {item.itemCode}
-                                              </p>
-                                              <table>
-                                                <tbody>
-                                                  <tr>
-                                                    <td>
-                                                      <label>Colors:</label>
-                                                    </td>
-                                                    <td>
-                                                      <ul>
-                                                        {item.color ===
-                                                        "Blue" ? (
-                                                          <li>
-                                                            <a className="colorblue">
-                                                              <span>1</span>
-                                                            </a>
-                                                          </li>
-                                                        ) : null}
+                    <div className="prodscro">
+                      <div className="pro-slidercam">
+                        <table className="w-100">
+                          <tbody>
+                            <tr>
+                              {this.state.campaignrecommended !== null &&
+                                this.state.campaignrecommended.map(
+                                  (item, j) => {
+                                    var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
+                                    return (
+                                      <td key={j}>
+                                        <div className="imgbox">
+                                          <Popover
+                                            overlayClassName="antcustom ant-prodesc"
+                                            content={
+                                              <div className="productdesc">
+                                                <h4>{FullProductName}</h4>
+                                                <p>
+                                                  Product Code - {item.itemCode}
+                                                </p>
+                                                <table>
+                                                  <tbody>
+                                                    <tr>
+                                                      <td>
+                                                        <label>Colors:</label>
+                                                      </td>
+                                                      <td>
+                                                        <ul>
+                                                          {item.color ===
+                                                          "Blue" ? (
+                                                            <li>
+                                                              <a className="colorblue">
+                                                                <span>1</span>
+                                                              </a>
+                                                            </li>
+                                                          ) : null}
 
-                                                        {item.color ===
-                                                        "Black" ? (
-                                                          <li>
-                                                            <a className="colorblack">
-                                                              <span>1</span>
-                                                            </a>
-                                                          </li>
-                                                        ) : null}
+                                                          {item.color ===
+                                                          "Black" ? (
+                                                            <li>
+                                                              <a className="colorblack">
+                                                                <span>1</span>
+                                                              </a>
+                                                            </li>
+                                                          ) : null}
 
-                                                        {item.color ===
-                                                        "Grey" ? (
+                                                          {item.color ===
+                                                          "Grey" ? (
+                                                            <li>
+                                                              <a className="colorgrey">
+                                                                <span>1</span>
+                                                              </a>
+                                                            </li>
+                                                          ) : null}
+                                                        </ul>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>
+                                                        <label>Sizes:</label>
+                                                      </td>
+                                                      <td>
+                                                        <ul className="sizes">
                                                           <li>
-                                                            <a className="colorgrey">
-                                                              <span>1</span>
+                                                            <a
+                                                              className={
+                                                                item.size ===
+                                                                "6"
+                                                                  ? "active"
+                                                                  : ""
+                                                              }
+                                                            >
+                                                              6
                                                             </a>
                                                           </li>
-                                                        ) : null}
-                                                      </ul>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>
-                                                      <label>Sizes:</label>
-                                                    </td>
-                                                    <td>
-                                                      <ul className="sizes">
-                                                        <li>
-                                                          <a
-                                                            className={
-                                                              item.size === "6"
-                                                                ? "active"
-                                                                : ""
-                                                            }
-                                                          >
-                                                            6
-                                                          </a>
-                                                        </li>
-                                                        <li>
-                                                          <a
-                                                            className={
-                                                              item.size === "7"
-                                                                ? "active"
-                                                                : ""
-                                                            }
-                                                          >
-                                                            7
-                                                          </a>
-                                                        </li>
-                                                        <li>
-                                                          <a
-                                                            className={
-                                                              item.size === "8"
-                                                                ? "active"
-                                                                : ""
-                                                            }
-                                                          >
-                                                            8
-                                                          </a>
-                                                        </li>
-                                                        <li>
-                                                          <a
-                                                            className={
-                                                              item.size === "9"
-                                                                ? "active"
-                                                                : ""
-                                                            }
-                                                          >
-                                                            9
-                                                          </a>
-                                                        </li>
-                                                        <li>
-                                                          <a
-                                                            className={
-                                                              item.size === "10"
-                                                                ? "active"
-                                                                : ""
-                                                            }
-                                                          >
-                                                            10
-                                                          </a>
-                                                        </li>
-                                                        <li>
-                                                          <a
-                                                            className={
-                                                              item.size === "11"
-                                                                ? "active"
-                                                                : ""
-                                                            }
-                                                          >
-                                                            11
-                                                          </a>
-                                                        </li>
-                                                      </ul>
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                              <h3>{item.price}/-</h3>
-                                            </div>
-                                          }
-                                          placement="left"
-                                        >
-                                          <img
-                                            className="shoeimg"
-                                            src={item.imageURL}
-                                            alt="Product Image"
-                                          />
-                                        </Popover>
-                                        <Link
-                                          to={`//${item.url}`}
-                                          target="_blank"
-                                        >
-                                          <img
-                                            className="whatsappico"
-                                            src={Whatsapp}
-                                            alt="Whatsapp Icon"
-                                          />
-                                        </Link>
-                                      </div>
-                                      <h4>{item.subCategory}</h4>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        );
-                      })}
+                                                          <li>
+                                                            <a
+                                                              className={
+                                                                item.size ===
+                                                                "7"
+                                                                  ? "active"
+                                                                  : ""
+                                                              }
+                                                            >
+                                                              7
+                                                            </a>
+                                                          </li>
+                                                          <li>
+                                                            <a
+                                                              className={
+                                                                item.size ===
+                                                                "8"
+                                                                  ? "active"
+                                                                  : ""
+                                                              }
+                                                            >
+                                                              8
+                                                            </a>
+                                                          </li>
+                                                          <li>
+                                                            <a
+                                                              className={
+                                                                item.size ===
+                                                                "9"
+                                                                  ? "active"
+                                                                  : ""
+                                                              }
+                                                            >
+                                                              9
+                                                            </a>
+                                                          </li>
+                                                          <li>
+                                                            <a
+                                                              className={
+                                                                item.size ===
+                                                                "10"
+                                                                  ? "active"
+                                                                  : ""
+                                                              }
+                                                            >
+                                                              10
+                                                            </a>
+                                                          </li>
+                                                          <li>
+                                                            <a
+                                                              className={
+                                                                item.size ===
+                                                                "11"
+                                                                  ? "active"
+                                                                  : ""
+                                                              }
+                                                            >
+                                                              11
+                                                            </a>
+                                                          </li>
+                                                        </ul>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                                <h3>INR {item.price}/-</h3>
+                                              </div>
+                                            }
+                                            placement="left"
+                                          >
+                                            <img
+                                              className="shoeimg"
+                                              src={item.imageURL}
+                                              alt="Product Image"
+                                            />
+                                          </Popover>
+                                          <Link
+                                            to={`//${item.url}`}
+                                            target="_blank"
+                                          >
+                                            <img
+                                              className="whatsappico"
+                                              src={Whatsapp}
+                                              alt="Whatsapp Icon"
+                                            />
+                                          </Link>
+                                        </div>
+                                        <h4>{item.subCategory}</h4>
+                                      </td>
+                                    );
+                                  }
+                                )}
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </Tab>
                   <Tab label="Last Transaction">
                     <div>
@@ -1923,10 +2242,20 @@ class StoreCampaign extends Component {
           open={this.state.ResponsiveShareNow}
           onClose={this.handleShareNowCloseModal.bind(this)}
           center
-          modalId="sharecamp-popupmob"
-          overlayId="logout-ovrly-none"
+          modalId="sharesuccesfullpopup"
+          overlayId=""
         >
-          <h3>Shared Successfully!</h3>
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleShareNowCloseModal.bind(this)}
+          />
+          <div>
+            <img className="tick" src={Tick} alt="Tick Icon" />
+            <h3>Shared Successfully!</h3>
+            <p>Your Message has been shared successfully</p>
+          </div>
         </Modal>
         <Modal
           open={this.state.ResponsiveBroadCast}
