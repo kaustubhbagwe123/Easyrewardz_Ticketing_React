@@ -51,7 +51,10 @@ import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
 import { ItemMeta } from "semantic-ui-react";
 import moment from "moment";
+import io from "socket.io-client";
 
+// const socket = io.connect("http://localhost:4000");
+// var isSocketReady=1;
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -250,6 +253,13 @@ class Header extends Component {
       );
       this.handleGetNotigfication();
       this.handleGetChatNotificationCount();
+      this.handleGetOngoingChat("");
+      this.handleGetNewChat();
+
+      if (localStorage.getItem("isSocketReady")) {
+      } else {
+        localStorage.setItem("isSocketReady", 1);
+      }
     }
   }
 
@@ -577,32 +587,72 @@ class Header extends Component {
   ////handle chat modal close
   handleChatModalClose() {
     this.setState({ chatModal: false });
+    localStorage.setItem("isSocketReady", 1);
   }
   ////handle chat modal open
   handleChatModalOpen() {
     this.setState({ chatModal: true });
-    this.handleGetOngoingChat();
-    this.handleGetNewChat();
+
+    // this.handleGetNewChat();
   }
 
   ////handleGet Ongoing Chat
-  handleGetOngoingChat() {
+  handleGetOngoingChat(value) {
     let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetOngoingChat",
       headers: authHeader(),
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
-          self.setState({ ongoingChatsData });
-          // setInterval(() => {
-          // if (self.state.chatModal) {
-          //   self.handleGetOngoingChat();
-          // }
-          // }, 40000);
+          self.setState({
+            ongoingChatsData,
+          });
+
+          if (value == "") {
+            for (let i = 0; i < ongoingChatsData.length; i++) {
+              const socket = io.connect(config.socketUrl);
+
+              socket.on("connect", () => {
+                socket.send("hi");
+                socket.on(ongoingChatsData[i].mobileNo, function(data) {
+                  if (self.state.mobileNo === data[3]) {
+                    var messageData = self.state.messageData;
+                    messageData.push({
+                      message: data[0],
+                      byCustomer: data[1],
+                      chatTime: data[2],
+                      chatDate: "Today",
+                    });
+                    self.setState({ ...self.state.messageData, messageData });
+                  } else {
+                    self.state.ongoingChatsData.find(
+                      (x) => x.mobileNo == data[3]
+                    ).messageCount =
+                      self.state.ongoingChatsData.find(
+                        (x) => x.mobileNo == data[3]
+                      ).messageCount + 1;
+                    console.log(
+                      self.state.ongoingChatsData.find(
+                        (x) => x.mobileNo == data[3]
+                      ).messageCount,
+                      "--count"
+                    );
+                    self.setState({
+                      ongoingChatsData: self.state.ongoingChatsData,
+                      chatMessageCount: self.state.chatMessageCount + 1,
+                    });
+                  }
+                });
+              });
+            }
+            //   localStorage.setItem("isSocketReady", 2);
+          }
         } else {
           self.setState({ ongoingChatsData });
         }
@@ -654,7 +704,7 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.handleGetOngoingChat();
+          self.handleGetOngoingChat("isRead");
           self.handleGetChatMessagesList(id);
           self.setState({ customerName: name });
         } else {
@@ -680,7 +730,7 @@ class Header extends Component {
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           self.setState({ chatId: 0 });
-          self.handleGetOngoingChat();
+          self.handleGetOngoingChat("isRead");
           self.handleGetNewChat();
         } else {
         }
@@ -705,8 +755,10 @@ class Header extends Component {
         var messageData = response.data.responseData;
         if (message === "Success" && messageData) {
           self.setState({
+            ...messageData,
             messageData,
           });
+
           // setInterval(() => {
           // if (self.state.chatModal) {
           //  self.handleGetChatMessagesList(id);
@@ -722,9 +774,13 @@ class Header extends Component {
   }
   ////handle save chat messgae
   handleSaveChatMessages(messageStringData) {
+    debugger;
+    var nickname = "deepak";
+    var msf = "hello";
+
     let self = this;
     var messagecontent = "";
-    if (messageStringData) {
+    if (messageStringData !== "") {
       messagecontent = messageStringData
         .replace("col-md-4", "col-md-2")
         .replace("col-md-8", "col-md-10");
@@ -916,7 +972,7 @@ class Header extends Component {
               scheduleModal: false,
             });
             self.handleGetTimeSlot();
-            self.handleSaveChatMessages();
+            self.handleSaveChatMessages("");
           }
         })
         .catch((response) => {
@@ -1015,17 +1071,61 @@ class Header extends Component {
     // this.searchInput.focus();
   };
 
+  handleSetMessage = (messageData) => {
+    this.setState({ messageData });
+  };
+
   ////handle on going chat click
   handleOngoingChatClick = (id, name, count, mobileNo, customerId) => {
-    this.setState({ chatId: id, customerName: name, mobileNo, customerId });
+    debugger;
+    // const socket = io.connect("http://localhost:4000");
+    // var messageData = this.state.messageData;
 
-    if (this.state.chatId === id) {
-      this.handleGetChatMessagesList(id);
-    } else {
-      if (count === 0) {
+    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo });
+    let self = this;
+    // socket.on("connect", () => {
+    //   socket.send("hi");
+    //   socket.on(mobileNo, function(data) {
+    //     console.log(data);
+    //     console.log(mobileNo, "---mobileNo");
+    //     // document.getElementsByClassName("chat-info active").click();
+    //     if (self.state.mobileNo === data[3]) {
+    //       messageData.push({
+    //         message: data[0],
+    //         byCustomer: data[1],
+    //         chatTime: data[2],
+    //         chatDate: "Today",
+    //       });
+    //       self.setState({
+    //         messageData,
+    //       });
+    //     } else {
+    //       self.state.ongoingChatsData.find(
+    //         (x) => x.mobileNo == data[3]
+    //       ).messageCount =
+    //         self.state.ongoingChatsData.find((x) => x.mobileNo == data[3])
+    //           .messageCount + 1;
+    //       console.log(
+    //         self.state.ongoingChatsData.find((x) => x.mobileNo == data[3])
+    //           .messageCount,
+    //         "--count"
+    //       );
+    //       self.setState({ ongoingChatsData: self.state.ongoingChatsData });
+    //     }
+    //   });
+    // });
+    if (this.state.messageData.length == 0 || this.state.chatId != id) {
+      if (this.state.chatId === id) {
         this.handleGetChatMessagesList(id);
       } else {
-        this.handleMakeAsReadOnGoingChat(id, name);
+        if (count === 0) {
+          this.handleGetChatMessagesList(id);
+        } else {
+          this.setState({
+            chatMessageCount: this.state.chatMessageCount - count,
+          });
+          this.handleMakeAsReadOnGoingChat(id, name);
+        }
       }
     }
   };
@@ -1123,7 +1223,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.state.message);
     return (
       <React.Fragment>
         <div
@@ -1527,6 +1626,7 @@ class Header extends Component {
                       {this.state.ongoingChatsData &&
                         this.state.ongoingChatsData.map((chat, i) => (
                           <div
+                            id={chat.chatID}
                             key={i}
                             className={
                               this.state.chatId === chat.chatID
@@ -1553,7 +1653,12 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>
+                                <p
+                                  style={{
+                                    fontWeight:
+                                      chat.messageCount > 0 ? "bold" : "400",
+                                  }}
+                                >
                                   {chat.messageCount === 0
                                     ? "No"
                                     : chat.messageCount}{" "}
@@ -1600,7 +1705,12 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
-                                <p>
+                                <p
+                                  style={{
+                                    fontWeight:
+                                      chat.messageCount > 0 ? "bold" : "400",
+                                  }}
+                                >
                                   {chat.messageCount === 0
                                     ? "No"
                                     : chat.messageCount}{" "}
@@ -1629,6 +1739,7 @@ class Header extends Component {
                       />
                     </div>
                   </div> */}
+
                   <ul className="nav nav-tabs" role="tablist">
                     <li className="nav-item">
                       <a
@@ -1832,7 +1943,7 @@ class Header extends Component {
                                       />
                                     </div>
                                     <div className="chat-trail-chat-cntr">
-                                      <p className="chat-trail-chat">
+                                      <p className="chat-trail-chat pd-0">
                                         {ReactHtmlParser(item.message)}
                                       </p>
                                       <span className="chat-trail-time">
@@ -1858,75 +1969,83 @@ class Header extends Component {
                     ) : null}
                     <div
                       className="chatcontentdivtab chat-tabs-desktop"
-                      style={{ height: !this.state.isDownbtn ? "80%" : "" }}
+                      style={{
+                        height: !this.state.isDownbtn ? "80%" : "",
+                      }}
                     >
-                      <ul className="nav nav-tabs" role="tablist">
-                        <li className="nav-item">
-                          <a
-                            className="nav-link active"
-                            data-toggle="tab"
-                            href="#message-tab"
-                            role="tab"
-                            aria-controls="message-tab"
-                            aria-selected="true"
-                          >
-                            MESSAGE
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            data-toggle="tab"
-                            href="#card-tab"
-                            role="tab"
-                            aria-controls="card-tab"
-                            aria-selected="false"
-                          >
-                            CARD
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            data-toggle="tab"
-                            href="#recommended-list-tab"
-                            role="tab"
-                            aria-controls="recommended-list-tab"
-                            aria-selected="false"
-                          >
-                            RECOMMENDED LIST
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            data-toggle="tab"
-                            href="#schedule-visit-tab"
-                            role="tab"
-                            aria-controls="schedule-visit-tab"
-                            aria-selected="false"
-                            onClick={this.handleGetTimeSlot.bind(this)}
-                          >
-                            SCHEDULE VISIT
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            data-toggle="tab"
-                            href="#generate-payment-link-tab"
-                            role="tab"
-                            aria-controls="generate-payment-link-tab"
-                            aria-selected="false"
-                          >
-                            GENERATE PAYMENT LINK
-                          </a>
-                        </li>
-                      </ul>
+                      {this.state.customerName !== "" ? (
+                        <ul className="nav nav-tabs" role="tablist">
+                          <li className="nav-item">
+                            <a
+                              className="nav-link active"
+                              data-toggle="tab"
+                              href="#message-tab"
+                              role="tab"
+                              aria-controls="message-tab"
+                              aria-selected="true"
+                            >
+                              MESSAGE
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              data-toggle="tab"
+                              href="#card-tab"
+                              role="tab"
+                              aria-controls="card-tab"
+                              aria-selected="false"
+                            >
+                              CARD
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              data-toggle="tab"
+                              href="#recommended-list-tab"
+                              role="tab"
+                              aria-controls="recommended-list-tab"
+                              aria-selected="false"
+                            >
+                              RECOMMENDED LIST
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              data-toggle="tab"
+                              href="#schedule-visit-tab"
+                              role="tab"
+                              aria-controls="schedule-visit-tab"
+                              aria-selected="false"
+                              onClick={this.handleGetTimeSlot.bind(this)}
+                            >
+                              SCHEDULE VISIT
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              data-toggle="tab"
+                              href="#generate-payment-link-tab"
+                              role="tab"
+                              aria-controls="generate-payment-link-tab"
+                              aria-selected="false"
+                            >
+                              GENERATE PAYMENT LINK
+                            </a>
+                          </li>
+                        </ul>
+                      ) : null}
                       <div className="tab-content">
                         {/* --------Message Tab----- */}
                         <div
-                          className="tab-pane fade show active"
+                          className={
+                            this.state.customerName !== ""
+                              ? "tab-pane fade show active"
+                              : "tab-pane fade"
+                          }
                           id="message-tab"
                           role="tabpanel"
                           aria-labelledby="message-tab"
@@ -1997,7 +2116,10 @@ class Header extends Component {
                               )}
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleSaveChatMessages.bind(this)}
+                              onClick={this.handleSaveChatMessages.bind(
+                                this,
+                                ""
+                              )}
                               title={"Send"}
                             >
                               <img src={Assign} alt="send img" />
@@ -2057,12 +2179,12 @@ class Header extends Component {
                                     <div
                                       className="col-md-6"
                                       key={i}
-                                      id={"card" + item.itemID}
                                       onClick={this.handleSelectCard.bind(
                                         this,
                                         item.itemID
                                       )}
-                                    >{item.itemID ===
+                                    >
+                                      {item.itemID ===
                                       this.state.selectedCard ? (
                                         <div className="selectdot">
                                           <img
@@ -2071,9 +2193,11 @@ class Header extends Component {
                                           />
                                         </div>
                                       ) : null}
-                                      <div className="card">
+                                      <div
+                                        className="card"
+                                        id={"card" + item.itemID}
+                                      >
                                         <div className="card-body position-relative">
-                                          
                                           {/* <div className="container"> */}
                                           <div
                                             className="row"
@@ -2109,7 +2233,11 @@ class Header extends Component {
                                                 </label>
                                               </div>
                                               <div>
-                                                <a href={item.redirectionUrl} target="_blank" className="chat-product-url">
+                                                <a
+                                                  href={item.redirectionUrl}
+                                                  target="_blank"
+                                                  className="chat-product-url"
+                                                >
                                                   {item.redirectionUrl}
                                                 </a>
                                               </div>
@@ -2177,7 +2305,10 @@ class Header extends Component {
                         >
                           <div
                             className="row"
-                            style={{ marginLeft: "5px", marginTop: "10px" }}
+                            style={{
+                              marginLeft: "5px",
+                              marginTop: "10px",
+                            }}
                           >
                             <div className="col-md-8 schedule-left-cntr">
                               {this.state.timeSlotData !== null
@@ -2460,7 +2591,9 @@ class Header extends Component {
                     </div>
                     <div
                       className="chatcontentdivtab chat-tabs-mobile"
-                      style={{ height: !this.state.isDownbtn ? "80%" : "" }}
+                      style={{
+                        height: !this.state.isDownbtn ? "80%" : "",
+                      }}
                     >
                       <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
@@ -2571,7 +2704,10 @@ class Header extends Component {
 
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleSaveChatMessages.bind(this)}
+                              onClick={this.handleSaveChatMessages.bind(
+                                this,
+                                ""
+                              )}
                               title={"Send"}
                             >
                               <img src={Assign} alt="send img" />
@@ -2598,6 +2734,10 @@ class Header extends Component {
                                 name="Search"
                                 maxLength="100"
                                 autoComplete="off"
+                                onChange={this.handleSearchItemChange.bind(
+                                  this
+                                )}
+                                onKeyPress={this.enterPressed.bind(this)}
                               />
                               <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
                                 <img
@@ -2695,7 +2835,9 @@ class Header extends Component {
                           center
                           modalId="mobile-tabs-popup"
                           overlayId="mobile-tabs-overlay"
-                          classNames={{ modal: "recommended-list-popup" }}
+                          classNames={{
+                            modal: "recommended-list-popup",
+                          }}
                         >
                           <div className="recommended-cntr m-0 h-100">
                             <div className="chat-btn-cntr">
@@ -2726,7 +2868,9 @@ class Header extends Component {
                           center
                           modalId="mobile-tabs-popup"
                           overlayId="mobile-tabs-overlay"
-                          classNames={{ modal: "schedule-visit-popup" }}
+                          classNames={{
+                            modal: "schedule-visit-popup",
+                          }}
                         >
                           <div className="schedule-mobile-cntr">
                             <div>
@@ -2947,7 +3091,9 @@ class Header extends Component {
                           center
                           modalId="mobile-tabs-popup"
                           overlayId="mobile-tabs-overlay"
-                          classNames={{ modal: "recommended-list-popup" }}
+                          classNames={{
+                            modal: "recommended-list-popup",
+                          }}
                         >
                           <div className="schedule-mobile-cntr p-0">
                             <div>

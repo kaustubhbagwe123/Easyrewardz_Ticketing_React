@@ -800,6 +800,9 @@ p {
 .schedule-btn-cntr *:focus {
   outline: none;
 }
+.pd-0 .card-body{
+  padding: 0;
+}
 
 /* Responsive starts */
 @media all and (max-width: 576px) {
