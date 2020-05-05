@@ -1501,9 +1501,7 @@ class StoreCampaign extends Component {
                                   dateFormat="MM/dd/yyyy h:mm aa"
                                   value={
                                     item.callRescheduledTo !== ""
-                                      ? moment(item.callRescheduledTo).format(
-                                          "DD-MM-YYYY hh:mm:ss"
-                                        )
+                                      ? moment(item.callRescheduledTo)
                                       : ""
                                   }
                                   onChange={this.onDateChange.bind(
