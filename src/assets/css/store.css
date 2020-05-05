@@ -1508,9 +1508,10 @@ table tr th:last-child {
   border-radius: 10px;
   margin: 20px 0 0 0;
   padding: 18px 15px;
+  height: calc(100% - 18px);
 }
 .productbox .tab-content {
-  padding: 24px 0 0;
+  padding: 24px 15px 0;
 }
 .productbox .prodscro {
   max-height: 210px;
@@ -2199,6 +2200,7 @@ table tr th:last-child {
   }
   .productbox {
     padding: 18px 20px;
+    height: auto;
   }
   .keyinsights {
     padding: 18px 20px;
@@ -2410,32 +2412,58 @@ table tr th:last-child {
   }
   .productbox .nav-tabs {
     padding: 0;
-}
-.productbox .prodscro {
-  padding: 0;
-  max-height: 200px;
-}
-#sharesuccesfullpopup .tick {
-  height: 40px;
-  margin: auto;
-  display: block;
-  margin-bottom: 15px;
-}
-#sharesuccesfullpopup {
-  border-radius: 20px;
-  width: 100%;
-}
-#sharesuccesfullpopup h3 {
-  font-size: 16px;
-  text-align: center;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-#sharesuccesfullpopup p {
-  font-size: 11px;
-  text-align: center;
-  margin-bottom: 15px;
-}
+  }
+  .productbox .prodscro {
+    padding: 0;
+    max-height: 200px;
+  }
+  #sharesuccesfullpopup .tick {
+    height: 40px;
+    margin: auto;
+    display: block;
+    margin-bottom: 15px;
+  }
+  #sharesuccesfullpopup {
+    border-radius: 20px;
+    width: 100%;
+  }
+  #sharesuccesfullpopup h3 {
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  #sharesuccesfullpopup p {
+    font-size: 11px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .custom-tableak .react-pagination-js-bootstrap .page,
+  .custom-tableak .react-pagination-js-bootstrap .pageElli,
+  .custom-tableak .react-pagination-js-bootstrap .is-active {
+    padding: 0 7px;
+    font-size: 11px;
+  }
+  .custom-tableak .react-pagination-js-bootstrap ul {
+    margin: initial;
+    margin-left: auto;
+    margin-right: 4px;
+  }
+  .Camp-pagination p {
+    display: none;
+  }
+  .Camp-pagination select {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .Camp-pagination {
+    left: 12px;
+  }
+  .productbox .tab-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
 /* ------------------Campain Css End ------------------------- */
 
@@ -2658,3 +2686,27 @@ table tr th:last-child {
   }
 }
 /* ------------------Appointment Css End ------------------------- */
+
+/* Datepicker responsive starts */
+
+@media screen and (max-width: 600px) {
+  .date-time-resp .react-datepicker__day-name,
+  .date-time-resp .react-datepicker__day,
+  .date-time-resp .react-datepicker__time-name {
+    width: 1.5rem !important;
+    line-height: 1.5rem !important;
+  }
+  .date-time-resp .react-datepicker__current-month,
+  .date-time-resp .react-datepicker-time__header,
+  .date-time-resp .react-datepicker-year-header {
+    font-size: 14px !important;
+  }
+  .date-time-resp .react-datepicker-popper {
+    margin-left: -119px;
+  }
+  .date-time-resp .react-datepicker__triangle {
+    margin-left: 90px !important;
+  }
+}
+
+/* Datepicker responsive ends */

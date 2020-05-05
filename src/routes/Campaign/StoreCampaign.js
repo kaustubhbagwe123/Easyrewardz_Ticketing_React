@@ -13,6 +13,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio, Input, Button } from "antd";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
@@ -65,6 +66,7 @@ class StoreCampaign extends Component {
       campaignkeyinsight: {},
       campaignrecommended: [],
       lasttransactiondetails: {},
+      lastTransactionItem: [],
       ResponsiveShareNow: false,
       campaignID: 0,
       ResponsiveChooseChannel: 0,
@@ -82,7 +84,6 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
-    //debugger;
     this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
@@ -809,11 +810,15 @@ class StoreCampaign extends Component {
       .then(function(response) {
         var message = response.data.message;
         if (this.state.Respo_ChannelBot === true) {
-          self.setState({
-            ResponsiveShareNow: true,
-          });
+          if (message === "Success") {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          } else {
+            NotificationManager.error("Server temporarily not available.");
+          }
         } else {
-          if (message == "Success") {
+          if (message === "Success") {
             NotificationManager.success("Success.");
           } else {
             NotificationManager.error("Failed");
@@ -827,7 +832,7 @@ class StoreCampaign extends Component {
 
   ///handle Send Via SMS
   handleSendViaSMS(data) {
-    let self=this;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareSMS",
@@ -843,18 +848,21 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if(this.state.Respo_ChannelSMS === true){
-          self.setState({
-            ResponsiveShareNow: true,
-          })
-        }else{
-          if (message == "Success") {
+        if (this.state.Respo_ChannelSMS === true) {
+          if (message === "Success") {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          } else {
+            NotificationManager.error("Server temporarily not available.");
+          }
+        } else {
+          if (message === "Success") {
             NotificationManager.success("SMS Send Successfully.");
           } else {
             NotificationManager.error("SMS Send Failed.");
           }
         }
-       
       })
       .catch((response) => {
         console.log(response);
@@ -880,7 +888,7 @@ class StoreCampaign extends Component {
       .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
-        if (message == "Success") {
+        if (message === "Success") {
           window.open("//" + data, "_blank");
           self.setState({
             ResponsiveShareNow: true,
@@ -896,6 +904,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -907,7 +916,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -925,7 +934,18 @@ class StoreCampaign extends Component {
             useratvdetails: data.useratvdetails,
             campaignrecommended: data.campaignrecommended,
             lasttransactiondetails: data.lasttransactiondetails,
+            lastTransactionItem: data.lasttransactiondetails.itemDetails,
             sortCustName: sortName,
+          });
+        } else {
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: {},
+            campaignkeyinsight: {},
+            useratvdetails: {},
+            campaignrecommended: [],
+            lasttransactiondetails: {},
+            lastTransactionItem: [],
           });
         }
       })
@@ -934,25 +954,25 @@ class StoreCampaign extends Component {
       });
   }
 
-  checkIndividualStatus = async(campaignScriptID, customerCount, event) => {
-    debugger; 
+  checkIndividualStatus(campaignScriptID, customerCount, event) {
+    debugger;
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
     for (var i in checkboxes) {
       if (isNaN(i) === false) {
         if (checkboxes[i].checked === true) {
           if (checkboxes[i].getAttribute("attrIds") !== null)
-          strStatusIds += checkboxes[i].getAttribute("attrIds") + ",";
+            strStatusIds += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     }
-    await this.setState({
-      filterDropdownVisible: false,
+    this.setState({
+      filterDropdownVisible: false
     });
-    await this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
   }
 
-  checkAllStatus = async (campaignScriptID, customerCount, event) => {
+  checkAllStatus(campaignScriptID, customerCount, event) {
     this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strStatusIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -962,7 +982,7 @@ class StoreCampaign extends Component {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
-          strStatusIds = "All";
+            strStatusIds = "All";
         }
       }
     } else {
@@ -973,7 +993,7 @@ class StoreCampaign extends Component {
       }
       strStatusIds = "";
     }
-    await this.setState({
+    this.setState({
       filterDropdownVisible: false,
     });
     
@@ -995,7 +1015,7 @@ class StoreCampaign extends Component {
         campaignScriptID: campaignScriptID,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
-        FilterStatus: statusId
+        FilterStatus: statusId,
       },
     })
       .then(function(response) {
@@ -1018,7 +1038,6 @@ class StoreCampaign extends Component {
       });
   }
 
-
   handleSelectChannelsOnchange(check) {
     //debugger;
     if (check === "Messanger") {
@@ -1028,7 +1047,6 @@ class StoreCampaign extends Component {
         Respo_ChannelSMS: false,
         Respo_ChannelEmail: false,
       });
-      // this.handleSendViaMessanger.bind(this, this.state.customerModalDetails);
     } else if (check === "Bot") {
       this.setState({
         Respo_ChannelMessanger: false,
@@ -1036,7 +1054,6 @@ class StoreCampaign extends Component {
         Respo_ChannelSMS: false,
         Respo_ChannelEmail: false,
       });
-      // this.handleSendViaBotData.bind(this, this.state.customerModalDetails);
     } else if (check === "SMS") {
       this.setState({
         Respo_ChannelMessanger: false,
@@ -1044,7 +1061,6 @@ class StoreCampaign extends Component {
         Respo_ChannelSMS: true,
         Respo_ChannelEmail: false,
       });
-      // this.handleSendViaSMS.bind(this, this.state.customerModalDetails);
     } else if (check === "Email") {
       this.setState({
         Respo_ChannelMessanger: false,
@@ -1320,7 +1336,7 @@ class StoreCampaign extends Component {
                               style={{ width: 188, marginBottom: 8, display: 'block' }}
                             /> */}
                             {/* <Space> */}
-                              {/* <Button
+                            {/* <Button
                                 type="primary"
                                 onClick={() => this.handleSearch(selectedKeys, confirm)}
                                 size="small"
@@ -1333,90 +1349,116 @@ class StoreCampaign extends Component {
                               </Button> */}
                             {/* </Space> */}
                             <ul>
-                            <li>
-                              <label htmlFor="all-status">
-                                <input
-                                  type="checkbox"
-                                  id="all-status"
-                                  className="ch1"
-                                  onChange={this.checkAllStatus.bind(this, row.campaignID, row.customerCount)}
-                                  checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                />
-                                <span className="ch1-text">All</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label htmlFor="status100">
-                                <input
-                                  type="checkbox"
-                                  id="status100"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
-                                  // checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                  attrIds={100}
-                                />
-                                <span className="ch1-text">Contacted</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label htmlFor="status101">
-                                <input
-                                  type="checkbox"
-                                  id="status101"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
-                                  // checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                  attrIds={101}
-                                />
-                                <span className="ch1-text">Not Contacted</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label htmlFor="status102">
-                                <input
-                                  type="checkbox"
-                                  id="status102"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
-                                  // checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                  attrIds={102}
-                                />
-                                <span className="ch1-text">Follow Up</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label htmlFor="status103">
-                                <input
-                                  type="checkbox"
-                                  id="status103"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
-                                  // checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                  attrIds={103}
-                                />
-                                <span className="ch1-text">Converted</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label htmlFor="status104">
-                                <input
-                                  type="checkbox"
-                                  id="status104"
-                                  className="ch1"
-                                  onChange={this.checkIndividualStatus.bind(this, row.campaignID, row.customerCount)}
-                                  // checked={this.state.CheckBoxAllBrand}
-                                  name="allStatus"
-                                  attrIds={104}
-                                />
-                                <span className="ch1-text">Conversation</span>
-                              </label>
-                            </li>
-                            {/* {this.state.BrandData !== null &&
+                              <li>
+                                <label htmlFor="all-status">
+                                  <input
+                                    type="checkbox"
+                                    id="all-status"
+                                    className="ch1"
+                                    onChange={this.checkAllStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                  />
+                                  <span className="ch1-text">All</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status100">
+                                  <input
+                                    type="checkbox"
+                                    id="status100"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={100}
+                                  />
+                                  <span className="ch1-text">Contacted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status101">
+                                  <input
+                                    type="checkbox"
+                                    id="status101"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={101}
+                                  />
+                                  <span className="ch1-text">
+                                    Not Contacted
+                                  </span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status102">
+                                  <input
+                                    type="checkbox"
+                                    id="status102"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={102}
+                                  />
+                                  <span className="ch1-text">Follow Up</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status103">
+                                  <input
+                                    type="checkbox"
+                                    id="status103"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={103}
+                                  />
+                                  <span className="ch1-text">Converted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <label htmlFor="status104">
+                                  <input
+                                    type="checkbox"
+                                    id="status104"
+                                    className="ch1"
+                                    onChange={this.checkIndividualStatus.bind(
+                                      this,
+                                      row.campaignID,
+                                      row.customerCount
+                                    )}
+                                    // checked={this.state.CheckBoxAllBrand}
+                                    name="allStatus"
+                                    attrIds={104}
+                                  />
+                                  <span className="ch1-text">Conversation</span>
+                                </label>
+                              </li>
+                              {/* {this.state.BrandData !== null &&
                               this.state.BrandData.map((item, i) => (
                                 <li key={i}>
                                   <label htmlFor={"i" + item.brandID}>
@@ -1432,8 +1474,7 @@ class StoreCampaign extends Component {
                                   </label>
                                 </li>
                               ))} */}
-                          </ul>
-
+                            </ul>
                           </div>
                         ),
                         filterDropdownVisible:  this.state.filterDropdownVisible,
@@ -1489,34 +1530,39 @@ class StoreCampaign extends Component {
                                 item.responseID === 3 ? "" : "disabled-input"
                               }
                             >
-                              <DatePicker
-                                id="startDate"
-                                autoComplete="off"
-                                showTimeSelect
-                                name="startDate"
-                                showMonthDropdown
-                                showYearDropdown
-                                selected={
-                                  item.callRescheduledTo !== ""
-                                    ? new Date(item.callRescheduledTo)
-                                    : new Date()
-                                }
-                                dateFormat="MM/dd/yyyy h:mm aa"
-                                value={
-                                  item.callRescheduledTo !== ""
-                                    ? moment(item.callRescheduledTo).format(
-                                        "DD-MM-YYYY hh:mm:ss"
-                                      )
-                                    : ""
-                                }
-                                onChange={this.onDateChange.bind(this, item.id)}
-                                className={
-                                  item.responseID === 3
-                                    ? "txtStore dateTimeStore"
-                                    : "txtStore dateTimeStore disabled-link"
-                                }
-                                placeholderText="Select Date &amp; Time"
-                              />
+                              <div className="date-time-resp">
+                                <DatePicker
+                                  id="startDate"
+                                  autoComplete="off"
+                                  showTimeSelect
+                                  name="startDate"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  selected={
+                                    item.callRescheduledTo !== ""
+                                      ? new Date(item.callRescheduledTo)
+                                      : new Date()
+                                  }
+                                  dateFormat="MM/dd/yyyy h:mm aa"
+                                  value={
+                                    item.callRescheduledTo !== ""
+                                      ? moment(item.callRescheduledTo).format(
+                                          "DD-MM-YYYY hh:mm:ss"
+                                        )
+                                      : ""
+                                  }
+                                  onChange={this.onDateChange.bind(
+                                    this,
+                                    item.id
+                                  )}
+                                  className={
+                                    item.responseID === 3
+                                      ? "txtStore dateTimeStore"
+                                      : "txtStore dateTimeStore disabled-link"
+                                  }
+                                  placeholderText="Select Date &amp; Time"
+                                />
+                              </div>
                             </div>
                           );
                         },
@@ -1649,35 +1695,37 @@ class StoreCampaign extends Component {
                                         : "disabled-input"
                                     }
                                   >
-                                    <DatePicker
-                                      id="startDate"
-                                      autoComplete="off"
-                                      showTimeSelect
-                                      name="startDate"
-                                      showMonthDropdown
-                                      showYearDropdown
-                                      selected={
-                                        row.callRescheduledTo !== ""
-                                          ? new Date(row.callRescheduledTo)
-                                          : new Date()
-                                      }
-                                      dateFormat="MM/dd/yyyy h:mm aa"
-                                      value={
-                                        row.callRescheduledTo !== ""
-                                          ? moment(row.callRescheduledTo)
-                                          : ""
-                                      }
-                                      onChange={this.onDateChange.bind(
-                                        this,
-                                        row.id
-                                      )}
-                                      className={
-                                        row.responseID === 3
-                                          ? "txtStore dateTimeStore"
-                                          : "txtStore dateTimeStore disabled-link"
-                                      }
-                                      placeholderText="Select Date &amp; Time"
-                                    />
+                                    <div className="date-time-resp">
+                                      <DatePicker
+                                        id="startDate"
+                                        autoComplete="off"
+                                        showTimeSelect
+                                        name="startDate"
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        selected={
+                                          row.callRescheduledTo !== ""
+                                            ? new Date(row.callRescheduledTo)
+                                            : new Date()
+                                        }
+                                        dateFormat="MM/dd/yyyy h:mm aa"
+                                        value={
+                                          row.callRescheduledTo !== ""
+                                            ? moment(row.callRescheduledTo)
+                                            : ""
+                                        }
+                                        onChange={this.onDateChange.bind(
+                                          this,
+                                          row.id
+                                        )}
+                                        className={
+                                          row.responseID === 3
+                                            ? "txtStore dateTimeStore"
+                                            : "txtStore dateTimeStore disabled-link"
+                                        }
+                                        placeholderText="Select Date &amp; Time"
+                                      />
+                                    </div>
                                   </div>
                                 </td>
                                 <td></td>
@@ -1922,157 +1970,161 @@ class StoreCampaign extends Component {
                                     var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
                                     return (
                                       <td key={j}>
-                                        <div className="imgbox">
-                                          <Popover
-                                            overlayClassName="antcustom ant-prodesc"
-                                            content={
-                                              <div className="productdesc">
-                                                <h4>{FullProductName}</h4>
-                                                <p>
-                                                  Product Code - {item.itemCode}
-                                                </p>
-                                                <table>
-                                                  <tbody>
-                                                    <tr>
-                                                      <td>
-                                                        <label>Colors:</label>
-                                                      </td>
-                                                      <td>
-                                                        <ul>
-                                                          {item.color ===
-                                                          "Blue" ? (
-                                                            <li>
-                                                              <a className="colorblue">
-                                                                <span>1</span>
-                                                              </a>
-                                                            </li>
-                                                          ) : null}
+                                        {item.imageURL !== "" ? (
+                                          <div className="imgbox">
+                                            <Popover
+                                              overlayClassName="antcustom ant-prodesc"
+                                              content={
+                                                <div className="productdesc">
+                                                  <h4>{FullProductName}</h4>
+                                                  <p>
+                                                    Product Code -{" "}
+                                                    {item.itemCode}
+                                                  </p>
+                                                  <table>
+                                                    <tbody>
+                                                      <tr>
+                                                        <td>
+                                                          <label>Colors:</label>
+                                                        </td>
+                                                        <td>
+                                                          <ul>
+                                                            {item.color ===
+                                                            "Blue" ? (
+                                                              <li>
+                                                                <a className="colorblue">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
 
-                                                          {item.color ===
-                                                          "Black" ? (
-                                                            <li>
-                                                              <a className="colorblack">
-                                                                <span>1</span>
-                                                              </a>
-                                                            </li>
-                                                          ) : null}
+                                                            {item.color ===
+                                                            "Black" ? (
+                                                              <li>
+                                                                <a className="colorblack">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
 
-                                                          {item.color ===
-                                                          "Grey" ? (
+                                                            {item.color ===
+                                                            "Grey" ? (
+                                                              <li>
+                                                                <a className="colorgrey">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+                                                          </ul>
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          <label>Sizes:</label>
+                                                        </td>
+                                                        <td>
+                                                          <ul className="sizes">
                                                             <li>
-                                                              <a className="colorgrey">
-                                                                <span>1</span>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "6"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                6
                                                               </a>
                                                             </li>
-                                                          ) : null}
-                                                        </ul>
-                                                      </td>
-                                                    </tr>
-                                                    <tr>
-                                                      <td>
-                                                        <label>Sizes:</label>
-                                                      </td>
-                                                      <td>
-                                                        <ul className="sizes">
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "6"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              6
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "7"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              7
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "8"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              8
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "9"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              9
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "10"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              10
-                                                            </a>
-                                                          </li>
-                                                          <li>
-                                                            <a
-                                                              className={
-                                                                item.size ===
-                                                                "11"
-                                                                  ? "active"
-                                                                  : ""
-                                                              }
-                                                            >
-                                                              11
-                                                            </a>
-                                                          </li>
-                                                        </ul>
-                                                      </td>
-                                                    </tr>
-                                                  </tbody>
-                                                </table>
-                                                <h3>INR {item.price}/-</h3>
-                                              </div>
-                                            }
-                                            placement="left"
-                                          >
-                                            <img
-                                              className="shoeimg"
-                                              src={item.imageURL}
-                                              alt="Product Image"
-                                            />
-                                          </Popover>
-                                          <Link
-                                            to={`//${item.url}`}
-                                            target="_blank"
-                                          >
-                                            <img
-                                              className="whatsappico"
-                                              src={Whatsapp}
-                                              alt="Whatsapp Icon"
-                                            />
-                                          </Link>
-                                        </div>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "7"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                7
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "8"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                8
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "9"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                9
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "10"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                10
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "11"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                11
+                                                              </a>
+                                                            </li>
+                                                          </ul>
+                                                        </td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                  <h3>INR {item.price}/-</h3>
+                                                </div>
+                                              }
+                                              placement="left"
+                                            >
+                                              <img
+                                                className="shoeimg"
+                                                src={item.imageURL}
+                                                alt="Product Image"
+                                              />
+                                            </Popover>
+                                            <Link
+                                              to={`//${item.url}`}
+                                              target="_blank"
+                                            >
+                                              <img
+                                                className="whatsappico"
+                                                src={Whatsapp}
+                                                alt="Whatsapp Icon"
+                                              />
+                                            </Link>
+                                          </div>
+                                        ) : null}
+
                                         <h4>{item.subCategory}</h4>
                                       </td>
                                     );
@@ -2130,16 +2182,18 @@ class StoreCampaign extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>Beige Sports Shoes</td>
-                                  <td>x1</td>
-                                  <td>₹1,499</td>
-                                </tr>
-                                <tr>
-                                  <td>Black Sandals</td>
-                                  <td>x2</td>
-                                  <td>₹4,998</td>
-                                </tr>
+                                {this.state.lastTransactionItem !== null &&
+                                  this.state.lastTransactionItem.map(
+                                    (item, l) => {
+                                      return (
+                                        <tr key={l}>
+                                          <td>{item.article}</td>
+                                          <td>{item.quantity}</td>
+                                          <td>₹{item.amount}</td>
+                                        </tr>
+                                      );
+                                    }
+                                  )}
                               </tbody>
                             </table>
                           </div>
@@ -2224,8 +2278,8 @@ class StoreCampaign extends Component {
           />
           <div>
             <img className="tick" src={Tick} alt="Tick Icon" />
-          <h3>Shared Successfully!</h3>
-          <p>Your Message has been shared successfully</p>
+            <h3>Shared Successfully!</h3>
+            <p>Your Message has been shared successfully</p>
           </div>
         </Modal>
         <Modal
