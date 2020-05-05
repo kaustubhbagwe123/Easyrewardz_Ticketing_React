@@ -1018,18 +1018,20 @@ class Header extends Component {
   }
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
-    var message = evt.editor.getData();
-    var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
-    messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
+    debugger;
+    var message = evt.target.value;
+    // var message = evt.editor.getData();
+    // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
+    // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     this.setState({
-      message,
-      messageSuggestion,
+      message
+      // messageSuggestion,
     });
   };
 
   handleMessageSuggestion = (evt) => {
     setTimeout(() => {
-      if (this.state.messageSuggestion.length > 2) {
+      if (this.state.message.length > 0) {
         this.handleGetMessageSuggestionList();
       } else {
         this.setState({
@@ -1047,7 +1049,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/getChatSuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: this.state.messageSuggestion,
+        TikcketTitle: this.state.message,
       },
     })
       .then(function(res) {
@@ -1095,7 +1097,8 @@ class Header extends Component {
     // const socket = io.connect("http://localhost:4000");
     // var messageData = this.state.messageData;
 
-    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo });
+    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo, 
+      message: "", messageSuggestionData: [], chkSuggestion: [] });
     let self = this;
     // socket.on("connect", () => {
     //   socket.send("hi");
@@ -1234,6 +1237,32 @@ class Header extends Component {
 
       this.handleSaveChatMessages(messageStringData);
     }
+  }
+
+  handleSendRecommendedList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
+      headers: authHeader(),
+      params: {
+        CustomerID : this.state.customerId,
+        MobileNumber : this.state.mobileNo
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
+                                      self.state.mobileNo,self.state.customerId);
+        } else {
+          self.setState({ messageSuggestionData: [], chkSuggestion: [] });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   }
 
   render() {
@@ -2065,7 +2094,12 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <CKEditor
+                            <span className="message-initial">{this.state.customerName.charAt(0).toUpperCase()}</span>
+                            <textarea placeholder="Search to get suggestions..."
+                            value={this.state.message}
+                            onChange={this.handleOnChangeCKEditor.bind(this)}
+                            ></textarea>
+                            {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
@@ -2096,7 +2130,7 @@ class Header extends Component {
                                   },
                                 ],
                               }}
-                            />
+                            /> */}
                             {this.state.isMessage !== "" && (
                               <p
                                 style={{
@@ -2160,9 +2194,8 @@ class Header extends Component {
                               )} */}
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleSaveChatMessages.bind(
-                                this,
-                                ""
+                              onClick={this.handleMessageSuggestion.bind(
+                                this
                               )}
                               title={"Send"}
                             >
@@ -2331,7 +2364,9 @@ class Header extends Component {
                           aria-labelledby="recommended-list-tab"
                         >
                           <div className="recommended-cntr">
-                            <button className="butn">
+                            <button className="butn"
+                            onClick={this.handleSendRecommendedList.bind(this)}
+                            >
                               Send Recommended List
                               <img
                                 src={SendUp}
@@ -2715,7 +2750,12 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <CKEditor
+                            <span className="message-initial">{this.state.customerName.charAt(0).toUpperCase()}</span>
+                            <textarea placeholder="Search to get suggestions..."
+                              value={this.state.message}
+                              onChange={this.handleOnChangeCKEditor.bind(this)}
+                            ></textarea>
+                            {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
@@ -2746,7 +2786,7 @@ class Header extends Component {
                                   },
                                 ],
                               }}
-                            />
+                            /> */}
                             {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
@@ -2781,9 +2821,8 @@ class Header extends Component {
 
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleSaveChatMessages.bind(
-                                this,
-                                ""
+                              onClick={this.handleMessageSuggestion.bind(
+                                this
                               )}
                               title={"Send"}
                             >
@@ -2921,7 +2960,7 @@ class Header extends Component {
                             <div className="chat-btn-cntr">
                               <button
                                 className="butn"
-                                onClick={this.onCloseRecommendedModal}
+                                onClick={this.handleSendRecommendedList.bind(this)}
                               >
                                 Send Recommended List
                                 <img

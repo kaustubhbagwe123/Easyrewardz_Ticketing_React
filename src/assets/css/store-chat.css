@@ -605,6 +605,33 @@ p {
 .chatcontentdivtab .cke_contents {
   height: 100px !important;
 }
+.message-div textarea {
+  height: 100px;
+  resize: none;
+  width: 100%;
+  border: 1px solid #d8dfe2;
+  border-radius: 5px;
+  padding: 16px 55px 16px 50px;
+  color: #4a4a4a;
+}
+.message-div textarea::placeholder {
+  padding: 0;
+  font-weight: 400;
+}
+.message-initial {
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  background-color: #ddf6fc;
+  border-radius: 5px;
+  width: 28px;
+  height: 28px;
+  color: #11b4db;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: center;
+}
 
 .searchtxt {
   background-color: #fff !important;
@@ -858,7 +885,7 @@ p {
 .schedule-btn-cntr *:focus {
   outline: none;
 }
-.pd-0 .card-body{
+.pd-0 .card-body {
   padding: 0;
 }
 
@@ -924,7 +951,27 @@ p {
     padding: 0;
   }
   .message-div {
-    margin: 0;
+    /* margin: 0; */
+    margin: 14px;
+  }
+  .message-initial {
+    width: 23px;
+    height: 23px;
+    line-height: 23px;
+    font-size: 11px;
+    border-radius: 3px;
+    top: 9px;
+    left: 9px;
+  }
+  .message-div textarea {
+    border-color: transparent;
+    border-radius: 4px;
+    font-size: 12px;
+    height: 80px;
+    padding: 11px 55px 11px 40px;
+  }
+  .message-div textarea::placeholder {
+    font-size: 12px;
   }
   .chatcontentdivtab .cke_contents {
     height: 80px !important;
@@ -952,7 +999,8 @@ p {
     margin-right: 5px;
     margin-left: 15px;
     /* height: calc(100vh - 314px); */
-    height: calc(100vh - 404px);
+    /* height: calc(100vh - 404px); */
+    height: calc(100vh - 395px);
   }
   /* right side part ends */
 
@@ -1131,7 +1179,8 @@ p {
   }
   .chatcontentDiv {
     /* height: calc(100vh - 299px); */
-    height: calc(100vh - 389px);
+    /* height: calc(100vh - 389px); */
+    height: calc(100vh - 380px);
   }
   .chat-detail-outer-cntr {
     min-height: 66px;
