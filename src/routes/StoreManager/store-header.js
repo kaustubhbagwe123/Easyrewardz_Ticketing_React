@@ -266,7 +266,6 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -385,7 +384,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -610,7 +608,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
@@ -641,12 +638,6 @@ class Header extends Component {
                       self.state.ongoingChatsData.find(
                         (x) => x.mobileNo == data[3]
                       ).messageCount + 1;
-                    console.log(
-                      self.state.ongoingChatsData.find(
-                        (x) => x.mobileNo == data[3]
-                      ).messageCount,
-                      "--count"
-                    );
                     self.setState({
                       ongoingChatsData: self.state.ongoingChatsData,
                       chatMessageCount: self.state.chatMessageCount + 1,
@@ -665,7 +656,6 @@ class Header extends Component {
         console.log(response, "---handleGetOngoingChat");
       });
   }
-
   ////handle Get New Chat
   handleGetNewChat() {
     let self = this;
@@ -779,13 +769,15 @@ class Header extends Component {
   ////handle save chat messgae
   handleSaveChatMessages(messageStringData, index) {
     let self = this;
+    debugger;
+
     var messagecontent = "";
     if (messageStringData) {
       messagecontent = messageStringData
         .replace("col-md-4", "col-md-2")
         .replace("col-md-8", "col-md-10");
     } else {
-      messagecontent = messageStringData;
+      messagecontent = this.state.message;
     }
     if (this.state.chkSuggestion.length > 0) {
       if (this.state.chkSuggestion[index] === 1) {
@@ -796,7 +788,9 @@ class Header extends Component {
     } else {
       this.state.chkSuggestion[index] = 1;
     }
-    this.setState({ chkSuggestion: this.state.chkSuggestion });
+    this.setState({
+      chkSuggestion: this.state.chkSuggestion,
+    });
 
     if (messagecontent !== "" && this.state.chatId > 0) {
       var inputParam = {};
@@ -806,7 +800,9 @@ class Header extends Component {
       inputParam.byCustomer = false;
       inputParam.chatStatus = 0;
       inputParam.storeManagerId = 0;
-      this.setState({ message: "" });
+      this.setState({
+        message: "",
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
@@ -818,7 +814,10 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
-            self.setState({ message: "", messageSuggestionData: [] });
+            self.setState({
+              message: "",
+              messageSuggestionData: [],
+            });
           } else {
           }
         })
@@ -982,6 +981,7 @@ class Header extends Component {
               scheduleModal: false,
             });
             self.handleGetTimeSlot();
+            debugger;
             self.handleSaveChatMessages("");
           }
         })
@@ -992,7 +992,6 @@ class Header extends Component {
   }
   ////handlecselect card in card tab
   handleSelectCard(id) {
-    debugger;
     // if (
     //   this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
     //   true
@@ -1024,7 +1023,7 @@ class Header extends Component {
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
     // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     this.setState({
-      message
+      message,
       // messageSuggestion,
     });
   };
@@ -1093,7 +1092,6 @@ class Header extends Component {
 
   ////handle on going chat click
   handleOngoingChatClick = (id, name, count, mobileNo, customerId) => {
-    debugger;
     // const socket = io.connect("http://localhost:4000");
     // var messageData = this.state.messageData;
 
@@ -1229,7 +1227,6 @@ class Header extends Component {
   ////handle card send button
   handleSendCard() {
     if (this.state.selectedCard > 0) {
-      debugger;
       var messageStringData = document.getElementById(
         "card" + this.state.selectedCard
       ).innerHTML;
@@ -1239,6 +1236,26 @@ class Header extends Component {
     }
   }
 
+  handleTabClick = (tabIndex) => {
+    if (tabIndex == 1) {
+      this.setState({ isDownbtn: true });
+    }
+
+    if (tabIndex == 2) {
+      this.setState({ isDownbtn: true });
+    }
+    if (tabIndex == 3) {
+      this.setState({ isDownbtn: true });
+    }
+
+    if (tabIndex == 4) {
+      this.setState({ isDownbtn: true });
+      this.handleGetTimeSlot();
+    }
+    if (tabIndex == 5) {
+      this.setState({ isDownbtn: true });
+    }
+  };
   handleSendRecommendedList() {
     let self = this;
     axios({
@@ -1874,16 +1891,20 @@ class Header extends Component {
                                         src={ChatCount}
                                         alt="notification image"
                                       />
-                                      <span className="chat-notification-count">
-                                        15
-                                      </span>
+                                      {chat.messageCount > 0 ? (
+                                        <span className="chat-notification-count">
+                                          chat.messageCount
+                                        </span>
+                                      ) : null}
                                     </div>
                                     <img
                                       src={DummyFace1}
                                       alt="face image"
                                       title={chat.cumtomerName}
                                     />
-                                    <span className="online"></span>
+                                    {chat.messageCount > 0 ? (
+                                      <span className="online"></span>
+                                    ) : null}
                                   </div>
                                 </div>
                                 <span className="face-name">
@@ -1931,7 +1952,7 @@ class Header extends Component {
                                         alt="notification image"
                                       />
                                       <span className="chat-notification-count">
-                                        15
+                                        {chat.messageCount}
                                       </span>
                                     </div>
                                     <img src={DummyFace1} alt="face image" />
@@ -2027,6 +2048,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="message-tab"
                               aria-selected="true"
+                              onClick={this.handleTabClick.bind(this, 1)}
                             >
                               MESSAGE
                             </a>
@@ -2039,6 +2061,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="card-tab"
                               aria-selected="false"
+                              onClick={this.handleTabClick.bind(this, 2)}
                             >
                               CARD
                             </a>
@@ -2051,6 +2074,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="recommended-list-tab"
                               aria-selected="false"
+                              onClick={this.handleTabClick.bind(this, 3)}
                             >
                               RECOMMENDED LIST
                             </a>
@@ -2063,7 +2087,8 @@ class Header extends Component {
                               role="tab"
                               aria-controls="schedule-visit-tab"
                               aria-selected="false"
-                              onClick={this.handleGetTimeSlot.bind(this)}
+                              // onClick={this.handleGetTimeSlot.bind(this)}
+                              onClick={this.handleTabClick.bind(this, 4)}
                             >
                               SCHEDULE VISIT
                             </a>
@@ -2076,6 +2101,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="generate-payment-link-tab"
                               aria-selected="false"
+                              onClick={this.handleTabClick.bind(this, 5)}
                             >
                               GENERATE PAYMENT LINK
                             </a>
@@ -2095,10 +2121,13 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <span className="message-initial">{this.state.customerName.charAt(0).toUpperCase()}</span>
-                            <textarea placeholder="Search to get suggestions..."
-                            value={this.state.message}
-                            onChange={this.handleOnChangeCKEditor.bind(this)}
+                            <span className="message-initial">
+                              {this.state.customerName.charAt(0).toUpperCase()}
+                            </span>
+                            <textarea
+                              placeholder="Search to get suggestions..."
+                              value={this.state.message}
+                              onChange={this.handleOnChangeCKEditor.bind(this)}
                             ></textarea>
                             {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
@@ -2195,9 +2224,7 @@ class Header extends Component {
                               )} */}
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleMessageSuggestion.bind(
-                                this
-                              )}
+                              onClick={this.handleMessageSuggestion.bind(this)}
                               title={"Send"}
                             >
                               {/* <img src={Assign} alt="send img" /> */}
@@ -2365,8 +2392,11 @@ class Header extends Component {
                           aria-labelledby="recommended-list-tab"
                         >
                           <div className="recommended-cntr">
-                            <button className="butn"
-                            onClick={this.handleSendRecommendedList.bind(this)}
+                            <button
+                              className="butn"
+                              onClick={this.handleSendRecommendedList.bind(
+                                this
+                              )}
                             >
                               Send Recommended List
                               <img
@@ -2751,43 +2781,15 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <span className="message-initial">{this.state.customerName.charAt(0).toUpperCase()}</span>
-                            <textarea placeholder="Search to get suggestions..."
+                            <span className="message-initial">
+                              {this.state.customerName.charAt(0).toUpperCase()}
+                            </span>
+                            <textarea
+                              placeholder="Search to get suggestions..."
                               value={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                             ></textarea>
-                            {/* <CKEditor
-                              onBeforeLoad={(CKEDITOR) =>
-                                (CKEDITOR.disableAutoInline = true)
-                              }
-                              data={this.state.message}
-                              onChange={this.handleOnChangeCKEditor.bind(this)}
-                              config={{
-                                toolbar: [
-                                  {
-                                    name: "basicstyles",
-                                    items: ["Bold", "Italic", "Strike"],
-                                  },
 
-                                  {
-                                    name: "paragraph",
-                                    items: ["NumberedList", "BulletedList"],
-                                  },
-                                  {
-                                    name: "links",
-                                    items: ["Link", "Unlink"],
-                                  },
-                                  {
-                                    name: "insert",
-                                    items: ["Image", "Table"],
-                                  },
-                                  {
-                                    name: "editing",
-                                    items: ["Scayt"],
-                                  },
-                                ],
-                              }}
-                            /> */}
                             {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
@@ -2822,9 +2824,7 @@ class Header extends Component {
 
                             <div
                               className="mobile-ck-send"
-                              onClick={this.handleMessageSuggestion.bind(
-                                this
-                              )}
+                              onClick={this.handleMessageSuggestion.bind(this)}
                               title={"Send"}
                             >
                               {/* <img src={Assign} alt="send img" /> */}
@@ -2891,33 +2891,27 @@ class Header extends Component {
                                           <div className="mobile-card-img">
                                             <img
                                               className="chat-product-img"
-                                              src={item.productImgURL}
+                                              src={item.imageURL}
                                               alt="Product Image"
                                               title="POWER Black Casual Shoes For Man"
                                             />
                                           </div>
                                           <div className="bkcprdt">
-                                            {/* <div> */}
                                             <label className="chat-product-name">
-                                              {item.productName}
+                                              {item.label}
                                             </label>
-                                            {/* </div> */}
-                                            {/* <div> */}
                                             <label className="chat-product-code">
                                               Product Code:
-                                              {item.productCode}
+                                              {item.alternativeText}
                                             </label>
-                                            {/* </div> */}
-                                            {/* <div> */}
+
                                             <label className="chat-product-prize">
                                               {item.productPrize}
                                             </label>
-                                            {/* </div> */}
-                                            {/* <div> */}
+
                                             <label className="chat-product-url">
-                                              {item.productUrl}
+                                              {item.imageURL}
                                             </label>
-                                            {/* </div> */}
                                           </div>
                                         </div>
                                       </div>
@@ -2961,7 +2955,9 @@ class Header extends Component {
                             <div className="chat-btn-cntr">
                               <button
                                 className="butn"
-                                onClick={this.handleSendRecommendedList.bind(this)}
+                                onClick={this.handleSendRecommendedList.bind(
+                                  this
+                                )}
                               >
                                 Send Recommended List
                                 <img
