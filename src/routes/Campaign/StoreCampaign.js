@@ -840,7 +840,7 @@ class StoreCampaign extends Component {
         StoreID: data.storecode,
         ProgramCode: data.programcode,
         CustomerID: data.id,
-        CustomerMobileNumber: "9601001910", // data.customerNumber,
+        CustomerMobileNumber: data.customerNumber,
         StoreManagerId: data.storeManagerId,
         CampaignScriptID: data.campaignScriptID,
       },
