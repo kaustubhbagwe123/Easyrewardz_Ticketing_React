@@ -8,7 +8,8 @@ import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
-import ChatbotS from "./../../assets/Images/sms2.svg";
+import Smsicon from "./../../assets/Images/sms2.svg";
+import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
@@ -1165,7 +1166,7 @@ class StoreCampaign extends Component {
                         <a className="button-blue">
                           <img
                             className="ico"
-                            src={ChatbotS}
+                            src={Smsicon}
                             alt="Chatbot Icon"
                           />
                           SMS Script
