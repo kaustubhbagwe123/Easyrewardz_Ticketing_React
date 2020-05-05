@@ -1140,6 +1140,32 @@ class Header extends Component {
     }
   }
 
+  handleSendRecommendedList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
+      headers: authHeader(),
+      params: {
+        CustomerID : this.state.customerId,
+        MobileNumber : this.state.mobileNo
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
+                                      self.state.mobileNo,self.state.customerId);
+        } else {
+          self.setState({ messageSuggestionData: [], chkSuggestion: [] });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
+
   render() {
     console.log(this.state.message);
     return (
@@ -2211,7 +2237,9 @@ class Header extends Component {
                           aria-labelledby="recommended-list-tab"
                         >
                           <div className="recommended-cntr">
-                            <button className="butn">
+                            <button className="butn"
+                            onClick={this.handleSendRecommendedList.bind(this)}
+                            >
                               Send Recommended List
                               <img
                                 src={SendUp}
@@ -2787,7 +2815,7 @@ class Header extends Component {
                             <div className="chat-btn-cntr">
                               <button
                                 className="butn"
-                                onClick={this.onCloseRecommendedModal}
+                                onClick={this.handleSendRecommendedList.bind(this)}
                               >
                                 Send Recommended List
                                 <img
