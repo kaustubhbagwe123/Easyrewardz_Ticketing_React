@@ -11,7 +11,7 @@ import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table, Popover, Radio, Input, Button } from "antd";
+import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ import Modal from "react-responsive-modal";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
+import ReactTable from "react-table";
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -76,6 +77,10 @@ class StoreCampaign extends Component {
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
       filterDropdownVisible: false,
+      strStatusIds: "",
+      chatbotScript: "",
+      smsScript: "",
+      campaingPeriod: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -651,9 +656,12 @@ class StoreCampaign extends Component {
     });
   }
 
-  responsiveCustModalOpen() {
+  responsiveCustModalOpen(data) {
     this.setState({
       ResponsiveCustModal: true,
+      chatbotScript: data.chatbotScript,
+      smsScript: data.smsScript,
+      campaingPeriod: data.campaingPeriod,
     });
   }
   responsiveCustModalClose() {
@@ -717,13 +725,19 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = async (numPage) => {
-    //debugger;
     await this.setState({
       childCurrentPage: numPage,
     });
-    await setTimeout(() => {
-      this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
-    }, 500);
+    if (this.state.strStatusIds !== "") {
+      this.handleGetCampaignCustomer(
+        this.state.campaignID,
+        this.state.childTotalGridRecord
+      );
+    } else {
+      await setTimeout(() => {
+        this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+      }, 500);
+    }
   };
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
@@ -731,6 +745,7 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
+    debugger;
     if (data) {
       this.setState({
         childCurrentPage: 1,
@@ -972,12 +987,11 @@ class StoreCampaign extends Component {
     }
     this.setState({
       filterDropdownVisible: false,
-    });
-    this.handleGetCampaignCustomer(
       strStatusIds,
-      campaignScriptID,
-      customerCount
-    );
+    });
+    setTimeout(() => {
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+    }, 50);
   }
 
   checkAllStatus(campaignScriptID, customerCount, event) {
@@ -1003,16 +1017,15 @@ class StoreCampaign extends Component {
     }
     this.setState({
       filterDropdownVisible: false,
-    });
-
-    this.handleGetCampaignCustomer(
       strStatusIds,
-      campaignScriptID,
-      customerCount
-    );
+    });
+    setTimeout(() => {
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+    }, 50);
   }
 
-  handleGetCampaignCustomer = (statusId, campaignScriptID, customerCount) => {
+  handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
+    debugger;
     let self = this;
     if (customerCount !== "") {
       this.setState({
@@ -1027,7 +1040,7 @@ class StoreCampaign extends Component {
         campaignScriptID: campaignScriptID,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
-        FilterStatus: statusId,
+        FilterStatus: this.state.strStatusIds,
       },
     })
       .then(function(response) {
@@ -1103,7 +1116,7 @@ class StoreCampaign extends Component {
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
                         alt="info-icon"
-                        onClick={this.responsiveCustModalOpen.bind(this)}
+                        onClick={this.responsiveCustModalOpen.bind(this, item)}
                       />
                     </div>
                   );
@@ -1754,22 +1767,12 @@ class StoreCampaign extends Component {
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">Chatbot Script</label>
                     <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly. Enter "Browse" to explore
-                      your favorite categories and continue with your shopping.
-                      Enter "Go Back" to Exit Shopping Mode
+                      {this.state.chatbotScript}
                     </label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -1778,21 +1781,11 @@ class StoreCampaign extends Component {
                 <div className="">
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">SMS Script</label>
-                    <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly.
-                    </label>
+                    <label class="channelScript">{this.state.smsScript}</label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -2104,7 +2097,35 @@ class StoreCampaign extends Component {
                           </tbody>
                         </table>
                         <div className="trasactablist">
-                          <div className="tabscrol">
+                          <div
+                            className="myTicket-table remov agentlist"
+                            id="tic-det-assign"
+                          >
+                            <ReactTable
+                              className="limit-react-table-body tabscrol"
+                              data={this.state.lastTransactionItem}
+                              columns={[
+                                {
+                                  Header: <span>Article</span>,
+                                  accessor: "article",
+                                  minWidth: 120,
+                                },
+                                {
+                                  Header: <span>Qty.</span>,
+                                  accessor: "quantity",
+                                },
+                                {
+                                  Header: <span>Amount</span>,
+                                  accessor: "amount",
+                                },
+                              ]}
+                              minRows={2}
+                              // defaultPageSize={5}
+                              showPagination={false}
+                              resizable={false}
+                            />
+                          </div>
+                          {/* <div className="tabscrol">
                             <table>
                               <thead>
                                 <tr>
@@ -2128,7 +2149,7 @@ class StoreCampaign extends Component {
                                   )}
                               </tbody>
                             </table>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
