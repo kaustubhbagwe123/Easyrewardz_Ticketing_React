@@ -1512,7 +1512,7 @@ table tr th:last-child {
   height: calc(100% - 18px);
 }
 .productbox .tab-content {
-  padding: 24px 15px 0;
+  padding: 24px 0px 0;
 }
 .productbox .prodscro {
   max-height: 210px;
@@ -1591,6 +1591,9 @@ table tr th:last-child {
   position: absolute;
   right: 0;
   top: 0;
+}
+.transactionbox {
+  padding: 0 15px;
 }
 .transactionbox td {
   padding: 0 0 10px 0;
@@ -2567,9 +2570,8 @@ table tr th:last-child {
   .Camp-pagination {
     left: 12px;
   }
-  .productbox .tab-content {
-    padding-right: 0;
-    padding-left: 0;
+  .transactionbox {
+    padding: 0;
   }
 
   .campaign-status-drpdwn {
@@ -2838,3 +2840,9 @@ table tr th:last-child {
 }
 
 /* Datepicker responsive ends */
+
+@media screen and (max-width: 359px) {
+  .trasactablist {
+    margin: 0 -16px;
+  }
+}
