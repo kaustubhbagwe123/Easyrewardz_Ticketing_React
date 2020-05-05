@@ -1311,6 +1311,7 @@ class StoreCampaign extends Component {
                       {
                         title: "Status",
                         dataIndex: "statusName",
+                        className: "camp-status-header",
                         render: (row, item) => {
                           return (
                             <div>
@@ -1331,112 +1332,109 @@ class StoreCampaign extends Component {
                           );
                         },
                         filterDropdown: (dataIndex) => (
-                          <div
-                            className="campaign-status-drpdwn"
-                            style={{ padding: 8 }}
-                          >
+                          <div className="campaign-status-drpdwn">
                             <ul>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="all-status"
+                                  className="ch1"
+                                  onChange={this.checkAllStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                />
                                 <label htmlFor="all-status">
-                                  <input
-                                    type="checkbox"
-                                    id="all-status"
-                                    className="ch1"
-                                    onChange={this.checkAllStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    checked={this.state.CheckBoxAllBrand}
-                                    name="allStatus"
-                                  />
                                   <span className="ch1-text">All</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status100"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={100}
+                                />
                                 <label htmlFor="status100">
-                                  <input
-                                    type="checkbox"
-                                    id="status100"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={100}
-                                  />
                                   <span className="ch1-text">Contacted</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status101"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={101}
+                                />
                                 <label htmlFor="status101">
-                                  <input
-                                    type="checkbox"
-                                    id="status101"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={101}
-                                  />
                                   <span className="ch1-text">
                                     Not Contacted
                                   </span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status102"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={102}
+                                />
                                 <label htmlFor="status102">
-                                  <input
-                                    type="checkbox"
-                                    id="status102"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={102}
-                                  />
                                   <span className="ch1-text">Follow Up</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status103"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={103}
+                                />
                                 <label htmlFor="status103">
-                                  <input
-                                    type="checkbox"
-                                    id="status103"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={103}
-                                  />
                                   <span className="ch1-text">Converted</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status104"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={104}
+                                />
                                 <label htmlFor="status104">
-                                  <input
-                                    type="checkbox"
-                                    id="status104"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={104}
-                                  />
                                   <span className="ch1-text">Conversation</span>
                                 </label>
                               </li>
