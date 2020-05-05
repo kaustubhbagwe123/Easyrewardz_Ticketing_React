@@ -1338,7 +1338,10 @@ class StoreCampaign extends Component {
                           );
                         },
                         filterDropdown: (dataIndex) => (
-                          <div style={{ padding: 8 }}>
+                          <div
+                            className="campaign-status-drpdwn"
+                            style={{ padding: 8 }}
+                          >
                             <ul>
                               <li>
                                 <label htmlFor="all-status">
