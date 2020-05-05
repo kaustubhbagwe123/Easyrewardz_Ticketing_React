@@ -13,6 +13,7 @@ import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio, Input, Button } from "antd";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
@@ -912,7 +913,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1526,34 +1527,39 @@ class StoreCampaign extends Component {
                                 item.responseID === 3 ? "" : "disabled-input"
                               }
                             >
-                              <DatePicker
-                                id="startDate"
-                                autoComplete="off"
-                                showTimeSelect
-                                name="startDate"
-                                showMonthDropdown
-                                showYearDropdown
-                                selected={
-                                  item.callRescheduledTo !== ""
-                                    ? new Date(item.callRescheduledTo)
-                                    : new Date()
-                                }
-                                dateFormat="MM/dd/yyyy h:mm aa"
-                                value={
-                                  item.callRescheduledTo !== ""
-                                    ? moment(item.callRescheduledTo).format(
-                                        "DD-MM-YYYY hh:mm:ss"
-                                      )
-                                    : ""
-                                }
-                                onChange={this.onDateChange.bind(this, item.id)}
-                                className={
-                                  item.responseID === 3
-                                    ? "txtStore dateTimeStore"
-                                    : "txtStore dateTimeStore disabled-link"
-                                }
-                                placeholderText="Select Date &amp; Time"
-                              />
+                              <div className="date-time-resp">
+                                <DatePicker
+                                  id="startDate"
+                                  autoComplete="off"
+                                  showTimeSelect
+                                  name="startDate"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  selected={
+                                    item.callRescheduledTo !== ""
+                                      ? new Date(item.callRescheduledTo)
+                                      : new Date()
+                                  }
+                                  dateFormat="MM/dd/yyyy h:mm aa"
+                                  value={
+                                    item.callRescheduledTo !== ""
+                                      ? moment(item.callRescheduledTo).format(
+                                          "DD-MM-YYYY hh:mm:ss"
+                                        )
+                                      : ""
+                                  }
+                                  onChange={this.onDateChange.bind(
+                                    this,
+                                    item.id
+                                  )}
+                                  className={
+                                    item.responseID === 3
+                                      ? "txtStore dateTimeStore"
+                                      : "txtStore dateTimeStore disabled-link"
+                                  }
+                                  placeholderText="Select Date &amp; Time"
+                                />
+                              </div>
                             </div>
                           );
                         },
@@ -1686,35 +1692,37 @@ class StoreCampaign extends Component {
                                         : "disabled-input"
                                     }
                                   >
-                                    <DatePicker
-                                      id="startDate"
-                                      autoComplete="off"
-                                      showTimeSelect
-                                      name="startDate"
-                                      showMonthDropdown
-                                      showYearDropdown
-                                      selected={
-                                        row.callRescheduledTo !== ""
-                                          ? new Date(row.callRescheduledTo)
-                                          : new Date()
-                                      }
-                                      dateFormat="MM/dd/yyyy h:mm aa"
-                                      value={
-                                        row.callRescheduledTo !== ""
-                                          ? moment(row.callRescheduledTo)
-                                          : ""
-                                      }
-                                      onChange={this.onDateChange.bind(
-                                        this,
-                                        row.id
-                                      )}
-                                      className={
-                                        row.responseID === 3
-                                          ? "txtStore dateTimeStore"
-                                          : "txtStore dateTimeStore disabled-link"
-                                      }
-                                      placeholderText="Select Date &amp; Time"
-                                    />
+                                    <div className="date-time-resp">
+                                      <DatePicker
+                                        id="startDate"
+                                        autoComplete="off"
+                                        showTimeSelect
+                                        name="startDate"
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        selected={
+                                          row.callRescheduledTo !== ""
+                                            ? new Date(row.callRescheduledTo)
+                                            : new Date()
+                                        }
+                                        dateFormat="MM/dd/yyyy h:mm aa"
+                                        value={
+                                          row.callRescheduledTo !== ""
+                                            ? moment(row.callRescheduledTo)
+                                            : ""
+                                        }
+                                        onChange={this.onDateChange.bind(
+                                          this,
+                                          row.id
+                                        )}
+                                        className={
+                                          row.responseID === 3
+                                            ? "txtStore dateTimeStore"
+                                            : "txtStore dateTimeStore disabled-link"
+                                        }
+                                        placeholderText="Select Date &amp; Time"
+                                      />
+                                    </div>
                                   </div>
                                 </td>
                                 <td></td>
