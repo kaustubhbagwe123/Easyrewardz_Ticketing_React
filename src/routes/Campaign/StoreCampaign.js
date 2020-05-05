@@ -8,6 +8,7 @@ import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
+import Email from "./../../assets/Images/camp-Email.svg";
 import Smsicon from "./../../assets/Images/sms2.svg";
 import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
@@ -2168,7 +2169,7 @@ class StoreCampaign extends Component {
                   ) : null}
                   {this.state.customerModalDetails.emailFlag === true ? (
                     <li>
-                      <img className="ico" src={Sms1} alt="Email Icon" />
+                      <img className="ico" src={Email} alt="Email Icon" />
                       Email
                     </li>
                   ) : null}
@@ -2359,7 +2360,7 @@ class StoreCampaign extends Component {
                             "Email"
                           )}
                         >
-                          <img className="ico" src={Sms1} alt="Email Icon" />
+                          <img className="ico" src={Email} alt="Email Icon" />
                           {this.state.Respo_ChannelEmail === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
