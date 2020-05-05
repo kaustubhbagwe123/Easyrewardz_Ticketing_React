@@ -119,7 +119,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -151,7 +151,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    //debugger;
+    //
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -176,7 +176,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////debugger;
+            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -214,7 +214,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////debugger;
+            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -690,7 +690,7 @@ class StoreCampaign extends Component {
     });
   }
   handleShareNowOpenModal() {
-    //debugger;
+    //
     if (this.state.Respo_ChannelMessanger === true) {
       this.handleSendViaMessanger(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelBot === true) {
@@ -745,7 +745,7 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
-    debugger;
+  
     if (data) {
       this.setState({
         childCurrentPage: 1,
@@ -784,7 +784,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -810,7 +809,6 @@ class StoreCampaign extends Component {
   /// Send Via Bot data
   handleSendViaBotData(data) {
     let self = this;
-    //debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
@@ -825,7 +823,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger
         var message = response.data.message;
         if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
@@ -924,7 +921,6 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -936,7 +932,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -975,7 +970,6 @@ class StoreCampaign extends Component {
   }
 
   checkIndividualStatus(campaignScriptID, customerCount, event) {
-    debugger;
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
     for (var i in checkboxes) {
@@ -1026,7 +1020,6 @@ class StoreCampaign extends Component {
   }
 
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
-    debugger;
     let self = this;
     if (customerCount !== "") {
       this.setState({
@@ -1045,7 +1038,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1066,7 +1058,6 @@ class StoreCampaign extends Component {
   };
 
   handleSelectChannelsOnchange(check) {
-    //debugger;
     if (check === "Messanger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1469,7 +1460,7 @@ class StoreCampaign extends Component {
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          ////debugger;
+                          ////
                           return (
                             <div
                               className={
@@ -1877,6 +1868,7 @@ class StoreCampaign extends Component {
                     className="keyingsightdrp"
                     src={Dropdown3}
                     alt="Down Arrow"
+                    style={{display:"none"}}
                   />
                 </div>
               ) : null}
