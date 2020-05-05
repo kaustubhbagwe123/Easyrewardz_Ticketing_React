@@ -1385,6 +1385,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100px;
   height: 30px;
+  color: #fff;
   text-transform: initial;
 }
 .custom-tableak .txtStore {
@@ -1447,7 +1448,7 @@ table tr th:last-child {
   width: 7%;
   background: #0080ff;
   border-radius: 8px;
-  padding: 12px;
+  padding: 12px 8px;
   text-align: center;
   color: #fff;
   font-size: 17px;
@@ -1489,11 +1490,12 @@ table tr th:last-child {
   border-radius: 10px;
   margin: 0;
   padding: 18px 23px;
+  height: calc(100% - 128px);
 }
 .keyinsights h4 {
   color: #8694a0;
   font-size: 16px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   font-weight: normal;
 }
 .keyinsights p {
@@ -1506,10 +1508,16 @@ table tr th:last-child {
   background-color: #f2f5f8;
   border-radius: 10px;
   margin: 20px 0 0 0;
-  padding: 18px 30px;
+  padding: 18px 15px;
+  height: calc(100% - 18px);
 }
 .productbox .tab-content {
-  padding: 24px 0 0;
+  padding: 24px 15px 0;
+}
+.productbox .prodscro {
+  max-height: 210px;
+  overflow: auto;
+  padding: 0 15px;
 }
 .productbox .nav-tabs .nav-link.active {
   color: #8694a0;
@@ -1537,17 +1545,12 @@ table tr th:last-child {
   height: "30px";
   line-height: 30px;
 }
-
-.pro-slidercam td {
-  padding: 0;
-  padding-bottom: 7px;
-}
-.pro-slidercam td:first-child {
+/* .pro-slidercam td:first-child {
   padding-right: 10px;
 }
 .pro-slidercam td:last-child {
   padding-left: 10px;
-}
+} */
 .pro-slidercam .shoeimg {
   height: 100%;
   width: auto;
@@ -1568,6 +1571,20 @@ table tr th:last-child {
   text-align: center;
   margin-top: 5px;
   color: #333;
+}
+.pro-slidercam td {
+  padding: 0 5px 10px 0;
+  width: 50%;
+  display: inline-block;
+}
+.pro-slidercam table td:nth-child(2) {
+  padding: 0 0 10px 5px;
+}
+.pro-slidercam table td:nth-child(3) {
+  padding: 0 5px 10px 0;
+}
+.pro-slidercam table td:nth-child(4) {
+  padding: 0 0px 10px 5px;
 }
 .whatsappico {
   height: 18px;
@@ -1590,8 +1607,8 @@ table tr th:last-child {
 .trasactablist {
   background-color: #f9f9f9;
   border-radius: 10px;
-  margin-top: 5px;
-  padding: 15px;
+  /* margin-top: 5px; */
+  /* padding: 15px; */
 }
 .trasactablist tr:last-child {
   margin-bottom: 15px;
@@ -1617,7 +1634,7 @@ table tr th:last-child {
   font-weight: 600;
 }
 .trasactablist .tabscrol {
-  max-height: 75px;
+  max-height: 90px;
   overflow: auto;
 }
 .trasactablist .tabscrol::-webkit-scrollbar {
@@ -1634,6 +1651,21 @@ table tr th:last-child {
 .trasactablist .tabscrol::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.productbox .prodscro::-webkit-scrollbar {
+  width: 4px;
+}
+.productbox .prodscro::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.productbox .prodscro::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.productbox .prodscro::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .sharecamp {
   margin-top: 25px;
 }
@@ -1677,6 +1709,7 @@ table tr th:last-child {
 .productbox .nav-tabs {
   overflow: inherit;
   border: none;
+  padding: 0 15px;
 }
 .productdesc {
   padding: 15px;
@@ -1760,8 +1793,9 @@ table tr th:last-child {
   font-size: 12px;
 }
 .custom-tableak .table-btnlabel {
-  font-size: 12px;
+  font-size: 11px;
 }
+
 .custom-tableak .txtStore,
 .custom-tableak .txtStore::placeholder {
   font-size: 13px;
@@ -1831,6 +1865,55 @@ table tr th:last-child {
   text-align: center;
   line-height: 0;
 }
+.innertabcollapse td {
+  padding: 7px !important;
+  font-size: 11px;
+}
+.lt-single td {
+  display: block;
+  padding: 43px 20px;
+  text-align: center;
+}
+.tab-single .nav-item {
+  width: 100%;
+}
+.tab-single .nav-tabs .nav-link.active {
+  display: block !important;
+  text-align: center;
+}
+#sharecamp-popupmob {
+  display: none;
+}
+#logout-ovrly-none {
+  background-color: transparent;
+  background: none;
+}
+.custom-tableak .react-pagination-js-bootstrap {
+  background: #f9f9f9;
+}
+.custom-tableak .react-pagination-js-bootstrap ul {
+  margin: auto;
+  display: table;
+  padding: 10px 0;
+  box-shadow: none;
+}
+.custom-tableak .react-pagination-js-bootstrap ul li {
+  border: none;
+}
+.custom-tableak .react-pagination-js-bootstrap .is-active {
+  float: left;
+  padding: 0px 10px;
+  line-height: 25px;
+  color: #fff;
+  background-color: #2561a8;
+  cursor: default;
+  border-radius: 5px;
+}
+.custom-tableak .react-pagination-js-bootstrap .page,
+.custom-tableak .react-pagination-js-bootstrap .pageElli {
+  line-height: 25px !important;
+  color: #333;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
@@ -1847,6 +1930,127 @@ table tr th:last-child {
 .status-btn-camp {
   display: contents;
 }
+.midalResponseAction .ant-table-row-collapsed,
+.midalResponseAction .ant-table-row-expanded {
+  display: none;
+}
+.custpagination {
+  margin-top: 0 !important;
+}
+.Camp-pagination {
+  margin-top: -22px;
+}
+.Camp-pagination select {
+  background: url("./../Images/dropdown3.png") no-repeat right 4px center;
+  background-size: 8px;
+  padding-right: 17px;
+  padding-left: 7px;
+}
+
+.campaign-status-drpdwn span {
+  color: #4a4a4a;
+}
+.campaign-status-drpdwn li {
+  display: block;
+  margin-bottom: 8px;
+}
+.campaign-status-drpdwn li:last-child {
+  margin-bottom: 0;
+}
+.campaign-status-drpdwn {
+  padding: 20px 35px;
+  /* border-radius: 10px; */
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+.campaign-status-drpdwn ul {
+  margin: 0;
+}
+.campaign-status-drpdwn input {
+  display: none;
+}
+.campaign-status-drpdwn label {
+  position: relative;
+  padding-left: 23px;
+}
+.campaign-status-drpdwn label::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 1px solid #9a9a9a;
+  position: absolute;
+  border-radius: 2px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.campaign-status-drpdwn input:checked + label::after {
+  content: "";
+  width: 4px;
+  height: 8px;
+  border: solid #9a9a9a;
+  border-width: 0 1px 1px 0;
+  transform: rotate(45deg) translateY(-50%);
+  position: absolute;
+  left: 2px;
+  top: 42%;
+}
+.camp-status-header {
+  position: relative;
+}
+.camp-status-header .ant-table-filter-icon {
+  position: absolute !important;
+  left: 65px;
+  top: 50% !important;
+  transform: translateY(-50%);
+  width: 12px !important;
+}
+.camp-status-header .ant-table-filter-icon::before {
+  content: "";
+  background: url("./../Images//dropdown3.png") no-repeat center center;
+  background-size: 12px;
+  display: block;
+  height: 6px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+}
+.ant-table-thead
+  > tr
+  > th.ant-table-column-has-actions.ant-table-column-has-filters.camp-status-header
+  .anticon-filter.ant-table-filter-open,
+.ant-table-thead
+  > tr
+  > th.ant-table-column-has-actions.ant-table-column-has-filters.camp-status-header
+  .ant-table-filter-icon.ant-table-filter-open,
+.ant-table-thead
+  > tr
+  > th.ant-table-column-has-actions.ant-table-column-has-filters.camp-status-header:hover
+  .anticon-filter:hover,
+.ant-table-thead
+  > tr
+  > th.ant-table-column-has-actions.ant-table-column-has-filters.camp-status-header:hover
+  .ant-table-filter-icon:hover {
+  background: transparent;
+}
+
+.last-trans-table .ReactTable .rt-thead .rt-th.-cursor-pointer {
+  padding: 11px 15px 6px !important;
+  font-size: 12px;
+  color: #7b7b7b;
+}
+.last-trans-table .ReactTable .rt-tbody .rt-td {
+  padding: 4px 15px !important;
+  font-size: 12px;
+  color: #4a4a4a;
+}
+.last-trans-table .ReactTable .rt-tbody .rt-tr-group:hover {
+  background-color: transparent;
+}
+.last-trans-table {
+  padding-bottom: 10px;
+}
+
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {
@@ -1952,6 +2156,7 @@ table tr th:last-child {
   }
   .custom-tableak .hdrcloselabel {
     font-size: 10px;
+    vertical-align: super;
   }
   .custom-tableak {
     padding: 5px 0;
@@ -1976,13 +2181,16 @@ table tr th:last-child {
   .notConnectedBtnRed {
     width: 95px;
     height: 22px;
+    font-weight: normal;
   }
   .contactBtnGreen {
     width: 95px;
+    font-weight: normal;
     height: 22px;
   }
   .followUpBtnYellow {
     width: 95px;
+    font-weight: normal;
     height: 22px;
   }
   .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
@@ -2098,9 +2306,11 @@ table tr th:last-child {
   }
   .productbox {
     padding: 18px 20px;
+    height: auto;
   }
   .keyinsights {
     padding: 18px 20px;
+    height: auto;
   }
   .trasactablist th {
     font-size: 12px;
@@ -2248,39 +2458,140 @@ table tr th:last-child {
   /* .broadcastimg {
   display: none;
 } */
-.broadcastpop .broadcasttitle {
-  font-size: 17px;
-  font-weight: bolder;
-  margin-bottom: 10px;
-}
-.broadcastpop .broadcastsubtitle {
-  color: #999;
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-.broadcastpop .ant-radio-checked .ant-radio-inner {
-  border-color: #2561a8;
-}
-.broadcastpop .ant-radio-inner::after {
-  background-color: #2561a8;
-}
-.broadcastpop .ant-radio-wrapper {
-  display: block;
-  margin-bottom: 10px;
-}
-.executebtn {
-  background-color: #2561a8;
-  border-radius: 4px;
-  width: 100%;
-  height: 35px;
-  min-width: 68px !important;
-  cursor: pointer;
-  margin-top: 15px;
-  color: #fff;
-  text-align: center;
-  line-height: 0;
-}
+  .broadcastpop .broadcasttitle {
+    font-size: 17px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+  }
+  .broadcastpop .broadcastsubtitle {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .broadcastpop .ant-radio-checked .ant-radio-inner {
+    border-color: #2561a8;
+  }
+  .broadcastpop .ant-radio-inner::after {
+    background-color: #2561a8;
+  }
+  .broadcastpop .ant-radio-wrapper {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .executebtn {
+    background-color: #2561a8;
+    border-radius: 4px;
+    width: 100%;
+    height: 35px;
+    min-width: 68px !important;
+    cursor: pointer;
+    margin-top: 15px;
+    color: #fff;
+    text-align: center;
+    line-height: 0;
+  }
+  .midalResponseAction .ant-table-row-collapsed,
+  .midalResponseAction .ant-table-row-expanded {
+    display: block;
+  }
+  .custom-tableak .txtStore,
+  .custom-tableak .txtStore::placeholder {
+    font-size: 12px;
+  }
+  .innertabcollapse .dateTimeStore {
+    width: 160px;
+    height: 28px;
+  }
+  .innertabcollapse .responceDrop-down {
+    width: 160px;
+    height: 28px;
+  }
+  .custom-tableak .saveLabel {
+    text-align: center;
+    font-size: 11px;
+    width: 60px;
+    height: 28px;
+  }
+  #sharecamp-popupmob {
+    display: block;
+    border-radius: 20px;
+  }
+  .productbox .nav-tabs {
+    padding: 0;
+  }
+  .productbox .prodscro {
+    padding: 0;
+    max-height: 200px;
+  }
+  #sharesuccesfullpopup .tick {
+    height: 40px;
+    margin: auto;
+    display: block;
+    margin-bottom: 15px;
+  }
+  #sharesuccesfullpopup {
+    border-radius: 20px;
+    width: 100%;
+  }
+  #sharesuccesfullpopup h3 {
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  #sharesuccesfullpopup p {
+    font-size: 11px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .custom-tableak .react-pagination-js-bootstrap .page,
+  .custom-tableak .react-pagination-js-bootstrap .pageElli,
+  .custom-tableak .react-pagination-js-bootstrap .is-active {
+    padding: 0 7px;
+    font-size: 11px;
+  }
+  .custom-tableak .react-pagination-js-bootstrap ul {
+    margin: initial;
+    margin-left: auto;
+    margin-right: 4px;
+  }
+  .Camp-pagination p {
+    display: none;
+  }
+  .Camp-pagination select {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .Camp-pagination {
+    left: 12px;
+  }
+  .productbox .tab-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .campaign-status-drpdwn {
+    padding: 15px 20px;
+    font-size: 12px;
+  }
+  .campaign-status-drpdwn label::before {
+    width: 13px;
+    height: 13px;
+  }
+  .camp-status-header .ant-table-filter-icon::before {
+    background-size: 10px;
+    width: 10px;
+    height: 5px;
+  }
+  .camp-status-header .ant-table-filter-icon {
+    left: 45px;
+    top: 48% !important;
+  }
+  .campaign-status-drpdwn input:checked + label::after {
+    left: 1.5px;
+  }
 }
 /* ------------------Campain Css End ------------------------- */
 
@@ -2503,3 +2814,27 @@ table tr th:last-child {
   }
 }
 /* ------------------Appointment Css End ------------------------- */
+
+/* Datepicker responsive starts */
+
+@media screen and (max-width: 600px) {
+  .date-time-resp .react-datepicker__day-name,
+  .date-time-resp .react-datepicker__day,
+  .date-time-resp .react-datepicker__time-name {
+    width: 1.5rem !important;
+    line-height: 1.5rem !important;
+  }
+  .date-time-resp .react-datepicker__current-month,
+  .date-time-resp .react-datepicker-time__header,
+  .date-time-resp .react-datepicker-year-header {
+    font-size: 14px !important;
+  }
+  .date-time-resp .react-datepicker-popper {
+    margin-left: -119px;
+  }
+  .date-time-resp .react-datepicker__triangle {
+    margin-left: 90px !important;
+  }
+}
+
+/* Datepicker responsive ends */

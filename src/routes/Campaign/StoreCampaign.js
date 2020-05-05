@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import { authHeader } from "./../../helpers/authHeader";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import BroadCastIcon from "./../../assets/Images/broadCast.png";
@@ -9,29 +9,27 @@ import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import ChatbotS from "./../../assets/Images/sms2.svg";
-import collapsedown from "./../../assets/Images/collapsedown.png";
-import collapseUp from "./../../assets/Images/collapseUp.png";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
-import Shoe from "./../../assets/Images/shoe.jpg";
+import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "react-router-dom";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
-import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
-import Pagination from "./CampaignPagination";
-// import ChildTablePagination from "./ChildTablePagination";
-
-// import Demo from "./../../store/Hashtag";
+import Pagination from "react-pagination-js";
+import "react-pagination-js/dist/styles.css";
+import Demo from "./../../store/Hashtag";
+import ReactTable from "react-table";
+// import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      FirstCollapse: false,
-      TwoCollapse: false,
       campaignGridData: [],
       raisedTicketModal: false,
       custNameModal: false,
@@ -54,29 +52,38 @@ class StoreCampaign extends Component {
       loading: false,
       ChildTblLoading: false,
       broadcastChannel: 1,
-      responsiveChildTable: false,
       responsiveShareVia: false,
       sortCustName: "",
       customerModalDetails: {},
       currentPage: 1,
-      postsPerPage: 5,
+      postsPerPage: 10,
       totalGridRecord: [],
       childCurrentPage: 1,
-      ChildPostsPerPage: 5,
-      childTotalGridRecord: [],
+      ChildPostsPerPage: 10,
+      childTotalGridRecord: 0,
       ResponsiveBroadCast: false,
       collapseModalDetails: {},
+      useratvdetails: {},
+      campaignkeyinsight: {},
+      campaignrecommended: [],
+      lasttransactiondetails: {},
+      lastTransactionItem: [],
+      ResponsiveShareNow: false,
+      campaignID: 0,
+      ResponsiveChooseChannel: 0,
+      CheckBoxAllStatus: false,
+      Respo_ChannelMessanger: false,
+      Respo_ChannelBot: false,
+      Respo_ChannelSMS: false,
+      Respo_ChannelEmail: false,
+      filterDropdownVisible: false,
+      strStatusIds: "",
+      chatbotScript: "",
+      smsScript: "",
+      campaingPeriod: "",
     };
-    this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
-    this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
-      this
-    );
-    this.handleRaisedTicketModalClose = this.handleRaisedTicketModalClose.bind(
-      this
-    );
-    this.handleRaisedTicketModalOpen = this.handleRaisedTicketModalOpen.bind(
       this
     );
   }
@@ -87,7 +94,6 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignCustomerID, item, e) {
-    //debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
@@ -113,7 +119,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
+        //debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -146,53 +152,89 @@ class StoreCampaign extends Component {
     campaignScriptID
   ) {
     //debugger;
-    if (responseID !== 0) {
-      let self = this,
-        calculatedCallReScheduledTo;
-      var check = true;
-      var Updatecheck = "";
-      this.setState({
-        loading: true,
-      });
+    let self = this,
+      calculatedCallReScheduledTo;
+    var Updatecheck = "";
+    if (responseID === 3) {
+      if (callRescheduledTo !== "") {
+        this.setState({
+          loading: true,
+        });
 
-      if (responseID === 3) {
         calculatedCallReScheduledTo = moment(callRescheduledTo).format(
           "YYYY-MM-DD HH:mm:ss"
         );
-      } else {
-        calculatedCallReScheduledTo = "";
-      }
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
-        headers: authHeader(),
-        data: {
-          CampaignCustomerID: id,
-          ResponseID: responseID,
-          CallReScheduledTo: calculatedCallReScheduledTo,
-        },
-      })
-        .then(function(res) {
-          //debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success("Record Updated Successfully.");
-            self.handleGetCampaignCustomerData(
-              check,
-              Updatecheck,
-              campaignScriptID
-            );
-          } else {
-            self.setState({
-              loading: false,
-            });
-          }
+
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
+          headers: authHeader(),
+          data: {
+            CampaignCustomerID: id,
+            ResponseID: responseID,
+            CallReScheduledTo: calculatedCallReScheduledTo,
+          },
         })
-        .catch((data) => {
-          console.log(data);
-        });
+          .then(function(res) {
+            //////debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success("Record Updated Successfully.");
+              self.handleGetCampaignCustomerData(
+                true,
+                Updatecheck,
+                campaignScriptID
+              );
+            } else {
+              self.setState({
+                loading: false,
+              });
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Select Date and Time.");
+      }
     } else {
-      NotificationManager.error("Please Select Response.");
+      if (responseID !== 0) {
+        this.setState({
+          loading: true,
+        });
+
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
+          headers: authHeader(),
+          data: {
+            CampaignCustomerID: id,
+            ResponseID: responseID,
+            CallReScheduledTo: "",
+          },
+        })
+          .then(function(res) {
+            //////debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success("Record Updated Successfully.");
+              self.handleGetCampaignCustomerData(
+                true,
+                Updatecheck,
+                campaignScriptID
+              );
+            } else {
+              self.setState({
+                loading: false,
+              });
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        NotificationManager.error("Please Select Response.");
+      }
     }
   }
 
@@ -225,13 +267,6 @@ class StoreCampaign extends Component {
       .catch((data) => {
         console.log(data);
       });
-  }
-
-  firstActionOpenClps() {
-    this.setState((state) => ({ FirstCollapse: !state.FirstCollapse }));
-  }
-  twoActionOpenClps() {
-    this.setState((state) => ({ TwoCollapse: !state.TwoCollapse }));
   }
 
   handleCreateTicket() {
@@ -615,30 +650,18 @@ class StoreCampaign extends Component {
     }
   };
 
-  handleCustomerNameModalOpen(data) {
-    //debugger;
-    var strTag = data.customerName.split(" ");
-    var sortName = strTag[0].charAt(0).toUpperCase();
-    if (strTag.length === 1) {
-      sortName = strTag[0].charAt(0).toUpperCase();
-    } else {
-      sortName += strTag[1].charAt(0).toUpperCase();
-    }
-    this.setState({
-      custNameModal: true,
-      customerModalDetails: data,
-      sortCustName: sortName,
-    });
-  }
   handleCustomerNameModalClose() {
     this.setState({
       custNameModal: false,
     });
   }
 
-  responsiveCustModalOpen() {
+  responsiveCustModalOpen(data) {
     this.setState({
       ResponsiveCustModal: true,
+      chatbotScript: data.chatbotScript,
+      smsScript: data.smsScript,
+      campaingPeriod: data.campaingPeriod,
     });
   }
   responsiveCustModalClose() {
@@ -666,31 +689,89 @@ class StoreCampaign extends Component {
       ResponsiveBroadCast: false,
     });
   }
+  handleShareNowOpenModal() {
+    //debugger;
+    if (this.state.Respo_ChannelMessanger === true) {
+      this.handleSendViaMessanger(this.state.customerModalDetails);
+    } else if (this.state.Respo_ChannelBot === true) {
+      this.handleSendViaBotData(this.state.customerModalDetails);
+    } else if (this.state.Respo_ChannelSMS === true) {
+      this.handleSendViaSMS(this.state.customerModalDetails);
+    } else if (this.state.Respo_ChannelEmail === true) {
+      console.log("API not ready");
+    }
+    // this.setState({
+    //   ResponsiveShareNow: true,
+    // });
+  }
+  handleShareNowCloseModal() {
+    this.setState({
+      ResponsiveShareNow: false,
+    });
+  }
   handleBroadcastChange = (e) => {
     this.setState({
       broadcastChannel: e.target.value,
     });
   };
-
-  handleToggleChildTable(data) {
+  /// handle Per page onchange
+  handlePageItemchange = (e) => {
     this.setState({
-      responsiveChildTable: !this.state.responsiveChildTable,
-      collapseModalDetails: data,
+      ChildPostsPerPage: e.target.value,
     });
-  }
+    setTimeout(() => {
+      this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+    }, 50);
+  };
+  /// Pagination Onchange
+  PaginationOnChange = async (numPage) => {
+    await this.setState({
+      childCurrentPage: numPage,
+    });
+    if (this.state.strStatusIds !== "") {
+      this.handleGetCampaignCustomer(
+        this.state.campaignID,
+        this.state.childTotalGridRecord
+      );
+    } else {
+      await setTimeout(() => {
+        this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+      }, 500);
+    }
+  };
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    //debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
     });
+    debugger;
+    if (data) {
+      this.setState({
+        childCurrentPage: 1,
+        childTotalGridRecord: 0,
+      });
+    }
     var campaignId = 0;
-    if (check !== undefined) {
+    if (check !== undefined || check > 0) {
       campaignId = check;
     } else {
-      campaignId = row.campaignID;
+      if (row !== "") {
+        this.setState({
+          campaignID: row.campaignID,
+        });
+        campaignId = row.campaignID;
+      } else {
+        campaignId = this.state.campaignID;
+      }
     }
+    if (row !== "") {
+      this.setState({
+        childTotalGridRecord: Number(row.customerCount),
+      });
+    } else {
+    }
+
     let self = this;
     axios({
       method: "post",
@@ -698,8 +779,8 @@ class StoreCampaign extends Component {
       headers: authHeader(),
       params: {
         campaignScriptID: campaignId,
-        pageNo: 1,
-        pageSize: 10,
+        pageNo: this.state.childCurrentPage,
+        pageSize: this.state.ChildPostsPerPage,
       },
     })
       .then(function(response) {
@@ -707,21 +788,18 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          const indexOfLastpost =
-            self.state.childCurrentPage * self.state.ChildPostsPerPage;
-          const indexOfFirstpost =
-            indexOfLastpost - self.state.ChildPostsPerPage;
-          const currentPosts = data.slice(indexOfFirstpost, indexOfLastpost);
           self.setState({
-            CampChildTableData: data,
+            CampChildTableData: data.campaignCustomerModel,
             ChildTblLoading: false,
             loading: false,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
             CampChildTableData: [],
             ChildTblLoading: false,
             loading: false,
+            childTotalGridRecord: 0,
           });
         }
       })
@@ -731,8 +809,8 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
+    let self = this;
     //debugger;
-    // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
@@ -747,22 +825,70 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger;
+        debugger
         var message = response.data.message;
-        // var data = response.data.responseData;
-        if (message == "Success") {
-          NotificationManager.success("Success.");
+        if (self.state.Respo_ChannelBot === true) {
+          if (message === "Success") {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          } else {
+            NotificationManager.error("Server temporarily not available.");
+          }
         } else {
-          NotificationManager.error("Failed");
+          if (message === "Success") {
+            NotificationManager.success("Success.");
+          } else {
+            NotificationManager.error("Failed");
+          }
         }
       })
       .catch((response) => {
         console.log(response);
       });
   }
+
+  ///handle Send Via SMS
+  handleSendViaSMS(data) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/CampaignShareSMS",
+      headers: authHeader(),
+      data: {
+        StoreID: data.storecode,
+        ProgramCode: data.programcode,
+        CustomerID: data.id,
+        CustomerMobileNumber: data.customerNumber,
+        StoreManagerId: data.storeManagerId,
+        CampaignScriptID: data.campaignScriptID,
+      },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        if (self.state.Respo_ChannelSMS === true) {
+          if (message === "Success") {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          } else {
+            NotificationManager.error("Server temporarily not available.");
+          }
+        } else {
+          if (message === "Success") {
+            NotificationManager.success("SMS Send Successfully.");
+          } else {
+            NotificationManager.error("SMS Send Failed.");
+          }
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
-    //debugger;
     let self = this;
     axios({
       method: "post",
@@ -778,11 +904,15 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger;
         var message = response.data.message;
         var data = response.data.responseData;
-        if (message == "Success") {
+        if (message === "Success") {
           window.open("//" + data, "_blank");
+          if (self.state.Respo_ChannelMessanger === true) {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          }
         } else {
           NotificationManager.error("Failed");
         }
@@ -790,6 +920,182 @@ class StoreCampaign extends Component {
       .catch((response) => {
         console.log(response);
       });
+  }
+
+  /// Handle Get Customer data
+  handleGetCustomerDataForModal(rowData) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
+      headers: authHeader(),
+      params: {
+        programCode: rowData.programcode,
+        mobileNumber: rowData.customerNumber,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          var strTag = rowData.customerName.split(" ");
+          var sortName = strTag[0].charAt(0).toUpperCase();
+          if (strTag.length === 1) {
+            sortName = strTag[0].charAt(0).toUpperCase();
+          } else {
+            sortName += strTag[1].charAt(0).toUpperCase();
+          }
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: rowData,
+            campaignkeyinsight: data.campaignkeyinsight,
+            useratvdetails: data.useratvdetails,
+            campaignrecommended: data.campaignrecommended,
+            lasttransactiondetails: data.lasttransactiondetails,
+            lastTransactionItem: data.lasttransactiondetails.itemDetails,
+            sortCustName: sortName,
+          });
+        } else {
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: {},
+            campaignkeyinsight: {},
+            useratvdetails: {},
+            campaignrecommended: [],
+            lasttransactiondetails: {},
+            lastTransactionItem: [],
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+
+  checkIndividualStatus(campaignScriptID, customerCount, event) {
+    debugger;
+    var checkboxes = document.getElementsByName("allStatus");
+    var strStatusIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatusIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      filterDropdownVisible: false,
+      strStatusIds,
+    });
+    setTimeout(() => {
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+    }, 50);
+  }
+
+  checkAllStatus(campaignScriptID, customerCount, event) {
+    this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    var strStatusIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allStatus");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatusIds = "All";
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strStatusIds = "";
+    }
+    this.setState({
+      filterDropdownVisible: false,
+      strStatusIds,
+    });
+    setTimeout(() => {
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+    }, 50);
+  }
+
+  handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
+    debugger;
+    let self = this;
+    if (customerCount !== "") {
+      this.setState({
+        childTotalGridRecord: Number(customerCount),
+      });
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+      headers: authHeader(),
+      params: {
+        campaignScriptID: campaignScriptID,
+        pageNo: this.state.childCurrentPage,
+        pageSize: this.state.ChildPostsPerPage,
+        FilterStatus: this.state.strStatusIds,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          self.setState({
+            CampChildTableData: data.campaignCustomerModel,
+            childTotalGridRecord: data.campaignCustomerCount,
+          });
+        } else {
+          self.setState({
+            CampChildTableData: [],
+            childTotalGridRecord: 0,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  };
+
+  handleSelectChannelsOnchange(check) {
+    //debugger;
+    if (check === "Messanger") {
+      this.setState({
+        Respo_ChannelMessanger: true,
+        Respo_ChannelBot: false,
+        Respo_ChannelSMS: false,
+        Respo_ChannelEmail: false,
+      });
+    } else if (check === "Bot") {
+      this.setState({
+        Respo_ChannelMessanger: false,
+        Respo_ChannelBot: true,
+        Respo_ChannelSMS: false,
+        Respo_ChannelEmail: false,
+      });
+    } else if (check === "SMS") {
+      this.setState({
+        Respo_ChannelMessanger: false,
+        Respo_ChannelBot: false,
+        Respo_ChannelSMS: true,
+        Respo_ChannelEmail: false,
+      });
+    } else if (check === "Email") {
+      this.setState({
+        Respo_ChannelMessanger: false,
+        Respo_ChannelBot: false,
+        Respo_ChannelSMS: false,
+        Respo_ChannelEmail: true,
+      });
+    }
   }
   render() {
     return (
@@ -811,7 +1117,7 @@ class StoreCampaign extends Component {
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
                         alt="info-icon"
-                        onClick={this.responsiveCustModalOpen.bind(this)}
+                        onClick={this.responsiveCustModalOpen.bind(this, item)}
                       />
                     </div>
                   );
@@ -889,14 +1195,7 @@ class StoreCampaign extends Component {
                 className: "particular-hide",
                 render: (row, item) => {
                   return (
-                    <button
-                      className="closebtn"
-                      type="button"
-                      // onClick={this.handleCloseCampaign.bind(
-                      //   this,
-                      //   row.campaignTypeID
-                      // )}
-                    >
+                    <button className="closebtn" type="button">
                       <label className="hdrcloselabel">{item.status}</label>
                     </button>
                   );
@@ -906,14 +1205,16 @@ class StoreCampaign extends Component {
                 title: "Actions",
                 render: (row, item) => {
                   return (
-                      <Popover
+                    <Popover
                       overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                           Broadcast to Campaign Customers
+                            Broadcast to Campaign Customers
                           </label>
-                          <label className="broadcastsubtitle">Choose Channel</label>
+                          <label className="broadcastsubtitle">
+                            Choose Channel
+                          </label>
                           <div>
                             <Radio.Group
                               onChange={this.handleBroadcastChange}
@@ -930,225 +1231,507 @@ class StoreCampaign extends Component {
                               </Radio>
                             </Radio.Group>
                           </div>
-                          <button type="button" className="executebtn">Execute</button>
+                          <button type="button" className="executebtn">
+                            Execute
+                          </button>
                         </div>
                       }
                       placement="bottom"
                       trigger="click"
                     >
-                    <div className="broadcast-icon">
-                    <img
-                      src={BroadCastIcon}
-                      alt="cancel-icone"
-                      // onClick={this.handleBroadCastModalOpen.bind(this)}
-                      className="broadcastimg"
-                    />
-                  </div>
-                      
+                      <div className="broadcast-icon">
+                        <img
+                          src={BroadCastIcon}
+                          alt="cancel-icone"
+                          onClick={this.handleBroadCastModalOpen.bind(this)}
+                          className="broadcastimg"
+                        />
+                      </div>
                     </Popover>
-                   
                   );
                 },
               },
             ]}
             expandedRowRender={(row, item) => {
-              //debugger;
               return (
-                <Table
-                  dataSource={this.state.CampChildTableData.filter(
-                    (x) => x.campaignScriptID === row.campaignID
-                  )}
-                  columns={[
-                    {
-                      title: "Customer Name",
-                      dataIndex: "id",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            <p
-                              className="cust-name"
-                              onClick={this.handleCustomerNameModalOpen.bind(
-                                this,
-                                item
-                              )}
-                            >
-                              {item.customerName}
-                              <img
-                                className="ico"
-                                src={Whatsapp}
-                                alt="Whatsapp Icon"
-                              />
-                            </p>
-                            <span className="sml-fnt">
-                              {item.customerNumber}
-                            </span>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Date",
-                      dataIndex: "campaignDate",
-                      className: "table-coloum-hide",
-                    },
-                    {
-                      title: "Response",
-                      className: "table-coloum-hide",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            <select
-                              className="responceDrop-down dropdown-label"
-                              value={item.responseID}
-                              onChange={this.onResponseChange.bind(
-                                this,
-                                item.id,
-                                item
-                              )}
-                            >
-                              <option hidden>Select Response</option>
-                              {item.hsCampaignResponseList !== null &&
-                                item.hsCampaignResponseList.map((items, i) => (
-                                  <option key={i} value={items.responseID}>
-                                    {items.response}
-                                  </option>
-                                ))}
-                            </select>
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Status",
-                      dataIndex: "statusName",
-                      render: (row, item) => {
-                        return (
-                          <div>
-                            {item.statusID === 100 ? (
-                              <label className="table-btnlabel contactBtnGreen">
-                                {item.statusName}
-                              </label>
-                            ) : item.statusID === 101 ? (
-                              <label className="table-btnlabel notConnectedBtnRed">
-                                {item.statusName}
-                              </label>
-                            ) : item.statusID === 102 ? (
-                              <label className="table-btnlabel followUpBtnYellow">
-                                {item.statusName}
-                              </label>
-                            ) : null}
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Call Recheduled To",
-                      className: "table-coloum-hide",
-                      dataIndex: "pricePaid",
-                      render: (row, item) => {
-                        // debugger;
-                        return (
-                          <div
-                            className={
-                              item.responseID === 3 ? "" : "disabled-input"
-                            }
-                          >
-                            <DatePicker
-                              id="startDate"
-                              autoComplete="off"
-                              showTimeSelect
-                              name="startDate"
-                              showMonthDropdown
-                              showYearDropdown
-                              selected={
-                                item.callRescheduledTo !== ""
-                                  ? new Date(item.callRescheduledTo)
-                                  : new Date()
-                              }
-                              dateFormat="MM/dd/yyyy h:mm aa"
-                              value={
-                                item.callRescheduledTo !== ""
-                                  ? moment(item.callRescheduledTo)
-                                  : ""
-                              }
-                              onChange={this.onDateChange.bind(this, item.id)}
-                              className={
-                                item.responseID === 3
-                                  ? "txtStore dateTimeStore"
-                                  : "txtStore dateTimeStore disabled-link"
-                              }
-                              placeholderText="Select Date &amp; Time"
-                            />
-                          </div>
-                        );
-                      },
-                    },
-                    {
-                      title: "Actions",
-                      render: (row, item) => {
-                        return (
-                          <div>
+                <div>
+                  <Table
+                    dataSource={this.state.CampChildTableData.filter(
+                      (x) => x.campaignScriptID === row.campaignID
+                    )}
+                    className="midalResponseAction"
+                    columns={[
+                      {
+                        title: "Customer Name",
+                        dataIndex: "id",
+                        render: (row, item) => {
+                          return (
                             <div>
-                              {this.state.responsiveChildTable ? (
+                              <p
+                                className="cust-name"
+                                onClick={this.handleGetCustomerDataForModal.bind(
+                                  this,
+                                  item
+                                )}
+                              >
+                                {item.customerName}
                                 <img
-                                  className="info-icon-cp hidedesk"
-                                  src={collapseUp}
-                                  alt="collapseUp"
-                                  onClick={this.handleToggleChildTable.bind(
-                                    this
-                                  )}
+                                  className="ico"
+                                  src={Whatsapp}
+                                  alt="Whatsapp Icon"
                                 />
-                              ) : (
-                                <img
-                                  className="info-icon-cp hidedesk"
-                                  src={collapsedown}
-                                  alt="collapsedown"
-                                  onClick={this.handleToggleChildTable.bind(
-                                    this
-                                  )}
-                                />
-                              )}
+                              </p>
+                              <span className="sml-fnt">
+                                {item.customerNumber}
+                              </span>
                             </div>
-                            <div className="table-coloum-hide status-btn-camp">
-                              <div>
-                                <button
-                                  className="saveBtn saveLabel"
-                                  type="button"
-                                  onClick={this.handleUpdateCampaignResponse.bind(
-                                    this,
-                                    item.id,
-                                    item.responseID,
-                                    item.callRescheduledTo,
-                                    item.campaignScriptID
-                                  )}
-                                >
-                                  Update
-                                </button>
-                              </div>
-                              <div style={{ display: "none" }}>
-                                <button
-                                  className="raisedticket-Btn"
-                                  type="button"
-                                  // onClick={this.handleRaisedTicketModalOpen.bind(
-                                  //   this,
-                                  //   row,
-                                  //   item
-                                  // )}
-                                >
-                                  <label className="raise-ticketLbl">
-                                    Raise Ticket
-                                  </label>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        );
+                          );
+                        },
                       },
-                    },
-                  ]}
-                  pagination={false}
-                  loading={this.state.ChildTblLoading}
-                />
+                      {
+                        title: "Date",
+                        dataIndex: "campaignDate",
+                        className: "table-coloum-hide",
+                      },
+                      {
+                        title: "Response",
+                        className: "table-coloum-hide",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              <select
+                                className="responceDrop-down dropdown-label"
+                                value={item.responseID}
+                                onChange={this.onResponseChange.bind(
+                                  this,
+                                  item.id,
+                                  item
+                                )}
+                              >
+                                <option hidden>Select Response</option>
+                                {item.hsCampaignResponseList !== null &&
+                                  item.hsCampaignResponseList.map(
+                                    (items, i) => (
+                                      <option key={i} value={items.responseID}>
+                                        {items.response}
+                                      </option>
+                                    )
+                                  )}
+                              </select>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Status",
+                        dataIndex: "statusName",
+                        className: "camp-status-header",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              {item.statusID === 100 ? (
+                                <label className="table-btnlabel contactBtnGreen">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 101 ? (
+                                <label className="table-btnlabel notConnectedBtnRed">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 102 ? (
+                                <label className="table-btnlabel followUpBtnYellow">
+                                  {item.statusName}
+                                </label>
+                              ) : null}
+                            </div>
+                          );
+                        },
+                        filterDropdown: (dataIndex) => (
+                          <div className="campaign-status-drpdwn">
+                            <ul>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="all-status"
+                                  className="ch1"
+                                  onChange={this.checkAllStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                />
+                                <label htmlFor="all-status">
+                                  <span className="ch1-text">All</span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="status100"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={100}
+                                />
+                                <label htmlFor="status100">
+                                  <span className="ch1-text">Contacted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="status101"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={101}
+                                />
+                                <label htmlFor="status101">
+                                  <span className="ch1-text">
+                                    Not Contacted
+                                  </span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="status102"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={102}
+                                />
+                                <label htmlFor="status102">
+                                  <span className="ch1-text">Follow Up</span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="status103"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={103}
+                                />
+                                <label htmlFor="status103">
+                                  <span className="ch1-text">Converted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="status104"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={104}
+                                />
+                                <label htmlFor="status104">
+                                  <span className="ch1-text">Conversation</span>
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
+                        ),
+                        filterDropdownVisible: this.state.filterDropdownVisible,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ filterDropdownVisible: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
+                      },
+                      {
+                        title: "Call Recheduled To",
+                        className: "table-coloum-hide",
+                        dataIndex: "pricePaid",
+                        render: (row, item) => {
+                          ////debugger;
+                          return (
+                            <div
+                              className={
+                                item.responseID === 3 ? "" : "disabled-input"
+                              }
+                            >
+                              <div className="date-time-resp">
+                                <DatePicker
+                                  id="startDate"
+                                  autoComplete="off"
+                                  showTimeSelect
+                                  name="startDate"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  selected={
+                                    item.callRescheduledTo !== ""
+                                      ? new Date(item.callRescheduledTo)
+                                      : new Date()
+                                  }
+                                  dateFormat="MM/dd/yyyy h:mm aa"
+                                  value={
+                                    item.callRescheduledTo !== ""
+                                      ? moment(item.callRescheduledTo).format(
+                                          "DD-MM-YYYY hh:mm:ss"
+                                        )
+                                      : ""
+                                  }
+                                  onChange={this.onDateChange.bind(
+                                    this,
+                                    item.id
+                                  )}
+                                  className={
+                                    item.responseID === 3
+                                      ? "txtStore dateTimeStore"
+                                      : "txtStore dateTimeStore disabled-link"
+                                  }
+                                  placeholderText="Select Date &amp; Time"
+                                />
+                              </div>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        title: "Actions",
+                        render: (row, item) => {
+                          return (
+                            <div>
+                              <div className="table-coloum-hide status-btn-camp">
+                                <div>
+                                  <button
+                                    className="saveBtn saveLabel"
+                                    type="button"
+                                    onClick={this.handleUpdateCampaignResponse.bind(
+                                      this,
+                                      item.id,
+                                      item.responseID,
+                                      item.callRescheduledTo,
+                                      item.campaignScriptID
+                                    )}
+                                  >
+                                    Update
+                                  </button>
+                                </div>
+                                <div style={{ display: "none" }}>
+                                  <button
+                                    className="raisedticket-Btn"
+                                    type="button"
+                                    // onClick={this.handleRaisedTicketModalOpen.bind(
+                                    //   this,
+                                    //   row,
+                                    //   item
+                                    // )}
+                                  >
+                                    <label className="raise-ticketLbl">
+                                      Raise Ticket
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        },
+                      },
+                    ]}
+                    expandedRowRender={(row, item) => {
+                      return (
+                        <div className="innertabcollapse">
+                          <table>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <label>Customer Name</label>
+                                </td>
+                                <td>
+                                  <label className="cust-name">
+                                    {row.customerName}
+                                    <img
+                                      className="ico"
+                                      src={Whatsapp}
+                                      alt="Whatsapp Icon"
+                                    />
+                                  </label>
+                                  <span className="sml-fnt">
+                                    {row.customerNumber}
+                                  </span>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Date</label>
+                                </td>
+                                <td>
+                                  <label>{row.campaignDate}</label>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Response</label>
+                                </td>
+                                <td>
+                                  <select
+                                    className="responceDrop-down dropdown-label"
+                                    value={row.responseID}
+                                    onChange={this.onResponseChange.bind(
+                                      this,
+                                      row.id,
+                                      row
+                                    )}
+                                  >
+                                    <option hidden>Select Response</option>
+                                    {row.hsCampaignResponseList !== null &&
+                                      row.hsCampaignResponseList.map(
+                                        (items, i) => (
+                                          <option
+                                            key={i}
+                                            value={items.responseID}
+                                          >
+                                            {items.response}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Status</label>
+                                </td>
+                                <td>
+                                  <label className="table-btnlabel notConnectedBtnRed">
+                                    {row.statusName}
+                                  </label>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <label>Call Rescheduled to</label>
+                                </td>
+                                <td>
+                                  <div
+                                    className={
+                                      row.responseID === 3
+                                        ? ""
+                                        : "disabled-input"
+                                    }
+                                  >
+                                    <div className="date-time-resp">
+                                      <DatePicker
+                                        id="startDate"
+                                        autoComplete="off"
+                                        showTimeSelect
+                                        name="startDate"
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        selected={
+                                          row.callRescheduledTo !== ""
+                                            ? new Date(row.callRescheduledTo)
+                                            : new Date()
+                                        }
+                                        dateFormat="MM/dd/yyyy h:mm aa"
+                                        value={
+                                          row.callRescheduledTo !== ""
+                                            ? moment(row.callRescheduledTo)
+                                            : ""
+                                        }
+                                        onChange={this.onDateChange.bind(
+                                          this,
+                                          row.id
+                                        )}
+                                        className={
+                                          row.responseID === 3
+                                            ? "txtStore dateTimeStore"
+                                            : "txtStore dateTimeStore disabled-link"
+                                        }
+                                        placeholderText="Select Date &amp; Time"
+                                      />
+                                    </div>
+                                  </div>
+                                </td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td colSpan="3">
+                                  <div style={{ float: "right" }}>
+                                    <button
+                                      className="saveBtn saveLabel"
+                                      type="button"
+                                      onClick={this.handleUpdateCampaignResponse.bind(
+                                        this,
+                                        row.id,
+                                        row.responseID,
+                                        row.callRescheduledTo,
+                                        row.campaignScriptID
+                                      )}
+                                    >
+                                      Update
+                                    </button>
+                                    <button
+                                      className="raisedticket-Btn saveLabel"
+                                      style={{ display: "none" }}
+                                    >
+                                      Raise Ticket
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      );
+                    }}
+                    expandIconColumnIndex={5}
+                    expandIconAsCell={false}
+                    pagination={false}
+                    loading={this.state.ChildTblLoading}
+                  />
+                  <Pagination
+                    currentPage={this.state.childCurrentPage}
+                    totalSize={this.state.childTotalGridRecord}
+                    sizePerPage={this.state.ChildPostsPerPage}
+                    changeCurrentPage={this.PaginationOnChange}
+                    theme="bootstrap"
+                  />
+                  <div className="position-relative">
+                    <div className="item-selection Camp-pagination">
+                      <select
+                        value={this.state.ChildPostsPerPage}
+                        onChange={this.handlePageItemchange}
+                      >
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={30}>30</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
+                </div>
               );
             }}
             onExpand={this.handleGetCampaignCustomerData}
@@ -1159,141 +1742,12 @@ class StoreCampaign extends Component {
             dataSource={this.state.campaignGridData}
           />
         </div>
-        <Pagination
+
+        {/* <Pagination
           postsPerPage={this.state.postsPerPage}
           totalGridData={this.state.totalGridRecord}
-        />
-        <div className="hidedesk">
-          <Collapse isOpen={this.state.responsiveChildTable}>
-            <Card>
-              <CardBody>
-                <div className="innertabcollapse">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <label>Customer Name</label>
-                        </td>
-                        <td>
-                          <label>
-                            {this.state.collapseModalDetails.customerName}
-                            <span>{this.state.collapseModalDetails.customerNumber}</span>
-                          </label>
-                        </td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label>Date</label>
-                        </td>
-                        <td>
-                          <label>{this.state.collapseModalDetails.campaignDate}</label>
-                        </td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label>Response</label>
-                        </td>
-                        <td>
-                          {/* <select
-                            className="responceDrop-down dropdown-label"
-                            value={this.state.collapseModalDetails.responseID}
-                            onChange={this.onResponseChange.bind(
-                              this,
-                              this.state.collapseModalDetails.id,
-                              this.state.collapseModalDetails
-                            )}
-                          >
-                            <option hidden>Select Response</option>
-                            {this.state.collapseModalDetails.hsCampaignResponseList !== null &&
-                              this.state.collapseModalDetails.hsCampaignResponseList.map((items, i) => (
-                                <option key={i} value={items.responseID}>
-                                  {items.response}
-                                </option>
-                              ))}
-                          </select> */}
-                        </td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label>Status</label>
-                        </td>
-                        <td>
-                          <label className="table-btnlabel notConnectedBtnRed">
-                            {this.state.collapseModalDetails.statusName}
-                          </label>
-                        </td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label>Call Rescheduled to</label>
-                        </td>
-                        <td>
-                          {/* <div
-                            className={
-                              this.state.collapseModalDetails.responseID === 3 ? "" : "disabled-input"
-                            }
-                          >
-                            <DatePicker
-                              id="startDate"
-                              autoComplete="off"
-                              showTimeSelect
-                              name="startDate"
-                              showMonthDropdown
-                              showYearDropdown
-                              selected={
-                                this.state.collapseModalDetails.callRescheduledTo !== ""
-                                  ? new Date(this.state.collapseModalDetails.callRescheduledTo)
-                                  : new Date()
-                              }
-                              dateFormat="MM/dd/yyyy h:mm aa"
-                              value={
-                                this.state.collapseModalDetails.callRescheduledTo !== ""
-                                  ? moment(this.state.collapseModalDetails.callRescheduledTo)
-                                  : ""
-                              }
-                              onChange={this.onDateChange.bind(this, this.state.collapseModalDetails.id)}
-                              className={
-                                this.state.collapseModalDetails.responseID === 3
-                                  ? "txtStore dateTimeStore"
-                                  : "txtStore dateTimeStore disabled-link"
-                              }
-                              placeholderText="Select Date &amp; Time"
-                            />
-                          </div> */}
-                        </td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <button
-                            className="saveBtn saveLabel"
-                            type="button"
-                            onClick={this.handleUpdateCampaignResponse.bind(
-                              this,
-                              this.state.collapseModalDetails.id,
-                              this.state.collapseModalDetails.responseID,
-                              this.state.collapseModalDetails.callRescheduledTo,
-                              this.state.collapseModalDetails.campaignScriptID
-                            )}
-                          >
-                            Update
-                          </button>
-                          <button style={{ display: "none" }}>
-                            Raise Ticket
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </CardBody>
-            </Card>
-          </Collapse>
-        </div>
+        /> */}
+
         <Modal
           open={this.state.ResponsiveCustModal}
           onClose={this.responsiveCustModalClose.bind(this)}
@@ -1314,22 +1768,12 @@ class StoreCampaign extends Component {
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">Chatbot Script</label>
                     <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly. Enter "Browse" to explore
-                      your favorite categories and continue with your shopping.
-                      Enter "Go Back" to Exit Shopping Mode
+                      {this.state.chatbotScript}
                     </label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -1338,21 +1782,11 @@ class StoreCampaign extends Component {
                 <div className="">
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">SMS Script</label>
-                    <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly.
-                    </label>
+                    <label class="channelScript">{this.state.smsScript}</label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -1381,182 +1815,247 @@ class StoreCampaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>{this.state.customerModalDetails.customerName}</h3>
-                <p>Elite</p>
+                <p>{this.state.useratvdetails.tiername}</p>
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-              <div className="lifetimevalue">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <h4>Lifetime Value</h4>
-                        <label>₹16,347</label>
-                      </td>
-                      <td>
-                        <h4>Visit Count</h4>
-                        <label>08</label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="keyinsights">
-                <h4>Key Insights</h4>
-                <p>Naman has an ATV Rs 500 in last quarter</p>
-                <p>Naman's favourite product category is Men Closet</p>
-                <p>
-                  Naman's basket size is reducing, Recommended Brands are: North
-                  Star, Hush Puppies
-                </p>
-                <img
-                  className="keyingsightdrp"
-                  src={Dropdown3}
-                  alt="Down Arrow"
-                />
-              </div>
+              {this.state.campaignkeyinsight.insightText === "" ? (
+                <div className="lifetimevalue lt-single">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h4>Lifetime Value</h4>
+                          <label>
+                            ₹{this.state.useratvdetails.lifeTimeValue}
+                          </label>
+                        </td>
+                        <td>
+                          <h4>Visit Count</h4>
+                          <label>
+                            {this.state.useratvdetails.visitCount < 9
+                              ? "0" + this.state.useratvdetails.visitCount
+                              : this.state.useratvdetails.visitCount}
+                          </label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="lifetimevalue">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h4>Lifetime Value</h4>
+                          <label>
+                            ₹{this.state.useratvdetails.lifeTimeValue}
+                          </label>
+                        </td>
+                        <td>
+                          <h4>Visit Count</h4>
+                          <label>
+                            {this.state.useratvdetails.visitCount < 9
+                              ? "0" + this.state.useratvdetails.visitCount
+                              : this.state.useratvdetails.visitCount}
+                          </label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {this.state.campaignkeyinsight.insightText !== "" ? (
+                <div className="keyinsights">
+                  <h4>Key Insights</h4>
+                  <p>{this.state.campaignkeyinsight.insightText}</p>
+                  <img
+                    className="keyingsightdrp"
+                    src={Dropdown3}
+                    alt="Down Arrow"
+                  />
+                </div>
+              ) : null}
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
                 <Tabs>
                   <Tab label="Recommended">
-                    <div>
+                    <div className="prodscro">
                       <div className="pro-slidercam">
                         <table className="w-100">
                           <tbody>
                             <tr>
-                              <td>
-                                <div className="imgbox">
-                                  <Popover
-                                    overlayClassName="antcustom ant-prodesc"
-                                    content={
-                                      <div className="productdesc">
-                                        <h4>Blue Casual Shoes</h4>
-                                        <p>Product Code - F808920000</p>
-                                        <table>
-                                          <tbody>
-                                            <tr>
-                                              <td>
-                                                <label>Colors:</label>
-                                              </td>
-                                              <td>
-                                                <ul>
-                                                  <li>
-                                                    <a className="colorblue">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="colorblack">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="colorgrey">
-                                                      <span>1</span>
-                                                    </a>
-                                                  </li>
-                                                </ul>
-                                              </td>
-                                            </tr>
-                                            <tr>
-                                              <td>
-                                                <label>Sizes:</label>
-                                              </td>
-                                              <td>
-                                                <ul className="sizes">
-                                                  <li>
-                                                    <a>6</a>
-                                                  </li>
-                                                  <li>
-                                                    <a className="active">7</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>8</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>9</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>10</a>
-                                                  </li>
-                                                  <li>
-                                                    <a>11</a>
-                                                  </li>
-                                                </ul>
-                                              </td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                        <h3>INR 3499/-</h3>
-                                      </div>
-                                    }
-                                    placement="left"
-                                    trigger="click"
-                                  >
-                                    <img
-                                      className="shoeimg"
-                                      src={Shoe}
-                                      alt="Product Image"
-                                    />
-                                  </Popover>
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
-                              <td>
-                                <div className="imgbox">
-                                  <img
-                                    className="shoeimg"
-                                    src={Shoe}
-                                    alt="Product Image"
-                                  />
-                                  <img
-                                    className="whatsappico"
-                                    src={Whatsapp}
-                                    alt="Whatsapp Icon"
-                                  />
-                                </div>
-                                <h4>Casual Shoe</h4>
-                              </td>
+                              {this.state.campaignrecommended !== null &&
+                                this.state.campaignrecommended.map(
+                                  (item, j) => {
+                                    var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
+                                    return (
+                                      <td key={j}>
+                                        {item.imageURL !== "" ? (
+                                          <div className="imgbox">
+                                            <Popover
+                                              overlayClassName="antcustom ant-prodesc"
+                                              content={
+                                                <div className="productdesc">
+                                                  <h4>{FullProductName}</h4>
+                                                  <p>
+                                                    Product Code -{" "}
+                                                    {item.itemCode}
+                                                  </p>
+                                                  <table>
+                                                    <tbody>
+                                                      <tr>
+                                                        <td>
+                                                          <label>Colors:</label>
+                                                        </td>
+                                                        <td>
+                                                          <ul>
+                                                            {item.color ===
+                                                            "Blue" ? (
+                                                              <li>
+                                                                <a className="colorblue">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+
+                                                            {item.color ===
+                                                            "Black" ? (
+                                                              <li>
+                                                                <a className="colorblack">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+
+                                                            {item.color ===
+                                                            "Grey" ? (
+                                                              <li>
+                                                                <a className="colorgrey">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+                                                          </ul>
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          <label>Sizes:</label>
+                                                        </td>
+                                                        <td>
+                                                          <ul className="sizes">
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "6"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                6
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "7"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                7
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "8"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                8
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "9"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                9
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "10"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                10
+                                                              </a>
+                                                            </li>
+                                                            <li>
+                                                              <a
+                                                                className={
+                                                                  item.size ===
+                                                                  "11"
+                                                                    ? "active"
+                                                                    : ""
+                                                                }
+                                                              >
+                                                                11
+                                                              </a>
+                                                            </li>
+                                                          </ul>
+                                                        </td>
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                  <h3>INR {item.price}/-</h3>
+                                                </div>
+                                              }
+                                              placement="left"
+                                            >
+                                              <img
+                                                className="shoeimg"
+                                                src={item.imageURL}
+                                                alt="Product Image"
+                                              />
+                                            </Popover>
+                                            <Link
+                                              to={`//${item.url}`}
+                                              target="_blank"
+                                            >
+                                              <img
+                                                className="whatsappico"
+                                                src={Whatsapp}
+                                                alt="Whatsapp Icon"
+                                              />
+                                            </Link>
+                                          </div>
+                                        ) : null}
+
+                                        <h4>{item.subCategory}</h4>
+                                      </td>
+                                    );
+                                  }
+                                )}
                             </tr>
                           </tbody>
                         </table>
@@ -1571,27 +2070,61 @@ class StoreCampaign extends Component {
                             <tr>
                               <td>
                                 <h5>Bill No.</h5>
-                                <label>BB332393</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.billNo}
+                                </label>
                               </td>
                               <td>
                                 <h5>Amount</h5>
-                                <label>₹1,499</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.amount}
+                                </label>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <h5>Store</h5>
-                                <label>Bata - Rajouri Garden</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.storeName}
+                                </label>
                               </td>
                               <td>
                                 <h5>Date</h5>
-                                <label>12 Jan 2020</label>
+                                <label>
+                                  {this.state.lasttransactiondetails.billDate}
+                                </label>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                         <div className="trasactablist">
-                          <div className="tabscrol">
+                          <div className="myTicket-table remov agentlist last-trans-table">
+                            <ReactTable
+                              className="limit-react-table-body tabscrol"
+                              data={this.state.lastTransactionItem}
+                              columns={[
+                                {
+                                  Header: <span>Article</span>,
+                                  accessor: "article",
+                                },
+                                {
+                                  Header: <span>Qty.</span>,
+                                  accessor: "quantity",
+                                  width: 60,
+                                },
+                                {
+                                  Header: <span>Amount</span>,
+                                  accessor: "amount",
+                                  width: 80,
+                                },
+                              ]}
+                              minRows={2}
+                              // defaultPageSize={5}
+                              showPagination={false}
+                              resizable={false}
+                            />
+                          </div>
+                          {/* <div className="tabscrol">
                             <table>
                               <thead>
                                 <tr>
@@ -1601,19 +2134,21 @@ class StoreCampaign extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>Beige Sports Shoes</td>
-                                  <td>x1</td>
-                                  <td>₹1,499</td>
-                                </tr>
-                                <tr>
-                                  <td>Black Sandals</td>
-                                  <td>x2</td>
-                                  <td>₹4,998</td>
-                                </tr>
+                                {this.state.lastTransactionItem !== null &&
+                                  this.state.lastTransactionItem.map(
+                                    (item, l) => {
+                                      return (
+                                        <tr key={l}>
+                                          <td>{item.article}</td>
+                                          <td>{item.quantity}</td>
+                                          <td>₹{item.amount}</td>
+                                        </tr>
+                                      );
+                                    }
+                                  )}
                               </tbody>
                             </table>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -1628,7 +2163,12 @@ class StoreCampaign extends Component {
                 <h4>Share Campaign Via</h4>
                 <ul>
                   {this.state.customerModalDetails.smsFlag === true ? (
-                    <li>
+                    <li
+                      onClick={this.handleSendViaSMS.bind(
+                        this,
+                        this.state.customerModalDetails
+                      )}
+                    >
                       <img className="ico" src={Sms1} alt="SMS Icon" />
                       SMS
                     </li>
@@ -1676,24 +2216,42 @@ class StoreCampaign extends Component {
           </div>
         </Modal>
         <Modal
+          open={this.state.ResponsiveShareNow}
+          onClose={this.handleShareNowCloseModal.bind(this)}
+          center
+          modalId="sharesuccesfullpopup"
+          overlayId=""
+        >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleShareNowCloseModal.bind(this)}
+          />
+          <div>
+            <img className="tick" src={Tick} alt="Tick Icon" />
+            <h3>Shared Successfully!</h3>
+            <p>Your Message has been shared successfully</p>
+          </div>
+        </Modal>
+        <Modal
           open={this.state.ResponsiveBroadCast}
           onClose={this.handleBroadCastModalClose.bind(this)}
           center
-          modalId="sharecamp-popup"
-          overlayId="logout-ovrly"
-          overlayClassName="sharepopupmob"
+          modalId="sharecamp-popupmob"
+          overlayId="logout-ovrly-none"
         >
-           <img
+          <img
             src={CancelIcon}
             alt="cancel-icone"
             className="cust-icon"
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
           <div className="general-popover popover-body broadcastpop">
-            <label>
-              <b>Broadcast to Campaign Customers</b>
+            <label className="broadcasttitle">
+              Broadcast to Campaign Customers
             </label>
-            <label>Choose Channel</label>
+            <label className="broadcastsubtitle">Choose Channel</label>
             <div>
               <Radio.Group
                 onChange={this.handleBroadcastChange}
@@ -1731,49 +2289,102 @@ class StoreCampaign extends Component {
             <table className="w-100">
               <tbody>
                 <tr>
-                  <td>
-                    <a href="#">
-                      <div className="chatbox">
-                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                        Send Via Messanger
-                      </div>
-                    </a>
-                  </td>
-                  <td>
-                    <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                      Send Via Bot
-                    </div>
-                    </a>
-                  </td>
+                  {this.state.customerModalDetails.messengerFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "Messanger"
+                          )}
+                        >
+                          <img
+                            className="ico"
+                            src={Whatsapp}
+                            alt="Whatsapp Icon"
+                          />
+                          {this.state.Respo_ChannelMessanger === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
+                          Send Via Messanger
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
+                  {this.state.customerModalDetails.botFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "Bot"
+                          )}
+                        >
+                          <img
+                            className="ico"
+                            src={Whatsapp}
+                            alt="Whatsapp Icon"
+                          />
+                          {this.state.Respo_ChannelBot === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
+                          Send Via Bot
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
                 </tr>
                 <tr>
-                  <td>
-                    <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Sms1} alt="SMS Icon" />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                      SMS
-                    </div>
-                    </a>
-                  </td>
-                  <td>
-                    <a href="#">
-                    <div className="chatbox">
-                      <img className="ico" src={Sms1} alt="Email Icon" />
-                        <img className="tick" src={Tick} alt="Tick Icon" />
-                      Email
-                    </div>
-                    </a>
-                  </td>
+                  {this.state.customerModalDetails.smsFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "SMS"
+                          )}
+                        >
+                          <img className="ico" src={Sms1} alt="SMS Icon" />
+                          {this.state.Respo_ChannelSMS === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
+                          SMS
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
+                  {this.state.customerModalDetails.emailFlag === true ? (
+                    <td>
+                      <a href={Demo.BLANK_LINK}>
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "Email"
+                          )}
+                        >
+                          <img className="ico" src={Sms1} alt="Email Icon" />
+                          {this.state.Respo_ChannelEmail === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
+                          Email
+                        </div>
+                      </a>
+                    </td>
+                  ) : null}
                 </tr>
               </tbody>
             </table>
             <div className="sharecampmob">
-              <label className="shareviabtn">Share Now</label>
+              <label
+                className="shareviabtn"
+                onClick={this.handleShareNowOpenModal.bind(this)}
+              >
+                Share Now
+              </label>
             </div>
           </div>
         </Modal>

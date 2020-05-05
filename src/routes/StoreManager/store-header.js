@@ -5,6 +5,7 @@ import ChatLogo from "./../../assets/Images/chat.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
+import SuggSearch from "./../../assets/Images/sugg-search.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
@@ -202,6 +203,7 @@ class Header extends Component {
       recommendedModal: false,
       paymentModal: false,
       selectedCard: 0,
+      chkSuggestion: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -264,6 +266,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
+    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -382,6 +385,7 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -773,20 +777,26 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages(messageStringData) {
-    debugger;
-    var nickname = "deepak";
-    var msf = "hello";
-
+  handleSaveChatMessages(messageStringData, index) {
     let self = this;
     var messagecontent = "";
-    if (messageStringData !== "") {
+    if (messageStringData) {
       messagecontent = messageStringData
         .replace("col-md-4", "col-md-2")
         .replace("col-md-8", "col-md-10");
     } else {
-      messagecontent = this.state.message;
+      messagecontent = messageStringData;
     }
+    if (this.state.chkSuggestion.length > 0) {
+      if (this.state.chkSuggestion[index] === 1) {
+        this.state.chkSuggestion[index] = 0;
+      } else {
+        this.state.chkSuggestion[index] = 1;
+      }
+    } else {
+      this.state.chkSuggestion[index] = 1;
+    }
+    this.setState({ chkSuggestion: this.state.chkSuggestion });
 
     if (messagecontent !== "" && this.state.chatId > 0) {
       var inputParam = {};
@@ -808,7 +818,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
-            self.setState({ message: "" });
+            self.setState({ message: "", messageSuggestionData: [] });
           } else {
           }
         })
@@ -1015,12 +1025,16 @@ class Header extends Component {
       message,
       messageSuggestion,
     });
+  };
+
+  handleMessageSuggestion = (evt) => {
     setTimeout(() => {
       if (this.state.messageSuggestion.length > 2) {
         this.handleGetMessageSuggestionList();
       } else {
         this.setState({
           messageSuggestionData: [],
+          chkSuggestion: [],
         });
       }
     }, 1);
@@ -1030,7 +1044,7 @@ class Header extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/gettitlesuggestions",
+      url: config.apiUrl + "/CustomerChat/getChatSuggestions",
       headers: authHeader(),
       params: {
         TikcketTitle: this.state.messageSuggestion,
@@ -1040,9 +1054,9 @@ class Header extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({ messageSuggestionData: data });
+          self.setState({ messageSuggestionData: data, chkSuggestion: [] });
         } else {
-          self.setState({ messageSuggestionData: [] });
+          self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
       })
       .catch((res) => {
@@ -2057,7 +2071,6 @@ class Header extends Component {
                               }
                               data={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
-                              id="messageSuggestion"
                               config={{
                                 toolbar: [
                                   {
@@ -2097,6 +2110,37 @@ class Header extends Component {
                             {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
+                                <div className="suggestions-cntr">
+                                  {this.state.messageSuggestionData !== null &&
+                                    this.state.messageSuggestionData.map(
+                                      (item, i) => (
+                                        <div
+                                          className={
+                                            this.state.chkSuggestion[i] === 1
+                                              ? "suggestions-tick"
+                                              : ""
+                                          }
+                                          key={i}
+                                          onClick={this.handleSaveChatMessages.bind(
+                                            this,
+                                            item.suggestionText,
+                                            i
+                                          )}
+                                        >
+                                          <Tooltip
+                                            placement="left"
+                                            title={item.suggestionText}
+                                          >
+                                            <span>{item.suggestionText}</span>
+                                          </Tooltip>
+                                        </div>
+                                      )
+                                    )}
+                                </div>
+                              )}
+                            {/* {this.state.messageSuggestionData !== null &&
+                              this.state.messageSuggestionData.length > 0 &&
+                              this.state.messageSuggestionData.length > 0 && (
                                 <div className="custom-ticket-title-suggestions">
                                   {this.state.messageSuggestionData !== null &&
                                     this.state.messageSuggestionData.map(
@@ -2113,7 +2157,7 @@ class Header extends Component {
                                       )
                                     )}
                                 </div>
-                              )}
+                              )} */}
                             <div
                               className="mobile-ck-send"
                               onClick={this.handleSaveChatMessages.bind(
@@ -2122,7 +2166,8 @@ class Header extends Component {
                               )}
                               title={"Send"}
                             >
-                              <img src={Assign} alt="send img" />
+                              {/* <img src={Assign} alt="send img" /> */}
+                              <img src={SuggSearch} alt="send img" />
                             </div>
                           </div>
                         </div>
@@ -2674,6 +2719,7 @@ class Header extends Component {
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
+                              data={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                               config={{
                                 toolbar: [
@@ -2701,6 +2747,37 @@ class Header extends Component {
                                 ],
                               }}
                             />
+                            {this.state.messageSuggestionData !== null &&
+                              this.state.messageSuggestionData.length > 0 &&
+                              this.state.messageSuggestionData.length > 0 && (
+                                <div className="suggestions-cntr">
+                                  {this.state.messageSuggestionData !== null &&
+                                    this.state.messageSuggestionData.map(
+                                      (item, i) => (
+                                        <div
+                                          className={
+                                            this.state.chkSuggestion[i] === 1
+                                              ? "suggestions-tick"
+                                              : ""
+                                          }
+                                          key={i}
+                                          onClick={this.handleSaveChatMessages.bind(
+                                            this,
+                                            item.suggestionText,
+                                            i
+                                          )}
+                                        >
+                                          <Tooltip
+                                            placement="left"
+                                            title={item.suggestionText}
+                                          >
+                                            <span>{item.suggestionText}</span>
+                                          </Tooltip>
+                                        </div>
+                                      )
+                                    )}
+                                </div>
+                              )}
 
                             <div
                               className="mobile-ck-send"
@@ -2710,7 +2787,8 @@ class Header extends Component {
                               )}
                               title={"Send"}
                             >
-                              <img src={Assign} alt="send img" />
+                              {/* <img src={Assign} alt="send img" /> */}
+                              <img src={SuggSearch} alt="send img" />
                             </div>
                           </div>
                         </div>

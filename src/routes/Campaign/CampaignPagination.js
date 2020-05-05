@@ -9,7 +9,7 @@ const CampaignPagination = ({ postsPerPage, totalGridData }) => {
   }
   return (
     <nav>
-      <ul className="pagination">
+      <ul className="pagination custpagination">
         {pageNumber.map((number) => (
           <li key={number} className="page-item">
             <a href={Demo.BLANK_LINK} className="page-link" style={{display:"none"}}>

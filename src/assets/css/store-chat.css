@@ -87,6 +87,54 @@ p {
 /* .chatbot-left {
   height: calc(100vh - 94px);
 } */
+
+/* message suggestions starts */
+.suggestions-cntr {
+  margin: 8px -7px;
+}
+.suggestions-cntr span {
+  background: #fff;
+  opacity: 0.7;
+  padding: 5px 15px;
+  display: inline-block;
+  margin: 4px 7px;
+  max-width: 250px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-radius: 1px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+.suggestions-cntr div {
+  position: relative;
+  display: inline-block;
+}
+.suggestions-tick span {
+  opacity: 1;
+}
+.suggestions-tick span:after {
+  content: "";
+  width: 5px;
+  height: 10px;
+  border: solid #47b04b;
+  border-width: 0 1px 1px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 0.5px;
+  right: 6.5px;
+}
+.suggestions-tick span:before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  border-radius: 50%;
+  background: #c7e8c8;
+  top: -3px;
+  right: 0px;
+}
+/* message suggestions ends */
+
 /* mobile chats tab starts */
 .chat-tabs-mobile {
   display: none;
@@ -236,12 +284,18 @@ p {
 .mobile-ck-send {
   position: absolute;
   width: 30px;
+  height: 30px;
+  line-height: 25px;
   right: 15px;
-  bottom: 55px;
+  top: 35px;
+  /* bottom: 55px; */
   cursor: pointer;
+  border: 0.5px solid #215faa;
+  border-radius: 50%;
+  text-align: center;
 }
 .mobile-ck-send img {
-  width: 100%;
+  width: 13px;
 }
 #mobile-tabs-overlay {
   background: rgba(0, 0, 0, 0.65);
@@ -548,6 +602,9 @@ p {
   margin: 20px;
   position: relative;
 }
+.chatcontentdivtab .cke_contents {
+  height: 100px !important;
+}
 
 .searchtxt {
   background-color: #fff !important;
@@ -787,6 +844,7 @@ p {
 .ant-tooltip-inner {
   font-size: 11px;
   max-width: 100px;
+  min-height: auto;
   text-align: center;
   letter-spacing: 0.5px;
   line-height: 1.4;
@@ -1020,6 +1078,10 @@ p {
   .schedule-left-cntr {
     max-height: calc(100vh - 230px);
   }
+  .ant-tooltip-inner {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
   /* schedule modal ends */
 
   /* payment link mobile starts */
@@ -1034,6 +1096,30 @@ p {
     margin-left: 5px;
   }
   /* payment link mobile ends */
+
+  /* message suggestions starts */
+  .suggestions-cntr span {
+    font-size: 11px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 2px 4px;
+    max-width: 190px;
+  }
+  .suggestions-cntr {
+    margin: 8px 10px 4px;
+  }
+  .suggestions-tick span:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+  }
+  .suggestions-tick span:after {
+    content: "";
+    width: 4px;
+    height: 8px;
+    right: 5.5px;
+  }
+  /* message suggestions ends */
 }
 
 @media all and (max-width: 425px) {
