@@ -266,7 +266,6 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -385,7 +384,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -610,7 +608,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
@@ -641,12 +638,6 @@ class Header extends Component {
                       self.state.ongoingChatsData.find(
                         (x) => x.mobileNo == data[3]
                       ).messageCount + 1;
-                    console.log(
-                      self.state.ongoingChatsData.find(
-                        (x) => x.mobileNo == data[3]
-                      ).messageCount,
-                      "--count"
-                    );
                     self.setState({
                       ongoingChatsData: self.state.ongoingChatsData,
                       chatMessageCount: self.state.chatMessageCount + 1,
@@ -665,7 +656,6 @@ class Header extends Component {
         console.log(response, "---handleGetOngoingChat");
       });
   }
-
   ////handle Get New Chat
   handleGetNewChat() {
     let self = this;
@@ -779,13 +769,15 @@ class Header extends Component {
   ////handle save chat messgae
   handleSaveChatMessages(messageStringData, index) {
     let self = this;
+    debugger;
+
     var messagecontent = "";
     if (messageStringData) {
       messagecontent = messageStringData
         .replace("col-md-4", "col-md-2")
         .replace("col-md-8", "col-md-10");
     } else {
-      messagecontent = messageStringData;
+      messagecontent = this.state.message;
     }
     if (this.state.chkSuggestion.length > 0) {
       if (this.state.chkSuggestion[index] === 1) {
@@ -796,7 +788,9 @@ class Header extends Component {
     } else {
       this.state.chkSuggestion[index] = 1;
     }
-    this.setState({ chkSuggestion: this.state.chkSuggestion });
+    this.setState({
+      chkSuggestion: this.state.chkSuggestion,
+    });
 
     if (messagecontent !== "" && this.state.chatId > 0) {
       var inputParam = {};
@@ -806,7 +800,9 @@ class Header extends Component {
       inputParam.byCustomer = false;
       inputParam.chatStatus = 0;
       inputParam.storeManagerId = 0;
-      this.setState({ message: "" });
+      this.setState({
+        message: "",
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
@@ -818,7 +814,10 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
-            self.setState({ message: "", messageSuggestionData: [] });
+            self.setState({
+              message: "",
+              messageSuggestionData: [],
+            });
           } else {
           }
         })
@@ -982,6 +981,7 @@ class Header extends Component {
               scheduleModal: false,
             });
             self.handleGetTimeSlot();
+            debugger;
             self.handleSaveChatMessages("");
           }
         })
@@ -992,7 +992,6 @@ class Header extends Component {
   }
   ////handlecselect card in card tab
   handleSelectCard(id) {
-    debugger;
     // if (
     //   this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
     //   true
@@ -1091,11 +1090,15 @@ class Header extends Component {
 
   ////handle on going chat click
   handleOngoingChatClick = (id, name, count, mobileNo, customerId) => {
-    debugger;
     // const socket = io.connect("http://localhost:4000");
     // var messageData = this.state.messageData;
 
-    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo });
+    this.setState({
+      chatId: id,
+      customerName: name,
+      mobileNo: mobileNo,
+      customerId: customerId,
+    });
     let self = this;
     // socket.on("connect", () => {
     //   socket.send("hi");
@@ -1226,7 +1229,6 @@ class Header extends Component {
   ////handle card send button
   handleSendCard() {
     if (this.state.selectedCard > 0) {
-      debugger;
       var messageStringData = document.getElementById(
         "card" + this.state.selectedCard
       ).innerHTML;
@@ -1235,6 +1237,27 @@ class Header extends Component {
       this.handleSaveChatMessages(messageStringData);
     }
   }
+
+  handleTabClick = (tabIndex) => {
+    if (tabIndex == 1) {
+      this.setState({ isDownbtn: true });
+    }
+
+    if (tabIndex == 2) {
+      this.setState({ isDownbtn: true });
+    }
+    if (tabIndex == 3) {
+      this.setState({ isDownbtn: true });
+    }
+
+    if (tabIndex == 4) {
+      this.setState({ isDownbtn: true });
+      this.handleGetTimeSlot();
+    }
+    if (tabIndex == 5) {
+      this.setState({ isDownbtn: true });
+    }
+  };
 
   render() {
     return (
@@ -1997,6 +2020,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="message-tab"
                               aria-selected="true"
+                              onClick={this.handleTabClick.bind(this, 1)}
                             >
                               MESSAGE
                             </a>
@@ -2009,6 +2033,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="card-tab"
                               aria-selected="false"
+                              onClick={this.handleTabClick.bind(this, 2)}
                             >
                               CARD
                             </a>
@@ -2021,6 +2046,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="recommended-list-tab"
                               aria-selected="false"
+                              onClick={this.handleTabClick.bind(this, 3)}
                             >
                               RECOMMENDED LIST
                             </a>
@@ -2033,7 +2059,8 @@ class Header extends Component {
                               role="tab"
                               aria-controls="schedule-visit-tab"
                               aria-selected="false"
-                              onClick={this.handleGetTimeSlot.bind(this)}
+                              // onClick={this.handleGetTimeSlot.bind(this)}
+                              onClick={this.handleTabClick.bind(this, 4)}
                             >
                               SCHEDULE VISIT
                             </a>
@@ -2046,6 +2073,7 @@ class Header extends Component {
                               role="tab"
                               aria-controls="generate-payment-link-tab"
                               aria-selected="false"
+                              onClick={this.handleTabClick.bind(this, 5)}
                             >
                               GENERATE PAYMENT LINK
                             </a>
