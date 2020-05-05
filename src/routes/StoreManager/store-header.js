@@ -2065,7 +2065,9 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <CKEditor
+                            <span className="message-initial">M</span>
+                            <textarea placeholder="Search to get suggestions..."></textarea>
+                            {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
@@ -2096,7 +2098,7 @@ class Header extends Component {
                                   },
                                 ],
                               }}
-                            />
+                            /> */}
                             {this.state.isMessage !== "" && (
                               <p
                                 style={{
@@ -2715,7 +2717,9 @@ class Header extends Component {
                           aria-labelledby="message-tab"
                         >
                           <div className="message-div">
-                            <CKEditor
+                            <span className="message-initial">M</span>
+                            <textarea placeholder="Search to get suggestions..."></textarea>
+                            {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
@@ -2746,7 +2750,7 @@ class Header extends Component {
                                   },
                                 ],
                               }}
-                            />
+                            /> */}
                             {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
