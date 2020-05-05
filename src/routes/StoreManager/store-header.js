@@ -1097,7 +1097,7 @@ class Header extends Component {
     // const socket = io.connect("http://localhost:4000");
     // var messageData = this.state.messageData;
 
-    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo, 
+    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo, customerId: customerId, 
       message: "", messageSuggestionData: [], chkSuggestion: [] });
     let self = this;
     // socket.on("connect", () => {
@@ -1246,7 +1246,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
       headers: authHeader(),
       params: {
-        CustomerID : this.state.customerId,
+        CustomerID : parseInt(this.state.customerId),
         MobileNumber : this.state.mobileNo
       },
     })
@@ -1254,8 +1254,9 @@ class Header extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
-                                      self.state.mobileNo,self.state.customerId);
+          // self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
+          //                             self.state.mobileNo,self.state.customerId);
+          self.handleGetChatMessagesList(self.state.chatId);
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
