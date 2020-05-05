@@ -769,13 +769,15 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
           self.setState({
-            CampChildTableData: data,
+            CampChildTableData: data.campaignCustomerModel,
             ChildTblLoading: false,
             loading: false,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -890,9 +892,11 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message === "Success") {
           window.open("//" + data, "_blank");
-          self.setState({
-            ResponsiveShareNow: true,
-          });
+          if (this.state.Respo_ChannelMessanger === true) {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          }
         } else {
           NotificationManager.error("Failed");
         }
@@ -1032,7 +1036,8 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message == "Success") {
           self.setState({
-            CampChildTableData: data,
+            CampChildTableData: data.campaignCustomerModel,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
