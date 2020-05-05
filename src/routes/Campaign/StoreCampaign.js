@@ -2098,10 +2098,7 @@ class StoreCampaign extends Component {
                           </tbody>
                         </table>
                         <div className="trasactablist">
-                          <div
-                            className="myTicket-table remov agentlist"
-                            id="tic-det-assign"
-                          >
+                          <div className="myTicket-table remov agentlist last-trans-table">
                             <ReactTable
                               className="limit-react-table-body tabscrol"
                               data={this.state.lastTransactionItem}
@@ -2109,15 +2106,16 @@ class StoreCampaign extends Component {
                                 {
                                   Header: <span>Article</span>,
                                   accessor: "article",
-                                  minWidth: 120,
                                 },
                                 {
                                   Header: <span>Qty.</span>,
                                   accessor: "quantity",
+                                  width: 60,
                                 },
                                 {
                                   Header: <span>Amount</span>,
                                   accessor: "amount",
+                                  width: 80,
                                 },
                               ]}
                               minRows={2}
