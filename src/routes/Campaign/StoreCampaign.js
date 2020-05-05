@@ -747,7 +747,7 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
-  
+
     if (data) {
       this.setState({
         childCurrentPage: 1,
@@ -905,7 +905,11 @@ class StoreCampaign extends Component {
       .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
+
         if (message === "Success") {
+          if (self.state.Respo_ChannelMessanger === false) {
+            NotificationManager.success("Send Successfully.");
+          }
           window.open("//" + data, "_blank");
           if (self.state.Respo_ChannelMessanger === true) {
             self.setState({
@@ -913,7 +917,7 @@ class StoreCampaign extends Component {
             });
           }
         } else {
-          NotificationManager.error("Failed");
+          NotificationManager.error("Server temporarily not available.");
         }
       })
       .catch((response) => {
@@ -934,6 +938,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -944,6 +949,18 @@ class StoreCampaign extends Component {
           } else {
             sortName += strTag[1].charAt(0).toUpperCase();
           }
+          if (
+            data.lasttransactiondetails.itemDetails.length > 0 ||
+            data.lasttransactiondetails.itemDetails !== null
+          ) {
+            self.setState({
+              lastTransactionItem: data.lasttransactiondetails.itemDetails,
+            });
+          } else {
+            self.setState({
+              lastTransactionItem: [],
+            });
+          }
           self.setState({
             custNameModal: true,
             customerModalDetails: rowData,
@@ -951,7 +968,6 @@ class StoreCampaign extends Component {
             useratvdetails: data.useratvdetails,
             campaignrecommended: data.campaignrecommended,
             lasttransactiondetails: data.lasttransactiondetails,
-            lastTransactionItem: data.lasttransactiondetails.itemDetails,
             sortCustName: sortName,
           });
         } else {
@@ -1870,7 +1886,7 @@ class StoreCampaign extends Component {
                     className="keyingsightdrp"
                     src={Dropdown3}
                     alt="Down Arrow"
-                    style={{display:"none"}}
+                    style={{ display: "none" }}
                   />
                 </div>
               ) : null}
