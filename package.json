@@ -101,6 +101,7 @@
     "select2": "^4.0.12",
     "semantic-ui-react": "^0.88.2",
     "simple-react-validator": "^1.4.3",
+    "socket.io-client": "^2.3.0",
     "ultimate-pagination": "^1.0.0"
   },
   "scripts": {

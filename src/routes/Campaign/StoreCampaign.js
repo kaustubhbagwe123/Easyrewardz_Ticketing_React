@@ -8,10 +8,12 @@ import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
-import ChatbotS from "./../../assets/Images/sms2.svg";
+import Email from "./../../assets/Images/camp-Email.svg";
+import Smsicon from "./../../assets/Images/sms2.svg";
+import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
-import { Table, Popover, Radio, Input, Button } from "antd";
+import { Table, Popover, Radio } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
@@ -22,6 +24,7 @@ import Modal from "react-responsive-modal";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
+import ReactTable from "react-table";
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -75,7 +78,11 @@ class StoreCampaign extends Component {
       Respo_ChannelBot: false,
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
-      filterDropdownVisible: false
+      filterDropdownVisible: false,
+      strStatusIds: "",
+      chatbotScript: "",
+      smsScript: "",
+      campaingPeriod: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -114,7 +121,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -146,7 +153,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    //debugger;
+    //
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -171,7 +178,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////debugger;
+            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -209,7 +216,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////debugger;
+            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -651,9 +658,12 @@ class StoreCampaign extends Component {
     });
   }
 
-  responsiveCustModalOpen() {
+  responsiveCustModalOpen(data) {
     this.setState({
       ResponsiveCustModal: true,
+      chatbotScript: data.chatbotScript,
+      smsScript: data.smsScript,
+      campaingPeriod: data.campaingPeriod,
     });
   }
   responsiveCustModalClose() {
@@ -682,7 +692,7 @@ class StoreCampaign extends Component {
     });
   }
   handleShareNowOpenModal() {
-    //debugger;
+    //
     if (this.state.Respo_ChannelMessanger === true) {
       this.handleSendViaMessanger(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelBot === true) {
@@ -717,13 +727,19 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = async (numPage) => {
-    //debugger;
     await this.setState({
       childCurrentPage: numPage,
     });
-    await setTimeout(() => {
-      this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
-    }, 500);
+    if (this.state.strStatusIds !== "") {
+      this.handleGetCampaignCustomer(
+        this.state.campaignID,
+        this.state.childTotalGridRecord
+      );
+    } else {
+      await setTimeout(() => {
+        this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+      }, 500);
+    }
   };
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
@@ -731,6 +747,7 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
+  
     if (data) {
       this.setState({
         childCurrentPage: 1,
@@ -773,9 +790,10 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message == "Success") {
           self.setState({
-            CampChildTableData: data,
+            CampChildTableData: data.campaignCustomerModel,
             ChildTblLoading: false,
             loading: false,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -793,7 +811,6 @@ class StoreCampaign extends Component {
   /// Send Via Bot data
   handleSendViaBotData(data) {
     let self = this;
-    //debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
@@ -809,7 +826,7 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if (this.state.Respo_ChannelBot === true) {
+        if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
@@ -848,7 +865,7 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if (this.state.Respo_ChannelSMS === true) {
+        if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
@@ -890,9 +907,11 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message === "Success") {
           window.open("//" + data, "_blank");
-          self.setState({
-            ResponsiveShareNow: true,
-          });
+          if (self.state.Respo_ChannelMessanger === true) {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          }
         } else {
           NotificationManager.error("Failed");
         }
@@ -904,7 +923,6 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -916,7 +934,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -955,7 +972,6 @@ class StoreCampaign extends Component {
   }
 
   checkIndividualStatus(campaignScriptID, customerCount, event) {
-    debugger;
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
     for (var i in checkboxes) {
@@ -967,9 +983,12 @@ class StoreCampaign extends Component {
       }
     }
     this.setState({
-      filterDropdownVisible: false
+      filterDropdownVisible: false,
+      strStatusIds,
     });
-    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+    setTimeout(() => {
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+    }, 50);
   }
 
   checkAllStatus(campaignScriptID, customerCount, event) {
@@ -995,12 +1014,14 @@ class StoreCampaign extends Component {
     }
     this.setState({
       filterDropdownVisible: false,
+      strStatusIds,
     });
-    
-    this.handleGetCampaignCustomer(strStatusIds,campaignScriptID, customerCount);
+    setTimeout(() => {
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+    }, 50);
   }
 
-  handleGetCampaignCustomer = (statusId, campaignScriptID, customerCount) => {
+  handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
     let self = this;
     if (customerCount !== "") {
       this.setState({
@@ -1015,16 +1036,16 @@ class StoreCampaign extends Component {
         campaignScriptID: campaignScriptID,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
-        FilterStatus: statusId,
+        FilterStatus: this.state.strStatusIds,
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
           self.setState({
-            CampChildTableData: data
+            CampChildTableData: data.campaignCustomerModel,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -1036,10 +1057,9 @@ class StoreCampaign extends Component {
       .catch((response) => {
         console.log(response);
       });
-  }
+  };
 
   handleSelectChannelsOnchange(check) {
-    //debugger;
     if (check === "Messanger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1090,7 +1110,7 @@ class StoreCampaign extends Component {
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
                         alt="info-icon"
-                        onClick={this.responsiveCustModalOpen.bind(this)}
+                        onClick={this.responsiveCustModalOpen.bind(this, item)}
                       />
                     </div>
                   );
@@ -1147,7 +1167,7 @@ class StoreCampaign extends Component {
                         <a className="button-blue">
                           <img
                             className="ico"
-                            src={ChatbotS}
+                            src={Smsicon}
                             alt="Chatbot Icon"
                           />
                           SMS Script
@@ -1168,10 +1188,7 @@ class StoreCampaign extends Component {
                 className: "particular-hide",
                 render: (row, item) => {
                   return (
-                    <button
-                      className="closebtn"
-                      type="button"
-                    >
+                    <button className="closebtn" type="button">
                       <label className="hdrcloselabel">{item.status}</label>
                     </button>
                   );
@@ -1301,6 +1318,7 @@ class StoreCampaign extends Component {
                       {
                         title: "Status",
                         dataIndex: "statusName",
+                        className: "camp-status-header",
                         render: (row, item) => {
                           return (
                             <div>
@@ -1320,127 +1338,131 @@ class StoreCampaign extends Component {
                             </div>
                           );
                         },
-                        filterDropdown: dataIndex => (
-                          <div style={{ padding: 8 }}>
+                        filterDropdown: (dataIndex) => (
+                          <div className="campaign-status-drpdwn">
                             <ul>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="all-status"
+                                  className="ch1"
+                                  onChange={this.checkAllStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  checked={this.state.CheckBoxAllBrand}
+                                  name="allStatus"
+                                />
                                 <label htmlFor="all-status">
-                                  <input
-                                    type="checkbox"
-                                    id="all-status"
-                                    className="ch1"
-                                    onChange={this.checkAllStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    checked={this.state.CheckBoxAllBrand}
-                                    name="allStatus"
-                                  />
                                   <span className="ch1-text">All</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status100"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={100}
+                                />
                                 <label htmlFor="status100">
-                                  <input
-                                    type="checkbox"
-                                    id="status100"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={100}
-                                  />
                                   <span className="ch1-text">Contacted</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status101"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={101}
+                                />
                                 <label htmlFor="status101">
-                                  <input
-                                    type="checkbox"
-                                    id="status101"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={101}
-                                  />
                                   <span className="ch1-text">
                                     Not Contacted
                                   </span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status102"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={102}
+                                />
                                 <label htmlFor="status102">
-                                  <input
-                                    type="checkbox"
-                                    id="status102"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={102}
-                                  />
                                   <span className="ch1-text">Follow Up</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status103"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={103}
+                                />
                                 <label htmlFor="status103">
-                                  <input
-                                    type="checkbox"
-                                    id="status103"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={103}
-                                  />
                                   <span className="ch1-text">Converted</span>
                                 </label>
                               </li>
                               <li>
+                                <input
+                                  type="checkbox"
+                                  id="status104"
+                                  className="ch1"
+                                  onChange={this.checkIndividualStatus.bind(
+                                    this,
+                                    row.campaignID,
+                                    row.customerCount
+                                  )}
+                                  name="allStatus"
+                                  attrIds={104}
+                                />
                                 <label htmlFor="status104">
-                                  <input
-                                    type="checkbox"
-                                    id="status104"
-                                    className="ch1"
-                                    onChange={this.checkIndividualStatus.bind(
-                                      this,
-                                      row.campaignID,
-                                      row.customerCount
-                                    )}
-                                    name="allStatus"
-                                    attrIds={104}
-                                  />
                                   <span className="ch1-text">Conversation</span>
                                 </label>
                               </li>
-                             
                             </ul>
                           </div>
                         ),
-                        filterDropdownVisible:  this.state.filterDropdownVisible,
-                        onFilterDropdownVisibleChange: visible => this.setState({ filterDropdownVisible: visible }),
-                        filterIcon: filtered => <span style={{ color: filtered ? '#1890ff' : undefined }} ></span>,
+                        filterDropdownVisible: this.state.filterDropdownVisible,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ filterDropdownVisible: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
                       },
                       {
                         title: "Call Recheduled To",
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          ////debugger;
+                          ////
                           return (
                             <div
                               className={
@@ -1739,22 +1761,12 @@ class StoreCampaign extends Component {
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">Chatbot Script</label>
                     <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly. Enter "Browse" to explore
-                      your favorite categories and continue with your shopping.
-                      Enter "Go Back" to Exit Shopping Mode
+                      {this.state.chatbotScript}
                     </label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -1763,21 +1775,11 @@ class StoreCampaign extends Component {
                 <div className="">
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">SMS Script</label>
-                    <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly.
-                    </label>
+                    <label class="channelScript">{this.state.smsScript}</label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -1868,6 +1870,7 @@ class StoreCampaign extends Component {
                     className="keyingsightdrp"
                     src={Dropdown3}
                     alt="Down Arrow"
+                    style={{display:"none"}}
                   />
                 </div>
               ) : null}
@@ -2089,7 +2092,33 @@ class StoreCampaign extends Component {
                           </tbody>
                         </table>
                         <div className="trasactablist">
-                          <div className="tabscrol">
+                          <div className="myTicket-table remov agentlist last-trans-table">
+                            <ReactTable
+                              className="limit-react-table-body tabscrol"
+                              data={this.state.lastTransactionItem}
+                              columns={[
+                                {
+                                  Header: <span>Article</span>,
+                                  accessor: "article",
+                                },
+                                {
+                                  Header: <span>Qty.</span>,
+                                  accessor: "quantity",
+                                  width: 60,
+                                },
+                                {
+                                  Header: <span>Amount</span>,
+                                  accessor: "amount",
+                                  width: 80,
+                                },
+                              ]}
+                              minRows={2}
+                              // defaultPageSize={5}
+                              showPagination={false}
+                              resizable={false}
+                            />
+                          </div>
+                          {/* <div className="tabscrol">
                             <table>
                               <thead>
                                 <tr>
@@ -2113,7 +2142,7 @@ class StoreCampaign extends Component {
                                   )}
                               </tbody>
                             </table>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -2140,7 +2169,7 @@ class StoreCampaign extends Component {
                   ) : null}
                   {this.state.customerModalDetails.emailFlag === true ? (
                     <li>
-                      <img className="ico" src={Sms1} alt="Email Icon" />
+                      <img className="ico" src={Email} alt="Email Icon" />
                       Email
                     </li>
                   ) : null}
@@ -2331,7 +2360,7 @@ class StoreCampaign extends Component {
                             "Email"
                           )}
                         >
-                          <img className="ico" src={Sms1} alt="Email Icon" />
+                          <img className="ico" src={Email} alt="Email Icon" />
                           {this.state.Respo_ChannelEmail === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
