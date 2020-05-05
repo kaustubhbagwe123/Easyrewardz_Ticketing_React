@@ -1473,7 +1473,6 @@ table tr th:last-child {
   background-color: #f2f5f8;
   border-radius: 10px;
   margin: 20px 0 15px 0;
-  height: calc(100% - 15px);
 }
 .lifetimevalue h4 {
   color: #8694a0;
@@ -1509,10 +1508,10 @@ table tr th:last-child {
   border-radius: 10px;
   margin: 20px 0 0 0;
   padding: 18px 15px;
-  height: calc(100% - 15px);
+  height: calc(100% - 18px);
 }
 .productbox .tab-content {
-  padding: 24px 0 0;
+  padding: 24px 15px 0;
 }
 .productbox .prodscro {
   max-height: 210px;
@@ -2460,6 +2459,10 @@ table tr th:last-child {
   }
   .Camp-pagination {
     left: 12px;
+  }
+  .productbox .tab-content {
+    padding-right: 0;
+    padding-left: 0;
   }
 }
 /* ------------------Campain Css End ------------------------- */
