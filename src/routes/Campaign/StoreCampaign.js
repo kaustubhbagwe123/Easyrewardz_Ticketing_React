@@ -825,8 +825,9 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger
         var message = response.data.message;
-        if (this.state.Respo_ChannelBot === true) {
+        if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
@@ -865,7 +866,7 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if (this.state.Respo_ChannelSMS === true) {
+        if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
@@ -907,7 +908,7 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
         if (message === "Success") {
           window.open("//" + data, "_blank");
-          if (this.state.Respo_ChannelMessanger === true) {
+          if (self.state.Respo_ChannelMessanger === true) {
             self.setState({
               ResponsiveShareNow: true,
             });
