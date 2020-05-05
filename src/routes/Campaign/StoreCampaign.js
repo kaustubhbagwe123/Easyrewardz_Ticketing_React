@@ -78,6 +78,9 @@ class StoreCampaign extends Component {
       Respo_ChannelEmail: false,
       filterDropdownVisible: false,
       strStatusIds: "",
+      chatbotScript: "",
+      smsScript: "",
+      campaingPeriod: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -653,9 +656,12 @@ class StoreCampaign extends Component {
     });
   }
 
-  responsiveCustModalOpen() {
+  responsiveCustModalOpen(data) {
     this.setState({
       ResponsiveCustModal: true,
+      chatbotScript: data.chatbotScript,
+      smsScript: data.smsScript,
+      campaingPeriod: data.campaingPeriod,
     });
   }
   responsiveCustModalClose() {
@@ -1110,7 +1116,7 @@ class StoreCampaign extends Component {
                         className="info-icon-cp hidedesk"
                         src={BlackInfoIcon}
                         alt="info-icon"
-                        onClick={this.responsiveCustModalOpen.bind(this)}
+                        onClick={this.responsiveCustModalOpen.bind(this, item)}
                       />
                     </div>
                   );
@@ -1763,22 +1769,12 @@ class StoreCampaign extends Component {
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">Chatbot Script</label>
                     <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly. Enter "Browse" to explore
-                      your favorite categories and continue with your shopping.
-                      Enter "Go Back" to Exit Shopping Mode
+                      {this.state.chatbotScript}
                     </label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -1787,21 +1783,11 @@ class StoreCampaign extends Component {
                 <div className="">
                   <div class="dash-creation-popup custompop">
                     <label class="poptitle">SMS Script</label>
-                    <label class="channelScript">
-                      Dear, I am , your Relationship Manager from Bata, store.
-                      Our store is open now as per local government guidelines.
-                      Your safety &amp; convenience continue to remain our top
-                      priority, and we have introduced new ways Of shopping for
-                      you! You can click on wnuw.bata.in/rec to view our new
-                      collections in your favorite categories. Enter "Visit" to
-                      book an appointment for store visit. Enter "Shop" for
-                      assisted shopping via WhatsApp and one of our staff will
-                      get in touch with you shortly.
-                    </label>
+                    <label class="channelScript">{this.state.smsScript}</label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>13 May-20/31 May-20</span>
+                      Campaign Period<span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
