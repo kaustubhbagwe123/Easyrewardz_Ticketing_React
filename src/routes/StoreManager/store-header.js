@@ -204,6 +204,7 @@ class Header extends Component {
       paymentModal: false,
       selectedCard: 0,
       chkSuggestion: [],
+      programCode: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -621,6 +622,7 @@ class Header extends Component {
 
               socket.on("connect", () => {
                 socket.send("hi");
+                // socket.on(ongoingChatsData[i].mobileNoon+goingChatsData[i].programCode, function(data) {
                 socket.on(ongoingChatsData[i].mobileNo, function(data) {
                   if (self.state.mobileNo === data[3]) {
                     var messageData = self.state.messageData;
@@ -800,12 +802,19 @@ class Header extends Component {
       inputParam.byCustomer = false;
       inputParam.chatStatus = 0;
       inputParam.storeManagerId = 0;
+
+      // inputParam.ChatID = this.state.chatId;
+      // inputParam.MobileNo = this.state.mobileNo;
+      // inputParam.ProgramCode = 0;
+      // inputParam.Message = messagecontent;
+
       this.setState({
         message: "",
       });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
+        // url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
         headers: authHeader(),
         data: inputParam,
       })
@@ -1091,7 +1100,14 @@ class Header extends Component {
   };
 
   ////handle on going chat click
-  handleOngoingChatClick = (id, name, count, mobileNo, customerId) => {
+  handleOngoingChatClick = (
+    id,
+    name,
+    count,
+    mobileNo,
+    customerId,
+    ProgramCode
+  ) => {
     // const socket = io.connect("http://localhost:4000");
     // var messageData = this.state.messageData;
 
@@ -1100,6 +1116,7 @@ class Header extends Component {
       customerName: name,
       mobileNo: mobileNo,
       customerId: customerId,
+      programCode: ProgramCode,
     });
     this.setState({
       chatId: id,
@@ -1288,7 +1305,8 @@ class Header extends Component {
             self.state.customerName,
             0,
             self.state.mobileNo,
-            self.state.customerId
+            self.state.customerId,
+            self.state.programCode
           );
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
@@ -1716,7 +1734,8 @@ class Header extends Component {
                               chat.cumtomerName,
                               chat.messageCount,
                               chat.mobileNo,
-                              chat.customerID
+                              chat.customerID,
+                              chat.programCode
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -1839,7 +1858,7 @@ class Header extends Component {
                             className="chat-bubble-white"
                             alt="chat count"
                           />
-                          <span>12</span>
+                          <span>{this.state.ongoingChatsData.length}</span>
                         </div>
                         Ongoing Chats
                       </a>
@@ -1865,7 +1884,7 @@ class Header extends Component {
                             className="chat-bubble-white"
                             alt="chat count"
                           />
-                          <span>6</span>
+                          <span>{this.state.newChatsData.length}</span>
                         </div>
                         New Chats
                       </a>
@@ -1897,20 +1916,23 @@ class Header extends Component {
                                   chat.cumtomerName,
                                   chat.messageCount,
                                   chat.mobileNo,
-                                  chat.customerID
+                                  chat.customerID,
+                                  chat.programCode
                                 )}
                               >
                                 <div className="chat-face-cntr">
                                   <div className="chat-face-inner-cntr">
                                     <div className="chat-notification-cntr">
-                                      <img
-                                        src={ChatCount}
-                                        alt="notification image"
-                                      />
                                       {chat.messageCount > 0 ? (
-                                        <span className="chat-notification-count">
-                                          chat.messageCount
-                                        </span>
+                                        <>
+                                          <img
+                                            src={ChatCount}
+                                            alt="notification image"
+                                          />
+                                          <span className="chat-notification-count">
+                                            {chat.messageCount}
+                                          </span>
+                                        </>
                                       ) : null}
                                     </div>
                                     <img
@@ -1918,6 +1940,7 @@ class Header extends Component {
                                       alt="face image"
                                       title={chat.cumtomerName}
                                     />
+
                                     {chat.messageCount > 0 ? (
                                       <span className="online"></span>
                                     ) : null}
@@ -1963,13 +1986,18 @@ class Header extends Component {
                                 >
                                   <div className="chat-face-inner-cntr">
                                     <div className="chat-notification-cntr">
-                                      <img
-                                        src={ChatCount}
-                                        alt="notification image"
-                                      />
-                                      <span className="chat-notification-count">
-                                        {chat.messageCount}
-                                      </span>
+                                      {chat.messageCount > 0 ? (
+                                        <>
+                                          <img
+                                            src={ChatCount}
+                                            alt="notification image"
+                                          />
+
+                                          <span className="chat-notification-count">
+                                            {chat.messageCount}
+                                          </span>
+                                        </>
+                                      ) : null}
                                     </div>
                                     <img src={DummyFace1} alt="face image" />
                                     <span className="online"></span>
