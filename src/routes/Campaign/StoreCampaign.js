@@ -1171,10 +1171,6 @@ class StoreCampaign extends Component {
                     <button
                       className="closebtn"
                       type="button"
-                      // onClick={this.handleCloseCampaign.bind(
-                      //   this,
-                      //   row.campaignTypeID
-                      // )}
                     >
                       <label className="hdrcloselabel">{item.status}</label>
                     </button>
@@ -1326,28 +1322,6 @@ class StoreCampaign extends Component {
                         },
                         filterDropdown: dataIndex => (
                           <div style={{ padding: 8 }}>
-                            {/* <Input
-                              ref={node => {
-                                this.searchInput = node;
-                              }}
-                              value={selectedKeys[0]}
-                              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-                              style={{ width: 188, marginBottom: 8, display: 'block' }}
-                            /> */}
-                            {/* <Space> */}
-                            {/* <Button
-                                type="primary"
-                                onClick={() => this.handleSearch(selectedKeys, confirm)}
-                                size="small"
-                                style={{ width: 90 }}
-                              >
-                                Search
-                              </Button>
-                              <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                                Reset
-                              </Button> */}
-                            {/* </Space> */}
                             <ul>
                               <li>
                                 <label htmlFor="all-status">
@@ -1377,7 +1351,6 @@ class StoreCampaign extends Component {
                                       row.campaignID,
                                       row.customerCount
                                     )}
-                                    // checked={this.state.CheckBoxAllBrand}
                                     name="allStatus"
                                     attrIds={100}
                                   />
@@ -1395,7 +1368,6 @@ class StoreCampaign extends Component {
                                       row.campaignID,
                                       row.customerCount
                                     )}
-                                    // checked={this.state.CheckBoxAllBrand}
                                     name="allStatus"
                                     attrIds={101}
                                   />
@@ -1415,7 +1387,6 @@ class StoreCampaign extends Component {
                                       row.campaignID,
                                       row.customerCount
                                     )}
-                                    // checked={this.state.CheckBoxAllBrand}
                                     name="allStatus"
                                     attrIds={102}
                                   />
@@ -1433,7 +1404,6 @@ class StoreCampaign extends Component {
                                       row.campaignID,
                                       row.customerCount
                                     )}
-                                    // checked={this.state.CheckBoxAllBrand}
                                     name="allStatus"
                                     attrIds={103}
                                   />
@@ -1451,72 +1421,19 @@ class StoreCampaign extends Component {
                                       row.campaignID,
                                       row.customerCount
                                     )}
-                                    // checked={this.state.CheckBoxAllBrand}
                                     name="allStatus"
                                     attrIds={104}
                                   />
                                   <span className="ch1-text">Conversation</span>
                                 </label>
                               </li>
-                              {/* {this.state.BrandData !== null &&
-                              this.state.BrandData.map((item, i) => (
-                                <li key={i}>
-                                  <label htmlFor={"i" + item.brandID}>
-                                    <input
-                                      type="checkbox"
-                                      id={"i" + item.brandID}
-                                      className="ch1"
-                                      name="allBrand"
-                                      attrIds={item.brandID}
-                                      onChange={this.checkIndividualBrand.bind(this)}
-                                    />
-                                    <span className="ch1-text">{item.brandName}</span>
-                                  </label>
-                                </li>
-                              ))} */}
+                             
                             </ul>
                           </div>
                         ),
                         filterDropdownVisible:  this.state.filterDropdownVisible,
                         onFilterDropdownVisibleChange: visible => this.setState({ filterDropdownVisible: visible }),
                         filterIcon: filtered => <span style={{ color: filtered ? '#1890ff' : undefined }} ></span>,
-                        
-                        // onFilter: (value, record) =>
-                        //   record.statusID.toString().toLowerCase().includes(value.toLowerCase()),
-                        // onFilterDropdownVisibleChange: visible => {
-                        //   if (visible) {
-                        //     // setTimeout(() => this.searchInput.select());
-                        //   }
-                        // },
-                        // filters: [
-                        //   {
-                        //     text: 'Contacted',
-                        //     value: '100',
-                        //   },
-                        //   {
-                        //     text: 'Not Contacted',
-                        //     value: '101',
-                        //   },
-                        //   {
-                        //     text: 'Follow Up',
-                        //     value: '102',
-                        //   },
-                        //   {
-                        //     text: 'Converted',
-                        //     value: '103',
-                        //   },
-                        //   {
-                        //     text: 'Conversation',
-                        //     value: '104',
-                        //   }
-                        // ],
-                        // onFilter: (value, record) => {
-                        //   record.statusID.toString().includes(value)
-                        // },
-                        // onFilterDropdownVisibleChange: (visible) => {
-                        //   debugger;
-                        //   // record.statusID.toString().includes(value)
-                        // },
                       },
                       {
                         title: "Call Recheduled To",
@@ -1731,7 +1648,7 @@ class StoreCampaign extends Component {
                                 <td></td>
                               </tr>
                               <tr>
-                                <td colspan="3">
+                                <td colSpan="3">
                                   <div style={{ float: "right" }}>
                                     <button
                                       className="saveBtn saveLabel"
