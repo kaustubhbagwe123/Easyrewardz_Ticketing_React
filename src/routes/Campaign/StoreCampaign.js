@@ -903,14 +903,15 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCustomerpopupDetails",
       headers: authHeader(),
       params: {
-        programCode:rowData.programcode,
-        mobileNumber:rowData.customerNumber,
+        programCode: rowData.programcode,
+        mobileNumber: rowData.customerNumber,
       },
     })
       .then(function(response) {
@@ -934,6 +935,16 @@ class StoreCampaign extends Component {
             lasttransactiondetails: data.lasttransactiondetails,
             lastTransactionItem: data.lasttransactiondetails.itemDetails,
             sortCustName: sortName,
+          });
+        } else {
+          self.setState({
+            custNameModal: true,
+            customerModalDetails: {},
+            campaignkeyinsight: {},
+            useratvdetails: {},
+            campaignrecommended: [],
+            lasttransactiondetails: {},
+            lastTransactionItem: [],
           });
         }
       })
@@ -1042,7 +1053,6 @@ class StoreCampaign extends Component {
         Respo_ChannelSMS: false,
         Respo_ChannelEmail: false,
       });
-      // this.handleSendViaMessanger.bind(this, this.state.customerModalDetails);
     } else if (check === "Bot") {
       this.setState({
         Respo_ChannelMessanger: false,
@@ -1050,7 +1060,6 @@ class StoreCampaign extends Component {
         Respo_ChannelSMS: false,
         Respo_ChannelEmail: false,
       });
-      // this.handleSendViaBotData.bind(this, this.state.customerModalDetails);
     } else if (check === "SMS") {
       this.setState({
         Respo_ChannelMessanger: false,
@@ -1058,7 +1067,6 @@ class StoreCampaign extends Component {
         Respo_ChannelSMS: true,
         Respo_ChannelEmail: false,
       });
-      // this.handleSendViaSMS.bind(this, this.state.customerModalDetails);
     } else if (check === "Email") {
       this.setState({
         Respo_ChannelMessanger: false,
