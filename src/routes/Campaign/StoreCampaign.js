@@ -79,7 +79,7 @@ class StoreCampaign extends Component {
   }
 
   componentDidMount() {
-    debugger
+    debugger;
     this.handleGetCampaignGridData();
     this.handleGetBrand();
   }
@@ -755,7 +755,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
