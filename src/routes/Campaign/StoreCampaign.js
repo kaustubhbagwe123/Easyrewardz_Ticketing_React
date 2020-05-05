@@ -8,7 +8,9 @@ import Dropdown3 from "./../../assets/Images/dropdown3.png";
 import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
-import ChatbotS from "./../../assets/Images/sms2.svg";
+import Email from "./../../assets/Images/camp-Email.svg";
+import Smsicon from "./../../assets/Images/sms2.svg";
+import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { Table, Popover, Radio } from "antd";
@@ -119,7 +121,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //debugger;
+        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -151,7 +153,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    //debugger;
+    //
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -176,7 +178,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////debugger;
+            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -214,7 +216,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////debugger;
+            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -690,7 +692,7 @@ class StoreCampaign extends Component {
     });
   }
   handleShareNowOpenModal() {
-    //debugger;
+    //
     if (this.state.Respo_ChannelMessanger === true) {
       this.handleSendViaMessanger(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelBot === true) {
@@ -745,7 +747,7 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
-    debugger;
+  
     if (data) {
       this.setState({
         childCurrentPage: 1,
@@ -784,7 +786,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -810,7 +811,6 @@ class StoreCampaign extends Component {
   /// Send Via Bot data
   handleSendViaBotData(data) {
     let self = this;
-    //debugger;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareChatbot",
@@ -825,7 +825,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger
         var message = response.data.message;
         if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
@@ -924,7 +923,6 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -936,7 +934,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -975,7 +972,6 @@ class StoreCampaign extends Component {
   }
 
   checkIndividualStatus(campaignScriptID, customerCount, event) {
-    debugger;
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
     for (var i in checkboxes) {
@@ -1026,7 +1022,6 @@ class StoreCampaign extends Component {
   }
 
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
-    debugger;
     let self = this;
     if (customerCount !== "") {
       this.setState({
@@ -1045,7 +1040,6 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1066,7 +1060,6 @@ class StoreCampaign extends Component {
   };
 
   handleSelectChannelsOnchange(check) {
-    //debugger;
     if (check === "Messanger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1174,7 +1167,7 @@ class StoreCampaign extends Component {
                         <a className="button-blue">
                           <img
                             className="ico"
-                            src={ChatbotS}
+                            src={Smsicon}
                             alt="Chatbot Icon"
                           />
                           SMS Script
@@ -1469,7 +1462,7 @@ class StoreCampaign extends Component {
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          ////debugger;
+                          ////
                           return (
                             <div
                               className={
@@ -1877,6 +1870,7 @@ class StoreCampaign extends Component {
                     className="keyingsightdrp"
                     src={Dropdown3}
                     alt="Down Arrow"
+                    style={{display:"none"}}
                   />
                 </div>
               ) : null}
@@ -2175,7 +2169,7 @@ class StoreCampaign extends Component {
                   ) : null}
                   {this.state.customerModalDetails.emailFlag === true ? (
                     <li>
-                      <img className="ico" src={Sms1} alt="Email Icon" />
+                      <img className="ico" src={Email} alt="Email Icon" />
                       Email
                     </li>
                   ) : null}
@@ -2366,7 +2360,7 @@ class StoreCampaign extends Component {
                             "Email"
                           )}
                         >
-                          <img className="ico" src={Sms1} alt="Email Icon" />
+                          <img className="ico" src={Email} alt="Email Icon" />
                           {this.state.Respo_ChannelEmail === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
