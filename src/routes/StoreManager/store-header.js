@@ -1935,12 +1935,17 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    <img
+                                    {/* <img
                                       src={DummyFace1}
                                       alt="face image"
                                       title={chat.cumtomerName}
-                                    />
-
+                                    /> */}
+                                    <span className="chat-initial">
+                                      {chat.cumtomerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
                                     {chat.messageCount > 0 ? (
                                       <span className="online"></span>
                                     ) : null}
@@ -1999,7 +2004,13 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    <img src={DummyFace1} alt="face image" />
+                                    {/* <img src={DummyFace1} alt="face image" /> */}
+                                    <span className="chat-initial">
+                                      {chat.cumtomerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
                                     <span className="online"></span>
                                   </div>
                                 </div>

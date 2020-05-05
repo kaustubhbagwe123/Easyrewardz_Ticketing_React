@@ -241,6 +241,14 @@ p {
 .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
   padding-left: 4px;
 }
+.chat-initial {
+  background: #ddf6fc;
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  color: #11b4db;
+  text-transform: uppercase;
+}
 .chat-notification-count {
   position: absolute;
   top: 50%;
@@ -1189,6 +1197,11 @@ p {
   .online {
     width: 8px;
     height: 8px;
+  }
+  .chat-initial {
+    height: 35px;
+    line-height: 35px;
+    font-size: 12px;
   }
   /* .chat-detail-outer-cntr .chat-detail-middle-cntr:first-child {
     padding-left: 2px;
