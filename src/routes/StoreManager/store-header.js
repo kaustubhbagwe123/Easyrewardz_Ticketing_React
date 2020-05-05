@@ -992,7 +992,7 @@ class Header extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/gettitlesuggestions",
+      url: config.apiUrl + "/CustomerChat/getChatSuggestions",
       headers: authHeader(),
       params: {
         TikcketTitle: this.state.messageSuggestion,
@@ -2008,15 +2008,15 @@ class Header extends Component {
                                           key={i}
                                           onClick={this.handleSaveChatMessages.bind(
                                             this,
-                                            item.ticketTitle,
+                                            item.suggestionText,
                                             i
                                           )}
                                         >
                                           <Tooltip
                                             placement="left"
-                                            title={item.ticketTitle}
+                                            title={item.suggestionText}
                                           >
-                                            <span>{item.ticketTitle}</span>
+                                            <span>{item.suggestionText}</span>
                                           </Tooltip>
                                         </div>
                                       )
@@ -2638,15 +2638,15 @@ class Header extends Component {
                                           key={i}
                                           onClick={this.handleSaveChatMessages.bind(
                                             this,
-                                            item.ticketTitle,
+                                            item.suggestionText,
                                             i
                                           )}
                                         >
                                           <Tooltip
                                             placement="left"
-                                            title={item.ticketTitle}
+                                            title={item.suggestionText}
                                           >
-                                            <span>{item.ticketTitle}</span>
+                                            <span>{item.suggestionText}</span>
                                           </Tooltip>
                                         </div>
                                       )
