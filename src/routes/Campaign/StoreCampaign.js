@@ -806,11 +806,15 @@ class StoreCampaign extends Component {
       .then(function(response) {
         var message = response.data.message;
         if (this.state.Respo_ChannelBot === true) {
-          self.setState({
-            ResponsiveShareNow: true,
-          });
+          if (message === "Success") {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          } else {
+            NotificationManager.error("Server temporarily not available.");
+          }
         } else {
-          if (message == "Success") {
+          if (message === "Success") {
             NotificationManager.success("Success.");
           } else {
             NotificationManager.error("Failed");
@@ -824,7 +828,7 @@ class StoreCampaign extends Component {
 
   ///handle Send Via SMS
   handleSendViaSMS(data) {
-    let self=this;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/CampaignShareSMS",
@@ -840,18 +844,21 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        if(this.state.Respo_ChannelSMS === true){
-          self.setState({
-            ResponsiveShareNow: true,
-          })
-        }else{
-          if (message == "Success") {
+        if (this.state.Respo_ChannelSMS === true) {
+          if (message === "Success") {
+            self.setState({
+              ResponsiveShareNow: true,
+            });
+          } else {
+            NotificationManager.error("Server temporarily not available.");
+          }
+        } else {
+          if (message === "Success") {
             NotificationManager.success("SMS Send Successfully.");
           } else {
             NotificationManager.error("SMS Send Failed.");
           }
         }
-       
       })
       .catch((response) => {
         console.log(response);
@@ -877,7 +884,7 @@ class StoreCampaign extends Component {
       .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
-        if (message == "Success") {
+        if (message === "Success") {
           window.open("//" + data, "_blank");
           self.setState({
             ResponsiveShareNow: true,
@@ -904,7 +911,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
-        //debugger
+        debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1967,8 +1974,8 @@ class StoreCampaign extends Component {
           />
           <div>
             <img className="tick" src={Tick} alt="Tick Icon" />
-          <h3>Shared Successfully!</h3>
-          <p>Your Message has been shared successfully</p>
+            <h3>Shared Successfully!</h3>
+            <p>Your Message has been shared successfully</p>
           </div>
         </Modal>
         <Modal
