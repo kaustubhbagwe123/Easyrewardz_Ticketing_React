@@ -84,98 +84,6 @@ class Header extends Component {
       chatModal: false,
       ongoingChatsData: [],
       newChatsData: [],
-      // searchCardData: [
-      //   {
-      //     id: 1,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 2,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 3,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 4,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 5,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 6,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 7,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 8,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 9,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      //   {
-      //     id: 10,
-      //     productName: "POWER Black Casual Shoes For Man",
-      //     productCode: "F808600200",
-      //     productPrize: "INR 3000/- INR 2799/- (-%30)",
-      //     productUrl: "www.google.com/productid-F808600200",
-      //     productImgURL: Bata,
-      //     isSelect: false,
-      //   },
-      // ],
       searchCardData: [],
       chatId: 0,
       isDownbtn: true,
@@ -194,9 +102,6 @@ class Header extends Component {
       isSelectSlot: "",
       customerId: 0,
       mobileNo: "",
-      daySelect: "",
-      datesSelect: "",
-      slotID: "",
       messageSuggestionData: [],
       messageSuggestion: "",
       scheduleModal: false,
@@ -205,6 +110,7 @@ class Header extends Component {
       selectedCard: 0,
       chkSuggestion: [],
       programCode: "",
+      oldCount: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -617,33 +523,19 @@ class Header extends Component {
           });
 
           if (value == "") {
+            const socket = io.connect(config.socketUrl, {
+              transports: ["polling"],
+            });
             for (let i = 0; i < ongoingChatsData.length; i++) {
-              const socket = io.connect(config.socketUrl);
-
               socket.on("connect", () => {
                 socket.send("hi");
                 // socket.on(ongoingChatsData[i].mobileNoon+goingChatsData[i].programCode, function(data) {
                 socket.on(ongoingChatsData[i].mobileNo, function(data) {
                   if (self.state.mobileNo === data[3]) {
-                    var messageData = self.state.messageData;
-                    messageData.push({
-                      message: data[0],
-                      byCustomer: data[1],
-                      chatTime: data[2],
-                      chatDate: "Today",
-                    });
-                    self.setState({ ...self.state.messageData, messageData });
+                    self.handleGetChatMessagesList(self.state.chatId);
                   } else {
-                    self.state.ongoingChatsData.find(
-                      (x) => x.mobileNo == data[3]
-                    ).messageCount =
-                      self.state.ongoingChatsData.find(
-                        (x) => x.mobileNo == data[3]
-                      ).messageCount + 1;
-                    self.setState({
-                      ongoingChatsData: self.state.ongoingChatsData,
-                      chatMessageCount: self.state.chatMessageCount + 1,
-                    });
+                    self.handleGetOngoingChat("");
+                    self.handleGetChatNotificationCount();
                   }
                 });
               });
@@ -702,6 +594,7 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           self.handleGetOngoingChat("isRead");
           self.handleGetChatMessagesList(id);
+          self.handleGetChatNotificationCount();
           self.setState({ customerName: name });
         } else {
           self.setState({ customerName: name });
@@ -754,12 +647,7 @@ class Header extends Component {
             ...messageData,
             messageData,
           });
-
-          // setInterval(() => {
-          // if (self.state.chatModal) {
-          //  self.handleGetChatMessagesList(id);
-          //   }
-          // }, 20000);
+          // self.handleGetChatNotificationCount();
         } else {
           self.setState({ messageData });
         }
@@ -1108,44 +996,21 @@ class Header extends Component {
     customerId,
     ProgramCode
   ) => {
-    // const socket = io.connect("http://localhost:4000");
-    // var messageData = this.state.messageData;
+    this.setState({
+      chatId: id,
+      customerName: name,
+      mobileNo: mobileNo,
+      customerId: customerId,
+      programCode: ProgramCode,
+      mobileNo: mobileNo,
+      message: "",
+      messageSuggestionData: [],
+      chkSuggestion: [],
+      oldCount: count,
+    });
 
-    this.setState({ chatId: id, customerName: name, mobileNo: mobileNo, customerId: customerId, 
-      message: "", messageSuggestionData: [], chkSuggestion: [],
-      programCode: ProgramCode });
     let self = this;
-    // socket.on("connect", () => {
-    //   socket.send("hi");
-    //   socket.on(mobileNo, function(data) {
-    //     console.log(data);
-    //     console.log(mobileNo, "---mobileNo");
-    //     // document.getElementsByClassName("chat-info active").click();
-    //     if (self.state.mobileNo === data[3]) {
-    //       messageData.push({
-    //         message: data[0],
-    //         byCustomer: data[1],
-    //         chatTime: data[2],
-    //         chatDate: "Today",
-    //       });
-    //       self.setState({
-    //         messageData,
-    //       });
-    //     } else {
-    //       self.state.ongoingChatsData.find(
-    //         (x) => x.mobileNo == data[3]
-    //       ).messageCount =
-    //         self.state.ongoingChatsData.find((x) => x.mobileNo == data[3])
-    //           .messageCount + 1;
-    //       console.log(
-    //         self.state.ongoingChatsData.find((x) => x.mobileNo == data[3])
-    //           .messageCount,
-    //         "--count"
-    //       );
-    //       self.setState({ ongoingChatsData: self.state.ongoingChatsData });
-    //     }
-    //   });
-    // });
+
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.handleGetChatMessagesList(id);
@@ -1153,9 +1018,9 @@ class Header extends Component {
         if (count === 0) {
           this.handleGetChatMessagesList(id);
         } else {
-          this.setState({
-            chatMessageCount: this.state.chatMessageCount - count,
-          });
+          // this.setState({
+          //   chatMessageCount: this.state.chatMessageCount - count,
+          // });
           this.handleMakeAsReadOnGoingChat(id, name);
         }
       }
@@ -1280,8 +1145,8 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/sendRecommendationsToCustomer",
       headers: authHeader(),
       params: {
-        CustomerID : parseInt(this.state.customerId),
-        MobileNumber : this.state.mobileNo
+        CustomerID: this.state.customerId,
+        MobileNumber: this.state.mobileNo,
       },
     })
       .then(function(res) {
@@ -1291,6 +1156,7 @@ class Header extends Component {
           // self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
           //                             self.state.mobileNo,self.state.customerId);
           self.handleGetChatMessagesList(self.state.chatId);
+          self.onCloseRecommendedModal();
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
@@ -1918,17 +1784,12 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    {/* <img
+                                    <img
                                       src={DummyFace1}
                                       alt="face image"
                                       title={chat.cumtomerName}
-                                    /> */}
-                                    <span className="chat-initial">
-                                      {chat.cumtomerName
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                    </span>
+                                    />
+
                                     {chat.messageCount > 0 ? (
                                       <span className="online"></span>
                                     ) : null}
@@ -1987,13 +1848,7 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    {/* <img src={DummyFace1} alt="face image" /> */}
-                                    <span className="chat-initial">
-                                      {chat.cumtomerName
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                    </span>
+                                    <img src={DummyFace1} alt="face image" />
                                     <span className="online"></span>
                                   </div>
                                 </div>
