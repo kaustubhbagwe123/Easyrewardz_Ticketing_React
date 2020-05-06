@@ -183,11 +183,6 @@
   background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat
     right 15px center;
 }
-.txtStoreGray {
-  padding-top: 0px !important;
-  background: #e5e9ed url(/src/assets/Images/calender.png) no-repeat
-    right 15px center;
-}
 .dateTimeStore {
   background-color: #ecf2f4;
   border-radius: 4px;

@@ -1509,8 +1509,8 @@ class StoreCampaign extends Component {
                                   )}
                                   className={
                                     item.responseID === 3
-                                      ? "txtStoreGray dateTimeStore"
-                                      : "txtStoreGray dateTimeStore disabled-link"
+                                      ? "txtStore dateTimeStore"
+                                      : "txtStore dateTimeStore disabled-link"
                                   }
                                   placeholderText="Select Date &amp; Time"
                                 />
@@ -1671,8 +1671,8 @@ class StoreCampaign extends Component {
                                         )}
                                         className={
                                           row.responseID === 3
-                                            ? "txtStoreGray dateTimeStore"
-                                            : "txtStoreGray dateTimeStore disabled-link"
+                                            ? "txtStore dateTimeStore"
+                                            : "txtStore dateTimeStore disabled-link"
                                         }
                                         placeholderText="Select Date &amp; Time"
                                       />
