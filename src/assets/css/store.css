@@ -2075,7 +2075,15 @@ table tr th:last-child {
 .last-trans-table {
   padding-bottom: 10px;
 }
-
+#custMobileFilter {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 260px;
+  right: 420px;
+  top: 174px;
+  border-radius: 10px;
+  box-shadow:0 4px 4px 0 rgba(0, 0, 0, 0.02)
+}
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {

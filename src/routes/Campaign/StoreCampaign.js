@@ -79,10 +79,12 @@ class StoreCampaign extends Component {
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
       filterDropdownVisible: false,
+      filterCustomerNumber: false,
       strStatusIds: "",
       chatbotScript: "",
       smsScript: "",
       campaingPeriod: "",
+      filterCustNO: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -121,7 +123,6 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -689,6 +690,8 @@ class StoreCampaign extends Component {
       ResponsiveBroadCast: false,
     });
   }
+
+
   handleShareNowOpenModal() {
     //
     if (this.state.Respo_ChannelMessanger === true) {
@@ -739,6 +742,7 @@ class StoreCampaign extends Component {
       }, 500);
     }
   };
+
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
     this.setState({
@@ -771,7 +775,12 @@ class StoreCampaign extends Component {
       });
     } else {
     }
-
+    var filterIds = "";
+    if (this.state.strStatusIds !== "") {
+      filterIds = this.state.strStatusIds;
+    } else {
+      filterIds = "All";
+    }
     let self = this;
     axios({
       method: "post",
@@ -781,6 +790,8 @@ class StoreCampaign extends Component {
         campaignScriptID: campaignId,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
+        FilterStatus: filterIds,
+        MobileNumber: this.state.filterCustNO,
       },
     })
       .then(function(response) {
@@ -1036,12 +1047,43 @@ class StoreCampaign extends Component {
     }, 50);
   }
 
+  HandleSearchCustomerNumber = () => {
+    debugger;
+    this.setState({
+      filterCustomerNumber: true,
+    });
+  };
+
+  handleCloseCustomerFilter() {
+    this.setState({
+      filterCustomerNumber: false,
+    });
+  }
+  handleCustomerFilerOnchange(campaignID,customerCount,e) {
+    debugger
+    this.setState({
+      filterCustNO: e.target.value,
+    });
+    if(this.state.filterCustNO.length > 3){
+      setTimeout(() => {
+        this.handleGetCampaignCustomer(campaignID, customerCount);
+      }, 50);
+    }
+
+  }
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
+    debugger;
     let self = this;
     if (customerCount !== "") {
       this.setState({
         childTotalGridRecord: Number(customerCount),
       });
+    }
+    var filterIds = "";
+    if (this.state.strStatusIds !== "") {
+      filterIds = this.state.strStatusIds;
+    } else {
+      filterIds = "All";
     }
     axios({
       method: "post",
@@ -1051,7 +1093,8 @@ class StoreCampaign extends Component {
         campaignScriptID: campaignScriptID,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
-        FilterStatus: this.state.strStatusIds,
+        FilterStatus: filterIds,
+        MobileNumber: this.state.filterCustNO,
       },
     })
       .then(function(response) {
@@ -1061,11 +1104,14 @@ class StoreCampaign extends Component {
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
+            filterCustomerNumber:false,
+            filterCustNO:""
           });
         } else {
           self.setState({
             CampChildTableData: [],
             childTotalGridRecord: 0,
+            filterCustomerNumber:false
           });
         }
       })
@@ -1272,6 +1318,50 @@ class StoreCampaign extends Component {
                       {
                         title: "Customer Name",
                         dataIndex: "id",
+                        filterDropdown: (dataIndex) => (
+                          <Modal
+                            open={this.state.filterCustomerNumber}
+                            onClose={this.handleCloseCustomerFilter.bind(this)}
+                            center
+                            modalId="custMobileFilter"
+                            overlayId="logout-ovrly"
+                          >
+                            <div className="row">
+                              <label>Customer Number</label>
+                              <input
+                                type="text"
+                                className="txt-1"
+                                autoComplete="off"
+                                placeholder="Enter Mobile No"
+                                value={this.state.filterCustNO}
+                                onChange={this.handleCustomerFilerOnchange.bind(this,
+                                  row.campaignID,
+                                  row.customerCount
+                                )}
+                              />
+                            </div>
+                            {/* <div className="row">
+                              <button
+                                type="button"
+                                className="butn"
+                                onClick={this.handleGetCampaignCustomer(
+                                  row.campaignID,
+                                  row.customerCount
+                                )}
+                              >
+                                Submit
+                              </button>
+                            </div> */}
+                          </Modal>
+                        ),
+                        filterDropdownVisible: this.state.filterCustomerNumber,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ filterCustomerNumber: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
                         render: (row, item) => {
                           return (
                             <div>
@@ -1509,8 +1599,8 @@ class StoreCampaign extends Component {
                                   )}
                                   className={
                                     item.responseID === 3
-                                      ? "txtStoreGray dateTimeStore"
-                                      : "txtStoreGray dateTimeStore disabled-link"
+                                      ? "txtStore dateTimeStore border-red"
+                                      : "txtStore dateTimeStore disabled-link"
                                   }
                                   placeholderText="Select Date &amp; Time"
                                 />
@@ -1671,8 +1761,8 @@ class StoreCampaign extends Component {
                                         )}
                                         className={
                                           row.responseID === 3
-                                            ? "txtStoreGray dateTimeStore"
-                                            : "txtStoreGray dateTimeStore disabled-link"
+                                            ? "txtStore dateTimeStore"
+                                            : "txtStore dateTimeStore disabled-link"
                                         }
                                         placeholderText="Select Date &amp; Time"
                                       />
@@ -2070,7 +2160,11 @@ class StoreCampaign extends Component {
                   </Tab>
 
                   <Tab
-                    label={this.state.lastTransactionItem.length > 0 ? "Last Transaction":""}
+                    label={
+                      this.state.lastTransactionItem.length > 0
+                        ? "Last Transaction"
+                        : ""
+                    }
                     // label="Last Transaction"
                     className={
                       this.state.lastTransactionItem.length > 0
