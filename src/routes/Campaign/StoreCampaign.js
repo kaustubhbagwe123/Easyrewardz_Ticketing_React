@@ -153,7 +153,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    //
+    
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -163,9 +163,10 @@ class StoreCampaign extends Component {
           loading: true,
         });
 
-        calculatedCallReScheduledTo = moment(callRescheduledTo).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
+        calculatedCallReScheduledTo = callRescheduledTo;
+        // calculatedCallReScheduledTo = moment(callRescheduledTo).format(
+        //   "YYYY-MM-DD HH:mm:ss"
+        // );
 
         axios({
           method: "post",
@@ -178,7 +179,7 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////
+           
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -216,7 +217,6 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -786,6 +786,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1478,7 +1479,7 @@ class StoreCampaign extends Component {
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          ////
+                          debugger
                           return (
                             <div
                               className={
