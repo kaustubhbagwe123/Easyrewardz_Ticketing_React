@@ -852,6 +852,7 @@ class Header extends Component {
               noOfPeople: "",
               selectSlot: {},
               scheduleModal: false,
+              selectedSlot: {}
             });
             self.handleGetTimeSlot();
             debugger;
@@ -1125,6 +1126,9 @@ class Header extends Component {
             self.state.programCode,
             self.state.storeID
           );
+         
+          self.handleGetChatMessagesList(self.state.chatId);
+          self.onCloseRecommendedModal();
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
@@ -2462,7 +2466,12 @@ class Header extends Component {
                                       Selected Slot
                                     </label>
                                     {Object.keys(this.state.selectedSlot)
-                                      .length !== 0 ? (
+                                      .length !== 0 && 
+                                      (this.state.selectedSlot
+                                                .visitedCount <
+                                              this.state.selectedSlot
+                                                .maxCapacity)
+                                       ? (
                                       <button
                                         className={
                                           this.state.selectedSlot.maxCapacity ==

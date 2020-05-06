@@ -79,10 +79,12 @@ class StoreCampaign extends Component {
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
       filterDropdownVisible: false,
+      filterCustomerNumber: false,
       strStatusIds: "",
       chatbotScript: "",
       smsScript: "",
       campaingPeriod: "",
+      filterCustNO: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -121,7 +123,6 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        //
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -153,7 +154,6 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    //
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -163,9 +163,10 @@ class StoreCampaign extends Component {
           loading: true,
         });
 
-        calculatedCallReScheduledTo = moment(callRescheduledTo).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
+        calculatedCallReScheduledTo = callRescheduledTo;
+        // calculatedCallReScheduledTo = moment(callRescheduledTo).format(
+        //   "YYYY-MM-DD HH:mm:ss"
+        // );
 
         axios({
           method: "post",
@@ -178,7 +179,6 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -216,7 +216,6 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-            //////
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -691,6 +690,8 @@ class StoreCampaign extends Component {
       ResponsiveBroadCast: false,
     });
   }
+
+
   handleShareNowOpenModal() {
     //
     if (this.state.Respo_ChannelMessanger === true) {
@@ -741,6 +742,7 @@ class StoreCampaign extends Component {
       }, 500);
     }
   };
+
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
     this.setState({
@@ -773,19 +775,27 @@ class StoreCampaign extends Component {
       });
     } else {
     }
-
+    var filterIds = "";
+    if (this.state.strStatusIds !== "") {
+      filterIds = this.state.strStatusIds;
+    } else {
+      filterIds = "All";
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
       headers: authHeader(),
-      params: {
+      data: {
         campaignScriptID: campaignId,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
+        FilterStatus: filterIds,
+        MobileNumber: this.state.filterCustNO,
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -950,7 +960,7 @@ class StoreCampaign extends Component {
             sortName += strTag[1].charAt(0).toUpperCase();
           }
           if (
-            data.lasttransactiondetails.itemDetails.length > 0 ||
+            // data.lasttransactiondetails.itemDetails.length > 0 ||
             data.lasttransactiondetails.itemDetails !== null
           ) {
             self.setState({
@@ -1037,22 +1047,54 @@ class StoreCampaign extends Component {
     }, 50);
   }
 
+  HandleSearchCustomerNumber = () => {
+    debugger;
+    this.setState({
+      filterCustomerNumber: true,
+    });
+  };
+
+  handleCloseCustomerFilter() {
+    this.setState({
+      filterCustomerNumber: false,
+    });
+  }
+  handleCustomerFilerOnchange(campaignID,customerCount,e) {
+    debugger
+    this.setState({
+      filterCustNO: e.target.value,
+    });
+    if(this.state.filterCustNO.length > 3){
+      setTimeout(() => {
+        this.handleGetCampaignCustomer(campaignID, customerCount);
+      }, 50);
+    }
+
+  }
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
+    debugger;
     let self = this;
     if (customerCount !== "") {
       this.setState({
         childTotalGridRecord: Number(customerCount),
       });
     }
+    var filterIds = "";
+    if (this.state.strStatusIds !== "") {
+      filterIds = this.state.strStatusIds;
+    } else {
+      filterIds = "All";
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
       headers: authHeader(),
-      params: {
+      data: {
         campaignScriptID: campaignScriptID,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
-        FilterStatus: this.state.strStatusIds,
+        FilterStatus: filterIds,
+        MobileNumber: this.state.filterCustNO,
       },
     })
       .then(function(response) {
@@ -1062,11 +1104,14 @@ class StoreCampaign extends Component {
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
+            filterCustomerNumber:false,
+            filterCustNO:""
           });
         } else {
           self.setState({
             CampChildTableData: [],
             childTotalGridRecord: 0,
+            filterCustomerNumber:false
           });
         }
       })
@@ -1273,6 +1318,50 @@ class StoreCampaign extends Component {
                       {
                         title: "Customer Name",
                         dataIndex: "id",
+                        filterDropdown: (dataIndex) => (
+                          <Modal
+                            open={this.state.filterCustomerNumber}
+                            onClose={this.handleCloseCustomerFilter.bind(this)}
+                            center
+                            modalId="custMobileFilter"
+                            overlayId="logout-ovrly"
+                          >
+                            <div className="row">
+                              <label>Customer Number</label>
+                              <input
+                                type="text"
+                                className="txt-1"
+                                autoComplete="off"
+                                placeholder="Enter Mobile No"
+                                value={this.state.filterCustNO}
+                                onChange={this.handleCustomerFilerOnchange.bind(this,
+                                  row.campaignID,
+                                  row.customerCount
+                                )}
+                              />
+                            </div>
+                            {/* <div className="row">
+                              <button
+                                type="button"
+                                className="butn"
+                                onClick={this.handleGetCampaignCustomer(
+                                  row.campaignID,
+                                  row.customerCount
+                                )}
+                              >
+                                Submit
+                              </button>
+                            </div> */}
+                          </Modal>
+                        ),
+                        filterDropdownVisible: this.state.filterCustomerNumber,
+                        onFilterDropdownVisibleChange: (visible) =>
+                          this.setState({ filterCustomerNumber: visible }),
+                        filterIcon: (filtered) => (
+                          <span
+                            style={{ color: filtered ? "#1890ff" : undefined }}
+                          ></span>
+                        ),
                         render: (row, item) => {
                           return (
                             <div>
@@ -1355,7 +1444,7 @@ class StoreCampaign extends Component {
                           );
                         },
                         filterDropdown: (dataIndex) => (
-                          <div className="campaign-status-drpdwn">
+                          <div className="sharecamp">
                             <ul>
                               <li>
                                 <input
@@ -1478,7 +1567,6 @@ class StoreCampaign extends Component {
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          ////
                           return (
                             <div
                               className={
@@ -1491,6 +1579,7 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
+                                  minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
                                   selected={
@@ -1540,10 +1629,9 @@ class StoreCampaign extends Component {
                                   >
                                     Update
                                   </button>
-                                </div>
-                                <div style={{ display: "none" }}>
                                   <button
                                     className="raisedticket-Btn"
+                                    style={{ display: "none" }}
                                     type="button"
                                     // onClick={this.handleRaisedTicketModalOpen.bind(
                                     //   this,
@@ -2070,7 +2158,20 @@ class StoreCampaign extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label="Last Transaction">
+
+                  <Tab
+                    label={
+                      this.state.lastTransactionItem.length > 0
+                        ? "Last Transaction"
+                        : ""
+                    }
+                    // label="Last Transaction"
+                    className={
+                      this.state.lastTransactionItem.length > 0
+                        ? ""
+                        : "displayNn"
+                    }
+                  >
                     <div>
                       <div className="transactionbox">
                         <table>
@@ -2183,7 +2284,7 @@ class StoreCampaign extends Component {
                   ) : null}
                   {this.state.customerModalDetails.emailFlag === true ? (
                     <li>
-                      <img className="ico" src={Email} alt="Email Icon" />
+                      <img className="emailico" src={Email} alt="Email Icon" />
                       Email
                     </li>
                   ) : null}
