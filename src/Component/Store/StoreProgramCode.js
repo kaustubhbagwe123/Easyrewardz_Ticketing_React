@@ -106,6 +106,7 @@ class StoreProgramCode extends Component {
                     maxLength={10}
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "Program Code",

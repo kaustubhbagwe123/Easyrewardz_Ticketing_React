@@ -153,7 +153,6 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
-    
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -179,7 +178,6 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
-           
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -779,14 +777,14 @@ class StoreCampaign extends Component {
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
       headers: authHeader(),
-      params: {
+      data: {
         campaignScriptID: campaignId,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
       },
     })
       .then(function(response) {
-        debugger
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -951,7 +949,7 @@ class StoreCampaign extends Component {
             sortName += strTag[1].charAt(0).toUpperCase();
           }
           if (
-            data.lasttransactiondetails.itemDetails.length > 0 ||
+            // data.lasttransactiondetails.itemDetails.length > 0 ||
             data.lasttransactiondetails.itemDetails !== null
           ) {
             self.setState({
@@ -1049,7 +1047,7 @@ class StoreCampaign extends Component {
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
       headers: authHeader(),
-      params: {
+      data: {
         campaignScriptID: campaignScriptID,
         pageNo: this.state.childCurrentPage,
         pageSize: this.state.ChildPostsPerPage,
@@ -1479,7 +1477,6 @@ class StoreCampaign extends Component {
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
-                          debugger
                           return (
                             <div
                               className={
@@ -1492,6 +1489,7 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
+                                  minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
                                   selected={
@@ -1511,8 +1509,8 @@ class StoreCampaign extends Component {
                                   )}
                                   className={
                                     item.responseID === 3
-                                      ? "txtStore dateTimeStore"
-                                      : "txtStore dateTimeStore disabled-link"
+                                      ? "txtStoreGray dateTimeStore"
+                                      : "txtStoreGray dateTimeStore disabled-link"
                                   }
                                   placeholderText="Select Date &amp; Time"
                                 />
@@ -1674,8 +1672,8 @@ class StoreCampaign extends Component {
                                         )}
                                         className={
                                           row.responseID === 3
-                                            ? "txtStore dateTimeStore"
-                                            : "txtStore dateTimeStore disabled-link"
+                                            ? "txtStoreGray dateTimeStore"
+                                            : "txtStoreGray dateTimeStore disabled-link"
                                         }
                                         placeholderText="Select Date &amp; Time"
                                       />
@@ -2071,7 +2069,16 @@ class StoreCampaign extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label="Last Transaction">
+
+                  <Tab
+                    label={this.state.lastTransactionItem.length > 0 ? "Last Transaction":""}
+                    // label="Last Transaction"
+                    className={
+                      this.state.lastTransactionItem.length > 0
+                        ? ""
+                        : "displayNn"
+                    }
+                  >
                     <div>
                       <div className="transactionbox">
                         <table>
