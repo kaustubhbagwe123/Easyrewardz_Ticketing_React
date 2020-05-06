@@ -111,6 +111,7 @@ class Header extends Component {
       chkSuggestion: [],
       programCode: "",
       oldCount: 0,
+      storeID: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -163,12 +164,6 @@ class Header extends Component {
       this.handleGetNotigfication();
       this.handleGetChatNotificationCount();
       this.handleGetOngoingChat("");
-      this.handleGetNewChat();
-
-      if (localStorage.getItem("isSocketReady")) {
-      } else {
-        localStorage.setItem("isSocketReady", 1);
-      }
     }
   }
 
@@ -523,21 +518,25 @@ class Header extends Component {
           });
 
           if (value == "") {
-            const socket = io.connect(config.socketUrl, {
-              transports: ["polling"],
-            });
+            // const socket = io.connect(config.socketUrl, {
+            //   transports: ["polling", "flashsocket"],
+            // });
             for (let i = 0; i < ongoingChatsData.length; i++) {
+              const socket = io.connect(config.socketUrl,{transports: ["polling", "flashsocket"]});
               socket.on("connect", () => {
                 socket.send("hi");
-                // socket.on(ongoingChatsData[i].mobileNoon+goingChatsData[i].programCode, function(data) {
-                socket.on(ongoingChatsData[i].mobileNo, function(data) {
-                  if (self.state.mobileNo === data[3]) {
-                    self.handleGetChatMessagesList(self.state.chatId);
-                  } else {
-                    self.handleGetOngoingChat("");
-                    self.handleGetChatNotificationCount();
+                socket.on(
+                  ongoingChatsData[i].mobileNo +
+                    ongoingChatsData[i].programCode,
+                  function(data) {
+                    if (self.state.mobileNo === data[3]) {
+                      self.handleGetChatMessagesList(self.state.chatId);
+                    } else {
+                      self.handleGetOngoingChat("isRead");
+                      self.handleGetChatNotificationCount();
+                    }
                   }
-                });
+                );
               });
             }
             //   localStorage.setItem("isSocketReady", 2);
@@ -573,11 +572,11 @@ class Header extends Component {
         }
       })
       .catch((response) => {
-        console.log(response, "---handleGetOngoingChat");
+        console.log(response, "---handleGetNewChat");
       });
   }
   ////handle Make As Read On Going Chat
-  handleMakeAsReadOnGoingChat(id, name) {
+  handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
     axios({
@@ -595,9 +594,7 @@ class Header extends Component {
           self.handleGetOngoingChat("isRead");
           self.handleGetChatMessagesList(id);
           self.handleGetChatNotificationCount();
-          self.setState({ customerName: name });
         } else {
-          self.setState({ customerName: name });
         }
       })
       .catch((response) => {
@@ -711,6 +708,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
+            self.handleGetOngoingChat("isRead");
             self.setState({
               message: "",
               messageSuggestionData: [],
@@ -719,7 +717,7 @@ class Header extends Component {
           }
         })
         .catch((response) => {
-          console.log(response, "---handleGetChatMessagesList");
+          console.log(response, "---saveChatMessages");
         });
     }
   }
@@ -753,6 +751,7 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         SearchText: this.state.searchItem,
+        ProgramCode: this.state.programCode,
       },
     })
       .then(function(response) {
@@ -767,7 +766,7 @@ class Header extends Component {
         console.log(response, "---handleSearchChatItemDetails");
       });
   }
-  ////handle get chat notification count
+  ////handle get time slot by store id
   handleGetTimeSlot() {
     let self = this;
 
@@ -777,9 +776,11 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         storeID: 1,
+        // storeID: this.state.storeID,
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
 
@@ -794,32 +795,6 @@ class Header extends Component {
       });
   }
 
-  ////handle get chat notification count
-  handleGetTimeSlot() {
-    let self = this;
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/GetTimeSlot",
-      headers: authHeader(),
-      params: {
-        storeID: 1,
-      },
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var timeSlotData = response.data.responseData;
-
-        if (message == "Success" && timeSlotData) {
-          self.setState({ timeSlotData });
-        } else {
-          self.setState({ timeSlotData });
-        }
-      })
-      .catch((response) => {
-        console.log(response, "---handleGetTimeSlot");
-      });
-  }
   ////handle send schedual visit
   handleScheduleVisit() {
     let self = this;
@@ -854,7 +829,8 @@ class Header extends Component {
       inputParam.SlotID = this.state.selectedSlot.timeSlotId;
       inputParam.NOofPeople = Number(this.state.noOfPeople);
       inputParam.MobileNo = this.state.mobileNo;
-      inputParam.StoreID = 1;
+      // inputParam.StoreID = this.state.storeID;
+      inputParam.StoreID =1;
 
       var messagedata =
         "Your appointment is booked at " +
@@ -889,23 +865,6 @@ class Header extends Component {
   }
   ////handlecselect card in card tab
   handleSelectCard(id) {
-    // if (
-    //   this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
-    //   true
-    // ) {
-    //   this.state.searchCardData.filter((x) => x.id === id)[0][
-    //     "isSelect"
-    //   ] = false;
-    // } else {
-    //   this.state.searchCardData.filter((x) => x.id === id)[0][
-    //     "isSelect"
-    //   ] = true;
-    // }
-    // this.setState({
-    //   searchCardData: this.state.searchCardData,
-    // });
-    // var messageStringData = document.getElementById("card" + id).innerHTML;
-
     this.setState({ selectedCard: id });
   }
   ////handle button down click
@@ -945,7 +904,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/getChatSuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: this.state.message,
+        SearchText: this.state.message,
       },
     })
       .then(function(res) {
@@ -994,9 +953,11 @@ class Header extends Component {
     count,
     mobileNo,
     customerId,
-    ProgramCode
+    ProgramCode,
+    StoreID
   ) => {
     this.setState({
+      storeID: StoreID,
       chatId: id,
       customerName: name,
       mobileNo: mobileNo,
@@ -1007,6 +968,11 @@ class Header extends Component {
       messageSuggestionData: [],
       chkSuggestion: [],
       oldCount: count,
+      activeTab: 1,
+      timeSlotData: [],
+      searchItem: "",
+      searchCardData: [],
+      messageData: [],
     });
 
     let self = this;
@@ -1018,10 +984,7 @@ class Header extends Component {
         if (count === 0) {
           this.handleGetChatMessagesList(id);
         } else {
-          // this.setState({
-          //   chatMessageCount: this.state.chatMessageCount - count,
-          // });
-          this.handleMakeAsReadOnGoingChat(id, name);
+          this.handleMakeAsReadOnGoingChat(id);
         }
       }
     }
@@ -1120,22 +1083,22 @@ class Header extends Component {
 
   handleTabClick = (tabIndex) => {
     if (tabIndex == 1) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 1 });
     }
 
     if (tabIndex == 2) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 2 });
     }
     if (tabIndex == 3) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 3 });
     }
 
     if (tabIndex == 4) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 4 });
       this.handleGetTimeSlot();
     }
     if (tabIndex == 5) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 5 });
     }
   };
   handleSendRecommendedList() {
@@ -1159,7 +1122,8 @@ class Header extends Component {
             0,
             self.state.mobileNo,
             self.state.customerId,
-            self.state.programCode
+            self.state.programCode,
+            self.state.storeID
           );
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
@@ -1588,7 +1552,8 @@ class Header extends Component {
                               chat.messageCount,
                               chat.mobileNo,
                               chat.customerID,
-                              chat.programCode
+                              chat.programCode,
+                              chat.storeID
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -1770,7 +1735,8 @@ class Header extends Component {
                                   chat.messageCount,
                                   chat.mobileNo,
                                   chat.customerID,
-                                  chat.programCode
+                                  chat.programCode,
+                                  chat.storeID
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -1788,11 +1754,17 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    <img
+                                    {/* <img
                                       src={DummyFace1}
                                       alt="face image"
                                       title={chat.cumtomerName}
-                                    />
+                                    /> */}
+                                    <span className="chat-initial">
+                                      {chat.cumtomerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
 
                                     {chat.messageCount > 0 ? (
                                       <span className="online"></span>
@@ -1852,7 +1824,13 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    <img src={DummyFace1} alt="face image" />
+                                    {/* <img src={DummyFace1} alt="face image" /> */}
+                                    <span className="chat-initial">
+                                      {chat.cumtomerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
                                     <span className="online"></span>
                                   </div>
                                 </div>
@@ -1939,7 +1917,11 @@ class Header extends Component {
                         <ul className="nav nav-tabs" role="tablist">
                           <li className="nav-item">
                             <a
-                              className="nav-link active"
+                              className={
+                                this.state.activeTab == 1
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                               data-toggle="tab"
                               href="#message-tab"
                               role="tab"
@@ -1952,7 +1934,11 @@ class Header extends Component {
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={
+                                this.state.activeTab == 2
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                               data-toggle="tab"
                               href="#card-tab"
                               role="tab"
@@ -1965,7 +1951,11 @@ class Header extends Component {
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={
+                                this.state.activeTab == 3
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                               data-toggle="tab"
                               href="#recommended-list-tab"
                               role="tab"
@@ -1978,7 +1968,11 @@ class Header extends Component {
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={
+                                this.state.activeTab == 4
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                               data-toggle="tab"
                               href="#schedule-visit-tab"
                               role="tab"
@@ -1992,7 +1986,11 @@ class Header extends Component {
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={
+                                this.state.activeTab == 5
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                               data-toggle="tab"
                               href="#generate-payment-link-tab"
                               role="tab"
