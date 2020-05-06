@@ -1153,14 +1153,10 @@ class Header extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.handleOngoingChatClick(
-            self.state.chatId,
-            self.state.customerName,
-            0,
-            self.state.mobileNo,
-            self.state.customerId,
-            self.state.programCode
-          );
+          // self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
+          //                             self.state.mobileNo,self.state.customerId);
+          self.handleGetChatMessagesList(self.state.chatId);
+          self.onCloseRecommendedModal();
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }

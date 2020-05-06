@@ -1354,7 +1354,7 @@ class StoreCampaign extends Component {
                           );
                         },
                         filterDropdown: (dataIndex) => (
-                          <div className="campaign-status-drpdwn">
+                          <div className="sharecamp">
                             <ul>
                               <li>
                                 <input
@@ -1539,10 +1539,9 @@ class StoreCampaign extends Component {
                                   >
                                     Update
                                   </button>
-                                </div>
-                                <div style={{ display: "none" }}>
                                   <button
                                     className="raisedticket-Btn"
+                                    style={{ display: "none" }}
                                     type="button"
                                     // onClick={this.handleRaisedTicketModalOpen.bind(
                                     //   this,
@@ -2191,7 +2190,7 @@ class StoreCampaign extends Component {
                   ) : null}
                   {this.state.customerModalDetails.emailFlag === true ? (
                     <li>
-                      <img className="ico" src={Email} alt="Email Icon" />
+                      <img className="emailico" src={Email} alt="Email Icon" />
                       Email
                     </li>
                   ) : null}
