@@ -1291,6 +1291,7 @@ class Header extends Component {
           // self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
           //                             self.state.mobileNo,self.state.customerId);
           self.handleGetChatMessagesList(self.state.chatId);
+          self.onCloseRecommendedModal();
         } else {
           self.setState({ messageSuggestionData: [], chkSuggestion: [] });
         }
