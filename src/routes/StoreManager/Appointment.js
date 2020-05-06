@@ -475,7 +475,9 @@ class Appointment extends Component {
             onExpand={this.onRowExpand}
             expandIconColumnIndex={6}
             expandIconAsCell={false}
-            pagination={{ defaultPageSize: 5 }}
+            pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+            showSizeChanger={true}
+            onShowSizeChange={true}
             loading={this.state.loading}
             dataSource={this.state.appointmentGridData}
           />
