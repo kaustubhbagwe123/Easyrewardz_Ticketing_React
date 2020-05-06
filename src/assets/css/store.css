@@ -1928,6 +1928,9 @@ table tr th:last-child {
   line-height: 25px !important;
   color: #333;
 }
+.border-red {
+  border: 3px solid red;
+}
 /* ------------------Campain Css End ------------------------- */
 .broadcastpop label {
   display: block;
