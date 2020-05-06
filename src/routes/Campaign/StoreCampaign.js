@@ -1599,7 +1599,7 @@ class StoreCampaign extends Component {
                                   )}
                                   className={
                                     item.responseID === 3
-                                      ? "txtStore dateTimeStore border-red"
+                                      ? "txtStore dateTimeStore"
                                       : "txtStore dateTimeStore disabled-link"
                                   }
                                   placeholderText="Select Date &amp; Time"
