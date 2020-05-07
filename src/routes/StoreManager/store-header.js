@@ -111,7 +111,16 @@ class Header extends Component {
       chkSuggestion: [],
       programCode: "",
       oldCount: 0,
+      toggle: {
+        one: false,
+        two: false,
+        three: false,
+        four: false,
+        five: false,
+      },
       storeID: "",
+      notificationAccess: "none",
+      settingAccess: "none",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -165,6 +174,14 @@ class Header extends Component {
       this.handleGetChatNotificationCount();
       this.handleGetOngoingChat("");
     }
+  }
+
+  toggleFilter(e) {
+    this.setState({
+      toggle: {
+        [e.target.id]: !this.state.toggle[e.target.id],
+      },
+    });
   }
 
   setAccessUser(data) {
@@ -494,7 +511,21 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
-    this.setState({ chatModal: true, activeTab: 1 });
+    this.setState({
+      chatModal: true,
+      noOfPeople: "",
+      selectSlot: {},
+      scheduleModal: false,
+      selectedSlot: {},
+      toggle: {
+        one: true,
+        two: false,
+        three: false,
+        four: false,
+        five: false,
+      },
+      activeTab: 1,
+    });
 
     this.handleGetNewChat();
     this.handleGetOngoingChat("isRead");
@@ -1004,8 +1035,6 @@ class Header extends Component {
     ProgramCode,
     StoreID
   ) => {
-    
-
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1020,6 +1049,17 @@ class Header extends Component {
           messageSuggestionData: [],
           chkSuggestion: [],
           oldCount: count,
+          toggle: {
+            one: true,
+            two: false,
+            three: false,
+            four: false,
+            five: false,
+          },
+          noOfPeople: "",
+          selectSlot: {},
+          scheduleModal: false,
+          selectedSlot: {},
           activeTab: 1,
           timeSlotData: [],
           searchItem: "",
@@ -1041,6 +1081,17 @@ class Header extends Component {
           messageSuggestionData: [],
           chkSuggestion: [],
           oldCount: count,
+          toggle: {
+            one: true,
+            two: false,
+            three: false,
+            four: false,
+            five: false,
+          },
+          noOfPeople: "",
+          selectSlot: {},
+          scheduleModal: false,
+          selectedSlot: {},
           activeTab: 1,
           timeSlotData: [],
           searchItem: "",
@@ -1109,7 +1160,7 @@ class Header extends Component {
   };
 
   onCloseScheduleModal = () => {
-    this.handleScheduleVisit();
+    // this.handleScheduleVisit();
     this.setState({ scheduleModal: false });
   };
   onOpenScheduleModal = () => {
@@ -1149,7 +1200,7 @@ class Header extends Component {
     }
   }
 
-  handleTabClick = (tabIndex) => {
+  handleTabClick = (tabIndex, e) => {
     if (tabIndex == 1) {
       this.setState({ isDownbtn: true, activeTab: 1 });
     }
@@ -1168,6 +1219,12 @@ class Header extends Component {
     if (tabIndex == 5) {
       this.setState({ isDownbtn: true, activeTab: 5 });
     }
+
+    this.setState({
+      toggle: {
+        [e.target.id]: !this.state.toggle[e.target.id],
+      },
+    });
   };
   handleSendRecommendedList() {
     let self = this;
@@ -1184,15 +1241,15 @@ class Header extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.handleOngoingChatClick(
-            self.state.chatId,
-            self.state.customerName,
-            0,
-            self.state.mobileNo,
-            self.state.customerId,
-            self.state.programCode,
-            self.state.storeID
-          );
+          // self.handleOngoingChatClick(
+          //   self.state.chatId,
+          //   self.state.customerName,
+          //   0,
+          //   self.state.mobileNo,
+          //   self.state.customerId,
+          //   self.state.programCode,
+          //   self.state.storeID
+          // );
 
           self.handleGetChatMessagesList(self.state.chatId);
           self.onCloseRecommendedModal();
@@ -1310,7 +1367,7 @@ class Header extends Component {
               </div>
             </a>
             {/* --notification-- */}
-            <a>
+            <a href="#!" style={{ display: this.state.notificationAccess }}>
               <div
                 className="position-relative"
                 onClick={this.handleNotificationModalOpen.bind(this)}
@@ -1329,7 +1386,10 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <Link to="/store/settings">
+            <Link
+              to="/store/settings"
+              style={{ display: this.state.settingAccess }}
+            >
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
@@ -1989,7 +2049,7 @@ class Header extends Component {
                           <li className="nav-item">
                             <a
                               className={
-                                this.state.activeTab == 1
+                                this.state.toggle.one
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -1999,6 +2059,7 @@ class Header extends Component {
                               aria-controls="message-tab"
                               aria-selected="true"
                               onClick={this.handleTabClick.bind(this, 1)}
+                              id="one"
                             >
                               MESSAGE
                             </a>
@@ -2006,7 +2067,7 @@ class Header extends Component {
                           <li className="nav-item">
                             <a
                               className={
-                                this.state.activeTab == 2
+                                this.state.toggle.two
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -2016,6 +2077,7 @@ class Header extends Component {
                               aria-controls="card-tab"
                               aria-selected="false"
                               onClick={this.handleTabClick.bind(this, 2)}
+                              id="two"
                             >
                               CARD
                             </a>
@@ -2023,7 +2085,7 @@ class Header extends Component {
                           <li className="nav-item">
                             <a
                               className={
-                                this.state.activeTab == 3
+                                this.state.toggle.three
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -2033,6 +2095,7 @@ class Header extends Component {
                               aria-controls="recommended-list-tab"
                               aria-selected="false"
                               onClick={this.handleTabClick.bind(this, 3)}
+                              id="three"
                             >
                               RECOMMENDED LIST
                             </a>
@@ -2040,7 +2103,7 @@ class Header extends Component {
                           <li className="nav-item">
                             <a
                               className={
-                                this.state.activeTab == 4
+                                this.state.toggle.four
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -2051,6 +2114,7 @@ class Header extends Component {
                               aria-selected="false"
                               // onClick={this.handleGetTimeSlot.bind(this)}
                               onClick={this.handleTabClick.bind(this, 4)}
+                              id="four"
                             >
                               SCHEDULE VISIT
                             </a>
@@ -2058,7 +2122,7 @@ class Header extends Component {
                           <li className="nav-item">
                             <a
                               className={
-                                this.state.activeTab == 5
+                                this.state.toggle.five
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -2068,6 +2132,7 @@ class Header extends Component {
                               aria-controls="generate-payment-link-tab"
                               aria-selected="false"
                               onClick={this.handleTabClick.bind(this, 5)}
+                              id="five"
                             >
                               GENERATE PAYMENT LINK
                             </a>
@@ -2078,8 +2143,11 @@ class Header extends Component {
                         {/* --------Message Tab----- */}
                         <div
                           className={
-                            this.state.customerName !== ""
-                              ? "tab-pane fade show active"
+                            // this.state.customerName !== ""
+                            //   ? "tab-pane fade active show"
+                            //   :
+                            this.state.toggle.one
+                              ? "tab-pane fade active show"
                               : "tab-pane fade"
                           }
                           id="message-tab"
@@ -2205,7 +2273,11 @@ class Header extends Component {
                         </div>
                         {/* --------Card Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={
+                            this.state.toggle.two
+                              ? "tab-pane fade active show"
+                              : "tab-pane fade"
+                          }
                           id="card-tab"
                           role="tabpanel"
                           aria-labelledby="card-tab"
@@ -2362,7 +2434,11 @@ class Header extends Component {
                         </div>
                         {/* --------Recommended List Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={
+                            this.state.toggle.three
+                              ? "tab-pane fade active show"
+                              : "tab-pane fade"
+                          }
                           id="recommended-list-tab"
                           role="tabpanel"
                           aria-labelledby="recommended-list-tab"
@@ -2385,7 +2461,11 @@ class Header extends Component {
                         </div>
                         {/* --------Schedule Visit Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={
+                            this.state.toggle.four
+                              ? "tab-pane fade active show"
+                              : "tab-pane fade"
+                          }
                           id="schedule-visit-tab"
                           role="tabpanel"
                           aria-labelledby="schedule-visit-tab"
@@ -2543,9 +2623,7 @@ class Header extends Component {
                                       Selected Slot
                                     </label>
                                     {Object.keys(this.state.selectedSlot)
-                                      .length !== 0 &&
-                                    this.state.selectedSlot.visitedCount <
-                                      this.state.selectedSlot.maxCapacity ? (
+                                      .length !== 0 ? (
                                       <button
                                         className={
                                           this.state.selectedSlot.maxCapacity ==
@@ -2622,7 +2700,11 @@ class Header extends Component {
                         </div>
                         {/* --------Generate Payment Link Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={
+                            this.state.toggle.five
+                              ? "tab-pane fade active show"
+                              : "tab-pane fade"
+                          }
                           id="generate-payment-link-tab"
                           role="tabpanel"
                           aria-labelledby="generate-payment-link-tab"
@@ -2691,64 +2773,89 @@ class Header extends Component {
                       <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
                           <a
-                            className="nav-link active"
+                            className={
+                              this.state.toggle.one
+                                ? "nav-link active"
+                                : "nav-link"
+                            }
                             data-toggle="tab"
                             href="#message-tab"
                             role="tab"
                             aria-controls="message-tab"
                             aria-selected="true"
+                            id="one"
                           >
                             MESSAGE
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={
+                              this.state.toggle.two
+                                ? "nav-link active"
+                                : "nav-link"
+                            }
                             data-toggle="tab"
                             href="#card-tab"
                             role="tab"
                             aria-controls="card-tab"
                             aria-selected="false"
                             onClick={this.onOpenCardModal}
+                            id="two"
                           >
                             CARD
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={
+                              this.state.toggle.three
+                                ? "nav-link active"
+                                : "nav-link"
+                            }
                             data-toggle="tab"
                             href="#recommended-list-tab"
                             role="tab"
                             aria-controls="recommended-list-tab"
                             aria-selected="false"
                             onClick={this.onOpenRecommendedModal}
+                            id="three"
                           >
                             RECOMMENDED LIST
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={
+                              this.state.toggle.four
+                                ? "nav-link active"
+                                : "nav-link"
+                            }
                             data-toggle="tab"
                             href="#schedule-visit-tab"
                             role="tab"
                             aria-controls="schedule-visit-tab"
                             aria-selected="false"
                             onClick={this.onOpenScheduleModal}
+                            id="four"
                           >
                             SCHEDULE VISIT
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={
+                              this.state.toggle.five
+                                ? "nav-link active"
+                                : "nav-link"
+                            }
                             data-toggle="tab"
                             href="#generate-payment-link-tab"
                             role="tab"
                             aria-controls="generate-payment-link-tab"
                             aria-selected="false"
                             onClick={this.onOpenPaymentModal}
+                            id="five"
                           >
                             GENERATE PAYMENT LINK
                           </a>
