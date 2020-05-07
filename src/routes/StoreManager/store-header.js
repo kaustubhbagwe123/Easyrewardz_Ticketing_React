@@ -554,7 +554,7 @@ class Header extends Component {
             // });
             for (let i = 0; i < ongoingChatsData.length; i++) {
               const socket = io.connect(config.socketUrl, {
-                transports: ["polling", "flashsocket"],
+                transports: ["polling"],
               });
               socket.on("connect", () => {
                 socket.send("hi");
@@ -563,6 +563,7 @@ class Header extends Component {
                     ongoingChatsData[i].programCode,
                   function(data) {
                     if (self.state.mobileNo === data[3]) {
+                      self.handleGetOngoingChat("isRead");
                       self.handleGetChatMessagesList(self.state.chatId);
                     } else {
                       self.handleGetOngoingChat("isRead");
@@ -572,7 +573,6 @@ class Header extends Component {
                 );
               });
             }
-            //   localStorage.setItem("isSocketReady", 2);
           }
         } else {
           self.setState({ ongoingChatsData });
