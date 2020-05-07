@@ -1001,6 +1001,7 @@ class Header extends Component {
   };
 
   onCloseCardModal = () => {
+    this.handleSendCard();
     this.setState({ cardModal: false });
   };
   onOpenCardModal = () => {
