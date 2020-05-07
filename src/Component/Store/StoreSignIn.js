@@ -108,6 +108,22 @@ class StoreSignIn extends Component {
                 }, 400);
                 return;
               } else if (
+                data[i].moduleName === "Campaign" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/campaign");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Appointment" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/appointment");
+                }, 400);
+                return;
+              } else if (
                 data[i].moduleName === "Settings" &&
                 data[i].modulestatus === true
               ) {

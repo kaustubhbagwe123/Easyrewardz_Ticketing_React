@@ -192,7 +192,11 @@
   padding-left: 10px;
 }
 .responceDrop-down {
-  background-color: #ecf2f4;
+  /* background-color: #ecf2f4; */
+  background: #ecf2f4 url("./../Images//dropdown3.png") no-repeat center right
+    10px !important;
+  background-size: 12px !important;
+  padding-right: 32px !important;
   border-radius: 4px;
   width: 190px;
   height: 31px;
@@ -2077,7 +2081,7 @@ table tr th:last-child {
   right: 420px;
   top: 174px;
   border-radius: 10px;
-  box-shadow:0 4px 4px 0 rgba(0, 0, 0, 0.02)
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
 }
 /* ------------------Campain Media Queries ------------------------- */
 
@@ -2537,6 +2541,10 @@ table tr th:last-child {
   .innertabcollapse .responceDrop-down {
     width: 160px;
     height: 28px;
+  }
+  .responceDrop-down {
+    background-size: 10px !important;
+    padding-right: 30px !important;
   }
   .custom-tableak .saveLabel {
     text-align: center;

@@ -117,7 +117,10 @@ class Header extends Component {
         three: false,
         four: false,
         five: false
-      }
+      },
+      storeID: "",
+      notificationAccess: "none",
+      settingAccess: "none",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -170,12 +173,6 @@ class Header extends Component {
       this.handleGetNotigfication();
       this.handleGetChatNotificationCount();
       this.handleGetOngoingChat("");
-      this.handleGetNewChat();
-
-      if (localStorage.getItem("isSocketReady")) {
-      } else {
-        localStorage.setItem("isSocketReady", 1);
-      }
     }
   }
 
@@ -511,7 +508,6 @@ class Header extends Component {
   ////handle chat modal close
   handleChatModalClose() {
     this.setState({ chatModal: false });
-    localStorage.setItem("isSocketReady", 1);
   }
   ////handle chat modal open
   handleChatModalOpen() {
@@ -529,7 +525,8 @@ class Header extends Component {
       }
       });
 
-    // this.handleGetNewChat();
+    this.handleGetNewChat();
+    this.handleGetOngoingChat("isRead");
   }
 
   ////handleGet Ongoing Chat
@@ -550,21 +547,27 @@ class Header extends Component {
           });
 
           if (value == "") {
-            const socket = io.connect(config.socketUrl, {
-              transports: ["polling"],
-            });
+            // const socket = io.connect(config.socketUrl, {
+            //   transports: ["polling", "flashsocket"],
+            // });
             for (let i = 0; i < ongoingChatsData.length; i++) {
+              const socket = io.connect(config.socketUrl, {
+                transports: ["polling", "flashsocket"],
+              });
               socket.on("connect", () => {
                 socket.send("hi");
-                // socket.on(ongoingChatsData[i].mobileNoon+goingChatsData[i].programCode, function(data) {
-                socket.on(ongoingChatsData[i].mobileNo, function(data) {
-                  if (self.state.mobileNo === data[3]) {
-                    self.handleGetChatMessagesList(self.state.chatId);
-                  } else {
-                    self.handleGetOngoingChat("");
-                    self.handleGetChatNotificationCount();
+                socket.on(
+                  ongoingChatsData[i].mobileNo +
+                    ongoingChatsData[i].programCode,
+                  function(data) {
+                    if (self.state.mobileNo === data[3]) {
+                      self.handleGetChatMessagesList(self.state.chatId);
+                    } else {
+                      self.handleGetOngoingChat("isRead");
+                      self.handleGetChatNotificationCount();
+                    }
                   }
-                });
+                );
               });
             }
             //   localStorage.setItem("isSocketReady", 2);
@@ -600,11 +603,11 @@ class Header extends Component {
         }
       })
       .catch((response) => {
-        console.log(response, "---handleGetOngoingChat");
+        console.log(response, "---handleGetNewChat");
       });
   }
   ////handle Make As Read On Going Chat
-  handleMakeAsReadOnGoingChat(id, name) {
+  handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
     axios({
@@ -622,9 +625,7 @@ class Header extends Component {
           self.handleGetOngoingChat("isRead");
           self.handleGetChatMessagesList(id);
           self.handleGetChatNotificationCount();
-          self.setState({ customerName: name });
         } else {
-          self.setState({ customerName: name });
         }
       })
       .catch((response) => {
@@ -738,6 +739,7 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
+            self.handleGetOngoingChat("isRead");
             self.setState({
               message: "",
               messageSuggestionData: [],
@@ -746,7 +748,7 @@ class Header extends Component {
           }
         })
         .catch((response) => {
-          console.log(response, "---handleGetChatMessagesList");
+          console.log(response, "---saveChatMessages");
         });
     }
   }
@@ -780,6 +782,7 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         SearchText: this.state.searchItem,
+        ProgramCode: this.state.programCode,
       },
     })
       .then(function(response) {
@@ -787,14 +790,20 @@ class Header extends Component {
         var searchCardData = response.data.responseData;
 
         if (message == "Success" && searchCardData) {
-          self.setState({ searchCardData });
+          searchCardData.forEach((element, i) => {
+            element["itemID"] = i + 1;
+          });
+          debugger;
+          self.setState({
+            searchCardData,
+          });
         }
       })
       .catch((response) => {
         console.log(response, "---handleSearchChatItemDetails");
       });
   }
-  ////handle get chat notification count
+  ////handle get time slot by store id
   handleGetTimeSlot() {
     let self = this;
 
@@ -804,16 +813,18 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         storeID: 1,
+        // storeID: this.state.storeID,
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
 
         if (message == "Success" && timeSlotData) {
-          self.setState({ timeSlotData });
+          self.setState({ timeSlotData, isSendClick: false });
         } else {
-          self.setState({ timeSlotData });
+          self.setState({ timeSlotData, isSendClick: false });
         }
       })
       .catch((response) => {
@@ -821,32 +832,6 @@ class Header extends Component {
       });
   }
 
-  ////handle get chat notification count
-  handleGetTimeSlot() {
-    let self = this;
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/GetTimeSlot",
-      headers: authHeader(),
-      params: {
-        storeID: 1,
-      },
-    })
-      .then(function(response) {
-        var message = response.data.message;
-        var timeSlotData = response.data.responseData;
-
-        if (message == "Success" && timeSlotData) {
-          self.setState({ timeSlotData });
-        } else {
-          self.setState({ timeSlotData });
-        }
-      })
-      .catch((response) => {
-        console.log(response, "---handleGetTimeSlot");
-      });
-  }
   ////handle send schedual visit
   handleScheduleVisit() {
     let self = this;
@@ -881,6 +866,7 @@ class Header extends Component {
       inputParam.SlotID = this.state.selectedSlot.timeSlotId;
       inputParam.NOofPeople = Number(this.state.noOfPeople);
       inputParam.MobileNo = this.state.mobileNo;
+      // inputParam.StoreID = this.state.storeID;
       inputParam.StoreID = 1;
 
       var messagedata =
@@ -888,7 +874,7 @@ class Header extends Component {
         this.state.selectedDate +
         " on " +
         this.state.selectedSlot.timeSlot;
-      this.setState({ message: messagedata });
+      this.setState({ message: messagedata, isSendClick: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/ScheduleVisit",
@@ -903,7 +889,7 @@ class Header extends Component {
               noOfPeople: "",
               selectSlot: {},
               scheduleModal: false,
-              selectedSlot: {}
+              selectedSlot: {},
             });
             self.handleGetTimeSlot();
             debugger;
@@ -917,23 +903,6 @@ class Header extends Component {
   }
   ////handlecselect card in card tab
   handleSelectCard(id) {
-    // if (
-    //   this.state.searchCardData.filter((x) => x.id === id)[0]["isSelect"] ==
-    //   true
-    // ) {
-    //   this.state.searchCardData.filter((x) => x.id === id)[0][
-    //     "isSelect"
-    //   ] = false;
-    // } else {
-    //   this.state.searchCardData.filter((x) => x.id === id)[0][
-    //     "isSelect"
-    //   ] = true;
-    // }
-    // this.setState({
-    //   searchCardData: this.state.searchCardData,
-    // });
-    // var messageStringData = document.getElementById("card" + id).innerHTML;
-
     this.setState({ selectedCard: id });
   }
   ////handle button down click
@@ -973,7 +942,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/getChatSuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: this.state.message,
+        SearchText: this.state.message,
       },
     })
       .then(function(res) {
@@ -1022,9 +991,11 @@ class Header extends Component {
     count,
     mobileNo,
     customerId,
-    ProgramCode
+    ProgramCode,
+    StoreID
   ) => {
     this.setState({
+      storeID: StoreID,
       chatId: id,
       customerName: name,
       mobileNo: mobileNo,
@@ -1046,6 +1017,12 @@ class Header extends Component {
       selectSlot: {},
       scheduleModal: false,
       selectedSlot: {},
+      activeTab: 1,
+      timeSlotData: [],
+      searchItem: "",
+      searchCardData: [],
+      messageData: [],
+      isSendClick: false,
     });
 
     let self = this;
@@ -1057,16 +1034,14 @@ class Header extends Component {
         if (count === 0) {
           this.handleGetChatMessagesList(id);
         } else {
-          // this.setState({
-          //   chatMessageCount: this.state.chatMessageCount - count,
-          // });
-          this.handleMakeAsReadOnGoingChat(id, name);
+          this.handleMakeAsReadOnGoingChat(id);
         }
       }
     }
   };
 
   onCloseCardModal = () => {
+    this.handleSendCard();
     this.setState({ cardModal: false });
   };
   onOpenCardModal = () => {
@@ -1117,7 +1092,7 @@ class Header extends Component {
   };
 
   onCloseScheduleModal = () => {
-    this.handleScheduleVisit();
+    // this.handleScheduleVisit();
     this.setState({ scheduleModal: false });
   };
   onOpenScheduleModal = () => {
@@ -1159,22 +1134,22 @@ class Header extends Component {
 
   handleTabClick = (tabIndex, e) => {
     if (tabIndex == 1) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 1 });
     }
 
     if (tabIndex == 2) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 2 });
     }
     if (tabIndex == 3) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 3 });
     }
 
     if (tabIndex == 4) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 4 });
       this.handleGetTimeSlot();
     }
     if (tabIndex == 5) {
-      this.setState({ isDownbtn: true });
+      this.setState({ isDownbtn: true, activeTab: 5 });
     }
 
     this.setState({
@@ -1198,8 +1173,16 @@ class Header extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          // self.handleOngoingChatClick(self.state.chatId, self.state.customerName,0,
-          //                             self.state.mobileNo,self.state.customerId);
+          // self.handleOngoingChatClick(
+          //   self.state.chatId,
+          //   self.state.customerName,
+          //   0,
+          //   self.state.mobileNo,
+          //   self.state.customerId,
+          //   self.state.programCode,
+          //   self.state.storeID
+          // );
+
           self.handleGetChatMessagesList(self.state.chatId);
           self.onCloseRecommendedModal();
         } else {
@@ -1316,7 +1299,7 @@ class Header extends Component {
               </div>
             </a>
             {/* --notification-- */}
-            <a>
+            <a href="#!" style={{ display: this.state.notificationAccess }}>
               <div
                 className="position-relative"
                 onClick={this.handleNotificationModalOpen.bind(this)}
@@ -1335,7 +1318,10 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <Link to="/store/settings">
+            <Link
+              to="/store/settings"
+              style={{ display: this.state.settingAccess }}
+            >
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
@@ -1629,7 +1615,8 @@ class Header extends Component {
                               chat.messageCount,
                               chat.mobileNo,
                               chat.customerID,
-                              chat.programCode
+                              chat.programCode,
+                              chat.storeID
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -1811,7 +1798,8 @@ class Header extends Component {
                                   chat.messageCount,
                                   chat.mobileNo,
                                   chat.customerID,
-                                  chat.programCode
+                                  chat.programCode,
+                                  chat.storeID
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -1829,11 +1817,17 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    <img
+                                    {/* <img
                                       src={DummyFace1}
                                       alt="face image"
                                       title={chat.cumtomerName}
-                                    />
+                                    /> */}
+                                    <span className="chat-initial">
+                                      {chat.cumtomerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
 
                                     {chat.messageCount > 0 ? (
                                       <span className="online"></span>
@@ -1893,7 +1887,13 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    <img src={DummyFace1} alt="face image" />
+                                    {/* <img src={DummyFace1} alt="face image" /> */}
+                                    <span className="chat-initial">
+                                      {chat.cumtomerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
                                     <span className="online"></span>
                                   </div>
                                 </div>
@@ -2261,34 +2261,39 @@ class Header extends Component {
                                                 className="chat-product-img"
                                                 src={item.imageURL}
                                                 alt="Product Image"
-                                                title="POWER Black Casual Shoes For Man"
+                                                title={item.productName}
                                               />
                                             </div>
                                             <div className="col-md-8 bkcprdt">
                                               <div>
                                                 <label className="chat-product-name">
-                                                  {item.label}
+                                                  {item.productName}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-code">
-                                                  {/* Product Code:
-                                                  {item.productCode} */}
-                                                  {item.alternativeText}
+                                                  Product Code:
+                                                  {item.uniqueItemCode}
+                                                  {/* {item.alternativeText} */}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-prize">
-                                                  {/* {item.productPrize} */}
+                                                  {item.price}
+                                                  {item.discount
+                                                    ? " (-" +
+                                                      item.discount +
+                                                      ")"
+                                                    : ""}
                                                 </label>
                                               </div>
                                               <div>
                                                 <a
-                                                  href={item.redirectionUrl}
+                                                  href={item.url}
                                                   target="_blank"
                                                   className="chat-product-url"
                                                 >
-                                                  {item.redirectionUrl}
+                                                  {item.url}
                                                 </a>
                                               </div>
                                             </div>
@@ -2569,7 +2574,11 @@ class Header extends Component {
                                   </div>
                                 </div>
                                 <button
-                                  className="butn ml-auto"
+                                  className={
+                                    this.state.isSendClick
+                                      ? "butn ml-auto isSendClick-dsle"
+                                      : "butn ml-auto"
+                                  }
                                   onClick={this.handleScheduleVisit.bind(this)}
                                 >
                                   Send
@@ -2654,64 +2663,69 @@ class Header extends Component {
                       <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
                           <a
-                            className="nav-link active"
+                            className={this.state.toggle.one ? 'nav-link active' : 'nav-link'}
                             data-toggle="tab"
                             href="#message-tab"
                             role="tab"
                             aria-controls="message-tab"
                             aria-selected="true"
+                            id="one"
                           >
                             MESSAGE
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={this.state.toggle.two ? 'nav-link active' : 'nav-link'}
                             data-toggle="tab"
                             href="#card-tab"
                             role="tab"
                             aria-controls="card-tab"
                             aria-selected="false"
                             onClick={this.onOpenCardModal}
+                            id="two"
                           >
                             CARD
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={this.state.toggle.three ? 'nav-link active' : 'nav-link'}
                             data-toggle="tab"
                             href="#recommended-list-tab"
                             role="tab"
                             aria-controls="recommended-list-tab"
                             aria-selected="false"
                             onClick={this.onOpenRecommendedModal}
+                            id="three"
                           >
                             RECOMMENDED LIST
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={this.state.toggle.four ? 'nav-link active' : 'nav-link'}
                             data-toggle="tab"
                             href="#schedule-visit-tab"
                             role="tab"
                             aria-controls="schedule-visit-tab"
                             aria-selected="false"
                             onClick={this.onOpenScheduleModal}
+                            id="four"
                           >
                             SCHEDULE VISIT
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className={this.state.toggle.five ? 'nav-link active' : 'nav-link'}
                             data-toggle="tab"
                             href="#generate-payment-link-tab"
                             role="tab"
                             aria-controls="generate-payment-link-tab"
                             aria-selected="false"
                             onClick={this.onOpenPaymentModal}
+                            id="five"
                           >
                             GENERATE PAYMENT LINK
                           </a>
@@ -2820,11 +2834,12 @@ class Header extends Component {
                                       key={i}
                                       onClick={this.handleSelectCard.bind(
                                         this,
-                                        item.id
+                                        item.itemID
                                       )}
                                     >
                                       <div className="card-body position-relative">
-                                        {item.isSelect ? (
+                                        {item.itemID ===
+                                        this.state.selectedCard ? (
                                           <div className="selectdot">
                                             <img
                                               src={CardTick}
@@ -2838,24 +2853,27 @@ class Header extends Component {
                                               className="chat-product-img"
                                               src={item.imageURL}
                                               alt="Product Image"
-                                              title="POWER Black Casual Shoes For Man"
+                                              title={item.productName}
                                             />
                                           </div>
                                           <div className="bkcprdt">
                                             <label className="chat-product-name">
-                                              {item.label}
+                                              {item.productName}
                                             </label>
                                             <label className="chat-product-code">
                                               Product Code:
-                                              {item.alternativeText}
+                                              {item.uniqueItemCode}
                                             </label>
 
                                             <label className="chat-product-prize">
-                                              {item.productPrize}
+                                              {item.price}
+                                              {item.discount
+                                                ? " (-" + item.discount + ")"
+                                                : ""}
                                             </label>
 
                                             <label className="chat-product-url">
-                                              {item.imageURL}
+                                              {item.url}
                                             </label>
                                           </div>
                                         </div>
