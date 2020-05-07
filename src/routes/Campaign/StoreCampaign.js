@@ -1158,8 +1158,20 @@ class StoreCampaign extends Component {
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: "Campaign Name",
+                title: () => {
+                  return (
+                    <div>
+                      Campaign Name{" "}
+                      <img
+                        src={Dropdown3}
+                        className="table-drpdwn"
+                        alt="dropdown img"
+                      />
+                    </div>
+                  );
+                },
                 dataIndex: "campaignName",
+                className: "abc",
                 render: (row, item) => {
                   return (
                     <div>
@@ -1243,7 +1255,18 @@ class StoreCampaign extends Component {
                 className: "table-coloum-hide",
               },
               {
-                title: "Status",
+                title: () => {
+                  return (
+                    <div>
+                      Status{" "}
+                      <img
+                        src={Dropdown3}
+                        className="table-drpdwn"
+                        alt="dropdown img"
+                      />
+                    </div>
+                  );
+                },
                 dataIndex: "status",
                 className: "particular-hide",
                 render: (row, item) => {
@@ -1579,24 +1602,12 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
-                                  // minTime={
-                                  //   item.callRescheduledTo !== ""
-                                  //     ? new Date(
-                                  //         item.callRescheduledTo
-                                  //       ).setTime(
-                                  //         new Date(
-                                  //           item.callRescheduledTo
-                                  //         ).getTime()
-                                  //       )
-                                  //     : new Date().setTime(new Date().getTime())
-                                  // }
-                                  // maxTime={
-                                  //   item.callRescheduledTo !== ""
-                                  //     ? new Date(
-                                  //         item.callRescheduledTo
-                                  //       ).setHours(23)
-                                  //     : new Date().setHours(23)
-                                  // }
+                                  minTime={new Date(
+                                    item.callRescheduledTo
+                                  ).setTime(
+                                    new Date(item.callRescheduledTo).getTime()
+                                  )}
+                                  maxTime={new Date().setHours(23)}
                                   minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
@@ -1760,10 +1771,10 @@ class StoreCampaign extends Component {
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
-                                        // minTime={new Date().setTime(
-                                        //   new Date().getTime()
-                                        // )}
-                                        // maxTime={new Date().setHours(23)}
+                                        minTime={new Date().setTime(
+                                          new Date().getTime()
+                                        )}
+                                        maxTime={new Date().setHours(23)}
                                         minDate={new Date()}
                                         showMonthDropdown
                                         showYearDropdown
