@@ -556,6 +556,10 @@ class Header extends Component {
               const socket = io.connect(config.socketUrl, {
                 transports: ["polling"],
               });
+              // const socket = io.connect(config.socketUrl, {
+              //   secure: true,
+              //   transports: ["polling"],
+              // });
               socket.on("connect", () => {
                 socket.send("hi");
                 socket.on(
@@ -571,6 +575,11 @@ class Header extends Component {
                     }
                   }
                 );
+                window.onbeforeunload = function() {
+                  console.log("unloading resources");
+                  socket.disconnect();
+                  socket.close();
+                };
               });
             }
           }
@@ -699,19 +708,6 @@ class Header extends Component {
     } else {
       messagecontent = this.state.message;
     }
-    if (this.state.chkSuggestion.length > 0) {
-      if (this.state.chkSuggestion[index] === 1) {
-        this.state.chkSuggestion[index] = 0;
-      } else {
-        this.state.chkSuggestion[index] = 1;
-      }
-    } else {
-      this.state.chkSuggestion[index] = 1;
-    }
-    this.setState({
-      chkSuggestion: this.state.chkSuggestion,
-    });
-
     if (messagecontent !== "" && this.state.chatId > 0) {
       var inputParam = {};
       inputParam.chatID = this.state.chatId;
@@ -721,18 +717,12 @@ class Header extends Component {
       inputParam.chatStatus = 0;
       inputParam.storeManagerId = 0;
 
-      // inputParam.ChatID = this.state.chatId;
-      // inputParam.MobileNo = this.state.mobileNo;
-      // inputParam.ProgramCode = 0;
-      // inputParam.Message = messagecontent;
-
       this.setState({
         message: "",
       });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
-        // url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
         headers: authHeader(),
         data: inputParam,
       })
@@ -742,6 +732,7 @@ class Header extends Component {
           if (message === "Success" && responseData) {
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
+            self.handleSendMessageToCustomer(messagecontent, 0);
             self.setState({
               message: "",
               messageSuggestionData: [],
@@ -907,32 +898,36 @@ class Header extends Component {
   handleSendMessageToCustomer(Message, index) {
     let self = this;
     var inputParam = {};
-    if (this.state.chkSuggestion.length > 0) {
-      if (this.state.chkSuggestion[index] === 1) {
-        this.state.chkSuggestion[index] = 0;
+    if (index > 0) {
+      if (this.state.chkSuggestion.length > 0) {
+        if (this.state.chkSuggestion[index] === 1) {
+          this.state.chkSuggestion[index] = 0;
+        } else {
+          this.state.chkSuggestion[index] = 1;
+        }
       } else {
         this.state.chkSuggestion[index] = 1;
       }
-    } else {
-      this.state.chkSuggestion[index] = 1;
+      this.setState({
+        chkSuggestion: this.state.chkSuggestion,
+      });
     }
-    this.setState({
-      chkSuggestion: this.state.chkSuggestion,
-    });
     inputParam.ChatID = this.state.chatId;
     inputParam.MobileNo = this.state.mobileNo;
     inputParam.ProgramCode = this.state.programCode;
     inputParam.Message = Message;
+    inputParam.InsertChat = index == 0 ? 0 : 1;
     if (this.state.chatId > 0) {
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
         headers: authHeader(),
-        data: inputParam,
+        params: inputParam,
       })
         .then(function(response) {
           var message = response.data.message;
           if (message == "Success") {
+            self.setState({ chkSuggestion: [] });
             self.handleGetChatMessagesList(self.state.chatId);
           }
         })
@@ -1109,7 +1104,7 @@ class Header extends Component {
   };
 
   onCloseCardModal = () => {
-    // this.handleSendCard();
+    this.handleSendCard();
     this.setState({ cardModal: false });
   };
   onOpenCardModal = () => {
@@ -2223,16 +2218,16 @@ class Header extends Component {
                                               : ""
                                           }
                                           key={i}
-                                          // onClick={this.handleSendMessageToCustomer.bind(
-                                          //   this,
-                                          //   item.suggestionText,
-                                          //   i
-                                          // )}
-                                          onClick={this.handleSaveChatMessages.bind(
+                                          onClick={this.handleSendMessageToCustomer.bind(
                                             this,
                                             item.suggestionText,
                                             i
                                           )}
+                                          // onClick={this.handleSaveChatMessages.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i
+                                          // )}
                                         >
                                           <Tooltip
                                             placement="left"
@@ -2897,7 +2892,12 @@ class Header extends Component {
                                               : ""
                                           }
                                           key={i}
-                                          onClick={this.handleSaveChatMessages.bind(
+                                          // onClick={this.handleSaveChatMessages.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i
+                                          // )}
+                                          onClick={this.handleSendMessageToCustomer.bind(
                                             this,
                                             item.suggestionText,
                                             i
