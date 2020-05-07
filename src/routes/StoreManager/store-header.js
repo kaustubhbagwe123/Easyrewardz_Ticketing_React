@@ -1041,7 +1041,7 @@ class Header extends Component {
   };
 
   onCloseCardModal = () => {
-    this.handleSendCard();
+    // this.handleSendCard();
     this.setState({ cardModal: false });
   };
   onOpenCardModal = () => {
@@ -2055,10 +2055,9 @@ class Header extends Component {
                         {/* --------Message Tab----- */}
                         <div
                           className={
-                            // this.state.customerName !== ""
-                            //   ? "tab-pane fade active show"
-                            //   : 
-                              this.state.toggle.one?"tab-pane fade active show":"tab-pane fade"
+                            this.state.customerName !== "" && this.state.toggle.one
+                              ? "tab-pane fade active show"
+                              : "tab-pane fade"
                           }
                           id="message-tab"
                           role="tabpanel"
