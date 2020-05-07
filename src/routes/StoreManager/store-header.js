@@ -491,13 +491,13 @@ class Header extends Component {
   ////handle chat modal close
   handleChatModalClose() {
     this.setState({ chatModal: false });
-    localStorage.setItem("isSocketReady", 1);
   }
   ////handle chat modal open
   handleChatModalOpen() {
     this.setState({ chatModal: true });
 
-    // this.handleGetNewChat();
+    this.handleGetNewChat();
+    this.handleGetOngoingChat("isRead");
   }
 
   ////handleGet Ongoing Chat
@@ -522,7 +522,9 @@ class Header extends Component {
             //   transports: ["polling", "flashsocket"],
             // });
             for (let i = 0; i < ongoingChatsData.length; i++) {
-              const socket = io.connect(config.socketUrl,{transports: ["polling", "flashsocket"]});
+              const socket = io.connect(config.socketUrl, {
+                transports: ["polling", "flashsocket"],
+              });
               socket.on("connect", () => {
                 socket.send("hi");
                 socket.on(
@@ -759,7 +761,13 @@ class Header extends Component {
         var searchCardData = response.data.responseData;
 
         if (message == "Success" && searchCardData) {
-          self.setState({ searchCardData });
+          searchCardData.forEach((element, i) => {
+            element["itemID"] = i + 1;
+          });
+          debugger;
+          self.setState({
+            searchCardData,
+          });
         }
       })
       .catch((response) => {
@@ -785,9 +793,9 @@ class Header extends Component {
         var timeSlotData = response.data.responseData;
 
         if (message == "Success" && timeSlotData) {
-          self.setState({ timeSlotData });
+          self.setState({ timeSlotData, isSendClick: false });
         } else {
-          self.setState({ timeSlotData });
+          self.setState({ timeSlotData, isSendClick: false });
         }
       })
       .catch((response) => {
@@ -830,14 +838,14 @@ class Header extends Component {
       inputParam.NOofPeople = Number(this.state.noOfPeople);
       inputParam.MobileNo = this.state.mobileNo;
       // inputParam.StoreID = this.state.storeID;
-      inputParam.StoreID =1;
+      inputParam.StoreID = 1;
 
       var messagedata =
         "Your appointment is booked at " +
         this.state.selectedDate +
         " on " +
         this.state.selectedSlot.timeSlot;
-      this.setState({ message: messagedata });
+      this.setState({ message: messagedata, isSendClick: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/ScheduleVisit",
@@ -852,7 +860,7 @@ class Header extends Component {
               noOfPeople: "",
               selectSlot: {},
               scheduleModal: false,
-              selectedSlot: {}
+              selectedSlot: {},
             });
             self.handleGetTimeSlot();
             debugger;
@@ -974,6 +982,7 @@ class Header extends Component {
       searchItem: "",
       searchCardData: [],
       messageData: [],
+      isSendClick: false,
     });
 
     let self = this;
@@ -1126,7 +1135,7 @@ class Header extends Component {
             self.state.programCode,
             self.state.storeID
           );
-         
+
           self.handleGetChatMessagesList(self.state.chatId);
           self.onCloseRecommendedModal();
         } else {
@@ -2216,34 +2225,39 @@ class Header extends Component {
                                                 className="chat-product-img"
                                                 src={item.imageURL}
                                                 alt="Product Image"
-                                                title="POWER Black Casual Shoes For Man"
+                                                title={item.productName}
                                               />
                                             </div>
                                             <div className="col-md-8 bkcprdt">
                                               <div>
                                                 <label className="chat-product-name">
-                                                  {item.label}
+                                                  {item.productName}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-code">
-                                                  {/* Product Code:
-                                                  {item.productCode} */}
-                                                  {item.alternativeText}
+                                                  Product Code:
+                                                  {item.uniqueItemCode}
+                                                  {/* {item.alternativeText} */}
                                                 </label>
                                               </div>
                                               <div>
                                                 <label className="chat-product-prize">
-                                                  {/* {item.productPrize} */}
+                                                  {item.price}
+                                                  {item.discount
+                                                    ? " (-" +
+                                                      item.discount +
+                                                      ")"
+                                                    : ""}
                                                 </label>
                                               </div>
                                               <div>
                                                 <a
-                                                  href={item.redirectionUrl}
+                                                  href={item.url}
                                                   target="_blank"
                                                   className="chat-product-url"
                                                 >
-                                                  {item.redirectionUrl}
+                                                  {item.url}
                                                 </a>
                                               </div>
                                             </div>
@@ -2466,12 +2480,9 @@ class Header extends Component {
                                       Selected Slot
                                     </label>
                                     {Object.keys(this.state.selectedSlot)
-                                      .length !== 0 && 
-                                      (this.state.selectedSlot
-                                                .visitedCount <
-                                              this.state.selectedSlot
-                                                .maxCapacity)
-                                       ? (
+                                      .length !== 0 &&
+                                    this.state.selectedSlot.visitedCount <
+                                      this.state.selectedSlot.maxCapacity ? (
                                       <button
                                         className={
                                           this.state.selectedSlot.maxCapacity ==
@@ -2528,7 +2539,11 @@ class Header extends Component {
                                   </div>
                                 </div>
                                 <button
-                                  className="butn ml-auto"
+                                  className={
+                                    this.state.isSendClick
+                                      ? "butn ml-auto isSendClick-dsle"
+                                      : "butn ml-auto"
+                                  }
                                   onClick={this.handleScheduleVisit.bind(this)}
                                 >
                                   Send
@@ -2779,11 +2794,12 @@ class Header extends Component {
                                       key={i}
                                       onClick={this.handleSelectCard.bind(
                                         this,
-                                        item.id
+                                        item.itemID
                                       )}
                                     >
                                       <div className="card-body position-relative">
-                                        {item.isSelect ? (
+                                        {item.itemID ===
+                                        this.state.selectedCard ? (
                                           <div className="selectdot">
                                             <img
                                               src={CardTick}
@@ -2797,24 +2813,27 @@ class Header extends Component {
                                               className="chat-product-img"
                                               src={item.imageURL}
                                               alt="Product Image"
-                                              title="POWER Black Casual Shoes For Man"
+                                              title={item.productName}
                                             />
                                           </div>
                                           <div className="bkcprdt">
                                             <label className="chat-product-name">
-                                              {item.label}
+                                              {item.productName}
                                             </label>
                                             <label className="chat-product-code">
                                               Product Code:
-                                              {item.alternativeText}
+                                              {item.uniqueItemCode}
                                             </label>
 
                                             <label className="chat-product-prize">
-                                              {item.productPrize}
+                                              {item.price}
+                                              {item.discount
+                                                ? " (-" + item.discount + ")"
+                                                : ""}
                                             </label>
 
                                             <label className="chat-product-url">
-                                              {item.imageURL}
+                                              {item.url}
                                             </label>
                                           </div>
                                         </div>

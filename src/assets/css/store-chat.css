@@ -896,6 +896,10 @@ p {
 .pd-0 .card-body {
   padding: 0;
 }
+.isSendClick-dsle {
+  pointer-events: none;
+  cursor: no-drop;
+}
 
 /* Responsive starts */
 @media all and (max-width: 576px) {

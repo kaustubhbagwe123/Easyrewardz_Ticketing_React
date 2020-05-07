@@ -265,7 +265,7 @@ let config = {
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
-  // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
+  socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
   // socketUrl:"http://localhost:4000"
 };
 
