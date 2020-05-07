@@ -494,7 +494,7 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
-    this.setState({ chatModal: true });
+    this.setState({ chatModal: true, activeTab: 1 });
 
     this.handleGetNewChat();
     this.handleGetOngoingChat("isRead");
@@ -872,6 +872,45 @@ class Header extends Component {
         });
     }
   }
+
+  handleSendMessageToCustomer(Message, index) {
+    let self = this;
+    var inputParam = {};
+    if (this.state.chkSuggestion.length > 0) {
+      if (this.state.chkSuggestion[index] === 1) {
+        this.state.chkSuggestion[index] = 0;
+      } else {
+        this.state.chkSuggestion[index] = 1;
+      }
+    } else {
+      this.state.chkSuggestion[index] = 1;
+    }
+    this.setState({
+      chkSuggestion: this.state.chkSuggestion,
+    });
+    inputParam.ChatID = this.state.chatId;
+    inputParam.MobileNo = this.state.mobileNo;
+    inputParam.ProgramCode = this.state.programCode;
+    inputParam.Message = Message;
+    if (this.state.chatId > 0) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
+        headers: authHeader(),
+        data: inputParam,
+      })
+        .then(function(response) {
+          var message = response.data.message;
+          if (message == "Success") {
+            self.handleGetChatMessagesList(self.state.chatId);
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleSendMessageToCustomer");
+        });
+    }
+  }
+
   ////handlecselect card in card tab
   handleSelectCard(id) {
     this.setState({ selectedCard: id });
@@ -965,32 +1004,50 @@ class Header extends Component {
     ProgramCode,
     StoreID
   ) => {
-    this.setState({
-      storeID: StoreID,
-      chatId: id,
-      customerName: name,
-      mobileNo: mobileNo,
-      customerId: customerId,
-      programCode: ProgramCode,
-      mobileNo: mobileNo,
-      message: "",
-      messageSuggestionData: [],
-      chkSuggestion: [],
-      oldCount: count,
-      activeTab: 1,
-      timeSlotData: [],
-      searchItem: "",
-      searchCardData: [],
-      messageData: [],
-      isSendClick: false,
-    });
-
-    let self = this;
+    
 
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
+        this.setState({
+          storeID: StoreID,
+          chatId: id,
+          customerName: name,
+          mobileNo: mobileNo,
+          customerId: customerId,
+          programCode: ProgramCode,
+          mobileNo: mobileNo,
+          message: "",
+          messageSuggestionData: [],
+          chkSuggestion: [],
+          oldCount: count,
+          activeTab: 1,
+          timeSlotData: [],
+          searchItem: "",
+          searchCardData: [],
+          messageData: [],
+          isSendClick: false,
+        });
         this.handleGetChatMessagesList(id);
       } else {
+        this.setState({
+          storeID: StoreID,
+          chatId: id,
+          customerName: name,
+          mobileNo: mobileNo,
+          customerId: customerId,
+          programCode: ProgramCode,
+          mobileNo: mobileNo,
+          message: "",
+          messageSuggestionData: [],
+          chkSuggestion: [],
+          oldCount: count,
+          activeTab: 1,
+          timeSlotData: [],
+          searchItem: "",
+          searchCardData: [],
+          messageData: [],
+          isSendClick: false,
+        });
         if (count === 0) {
           this.handleGetChatMessagesList(id);
         } else {
@@ -2094,6 +2151,11 @@ class Header extends Component {
                                               : ""
                                           }
                                           key={i}
+                                          // onClick={this.handleSendMessageToCustomer.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i
+                                          // )}
                                           onClick={this.handleSaveChatMessages.bind(
                                             this,
                                             item.suggestionText,
