@@ -1467,7 +1467,7 @@ class StoreCampaign extends Component {
                           );
                         },
                         filterDropdown: (dataIndex) => (
-                          <div className="sharecamp">
+                          <div className="campaign-status-drpdwn">
                             <ul>
                               <li>
                                 <input
@@ -1602,12 +1602,12 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
-                                  minTime={new Date(
-                                    item.callRescheduledTo
-                                  ).setTime(
-                                    new Date(item.callRescheduledTo).getTime()
-                                  )}
-                                  maxTime={new Date().setHours(23)}
+                                  // minTime={new Date(
+                                  //   item.callRescheduledTo
+                                  // ).setTime(
+                                  //   new Date(item.callRescheduledTo).getTime()
+                                  // )}
+                                  // maxTime={new Date().setHours(23)}
                                   minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
@@ -1771,10 +1771,10 @@ class StoreCampaign extends Component {
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
-                                        minTime={new Date().setTime(
-                                          new Date().getTime()
-                                        )}
-                                        maxTime={new Date().setHours(23)}
+                                        // minTime={new Date().setTime(
+                                        //   new Date().getTime()
+                                        // )}
+                                        // maxTime={new Date().setHours(23)}
                                         minDate={new Date()}
                                         showMonthDropdown
                                         showYearDropdown
