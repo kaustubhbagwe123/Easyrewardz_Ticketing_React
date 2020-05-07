@@ -98,9 +98,13 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignCustomerID, item, e) {
+    debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
+    this.state.CampChildTableData.filter(
+      (x) => x.id === campaignCustomerID
+    )[0].dateTimeHighlight = true;
 
     this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
@@ -799,6 +803,8 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
+          for (let obj of data.campaignCustomerModel)
+            obj.dateTimeHighlight = false;
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             ChildTblLoading: false,
@@ -1104,7 +1110,7 @@ class StoreCampaign extends Component {
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
             filterCustomerNumber: false,
-            filterCustNO: "",
+            // filterCustNO: "",
           });
         } else {
           self.setState({
@@ -1339,43 +1345,25 @@ class StoreCampaign extends Component {
                     columns={[
                       {
                         title: "Customer Name",
+                        className:
+                          "camp-status-header camp-status-header-cust-name",
                         dataIndex: "id",
                         filterDropdown: (dataIndex) => (
-                          <Modal
-                            open={this.state.filterCustomerNumber}
-                            onClose={this.handleCloseCustomerFilter.bind(this)}
-                            center
-                            modalId="custMobileFilter"
-                            overlayId="logout-ovrly"
-                          >
-                            <div className="row">
-                              <label>Customer Number</label>
-                              <input
-                                type="text"
-                                className="txt-1"
-                                autoComplete="off"
-                                placeholder="Enter Mobile No"
-                                value={this.state.filterCustNO}
-                                onChange={this.handleCustomerFilerOnchange.bind(
-                                  this,
-                                  row.campaignID,
-                                  row.customerCount
-                                )}
-                              />
-                            </div>
-                            {/* <div className="row">
-                              <button
-                                type="button"
-                                className="butn"
-                                onClick={this.handleGetCampaignCustomer(
-                                  row.campaignID,
-                                  row.customerCount
-                                )}
-                              >
-                                Submit
-                              </button>
-                            </div> */}
-                          </Modal>
+                          <div className="cust-name-drpdwn">
+                            <label>Customer Number</label>
+                            <input
+                              type="text"
+                              className="txt-1"
+                              autoComplete="off"
+                              placeholder="Enter Mobile No"
+                              value={this.state.filterCustNO}
+                              onChange={this.handleCustomerFilerOnchange.bind(
+                                this,
+                                row.campaignID,
+                                row.customerCount
+                              )}
+                            />
+                          </div>
                         ),
                         filterDropdownVisible: this.state.filterCustomerNumber,
                         onFilterDropdownVisibleChange: (visible) =>
@@ -1626,8 +1614,17 @@ class StoreCampaign extends Component {
                                     this,
                                     item.id
                                   )}
+                                  // className={
+                                  //   item.responseID === 3
+                                  //     ? "txtStore dateTimeStore"
+                                  //     : "txtStore dateTimeStore disabled-link"
+                                  // }
                                   className={
-                                    item.responseID === 3
+                                    item.responseID === 3 &&
+                                    item.dateTimeHighlight &&
+                                    !item.callRescheduledTo
+                                      ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                      : item.responseID === 3
                                       ? "txtStore dateTimeStore"
                                       : "txtStore dateTimeStore disabled-link"
                                   }
@@ -1794,7 +1791,11 @@ class StoreCampaign extends Component {
                                           row.id
                                         )}
                                         className={
-                                          row.responseID === 3
+                                          row.responseID === 3 &&
+                                          row.dateTimeHighlight &&
+                                          !row.callRescheduledTo
+                                            ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                            : row.responseID === 3
                                             ? "txtStore dateTimeStore"
                                             : "txtStore dateTimeStore disabled-link"
                                         }
@@ -1943,7 +1944,10 @@ class StoreCampaign extends Component {
                 <p>{this.state.sortCustName}</p>
               </div>
               <div className="nr-name">
-                <h3>{this.state.customerModalDetails.customerName}</h3>
+                <h3>
+                  {this.state.customerModalDetails.customerName}{" "}
+                  <span>{this.state.customerModalDetails.customerNumber}</span>
+                </h3>
                 <p>{this.state.useratvdetails.tiername}</p>
               </div>
             </div>

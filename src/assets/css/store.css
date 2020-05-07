@@ -191,6 +191,9 @@
   border: none;
   padding-left: 10px;
 }
+.dateTimeStore-highlight {
+  box-shadow: 0 0 0 1.5px rgba(247, 0, 0, 0.6);
+}
 .responceDrop-down {
   /* background-color: #ecf2f4; */
   background: #ecf2f4 url("./../Images//dropdown3.png") no-repeat center right
@@ -1470,6 +1473,10 @@ table tr th:last-child {
   letter-spacing: 1px;
   font-weight: 600;
 }
+.nr-name span {
+  font-size: 18px;
+  color: #0080ff;
+}
 .nr-name p {
   font-size: 16px;
   font-weight: 500;
@@ -1986,6 +1993,17 @@ table tr th:last-child {
   /* border-radius: 10px; */
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
 }
+.cust-name-drpdwn {
+  padding: 17px 25px 25px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+.cust-name-drpdwn label {
+  margin-bottom: 8px;
+}
+.cust-name-drpdwn input::placeholder {
+  font-weight: 400;
+  padding: 0;
+}
 .campaign-status-drpdwn ul {
   margin: 0;
 }
@@ -2027,6 +2045,9 @@ table tr th:last-child {
   top: 50% !important;
   transform: translateY(-50%);
   width: 12px !important;
+}
+.camp-status-header-cust-name .ant-table-filter-icon {
+  left: 122px;
 }
 .camp-status-header .ant-table-filter-icon::before {
   content: "";
@@ -2299,6 +2320,9 @@ table tr th:last-child {
   .nr-name h3 {
     font-size: 20px;
     letter-spacing: 0;
+  }
+  .nr-name span {
+    font-size: 14px;
   }
   .nr-name p {
     font-size: 14px;
@@ -2610,8 +2634,22 @@ table tr th:last-child {
     padding: 0;
   }
 
-  .campaign-status-drpdwn {
+  .campaign-status-drpdwn,
+  .cust-name-drpdwn {
     padding: 15px 20px;
+    font-size: 12px;
+  }
+  .cust-name-drpdwn {
+    padding-bottom: 20px;
+    max-width: 200px;
+  }
+  .cust-name-drpdwn label {
+    margin-bottom: 5px;
+  }
+  .cust-name-drpdwn input {
+    height: 35px;
+  }
+  .cust-name-drpdwn input::placeholder {
     font-size: 12px;
   }
   .campaign-status-drpdwn label::before {
@@ -2626,6 +2664,9 @@ table tr th:last-child {
   .camp-status-header .ant-table-filter-icon {
     left: 45px;
     top: 48% !important;
+  }
+  .camp-status-header-cust-name .ant-table-filter-icon {
+    left: 95px;
   }
   .campaign-status-drpdwn input:checked + label::after {
     left: 1.5px;

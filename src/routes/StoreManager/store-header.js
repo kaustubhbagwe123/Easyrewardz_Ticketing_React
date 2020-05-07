@@ -1905,6 +1905,9 @@ class Header extends Component {
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
                                 </span>
+                                <span className="face-name">
+                                  {chat.mobileNo}
+                                </span>
                               </div>
                             </div>
                           ))}
@@ -1967,6 +1970,9 @@ class Header extends Component {
                                 </div>
                                 <span className="face-name">
                                   {chat.cumtomerName.split(" ")[0]}
+                                </span>
+                                <span className="face-name">
+                                  {chat.mobileNo}
                                 </span>
                               </div>
                             </div>
@@ -2143,7 +2149,8 @@ class Header extends Component {
                         {/* --------Message Tab----- */}
                         <div
                           className={
-                            this.state.customerName !== "" && this.state.toggle.one
+                            this.state.customerName !== "" &&
+                            this.state.toggle.one
                               ? "tab-pane fade active show"
                               : "tab-pane fade"
                           }
