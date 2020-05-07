@@ -553,7 +553,17 @@ class ClaimApproveReject extends Component {
       this.setState({ errors: this.state.errors });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    alert();
+    const value = e.target.value;
+    let IsNumber=false;
+    let RE = /^-{0,1}\d*\.{0,1}\d+$/;
+    IsNumber= RE.test(value);
+    if(IsNumber)
+    {
+      console.log(IsNumber);
+    }
+  };
   handleOrderChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
@@ -1035,7 +1045,7 @@ class ClaimApproveReject extends Component {
                         type="text"
                         className="form-control textBox"
                         placeholder="Claim Percentage"
-                        name="claimPercentage"
+                        name="claimPercentage"                       
                         disabled={true}
                         value={this.state.claimPercentage}
                         disabled={true}

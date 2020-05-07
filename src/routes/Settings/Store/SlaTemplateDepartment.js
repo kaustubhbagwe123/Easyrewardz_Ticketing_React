@@ -1565,7 +1565,7 @@ class SlaTemplateDepartment extends Component {
                     <label className="Create-store-text">CREATE SLA</label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to">Function Type</label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"

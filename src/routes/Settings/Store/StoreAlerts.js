@@ -2698,7 +2698,7 @@ class Alerts extends Component {
                                 <label className="alert-main-popuplbl">
                                   Compose your Email
                                 </label>
-                                <div className="div-padding-alert">
+                                <div style={{display:'none'}} className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2801,7 +2801,7 @@ class Alerts extends Component {
                                 <label className="alert-main-popuplbl">
                                   Compose your Email
                                 </label>
-                                <div className="div-padding-alert">
+                                <div style={{display:'none'}} className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2906,7 +2906,7 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
-                                  <div className="form-group row">
+                                  <div style={{display:'none'}} className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
                                     </label>
@@ -3252,9 +3252,9 @@ class Alerts extends Component {
                     </Modal.Body>
                   </Modal>
                 </div>
-                <div className="right-sect-div">
-                  <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                <div style={{display:'none'}} className="right-sect-div">
+                  <div style={{display:'none'}} className="d-flex justify-content-between align-items-center pb-2">
+                    <h3 className="pb-0">Bulk Upload1</h3>
                     <div className="down-excel">
                       <p>Template</p>
                       <a href={Demo.BLANK_LINK}>

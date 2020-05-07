@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Collapse, CardBody, Card } from "reactstrap";
+import { Collapse, CardBody, Card, Input } from "reactstrap";
 // import TableDemo from "../TableDemo";
 import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
@@ -366,7 +366,20 @@ class RaiseClaim extends Component {
       });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    debugger;
+    const input = e.target.value;
+    let IsNumber=false;
+    let RE = /^-?\d*(\.\d+)?$/;
+    //IsNumber= RE.test(value);
+    if(!isNaN(input))
+    {
+      this.setState({claimPercentage:input});
+    }
+    else{     
+      this.setState({claimPercentage:""});
+    }
+  };
   handleGetBrandList() {
     let self = this;
     axios({
@@ -2048,6 +2061,7 @@ class RaiseClaim extends Component {
                           className="form-control textBox"
                           placeholder="Claim Percentage"
                           name="claimPercentage"
+                          onKeyUp={this.handlePercentageOnChange}
                           value={this.state.claimPercentage}
                           onChange={this.handleOnChange}
                         />
