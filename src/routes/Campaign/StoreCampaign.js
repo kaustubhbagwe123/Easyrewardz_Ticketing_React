@@ -106,6 +106,7 @@ class StoreCampaign extends Component {
   }
 
   onDateChange(campaignCustomerID, e) {
+    debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].callRescheduledTo = e;
@@ -691,7 +692,6 @@ class StoreCampaign extends Component {
     });
   }
 
-
   handleShareNowOpenModal() {
     //
     if (this.state.Respo_ChannelMessanger === true) {
@@ -1059,17 +1059,16 @@ class StoreCampaign extends Component {
       filterCustomerNumber: false,
     });
   }
-  handleCustomerFilerOnchange(campaignID,customerCount,e) {
-    debugger
+  handleCustomerFilerOnchange(campaignID, customerCount, e) {
+    debugger;
     this.setState({
       filterCustNO: e.target.value,
     });
-    if(this.state.filterCustNO.length > 3){
+    if (this.state.filterCustNO.length > 3) {
       setTimeout(() => {
         this.handleGetCampaignCustomer(campaignID, customerCount);
       }, 50);
     }
-
   }
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
     debugger;
@@ -1104,14 +1103,14 @@ class StoreCampaign extends Component {
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
-            filterCustomerNumber:false,
-            filterCustNO:""
+            filterCustomerNumber: false,
+            filterCustNO: "",
           });
         } else {
           self.setState({
             CampChildTableData: [],
             childTotalGridRecord: 0,
-            filterCustomerNumber:false
+            filterCustomerNumber: false,
           });
         }
       })
@@ -1334,7 +1333,8 @@ class StoreCampaign extends Component {
                                 autoComplete="off"
                                 placeholder="Enter Mobile No"
                                 value={this.state.filterCustNO}
-                                onChange={this.handleCustomerFilerOnchange.bind(this,
+                                onChange={this.handleCustomerFilerOnchange.bind(
+                                  this,
                                   row.campaignID,
                                   row.customerCount
                                 )}
@@ -1579,6 +1579,24 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
+                                  // minTime={
+                                  //   item.callRescheduledTo !== ""
+                                  //     ? new Date(
+                                  //         item.callRescheduledTo
+                                  //       ).setTime(
+                                  //         new Date(
+                                  //           item.callRescheduledTo
+                                  //         ).getTime()
+                                  //       )
+                                  //     : new Date().setTime(new Date().getTime())
+                                  // }
+                                  // maxTime={
+                                  //   item.callRescheduledTo !== ""
+                                  //     ? new Date(
+                                  //         item.callRescheduledTo
+                                  //       ).setHours(23)
+                                  //     : new Date().setHours(23)
+                                  // }
                                   minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
@@ -1742,6 +1760,11 @@ class StoreCampaign extends Component {
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
+                                        // minTime={new Date().setTime(
+                                        //   new Date().getTime()
+                                        // )}
+                                        // maxTime={new Date().setHours(23)}
+                                        minDate={new Date()}
                                         showMonthDropdown
                                         showYearDropdown
                                         selected={
