@@ -112,6 +112,8 @@ class Header extends Component {
       programCode: "",
       oldCount: 0,
       storeID: "",
+      notificationAccess: "none",
+      settingAccess: "none",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -1253,7 +1255,7 @@ class Header extends Component {
               </div>
             </a>
             {/* --notification-- */}
-            <a>
+            <a href="#!" style={{ display: this.state.notificationAccess }}>
               <div
                 className="position-relative"
                 onClick={this.handleNotificationModalOpen.bind(this)}
@@ -1272,7 +1274,10 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <Link to="/store/settings">
+            <Link
+              to="/store/settings"
+              style={{ display: this.state.settingAccess }}
+            >
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
