@@ -111,6 +111,13 @@ class Header extends Component {
       chkSuggestion: [],
       programCode: "",
       oldCount: 0,
+      toggle: {
+        one: false,
+        two: false,
+        three: false,
+        four: false,
+        five: false
+      }
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -170,6 +177,14 @@ class Header extends Component {
         localStorage.setItem("isSocketReady", 1);
       }
     }
+  }
+
+  toggleFilter(e){
+    this.setState({
+      toggle: {
+        [e.target.id]: !this.state.toggle[e.target.id]
+      }
+    })
   }
 
   setAccessUser(data) {
@@ -500,7 +515,19 @@ class Header extends Component {
   }
   ////handle chat modal open
   handleChatModalOpen() {
-    this.setState({ chatModal: true });
+    this.setState({ chatModal: true,
+      noOfPeople: "",
+      selectSlot: {},
+      scheduleModal: false,
+      selectedSlot: {},
+      toggle: {
+        one: true,
+        two: false,
+        three: false,
+        four: false,
+        five: false
+      }
+      });
 
     // this.handleGetNewChat();
   }
@@ -1008,6 +1035,17 @@ class Header extends Component {
       messageSuggestionData: [],
       chkSuggestion: [],
       oldCount: count,
+      toggle: {
+        one: true,
+        two: false,
+        three: false,
+        four: false,
+        five: false
+      },
+      noOfPeople: "",
+      selectSlot: {},
+      scheduleModal: false,
+      selectedSlot: {},
     });
 
     let self = this;
@@ -1119,7 +1157,7 @@ class Header extends Component {
     }
   }
 
-  handleTabClick = (tabIndex) => {
+  handleTabClick = (tabIndex, e) => {
     if (tabIndex == 1) {
       this.setState({ isDownbtn: true });
     }
@@ -1138,6 +1176,12 @@ class Header extends Component {
     if (tabIndex == 5) {
       this.setState({ isDownbtn: true });
     }
+
+    this.setState({
+      toggle: {
+        [e.target.id]: !this.state.toggle[e.target.id]
+      }
+    })
   };
   handleSendRecommendedList() {
     let self = this;
@@ -1936,46 +1980,49 @@ class Header extends Component {
                         <ul className="nav nav-tabs" role="tablist">
                           <li className="nav-item">
                             <a
-                              className="nav-link active"
+                              className={this.state.toggle.one ? 'nav-link active' : 'nav-link'}
                               data-toggle="tab"
                               href="#message-tab"
                               role="tab"
                               aria-controls="message-tab"
                               aria-selected="true"
                               onClick={this.handleTabClick.bind(this, 1)}
+                              id="one"
                             >
                               MESSAGE
                             </a>
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={this.state.toggle.two ? 'nav-link active' : 'nav-link'}
                               data-toggle="tab"
                               href="#card-tab"
                               role="tab"
                               aria-controls="card-tab"
                               aria-selected="false"
                               onClick={this.handleTabClick.bind(this, 2)}
+                              id="two"
                             >
                               CARD
                             </a>
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={this.state.toggle.three ? 'nav-link active' : 'nav-link'}
                               data-toggle="tab"
                               href="#recommended-list-tab"
                               role="tab"
                               aria-controls="recommended-list-tab"
                               aria-selected="false"
                               onClick={this.handleTabClick.bind(this, 3)}
+                              id="three"
                             >
                               RECOMMENDED LIST
                             </a>
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={this.state.toggle.four ? 'nav-link active' : 'nav-link'}
                               data-toggle="tab"
                               href="#schedule-visit-tab"
                               role="tab"
@@ -1983,19 +2030,21 @@ class Header extends Component {
                               aria-selected="false"
                               // onClick={this.handleGetTimeSlot.bind(this)}
                               onClick={this.handleTabClick.bind(this, 4)}
+                              id="four"
                             >
                               SCHEDULE VISIT
                             </a>
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className={this.state.toggle.five ? 'nav-link active' : 'nav-link'}
                               data-toggle="tab"
                               href="#generate-payment-link-tab"
                               role="tab"
                               aria-controls="generate-payment-link-tab"
                               aria-selected="false"
                               onClick={this.handleTabClick.bind(this, 5)}
+                              id="five"
                             >
                               GENERATE PAYMENT LINK
                             </a>
@@ -2006,9 +2055,10 @@ class Header extends Component {
                         {/* --------Message Tab----- */}
                         <div
                           className={
-                            this.state.customerName !== ""
-                              ? "tab-pane fade show active"
-                              : "tab-pane fade"
+                            // this.state.customerName !== ""
+                            //   ? "tab-pane fade active show"
+                            //   : 
+                              this.state.toggle.one?"tab-pane fade active show":"tab-pane fade"
                           }
                           id="message-tab"
                           role="tabpanel"
@@ -2128,7 +2178,7 @@ class Header extends Component {
                         </div>
                         {/* --------Card Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={this.state.toggle.two?"tab-pane fade active show":"tab-pane fade"}
                           id="card-tab"
                           role="tabpanel"
                           aria-labelledby="card-tab"
@@ -2280,7 +2330,7 @@ class Header extends Component {
                         </div>
                         {/* --------Recommended List Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={this.state.toggle.three?"tab-pane fade active show":"tab-pane fade"}
                           id="recommended-list-tab"
                           role="tabpanel"
                           aria-labelledby="recommended-list-tab"
@@ -2303,7 +2353,7 @@ class Header extends Component {
                         </div>
                         {/* --------Schedule Visit Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={this.state.toggle.four?"tab-pane fade active show":"tab-pane fade"}
                           id="schedule-visit-tab"
                           role="tabpanel"
                           aria-labelledby="schedule-visit-tab"
@@ -2461,11 +2511,7 @@ class Header extends Component {
                                       Selected Slot
                                     </label>
                                     {Object.keys(this.state.selectedSlot)
-                                      .length !== 0 && 
-                                      (this.state.selectedSlot
-                                                .visitedCount <
-                                              this.state.selectedSlot
-                                                .maxCapacity)
+                                      .length !== 0
                                        ? (
                                       <button
                                         className={
@@ -2539,7 +2585,7 @@ class Header extends Component {
                         </div>
                         {/* --------Generate Payment Link Tab----- */}
                         <div
-                          className="tab-pane fade"
+                          className={this.state.toggle.five?"tab-pane fade active show":"tab-pane fade"}
                           id="generate-payment-link-tab"
                           role="tabpanel"
                           aria-labelledby="generate-payment-link-tab"
