@@ -929,7 +929,6 @@ class StoreModule extends Component {
           }
         }
       }
-      
     } else if (column === "createdBy") {
       var sItems1 = screatedByFilterCheckbox.split(",");
       if (sItems1.length > 0) {
@@ -946,7 +945,6 @@ class StoreModule extends Component {
           }
         }
       }
-      
     } else if (column === "status") {
       var sItems2 = sstatusFilterCheckbox.split(",");
       if (sItems2.length > 0) {
@@ -963,11 +961,10 @@ class StoreModule extends Component {
           }
         }
       }
-      
     }
 
     this.setState({
-      isATOZ:true,
+      isATOZ: true,
       tempcampaignScriptData: itemsArray,
     });
   };
@@ -1282,7 +1279,7 @@ class StoreModule extends Component {
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-8">
-                        <div className="table-cntr table-height alertsTable align-table">
+                        <div className="table-cntr table-height alertsTable align-table setting-table-des">
                           <ReactTable
                             data={this.state.campaignScriptData}
                             columns={[

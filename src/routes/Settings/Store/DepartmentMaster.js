@@ -1301,7 +1301,7 @@ class DepartmentMaster extends Component {
           self.handleGetFunction("Add");
           self.setState({
             function_Id: data,
-            functionStatus:false
+            functionStatus: false,
           });
         } else {
           NotificationManager.error("Function not added.");
@@ -1345,12 +1345,11 @@ class DepartmentMaster extends Component {
         departmentData = this.state.list1Value;
       }
 
-      
-        // functionData = this.state.listFunction;
-        functionData = this.state.functionData.filter(
-          (x) => x.funcationName === this.state.listFunction
-        )[0].functionID;
-    
+      // functionData = this.state.listFunction;
+      functionData = this.state.functionData.filter(
+        (x) => x.funcationName === this.state.listFunction
+      )[0].functionID;
+
       if (this.state.selectStatus === "Active") {
         activeStatus = 1;
       } else {
@@ -1386,7 +1385,7 @@ class DepartmentMaster extends Component {
               departmentCompulsory: "",
               functionCompulsory: "",
               statusCompulsory: "",
-              functionStatus:false
+              functionStatus: false,
             });
           } else if (status === "Record Already Exists") {
             NotificationManager.error("Record Already Exists.");
@@ -1859,7 +1858,7 @@ class DepartmentMaster extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height deptMaster">
+                <div className="table-cntr table-height deptMaster setting-table-des">
                   <ReactTable
                     data={this.state.departmentGrid}
                     columns={[

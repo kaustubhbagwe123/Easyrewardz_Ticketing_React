@@ -27,9 +27,7 @@ import Modal from "react-bootstrap/Modal";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 
@@ -2001,7 +1999,6 @@ class Alerts extends Component {
   render() {
     return (
       <React.Fragment>
-       
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
             Settings
@@ -2179,7 +2176,7 @@ class Alerts extends Component {
           <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height alertsTable">
+                <div className="table-cntr table-height alertsTable setting-table-des">
                   <ReactTable
                     data={this.state.alert}
                     columns={[
@@ -2698,7 +2695,10 @@ class Alerts extends Component {
                                 <label className="alert-main-popuplbl">
                                   Compose your Email
                                 </label>
-                                <div className="div-padding-alert">
+                                <div
+                                  style={{ display: "none" }}
+                                  className="div-padding-alert"
+                                >
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2801,7 +2801,10 @@ class Alerts extends Component {
                                 <label className="alert-main-popuplbl">
                                   Compose your Email
                                 </label>
-                                <div className="div-padding-alert">
+                                <div
+                                  style={{ display: "none" }}
+                                  className="div-padding-alert"
+                                >
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
@@ -2906,7 +2909,10 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
-                                  <div className="form-group row">
+                                  <div
+                                    style={{ display: "none" }}
+                                    className="form-group row"
+                                  >
                                     <label className="label-color-alert col-sm-auto">
                                       Subject
                                     </label>
@@ -3252,9 +3258,12 @@ class Alerts extends Component {
                     </Modal.Body>
                   </Modal>
                 </div>
-                <div className="right-sect-div">
-                  <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                <div style={{ display: "none" }} className="right-sect-div">
+                  <div
+                    style={{ display: "none" }}
+                    className="d-flex justify-content-between align-items-center pb-2"
+                  >
+                    <h3 className="pb-0">Bulk Upload1</h3>
                     <div className="down-excel">
                       <p>Template</p>
                       <a href={Demo.BLANK_LINK}>

@@ -1317,7 +1317,7 @@ class CreatePriority extends Component {
                 {/* {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : ( */}
-                <div className="table-cntr table-height table-priority">
+                <div className="table-cntr table-height table-priority setting-table-des-antd">
                   <DndProvider backend={HTML5Backend}>
                     <Table
                       className={

@@ -1174,7 +1174,6 @@ class HierarchyMaster extends Component {
 
     return (
       <React.Fragment>
-        
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
             Settings
@@ -1386,7 +1385,7 @@ class HierarchyMaster extends Component {
           <div className="hiermas">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreHierarchyReact">
+                <div className="table-cntr table-height StoreHierarchyReact setting-table-des">
                   <ReactTable
                     data={hierarchyData}
                     columns={[

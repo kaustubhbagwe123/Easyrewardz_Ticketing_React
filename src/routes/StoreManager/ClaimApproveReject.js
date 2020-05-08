@@ -278,44 +278,49 @@ class ClaimApproveReject extends Component {
   ////handle add comment on claim
   handleAddStoreClaimCommentsApproveReject(isRejectComment) {
     debugger;
-    var comment = "";
-    if (this.state.claimComments !== "") {
-      comment = this.state.claimComments;
-    } else {
-      comment = this.state.rejectComment;
-    }
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
-      params: {
-        ClaimID: this.state.claimID,
-        Comment: comment,
-        iSRejectComment: isRejectComment,
-      },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success("Record saved successfully");
-          self.setState({
-            claimComments: "",
-            rejectComment: "",
-            rejectModal: false,
-          });
-          self.handleGetStoreClaimComments(self.state.claimID);
-        } else {
-          NotificationManager.error(res.data.message);
-        }
+    if (this.state.claimComments !== "" || this.state.rejectComment !== "") {
+      var comment = "";
+      if (this.state.claimComments !== "") {
+        comment = this.state.claimComments;
+      } else {
+        comment = this.state.rejectComment;
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
+        params: {
+          ClaimID: this.state.claimID,
+          Comment: comment,
+          iSRejectComment: isRejectComment,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(res) {
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("Record saved successfully");
+            self.setState({
+              claimComments: "",
+              rejectComment: "",
+              rejectModal: false,
+            });
+            self.handleGetStoreClaimComments(self.state.claimID);
+          } else {
+            NotificationManager.error(res.data.message);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Please Enter Comment.");
+    }
   }
 
   handleOnChange(e) {
+    debugger;
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
   ////handle get store claim comment by id
@@ -376,8 +381,10 @@ class ClaimApproveReject extends Component {
           if (status === "Success") {
             if (IsApprove == true) {
               NotificationManager.success("Record approved successfully");
+              self.props.history.push("/store/claim");
             } else {
               NotificationManager.success("Record rejected successfully");
+              self.props.history.push("/store/claim");
             }
           } else {
             NotificationManager.error(res.data.message);
@@ -553,7 +560,16 @@ class ClaimApproveReject extends Component {
       this.setState({ errors: this.state.errors });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    alert();
+    const value = e.target.value;
+    let IsNumber = false;
+    let RE = /^-{0,1}\d*\.{0,1}\d+$/;
+    IsNumber = RE.test(value);
+    if (IsNumber) {
+      console.log(IsNumber);
+    }
+  };
   handleOrderChange(e) {
     this.setState({
       [e.target.name]: e.target.value,

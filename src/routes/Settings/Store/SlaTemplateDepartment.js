@@ -84,7 +84,7 @@ class SlaTemplateDepartment extends Component {
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       sisSLAActiveFilterCheckbox: "",
-      regexp : /^[0-9\b]+$/
+      regexp: /^[0-9\b]+$/,
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -106,7 +106,7 @@ class SlaTemplateDepartment extends Component {
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
 
-    itemsArray.sort(function (a, b) {
+    itemsArray.sort(function(a, b) {
       return a.ticketStatus > b.ticketStatus ? 1 : -1;
     });
 
@@ -569,7 +569,7 @@ class SlaTemplateDepartment extends Component {
   handleSlaTargets = (i, e) => {
     debugger;
     const { name, value } = e.target;
-    if(value === '' || this.state.regexp.test(value)){
+    if (value === "" || this.state.regexp.test(value)) {
       let finalData = [...this.state.finalData];
       finalData[i] = {
         ...finalData[i],
@@ -596,7 +596,7 @@ class SlaTemplateDepartment extends Component {
         SearchText: this.state.SearchText,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let slaFunctionName = res.data.responseData;
         if (slaFunctionName !== null && slaFunctionName !== undefined) {
@@ -637,7 +637,7 @@ class SlaTemplateDepartment extends Component {
       url: config.apiUrl + "/StoreSLA/GetStoreSLA",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -702,7 +702,7 @@ class SlaTemplateDepartment extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -762,7 +762,7 @@ class SlaTemplateDepartment extends Component {
         SLAId: SLAId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -855,7 +855,7 @@ class SlaTemplateDepartment extends Component {
           isSLAActive: SlaIsActive,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -896,7 +896,7 @@ class SlaTemplateDepartment extends Component {
         SLAID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
@@ -999,7 +999,7 @@ class SlaTemplateDepartment extends Component {
       headers: authHeader(),
       data: inputParamter,
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -1086,7 +1086,7 @@ class SlaTemplateDepartment extends Component {
           this.updateUploadProgress(Math.round(progress));
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
@@ -1308,7 +1308,7 @@ class SlaTemplateDepartment extends Component {
           <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketSlaReact">
+                <div className="table-cntr table-height TicketSlaReact setting-table-des">
                   <ReactTable
                     data={this.state.slaTemplateGrid}
                     minRows={2}
@@ -1565,7 +1565,7 @@ class SlaTemplateDepartment extends Component {
                     <label className="Create-store-text">CREATE SLA</label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to">Function Type</label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"
@@ -1633,7 +1633,7 @@ class SlaTemplateDepartment extends Component {
                                         <li key={i}>
                                           <input
                                             type="checkbox"
-                                            id={"i" + item.functionID+"_"+i}
+                                            id={"i" + item.functionID + "_" + i}
                                             name="allSla"
                                             onChange={this.selectIndividualSLA.bind(
                                               this,
@@ -1641,7 +1641,9 @@ class SlaTemplateDepartment extends Component {
                                             )}
                                           />
                                           <label
-                                            htmlFor={"i" + item.functionID+"_"+i}
+                                            htmlFor={
+                                              "i" + item.functionID + "_" + i
+                                            }
                                           >
                                             {item.functionName}
                                             <div>
@@ -1788,7 +1790,10 @@ class SlaTemplateDepartment extends Component {
                     <h3>Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <CSVLink filename={"SLA.csv"} data={config.storeSlaTemplate}>
+                      <CSVLink
+                        filename={"SLA.csv"}
+                        data={config.storeSlaTemplate}
+                      >
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
                     </div>
