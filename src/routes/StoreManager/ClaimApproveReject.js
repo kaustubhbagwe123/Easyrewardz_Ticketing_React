@@ -64,6 +64,7 @@ class ClaimApproveReject extends Component {
       storeCommetData: [],
       approveCommentData: [],
       rejectCommentData: [],
+      commentValidation: "",
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -278,41 +279,47 @@ class ClaimApproveReject extends Component {
   ////handle add comment on claim
   handleAddStoreClaimCommentsApproveReject(isRejectComment) {
     debugger;
-    var comment = "";
-    if (this.state.claimComments !== "") {
-      comment = this.state.claimComments;
-    } else {
-      comment = this.state.rejectComment;
-    }
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
-      params: {
-        ClaimID: this.state.claimID,
-        Comment: comment,
-        iSRejectComment: isRejectComment,
-      },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success("Record saved successfully");
-          self.setState({
-            claimComments: "",
-            rejectComment: "",
-            rejectModal: false,
-          });
-          self.handleGetStoreClaimComments(self.state.claimID);
-        } else {
-          NotificationManager.error(res.data.message);
-        }
+    if (this.state.claimComments !== "") {
+      var comment = "";
+      if (this.state.claimComments !== "") {
+        comment = this.state.claimComments;
+      } else {
+        comment = this.state.rejectComment;
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
+        params: {
+          ClaimID: this.state.claimID,
+          Comment: comment,
+          iSRejectComment: isRejectComment,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            NotificationManager.success("Record saved successfully");
+            self.setState({
+              claimComments: "",
+              rejectComment: "",
+              rejectModal: false,
+            });
+            self.handleGetStoreClaimComments(self.state.claimID);
+          } else {
+            NotificationManager.error(res.data.message);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      self.setState({
+        commentValidation: "Please Enter Comment.",
       });
+    }
   }
 
   handleOnChange(e) {
@@ -556,11 +563,10 @@ class ClaimApproveReject extends Component {
   handlePercentageOnChange = (e) => {
     alert();
     const value = e.target.value;
-    let IsNumber=false;
+    let IsNumber = false;
     let RE = /^-{0,1}\d*\.{0,1}\d+$/;
-    IsNumber= RE.test(value);
-    if(IsNumber)
-    {
+    IsNumber = RE.test(value);
+    if (IsNumber) {
       console.log(IsNumber);
     }
   };
@@ -1045,7 +1051,7 @@ class ClaimApproveReject extends Component {
                         type="text"
                         className="form-control textBox"
                         placeholder="Claim Percentage"
-                        name="claimPercentage"                       
+                        name="claimPercentage"
                         disabled={true}
                         value={this.state.claimPercentage}
                         disabled={true}
@@ -1148,6 +1154,11 @@ class ClaimApproveReject extends Component {
                         value={this.state.claimComments}
                         onChange={this.handleOnChange}
                       ></textarea>
+                      {this.state.claimComments !== "" && (
+                        <p style={{ color: "red", marginTop: "0px" }}>
+                          {this.state.commentValidation}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="commentbt">
