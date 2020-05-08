@@ -4157,6 +4157,9 @@ table tr th:last-child {
 .search-customer-padding {
   padding: 30px;
 }
+.cusrow .row {
+  margin: 0 !important;
+}
 .back-color {
   background-color: #f5f8f9;
   padding-top: 20px;
