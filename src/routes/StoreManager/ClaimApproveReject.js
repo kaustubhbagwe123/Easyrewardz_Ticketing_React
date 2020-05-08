@@ -746,7 +746,7 @@ class ClaimApproveReject extends Component {
             <div className="col-md-9" style={{ padding: "0" }}>
               <div className="card card-radius" style={{ margin: "0 0 20px" }}>
                 <div
-                  className="search-customer-padding"
+                  className="search-customer-padding cusrow"
                   style={{ padding: "30px 45px 30px" }}
                 >
                   <div
@@ -1044,18 +1044,20 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6">Attached Image</label>
-                    </div>
-                  </div>
-                  {this.state.imageUR !== "" ? (
+                      <label className="label-6" style={{display:"block"}}>Attached Image</label>
+                      {this.state.imageUR !== "" ? (
                     <img
                       src={this.state.imageURL}
                       alt="Bata"
                       className="claim-bataShoes"
                     />
                   ) : null}
+                    </div>
+                  </div>
                   <div className="row" style={{ margin: "0" }}>
+                    <div className="col-md-4">
                     <label className="label-6">Comments By Store</label>
+                    </div>
                   </div>
                   {this.state.storeCommetData !== null &&
                     this.state.storeCommetData.map((item, i) => {

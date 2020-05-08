@@ -313,7 +313,7 @@ class StoreAddTask extends Component {
       <Fragment>
         <div className="row card1">
           <div className="col-md-8">
-            <div className="card" style={{ padding: "35px 35px" }}>
+            <div className="card" style={{ padding: "35px", height: "46.3vw" }}>
               <label className="store-Edit-lblcre">Create Task</label>
               <label className="store-Edit-lbl1"> Task Title</label>
               <input
