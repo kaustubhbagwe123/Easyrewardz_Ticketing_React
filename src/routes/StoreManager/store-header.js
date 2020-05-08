@@ -730,13 +730,14 @@ class Header extends Component {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
-            self.handleGetChatMessagesList(self.state.chatId);
-            self.handleGetOngoingChat("isRead");
-            self.handleSendMessageToCustomer(messagecontent, 0);
             self.setState({
               message: "",
               messageSuggestionData: [],
             });
+            self.handleGetChatMessagesList(self.state.chatId);
+            self.handleGetOngoingChat("isRead");
+            self.handleSendMessageToCustomer(messagecontent, 0);
+            
           } else {
           }
         })
@@ -927,7 +928,7 @@ class Header extends Component {
         .then(function(response) {
           var message = response.data.message;
           if (message == "Success") {
-            self.setState({ chkSuggestion: [] });
+            self.setState({ chkSuggestion: [], message: "", messageSuggestionData: [] });
             self.handleGetChatMessagesList(self.state.chatId);
           }
         })
@@ -2213,7 +2214,7 @@ class Header extends Component {
                                       (item, i) => (
                                         <div
                                           className={
-                                            this.state.chkSuggestion[i] === 1
+                                            this.state.chkSuggestion[i+1] === 1
                                               ? "suggestions-tick"
                                               : ""
                                           }
@@ -2221,7 +2222,7 @@ class Header extends Component {
                                           onClick={this.handleSendMessageToCustomer.bind(
                                             this,
                                             item.suggestionText,
-                                            i
+                                            i+1
                                           )}
                                           // onClick={this.handleSaveChatMessages.bind(
                                           //   this,
@@ -2887,7 +2888,7 @@ class Header extends Component {
                                       (item, i) => (
                                         <div
                                           className={
-                                            this.state.chkSuggestion[i] === 1
+                                            this.state.chkSuggestion[i+1] === 1
                                               ? "suggestions-tick"
                                               : ""
                                           }
@@ -2900,7 +2901,7 @@ class Header extends Component {
                                           onClick={this.handleSendMessageToCustomer.bind(
                                             this,
                                             item.suggestionText,
-                                            i
+                                            i+1
                                           )}
                                         >
                                           <Tooltip
