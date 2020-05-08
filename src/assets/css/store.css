@@ -957,6 +957,13 @@ table tr th:last-child {
   margin-left: 0px;
   width: 100%;
 }
+.closure-date {
+  font-size: 12px;
+  font-weight: 700;
+  color: #777;
+  margin: 0;
+  text-align: center;
+}
 .col-md-10-card {
   margin-left: 5px;
   flex: 0 0 75%;

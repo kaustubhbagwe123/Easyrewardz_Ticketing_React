@@ -48,6 +48,7 @@ class ClaimApproveReject extends Component {
       ticketID: 0,
       ticketingTaskID: 0,
       assignToName: "",
+      targetClouserDate: "",
       userModel: false,
       userData: [],
       assigneeID: 0,
@@ -229,6 +230,7 @@ class ClaimApproveReject extends Component {
           var ticketingTaskID = responseData.ticketingTaskID;
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
+          var targetClouserDate = responseData.targetClouserDate;
           var assigneeID = responseData.assigneeID;
           var oldAssignID = responseData.assigneeID;
           var status = responseData.status;
@@ -244,6 +246,7 @@ class ClaimApproveReject extends Component {
             status,
             assigneeID,
             assignToName,
+            targetClouserDate,
             ticketingTaskID,
             ticketID,
             imageURL,
@@ -727,17 +730,26 @@ class ClaimApproveReject extends Component {
             ) : null}
           </div>
           <div className="col-md-5">
-            <a
-              style={{ marginTop: "10px" }}
-              className="d-inline-block"
-              onClick={this.handleGetUserDropdown.bind(this)}
-            >
-              <div className="oval-5-1-new-store">
-                <img src={storeImg} alt="headphone" className="storeImg-11" />
-              </div>
-              <label className="naman-r">{this.state.assignToName}</label>
-              <img src={DownImg} alt="down" className="down-header" />
-            </a>
+            <div className="d-inline-block">
+              <a
+                style={{
+                  marginTop: this.state.targetClouserDate ? "5px" : "11px",
+                }}
+                className="d-inline-block"
+                onClick={this.handleGetUserDropdown.bind(this)}
+              >
+                <div className="oval-5-1-new-store">
+                  <img src={storeImg} alt="headphone" className="storeImg-11" />
+                </div>
+                <label className="naman-r">{this.state.assignToName}</label>
+                <img src={DownImg} alt="down" className="down-header" />
+              </a>
+              {this.state.targetClouserDate && (
+                <p className="closure-date">
+                  Closure Date: {this.state.targetClouserDate}
+                </p>
+              )}
+            </div>
 
             <div className="btn-approrej">
               <button
