@@ -169,7 +169,7 @@ class StoreCampaign extends Component {
         });
 
         calculatedCallReScheduledTo = callRescheduledTo;
-       
+
         axios({
           method: "post",
           url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
@@ -843,9 +843,13 @@ class StoreCampaign extends Component {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
-              custNameModal:false
+              custNameModal: false,
             });
-            self.handleGetCampaignCustomerData(false, "", self.state.campaignID);
+            self.handleGetCampaignCustomerData(
+              false,
+              "",
+              self.state.campaignID
+            );
           } else {
             NotificationManager.error("Server temporarily not available.");
           }
@@ -853,9 +857,13 @@ class StoreCampaign extends Component {
           if (message === "Success") {
             NotificationManager.success("Send Successfully.");
             self.setState({
-              custNameModal:false
+              custNameModal: false,
             });
-            self.handleGetCampaignCustomerData(false, "", self.state.campaignID);
+            self.handleGetCampaignCustomerData(
+              false,
+              "",
+              self.state.campaignID
+            );
           } else {
             NotificationManager.error("Failed");
           }
@@ -888,7 +896,7 @@ class StoreCampaign extends Component {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
-              custNameModal:false
+              custNameModal: false,
             });
           } else {
             NotificationManager.error("Server temporarily not available.");
@@ -896,7 +904,7 @@ class StoreCampaign extends Component {
         } else {
           if (message === "Success") {
             self.setState({
-              custNameModal:false
+              custNameModal: false,
             });
             NotificationManager.success("SMS Send Successfully.");
           } else {
@@ -1595,12 +1603,12 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
-                                  // minTime={new Date(
-                                  //   item.callRescheduledTo
-                                  // ).setTime(
-                                  //   new Date(item.callRescheduledTo).getTime()
-                                  // )}
-                                  // maxTime={new Date().setHours(23)}
+                                  minTime={new Date(
+                                    item.callRescheduledTo
+                                  ).setTime(
+                                    new Date(item.callRescheduledTo).getTime()
+                                  )}
+                                  maxTime={new Date().setHours(23)}
                                   minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
@@ -2024,7 +2032,12 @@ class StoreCampaign extends Component {
               <div className="productbox">
                 <div>
                   <ul
-                    className="nav alert-nav-tabs3 store-nav-tabs"
+                    className={
+                      this.state.showRecommandedtab === false
+                        ? "nav alert-nav-tabs3 store-nav-tabs tab-single"
+                        : "nav alert-nav-tabs3 store-nav-tabs"
+                    }
+                    // className="nav alert-nav-tabs3 store-nav-tabs tab-single"
                     role="tablist"
                   >
                     {this.state.showRecommandedtab ? (

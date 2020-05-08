@@ -1909,9 +1909,13 @@ table tr th:last-child {
 .tab-single .nav-item {
   width: 100%;
 }
-.tab-single .nav-tabs .nav-link.active {
+.tab-single .nav-link.active {
   display: block !important;
   text-align: center;
+}
+.tab-single .nav-link:focus,
+.tab-single .nav-link:hover:focus {
+  outline: 0;
 }
 #sharecamp-popupmob {
   display: none;
