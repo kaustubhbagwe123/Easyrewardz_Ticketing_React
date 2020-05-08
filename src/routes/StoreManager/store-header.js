@@ -1295,7 +1295,7 @@ class Header extends Component {
                       className={item.imgClass}
                     />
                   </div>
-                  {item.data}
+                  <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
               {/* <Link to="storedashboard" className="single-menu">
