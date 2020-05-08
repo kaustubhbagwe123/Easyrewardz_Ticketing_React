@@ -300,7 +300,8 @@ class ClaimApproveReject extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Record saved successfully");
+            if (!isRejectComment)
+              NotificationManager.success("Record saved successfully");
             self.setState({
               claimComments: "",
               rejectComment: "",
@@ -1063,7 +1064,7 @@ class ClaimApproveReject extends Component {
                       <label className="label-6">Attached Image</label>
                     </div>
                   </div>
-                  {this.state.imageUR !== "" ? (
+                  {this.state.imageURL !== "" ? (
                     <img
                       src={this.state.imageURL}
                       alt="Bata"
