@@ -184,6 +184,7 @@ class StoreUsers extends Component {
     );
     this.closeEditModals = this.closeEditModals.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleSendMail = this.handleSendMail.bind(this);
   }
 
   opneUserEditModal = () => {
@@ -2641,7 +2642,7 @@ class StoreUsers extends Component {
     }
   }
   //// final save User data
-  handleFinalSaveUserData() {
+  handleFinalSaveUserData() { 
     debugger;
     if (
       this.state.selectedClaimBrand.length > 0 &&
@@ -2718,6 +2719,7 @@ class StoreUsers extends Component {
             if (status === "Success") {
               NotificationManager.success("Record Saved Successfully.");
               self.handleGetStoreUserGridData();
+              self.handleSendMail(self.state.user_ID)
               self.setState({
                 brandData: [],
                 storeCodeData: [],
@@ -2758,7 +2760,31 @@ class StoreUsers extends Component {
       });
     }
   }
+  handleSendMail(user_Id) {
+    debugger;
 
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/SendMailforchangepassword",
+      headers: authHeader(),
+      params: {
+        userID: user_Id,
+        IsStoreUser:1
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let reportto = res.data.responseData;
+        if (reportto === "Mail sent successfully") {
+          NotificationManager.success("Please Check Email.");
+        }else{
+          NotificationManager.error(reportto);
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
   //// hanlde check Edit Store details
   HandlecheckStoreDetails() {
     debugger;

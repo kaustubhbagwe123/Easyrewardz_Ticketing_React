@@ -2080,7 +2080,6 @@ class Users extends Component {
   }
   handleSendMail(id) {
     debugger;
-    let self = this;
 
     axios({
       method: "post",
