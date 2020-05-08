@@ -320,6 +320,7 @@ class ClaimApproveReject extends Component {
   }
 
   handleOnChange(e) {
+    debugger;
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
   ////handle get store claim comment by id
@@ -1153,9 +1154,7 @@ class ClaimApproveReject extends Component {
                         value={this.state.claimComments}
                         onChange={this.handleOnChange}
                       ></textarea>
-                     
                     </div>
-                    
                   </div>
                   <div className="commentbt">
                     <button
