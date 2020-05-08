@@ -364,7 +364,7 @@ class StoreCRMRole extends Component {
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
             NotificationManager.error("Record Already Exists ");
-          }else{
+          } else {
             NotificationManager.error("Record Already Exists ");
           }
         } else {
@@ -1115,7 +1115,7 @@ class StoreCRMRole extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StorCrmRoleReact align-table">
+                <div className="table-cntr table-height StorCrmRoleReact align-table setting-table-des">
                   <ReactTable
                     data={this.state.crmRoles}
                     columns={[

@@ -544,6 +544,7 @@ class EditStoreTask extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var progressData = response.data.responseData[0];
         if (message == "Success") {
@@ -776,7 +777,11 @@ class EditStoreTask extends Component {
                 <div className="row">
                   <label
                     disabled={this.state.isSubmit}
-                    className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
+                    className={
+                      this.state.isSubmit
+                        ? "modal-lbl disabled-link"
+                        : "modal-lbl"
+                    }
                     onClick={this.handleUpdateTask.bind(this, 222)}
                   >
                     Submit as <span className="modal-lbl-1">Solved</span>
@@ -787,7 +792,11 @@ class EditStoreTask extends Component {
                 <div className="row" style={{ marginTop: "8px" }}>
                   <label
                     disabled={this.state.isSubmit}
-                    className={this.state.isSubmit?"modal-lbl disabled-link":"modal-lbl"}
+                    className={
+                      this.state.isSubmit
+                        ? "modal-lbl disabled-link"
+                        : "modal-lbl"
+                    }
                     className="modal-lbl"
                     onClick={this.handleUpdateTask.bind(this, 223)}
                   >

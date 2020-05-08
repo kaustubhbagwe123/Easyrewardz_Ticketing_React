@@ -3282,7 +3282,7 @@ class StoreUsers extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreUserReact">
+                <div className="table-cntr table-height StoreUserReact setting-table-des">
                   <ReactTable
                     data={this.state.StoreUserData}
                     columns={[

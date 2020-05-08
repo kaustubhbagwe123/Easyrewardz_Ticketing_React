@@ -376,8 +376,10 @@ class ClaimApproveReject extends Component {
           if (status === "Success") {
             if (IsApprove == true) {
               NotificationManager.success("Record approved successfully");
+              self.props.history.push("/store/claim");
             } else {
               NotificationManager.success("Record rejected successfully");
+              self.props.history.push("/store/claim");
             }
           } else {
             NotificationManager.error(res.data.message);
@@ -556,11 +558,10 @@ class ClaimApproveReject extends Component {
   handlePercentageOnChange = (e) => {
     alert();
     const value = e.target.value;
-    let IsNumber=false;
+    let IsNumber = false;
     let RE = /^-{0,1}\d*\.{0,1}\d+$/;
-    IsNumber= RE.test(value);
-    if(IsNumber)
-    {
+    IsNumber = RE.test(value);
+    if (IsNumber) {
       console.log(IsNumber);
     }
   };
@@ -1045,7 +1046,7 @@ class ClaimApproveReject extends Component {
                         type="text"
                         className="form-control textBox"
                         placeholder="Claim Percentage"
-                        name="claimPercentage"                       
+                        name="claimPercentage"
                         disabled={true}
                         value={this.state.claimPercentage}
                         disabled={true}
