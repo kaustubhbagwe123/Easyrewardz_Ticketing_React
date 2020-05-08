@@ -86,6 +86,7 @@ class StoreCampaign extends Component {
       campaingPeriod: "",
       filterCustNO: "",
       showRecommandedtab: false,
+      showLastTransactiondtab: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -986,10 +987,12 @@ class StoreCampaign extends Component {
           ) {
             self.setState({
               lastTransactionItem: data.lasttransactiondetails.itemDetails,
+              showLastTransactiondtab:false
             });
           } else {
             self.setState({
               lastTransactionItem: [],
+              showLastTransactiondtab:true
             });
           }
           if (data.campaignrecommended[0].itemCode !== "") {
@@ -1603,12 +1606,12 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
-                                  minTime={new Date(
-                                    item.callRescheduledTo
-                                  ).setTime(
-                                    new Date(item.callRescheduledTo).getTime()
-                                  )}
-                                  maxTime={new Date().setHours(23)}
+                                  // minTime={new Date(
+                                  //   item.callRescheduledTo
+                                  // ).setTime(
+                                  //   new Date(item.callRescheduledTo).getTime()
+                                  // )}
+                                  // maxTime={new Date().setHours(23)}
                                   minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
@@ -2033,7 +2036,7 @@ class StoreCampaign extends Component {
                 <div>
                   <ul
                     className={
-                      this.state.showRecommandedtab === false
+                      this.state.showRecommandedtab === false ||  this.state.showLastTransactiondtab === true
                         ? "nav alert-nav-tabs3 store-nav-tabs tab-single"
                         : "nav alert-nav-tabs3 store-nav-tabs"
                     }
