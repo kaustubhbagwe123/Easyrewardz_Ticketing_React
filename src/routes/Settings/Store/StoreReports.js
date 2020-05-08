@@ -26,7 +26,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import moment from "moment";
-import ClaimStatus from "../../../routes/ClaimStatus"
+import ClaimStatus from "../../../routes/ClaimStatus";
 
 class StoreReports extends Component {
   constructor(props) {
@@ -79,7 +79,7 @@ class StoreReports extends Component {
         { campaignNameID: 17, campaignName: "Campaign Status 1" },
         { campaignNameID: 18, campaignName: "Campaign Status 2" },
       ],
-      userData:[],
+      userData: [],
       selectedTeamMember: [],
       departmentOvrlayShow: false,
       functionOvrlayShow: false,
@@ -130,7 +130,7 @@ class StoreReports extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
-      selectedReportName:"",
+      selectedReportName: "",
       ReportParams: {},
       Schedule_ID: 0,
       selectedNoOfDay: 0,
@@ -167,7 +167,7 @@ class StoreReports extends Component {
         },
       ],
       reportID: 0,
-      selectedTaskStatus: ""
+      selectedTaskStatus: "",
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -192,7 +192,6 @@ class StoreReports extends Component {
       this
     );
     this.handleSave = this.handleSave.bind(this);
-
   }
 
   componentDidMount() {
@@ -986,255 +985,273 @@ class StoreReports extends Component {
   }
 
   handleGetDepartment() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({departmentName: responseData});
+          self.setState({ departmentName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetFunction() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreDepartment/getFunctionNameByMultipleDepartmentIds",
+      url:
+        config.apiUrl +
+        "/StoreDepartment/getFunctionNameByMultipleDepartmentIds",
       params: { DepartmentIds: this.state.indiDepartment },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({functionName: responseData});
+          self.setState({ functionName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ isloading: false });
         console.log(response, "---handleGetTaskData");
       });
   }
 
   handleGetPriority() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({priorityName: responseData});
+          self.setState({ priorityName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimCategory() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
       params: { BrandIds: "" },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimCategoryName: responseData});
+          self.setState({ claimCategoryName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimSubCategory() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimSubCategory",
       params: { CategoryIDs: this.state.indiClaimCategory },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimSubCategoryName: responseData});
+          self.setState({ claimSubCategoryName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimIssueType() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimIssueType",
       params: { subCategoryIDs: this.state.indiClaimSubCategory },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimIssueTypeName: responseData});
+          self.setState({ claimIssueTypeName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetUser() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({userData: responseData});
+          self.setState({ userData: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
- 
+
   handleGetStoreReportSearch(activeTabId) {
-    debugger; 
+    debugger;
     let self = this;
     var taskStatus = "";
-    var paramData ={};
-    for(var a=0; a<this.state.taskStatus.length; a++){
-      this.state.selectedTaskStatus+=this.state.taskStatus[a].taskStatusID+","
+    var paramData = {};
+    for (var a = 0; a < this.state.taskStatus.length; a++) {
+      this.state.selectedTaskStatus +=
+        this.state.taskStatus[a].taskStatusID + ",";
     }
-   if(activeTabId === 1)
-   {
-    paramData ={
-      ActiveTabId: activeTabId,
-      TaskTitle: this.state.taskIdTitle,
-      TaskStatus: this.state.selectedTaskStatus,
-      IsTaskWithTicket: this.state.taskWithTickets==="no"?false:true,
-      TaskTicketID: this.state.taskLinkedTicketId,
-      DepartmentIds: this.state.indiDepartment,
-      FunctionIds: this.state.indiFunction,
-      PriorityIds: this.state.indiPriority,
-      IsTaskWithClaim: this.state.taskWithClaim==="no"?false:true,
-      TaskClaimID: this.state.taskClaimId,
-      TaskCreatedDate: this.state.taskCreateDate===""?null:
-                        moment(this.state.taskCreateDate).format('YYYY-MM-DD'),
-      TaskCreatedBy: this.state.taskCreatedBy,
-      TaskAssignedId: this.state.taskAssignedTo
+    if (activeTabId === 1) {
+      paramData = {
+        ActiveTabId: activeTabId,
+        TaskTitle: this.state.taskIdTitle,
+        TaskStatus: this.state.selectedTaskStatus,
+        IsTaskWithTicket: this.state.taskWithTickets === "no" ? false : true,
+        TaskTicketID: this.state.taskLinkedTicketId,
+        DepartmentIds: this.state.indiDepartment,
+        FunctionIds: this.state.indiFunction,
+        PriorityIds: this.state.indiPriority,
+        IsTaskWithClaim: this.state.taskWithClaim === "no" ? false : true,
+        TaskClaimID: this.state.taskClaimId,
+        TaskCreatedDate:
+          this.state.taskCreateDate === ""
+            ? null
+            : moment(this.state.taskCreateDate).format("YYYY-MM-DD"),
+        TaskCreatedBy: this.state.taskCreatedBy,
+        TaskAssignedId: this.state.taskAssignedTo,
+      };
     }
-   }
-   if (activeTabId === 2) {
-    paramData ={
-      ActiveTabId: activeTabId,
-      ClaimID: this.state.claimClaimId===""?0:parseInt(this.state.claimClaimId),
-      ClaimStatus: this.state.indiClaimStatus,
-      IsClaimWithTicket: false,
-      ClaimTicketID: this.state.claimLinkedTicketId===""?0:parseInt(this.state.claimLinkedTicketId),
-      ClaimCategoryIds: this.state.indiClaimCategory,
-      ClaimSubCategoryIds: this.state.indiClaimSubCategory,
-      ClaimIssuetypeIds: this.state.indiClaimIssueType,
-      IsClaimWithTask: this.state.claimWithTask === "no"?false:true,
-      ClaimTaskID: this.state.linkedTaskId===""?0:parseInt(this.state.linkedTaskId),
-      ClaimCreatedDate: this.state.claimCreateDate===""?null:
-                        moment(this.state.claimCreateDate).format('YYYY-MM-DD'),
-      ClaimCreatedBy: this.state.claimCreatedBy,
-      ClaimAssignedId: this.state.claimAssignedTo
+    if (activeTabId === 2) {
+      paramData = {
+        ActiveTabId: activeTabId,
+        ClaimID:
+          this.state.claimClaimId === ""
+            ? 0
+            : parseInt(this.state.claimClaimId),
+        ClaimStatus: this.state.indiClaimStatus,
+        IsClaimWithTicket: false,
+        ClaimTicketID:
+          this.state.claimLinkedTicketId === ""
+            ? 0
+            : parseInt(this.state.claimLinkedTicketId),
+        ClaimCategoryIds: this.state.indiClaimCategory,
+        ClaimSubCategoryIds: this.state.indiClaimSubCategory,
+        ClaimIssuetypeIds: this.state.indiClaimIssueType,
+        IsClaimWithTask: this.state.claimWithTask === "no" ? false : true,
+        ClaimTaskID:
+          this.state.linkedTaskId === ""
+            ? 0
+            : parseInt(this.state.linkedTaskId),
+        ClaimCreatedDate:
+          this.state.claimCreateDate === ""
+            ? null
+            : moment(this.state.claimCreateDate).format("YYYY-MM-DD"),
+        ClaimCreatedBy: this.state.claimCreatedBy,
+        ClaimAssignedId: this.state.claimAssignedTo,
+      };
     }
-   }
-   if (activeTabId === 3) {
-    paramData ={
-      ActiveTabId: activeTabId,
-      CampaignName: this.state.indiCampaignName,
-      CampaignAssignedIds: this.state.campaignAssignedTo,
-      CampaignStartDate: this.state.campaignEndDateFrom===""?null:
-                          moment(this.state.campaignEndDateFrom).format('YYYY-MM-DD'),
-      CampaignEndDate: this.state.campaignEndDateTo===""?null:
-                      moment(this.state.campaignEndDateTo).format('YYYY-MM-DD'),
-      CampaignStatusids: this.state.indiCampaignStatus
+    if (activeTabId === 3) {
+      paramData = {
+        ActiveTabId: activeTabId,
+        CampaignName: this.state.indiCampaignName,
+        CampaignAssignedIds: this.state.campaignAssignedTo,
+        CampaignStartDate:
+          this.state.campaignEndDateFrom === ""
+            ? null
+            : moment(this.state.campaignEndDateFrom).format("YYYY-MM-DD"),
+        CampaignEndDate:
+          this.state.campaignEndDateTo === ""
+            ? null
+            : moment(this.state.campaignEndDateTo).format("YYYY-MM-DD"),
+        CampaignStatusids: this.state.indiCampaignStatus,
+      };
     }
-   }
-   this.setState({ ReportParams: paramData });
+    this.setState({ ReportParams: paramData });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/StoreReportSearch",
       data: paramData,
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         if (message === "Success") {
-          self.setState({totalResult: response.data.responseData});
+          self.setState({ totalResult: response.data.responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetStoreReports() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/GetStoreReports",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({storeReportData: responseData});
+          self.setState({ storeReportData: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
-  
   ScheduleOpenModel = () => {
     debugger;
     if (this.state.selectedReportName == "") {
@@ -1244,9 +1261,7 @@ class StoreReports extends Component {
         var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
         var selectedTeamMember = this.state.selectedTeamMember;
         for (let j = 0; j < tData.length; j++) {
-          var data = this.state.userData.filter(
-            (x) => x.userID == tData[j]
-          );
+          var data = this.state.userData.filter((x) => x.userID == tData[j]);
           selectedTeamMember.push(data[0]);
         }
         this.setState({ Schedule: true, selectedTeamMember });
@@ -1535,7 +1550,7 @@ class StoreReports extends Component {
       selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   };
-  
+
   handleWeekForYear = (e) => {
     debugger;
     this.setState({
@@ -1598,7 +1613,7 @@ class StoreReports extends Component {
       selectedNameOfMonthForDailyYearCommaSeperated,
     });
   };
-  
+
   handleInsertReport() {
     let self = this;
     var SearchParams = {};
@@ -1750,7 +1765,7 @@ class StoreReports extends Component {
             ReportID: this.state.reportID,
             ReportName: self.state.selectedReportName,
             ScheduleID: this.state.Schedule_ID,
-            StoreReportSearchParams: SearchParams
+            StoreReportSearchParams: SearchParams,
           },
         })
           .then(function(res) {
@@ -1861,8 +1876,10 @@ class StoreReports extends Component {
     this.state.taskLinkedTicketId = allTab["TaskTicketID"];
     this.state.taskAssignedTo = allTab["TaskAssignedId"];
     this.state.taskCreatedBy = allTab["TaskCreatedBy"];
-    this.state.taskWithTickets = allTab["IsTaskWithTicket"] === true?"yes":"no";
-    this.state.taskWithClaim = allTab["IsTaskWithClaim"] === true?"yes":"no";
+    this.state.taskWithTickets =
+      allTab["IsTaskWithTicket"] === true ? "yes" : "no";
+    this.state.taskWithClaim =
+      allTab["IsTaskWithClaim"] === true ? "yes" : "no";
     this.state.taskClaimId = allTab["TaskClaimID"];
     this.state.indiDepartment = allTab["DepartmentIds"];
     this.state.indiFunction = allTab["FunctionIds"];
@@ -1876,15 +1893,17 @@ class StoreReports extends Component {
         );
         taskStatusCommaSeperated.push(data[0]);
       }
-      this.setState({taskStatus: taskStatusCommaSeperated});
+      this.setState({ taskStatus: taskStatusCommaSeperated });
     }
 
     this.state.claimClaimId = allTab["ClaimTaskID"];
     this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
     this.state.claimAssignedTo = allTab["ClaimAssignedId"];
     this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
-    this.state.claimWithTickets = allTab["IsClaimWithTicket"] === true?"yes":"no";
-    this.state.claimWithTask = allTab["IsClaimWithTask"] === true?"yes":"no";
+    this.state.claimWithTickets =
+      allTab["IsClaimWithTicket"] === true ? "yes" : "no";
+    this.state.claimWithTask =
+      allTab["IsClaimWithTask"] === true ? "yes" : "no";
     this.state.indiClaimCategory = allTab["ClaimCategoryIds"];
     this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
     this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
@@ -2024,13 +2043,13 @@ class StoreReports extends Component {
   };
 
   handleDeleteStoreReports(reportID) {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/DeleteStoreReport",
-       params: { ReportID: reportID },
-      headers: authHeader()
+      params: { ReportID: reportID },
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
@@ -2041,49 +2060,49 @@ class StoreReports extends Component {
           NotificationManager.success("Report deleted successfully.");
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetCampaignName() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/GetCampaignNames",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({campaignName: responseData});
+          self.setState({ campaignName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleDownload = (id) => {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreReport/DownloadStoreReportSearch",
-        headers: authHeader(),
-        params: {
-          SchedulerID: id,
-        },
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/DownloadStoreReportSearch",
+      headers: authHeader(),
+      params: {
+        SchedulerID: id,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        window.open(res.data.responseData);
       })
-        .then(function(res) {
-          debugger;
-          window.open(res.data.responseData);
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    };
+      .catch((data) => {
+        console.log(data);
+      });
+  };
 
   render() {
     const datareport = this.state.storeReportData;
@@ -2121,22 +2140,33 @@ class StoreReports extends Component {
             <div>
               <span>
                 {row.original["createdBy"]}
-                <Popover content={
-                <>
-                <div>
-                  <b>
-                    <p className="title">Created By: {row.original["createdBy"]}</p>
-                  </b>
-                  <p className="sub-title">Created Date: {row.original["createdDate"]}</p>
-                </div>
-                <div>
-                  <b>
-                    <p className="title">Updated By: {row.original["modifiedBy"]}</p>
-                  </b>
-                  <p className="sub-title">Updated Date: {row.original["modifiedDate"]}</p>
-                </div>
-                </>
-                } placement="bottom">
+                <Popover
+                  content={
+                    <>
+                      <div>
+                        <b>
+                          <p className="title">
+                            Created By: {row.original["createdBy"]}
+                          </p>
+                        </b>
+                        <p className="sub-title">
+                          Created Date: {row.original["createdDate"]}
+                        </p>
+                      </div>
+                      <div>
+                        <b>
+                          <p className="title">
+                            Updated By: {row.original["modifiedBy"]}
+                          </p>
+                        </b>
+                        <p className="sub-title">
+                          Updated Date: {row.original["modifiedDate"]}
+                        </p>
+                      </div>
+                    </>
+                  }
+                  placement="bottom"
+                >
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -2167,36 +2197,43 @@ class StoreReports extends Component {
               src={DownExcel}
               alt="download icon"
               className="downloadaction"
-              onClick={this.handleDownload.bind(
-                this,
-                row.original.scheduleID
-              )}
+              onClick={this.handleDownload.bind(this, row.original.scheduleID)}
             />
-            <Popover content={
-              <div className="d-flex general-popover popover-body">
-                <div className="del-big-icon">
-                  <img src={DelBigIcon} alt="del-icon" />
-                </div>
-                <div>
-                  <p className="font-weight-bold blak-clr">Delete file?</p>
-                  <p className="mt-1 fs-12">
-                    Are you sure you want to delete this file?
-                  </p>
-                  <div className="del-can">
-                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                    <button className="butn" 
-                    onClick={this.handleDeleteStoreReports.bind(this,row.original["reportID"])}>Delete</button>
+            <Popover
+              content={
+                <div className="d-flex general-popover popover-body">
+                  <div className="del-big-icon">
+                    <img src={DelBigIcon} alt="del-icon" />
+                  </div>
+                  <div>
+                    <p className="font-weight-bold blak-clr">Delete file?</p>
+                    <p className="mt-1 fs-12">
+                      Are you sure you want to delete this file?
+                    </p>
+                    <div className="del-can">
+                      <a href={Demo.BLANK_LINK}>CANCEL</a>
+                      <button
+                        className="butn"
+                        onClick={this.handleDeleteStoreReports.bind(
+                          this,
+                          row.original["reportID"]
+                        )}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            } placement="bottom" trigger="click">
+              }
+              placement="bottom"
+              trigger="click"
+            >
               <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
             </Popover>
-            <button className="react-tabel-button editre" id="p-edit-pop-2"
-            onClick={this.handleEditReport.bind(
-              this,
-              row.original
-            )}
+            <button
+              className="react-tabel-button editre"
+              id="p-edit-pop-2"
+              onClick={this.handleEditReport.bind(this, row.original)}
             >
               EDIT
             </button>
@@ -2216,7 +2253,12 @@ class StoreReports extends Component {
           </p>
           <div className="del-can">
             <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn" onClick={this.handleDeleteStoreReports.bind(this,)}>Delete</button>
+            <button
+              className="butn"
+              onClick={this.handleDeleteStoreReports.bind(this)}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
@@ -2323,7 +2365,10 @@ class StoreReports extends Component {
             />
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
-                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 1)}>
+                <li
+                  className="nav-item"
+                  onClick={this.handleChangeTab.bind(this, 1)}
+                >
                   <a
                     className={`nav-link ${this.state.tabIndex === 1 &&
                       "active"} `}
@@ -2337,7 +2382,10 @@ class StoreReports extends Component {
                     Task
                   </a>
                 </li>
-                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 2)}>
+                <li
+                  className="nav-item"
+                  onClick={this.handleChangeTab.bind(this, 2)}
+                >
                   <a
                     className={`nav-link ${this.state.tabIndex === 2 &&
                       "active"} `}
@@ -2351,7 +2399,10 @@ class StoreReports extends Component {
                     Claim
                   </a>
                 </li>
-                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 3)}>
+                <li
+                  className="nav-item"
+                  onClick={this.handleChangeTab.bind(this, 3)}
+                >
                   <a
                     className={`nav-link ${this.state.tabIndex === 3 &&
                       "active"} `}
@@ -2458,14 +2509,16 @@ class StoreReports extends Component {
                                           this,
                                           item.departmentID
                                         )}
-                                        checked={this.state.indiDepartment !== undefined?
-                                          this.state.indiDepartment.includes(
-                                          item.departmentID):false
+                                        checked={
+                                          this.state.indiDepartment !==
+                                          undefined
+                                            ? this.state.indiDepartment.includes(
+                                                item.departmentID
+                                              )
+                                            : false
                                         }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.departmentID}
-                                      >
+                                      <label htmlFor={"i" + item.departmentID}>
                                         {item.departmentName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2502,9 +2555,7 @@ class StoreReports extends Component {
                       <label>Task Status</label>
                       <div className="normal-dropdown">
                         <Select
-                          getOptionLabel={(option) =>
-                            option.taskStatusName
-                          }
+                          getOptionLabel={(option) => option.taskStatusName}
                           getOptionValue={(option) => option.taskStatusID}
                           options={this.state.taskStatusList}
                           closeMenuOnSelect={false}
@@ -2577,14 +2628,15 @@ class StoreReports extends Component {
                                           this,
                                           item.functionID
                                         )}
-                                        checked={this.state.indiFunction !== undefined?
-                                          this.state.indiFunction.includes(
-                                          item.functionID):false
+                                        checked={
+                                          this.state.indiFunction !== undefined
+                                            ? this.state.indiFunction.includes(
+                                                item.functionID
+                                              )
+                                            : false
                                         }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.functionID}
-                                      >
+                                      <label htmlFor={"i" + item.functionID}>
                                         {item.funcationName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2608,7 +2660,7 @@ class StoreReports extends Component {
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                         {/* <option value="1">Aman</option>
                         <option value="2">Arjun</option> */}
                       </select>
@@ -2688,13 +2740,15 @@ class StoreReports extends Component {
                                           this,
                                           item.priorityID
                                         )}
-                                        checked={this.state.indiPriority !== undefined?
-                                          this.state.indiPriority.includes(
-                                          item.priorityID):false}
+                                        checked={
+                                          this.state.indiPriority !== undefined
+                                            ? this.state.indiPriority.includes(
+                                                item.priorityID
+                                              )
+                                            : false
+                                        }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.priorityID}
-                                      >
+                                      <label htmlFor={"i" + item.priorityID}>
                                         {item.priortyName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2718,7 +2772,7 @@ class StoreReports extends Component {
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                         {/* <option value="1">Aman</option>
                         <option value="2">Arjun</option> */}
                       </select>
@@ -2765,7 +2819,7 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        onClick={this.handleNextPopupOpen.bind(this,1)}
+                        onClick={this.handleNextPopupOpen.bind(this, 1)}
                       >
                         NEXT
                       </button>
@@ -2860,13 +2914,16 @@ class StoreReports extends Component {
                                             this,
                                             item.categoryID
                                           )}
-                                          checked={this.state.indiClaimCategory !== undefined?
-                                            this.state.indiClaimCategory.includes(
-                                            item.categoryID):false}
+                                          checked={
+                                            this.state.indiClaimCategory !==
+                                            undefined
+                                              ? this.state.indiClaimCategory.includes(
+                                                  item.categoryID
+                                                )
+                                              : false
+                                          }
                                         />
-                                        <label
-                                          htmlFor={"i" + item.categoryID}
-                                        >
+                                        <label htmlFor={"i" + item.categoryID}>
                                           {item.categoryName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
@@ -2964,13 +3021,16 @@ class StoreReports extends Component {
                                           this,
                                           item.claimStatusID
                                         )}
-                                        checked={this.state.indiClaimStatus !== undefined?
-                                          this.state.indiClaimStatus.includes(
-                                          item.claimStatusID):false}
+                                        checked={
+                                          this.state.indiClaimStatus !==
+                                          undefined
+                                            ? this.state.indiClaimStatus.includes(
+                                                item.claimStatusID
+                                              )
+                                            : false
+                                        }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.claimStatusID}
-                                      >
+                                      <label htmlFor={"i" + item.claimStatusID}>
                                         {item.claimStatusName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -3050,9 +3110,14 @@ class StoreReports extends Component {
                                             this,
                                             item.subCategoryID
                                           )}
-                                          checked={this.state.indiClaimSubCategory !== undefined?
-                                            this.state.indiClaimSubCategory.includes(
-                                            item.subCategoryID):false}
+                                          checked={
+                                            this.state.indiClaimSubCategory !==
+                                            undefined
+                                              ? this.state.indiClaimSubCategory.includes(
+                                                  item.subCategoryID
+                                                )
+                                              : false
+                                          }
                                         />
                                         <label
                                           htmlFor={"s" + item.subCategoryID}
@@ -3081,7 +3146,7 @@ class StoreReports extends Component {
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                       </select>
                     </div>
                   </div>
@@ -3165,13 +3230,16 @@ class StoreReports extends Component {
                                             this,
                                             item.issueTypeID
                                           )}
-                                          checked={this.state.indiClaimIssueType !== undefined?
-                                            this.state.indiClaimIssueType.includes(
-                                            item.issueTypeID):false}
+                                          checked={
+                                            this.state.indiClaimIssueType !==
+                                            undefined
+                                              ? this.state.indiClaimIssueType.includes(
+                                                  item.issueTypeID
+                                                )
+                                              : false
+                                          }
                                         />
-                                        <label
-                                          htmlFor={"t" + item.issueTypeID}
-                                        >
+                                        <label htmlFor={"t" + item.issueTypeID}>
                                           {item.issueTypeName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
@@ -3196,7 +3264,7 @@ class StoreReports extends Component {
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                         {/* <option value="1">Aman</option>
                         <option value="2">Arjun</option> */}
                       </select>
@@ -3244,7 +3312,7 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         // onClick={this.handleNextPopupOpen}
-                        onClick={this.handleNextPopupOpen.bind(this,2)}
+                        onClick={this.handleNextPopupOpen.bind(this, 2)}
                       >
                         NEXT
                       </button>
@@ -3326,9 +3394,14 @@ class StoreReports extends Component {
                                           this,
                                           item.campaignNameID
                                         )}
-                                        checked={this.state.indiCampaignName !== undefined?
-                                          this.state.indiCampaignName.includes(
-                                          item.campaignNameID):false}
+                                        checked={
+                                          this.state.indiCampaignName !==
+                                          undefined
+                                            ? this.state.indiCampaignName.includes(
+                                                item.campaignNameID
+                                              )
+                                            : false
+                                        }
                                       />
                                       <label
                                         htmlFor={"camp" + item.campaignNameID}
@@ -3356,7 +3429,7 @@ class StoreReports extends Component {
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                       </select>
                     </div>
                     <div className="col-md-4">
@@ -3438,9 +3511,14 @@ class StoreReports extends Component {
                                             this,
                                             item.campaignNameID
                                           )}
-                                          checked={this.state.indiCampaignStatus !== undefined?
-                                            this.state.indiCampaignStatus.includes(
-                                            item.campaignNameID):false}
+                                          checked={
+                                            this.state.indiCampaignStatus !==
+                                            undefined
+                                              ? this.state.indiCampaignStatus.includes(
+                                                  item.campaignNameID
+                                                )
+                                              : false
+                                          }
                                         />
                                         <label
                                           htmlFor={"i" + item.campaignNameID}
@@ -3465,7 +3543,7 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        onClick={this.handleNextPopupOpen.bind(this,3)}
+                        onClick={this.handleNextPopupOpen.bind(this, 3)}
                         // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         NEXT
@@ -3497,7 +3575,9 @@ class StoreReports extends Component {
                 <div className="col-md-6">
                   <div className="store-totalresultcircle">
                     <label className="totalresult">Total Result</label>
-                      <span className="totalresultnumber">{this.state.totalResult}</span>
+                    <span className="totalresultnumber">
+                      {this.state.totalResult}
+                    </span>
                   </div>
                 </div>
                 <div className="col-md-6 rname">
@@ -3514,15 +3594,15 @@ class StoreReports extends Component {
                     />
                   </div>
                   <div className="buttonschdulesave">
-                    <button className="Schedulenext"
-                    onClick={this.ScheduleOpenModel}
-                    >SCHEDULE</button>
+                    <button
+                      className="Schedulenext"
+                      onClick={this.ScheduleOpenModel}
+                    >
+                      SCHEDULE
+                    </button>
                   </div>
                   <div className="buttonschdulesave1">
-                    <button
-                      className="Schedulenext1"
-                      onClick={this.handleSave}
-                    >
+                    <button className="Schedulenext1" onClick={this.handleSave}>
                       SAVE
                     </button>
                   </div>
@@ -3531,379 +3611,369 @@ class StoreReports extends Component {
             </div>
           </Modal>
           <Modal
-                    onClose={this.ScheduleCloseModel}
-                    open={this.state.Schedule}
-                    modalId="ScheduleModel"
-                    classNames={{
-                      modal: "schedule-width",
-                    }}
-                    overlayId="logout-ovrly"
-                  >
-                    <div>
-                      <label>
-                        <b>Schedule date to</b>
-                      </label>
-                      <div>
-                        <div className="normal-dropdown dropdown-setting1 schedule-multi">
+            onClose={this.ScheduleCloseModel}
+            open={this.state.Schedule}
+            modalId="ScheduleModel"
+            classNames={{
+              modal: "schedule-width",
+            }}
+            overlayId="logout-ovrly"
+          >
+            <div>
+              <label>
+                <b>Schedule date to</b>
+              </label>
+              <div>
+                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                  <Select
+                    getOptionLabel={(option) => option.userName}
+                    getOptionValue={
+                      (option) => option.userID //id
+                    }
+                    options={this.state.userData}
+                    placeholder="Team Member"
+                    // menuIsOpen={true}
+                    closeMenuOnSelect={false}
+                    onChange={this.setTeamMember.bind(this)}
+                    value={this.state.selectedTeamMember}
+                    // showNewOptionAtTop={false}
+                    isMulti
+                  />
+                </div>
+                <select
+                  id="inputState"
+                  className="form-control dropdown-setting1 ScheduleDate-to"
+                  value={this.state.selectScheduleDate}
+                  onChange={this.handleScheduleDateChange}
+                >
+                  {this.state.ScheduleOption !== null &&
+                    this.state.ScheduleOption.map((item, i) => (
+                      <option key={i} value={item.scheduleID}>
+                        {item.scheduleName}
+                      </option>
+                    ))}
+                </select>
+                {this.state.selectScheduleDate === "230" ||
+                this.state.selectScheduleDate === 230 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        name="selectedNoOfDay"
+                        value={this.state.selectedNoOfDay}
+                        onChange={this.handleOnChangeData}
+                      />
+                      <label className="every1">Day</label>
+                    </span>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "231" ||
+                this.state.selectScheduleDate === 231 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfWeek}
+                        onChange={this.handleWeekly}
+                      />
+                      <label className="every1">Week on</label>
+                    </span>
+                    <div
+                      style={{
+                        marginTop: "10px",
+                      }}
+                    >
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Mon"
+                        id="Mon"
+                      >
+                        Mon
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Tue"
+                        id="Tue"
+                      >
+                        Tue
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Wed"
+                        id="Wed"
+                      >
+                        Wed
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Thu"
+                        id="Thu"
+                      >
+                        Thu
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Fri"
+                        id="Fri"
+                      >
+                        Fri
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Sat"
+                        id="Sat"
+                      >
+                        Sat
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Sun"
+                        id="Sun"
+                      >
+                        Sun
+                      </Checkbox>
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "232" ||
+                this.state.selectScheduleDate === 232 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Day</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="9"
+                        value={this.state.selectedNoOfDaysForMonth}
+                        onChange={this.handleDaysForMonth}
+                      />
+                      <label className="every1">of every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfMonthForMonth}
+                        onChange={this.handleMonthForMonth}
+                      />
+                      <label className="every1">months</label>
+                    </span>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "233" ||
+                this.state.selectScheduleDate === 233 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        onChange={this.handleMonthForWeek}
+                        value={this.state.selectedNoOfMonthForWeek}
+                      />
+                      <label className="every1">month on the</label>
+                    </span>
+                    <div className="row mt-3">
+                      <div className="col-md-6">
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-setting1"
+                          onChange={this.handleWeekForWeek}
+                          value={this.state.selectedNoOfWeekForWeek}
+                        >
+                          <option value="0">Select</option>
+                          <option value="2">Second</option>
+                          <option value="4">Four</option>
+                        </select>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                           <Select
-                            getOptionLabel={(option) => option.userName}
+                            getOptionLabel={(option) => option.days}
                             getOptionValue={
-                              (option) => option.userID //id
+                              (option) => option.days //id
                             }
-                            options={this.state.userData}
-                            placeholder="Team Member"
+                            options={this.state.NameOfDayForWeek}
+                            placeholder="Select"
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
-                            onChange={this.setTeamMember.bind(this)}
-                            value={this.state.selectedTeamMember}
+                            onChange={this.setNameOfDayForWeek.bind(this)}
+                            value={this.state.selectedNameOfDayForWeek}
                             // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting1 ScheduleDate-to"
-                          value={this.state.selectScheduleDate}
-                          onChange={this.handleScheduleDateChange}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "234" ||
+                this.state.selectScheduleDate === 234 ? (
+                  <div className="ScheduleDate-to">
+                    <div className="row m-0">
+                      <label
+                        className="every1"
+                        style={{
+                          lineHeight: "40px",
+                        }}
+                      >
+                        on
+                      </label>
+                      <div className="col-md-7">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.month}
+                            getOptionValue={
+                              (option) => option.month //id
+                            }
+                            options={this.state.NameOfMonthForYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfMonthForYear.bind(this)}
+                            value={this.state.selectedNameOfMonthForYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfDayForDailyYear}
+                        onChange={this.handleDayForYear}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "235" ||
+                this.state.selectScheduleDate === 235 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <div className="row m-0">
+                        <label
+                          className="every1"
+                          style={{
+                            lineHeight: "40px",
+                          }}
                         >
-                          {this.state.ScheduleOption !== null &&
-                            this.state.ScheduleOption.map((item, i) => (
-                              <option key={i} value={item.scheduleID}>
-                                {item.scheduleName}
-                              </option>
-                            ))}
-                        </select>
-                        {this.state.selectScheduleDate === "230" ||
-                        this.state.selectScheduleDate === 230 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                name="selectedNoOfDay"
-                                value={this.state.selectedNoOfDay}
-                                onChange={this.handleOnChangeData}
-                              />
-                              <label className="every1">Day</label>
-                            </span>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "231" ||
-                        this.state.selectScheduleDate === 231 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                value={this.state.selectedNoOfWeek}
-                                onChange={this.handleWeekly}
-                              />
-                              <label className="every1">Week on</label>
-                            </span>
-                            <div
-                              style={{
-                                marginTop: "10px",
-                              }}
-                            >
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Mon"
-                                id="Mon"
-                              >
-                                Mon
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Tue"
-                                id="Tue"
-                              >
-                                Tue
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Wed"
-                                id="Wed"
-                              >
-                                Wed
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Thu"
-                                id="Thu"
-                              >
-                                Thu
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Fri"
-                                id="Fri"
-                              >
-                                Fri
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Sat"
-                                id="Sat"
-                              >
-                                Sat
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Sun"
-                                id="Sun"
-                              >
-                                Sun
-                              </Checkbox>
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "232" ||
-                        this.state.selectScheduleDate === 232 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Day</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="9"
-                                value={this.state.selectedNoOfDaysForMonth}
-                                onChange={this.handleDaysForMonth}
-                              />
-                              <label className="every1">of every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                value={this.state.selectedNoOfMonthForMonth}
-                                onChange={this.handleMonthForMonth}
-                              />
-                              <label className="every1">months</label>
-                            </span>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "233" ||
-                        this.state.selectScheduleDate === 233 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                onChange={this.handleMonthForWeek}
-                                value={this.state.selectedNoOfMonthForWeek}
-                              />
-                              <label className="every1">month on the</label>
-                            </span>
-                            <div className="row mt-3">
-                              <div className="col-md-6">
-                                <select
-                                  id="inputState"
-                                  className="form-control dropdown-setting1"
-                                  onChange={this.handleWeekForWeek}
-                                  value={this.state.selectedNoOfWeekForWeek}
-                                >
-                                  <option value="0">Select</option>
-                                  <option value="2">Second</option>
-                                  <option value="4">Four</option>
-                                </select>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.days}
-                                    getOptionValue={
-                                      (option) => option.days //id
-                                    }
-                                    options={this.state.NameOfDayForWeek}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfDayForWeek.bind(
-                                      this
-                                    )}
-                                    value={this.state.selectedNameOfDayForWeek}
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "234" ||
-                        this.state.selectScheduleDate === 234 ? (
-                          <div className="ScheduleDate-to">
-                            <div className="row m-0">
-                              <label
-                                className="every1"
-                                style={{
-                                  lineHeight: "40px",
-                                }}
-                              >
-                                on
-                              </label>
-                              <div className="col-md-7">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.month}
-                                    getOptionValue={
-                                      (option) => option.month //id
-                                    }
-                                    options={this.state.NameOfMonthForYear}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfMonthForYear.bind(
-                                      this
-                                    )}
-                                    value={
-                                      this.state.selectedNameOfMonthForYear
-                                    }
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                value={this.state.selectedNoOfDayForDailyYear}
-                                onChange={this.handleDayForYear}
-                              />
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "235" ||
-                        this.state.selectScheduleDate === 235 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <div className="row m-0">
-                                <label
-                                  className="every1"
-                                  style={{
-                                    lineHeight: "40px",
-                                  }}
-                                >
-                                  on the
-                                </label>
-                                <div className="col-md-7">
-                                  <select
-                                    id="inputState"
-                                    className="form-control dropdown-setting1"
-                                    onChange={this.handleWeekForYear}
-                                    value={this.state.selectedNoOfWeekForYear}
-                                  >
-                                    <option value="0">Select</option>
-                                    <option value="2">Second</option>
-                                    <option value="4">Four</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </span>
-                            <div className="row mt-3">
-                              <div className="col-md-5">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.days}
-                                    getOptionValue={
-                                      (option) => option.days //id
-                                    }
-                                    options={this.state.NameOfDayForYear}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfDayForYear.bind(
-                                      this
-                                    )}
-                                    value={this.state.selectedNameOfDayForYear}
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                              <label
-                                className="every1"
-                                style={{
-                                  lineHeight: "40px",
-                                  marginLeft: "14px",
-                                }}
-                              >
-                                to
-                              </label>
-                              <div className="col-md-5">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.month}
-                                    getOptionValue={
-                                      (option) => option.month //id
-                                    }
-                                    options={this.state.NameOfMonthForDailyYear}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfMonthForDailyYear.bind(
-                                      this
-                                    )}
-                                    value={
-                                      this.state.selectedNameOfMonthForDailyYear
-                                    }
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
+                          on the
+                        </label>
+                        <div className="col-md-7">
+                          <select
+                            id="inputState"
+                            className="form-control dropdown-setting1"
+                            onChange={this.handleWeekForYear}
+                            value={this.state.selectedNoOfWeekForYear}
+                          >
+                            <option value="0">Select</option>
+                            <option value="2">Second</option>
+                            <option value="4">Four</option>
+                          </select>
+                        </div>
+                      </div>
+                    </span>
+                    <div className="row mt-3">
+                      <div className="col-md-5">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.days}
+                            getOptionValue={
+                              (option) => option.days //id
+                            }
+                            options={this.state.NameOfDayForYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfDayForYear.bind(this)}
+                            value={this.state.selectedNameOfDayForYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                      <label
+                        className="every1"
+                        style={{
+                          lineHeight: "40px",
+                          marginLeft: "14px",
+                        }}
+                      >
+                        to
+                      </label>
+                      <div className="col-md-5">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.month}
+                            getOptionValue={
+                              (option) => option.month //id
+                            }
+                            options={this.state.NameOfMonthForDailyYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfMonthForDailyYear.bind(
+                              this
+                            )}
+                            value={this.state.selectedNameOfMonthForDailyYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
 
-                        {/* <input
+                {/* <input
                                       type="text"
                                       className="txt-1 txt1Place txt1Time"
                                       placeholder="11AM"
                                       onChange={this.handleScheduleTime}
                                     /> */}
-                        <div className="dash-timepicker">
-                          <DatePicker
-                            selected={this.state.selectedScheduleTime}
-                            onChange={this.handleScheduleTime.bind(this)}
-                            placeholderText="11 AM"
-                            showTimeSelect
-                            showTimeSelectOnly
-                            timeIntervals={60}
-                            timeCaption="Select Time"
-                            dateFormat="h:mm aa"
-                            className="txt-1 txt1Place txt1Time"
-                            value={this.state.selectedScheduleTime}
-                          />
-                        </div>
+                <div className="dash-timepicker">
+                  <DatePicker
+                    selected={this.state.selectedScheduleTime}
+                    onChange={this.handleScheduleTime.bind(this)}
+                    placeholderText="11 AM"
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={60}
+                    timeCaption="Select Time"
+                    dateFormat="h:mm aa"
+                    className="txt-1 txt1Place txt1Time"
+                    value={this.state.selectedScheduleTime}
+                  />
+                </div>
 
-                        <div>
-                          <button
-                            className="scheduleBtn"
-                            onClick={this.handleInsertReport.bind(this)}
-                          >
-                            <label className="addLable">SCHEDULE</label>
-                          </button>
-                        </div>
-                        <div onClick={this.ScheduleCloseModel}>
-                          <button type="button" className="scheduleBtncancel">
-                            CANCEL
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </Modal>
+                <div>
+                  <button
+                    className="scheduleBtn"
+                    onClick={this.handleInsertReport.bind(this)}
+                  >
+                    <label className="addLable">SCHEDULE</label>
+                  </button>
+                </div>
+                <div onClick={this.ScheduleCloseModel}>
+                  <button type="button" className="scheduleBtncancel">
+                    CANCEL
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal>
 
           {/* </div> */}
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr reactreport">
+          <div className="store-settings-cntr reactreport setting-table-des">
             <div style={{ backgroundColor: "#fff" }}>
               <ReactTable
                 data={datareport}

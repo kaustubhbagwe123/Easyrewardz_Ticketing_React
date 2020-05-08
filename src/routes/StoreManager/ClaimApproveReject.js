@@ -383,8 +383,10 @@ class ClaimApproveReject extends Component {
           if (status === "Success") {
             if (IsApprove == true) {
               NotificationManager.success("Record approved successfully");
+              self.props.history.push("/store/claim");
             } else {
               NotificationManager.success("Record rejected successfully");
+              self.props.history.push("/store/claim");
             }
           } else {
             NotificationManager.error(res.data.message);

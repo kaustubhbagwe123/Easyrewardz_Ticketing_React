@@ -384,8 +384,10 @@ class StoreFileUploadLogs extends Component {
 
     if (this.state.sortColumn === "fileUploadStatus") {
       itemsArray.sort(function(a, b) {
-        if (a.fileUploadStatus.toLowerCase() < b.fileUploadStatus.toLowerCase()) return -1;
-        if (a.fileUploadStatus.toLowerCase() > b.fileUploadStatus.toLowerCase()) return 1;
+        if (a.fileUploadStatus.toLowerCase() < b.fileUploadStatus.toLowerCase())
+          return -1;
+        if (a.fileUploadStatus.toLowerCase() > b.fileUploadStatus.toLowerCase())
+          return 1;
         return 0;
       });
     }
@@ -425,8 +427,10 @@ class StoreFileUploadLogs extends Component {
 
     if (this.state.sortColumn === "fileUploadStatus") {
       itemsArray.sort(function(a, b) {
-        if (a.fileUploadStatus.toLowerCase() < b.fileUploadStatus.toLowerCase()) return 1;
-        if (a.fileUploadStatus.toLowerCase() > b.fileUploadStatus.toLowerCase()) return -1;
+        if (a.fileUploadStatus.toLowerCase() < b.fileUploadStatus.toLowerCase())
+          return 1;
+        if (a.fileUploadStatus.toLowerCase() > b.fileUploadStatus.toLowerCase())
+          return -1;
         return 0;
       });
     }
@@ -795,7 +799,6 @@ class StoreFileUploadLogs extends Component {
 
     return (
       <div className="mainDivPadding">
-        
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
             Settings
@@ -996,7 +999,7 @@ class StoreFileUploadLogs extends Component {
             </div>
           </Modal>
         </div>
-        <div className="fileUploadTable TicketFileUploadReact settingtable">
+        <div className="fileUploadTable TicketFileUploadReact settingtable setting-table-des">
           <ReactTable
             minRows={2}
             data={this.state.fileUploadLog}
