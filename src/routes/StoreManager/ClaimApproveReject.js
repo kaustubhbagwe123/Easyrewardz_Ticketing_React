@@ -48,6 +48,7 @@ class ClaimApproveReject extends Component {
       ticketID: 0,
       ticketingTaskID: 0,
       assignToName: "",
+      targetClouserDate: "",
       userModel: false,
       userData: [],
       assigneeID: 0,
@@ -229,6 +230,7 @@ class ClaimApproveReject extends Component {
           var ticketingTaskID = responseData.ticketingTaskID;
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
+          var targetClouserDate = responseData.targetClouserDate;
           var assigneeID = responseData.assigneeID;
           var oldAssignID = responseData.assigneeID;
           var status = responseData.status;
@@ -244,6 +246,7 @@ class ClaimApproveReject extends Component {
             status,
             assigneeID,
             assignToName,
+            targetClouserDate,
             ticketingTaskID,
             ticketID,
             imageURL,
@@ -300,7 +303,8 @@ class ClaimApproveReject extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Record saved successfully");
+            if (!isRejectComment)
+              NotificationManager.success("Record saved successfully");
             self.setState({
               claimComments: "",
               rejectComment: "",
@@ -320,6 +324,7 @@ class ClaimApproveReject extends Component {
   }
 
   handleOnChange(e) {
+    debugger;
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
   ////handle get store claim comment by id
@@ -725,17 +730,26 @@ class ClaimApproveReject extends Component {
             ) : null}
           </div>
           <div className="col-md-5">
-            <a
-              style={{ marginTop: "10px" }}
-              className="d-inline-block"
-              onClick={this.handleGetUserDropdown.bind(this)}
-            >
-              <div className="oval-5-1-new-store">
-                <img src={storeImg} alt="headphone" className="storeImg-11" />
-              </div>
-              <label className="naman-r">{this.state.assignToName}</label>
-              <img src={DownImg} alt="down" className="down-header" />
-            </a>
+            <div className="d-inline-block">
+              <a
+                style={{
+                  marginTop: this.state.targetClouserDate ? "5px" : "11px",
+                }}
+                className="d-inline-block"
+                onClick={this.handleGetUserDropdown.bind(this)}
+              >
+                <div className="oval-5-1-new-store">
+                  <img src={storeImg} alt="headphone" className="storeImg-11" />
+                </div>
+                <label className="naman-r">{this.state.assignToName}</label>
+                <img src={DownImg} alt="down" className="down-header" />
+              </a>
+              {this.state.targetClouserDate && (
+                <p className="closure-date">
+                  Closure Date: {this.state.targetClouserDate}
+                </p>
+              )}
+            </div>
 
             <div className="btn-approrej">
               <button
@@ -761,7 +775,7 @@ class ClaimApproveReject extends Component {
             <div className="col-md-9" style={{ padding: "0" }}>
               <div className="card card-radius" style={{ margin: "0 0 20px" }}>
                 <div
-                  className="search-customer-padding"
+                  className="search-customer-padding cusrow"
                   style={{ padding: "30px 45px 30px" }}
                 >
                   <div
@@ -1059,18 +1073,22 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6">Attached Image</label>
+                      <label className="label-6" style={{ display: "block" }}>
+                        Attached Image
+                      </label>
+                      {this.state.imageURL !== "" ? (
+                        <img
+                          src={this.state.imageURL}
+                          alt="Bata"
+                          className="claim-bataShoes"
+                        />
+                      ) : null}
                     </div>
                   </div>
-                  {this.state.imageUR !== "" ? (
-                    <img
-                      src={this.state.imageURL}
-                      alt="Bata"
-                      className="claim-bataShoes"
-                    />
-                  ) : null}
                   <div className="row" style={{ margin: "0" }}>
-                    <label className="label-6">Comments By Store</label>
+                    <div className="col-md-4">
+                      <label className="label-6">Comments By Store</label>
+                    </div>
                   </div>
                   {this.state.storeCommetData !== null &&
                     this.state.storeCommetData.map((item, i) => {
@@ -1153,9 +1171,7 @@ class ClaimApproveReject extends Component {
                         value={this.state.claimComments}
                         onChange={this.handleOnChange}
                       ></textarea>
-                     
                     </div>
-                    
                   </div>
                   <div className="commentbt">
                     <button
