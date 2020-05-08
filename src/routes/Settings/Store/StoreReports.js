@@ -2657,6 +2657,9 @@ class StoreReports extends Component {
                         value={this.state.taskCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
@@ -2769,6 +2772,9 @@ class StoreReports extends Component {
                         value={this.state.taskAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
@@ -3143,6 +3149,9 @@ class StoreReports extends Component {
                         value={this.state.claimCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
@@ -3261,6 +3270,9 @@ class StoreReports extends Component {
                         value={this.state.claimAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
@@ -3426,6 +3438,9 @@ class StoreReports extends Component {
                         value={this.state.campaignAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
