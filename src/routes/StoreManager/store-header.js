@@ -899,6 +899,7 @@ class Header extends Component {
   handleSendMessageToCustomer(Message, index) {
     let self = this;
     var inputParam = {};
+    if(Message.trim()!==""){
     if (index > 0) {
       if (this.state.chkSuggestion.length > 0) {
         if (this.state.chkSuggestion[index] === 1) {
@@ -917,7 +918,7 @@ class Header extends Component {
     inputParam.MobileNo = this.state.mobileNo;
     inputParam.ProgramCode = this.state.programCode;
     inputParam.Message = Message;
-    inputParam.InsertChat = index == 0 ? 0 : 1;
+    inputParam.InsertChat = 1;
     if (this.state.chatId > 0) {
       axios({
         method: "post",
@@ -936,6 +937,7 @@ class Header extends Component {
           console.log(response, "---handleSendMessageToCustomer");
         });
     }
+  }
   }
 
   ////handlecselect card in card tab
@@ -2269,6 +2271,17 @@ class Header extends Component {
                               {/* <img src={Assign} alt="send img" /> */}
                               <img src={SuggSearch} alt="send img" />
                             </div>
+                            <div
+                              className="mobile-ck-send-btn"
+                              onClick={this.handleSendMessageToCustomer.bind(
+                                this,
+                                this.state.message,
+                                0
+                              )}
+                              title={"Send"}
+                            >
+                              <img src={Assign} alt="send img" />
+                            </div>
                           </div>
                         </div>
                         {/* --------Card Tab----- */}
@@ -2923,6 +2936,17 @@ class Header extends Component {
                             >
                               {/* <img src={Assign} alt="send img" /> */}
                               <img src={SuggSearch} alt="send img" />
+                            </div>
+                            <div
+                              className="mobile-ck-send-btn"
+                              onClick={this.handleSendMessageToCustomer.bind(
+                                this,
+                                this.state.message,
+                                0
+                              )}
+                              title={"Send"}
+                            >
+                              <img src={Assign} alt="send img" />
                             </div>
                           </div>
                         </div>

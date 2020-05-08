@@ -296,13 +296,28 @@ p {
   height: 30px;
   line-height: 25px;
   right: 15px;
-  top: 35px;
+  top: 15px;
   /* bottom: 55px; */
   cursor: pointer;
   border: 0.5px solid #215faa;
   border-radius: 50%;
   text-align: center;
 }
+
+.mobile-ck-send-btn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  right: 15px;
+  top: 56px;
+  /* bottom: 55px; */
+  cursor: pointer;
+  border: 0.5px solid #215faa;
+  border-radius: 50%;
+  text-align: center;
+}
+
 .mobile-ck-send img {
   width: 13px;
 }
