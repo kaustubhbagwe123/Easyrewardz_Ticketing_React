@@ -64,7 +64,6 @@ class ClaimApproveReject extends Component {
       storeCommetData: [],
       approveCommentData: [],
       rejectCommentData: [],
-      commentValidation: "",
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -316,9 +315,7 @@ class ClaimApproveReject extends Component {
           console.log(data);
         });
     } else {
-      self.setState({
-        commentValidation: "Please Enter Comment.",
-      });
+      NotificationManager.error("Please Enter Comment.");
     }
   }
 
@@ -1156,12 +1153,9 @@ class ClaimApproveReject extends Component {
                         value={this.state.claimComments}
                         onChange={this.handleOnChange}
                       ></textarea>
-                      {this.state.claimComments !== "" && (
-                        <p style={{ color: "red", marginTop: "0px" }}>
-                          {this.state.commentValidation}
-                        </p>
-                      )}
+                     
                     </div>
+                    
                   </div>
                   <div className="commentbt">
                     <button
