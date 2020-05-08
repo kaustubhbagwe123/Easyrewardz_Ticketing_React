@@ -85,6 +85,7 @@ class StoreCampaign extends Component {
       smsScript: "",
       campaingPeriod: "",
       filterCustNO: "",
+      showRecommandedtab: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -110,7 +111,6 @@ class StoreCampaign extends Component {
   }
 
   onDateChange(campaignCustomerID, e) {
-    debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].callRescheduledTo = e;
@@ -169,10 +169,7 @@ class StoreCampaign extends Component {
         });
 
         calculatedCallReScheduledTo = callRescheduledTo;
-        // calculatedCallReScheduledTo = moment(callRescheduledTo).format(
-        //   "YYYY-MM-DD HH:mm:ss"
-        // );
-
+       
         axios({
           method: "post",
           url: config.apiUrl + "/StoreCampaign/UpdateCampaignStatusResponse",
@@ -846,13 +843,19 @@ class StoreCampaign extends Component {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
+              custNameModal:false
             });
+            self.handleGetCampaignCustomerData(false, "", self.state.campaignID);
           } else {
             NotificationManager.error("Server temporarily not available.");
           }
         } else {
           if (message === "Success") {
-            NotificationManager.success("Success.");
+            NotificationManager.success("Send Successfully.");
+            self.setState({
+              custNameModal:false
+            });
+            self.handleGetCampaignCustomerData(false, "", self.state.campaignID);
           } else {
             NotificationManager.error("Failed");
           }
@@ -885,12 +888,16 @@ class StoreCampaign extends Component {
           if (message === "Success") {
             self.setState({
               ResponsiveShareNow: true,
+              custNameModal:false
             });
           } else {
             NotificationManager.error("Server temporarily not available.");
           }
         } else {
           if (message === "Success") {
+            self.setState({
+              custNameModal:false
+            });
             NotificationManager.success("SMS Send Successfully.");
           } else {
             NotificationManager.error("SMS Send Failed.");
@@ -975,6 +982,15 @@ class StoreCampaign extends Component {
           } else {
             self.setState({
               lastTransactionItem: [],
+            });
+          }
+          if (data.campaignrecommended[0].itemCode !== "") {
+            self.setState({
+              showRecommandedtab: true,
+            });
+          } else {
+            self.setState({
+              showRecommandedtab: false,
             });
           }
           self.setState({
@@ -1261,27 +1277,16 @@ class StoreCampaign extends Component {
                 className: "table-coloum-hide",
               },
               {
-                title: () => {
-                  return (
-                    <div>
-                      Status{" "}
-                      <img
-                        src={Dropdown3}
-                        className="table-drpdwn"
-                        alt="dropdown img"
-                      />
-                    </div>
-                  );
-                },
+                title: "Status",
                 dataIndex: "status",
                 className: "particular-hide",
-                render: (row, item) => {
-                  return (
-                    <button className="closebtn" type="button">
-                      <label className="hdrcloselabel">{item.status}</label>
-                    </button>
-                  );
-                },
+                // render: (row, item) => {
+                //   return (
+                //     <button className="closebtn" type="button">
+                //       <label className="hdrcloselabel">{item.status}</label>
+                //     </button>
+                //   );
+                // },
               },
               {
                 title: "Actions",
@@ -2017,8 +2022,63 @@ class StoreCampaign extends Component {
             </div>
             <div className="col-12 col-md-6">
               <div className="productbox">
-                <Tabs>
-                  <Tab label="Recommended">
+                <div>
+                  <ul
+                    className="nav alert-nav-tabs3 store-nav-tabs"
+                    role="tablist"
+                  >
+                    {this.state.showRecommandedtab ? (
+                      <li className="nav-item fo">
+                        <a
+                          className={
+                            this.state.showRecommandedtab
+                              ? "nav-link active"
+                              : "nav-link"
+                          }
+                          // className="nav-link active"
+                          data-toggle="tab"
+                          href="#recommended-tab"
+                          role="tab"
+                          aria-controls="recommended-tab"
+                          aria-selected="true"
+                        >
+                          Recommended
+                        </a>
+                      </li>
+                    ) : null}
+
+                    {this.state.lastTransactionItem.length > 0 ? (
+                      <li className="nav-item fo">
+                        <a
+                          className={
+                            this.state.showRecommandedtab === false
+                              ? "nav-link active"
+                              : "nav-link"
+                          }
+                          data-toggle="tab"
+                          href="#lastTransaction-tab"
+                          role="tab"
+                          aria-controls="lastTransaction-tab"
+                          aria-selected="false"
+                        >
+                          Last Transaction
+                        </a>
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+                <div className="tab-content p-0">
+                  <div
+                    className={
+                      this.state.showRecommandedtab
+                        ? "tab-pane fade show active"
+                        : "tab-pane fade"
+                    }
+                    // className="tab-pane fade show active"
+                    id="recommended-tab"
+                    role="tabpanel"
+                    aria-labelledby="recommended-tab"
+                  >
                     <div className="prodscro">
                       <div className="pro-slidercam">
                         <table className="w-100">
@@ -2071,6 +2131,15 @@ class StoreCampaign extends Component {
                                                             "Grey" ? (
                                                               <li>
                                                                 <a className="colorgrey">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+
+                                                            {item.color ===
+                                                            "Red" ? (
+                                                              <li>
+                                                                <a className="colorRed">
                                                                   <span>1</span>
                                                                 </a>
                                                               </li>
@@ -2195,20 +2264,16 @@ class StoreCampaign extends Component {
                         </table>
                       </div>
                     </div>
-                  </Tab>
-
-                  <Tab
-                    label={
-                      this.state.lastTransactionItem.length > 0
-                        ? "Last Transaction"
-                        : ""
-                    }
-                    // label="Last Transaction"
+                  </div>
+                  <div
                     className={
-                      this.state.lastTransactionItem.length > 0
-                        ? ""
-                        : "displayNn"
+                      this.state.showRecommandedtab === false
+                        ? "tab-pane fade show active"
+                        : "tab-pane fade"
                     }
+                    id="lastTransaction-tab"
+                    role="tabpanel"
+                    aria-labelledby="lastTransaction-tab"
                   >
                     <div>
                       <div className="transactionbox">
@@ -2271,36 +2336,11 @@ class StoreCampaign extends Component {
                               resizable={false}
                             />
                           </div>
-                          {/* <div className="tabscrol">
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>Article</th>
-                                  <th>Qty.</th>
-                                  <th>Amount</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.lastTransactionItem !== null &&
-                                  this.state.lastTransactionItem.map(
-                                    (item, l) => {
-                                      return (
-                                        <tr key={l}>
-                                          <td>{item.article}</td>
-                                          <td>{item.quantity}</td>
-                                          <td>₹{item.amount}</td>
-                                        </tr>
-                                      );
-                                    }
-                                  )}
-                              </tbody>
-                            </table>
-                          </div> */}
                         </div>
                       </div>
                     </div>
-                  </Tab>
-                </Tabs>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

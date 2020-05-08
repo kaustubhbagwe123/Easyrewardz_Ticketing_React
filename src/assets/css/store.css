@@ -1795,6 +1795,13 @@ table tr th:last-child {
   margin-right: 5px;
   display: inline;
 }
+.productdesc .colorRed {
+  background-color: #ef1634;
+  padding: 2px 6px;
+  border-radius: 50px;
+  margin-right: 5px;
+  display: inline;
+}
 .productdesc .sizes a {
   color: #333;
   font-size: 13px;
