@@ -1784,18 +1784,19 @@ class SlaTemplateDepartment extends Component {
                   </div>
                 </div>
                 <br />
-                <div className="store-col-2">
+                <div className="">
                   <div className="right-sect-div">
-                    <br />
-                    <h3>Bulk Upload</h3>
-                    <div className="down-excel">
-                      <p>Template</p>
-                      <CSVLink
-                        filename={"SLA.csv"}
-                        data={config.storeSlaTemplate}
-                      >
-                        <img src={DownExcel} alt="download icon" />
-                      </CSVLink>
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <h3 className="pb-0">Bulk Upload</h3>
+                      <div className="down-excel">
+                        <p>Template</p>
+                        <CSVLink
+                          filename={"SLA.csv"}
+                          data={config.storeSlaTemplate}
+                        >
+                          <img src={DownExcel} alt="download icon" />
+                        </CSVLink>
+                      </div>
                     </div>
                     <input
                       id="file-upload"

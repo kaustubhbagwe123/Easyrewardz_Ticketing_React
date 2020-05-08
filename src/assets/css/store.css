@@ -952,9 +952,10 @@ table tr th:last-child {
   text-align: left;
 }
 .claim-bataShoes {
-  width: 350px;
-  height: 197px;
+  /* width: 350px;
+  height: 197px; */
   margin-left: 0px;
+  width: 100%;
 }
 .col-md-10-card {
   margin-left: 5px;
