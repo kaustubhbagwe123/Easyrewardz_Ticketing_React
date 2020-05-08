@@ -191,8 +191,15 @@
   border: none;
   padding-left: 10px;
 }
+.dateTimeStore-highlight {
+  box-shadow: 0 0 0 1.5px rgba(247, 0, 0, 0.6);
+}
 .responceDrop-down {
-  background-color: #ecf2f4;
+  /* background-color: #ecf2f4; */
+  background: #ecf2f4 url("./../Images//dropdown3.png") no-repeat center right
+    10px !important;
+  background-size: 12px !important;
+  padding-right: 32px !important;
   border-radius: 4px;
   width: 190px;
   height: 31px;
@@ -1466,6 +1473,10 @@ table tr th:last-child {
   letter-spacing: 1px;
   font-weight: 600;
 }
+.nr-name span {
+  font-size: 18px;
+  color: #0080ff;
+}
 .nr-name p {
   font-size: 16px;
   font-weight: 500;
@@ -1979,8 +1990,19 @@ table tr th:last-child {
 }
 .campaign-status-drpdwn {
   padding: 20px 35px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+.cust-name-drpdwn {
+  padding: 17px 25px 25px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+.cust-name-drpdwn label {
+  margin-bottom: 8px;
+}
+.cust-name-drpdwn input::placeholder {
+  font-weight: 400;
+  padding: 0;
 }
 .campaign-status-drpdwn ul {
   margin: 0;
@@ -2023,6 +2045,9 @@ table tr th:last-child {
   top: 50% !important;
   transform: translateY(-50%);
   width: 12px !important;
+}
+.camp-status-header-cust-name .ant-table-filter-icon {
+  left: 122px;
 }
 .camp-status-header .ant-table-filter-icon::before {
   content: "";
@@ -2077,7 +2102,7 @@ table tr th:last-child {
   right: 420px;
   top: 174px;
   border-radius: 10px;
-  box-shadow:0 4px 4px 0 rgba(0, 0, 0, 0.02)
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
 }
 /* ------------------Campain Media Queries ------------------------- */
 
@@ -2295,6 +2320,9 @@ table tr th:last-child {
   .nr-name h3 {
     font-size: 20px;
     letter-spacing: 0;
+  }
+  .nr-name span {
+    font-size: 14px;
   }
   .nr-name p {
     font-size: 14px;
@@ -2538,6 +2566,10 @@ table tr th:last-child {
     width: 160px;
     height: 28px;
   }
+  .responceDrop-down {
+    background-size: 10px !important;
+    padding-right: 30px !important;
+  }
   .custom-tableak .saveLabel {
     text-align: center;
     font-size: 11px;
@@ -2602,8 +2634,22 @@ table tr th:last-child {
     padding: 0;
   }
 
-  .campaign-status-drpdwn {
+  .campaign-status-drpdwn,
+  .cust-name-drpdwn {
     padding: 15px 20px;
+    font-size: 12px;
+  }
+  .cust-name-drpdwn {
+    padding-bottom: 20px;
+    max-width: 200px;
+  }
+  .cust-name-drpdwn label {
+    margin-bottom: 5px;
+  }
+  .cust-name-drpdwn input {
+    height: 35px;
+  }
+  .cust-name-drpdwn input::placeholder {
     font-size: 12px;
   }
   .campaign-status-drpdwn label::before {
@@ -2619,8 +2665,14 @@ table tr th:last-child {
     left: 45px;
     top: 48% !important;
   }
+  .camp-status-header-cust-name .ant-table-filter-icon {
+    left: 95px;
+  }
   .campaign-status-drpdwn input:checked + label::after {
     left: 1.5px;
+  }
+  .table-drpdwn {
+    width: 10px;
   }
 }
 /* ------------------Campain Css End ------------------------- */

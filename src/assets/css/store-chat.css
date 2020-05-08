@@ -215,6 +215,7 @@ p {
   font-weight: 700;
   font-size: 11px;
   color: rgba(0, 0, 0, 0.6);
+  display: block;
 }
 .chat-face-cntr {
   width: 50px;
@@ -895,6 +896,10 @@ p {
 }
 .pd-0 .card-body {
   padding: 0;
+}
+.isSendClick-dsle {
+  pointer-events: none;
+  cursor: no-drop;
 }
 
 /* Responsive starts */

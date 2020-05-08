@@ -98,14 +98,19 @@ class StoreCampaign extends Component {
   }
 
   onResponseChange(campaignCustomerID, item, e) {
+    debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].responseID = parseInt(e.target.value);
+    this.state.CampChildTableData.filter(
+      (x) => x.id === campaignCustomerID
+    )[0].dateTimeHighlight = true;
 
     this.setState({ CampChildTableData: this.state.CampChildTableData });
   }
 
   onDateChange(campaignCustomerID, e) {
+    debugger;
     this.state.CampChildTableData.filter(
       (x) => x.id === campaignCustomerID
     )[0].callRescheduledTo = e;
@@ -691,7 +696,6 @@ class StoreCampaign extends Component {
     });
   }
 
-
   handleShareNowOpenModal() {
     //
     if (this.state.Respo_ChannelMessanger === true) {
@@ -799,6 +803,8 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
+          for (let obj of data.campaignCustomerModel)
+            obj.dateTimeHighlight = false;
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             ChildTblLoading: false,
@@ -1059,17 +1065,16 @@ class StoreCampaign extends Component {
       filterCustomerNumber: false,
     });
   }
-  handleCustomerFilerOnchange(campaignID,customerCount,e) {
-    debugger
+  handleCustomerFilerOnchange(campaignID, customerCount, e) {
+    debugger;
     this.setState({
       filterCustNO: e.target.value,
     });
-    if(this.state.filterCustNO.length > 3){
+    if (this.state.filterCustNO.length > 3) {
       setTimeout(() => {
         this.handleGetCampaignCustomer(campaignID, customerCount);
       }, 50);
     }
-
   }
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
     debugger;
@@ -1104,14 +1109,14 @@ class StoreCampaign extends Component {
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
-            filterCustomerNumber:false,
-            filterCustNO:""
+            filterCustomerNumber: false,
+            // filterCustNO: "",
           });
         } else {
           self.setState({
             CampChildTableData: [],
             childTotalGridRecord: 0,
-            filterCustomerNumber:false
+            filterCustomerNumber: false,
           });
         }
       })
@@ -1159,8 +1164,20 @@ class StoreCampaign extends Component {
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: "Campaign Name",
+                title: () => {
+                  return (
+                    <div>
+                      Campaign Name{" "}
+                      <img
+                        src={Dropdown3}
+                        className="table-drpdwn"
+                        alt="dropdown img"
+                      />
+                    </div>
+                  );
+                },
                 dataIndex: "campaignName",
+                className: "abc",
                 render: (row, item) => {
                   return (
                     <div>
@@ -1244,7 +1261,18 @@ class StoreCampaign extends Component {
                 className: "table-coloum-hide",
               },
               {
-                title: "Status",
+                title: () => {
+                  return (
+                    <div>
+                      Status{" "}
+                      <img
+                        src={Dropdown3}
+                        className="table-drpdwn"
+                        alt="dropdown img"
+                      />
+                    </div>
+                  );
+                },
                 dataIndex: "status",
                 className: "particular-hide",
                 render: (row, item) => {
@@ -1317,42 +1345,25 @@ class StoreCampaign extends Component {
                     columns={[
                       {
                         title: "Customer Name",
+                        className:
+                          "camp-status-header camp-status-header-cust-name",
                         dataIndex: "id",
                         filterDropdown: (dataIndex) => (
-                          <Modal
-                            open={this.state.filterCustomerNumber}
-                            onClose={this.handleCloseCustomerFilter.bind(this)}
-                            center
-                            modalId="custMobileFilter"
-                            overlayId="logout-ovrly"
-                          >
-                            <div className="row">
-                              <label>Customer Number</label>
-                              <input
-                                type="text"
-                                className="txt-1"
-                                autoComplete="off"
-                                placeholder="Enter Mobile No"
-                                value={this.state.filterCustNO}
-                                onChange={this.handleCustomerFilerOnchange.bind(this,
-                                  row.campaignID,
-                                  row.customerCount
-                                )}
-                              />
-                            </div>
-                            {/* <div className="row">
-                              <button
-                                type="button"
-                                className="butn"
-                                onClick={this.handleGetCampaignCustomer(
-                                  row.campaignID,
-                                  row.customerCount
-                                )}
-                              >
-                                Submit
-                              </button>
-                            </div> */}
-                          </Modal>
+                          <div className="cust-name-drpdwn">
+                            <label>Customer Number</label>
+                            <input
+                              type="text"
+                              className="txt-1"
+                              autoComplete="off"
+                              placeholder="Enter Mobile No"
+                              value={this.state.filterCustNO}
+                              onChange={this.handleCustomerFilerOnchange.bind(
+                                this,
+                                row.campaignID,
+                                row.customerCount
+                              )}
+                            />
+                          </div>
                         ),
                         filterDropdownVisible: this.state.filterCustomerNumber,
                         onFilterDropdownVisibleChange: (visible) =>
@@ -1444,7 +1455,7 @@ class StoreCampaign extends Component {
                           );
                         },
                         filterDropdown: (dataIndex) => (
-                          <div className="sharecamp">
+                          <div className="campaign-status-drpdwn">
                             <ul>
                               <li>
                                 <input
@@ -1579,6 +1590,12 @@ class StoreCampaign extends Component {
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
+                                  // minTime={new Date(
+                                  //   item.callRescheduledTo
+                                  // ).setTime(
+                                  //   new Date(item.callRescheduledTo).getTime()
+                                  // )}
+                                  // maxTime={new Date().setHours(23)}
                                   minDate={new Date()}
                                   showMonthDropdown
                                   showYearDropdown
@@ -1597,8 +1614,17 @@ class StoreCampaign extends Component {
                                     this,
                                     item.id
                                   )}
+                                  // className={
+                                  //   item.responseID === 3
+                                  //     ? "txtStore dateTimeStore"
+                                  //     : "txtStore dateTimeStore disabled-link"
+                                  // }
                                   className={
-                                    item.responseID === 3
+                                    item.responseID === 3 &&
+                                    item.dateTimeHighlight &&
+                                    !item.callRescheduledTo
+                                      ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                      : item.responseID === 3
                                       ? "txtStore dateTimeStore"
                                       : "txtStore dateTimeStore disabled-link"
                                   }
@@ -1742,6 +1768,11 @@ class StoreCampaign extends Component {
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
+                                        // minTime={new Date().setTime(
+                                        //   new Date().getTime()
+                                        // )}
+                                        // maxTime={new Date().setHours(23)}
+                                        minDate={new Date()}
                                         showMonthDropdown
                                         showYearDropdown
                                         selected={
@@ -1760,7 +1791,11 @@ class StoreCampaign extends Component {
                                           row.id
                                         )}
                                         className={
-                                          row.responseID === 3
+                                          row.responseID === 3 &&
+                                          row.dateTimeHighlight &&
+                                          !row.callRescheduledTo
+                                            ? "txtStore dateTimeStore dateTimeStore-highlight"
+                                            : row.responseID === 3
                                             ? "txtStore dateTimeStore"
                                             : "txtStore dateTimeStore disabled-link"
                                         }
@@ -1909,7 +1944,10 @@ class StoreCampaign extends Component {
                 <p>{this.state.sortCustName}</p>
               </div>
               <div className="nr-name">
-                <h3>{this.state.customerModalDetails.customerName}</h3>
+                <h3>
+                  {this.state.customerModalDetails.customerName}{" "}
+                  <span>{this.state.customerModalDetails.customerNumber}</span>
+                </h3>
                 <p>{this.state.useratvdetails.tiername}</p>
               </div>
             </div>
