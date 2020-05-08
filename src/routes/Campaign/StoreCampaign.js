@@ -939,6 +939,9 @@ class StoreCampaign extends Component {
         var data = response.data.responseData;
 
         if (message === "Success") {
+          self.setState({
+            custNameModal: false,
+          });
           if (self.state.Respo_ChannelMessanger === false) {
             NotificationManager.success("Send Successfully.");
           }
@@ -946,6 +949,7 @@ class StoreCampaign extends Component {
           if (self.state.Respo_ChannelMessanger === true) {
             self.setState({
               ResponsiveShareNow: true,
+              custNameModal: false,
             });
           }
         } else {
