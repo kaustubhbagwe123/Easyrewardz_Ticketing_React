@@ -279,7 +279,7 @@ class ClaimApproveReject extends Component {
   handleAddStoreClaimCommentsApproveReject(isRejectComment) {
     debugger;
     let self = this;
-    if (this.state.claimComments !== "") {
+    if (this.state.claimComments !== "" || this.state.rejectComment !== "") {
       var comment = "";
       if (this.state.claimComments !== "") {
         comment = this.state.claimComments;
