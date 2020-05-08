@@ -1906,15 +1906,30 @@ table tr th:last-child {
   padding: 43px 20px;
   text-align: center;
 }
+.productbox .nav {
+  margin-bottom: 25px;
+}
+.productbox .store-nav-tabs .nav-link {
+  color: #82909d !important;
+  font-size: 14px;
+  font-weight: 400;
+  display: inline-block;
+}
+.productbox .store-nav-tabs .nav-link.active {
+  font-weight: 700;
+  color: #82909d !important;
+  border-bottom: 2px solid #82909d;
+}
 .tab-single .nav-item {
   width: 100%;
-}
-.tab-single .nav-link.active {
-  display: block !important;
   text-align: center;
 }
-.tab-single .nav-link:focus,
-.tab-single .nav-link:hover:focus {
+/* .tab-single .nav-link.active {
+  display: block !important;
+  text-align: center;
+} */
+.productbox .nav-link:focus,
+.productbox .nav-link:hover:focus {
   outline: 0;
 }
 #sharecamp-popupmob {
@@ -2684,6 +2699,12 @@ table tr th:last-child {
   }
   .table-drpdwn {
     width: 10px;
+  }
+  .productbox .store-nav-tabs .nav-link {
+    margin-left: 0;
+  }
+  .productbox .nav {
+    margin-bottom: 20px;
   }
 }
 /* ------------------Campain Css End ------------------------- */
