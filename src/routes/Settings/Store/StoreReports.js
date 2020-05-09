@@ -49,11 +49,11 @@ class StoreReports extends Component {
       claimWithTickets: "no",
       taskWithClaim: "no",
       claimWithTask: "no",
-      taskCreatedBy: "1",
-      campaignAssignedTo: "1",
-      claimCreatedBy: "1",
-      taskAssignedTo: "1",
-      claimAssignedTo: "1",
+      taskCreatedBy: "0",
+      campaignAssignedTo: "0",
+      claimCreatedBy: "0",
+      taskAssignedTo: "0",
+      claimAssignedTo: "0",
       departmentShow: false,
       functionShow: false,
       priorityShow: false,
@@ -257,7 +257,7 @@ class StoreReports extends Component {
     if (this.state.departmentName !== null) {
       this.state.departmentName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiDepartment += item.campaignNameID + ",";
+        indiDepartment += item.departmentID + ",";
       }
     }
     await this.setState({
@@ -339,7 +339,7 @@ class StoreReports extends Component {
     if (this.state.claimIssueTypeName !== null) {
       this.state.claimIssueTypeName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimIssueType += item.campaignNameID + ",";
+        indiClaimIssueType += item.issueTypeID + ",";
       }
     }
     await this.setState({
@@ -420,7 +420,7 @@ class StoreReports extends Component {
     if (this.state.claimSubCategoryName !== null) {
       this.state.claimSubCategoryName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimSubCategory += item.campaignNameID + ",";
+        indiClaimSubCategory += item.subCategoryID + ",";
       }
     }
     await this.setState({
@@ -505,7 +505,7 @@ class StoreReports extends Component {
     if (this.state.claimCategoryName !== null) {
       this.state.claimCategoryName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimCategory += item.campaignNameID + ",";
+        indiClaimCategory += item.categoryID + ",";
       }
     }
     await this.setState({
@@ -587,7 +587,7 @@ class StoreReports extends Component {
     if (this.state.claimStatusName !== null) {
       this.state.claimStatusName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimStatus += item.campaignNameID + ",";
+        indiClaimStatus += item.claimStatusID + ",";
       }
     }
     await this.setState({
@@ -666,7 +666,7 @@ class StoreReports extends Component {
     if (this.state.priorityName !== null) {
       this.state.priorityName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiPriority += item.campaignNameID + ",";
+        indiPriority += item.priorityID + ",";
       }
     }
     await this.setState({
@@ -824,7 +824,7 @@ class StoreReports extends Component {
     if (this.state.functionName !== null) {
       this.state.functionName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiFunction += item.campaignNameID + ",";
+        indiFunction += item.functionID + ",";
       }
     }
     await this.setState({
@@ -1756,106 +1756,113 @@ class StoreReports extends Component {
     }
     setTimeout(() => {
       debugger;
-      if (this.state.Schedule_ID > 0) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreReport/SaveStoreReport",
-          headers: authHeader(),
-          data: {
-            ReportID: this.state.reportID,
-            ReportName: self.state.selectedReportName,
-            ScheduleID: this.state.Schedule_ID,
-            StoreReportSearchParams: SearchParams,
-          },
-        })
-          .then(function(res) {
-            // this.handleReportList();
+      // if (this.state.Schedule_ID > 0) {
+      debugger;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreReport/SaveStoreReport",
+        headers: authHeader(),
+        data: {
+          ReportID: this.state.reportID,
+          ReportName: self.state.selectedReportName,
+          ScheduleID: this.state.Schedule_ID,
+          StoreReportSearchParams: SearchParams,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          // this.handleReportList();
+          if (res.data.message === "Success") {
+            self.setState({ AddReportPopup: false });
             self.setState({ Schedule_ID: 0 });
             self.handleGetStoreReports();
             self.handleNextPopupClose();
             NotificationManager.success(
               "Report saved successfully for download."
             );
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-      } else {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
-          headers: authHeader(),
-          data: {
-            PrimaryScheduleID: this.state.Schedule_ID,
-            ReportName: this.state.selectedReportName,
-            SearchInputParams: SearchParams,
-            ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
-            ScheduleType: this.state.selectScheduleDate,
-            NoOfDay: this.state.selectedNoOfDay,
-            ScheduleTime: this.state.selectedScheduleTime,
-            IsDaily: this.state.IsDaily,
-            IsWeekly: this.state.IsWeekly,
-            NoOfWeek: this.state.selectedNoOfWeek,
-            DayIds: this.state.selectedWeeklyDays,
-            IsDailyForMonth: this.state.IsDailyForMonth,
-            NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
-            NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
-            IsWeeklyForMonth: this.state.IsWeeklyForMonth,
-            NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
-            NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-            ScheduleFrom: 4,
-            NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
-            IsDailyForYear: this.state.IsDailyForYear,
-            NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-            NameOfMonthForDailyYear: this.state
-              .selectedNameOfMonthForYearCommaSeperated,
-            IsWeeklyForYear: this.state.IsWeeklyForYear,
-            NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
-            NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-            NameOfMonthForYear: this.state
-              .selectedNameOfMonthForDailyYearCommaSeperated,
-          },
+          } else {
+            NotificationManager.error("Report not saved.");
+          }
         })
-          .then(function(res) {
-            debugger;
+        .catch((data) => {
+          console.log(data);
+        });
+      // } else {
+      //   axios({
+      //     method: "post",
+      //     url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
+      //     headers: authHeader(),
+      //     data: {
+      //       PrimaryScheduleID: this.state.Schedule_ID,
+      //       ReportName: this.state.selectedReportName,
+      //       SearchInputParams: SearchParams,
+      //       ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+      //       ScheduleType: this.state.selectScheduleDate,
+      //       NoOfDay: this.state.selectedNoOfDay,
+      //       ScheduleTime: this.state.selectedScheduleTime,
+      //       IsDaily: this.state.IsDaily,
+      //       IsWeekly: this.state.IsWeekly,
+      //       NoOfWeek: this.state.selectedNoOfWeek,
+      //       DayIds: this.state.selectedWeeklyDays,
+      //       IsDailyForMonth: this.state.IsDailyForMonth,
+      //       NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+      //       NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+      //       IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+      //       NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+      //       NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+      //       ScheduleFrom: 4,
+      //       NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+      //       IsDailyForYear: this.state.IsDailyForYear,
+      //       NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+      //       NameOfMonthForDailyYear: this.state
+      //         .selectedNameOfMonthForYearCommaSeperated,
+      //       IsWeeklyForYear: this.state.IsWeeklyForYear,
+      //       NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+      //       NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+      //       NameOfMonthForYear: this.state
+      //         .selectedNameOfMonthForDailyYearCommaSeperated,
+      //     },
+      //   })
+      //     .then(function(res) {
+      //       debugger;
 
-            let status = res.data.message;
-            let scheduleId = res.data.responseData;
-            if (status === "Success") {
-              self.state.selectedTeamMember = "";
-              self.state.selectedTeamMemberCommaSeperated = undefined;
-              self.state.selectScheduleDate = "";
-              self.state.selectedScheduleTime = "";
+      //       let status = res.data.message;
+      //       let scheduleId = res.data.responseData;
+      //       if (status === "Success") {
+      //         self.state.selectedTeamMember = "";
+      //         self.state.selectedTeamMemberCommaSeperated = undefined;
+      //         self.state.selectScheduleDate = "";
+      //         self.state.selectedScheduleTime = "";
 
-              self.ScheduleCloseModel();
-              // this.handleReportList();
-              self.handleGetStoreReports();
-              self.setState({ Schedule_ID: scheduleId });
-              self.setState({ AddReportPopup: false });
-              NotificationManager.success("Report saved successfully.");
-              self.setState({
-                ReportParams: {},
-                selectedScheduleTime: "",
-                // selectedTeamMemberCommaSeperated="",
-                // selectScheduleDate="",
-                // selectedScheduleTime="",
-                IsDaily: false,
-                IsDailyForMonth: false,
-                IsWeekly: false,
-                IsWeeklyForMonth: false,
-                IsDailyForYear: false,
-                IsWeeklyForYear: false,
-                NextPopup: false,
-              });
-            } else if (status == "duplicate") {
-              self.setState({ Schedule_ID: 0 });
-              NotificationManager.error("Report name already exist.");
-            }
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-      }
+      //         self.ScheduleCloseModel();
+      //         // this.handleReportList();
+      //         self.handleGetStoreReports();
+      //         self.setState({ Schedule_ID: scheduleId });
+      //         self.setState({ AddReportPopup: false });
+      //         NotificationManager.success("Report saved successfully.");
+      //         self.setState({
+      //           ReportParams: {},
+      //           selectedScheduleTime: "",
+      //           // selectedTeamMemberCommaSeperated="",
+      //           // selectScheduleDate="",
+      //           // selectedScheduleTime="",
+      //           IsDaily: false,
+      //           IsDailyForMonth: false,
+      //           IsWeekly: false,
+      //           IsWeeklyForMonth: false,
+      //           IsDailyForYear: false,
+      //           IsWeeklyForYear: false,
+      //           NextPopup: false,
+      //         });
+      //       } else if (status == "duplicate") {
+      //         self.setState({ Schedule_ID: 0 });
+      //         NotificationManager.error("Report name already exist.");
+      //       }
+      //     })
+      //     .catch((data) => {
+      //       console.log(data);
+      //     });
+      // }
     }, 10);
 
     // else{
@@ -1896,7 +1903,8 @@ class StoreReports extends Component {
       this.setState({ taskStatus: taskStatusCommaSeperated });
     }
 
-    this.state.claimClaimId = allTab["ClaimTaskID"];
+    this.state.claimClaimId = allTab["ClaimID"];
+    this.state.linkedTaskId = allTab["ClaimTaskID"];
     this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
     this.state.claimAssignedTo = allTab["ClaimAssignedId"];
     this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
@@ -1908,6 +1916,7 @@ class StoreReports extends Component {
     this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
     this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
     this.state.indiClaimStatus = allTab["ClaimStatus"];
+    // this.setState({ claimCreateDate: allTab["ClaimCreatedDate"] });
 
     this.state.indiCampaignName = allTab["CampaignName"];
     this.state.indiCampaignStatus = allTab["CampaignStatusids"];
@@ -2040,6 +2049,59 @@ class StoreReports extends Component {
     this.handleGetClaimSubCategory();
     this.handleGetClaimIssueType();
     this.handleAddReportOpen();
+    if (this.state.tabIndex === 1) {
+      setTimeout(() => {
+        if (this.state.indiDepartment.split(",").length - 1 !== 0) {
+          document.getElementById("departmentNameValue").textContent =
+            this.state.indiDepartment.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("departmentNameValue").textContent = "Select";
+        }
+        if (this.state.indiFunction.split(",").length - 1 !== 0) {
+          document.getElementById("functionNameValue").textContent =
+            this.state.indiFunction.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("functionNameValue").textContent = "Select";
+        }
+        if (this.state.indiPriority.split(",").length - 1 !== 0) {
+          document.getElementById("priorityNameValue").textContent =
+            this.state.indiPriority.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("priorityNameValue").textContent = "Select";
+        }
+      }, 100);
+    } else if (this.state.tabIndex === 2) {
+      setTimeout(() => {
+        if (this.state.indiClaimCategory.split(",").length - 1 !== 0) {
+          document.getElementById("claimCategoryNameValue").textContent =
+            this.state.indiClaimCategory.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimCategoryNameValue").textContent =
+            "Select";
+        }
+        if (this.state.indiClaimSubCategory.split(",").length - 1 !== 0) {
+          document.getElementById("claimSubCategoryNameValue").textContent =
+            this.state.indiClaimSubCategory.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimSubCategoryNameValue").textContent =
+            "Select";
+        }
+        if (this.state.indiClaimIssueType.split(",").length - 1 !== 0) {
+          document.getElementById("claimIssueTypeNameValue").textContent =
+            this.state.indiClaimIssueType.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimIssueTypeNameValue").textContent =
+            "Select";
+        }
+        if (this.state.indiClaimStatus.split(",").length - 1 !== 0) {
+          document.getElementById("claimStatusNameValue").textContent =
+            this.state.indiClaimStatus.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimStatusNameValue").textContent =
+            "Select";
+        }
+      }, 100);
+    }
   };
 
   handleDeleteStoreReports(reportID) {
@@ -2503,22 +2565,34 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.departmentID}
+                                        id={"d" + item.departmentID}
                                         name="allDepartment"
                                         onChange={this.selectIndividualDepartment.bind(
                                           this,
                                           item.departmentID
                                         )}
+                                        // checked={
+                                        //   this.state.indiDepartment !==
+                                        //   undefined
+                                        //     ? this.state.indiDepartment.includes(
+                                        //         item.departmentID
+                                        //       )
+                                        //     : false
+                                        // }
                                         checked={
                                           this.state.indiDepartment !==
                                           undefined
-                                            ? this.state.indiDepartment.includes(
-                                                item.departmentID
-                                              )
+                                            ? this.state.indiDepartment
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.departmentID.toString()
+                                                )
                                             : false
                                         }
                                       />
-                                      <label htmlFor={"i" + item.departmentID}>
+                                      <label htmlFor={"d" + item.departmentID}>
                                         {item.departmentName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2622,21 +2696,32 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.functionID}
+                                        id={"f" + item.functionID}
                                         name="allFunction"
                                         onChange={this.selectIndividualFunction.bind(
                                           this,
                                           item.functionID
                                         )}
+                                        // checked={
+                                        //   this.state.indiFunction !== undefined
+                                        //     ? this.state.indiFunction.includes(
+                                        //         item.functionID
+                                        //       )
+                                        //     : false
+                                        // }
                                         checked={
                                           this.state.indiFunction !== undefined
-                                            ? this.state.indiFunction.includes(
-                                                item.functionID
-                                              )
+                                            ? this.state.indiFunction
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.functionID.toString()
+                                                )
                                             : false
                                         }
                                       />
-                                      <label htmlFor={"i" + item.functionID}>
+                                      <label htmlFor={"f" + item.functionID}>
                                         {item.funcationName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2737,21 +2822,32 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.priorityID}
+                                        id={"p" + item.priorityID}
                                         name="allPriority"
                                         onChange={this.selectIndividualPriority.bind(
                                           this,
                                           item.priorityID
                                         )}
+                                        // checked={
+                                        //   this.state.indiPriority !== undefined
+                                        //     ? this.state.indiPriority.includes(
+                                        //         item.priorityID
+                                        //       )
+                                        //     : false
+                                        // }
                                         checked={
                                           this.state.indiPriority !== undefined
-                                            ? this.state.indiPriority.includes(
-                                                item.priorityID
-                                              )
+                                            ? this.state.indiPriority
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.priorityID.toString()
+                                                )
                                             : false
                                         }
                                       />
-                                      <label htmlFor={"i" + item.priorityID}>
+                                      <label htmlFor={"p" + item.priorityID}>
                                         {item.priortyName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2914,22 +3010,34 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.categoryID}
+                                          id={"cc" + item.categoryID}
                                           name="allClaimCategory"
                                           onChange={this.selectIndividualClaimCategory.bind(
                                             this,
                                             item.categoryID
                                           )}
+                                          // checked={
+                                          //   this.state.indiClaimCategory !==
+                                          //   undefined
+                                          //     ? this.state.indiClaimCategory.includes(
+                                          //         item.categoryID
+                                          //       )
+                                          //     : false
+                                          // }
                                           checked={
                                             this.state.indiClaimCategory !==
                                             undefined
-                                              ? this.state.indiClaimCategory.includes(
-                                                  item.categoryID
-                                                )
+                                              ? this.state.indiClaimCategory
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.categoryID.toString()
+                                                  )
                                               : false
                                           }
                                         />
-                                        <label htmlFor={"i" + item.categoryID}>
+                                        <label htmlFor={"cc" + item.categoryID}>
                                           {item.categoryName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
@@ -3021,22 +3129,36 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.claimStatusID}
+                                        id={"cs" + item.claimStatusID}
                                         name="allClaimStatus"
                                         onChange={this.selectIndividualClaimStatus.bind(
                                           this,
                                           item.claimStatusID
                                         )}
+                                        // checked={
+                                        //   this.state.indiClaimStatus !==
+                                        //   undefined
+                                        //     ? this.state.indiClaimStatus.includes(
+                                        //         item.claimStatusID
+                                        //       )
+                                        //     : false
+                                        // }
                                         checked={
                                           this.state.indiClaimStatus !==
                                           undefined
-                                            ? this.state.indiClaimStatus.includes(
-                                                item.claimStatusID
-                                              )
+                                            ? this.state.indiClaimStatus
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.claimStatusID.toString()
+                                                )
                                             : false
                                         }
                                       />
-                                      <label htmlFor={"i" + item.claimStatusID}>
+                                      <label
+                                        htmlFor={"cs" + item.claimStatusID}
+                                      >
                                         {item.claimStatusName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -3110,23 +3232,35 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"s" + item.subCategoryID}
+                                          id={"csc" + item.subCategoryID}
                                           name="allClaimSubCategory"
                                           onChange={this.selectIndividualClaimSubCategory.bind(
                                             this,
                                             item.subCategoryID
                                           )}
+                                          // checked={
+                                          //   this.state.indiClaimSubCategory !==
+                                          //   undefined
+                                          //     ? this.state.indiClaimSubCategory.includes(
+                                          //         item.subCategoryID
+                                          //       )
+                                          //     : false
+                                          // }
                                           checked={
                                             this.state.indiClaimSubCategory !==
                                             undefined
-                                              ? this.state.indiClaimSubCategory.includes(
-                                                  item.subCategoryID
-                                                )
+                                              ? this.state.indiClaimSubCategory
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.subCategoryID.toString()
+                                                  )
                                               : false
                                           }
                                         />
                                         <label
-                                          htmlFor={"s" + item.subCategoryID}
+                                          htmlFor={"csc" + item.subCategoryID}
                                         >
                                           {item.subCategoryName}
                                           <div>
@@ -3233,22 +3367,36 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"t" + item.issueTypeID}
+                                          id={"cit" + item.issueTypeID}
                                           name="allClaimIssueType"
                                           onChange={this.selectIndividualClaimIssueType.bind(
                                             this,
                                             item.issueTypeID
                                           )}
+                                          // checked={
+                                          //   this.state.indiClaimIssueType !==
+                                          //   undefined
+                                          //     ? this.state.indiClaimIssueType.includes(
+                                          //         item.issueTypeID
+                                          //       )
+                                          //     : false
+                                          // }
                                           checked={
                                             this.state.indiClaimIssueType !==
                                             undefined
-                                              ? this.state.indiClaimIssueType.includes(
-                                                  item.issueTypeID
-                                                )
+                                              ? this.state.indiClaimIssueType
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.issueTypeID.toString()
+                                                  )
                                               : false
                                           }
                                         />
-                                        <label htmlFor={"t" + item.issueTypeID}>
+                                        <label
+                                          htmlFor={"cit" + item.issueTypeID}
+                                        >
                                           {item.issueTypeName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
@@ -3406,12 +3554,24 @@ class StoreReports extends Component {
                                           this,
                                           item.campaignNameID
                                         )}
+                                        // checked={
+                                        //   this.state.indiCampaignName !==
+                                        //   undefined
+                                        //     ? this.state.indiCampaignName.includes(
+                                        //         item.campaignNameID
+                                        //       )
+                                        //     : false
+                                        // }
                                         checked={
                                           this.state.indiCampaignName !==
                                           undefined
-                                            ? this.state.indiCampaignName.includes(
-                                                item.campaignNameID
-                                              )
+                                            ? this.state.indiCampaignName
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.campaignNameID.toString()
+                                                )
                                             : false
                                         }
                                       />
@@ -3520,23 +3680,37 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.campaignNameID}
+                                          id={"cmpsta" + item.campaignNameID}
                                           name="allCampaignStatus"
                                           onChange={this.selectIndividualCampaignStatus.bind(
                                             this,
                                             item.campaignNameID
                                           )}
+                                          // checked={
+                                          //   this.state.indiCampaignStatus !==
+                                          //   undefined
+                                          //     ? this.state.indiCampaignStatus.includes(
+                                          //         item.campaignNameID
+                                          //       )
+                                          //     : false
+                                          // }
                                           checked={
                                             this.state.indiCampaignStatus !==
                                             undefined
-                                              ? this.state.indiCampaignStatus.includes(
-                                                  item.campaignNameID
-                                                )
+                                              ? this.state.indiCampaignStatus
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.campaignNameID.toString()
+                                                  )
                                               : false
                                           }
                                         />
                                         <label
-                                          htmlFor={"i" + item.campaignNameID}
+                                          htmlFor={
+                                            "cmpsta" + item.campaignNameID
+                                          }
                                         >
                                           {item.campaignName}
                                           <div>
