@@ -2013,7 +2013,7 @@ class SlaTemplateDepartment extends Component {
               <div className="col-md-6">
                 <label className="createhead-text-new">Store Name: </label>
                 <label className="createhead-text-1">
-                  {this.state.departmentName}
+                  {this.state.storeName}
                 </label>
               </div>
             </div>
@@ -2021,7 +2021,7 @@ class SlaTemplateDepartment extends Component {
               <div className="col-md-6">
                 <label className="createhead-text-new">Department Name:</label>
                 <label className="createhead-text-1">
-                  {this.state.storeName}
+                  {this.state.departmentName}
                 </label>
               </div>
               <div className="col-md-6">
