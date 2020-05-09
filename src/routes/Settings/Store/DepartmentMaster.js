@@ -2475,7 +2475,7 @@ class DepartmentMaster extends Component {
                             value={item.storeID}
                             className="select-category-placeholder"
                           >
-                            {item.storeName}
+                            {item.storeCode}
                           </option>
                         ))}
                     </select>

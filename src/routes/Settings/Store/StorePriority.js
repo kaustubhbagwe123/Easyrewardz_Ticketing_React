@@ -226,7 +226,6 @@ class CreatePriority extends Component {
               self.setState({
                 isprority: true,
                 editIsExist: "Priority already exist!",
-                isEditBtn: true,
               });
             } else {
               self.setState({
@@ -235,6 +234,7 @@ class CreatePriority extends Component {
             }
           } else {
             self.setState({
+              isEditBtn: true,
               isprority: false,
               isexist: "",
               editIsExist: "",
@@ -1803,7 +1803,7 @@ class CreatePriority extends Component {
               </a>
               <button
                 className="pop-over-button FlNone"
-                disabled={this.state.editSaveLoading && !this.state.isEditBtn}
+                disabled={this.state.editSaveLoading}
                 onClick={this.handleUpdateData.bind(this)}
                 type="submit"
               >
