@@ -2723,6 +2723,7 @@ class StoreUsers extends Component {
               NotificationManager.success("Record Saved Successfully.");
               self.handleGetStoreUserGridData();
               self.handleSendMail(self.state.user_ID)
+              self.handleGetstoreCodeData();
               self.setState({
                 brandData: [],
                 storeCodeData: [],
