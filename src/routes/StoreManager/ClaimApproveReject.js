@@ -325,7 +325,35 @@ class ClaimApproveReject extends Component {
 
   handleOnChange(e) {
     debugger;
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    if (e.currentTarget.name === "finalClaimPercentage") {
+      if (isNaN(e.currentTarget.value)) {
+        return false;
+      }
+      var splitText = e.currentTarget.value.split(".");
+      var index = e.currentTarget.value.indexOf(".");
+      if (parseFloat(e.currentTarget.value) <= 100) {
+        if (index != -1) {
+          if (splitText) {
+            if (splitText[1].length <= 2) {
+              if (index != -1 && splitText.length === 2) {
+                this.setState({ finalClaimPercentage: e.currentTarget.value });
+              }
+            } else {
+              return false;
+            }
+          } else {
+            this.setState({ finalClaimPercentage: e.currentTarget.value });
+          }
+        } else {
+          this.setState({ finalClaimPercentage: e.currentTarget.value });
+        }
+      }else
+      {
+        this.setState({ finalClaimPercentage: "" });
+      }
+    } else {
+      this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    }
   }
   ////handle get store claim comment by id
   handleGetStoreClaimComments(claimId) {

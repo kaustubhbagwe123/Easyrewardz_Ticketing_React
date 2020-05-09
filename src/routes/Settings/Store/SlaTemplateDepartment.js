@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { UncontrolledPopover, PopoverBody, Fade } from "reactstrap";
 import Demo from "../../../store/Hashtag.js";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
@@ -11,7 +11,7 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import Cancel from "./../../../assets/Images/cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
@@ -85,6 +85,7 @@ class SlaTemplateDepartment extends Component {
       screatedByFilterCheckbox: "",
       sisSLAActiveFilterCheckbox: "",
       regexp: /^[0-9\b]+$/,
+      isATOZ: true,
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -106,11 +107,31 @@ class SlaTemplateDepartment extends Component {
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "functionName") {
+      itemsArray.sort((a, b) => {
+        if (a.functionName < b.functionName) return -1;
+        if (a.functionName > b.functionName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return -1;
+        if (a.isSLAActive > b.isSLAActive) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isATOZ: true,
+      isortA: true,
       slaTemplateGrid: itemsArray,
     });
     this.StatusCloseModel();
@@ -119,10 +140,31 @@ class SlaTemplateDepartment extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+
+    if (this.state.sortColumn === "functionName") {
+      itemsArray.sort((a, b) => {
+        if (a.functionName < b.functionName) return 1;
+        if (a.functionName > b.functionName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return 1;
+        if (a.isSLAActive > b.isSLAActive) return -1;
+        return 0;
+      });
+    }
     this.setState({
+      isATOZ: false,
+      isortA: true,
       slaTemplateGrid: itemsArray,
     });
     this.StatusCloseModel();
@@ -237,8 +279,10 @@ class SlaTemplateDepartment extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        slaTemplateGrid: this.state.sortAllData,
-        sFilterCheckbox: "",
+        slaTemplateGrid: this.state.isortA
+          ? this.state.slaTemplateGrid
+          : this.state.sortAllData,
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
     }
   }
@@ -1324,18 +1368,34 @@ class SlaTemplateDepartment extends Component {
                             )}
                           >
                             Function Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Function Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "functionName",
                       },
                       {
                         Header: (
                           <span>
                             Priority Type
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            {/* <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Priority Type"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            /> */}
                           </span>
                         ),
+                        sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1418,9 +1478,17 @@ class SlaTemplateDepartment extends Component {
                             )}
                           >
                             Created By
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdBy",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1482,7 +1550,14 @@ class SlaTemplateDepartment extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         accessor: "isSLAActive",

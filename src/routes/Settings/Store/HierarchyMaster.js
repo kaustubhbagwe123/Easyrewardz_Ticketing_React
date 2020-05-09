@@ -11,7 +11,7 @@ import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import ActiveStatus from "../../activeStatus";
 import { Link } from "react-router-dom";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
@@ -203,6 +203,7 @@ class HierarchyMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
       temphierarchyData: [],
+      isATOZ: true,
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -221,6 +222,13 @@ class HierarchyMaster extends Component {
 
   StatusCloseModel() {
     debugger;
+    this.setState({
+      sortFilterCreatedBy: this.state.sortCreatedBy,
+      sortFilterDesignation: this.state.sortDesignation,
+      sortFilterReportTo: this.state.sortReportTo,
+      sortFilterStatus: this.state.sortStatus,
+    });
+
     if (this.state.temphierarchyData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -275,7 +283,7 @@ class HierarchyMaster extends Component {
         sortFilterDesignation: this.state.sortDesignation,
         sortFilterReportTo: this.state.sortReportTo,
         sortFilterCreatedBy: this.state.sortCreatedBy,
-        sortFilterStatus: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
       });
     }
   }
@@ -288,16 +296,16 @@ class HierarchyMaster extends Component {
     if (this.state.fileName) {
       const formData = new FormData();
       formData.append("file", this.state.file);
-      this.setState({ isShowProgress: true });
+      // this.setState({ isShowProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreHierarchy/BulkUploadStoreHierarchy",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
         .then((response) => {
           var status = response.data.message;
@@ -308,7 +316,8 @@ class HierarchyMaster extends Component {
             self.handleGetItem();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            self.setState({ isShowProgress: false });
             NotificationManager.error("File not uploaded.");
           }
         })
@@ -326,13 +335,6 @@ class HierarchyMaster extends Component {
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
 
-    // function myFunction() {
-    // First sort the array
-    //itemsArray.designationName.sort();
-    // Then reverse it:
-    //fruits.reverse();
-
-    // }
     if (this.state.sortColumn === "designationName") {
       itemsArray.sort((a, b) => {
         if (a.designationName.toLowerCase() < b.designationName.toLowerCase())
@@ -370,6 +372,7 @@ class HierarchyMaster extends Component {
     }
 
     this.setState({
+      isATOZ: true,
       hierarchyData: itemsArray,
     });
     this.StatusCloseModel();
@@ -416,6 +419,7 @@ class HierarchyMaster extends Component {
     }
 
     this.setState({
+      isATOZ: false,
       hierarchyData: itemsArray,
     });
     this.StatusCloseModel();
@@ -1392,7 +1396,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.designationColor}
+                            className={
+                            this.state.sortHeader === "Designation"
+                              ? "sort-column"
+                              : ""
+                          }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
@@ -1400,7 +1408,14 @@ class HierarchyMaster extends Component {
                             )}
                           >
                             Designation
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Designation"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1409,7 +1424,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.reportToColor}
+                          className={
+                            this.state.sortHeader === "Report To"
+                              ? "sort-column"
+                              : ""
+                          }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reportTo",
@@ -1417,7 +1436,14 @@ class HierarchyMaster extends Component {
                             )}
                           >
                             Report To
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Report To"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1426,7 +1452,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                          className={
+                            this.state.sortHeader === "Created By"
+                              ? "sort-column"
+                              : ""
+                          }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdbyperson",
@@ -1434,7 +1464,14 @@ class HierarchyMaster extends Component {
                             )}
                           >
                             Created By
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1490,7 +1527,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.statusColor}
+                          className={
+                            this.state.sortHeader === "Status"
+                              ? "sort-column"
+                              : ""
+                          }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
@@ -1498,7 +1539,14 @@ class HierarchyMaster extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,

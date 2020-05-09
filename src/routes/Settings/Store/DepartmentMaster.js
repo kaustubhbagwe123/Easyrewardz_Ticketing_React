@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "./../../../store/Hashtag.js";
 import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
@@ -99,6 +99,7 @@ class DepartmentMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
       functionStatus: false,
+      isATOZ: true,
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -958,6 +959,7 @@ class DepartmentMaster extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       departmentGrid: itemsArray,
     });
     setTimeout(() => {
@@ -1015,6 +1017,7 @@ class DepartmentMaster extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: false,
       departmentGrid: itemsArray,
     });
     setTimeout(() => {
@@ -1872,9 +1875,18 @@ class DepartmentMaster extends Component {
                               "Brand Name"
                             )}
                           >
-                            Brand Name <FontAwesomeIcon icon={faCaretDown} />
+                            Brand Name{" "}
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Brand Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "brandName",
                       },
                       {
@@ -1888,9 +1900,17 @@ class DepartmentMaster extends Component {
                             )}
                           >
                             Store Code
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Store Code"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "storeCode",
                       },
                       {
@@ -1904,9 +1924,17 @@ class DepartmentMaster extends Component {
                             )}
                           >
                             Department Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Department Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "departmentName",
                       },
                       {
@@ -1920,9 +1948,17 @@ class DepartmentMaster extends Component {
                             )}
                           >
                             Function
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Function"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "functionName",
                       },
                       {
@@ -1936,9 +1972,17 @@ class DepartmentMaster extends Component {
                             )}
                           >
                             Created By
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "createdBy",
                       },
                       {
@@ -1952,14 +1996,23 @@ class DepartmentMaster extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "status",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
+                        sortable:false,
                         Cell: (row) => {
                           var ids = row.original["departmentBrandMappingID"];
                           return (

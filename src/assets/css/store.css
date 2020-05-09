@@ -1286,6 +1286,10 @@ table tr th:last-child {
   height: 54px;
   pointer-events: none;
 }
+.ant-select-selection__placeholder
+{
+  display: block;
+}
 /* ----------------------------------------------- */
 /* ------Change password btn css start-------- */
 .userChangePW {

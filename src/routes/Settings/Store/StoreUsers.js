@@ -9,7 +9,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown,faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
@@ -159,6 +159,7 @@ class StoreUsers extends Component {
       EditmappedisClaimApprover: "",
       EditmappedcrmRoleID: "",
       EditmappedisActive: "",
+      isATOZ:true,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -795,6 +796,7 @@ class StoreUsers extends Component {
     }
     this.setState({
       isortA: true,
+      isATOZ:false,
       StoreUserData: itemsArray,
     });
     setTimeout(() => {
@@ -859,6 +861,7 @@ class StoreUsers extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ:true,
       StoreUserData: itemsArray,
     });
     setTimeout(() => {
@@ -3323,7 +3326,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             Brand Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Brand Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3340,7 +3350,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             Store Code
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Store Code"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3357,7 +3374,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             User Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "User Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3452,7 +3476,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             User Designation
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "User Designation"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3469,7 +3500,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             Reportee Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Reportee Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3516,7 +3554,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             Department
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Department"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3533,7 +3578,14 @@ class StoreUsers extends Component {
                             )}
                           >
                             Function
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Function"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";
@@ -79,6 +79,7 @@ class StoreCRMRole extends Component {
       progressValue: 0,
       statusCompulsory: "",
       isortA: false,
+      isATOZ: true,
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -865,6 +866,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       crmRoles: itemsArray,
     });
     setTimeout(() => {
@@ -903,6 +905,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: false,
       crmRoles: itemsArray,
     });
     setTimeout(() => {
@@ -1122,7 +1125,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.roleColor}
+                            className={
+                              this.state.sortHeader === "Role Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "roleName",
@@ -1130,7 +1137,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Role Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Role Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1175,7 +1189,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
@@ -1183,7 +1201,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Created By
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1239,7 +1264,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.statusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isRoleActive",
@@ -1247,7 +1276,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,

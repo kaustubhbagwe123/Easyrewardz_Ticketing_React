@@ -13,7 +13,7 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import Demo from "./../../../store/Hashtag";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown ,faCaretUp} from "@fortawesome/free-solid-svg-icons";
 import LetterBox from "./../../../assets/Images/SecuredLetter2.png";
 import SmsImg from "./../../../assets/Images/Sms.png";
 import NotificationImg from "./../../../assets/Images/Notification.png";
@@ -2191,9 +2191,17 @@ class Alerts extends Component {
                             )}
                           >
                             Alert Type
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "AlertType"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "alertTypeName",
                       },
                       {
@@ -2241,7 +2249,14 @@ class Alerts extends Component {
                             )}
                           >
                             Created by
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         Cell: (row) => {
@@ -2291,6 +2306,7 @@ class Alerts extends Component {
                             </div>
                           );
                         },
+                        sortable:false,
                         accessor: "createdBy",
                       },
                       {
@@ -2304,9 +2320,17 @@ class Alerts extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable:false,
                         accessor: "isAlertActive",
                       },
                       {
