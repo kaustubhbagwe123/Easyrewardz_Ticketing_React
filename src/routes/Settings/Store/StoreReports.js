@@ -973,6 +973,7 @@ class StoreReports extends Component {
   }
   handleNextPopupClose() {
     this.setState({ NextPopup: false });
+    this.handleGetStoreReports();
   }
   handleReportCreateDate(name, date) {
     debugger;
@@ -1257,22 +1258,38 @@ class StoreReports extends Component {
     if (this.state.selectedReportName == "") {
       NotificationManager.error("Please enter report name");
     } else {
-      if (this.state.selectedTeamMemberCommaSeperated) {
-        var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
-        var selectedTeamMember = this.state.selectedTeamMember;
-        for (let j = 0; j < tData.length; j++) {
-          var data = this.state.userData.filter((x) => x.userID == tData[j]);
-          selectedTeamMember.push(data[0]);
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreReport/CheckIfReportNameExists",
+        headers: authHeader(),
+        params: {
+          ReportID: this.state.reportID,
+          ReportName: self.state.selectedReportName,
+        },
+      }).then(function(res) {
+        debugger;
+        if (res.data.message === "Record Already Exists ") {
+          NotificationManager.error("Report name aleady exists.");
+          return;
         }
-        this.setState({ Schedule: true, selectedTeamMember });
-        setTimeout(() => {
-          for (let j = 0; j < this.state.dayIdsArray.length - 1; j++) {
-            document.getElementById(this.state.dayIdsArray[j]).click();
+        if (self.state.selectedTeamMemberCommaSeperated) {
+          var tData = self.state.selectedTeamMemberCommaSeperated.split(",");
+          var selectedTeamMember = self.state.selectedTeamMember;
+          for (let j = 0; j < tData.length; j++) {
+            var data = self.state.userData.filter((x) => x.userID == tData[j]);
+            selectedTeamMember.push(data[0]);
           }
-        }, 100);
-      } else {
-        this.setState({ Schedule: true, selectedTeamMember: [] });
-      }
+          self.setState({ Schedule: true, selectedTeamMember });
+          setTimeout(() => {
+            for (let j = 0; j < self.state.dayIdsArray.length - 1; j++) {
+              document.getElementById(self.state.dayIdsArray[j]).click();
+            }
+          }, 100);
+        } else {
+          self.setState({ Schedule: true, selectedTeamMember: [] });
+        }
+      });
     }
   };
   ScheduleCloseModel = () => {
@@ -1754,116 +1771,136 @@ class StoreReports extends Component {
     if (this.state.selectScheduleDate == "") {
       self.setState({ selectScheduleDate: 0 });
     }
-    setTimeout(() => {
-      debugger;
-      // if (this.state.Schedule_ID > 0) {
-      debugger;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StoreReport/SaveStoreReport",
-        headers: authHeader(),
-        data: {
-          ReportID: this.state.reportID,
-          ReportName: self.state.selectedReportName,
-          ScheduleID: this.state.Schedule_ID,
-          StoreReportSearchParams: SearchParams,
-        },
-      })
-        .then(function(res) {
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/CheckIfReportNameExists",
+      headers: authHeader(),
+      params: {
+        ReportID: this.state.reportID,
+        ReportName: self.state.selectedReportName,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        if (res.data.message === "Record Already Exists ") {
+          NotificationManager.error("Report name aleady exists.");
+          return;
+        }
+        setTimeout(() => {
           debugger;
-          // this.handleReportList();
-          if (res.data.message === "Success") {
-            self.setState({ AddReportPopup: false });
-            self.setState({ Schedule_ID: 0 });
-            self.handleGetStoreReports();
-            self.handleNextPopupClose();
-            NotificationManager.success(
-              "Report saved successfully for download."
-            );
-          } else {
-            NotificationManager.error("Report not saved.");
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-      // } else {
-      //   axios({
-      //     method: "post",
-      //     url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
-      //     headers: authHeader(),
-      //     data: {
-      //       PrimaryScheduleID: this.state.Schedule_ID,
-      //       ReportName: this.state.selectedReportName,
-      //       SearchInputParams: SearchParams,
-      //       ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
-      //       ScheduleType: this.state.selectScheduleDate,
-      //       NoOfDay: this.state.selectedNoOfDay,
-      //       ScheduleTime: this.state.selectedScheduleTime,
-      //       IsDaily: this.state.IsDaily,
-      //       IsWeekly: this.state.IsWeekly,
-      //       NoOfWeek: this.state.selectedNoOfWeek,
-      //       DayIds: this.state.selectedWeeklyDays,
-      //       IsDailyForMonth: this.state.IsDailyForMonth,
-      //       NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
-      //       NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
-      //       IsWeeklyForMonth: this.state.IsWeeklyForMonth,
-      //       NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
-      //       NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-      //       ScheduleFrom: 4,
-      //       NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
-      //       IsDailyForYear: this.state.IsDailyForYear,
-      //       NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-      //       NameOfMonthForDailyYear: this.state
-      //         .selectedNameOfMonthForYearCommaSeperated,
-      //       IsWeeklyForYear: this.state.IsWeeklyForYear,
-      //       NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
-      //       NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-      //       NameOfMonthForYear: this.state
-      //         .selectedNameOfMonthForDailyYearCommaSeperated,
-      //     },
-      //   })
-      //     .then(function(res) {
-      //       debugger;
+          // if (this.state.Schedule_ID > 0) {
+          debugger;
+          axios({
+            method: "post",
+            url: config.apiUrl + "/StoreReport/SaveStoreReport",
+            headers: authHeader(),
+            data: {
+              ReportID: self.state.reportID,
+              ReportName: self.state.selectedReportName,
+              ScheduleID: self.state.Schedule_ID,
+              StoreReportSearchParams: SearchParams,
+            },
+          })
+            .then(function(res) {
+              debugger;
+              // this.handleReportList();
+              if (res.data.message === "Success") {
+                self.setState({ AddReportPopup: false });
+                self.setState({ Schedule_ID: 0 });
+                // self.handleGetStoreReports();
+                self.handleNextPopupClose();
+                NotificationManager.success(
+                  "Report saved successfully for download."
+                );
+              } else {
+                NotificationManager.error("Report not saved.");
+              }
+            })
+            .catch((data) => {
+              console.log(data);
+            });
+          // } else {
+          //   axios({
+          //     method: "post",
+          //     url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
+          //     headers: authHeader(),
+          //     data: {
+          //       PrimaryScheduleID: this.state.Schedule_ID,
+          //       ReportName: this.state.selectedReportName,
+          //       SearchInputParams: SearchParams,
+          //       ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+          //       ScheduleType: this.state.selectScheduleDate,
+          //       NoOfDay: this.state.selectedNoOfDay,
+          //       ScheduleTime: this.state.selectedScheduleTime,
+          //       IsDaily: this.state.IsDaily,
+          //       IsWeekly: this.state.IsWeekly,
+          //       NoOfWeek: this.state.selectedNoOfWeek,
+          //       DayIds: this.state.selectedWeeklyDays,
+          //       IsDailyForMonth: this.state.IsDailyForMonth,
+          //       NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+          //       NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+          //       IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+          //       NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+          //       NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+          //       ScheduleFrom: 4,
+          //       NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+          //       IsDailyForYear: this.state.IsDailyForYear,
+          //       NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+          //       NameOfMonthForDailyYear: this.state
+          //         .selectedNameOfMonthForYearCommaSeperated,
+          //       IsWeeklyForYear: this.state.IsWeeklyForYear,
+          //       NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+          //       NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+          //       NameOfMonthForYear: this.state
+          //         .selectedNameOfMonthForDailyYearCommaSeperated,
+          //     },
+          //   })
+          //     .then(function(res) {
+          //       debugger;
 
-      //       let status = res.data.message;
-      //       let scheduleId = res.data.responseData;
-      //       if (status === "Success") {
-      //         self.state.selectedTeamMember = "";
-      //         self.state.selectedTeamMemberCommaSeperated = undefined;
-      //         self.state.selectScheduleDate = "";
-      //         self.state.selectedScheduleTime = "";
+          //       let status = res.data.message;
+          //       let scheduleId = res.data.responseData;
+          //       if (status === "Success") {
+          //         self.state.selectedTeamMember = "";
+          //         self.state.selectedTeamMemberCommaSeperated = undefined;
+          //         self.state.selectScheduleDate = "";
+          //         self.state.selectedScheduleTime = "";
 
-      //         self.ScheduleCloseModel();
-      //         // this.handleReportList();
-      //         self.handleGetStoreReports();
-      //         self.setState({ Schedule_ID: scheduleId });
-      //         self.setState({ AddReportPopup: false });
-      //         NotificationManager.success("Report saved successfully.");
-      //         self.setState({
-      //           ReportParams: {},
-      //           selectedScheduleTime: "",
-      //           // selectedTeamMemberCommaSeperated="",
-      //           // selectScheduleDate="",
-      //           // selectedScheduleTime="",
-      //           IsDaily: false,
-      //           IsDailyForMonth: false,
-      //           IsWeekly: false,
-      //           IsWeeklyForMonth: false,
-      //           IsDailyForYear: false,
-      //           IsWeeklyForYear: false,
-      //           NextPopup: false,
-      //         });
-      //       } else if (status == "duplicate") {
-      //         self.setState({ Schedule_ID: 0 });
-      //         NotificationManager.error("Report name already exist.");
-      //       }
-      //     })
-      //     .catch((data) => {
-      //       console.log(data);
-      //     });
-      // }
-    }, 10);
+          //         self.ScheduleCloseModel();
+          //         // this.handleReportList();
+          //         self.handleGetStoreReports();
+          //         self.setState({ Schedule_ID: scheduleId });
+          //         self.setState({ AddReportPopup: false });
+          //         NotificationManager.success("Report saved successfully.");
+          //         self.setState({
+          //           ReportParams: {},
+          //           selectedScheduleTime: "",
+          //           // selectedTeamMemberCommaSeperated="",
+          //           // selectScheduleDate="",
+          //           // selectedScheduleTime="",
+          //           IsDaily: false,
+          //           IsDailyForMonth: false,
+          //           IsWeekly: false,
+          //           IsWeeklyForMonth: false,
+          //           IsDailyForYear: false,
+          //           IsWeeklyForYear: false,
+          //           NextPopup: false,
+          //         });
+          //       } else if (status == "duplicate") {
+          //         self.setState({ Schedule_ID: 0 });
+          //         NotificationManager.error("Report name already exist.");
+          //       }
+          //     })
+          //     .catch((data) => {
+          //       console.log(data);
+          //     });
+          // }
+        }, 10);
+      })
+      .catch((data) => {
+        console.log(data);
+      });
 
     // else{
     //   NotificationManager.error("Please create scheduler");
@@ -2149,9 +2186,10 @@ class StoreReports extends Component {
   }
 
   handleDownload = (id) => {
+    debugger;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreReport/DownloadStoreReportSearch",
+      url: config.apiUrl + "/StoreReport/DownloadStoreReport",
       headers: authHeader(),
       params: {
         SchedulerID: id,
