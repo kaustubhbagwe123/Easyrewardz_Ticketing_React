@@ -109,6 +109,7 @@ class ClaimCategoryMaster extends Component {
       sissueTypeNameFilterCheckbox: "",
       sstatusNameFilterCheckbox: "",
       isATOZ: true,
+      selectBrandMulti: [],
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -1435,9 +1436,9 @@ class ClaimCategoryMaster extends Component {
   };
   handleBrandChange = (e) => {
     debugger;
-    let value = e.target.value;
+    // let value = e.target.value;
     this.setState({
-      selectBrand: value,
+      selectBrandMulti: e,
       categoryDropData: [],
       SubCategoryDropData: [],
       ListOfIssueData: [],
@@ -1445,11 +1446,11 @@ class ClaimCategoryMaster extends Component {
       ListOfSubCate: "",
       ListOfIssue: "",
     });
-    setTimeout(() => {
-      if (this.state.selectBrand) {
-        this.handleGetCategoryList();
-      }
-    }, 1);
+    // setTimeout(() => {
+    //   if (this.state.selectBrand) {
+    //     this.handleGetCategoryList();
+    //   }
+    // }, 1);
   };
   handleEditDropDownChange = (e) => {
     debugger;
@@ -2031,11 +2032,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "Brand"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "Brand"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName",
@@ -2059,11 +2060,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "Category"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "Category"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "categoryName",
@@ -2087,11 +2088,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "SubCategory"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "SubCategory"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName",
@@ -2115,11 +2116,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "IssueType"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "IssueType"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName",
@@ -2143,11 +2144,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "Status"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "statusName",
@@ -2253,7 +2254,7 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Brand Name</label>
-                        <select
+                        {/* <select
                           className="store-create-select"
                           value={this.state.selectBrand}
                           onChange={this.handleBrandChange}
@@ -2269,9 +2270,33 @@ class ClaimCategoryMaster extends Component {
                                 {item.brandName}
                               </option>
                             ))}
-                        </select>
-                        {(this.state.selectBrand === 0 ||
-                          this.state.selectBrand === "Select") && (
+                        </select> */}
+                        {/* <Select
+                          getOptionLabel={(option) => option.brandName}
+                          getOptionValue={(option) => option.brandID}
+                          options={this.state.brandData}
+                          placeholder="Select"
+                          className="store-create-select"
+                          closeMenuOnSelect={false}
+                          name="selectedClaimBrand"
+                          onChange={this.handleBrandChange.bind(this)}
+                          value={this.state.selectBrandMulti}
+                          isMulti
+                        /> */}
+                        <Select
+                          mode="multiple"
+                          className="store-create-select showborder-select"
+                          placeholder="Please select brand"
+                          onChange={this.handleBrandChange.bind(this)}
+                        >
+                          {this.state.brandData !== null &&
+                            this.state.brandData.map((item, i) => (
+                              <Option key={i} value={item.brandID}>
+                                {item.brandName}
+                              </Option>
+                            ))}
+                        </Select>
+                        {this.state.selectBrandMulti.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.brandCompulsion}
                           </p>
@@ -2284,18 +2309,32 @@ class ClaimCategoryMaster extends Component {
                           Claim Category
                         </label>
                         <Select
+                          className="store-create-select showborder-select"
                           showSearch={true}
                           value={this.state.list1Value}
-                          style={{ width: "100%" }}
                           onChange={this.handleCategoryChange}
-                          placeholder="Select Claim Category"
+                          placeholder="Please select claim cateogry"
+                          optionFilterProp="children"
+                          // onSearch={onSearch}
+                          filterOption={(input, option) =>
+                            option.children
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          }
                         >
-                          {list1SelectOptions}
-                          <Option value={NEW_ITEM}>
-                            <span className="sweetAlert-inCategory">
-                              + ADD NEW
-                            </span>
-                          </Option>
+                          {this.state.categoryDropData !== null ? (
+                            this.state.categoryDropData.map((item, i) => (
+                              <Option key={i} value={item.categoryID}>
+                                {item.categoryName}
+                              </Option>
+                            ))
+                          ) : (
+                            <Option value={NEW_ITEM}>
+                              <span className="sweetAlert-inCategory">
+                                + ADD NEW
+                              </span>
+                            </Option>
+                          )}
                         </Select>
                         {this.state.list1Value === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
