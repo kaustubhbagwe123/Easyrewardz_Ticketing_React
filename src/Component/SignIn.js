@@ -136,10 +136,7 @@ class SingIn extends Component {
         "enc"
       );
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-      // let X_Authorized_Domainname = encryption(
-      //   "http://easyrewardz.demo.brainvire.net",
-      //   "enc"
-      // );
+     
 
       let X_Authorized_Programcode = this.state.programCode;
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {

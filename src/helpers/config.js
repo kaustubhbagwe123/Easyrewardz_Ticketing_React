@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+ // apiUrl: "https://localhost:44357/api",
  
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -261,7 +261,7 @@ let config = {
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
-   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
+   apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
