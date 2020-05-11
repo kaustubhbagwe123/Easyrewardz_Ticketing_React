@@ -1868,7 +1868,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandColor}
+                            // className={this.state.brandColor}
+                            className={
+                              this.state.sortHeader === "Brand Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
@@ -1892,7 +1897,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.storeCodeColor}
+                            // className={this.state.storeCodeColor}
+                            className={
+                              this.state.sortHeader === "Store Code"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "storeCode",
@@ -1916,7 +1926,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.DepartNameColor}
+                            // className={this.state.DepartNameColor}
+                            className={
+                              this.state.sortHeader === "Department Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
@@ -1940,7 +1955,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.FunctionColor}
+                            // className={this.state.FunctionColor}
+                            className={
+                              this.state.sortHeader === "Function"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "functionName",
@@ -1964,7 +1984,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                            // className={this.state.createdColor}
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
@@ -1988,7 +2013,12 @@ class DepartmentMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.statusColor}
+                            // className={this.state.statusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",

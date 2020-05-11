@@ -134,6 +134,8 @@ class StoreReports extends Component {
       ReportParams: {},
       Schedule_ID: 0,
       selectedNoOfDay: 0,
+      selectedNameOfDayForYear: [],
+      selectedScheduleTime: "",
       NameOfDayForWeek: [
         {
           days: "Sunday",
@@ -192,6 +194,8 @@ class StoreReports extends Component {
       this
     );
     this.handleSave = this.handleSave.bind(this);
+    this.handleClearTabData = this.handleClearTabData.bind(this);
+    this.handleClearScheduleData = this.handleClearScheduleData.bind(this);
   }
 
   componentDidMount() {
@@ -230,6 +234,73 @@ class StoreReports extends Component {
     debugger;
     this.setState({
       [e.target.name]: e.target.value,
+    });
+  }
+
+  handleClearTabData() {
+    debugger;
+    setTimeout(() => {
+      this.selectNoDepartment();
+      this.selectNoFunction();
+      this.selectNoPriority();
+      this.selectNoClaimStatus();
+      this.selectNoClaimCategory();
+      this.selectNoClaimSubCategory();
+      this.selectNoClaimIssueType();
+      this.selectNoCampaignName();
+      this.selectNoCampaignStatus();
+    }, 1);
+
+    this.setState({
+      tabIndex: 1,
+      taskIdTitle: "",
+      taskStatus: [],
+      taskLinkedTicketId: "",
+      taskWithTickets: "no",
+      taskWithClaim: "no",
+      taskCreateDate: "",
+      taskCreatedBy: "0",
+      taskAssignedTo: "0",
+      taskClaimId: "",
+      claimClaimId: "",
+      claimLinkedTicketId: "",
+      claimWithTickets: "no",
+      claimWithTask: "no",
+      claimCreateDate: "",
+      claimCreatedBy: "0",
+      claimAssignedTo: "0",
+      linkedTaskId: "",
+      campaignAssignedTo: "0",
+      campaignEndDateFrom: "",
+      campaignEndDateTo: "",
+    });
+  }
+
+  handleClearScheduleData() {
+    debugger;
+    this.setState({
+      selectedTeamMember: [],
+      selectScheduleDate: "",
+      selectedNoOfDay: 0,
+      selectedNoOfWeek: 0,
+      Mon: "",
+      Tue: "",
+      Wed: "",
+      Thu: "",
+      Fri: "",
+      Sat: "",
+      Sun: "",
+      selectedNoOfDaysForMonth: 0,
+      selectedNoOfMonthForMonth: 0,
+      selectedNoOfMonthForWeek: 0,
+      selectedNoOfWeekForWeek: 0,
+      selectedNameOfDayForWeek: [],
+      selectedNameOfMonthForYear: [],
+      selectedNoOfDayForDailyYear: 0,
+      selectedNoOfWeekForYear: 0,
+      selectedNameOfMonthForDailyYear: "",
+      selectedNameOfDayForYear: [],
+      selectedScheduleTime: "",
     });
   }
 
@@ -962,9 +1033,11 @@ class StoreReports extends Component {
 
   handleAddReportOpen() {
     this.setState({ AddReportPopup: true });
+    this.handleClearTabData();
   }
   handleAddReportClose() {
     this.setState({ AddReportPopup: false });
+    // this.handleClearTabData();
   }
   handleNextPopupOpen(activeTabId) {
     //this.handleAddReportClose();
@@ -972,7 +1045,7 @@ class StoreReports extends Component {
     this.setState({ NextPopup: true });
   }
   handleNextPopupClose() {
-    this.setState({ NextPopup: false });
+    this.setState({ NextPopup: false, selectedReportName: "" });
     this.handleGetStoreReports();
   }
   handleReportCreateDate(name, date) {
@@ -1176,7 +1249,7 @@ class StoreReports extends Component {
             ? 0
             : parseInt(this.state.claimClaimId),
         ClaimStatus: this.state.indiClaimStatus,
-        IsClaimWithTicket: false,
+        IsClaimWithTicket: this.state.claimWithTickets === "no" ? false : true,
         ClaimTicketID:
           this.state.claimLinkedTicketId === ""
             ? 0
@@ -1294,6 +1367,7 @@ class StoreReports extends Component {
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false, selectedTeamMember: [] });
+    this.handleClearScheduleData();
   };
 
   handleScheduleDateChange = (e) => {
@@ -1909,185 +1983,224 @@ class StoreReports extends Component {
 
   handleEditReport = (rowData) => {
     debugger;
-    let allTab = JSON.parse(rowData.reportSearchParams);
-    this.setState({ Schedule_ID: rowData.scheduleID });
-    let withClaim = 0;
-    let withTask = 0;
-    // allTab=objEdit;
-    this.state.Schedule_ID = rowData.scheduleID;
-    this.state.tabIndex = allTab["ActiveTabId"];
-    this.state.taskIdTitle = allTab["TaskTitle"];
-    this.state.taskLinkedTicketId = allTab["TaskTicketID"];
-    this.state.taskAssignedTo = allTab["TaskAssignedId"];
-    this.state.taskCreatedBy = allTab["TaskCreatedBy"];
-    this.state.taskWithTickets =
-      allTab["IsTaskWithTicket"] === true ? "yes" : "no";
-    this.state.taskWithClaim =
-      allTab["IsTaskWithClaim"] === true ? "yes" : "no";
-    this.state.taskClaimId = allTab["TaskClaimID"];
-    this.state.indiDepartment = allTab["DepartmentIds"];
-    this.state.indiFunction = allTab["FunctionIds"];
-    this.state.indiPriority = allTab["PriorityIds"];
-    if (allTab["TaskStatus"]) {
-      var tData = allTab["TaskStatus"].split(",");
-      var taskStatusCommaSeperated = [];
-      for (let j = 0; j < tData.length - 1; j++) {
-        var data = this.state.taskStatusList.filter(
-          (x) => x.taskStatusID == tData[j]
-        );
-        taskStatusCommaSeperated.push(data[0]);
-      }
-      this.setState({ taskStatus: taskStatusCommaSeperated });
-    }
-
-    this.state.claimClaimId = allTab["ClaimID"];
-    this.state.linkedTaskId = allTab["ClaimTaskID"];
-    this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
-    this.state.claimAssignedTo = allTab["ClaimAssignedId"];
-    this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
-    this.state.claimWithTickets =
-      allTab["IsClaimWithTicket"] === true ? "yes" : "no";
-    this.state.claimWithTask =
-      allTab["IsClaimWithTask"] === true ? "yes" : "no";
-    this.state.indiClaimCategory = allTab["ClaimCategoryIds"];
-    this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
-    this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
-    this.state.indiClaimStatus = allTab["ClaimStatus"];
-    // this.setState({ claimCreateDate: allTab["ClaimCreatedDate"] });
-
-    this.state.indiCampaignName = allTab["CampaignName"];
-    this.state.indiCampaignStatus = allTab["CampaignStatusids"];
-    this.state.campaignAssignedTo = allTab["CampaignAssignedIds"];
-    this.state.campaignEndDateFrom = allTab["CampaignStartDate"];
-    this.state.campaignEndDateTo = allTab["CampaignEndDate"];
-
-    this.state.selectedReportName = rowData.reportName;
-    this.state.reportID = rowData.reportID;
-
-    // //////////////////Scheduler/////////////////////////
-    this.state.IsDaily = rowData.isDaily;
-    this.state.IsWeekly = rowData.isWeekly;
-    this.state.IsDailyForMonth = rowData.isDailyForMonth;
-    this.state.IsWeeklyForMonth = rowData.isWeeklyForMonth;
-    this.state.IsDailyForYear = rowData.isDailyForYear;
-    this.state.IsWeeklyForYear = rowData.isWeeklyForYear;
-    this.state.selectScheduleDate = rowData.scheduleType;
-    this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
-    this.state.selectedNoOfDay = rowData.noOfDay;
-    var responseTime = rowData.scheduleTime;
-    var splittedResponseTime = responseTime.split("T");
-    var date = splittedResponseTime[0];
-    var splittedDate = date.split("-");
-    var time = splittedResponseTime[1];
-    var splittedTime = time.split(":");
-    var finalTime = new Date(
-      splittedDate[0],
-      splittedDate[1] - 1,
-      splittedDate[2],
-      splittedTime[0],
-      splittedTime[1],
-      splittedTime[2]
-    );
-
-    this.state.selectedScheduleTime = finalTime;
-    // this.state.selectedScheduleTime=rowData.scheduleTime;
-    this.state.selectedNoOfWeek = rowData.noOfWeek;
-    this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
-    var dayIds = rowData.dayIds;
-    var splittedDayIds = dayIds.split(",");
-    this.setState({
-      dayIdsArray: splittedDayIds,
-    });
-    for (let i = 0; i < splittedDayIds.length; i++) {
-      var ele = splittedDayIds[i];
-      if (ele === "Mon") {
-        this.setState({
-          Mon: ele,
-        });
-      } else if (ele === "Tue") {
-        this.setState({
-          Tue: ele,
-        });
-      } else if (ele === "Wed") {
-        this.setState({
-          Wed: ele,
-        });
-      } else if (ele === "Thu") {
-        this.setState({
-          Thu: ele,
-        });
-      } else if (ele === "Fri") {
-        this.setState({
-          Fri: ele,
-        });
-      } else if (ele === "Sat") {
-        this.setState({
-          Sat: ele,
-        });
-      } else if (ele === "Sun") {
-        this.setState({
-          Sun: ele,
-        });
-      }
-    }
-    this.setState({
-      selectedNoOfDaysForMonth: rowData.noOfDaysForMonth,
-      selectedNoOfMonthForMonth: rowData.noOfMonthForMonth,
-      selectedNoOfMonthForWeek: rowData.noOfMonthForWeek,
-      selectedNoOfWeekForWeek: rowData.noOfWeekForWeek,
-    });
-    var dayForWeek = rowData.nameOfDayForWeek.split(",");
-    var selectedNameOfDayForWeek = [];
-    for (let j = 0; j < dayForWeek.length; j++) {
-      var data = this.state.NameOfDayForWeek.filter(
-        (x) => x.days == dayForWeek[j]
-      );
-      selectedNameOfDayForWeek.push(data[0]);
-    }
-    this.setState({
-      selectedNameOfDayForWeek: selectedNameOfDayForWeek,
-    });
-    var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
-    var selectedNameOfMonthForYear = [];
-    for (let j = 0; j < dayForYear.length; j++) {
-      var data = this.state.NameOfMonthForYear.filter(
-        (x) => x.month == dayForYear[j]
-      );
-      selectedNameOfMonthForYear.push(data[0]);
-    }
-    this.setState({
-      selectedNameOfMonthForYear: selectedNameOfMonthForYear,
-      selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear,
-    });
-    var dayForYear = rowData.nameOfDayForYear.split(",");
-    var selectedNameOfDayForYear = [];
-    for (let j = 0; j < dayForYear.length; j++) {
-      var data = this.state.NameOfDayForYear.filter(
-        (x) => x.days == dayForYear[j]
-      );
-      selectedNameOfDayForYear.push(data[0]);
-    }
-    var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
-    var selectedNameOfMonthForDailyYear = [];
-    for (let j = 0; j < monthForDailyYear.length; j++) {
-      var data = this.state.NameOfMonthForDailyYear.filter(
-        (x) => x.month == monthForDailyYear[j]
-      );
-      selectedNameOfMonthForDailyYear.push(data[0]);
-    }
-    this.setState({
-      selectedNameOfDayForYear: selectedNameOfDayForYear,
-      selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear,
-      selectedNoOfWeekForYear: rowData.noOfWeekForYear,
-    });
-
-    ///////////////////////////////////////////////////
-    this.handleGetFunction();
-    this.handleGetClaimSubCategory();
-    this.handleGetClaimIssueType();
     this.handleAddReportOpen();
-    if (this.state.tabIndex === 1) {
-      setTimeout(() => {
+    debugger;
+    setTimeout(() => {
+      let allTab = JSON.parse(rowData.reportSearchParams);
+      this.setState({ Schedule_ID: rowData.scheduleID });
+      this.setState({
+        tabIndex: allTab["ActiveTabId"],
+        taskIdTitle: allTab["TaskTitle"],
+        taskLinkedTicketId: allTab["TaskTicketID"],
+        taskAssignedTo: allTab["TaskAssignedId"],
+        taskCreatedBy: allTab["TaskCreatedBy"],
+        taskCreateDate: allTab["TaskCreatedDate"]
+          ? new Date(allTab["TaskCreatedDate"])
+          : "",
+        taskWithTickets: allTab["IsTaskWithTicket"] === true ? "yes" : "no",
+        taskWithClaim: allTab["IsTaskWithClaim"] === true ? "yes" : "no",
+        taskClaimId: allTab["TaskClaimID"],
+        indiDepartment: allTab["DepartmentIds"],
+        indiFunction: allTab["FunctionIds"],
+        indiPriority: allTab["PriorityIds"],
+        claimClaimId: allTab["ClaimID"],
+        linkedTaskId: allTab["ClaimTaskID"],
+        claimLinkedTicketId: allTab["ClaimTicketID"],
+        claimCreateDate: allTab["ClaimCreatedDate"]
+          ? new Date(allTab["ClaimCreatedDate"])
+          : "",
+        claimAssignedTo: allTab["ClaimAssignedId"],
+        claimCreatedBy: allTab["ClaimCreatedBy"],
+        claimWithTickets: allTab["IsClaimWithTicket"] === true ? "yes" : "no",
+        claimWithTask: allTab["IsClaimWithTask"] === true ? "yes" : "no",
+        indiClaimCategory: allTab["ClaimCategoryIds"],
+        indiClaimSubCategory: allTab["ClaimSubCategoryIds"],
+        indiClaimIssueType: allTab["ClaimIssuetypeIds"],
+        indiClaimStatus: allTab["ClaimStatus"],
+        indiCampaignName: allTab["CampaignName"],
+        indiCampaignStatus: allTab["CampaignStatusids"],
+        campaignAssignedTo: allTab["CampaignAssignedIds"],
+        campaignEndDateFrom: allTab["CampaignStartDate"]
+          ? new Date(allTab["CampaignStartDate"])
+          : "",
+        campaignEndDateTo: allTab["CampaignEndDate"]
+          ? new Date(allTab["CampaignEndDate"])
+          : "",
+      });
+      // this.state.Schedule_ID = rowData.scheduleID;
+      // this.state.tabIndex = allTab["ActiveTabId"];
+      // this.state.taskIdTitle = allTab["TaskTitle"];
+      // this.state.taskLinkedTicketId = allTab["TaskTicketID"];
+      // this.state.taskAssignedTo = allTab["TaskAssignedId"];
+      // this.state.taskCreatedBy = allTab["TaskCreatedBy"];
+      // this.state.taskWithTickets =
+      //   allTab["IsTaskWithTicket"] === true ? "yes" : "no";
+      // this.state.taskWithClaim =
+      //   allTab["IsTaskWithClaim"] === true ? "yes" : "no";
+      // this.state.taskClaimId = allTab["TaskClaimID"];
+      // this.state.indiDepartment = allTab["DepartmentIds"];
+      // this.state.indiFunction = allTab["FunctionIds"];
+      // this.state.indiPriority = allTab["PriorityIds"];
+      if (allTab["TaskStatus"]) {
+        var tData = allTab["TaskStatus"].split(",");
+        var taskStatusCommaSeperated = [];
+        for (let j = 0; j < tData.length - 1; j++) {
+          var data = this.state.taskStatusList.filter(
+            (x) => x.taskStatusID == tData[j]
+          );
+          taskStatusCommaSeperated.push(data[0]);
+        }
+        this.setState({ taskStatus: taskStatusCommaSeperated });
+      }
+
+      // this.state.claimClaimId = allTab["ClaimID"];
+      // this.state.linkedTaskId = allTab["ClaimTaskID"];
+      // this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
+      // this.state.claimAssignedTo = allTab["ClaimAssignedId"];
+      // this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
+      // this.state.claimWithTickets =
+      //   allTab["IsClaimWithTicket"] === true ? "yes" : "no";
+      // this.state.claimWithTask =
+      //   allTab["IsClaimWithTask"] === true ? "yes" : "no";
+      // this.state.indiClaimCategory = allTab["ClaimCategoryIds"];
+      // this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
+      // this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
+      // this.state.indiClaimStatus = allTab["ClaimStatus"];
+      // this.setState({ claimCreateDate: allTab["ClaimCreatedDate"] });
+
+      // this.state.indiCampaignName = allTab["CampaignName"];
+      // this.state.indiCampaignStatus = allTab["CampaignStatusids"];
+      // this.state.campaignAssignedTo = allTab["CampaignAssignedIds"];
+      // this.state.campaignEndDateFrom = allTab["CampaignStartDate"];
+      // this.state.campaignEndDateTo = allTab["CampaignEndDate"];
+
+      this.state.selectedReportName = rowData.reportName;
+      this.state.reportID = rowData.reportID;
+
+      // //////////////////Scheduler/////////////////////////
+      this.state.IsDaily = rowData.isDaily;
+      this.state.IsWeekly = rowData.isWeekly;
+      this.state.IsDailyForMonth = rowData.isDailyForMonth;
+      this.state.IsWeeklyForMonth = rowData.isWeeklyForMonth;
+      this.state.IsDailyForYear = rowData.isDailyForYear;
+      this.state.IsWeeklyForYear = rowData.isWeeklyForYear;
+      this.state.selectScheduleDate = rowData.scheduleType;
+      this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
+      this.state.selectedNoOfDay = rowData.noOfDay;
+      var responseTime = rowData.scheduleTime;
+      var splittedResponseTime = responseTime.split("T");
+      var date = splittedResponseTime[0];
+      var splittedDate = date.split("-");
+      var time = splittedResponseTime[1];
+      var splittedTime = time.split(":");
+      var finalTime = new Date(
+        splittedDate[0],
+        splittedDate[1] - 1,
+        splittedDate[2],
+        splittedTime[0],
+        splittedTime[1],
+        splittedTime[2]
+      );
+
+      this.state.selectedScheduleTime = finalTime;
+      // this.state.selectedScheduleTime=rowData.scheduleTime;
+      this.state.selectedNoOfWeek = rowData.noOfWeek;
+      this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
+      var dayIds = rowData.dayIds;
+      var splittedDayIds = dayIds.split(",");
+      this.setState({
+        dayIdsArray: splittedDayIds,
+      });
+      for (let i = 0; i < splittedDayIds.length; i++) {
+        var ele = splittedDayIds[i];
+        if (ele === "Mon") {
+          this.setState({
+            Mon: ele,
+          });
+        } else if (ele === "Tue") {
+          this.setState({
+            Tue: ele,
+          });
+        } else if (ele === "Wed") {
+          this.setState({
+            Wed: ele,
+          });
+        } else if (ele === "Thu") {
+          this.setState({
+            Thu: ele,
+          });
+        } else if (ele === "Fri") {
+          this.setState({
+            Fri: ele,
+          });
+        } else if (ele === "Sat") {
+          this.setState({
+            Sat: ele,
+          });
+        } else if (ele === "Sun") {
+          this.setState({
+            Sun: ele,
+          });
+        }
+      }
+      this.setState({
+        selectedNoOfDaysForMonth: rowData.noOfDaysForMonth,
+        selectedNoOfMonthForMonth: rowData.noOfMonthForMonth,
+        selectedNoOfMonthForWeek: rowData.noOfMonthForWeek,
+        selectedNoOfWeekForWeek: rowData.noOfWeekForWeek,
+      });
+      var dayForWeek = rowData.nameOfDayForWeek.split(",");
+      var selectedNameOfDayForWeek = [];
+      for (let j = 0; j < dayForWeek.length; j++) {
+        var data = this.state.NameOfDayForWeek.filter(
+          (x) => x.days == dayForWeek[j]
+        );
+        selectedNameOfDayForWeek.push(data[0]);
+      }
+      this.setState({
+        selectedNameOfDayForWeek: selectedNameOfDayForWeek,
+      });
+      var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
+      var selectedNameOfMonthForYear = [];
+      for (let j = 0; j < dayForYear.length; j++) {
+        var data = this.state.NameOfMonthForYear.filter(
+          (x) => x.month == dayForYear[j]
+        );
+        selectedNameOfMonthForYear.push(data[0]);
+      }
+      this.setState({
+        selectedNameOfMonthForYear: selectedNameOfMonthForYear,
+        selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear,
+      });
+      var dayForYear = rowData.nameOfDayForYear.split(",");
+      var selectedNameOfDayForYear = [];
+      for (let j = 0; j < dayForYear.length; j++) {
+        var data = this.state.NameOfDayForYear.filter(
+          (x) => x.days == dayForYear[j]
+        );
+        selectedNameOfDayForYear.push(data[0]);
+      }
+      var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
+      var selectedNameOfMonthForDailyYear = [];
+      for (let j = 0; j < monthForDailyYear.length; j++) {
+        var data = this.state.NameOfMonthForDailyYear.filter(
+          (x) => x.month == monthForDailyYear[j]
+        );
+        selectedNameOfMonthForDailyYear.push(data[0]);
+      }
+      this.setState({
+        selectedNameOfDayForYear: selectedNameOfDayForYear,
+        selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear,
+        selectedNoOfWeekForYear: rowData.noOfWeekForYear,
+      });
+
+      ///////////////////////////////////////////////////
+      this.handleGetFunction();
+      this.handleGetClaimSubCategory();
+      this.handleGetClaimIssueType();
+      // this.handleAddReportOpen();
+      if (this.state.tabIndex === 1) {
+        // setTimeout(() => {
         if (this.state.indiDepartment.split(",").length - 1 !== 0) {
           document.getElementById("departmentNameValue").textContent =
             this.state.indiDepartment.split(",").length - 1 + " selected";
@@ -2106,9 +2219,9 @@ class StoreReports extends Component {
         } else {
           document.getElementById("priorityNameValue").textContent = "Select";
         }
-      }, 100);
-    } else if (this.state.tabIndex === 2) {
-      setTimeout(() => {
+        // }, 100);
+      } else if (this.state.tabIndex === 2) {
+        // setTimeout(() => {
         if (this.state.indiClaimCategory.split(",").length - 1 !== 0) {
           document.getElementById("claimCategoryNameValue").textContent =
             this.state.indiClaimCategory.split(",").length - 1 + " selected";
@@ -2137,8 +2250,23 @@ class StoreReports extends Component {
           document.getElementById("claimStatusNameValue").textContent =
             "Select";
         }
-      }, 100);
-    }
+        // }, 100);
+      } else if (this.state.tabIndex === 3) {
+        if (this.state.indiCampaignName.split(",").length - 1 !== 0) {
+          document.getElementById("campaignNameValue").textContent =
+            this.state.indiCampaignName.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("campaignNameValue").textContent = "Select";
+        }
+        if (this.state.indiCampaignStatus.split(",").length - 1 !== 0) {
+          document.getElementById("campaignStatusNameValue").textContent =
+            this.state.indiCampaignStatus.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("campaignStatusNameValue").textContent =
+            "Select";
+        }
+      }
+    }, 1);
   };
 
   handleDeleteStoreReports(reportID) {
@@ -2292,52 +2420,63 @@ class StoreReports extends Component {
         Header: <span>Actions</span>,
         accessor: "actionReport",
         Cell: (row) => (
-          <span>
-            <img
-              src={DownExcel}
-              alt="download icon"
-              className="downloadaction"
-              onClick={this.handleDownload.bind(this, row.original.scheduleID)}
-            />
-            <Popover
-              content={
-                <div className="d-flex general-popover popover-body">
-                  <div className="del-big-icon">
-                    <img src={DelBigIcon} alt="del-icon" />
-                  </div>
-                  <div>
-                    <p className="font-weight-bold blak-clr">Delete file?</p>
-                    <p className="mt-1 fs-12">
-                      Are you sure you want to delete this file?
-                    </p>
-                    <div className="del-can">
-                      <a href={Demo.BLANK_LINK}>CANCEL</a>
-                      <button
-                        className="butn"
-                        onClick={this.handleDeleteStoreReports.bind(
-                          this,
-                          row.original["reportID"]
-                        )}
-                      >
-                        Delete
-                      </button>
+          <div className="report-action">
+            <div>
+              {row.original.isDownloaded === 1 && (
+                <img
+                  src={DownExcel}
+                  alt="download icon"
+                  className="downloadaction"
+                  onClick={this.handleDownload.bind(
+                    this,
+                    row.original.scheduleID
+                  )}
+                />
+              )}
+            </div>
+            <div>
+              <Popover
+                content={
+                  <div className="d-flex general-popover popover-body">
+                    <div className="del-big-icon">
+                      <img src={DelBigIcon} alt="del-icon" />
+                    </div>
+                    <div>
+                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                      <p className="mt-1 fs-12">
+                        Are you sure you want to delete this file?
+                      </p>
+                      <div className="del-can">
+                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                        <button
+                          className="butn"
+                          onClick={this.handleDeleteStoreReports.bind(
+                            this,
+                            row.original["reportID"]
+                          )}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              }
-              placement="bottom"
-              trigger="click"
-            >
-              <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
-            </Popover>
-            <button
-              className="react-tabel-button editre"
-              id="p-edit-pop-2"
-              onClick={this.handleEditReport.bind(this, row.original)}
-            >
-              EDIT
-            </button>
-          </span>
+                }
+                placement="bottom"
+                trigger="click"
+              >
+                <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
+              </Popover>
+            </div>
+            <div>
+              <button
+                className="react-tabel-button editre"
+                id="p-edit-pop-2"
+                onClick={this.handleEditReport.bind(this, row.original)}
+              >
+                EDIT
+              </button>
+            </div>
+          </div>
         ),
       },
     ];
