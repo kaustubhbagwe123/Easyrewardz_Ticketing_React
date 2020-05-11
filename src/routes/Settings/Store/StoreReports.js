@@ -2293,12 +2293,17 @@ class StoreReports extends Component {
         accessor: "actionReport",
         Cell: (row) => (
           <span>
-            <img
-              src={DownExcel}
-              alt="download icon"
-              className="downloadaction"
-              onClick={this.handleDownload.bind(this, row.original.scheduleID)}
-            />
+            {row.original.isDownloaded === 1 && (
+              <img
+                src={DownExcel}
+                alt="download icon"
+                className="downloadaction"
+                onClick={this.handleDownload.bind(
+                  this,
+                  row.original.scheduleID
+                )}
+              />
+            )}
             <Popover
               content={
                 <div className="d-flex general-popover popover-body">
