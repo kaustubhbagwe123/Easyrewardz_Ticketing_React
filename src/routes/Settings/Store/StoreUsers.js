@@ -3650,7 +3650,7 @@ class StoreUsers extends Component {
                           var ids = row.original["userID"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div

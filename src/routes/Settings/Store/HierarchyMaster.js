@@ -1631,7 +1631,7 @@ class HierarchyMaster extends Component {
                           var ids = row.original["designationID"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div
@@ -1741,29 +1741,7 @@ class HierarchyMaster extends Component {
                 </div>
               </div>
               <div className="col-md-4">
-                {/* <div className="right-sect-div">
-                  <h3>Create Hierarchy</h3>
-                  <div className="div-cntr">
-                    <label>Designation Name</label>
-                    <input type="text" defaultValue="Store Manager" maxLength={25} />
-                  </div>
-                  <div className="div-cntr">
-                    <label>Report To</label>
-                    <select>
-                      <option>Select</option>
-                      <option>Root</option>
-                      <option>Root</option>
-                    </select>
-                  </div>
-                  <div className="div-cntr">
-                    <label>Status</label>
-                    <select>
-                      <option>Active</option>
-                      <option>Inactive</option>
-                    </select>
-                  </div>
-                  <button className="butn">ADD</button>
-                </div> */}
+              
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
@@ -1796,8 +1774,8 @@ class HierarchyMaster extends Component {
                           value={this.state.selectReportTo}
                           onChange={this.handleOnReportToChange}
                         >
-                          <option value="0">select</option>
-                          <option value={1}>Root</option>
+                          <option value="">select</option>
+                          <option value={-1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
                               <option key={i + 1} value={item.designationID}>
@@ -1805,7 +1783,7 @@ class HierarchyMaster extends Component {
                               </option>
                             ))}
                         </select>
-                        {parseInt(this.state.selectReportTo) === 0 && (
+                        {parseInt(this.state.selectReportTo) === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.reportToCompulsion}
                           </p>

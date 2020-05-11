@@ -2177,7 +2177,7 @@ class ClaimCategoryMaster extends Component {
                             var ids = row.original["brandCategoryMappingID"];
                             return (
                               <>
-                                <span>
+                                <span className="d-flex align-items-center">
                                   <Popover
                                     content={
                                       <div className="d-flex general-popover popover-body">

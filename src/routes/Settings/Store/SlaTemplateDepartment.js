@@ -1588,7 +1588,7 @@ class SlaTemplateDepartment extends Component {
                           // var ids = row.original["slaid"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">
