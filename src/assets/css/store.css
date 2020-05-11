@@ -1286,9 +1286,22 @@ table tr th:last-child {
   height: 54px;
   pointer-events: none;
 }
-.ant-select-selection__placeholder
-{
+.ant-select-selection__placeholder {
   display: block;
+}
+.showborder-select .ant-select-selection {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  padding-left: 10px;
+  color: #999;
+  font-weight: 600;
+  border-color: #ecf2f4;
+  background: #ecf2f4
+    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAICAYAAAAiJnXPAAAAcElEQVR4nJXPMQrCUBBF0TNGhTTRbVho4f43IQlkGyEIsVIL/w/ykQRvM/DgzpsJVNjgZZ3Ac4sdTqhXxMCEPlJwxAX7BemBDkN8hQ3OqbFkwg13Pr9kRrRpY9nQZqGUfolZGBfOnjngmuZflFfMvAHCTRZc4oUWEgAAAABJRU5ErkJggg==)
+    no-repeat right 12px center;
+  cursor: pointer;
 }
 /* ----------------------------------------------- */
 /* ------Change password btn css start-------- */

@@ -1846,8 +1846,10 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortbrandName.push({ brandName: distinct[i] });
-            self.state.sortFilterbrandName.push({ brandName: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortbrandName.push({ brandName: distinct[i] });
+              self.state.sortFilterbrandName.push({ brandName: distinct[i] });
+            }
           }
 
           var unique = [];
@@ -1859,8 +1861,10 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortitemCode.push({ storeCode: distinct[i] });
-            self.state.sortFilteritemCode.push({ storeCode: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortitemCode.push({ storeCode: distinct[i] });
+              self.state.sortFilteritemCode.push({ storeCode: distinct[i] });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -1871,8 +1875,10 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortuserName.push({ userName: distinct[i] });
-            self.state.sortFilteruserName.push({ userName: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortuserName.push({ userName: distinct[i] });
+              self.state.sortFilteruserName.push({ userName: distinct[i] });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -1886,12 +1892,14 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortdesignationName.push({
-              designationName: distinct[i],
-            });
-            self.state.sortFilterdesignationName.push({
-              designationName: distinct[i],
-            });
+            if (distinct[i]) {
+              self.state.sortdesignationName.push({
+                designationName: distinct[i],
+              });
+              self.state.sortFilterdesignationName.push({
+                designationName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -1902,10 +1910,12 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortreporteeName.push({ reporteeName: distinct[i] });
-            self.state.sortFilterreporteeName.push({
-              reporteeName: distinct[i],
-            });
+            if (distinct[i]) {
+              self.state.sortreporteeName.push({ reporteeName: distinct[i] });
+              self.state.sortFilterreporteeName.push({
+                reporteeName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -1919,12 +1929,14 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortdepartmentName.push({
-              departmentName: distinct[i],
-            });
-            self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i],
-            });
+            if (distinct[i]) {
+              self.state.sortdepartmentName.push({
+                departmentName: distinct[i],
+              });
+              self.state.sortFilterdepartmentName.push({
+                departmentName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -1938,12 +1950,14 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortmappedFunctions.push({
-              mappedFunctions: distinct[i],
-            });
-            self.state.sortFiltermappedFunctions.push({
-              mappedFunctions: distinct[i],
-            });
+            if (distinct[i]) {
+              self.state.sortmappedFunctions.push({
+                mappedFunctions: distinct[i],
+              });
+              self.state.sortFiltermappedFunctions.push({
+                mappedFunctions: distinct[i],
+              });
+            }
           }
         } else {
           self.setState({ StoreUserData: [] });
@@ -3319,7 +3333,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandNameColor}
+                            // className={this.state.brandNameColor}
+                            className={
+                              this.state.sortHeader === "Brand Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
@@ -3343,7 +3362,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.storeCodeColor}
+                            // className={this.state.storeCodeColor}
+                            className={
+                              this.state.sortHeader === "Store Code"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "storeCode",
@@ -3367,7 +3391,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.userNameColor}
+                            // className={this.state.userNameColor}
+                            className={
+                              this.state.sortHeader === "User Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "userName",
@@ -3469,7 +3498,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.userdesignationColor}
+                            // className={this.state.userdesignationColor}
+                            className={
+                              this.state.sortHeader === "User Designation"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
@@ -3493,11 +3527,16 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.reporteeNameColor}
+                            // className={this.state.reporteeNameColor}
+                            className={
+                              this.state.sortHeader === "Reportee Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reporteeName",
-                              " Reportee Name"
+                              "Reportee Name"
                             )}
                           >
                             Reportee Name
@@ -3547,7 +3586,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.departmentColor}
+                            // className={this.state.departmentColor}
+                            className={
+                              this.state.sortHeader === "Department"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
@@ -3571,7 +3615,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.functionColor}
+                            // className={this.state.functionColor}
+                            className={
+                              this.state.sortHeader === "Function"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "mappedFunctions",
@@ -3596,6 +3645,7 @@ class StoreUsers extends Component {
                         Header: <span>Actions</span>,
                         accessor: "userID",
                         minWidth: 120,
+                        sortable: false,
                         Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
