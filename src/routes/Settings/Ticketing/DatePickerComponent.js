@@ -13,13 +13,13 @@ class DatePickerComponenet extends Component {
     let end = moment(start).add(30, "days");
     this.state = {
       start: start,
-      end: end
+      end: end,
     };
   }
   handleApplyCallback = async (startDate, endDate) => {
     await this.setState({
       start: endDate[0],
-      end: endDate[1]
+      end: endDate[1],
     });
 
     this.props.applyCallback(startDate, endDate);
@@ -34,7 +34,7 @@ class DatePickerComponenet extends Component {
           format="DD-MM-YYYY"
           defaultValue={[
             moment(this.state.start, "DD-MM-YYYY"),
-            moment(this.state.end, "DD-MM-YYYY")
+            moment(this.state.end, "DD-MM-YYYY"),
           ]}
         />
       </div>
