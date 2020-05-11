@@ -1581,7 +1581,7 @@ class CreatePriority extends Component {
                           headerSort: false,
                           render: (text, record) => {
                             return (
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div>

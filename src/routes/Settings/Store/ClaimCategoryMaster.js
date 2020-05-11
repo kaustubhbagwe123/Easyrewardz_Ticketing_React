@@ -2031,11 +2031,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "Brand"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "Brand"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName",
@@ -2059,11 +2059,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "Category"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "Category"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "categoryName",
@@ -2087,11 +2087,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "SubCategory"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "SubCategory"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName",
@@ -2115,11 +2115,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "IssueType"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "IssueType"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName",
@@ -2143,11 +2143,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                            className={
-                              this.state.sortHeader === "Status"
-                                ? "sort-column"
-                                : ""
-                            }
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "statusName",
@@ -2176,7 +2176,7 @@ class ClaimCategoryMaster extends Component {
                             var ids = row.original["brandCategoryMappingID"];
                             return (
                               <>
-                                <span>
+                                <span className="d-flex align-items-center">
                                   <Popover
                                     content={
                                       <div className="d-flex general-popover popover-body">

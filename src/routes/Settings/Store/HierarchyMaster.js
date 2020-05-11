@@ -1397,10 +1397,10 @@ class HierarchyMaster extends Component {
                         Header: (
                           <span
                             className={
-                            this.state.sortHeader === "Designation"
-                              ? "sort-column"
-                              : ""
-                          }
+                              this.state.sortHeader === "Designation"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
@@ -1424,11 +1424,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                          className={
-                            this.state.sortHeader === "Report To"
-                              ? "sort-column"
-                              : ""
-                          }
+                            className={
+                              this.state.sortHeader === "Report To"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reportTo",
@@ -1452,11 +1452,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                          className={
-                            this.state.sortHeader === "Created By"
-                              ? "sort-column"
-                              : ""
-                          }
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdbyperson",
@@ -1527,11 +1527,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                          className={
-                            this.state.sortHeader === "Status"
-                              ? "sort-column"
-                              : ""
-                          }
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
@@ -1559,7 +1559,7 @@ class HierarchyMaster extends Component {
                           var ids = row.original["designationID"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div

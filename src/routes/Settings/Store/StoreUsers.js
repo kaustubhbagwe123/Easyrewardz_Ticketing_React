@@ -9,7 +9,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
-import { faCaretDown,faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
@@ -159,7 +159,7 @@ class StoreUsers extends Component {
       EditmappedisClaimApprover: "",
       EditmappedcrmRoleID: "",
       EditmappedisActive: "",
-      isATOZ:true,
+      isATOZ: true,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -796,7 +796,7 @@ class StoreUsers extends Component {
     }
     this.setState({
       isortA: true,
-      isATOZ:false,
+      isATOZ: false,
       StoreUserData: itemsArray,
     });
     setTimeout(() => {
@@ -861,7 +861,7 @@ class StoreUsers extends Component {
 
     this.setState({
       isortA: true,
-      isATOZ:true,
+      isATOZ: true,
       StoreUserData: itemsArray,
     });
     setTimeout(() => {
@@ -2645,7 +2645,7 @@ class StoreUsers extends Component {
     }
   }
   //// final save User data
-  handleFinalSaveUserData() { 
+  handleFinalSaveUserData() {
     debugger;
     if (
       this.state.selectedClaimBrand.length > 0 &&
@@ -2722,7 +2722,7 @@ class StoreUsers extends Component {
             if (status === "Success") {
               NotificationManager.success("Record Saved Successfully.");
               self.handleGetStoreUserGridData();
-              self.handleSendMail(self.state.user_ID)
+              self.handleSendMail(self.state.user_ID);
               self.handleGetstoreCodeData();
               self.setState({
                 brandData: [],
@@ -2773,7 +2773,7 @@ class StoreUsers extends Component {
       headers: authHeader(),
       params: {
         userID: user_Id,
-        IsStoreUser:1
+        IsStoreUser: 1,
       },
     })
       .then(function(res) {
@@ -2781,7 +2781,7 @@ class StoreUsers extends Component {
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
           NotificationManager.success("Please Check Email.");
-        }else{
+        } else {
           NotificationManager.error(reportto);
         }
       })
@@ -3600,7 +3600,7 @@ class StoreUsers extends Component {
                           var ids = row.original["userID"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div

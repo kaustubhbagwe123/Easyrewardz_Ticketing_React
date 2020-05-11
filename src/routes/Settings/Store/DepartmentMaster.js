@@ -1886,7 +1886,7 @@ class DepartmentMaster extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "brandName",
                       },
                       {
@@ -1910,7 +1910,7 @@ class DepartmentMaster extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "storeCode",
                       },
                       {
@@ -1934,7 +1934,7 @@ class DepartmentMaster extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "departmentName",
                       },
                       {
@@ -1958,7 +1958,7 @@ class DepartmentMaster extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "functionName",
                       },
                       {
@@ -1982,7 +1982,7 @@ class DepartmentMaster extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "createdBy",
                       },
                       {
@@ -2006,17 +2006,17 @@ class DepartmentMaster extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "status",
                       },
                       {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
-                        sortable:false,
+                        sortable: false,
                         Cell: (row) => {
                           var ids = row.original["departmentBrandMappingID"];
                           return (
-                            <div>
+                            <div className="d-flex align-items-center">
                               <Popover
                                 content={
                                   <div className="d-flex general-popover popover-body">
