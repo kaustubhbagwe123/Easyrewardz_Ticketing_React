@@ -282,7 +282,6 @@ class SlaTemplateDepartment extends Component {
         slaTemplateGrid: this.state.isortA
           ? this.state.slaTemplateGrid
           : this.state.sortAllData,
-        sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
     }
   }
@@ -697,8 +696,12 @@ class SlaTemplateDepartment extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortIssueType.push({ functionName: distinct[i] });
-            self.state.sortFilterIssueType.push({ functionName: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortFilterIssueType.push({
+                functionName: distinct[i],
+              });
+              self.state.sortIssueType.push({ functionName: distinct[i] });
+            }
           }
 
           var unique = [];
@@ -710,8 +713,10 @@ class SlaTemplateDepartment extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
-            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortCreatedBy.push({ createdBy: distinct[i] });
+              self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
+            }
           }
 
           var unique = [];
@@ -723,8 +728,10 @@ class SlaTemplateDepartment extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ isSLAActive: distinct[i] });
-            self.state.sortFilterStatus.push({ isSLAActive: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortStatus.push({ isSLAActive: distinct[i] });
+              self.state.sortFilterStatus.push({ isSLAActive: distinct[i] });
+            }
           }
         }
 
@@ -1360,7 +1367,11 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.issueColor}
+                            className={
+                              this.state.sortHeader === "Function Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "functionName",
@@ -1470,7 +1481,11 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
@@ -1542,7 +1557,11 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.stattusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isSLAActive",

@@ -976,7 +976,7 @@ class EditStoreTask extends Component {
                       : this.state.commentCount}
                   </label>
                   <button
-                    disabled={this.iscmtLoading}
+                    disabled={this.state.iscmtLoading}
                     className="butn-store"
                     onClick={this.handleAddCommentByTaskId.bind(this)}
                   >
