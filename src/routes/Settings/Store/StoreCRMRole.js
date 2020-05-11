@@ -797,7 +797,8 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterRoleName });
       } else {
         this.setState({
-          sortFilterRoleName: this.state.sortRoleName,
+          // sortFilterRoleName: this.state.sortRoleName,
+          sortFilterRoleName: [],
         });
       }
     }
@@ -811,7 +812,8 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterCreated });
       } else {
         this.setState({
-          sortFilterCreated: this.state.sortCreated,
+          // sortFilterCreated: this.state.sortCreated,
+          sortFilterCreated: [],
         });
       }
     }
@@ -825,7 +827,8 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          // sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }

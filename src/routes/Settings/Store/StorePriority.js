@@ -887,7 +887,16 @@ class CreatePriority extends Component {
           .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
-              self.setState({ editSaveLoading: false, editmodel: false });
+              self.setState({
+                editSaveLoading: false,
+                editmodel: false,
+                sortCreatedBy: [],
+                sortFilterCreatedBy: [],
+                sortFilterName: [],
+                sortName: [],
+                sortStatus: [],
+                sortFilterStatus: [],
+              });
               self.handleGetPriorityList();
               NotificationManager.success("Priority updated successfully.");
               self.setState({
@@ -1108,6 +1117,19 @@ class CreatePriority extends Component {
     }
   }
 
+  handleClearSearch() {
+    this.setState({
+      spriortyNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      screatedDateFilterCheckbox: "",
+      sortFilterCreatedDate: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      priorityData: this.state.sortAllData,
+    });
+  }
   render() {
     return (
       <React.Fragment>
@@ -1164,9 +1186,12 @@ class CreatePriority extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>

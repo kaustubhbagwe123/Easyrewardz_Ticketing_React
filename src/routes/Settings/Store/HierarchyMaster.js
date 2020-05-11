@@ -446,9 +446,17 @@ class HierarchyMaster extends Component {
           "all,",
           ""
         );
-        if (sdesignationNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sdesignationNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -472,9 +480,17 @@ class HierarchyMaster extends Component {
       if (type === "value" && type !== "All") {
         sreportToFilterCheckbox = sreportToFilterCheckbox.replace("all", "");
         sreportToFilterCheckbox = sreportToFilterCheckbox.replace("all,", "");
-        if (sreportToFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sreportToFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sreportToFilterCheckbox = sreportToFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -504,9 +520,17 @@ class HierarchyMaster extends Component {
           "all,",
           ""
         );
-        if (screatedbypersonFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedbypersonFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedbypersonFilterCheckbox = screatedbypersonFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -530,9 +554,17 @@ class HierarchyMaster extends Component {
       if (type === "value" && type !== "All") {
         sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all", "");
         sstatusFilterCheckbox = sstatusFilterCheckbox.replace("all,", "");
-        if (sstatusFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sstatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sstatusFilterCheckbox = sstatusFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -800,7 +832,7 @@ class HierarchyMaster extends Component {
     }
     if (this.state.sortColumn === "status") {
       var sortFilterStatus = matchSorter(
-        this.state.sortCreatedBy,
+        this.state.sortStatus,
         e.target.value,
         {
           keys: ["status"],
@@ -1173,6 +1205,21 @@ class HierarchyMaster extends Component {
     }
   }
 
+  handleClearSearch() {
+    this.setState({
+      sdesignationNameFilterCheckbox: "",
+      sreportToFilterCheckbox: "",
+      screatedbypersonFilterCheckbox: "",
+      sstatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      hierarchyData: this.state.sortAllData,
+      temphierarchyData: [],
+    });
+  }
+
   render() {
     const { hierarchyData } = this.state;
 
@@ -1231,9 +1278,12 @@ class HierarchyMaster extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>
@@ -1282,9 +1332,9 @@ class HierarchyMaster extends Component {
                             name={item.designationName}
                             id={"fil-open" + item.designationName}
                             value={item.designationName}
-                            checked={this.state.sdesignationNameFilterCheckbox.includes(
-                              item.designationName
-                            )}
+                            checked={this.state.sdesignationNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.designationName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "designationName",
@@ -1302,29 +1352,31 @@ class HierarchyMaster extends Component {
 
                   {this.state.sortColumn === "reportTo"
                     ? this.state.sortFilterReportTo !== null &&
-                      this.state.sortFilterReportTo.map((item, i) => (
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            name="filter-type"
-                            id={"fil-open" + item.reportTo}
-                            value={item.reportTo}
-                            checked={this.state.sreportToFilterCheckbox.includes(
-                              item.reportTo
-                            )}
-                            onChange={this.setSortCheckStatus.bind(
-                              this,
-                              "reportTo",
-                              "value"
-                            )}
-                          />
-                          <label htmlFor={"fil-open" + item.reportTo}>
-                            <span className="table-btn table-blue-btn">
-                              {item.reportTo}
-                            </span>
-                          </label>
-                        </div>
-                      ))
+                      this.state.sortFilterReportTo.length > 0
+                      ? this.state.sortFilterReportTo.map((item, i) => (
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open" + item.reportTo}
+                              value={item.reportTo}
+                              checked={this.state.sreportToFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.reportTo)}
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "reportTo",
+                                "value"
+                              )}
+                            />
+                            <label htmlFor={"fil-open" + item.reportTo}>
+                              <span className="table-btn table-blue-btn">
+                                {item.reportTo}
+                              </span>
+                            </label>
+                          </div>
+                        ))
+                      : "No Record Found"
                     : null}
 
                   {this.state.sortColumn === "createdbyperson"
@@ -1336,9 +1388,9 @@ class HierarchyMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdbyperson}
                             value={item.createdbyperson}
-                            checked={this.state.screatedbypersonFilterCheckbox.includes(
-                              item.createdbyperson
-                            )}
+                            checked={this.state.screatedbypersonFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.createdbyperson)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdbyperson",
@@ -1363,9 +1415,9 @@ class HierarchyMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.status}
                             value={item.status}
-                            checked={this.state.sstatusFilterCheckbox.includes(
-                              item.status
-                            )}
+                            checked={this.state.sstatusFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.status)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "status",
@@ -1397,10 +1449,10 @@ class HierarchyMaster extends Component {
                         Header: (
                           <span
                             className={
-                            this.state.sortHeader === "Designation"
-                              ? "sort-column"
-                              : ""
-                          }
+                              this.state.sortHeader === "Designation"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
@@ -1424,11 +1476,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                          className={
-                            this.state.sortHeader === "Report To"
-                              ? "sort-column"
-                              : ""
-                          }
+                            className={
+                              this.state.sortHeader === "Report To"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reportTo",
@@ -1452,11 +1504,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                          className={
-                            this.state.sortHeader === "Created By"
-                              ? "sort-column"
-                              : ""
-                          }
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdbyperson",
@@ -1527,11 +1579,11 @@ class HierarchyMaster extends Component {
                       {
                         Header: (
                           <span
-                          className={
-                            this.state.sortHeader === "Status"
-                              ? "sort-column"
-                              : ""
-                          }
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
