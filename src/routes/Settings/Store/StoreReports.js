@@ -131,6 +131,7 @@ class StoreReports extends Component {
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
       selectedReportName: "",
+      selectedReportNameHolder: "",
       ReportParams: {},
       Schedule_ID: 0,
       selectedNoOfDay: 0,
@@ -169,7 +170,9 @@ class StoreReports extends Component {
         },
       ],
       reportID: 0,
+      reportIDHolder: 0,
       selectedTaskStatus: "",
+      edit: false,
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -301,6 +304,7 @@ class StoreReports extends Component {
       selectedNameOfMonthForDailyYear: "",
       selectedNameOfDayForYear: [],
       selectedScheduleTime: "",
+      selectedTeamMemberCommaSeperated: "",
     });
   }
 
@@ -1034,15 +1038,25 @@ class StoreReports extends Component {
   handleAddReportOpen() {
     this.setState({ AddReportPopup: true });
     this.handleClearTabData();
+    this.handleClearScheduleData();
   }
   handleAddReportClose() {
-    this.setState({ AddReportPopup: false });
+    this.setState({ AddReportPopup: false, edit: false });
     // this.handleClearTabData();
   }
   handleNextPopupOpen(activeTabId) {
+    debugger;
     //this.handleAddReportClose();
     this.handleGetStoreReportSearch(activeTabId);
     this.setState({ NextPopup: true });
+    if (this.state.edit) {
+      let selectedReportName = this.state.selectedReportNameHolder;
+      let reportID = this.state.reportIDHolder;
+      this.setState({
+        selectedReportName,
+        reportID,
+      });
+    }
   }
   handleNextPopupClose() {
     this.setState({ NextPopup: false, selectedReportName: "" });
@@ -1216,6 +1230,7 @@ class StoreReports extends Component {
     debugger;
     let self = this;
     var taskStatus = "";
+    this.setState({ selectedTaskStatus: "" });
     var paramData = {};
     for (var a = 0; a < this.state.taskStatus.length; a++) {
       this.state.selectedTaskStatus +=
@@ -1367,7 +1382,9 @@ class StoreReports extends Component {
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false, selectedTeamMember: [] });
-    this.handleClearScheduleData();
+    if (!this.state.edit) {
+      this.handleClearScheduleData();
+    }
   };
 
   handleScheduleDateChange = (e) => {
@@ -1983,6 +2000,7 @@ class StoreReports extends Component {
 
   handleEditReport = (rowData) => {
     debugger;
+    this.setState({ edit: true });
     this.handleAddReportOpen();
     debugger;
     setTimeout(() => {
@@ -2074,8 +2092,10 @@ class StoreReports extends Component {
       // this.state.campaignEndDateFrom = allTab["CampaignStartDate"];
       // this.state.campaignEndDateTo = allTab["CampaignEndDate"];
 
-      this.state.selectedReportName = rowData.reportName;
-      this.state.reportID = rowData.reportID;
+      this.setState({
+        selectedReportNameHolder: rowData.reportName,
+        reportIDHolder: rowData.reportID,
+      });
 
       // //////////////////Scheduler/////////////////////////
       this.state.IsDaily = rowData.isDaily;
@@ -2320,7 +2340,7 @@ class StoreReports extends Component {
       url: config.apiUrl + "/StoreReport/DownloadStoreReport",
       headers: authHeader(),
       params: {
-        SchedulerID: id,
+        ReportID: id,
       },
     })
       .then(function(res) {
@@ -2429,7 +2449,7 @@ class StoreReports extends Component {
                   className="downloadaction"
                   onClick={this.handleDownload.bind(
                     this,
-                    row.original.scheduleID
+                    row.original.reportID
                   )}
                 />
               )}

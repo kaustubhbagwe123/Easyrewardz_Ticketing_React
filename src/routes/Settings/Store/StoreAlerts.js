@@ -13,7 +13,7 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import Demo from "./../../../store/Hashtag";
-import { faCaretDown ,faCaretUp} from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import LetterBox from "./../../../assets/Images/SecuredLetter2.png";
 import SmsImg from "./../../../assets/Images/Sms.png";
 import NotificationImg from "./../../../assets/Images/Notification.png";
@@ -2201,7 +2201,7 @@ class Alerts extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "alertTypeName",
                       },
                       {
@@ -2306,7 +2306,7 @@ class Alerts extends Component {
                             </div>
                           );
                         },
-                        sortable:false,
+                        sortable: false,
                         accessor: "createdBy",
                       },
                       {
@@ -2330,7 +2330,7 @@ class Alerts extends Component {
                             />
                           </span>
                         ),
-                        sortable:false,
+                        sortable: false,
                         accessor: "isAlertActive",
                       },
                       {
@@ -2341,7 +2341,7 @@ class Alerts extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">

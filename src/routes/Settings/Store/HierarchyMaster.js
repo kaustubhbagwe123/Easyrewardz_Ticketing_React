@@ -203,6 +203,7 @@ class HierarchyMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
       temphierarchyData: [],
+      isortA: false,
       isATOZ: true,
     };
 
@@ -280,6 +281,10 @@ class HierarchyMaster extends Component {
         StatusModel: false,
         hierarchyData: this.state.sortAllData,
         filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
+        hierarchyData: this.state.isortA
+          ? this.state.itemData
+          : this.state.sortAllData,
         sortFilterDesignation: this.state.sortDesignation,
         sortFilterReportTo: this.state.sortReportTo,
         sortFilterCreatedBy: this.state.sortCreatedBy,
@@ -850,6 +855,8 @@ class HierarchyMaster extends Component {
 
   // get item list
   handleGetItem() {
+    let self = this;
+
     axios({
       method: "post",
       url: config.apiUrl + "/StoreHierarchy/ListStoreHierarchy",
@@ -861,9 +868,11 @@ class HierarchyMaster extends Component {
         let data = response.data.responseData;
 
         if (data !== null) {
-          this.state.sortAllData = data;
+          self.setState({ sortAllData: data });
           var unique = [];
           var distinct = [];
+          var sortDesignation = [];
+          var sortFilterDesignation = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].designationName]) {
               distinct.push(data[i].designationName);
@@ -871,14 +880,17 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            this.state.sortDesignation.push({ designationName: distinct[i] });
-            this.state.sortFilterDesignation.push({
+            sortDesignation.push({ designationName: distinct[i] });
+            sortFilterDesignation.push({
               designationName: distinct[i],
             });
           }
 
           var unique = [];
           var distinct = [];
+          var sortReportTo = [];
+          var sortFilterReportTo = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].reportTo]) {
               distinct.push(data[i].reportTo);
@@ -886,12 +898,14 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            this.state.sortReportTo.push({ reportTo: distinct[i] });
-            this.state.sortFilterReportTo.push({ reportTo: distinct[i] });
+            sortReportTo.push({ reportTo: distinct[i] });
+            sortFilterReportTo.push({ reportTo: distinct[i] });
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreatedBy = [];
+          var sortFilterCreatedBy = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdbyperson]) {
               distinct.push(data[i].createdbyperson);
@@ -899,14 +913,16 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            this.state.sortCreatedBy.push({ createdbyperson: distinct[i] });
-            this.state.sortFilterCreatedBy.push({
+            sortCreatedBy.push({ createdbyperson: distinct[i] });
+            sortFilterCreatedBy.push({
               createdbyperson: distinct[i],
             });
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].status]) {
               distinct.push(data[i].status);
@@ -914,20 +930,23 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            this.state.sortStatus.push({ status: distinct[i] });
-            this.state.sortFilterStatus.push({ status: distinct[i] });
+            sortStatus.push({ status: distinct[i] });
+            sortFilterStatus.push({ status: distinct[i] });
           }
         }
 
-        if (status === "Success" && data) {
-          this.setState({
-            hierarchyData: data,
-          });
-        } else {
-          this.setState({
-            hierarchyData: [],
-          });
-        }
+        self.setState({
+          hierarchyData: data,
+          sortCreatedBy,
+          sortFilterCreatedBy,
+          sortDesignation,
+          sortFilterDesignation,
+          sortReportTo,
+          sortFilterReportTo,
+          sortStatus,
+          sortFilterStatus,
+        });
+       
       })
       .catch((response) => {
         console.log(response);
@@ -1043,6 +1062,7 @@ class HierarchyMaster extends Component {
     ) {
       return false;
     }
+    this.setState({ isortA: false });
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (data === "designationName") {
       if (
@@ -1611,7 +1631,7 @@ class HierarchyMaster extends Component {
                           var ids = row.original["designationID"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div
