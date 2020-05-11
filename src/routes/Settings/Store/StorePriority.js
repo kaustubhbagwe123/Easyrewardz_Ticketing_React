@@ -170,6 +170,7 @@ class CreatePriority extends Component {
       AddPriority: false,
       isexist: "",
       editIsExist: "",
+      isEditBtn: true,
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -208,6 +209,7 @@ class CreatePriority extends Component {
         return false;
       }
     }
+    this.setState({ isEditBtn: false });
     axios({
       method: "post",
       url: config.apiUrl + "/StorePriority/ValidateStorePriorityNameExist",
@@ -232,6 +234,7 @@ class CreatePriority extends Component {
             }
           } else {
             self.setState({
+              isEditBtn: true,
               isprority: false,
               isexist: "",
               editIsExist: "",
@@ -858,7 +861,8 @@ class CreatePriority extends Component {
         this.state.rowData.priortyName !== "" &&
         this.state.editpriorityNameCompulsion == "" &&
         this.state.isprority == false &&
-        this.state.editstatusCompulsion === ""
+        this.state.editstatusCompulsion === "" &&
+        this.state.isEditBtn === true
       ) {
         let self = this;
         var activeStatus = 0;
@@ -1365,7 +1369,7 @@ class CreatePriority extends Component {
                           sorter: (a, b) =>
                             a.priortyName.length - b.priortyName.length,
                           sortDirections: ["descend", "ascend"],
-
+                          headerSort: false,
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
@@ -1405,7 +1409,7 @@ class CreatePriority extends Component {
                           sorter: (a, b) =>
                             a.createdByName.length - b.createdByName.length,
                           sortDirections: ["descend", "ascend"],
-
+                          headerSort: false,
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
@@ -1481,6 +1485,7 @@ class CreatePriority extends Component {
                           },
                         },
                         {
+                          headerSort: false,
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
@@ -1525,6 +1530,7 @@ class CreatePriority extends Component {
                           sortDirections: ["descend", "ascend"],
                         },
                         {
+                          headerSort: false,
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
@@ -1572,6 +1578,7 @@ class CreatePriority extends Component {
                           title: "Action",
                           dataIndex: "priorityID",
                           key: "priorityID",
+                          headerSort: false,
                           render: (text, record) => {
                             return (
                               <span>

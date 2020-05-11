@@ -10,7 +10,7 @@ import { ProgressBar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Select } from "antd";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import DownExcel from "./../../../assets/Images/csv.png";
@@ -108,6 +108,7 @@ class ClaimCategoryMaster extends Component {
       ssubCategoryNameFilterCheckbox: "",
       sissueTypeNameFilterCheckbox: "",
       sstatusNameFilterCheckbox: "",
+      isATOZ: true,
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -170,6 +171,7 @@ class ClaimCategoryMaster extends Component {
     }
     this.setState({
       isortA: true,
+      isATOZ: false,
       categoryGridData: itemsArray,
     });
     setTimeout(() => {
@@ -181,7 +183,6 @@ class ClaimCategoryMaster extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.categoryGridData;
-    var headerName = "";
 
     if (this.state.sortColumn === "brandName") {
       itemsArray.sort((a, b) => {
@@ -221,6 +222,7 @@ class ClaimCategoryMaster extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       categoryGridData: itemsArray,
     });
     setTimeout(() => {
@@ -1043,7 +1045,7 @@ class ClaimCategoryMaster extends Component {
       if (this.state.category_Id === 1) {
         finalId = this.state.list1Value;
       } else {
-        finalId = this.state.list1Value;
+        finalId = this.state.category_Id;
       }
     }
 
@@ -1740,7 +1742,7 @@ class ClaimCategoryMaster extends Component {
           } else {
             self.setState({
               showProgress: false,
-              isFileUploadFail: true,
+              // isFileUploadFail: true,
               progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
@@ -2029,7 +2031,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                              className={this.state.brandColor}
+                            className={
+                              this.state.sortHeader === "Brand"
+                                ? "sort-column"
+                                : ""
+                            }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName",
@@ -2037,7 +2043,14 @@ class ClaimCategoryMaster extends Component {
                               )}
                             >
                               Brand Name
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Brand"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2046,7 +2059,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                              className={this.state.categoryColor}
+                            className={
+                              this.state.sortHeader === "Category"
+                                ? "sort-column"
+                                : ""
+                            }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "categoryName",
@@ -2054,7 +2071,14 @@ class ClaimCategoryMaster extends Component {
                               )}
                             >
                               Claim Category
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Category"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2063,7 +2087,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                              className={this.state.subCategoryColor}
+                            className={
+                              this.state.sortHeader === "SubCategory"
+                                ? "sort-column"
+                                : ""
+                            }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName",
@@ -2071,7 +2099,14 @@ class ClaimCategoryMaster extends Component {
                               )}
                             >
                               Claim Sub Cat
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "SubCategory"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2080,7 +2115,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                              className={this.state.issueColor}
+                            className={
+                              this.state.sortHeader === "IssueType"
+                                ? "sort-column"
+                                : ""
+                            }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName",
@@ -2088,7 +2127,14 @@ class ClaimCategoryMaster extends Component {
                               )}
                             >
                               Claim Issue Type
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "IssueType"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,
@@ -2097,7 +2143,11 @@ class ClaimCategoryMaster extends Component {
                         {
                           Header: (
                             <span
-                              className={this.state.statusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "statusName",
@@ -2105,7 +2155,14 @@ class ClaimCategoryMaster extends Component {
                               )}
                             >
                               Status
-                              <FontAwesomeIcon icon={faCaretDown} />
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
                           ),
                           sortable: false,

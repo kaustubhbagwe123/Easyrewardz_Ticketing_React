@@ -369,15 +369,13 @@ class RaiseClaim extends Component {
   handlePercentageOnChange = (e) => {
     debugger;
     const input = e.target.value;
-    let IsNumber=false;
+    let IsNumber = false;
     let RE = /^-?\d*(\.\d+)?$/;
     //IsNumber= RE.test(value);
-    if(!isNaN(input))
-    {
-      this.setState({claimPercentage:input});
-    }
-    else{     
-      this.setState({claimPercentage:""});
+    if (!isNaN(input)) {
+      this.setState({ claimPercentage: input });
+    } else {
+      this.setState({ claimPercentage: "" });
     }
   };
   handleGetBrandList() {
@@ -925,9 +923,33 @@ class RaiseClaim extends Component {
       if (e.currentTarget.name === "claimPercentage") {
         this.state.errors["ClaimPercent"] = "";
         this.setState({
-          [e.currentTarget.name]: e.currentTarget.value,
           errors: this.state.errors,
         });
+
+        if (isNaN(e.currentTarget.value)) {
+          return false;
+        }
+        var splitText = e.currentTarget.value.split(".");
+        var index = e.currentTarget.value.indexOf(".");
+        if (parseFloat(e.currentTarget.value) <= 100) {
+          if (index != -1) {
+            if (splitText) {
+              if (splitText[1].length <= 2) {
+                if (index != -1 && splitText.length === 2) {
+                  this.setState({ claimPercentage: e.currentTarget.value });
+                }
+              } else {
+                return false;
+              }
+            } else {
+              this.setState({ claimPercentage: e.currentTarget.value });
+            }
+          } else {
+            this.setState({ claimPercentage: e.currentTarget.value });
+          }
+        } else {
+          this.setState({ claimPercentage: "" });
+        }
       } else {
         this.setState({
           [e.currentTarget.name]: e.currentTarget.value,

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";
@@ -36,14 +36,15 @@ class StoreCRMRole extends Component {
       crmRoles: [],
       ModulesEnabled: "",
       ModulesDisabled: "",
-      modulesList: [
-        { moduleId: 1, moduleName: "Dashboard", isActive: true },
-        { moduleId: 2, moduleName: "Tasks", isActive: false },
-        { moduleId: 3, moduleName: "Claim", isActive: true },
-        { moduleId: 4, moduleName: "Notification", isActive: true },
-        { moduleId: 5, moduleName: "Settings", isActive: true },
-        { moduleId: 6, moduleName: "Reports", isActive: false },
-      ],
+      modulesList: [],
+      // modulesList: [
+      //   { moduleId: 1, moduleName: "Dashboard", isActive: true },
+      //   { moduleId: 2, moduleName: "Tasks", isActive: false },
+      //   { moduleId: 3, moduleName: "Claim", isActive: true },
+      //   { moduleId: 4, moduleName: "Notification", isActive: true },
+      //   { moduleId: 5, moduleName: "Settings", isActive: true },
+      //   { moduleId: 6, moduleName: "Reports", isActive: false },
+      // ],
       RoleName: "",
       checkRoleName: "",
       RoleisActive: 0,
@@ -79,6 +80,8 @@ class StoreCRMRole extends Component {
       progressValue: 0,
       statusCompulsory: "",
       isortA: false,
+      isATOZ: true,
+      crmData: [],
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -88,6 +91,7 @@ class StoreCRMRole extends Component {
   componentDidMount() {
     this.handleGetCRMGridData();
     this.handleModulesDefault();
+    this.handleGetStoreCrmModule();
   }
   handleTabChange(index) {
     this.setState({
@@ -126,23 +130,23 @@ class StoreCRMRole extends Component {
     this.setState({ RoleisActive });
   };
   ///handle change Module
-  checkModule = async (moduleId) => {
+  checkModule = async (moduleID) => {
     debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
       ModulesEnabled = "",
       ModulesDisabled = "";
     for (let i = 0; i < modulesList.length; i++) {
-      if (modulesList[i].moduleId === moduleId) {
+      if (modulesList[i].moduleID === moduleID) {
         isActive = modulesList[i].isActive;
         modulesList[i].isActive = !isActive;
       }
     }
     for (let i = 0; i < modulesList.length; i++) {
       if (modulesList[i].isActive === true) {
-        ModulesEnabled += modulesList[i].moduleId + ",";
+        ModulesEnabled += modulesList[i].moduleID + ",";
       } else if (modulesList[i].isActive === false) {
-        ModulesDisabled += modulesList[i].moduleId + ",";
+        ModulesDisabled += modulesList[i].moduleID + ",";
       }
     }
     await this.setState({
@@ -341,17 +345,10 @@ class StoreCRMRole extends Component {
               updateModulesDisabled: "",
               checkRoleName: "",
               statusCompulsory: "",
-              modulesList: [
-                { moduleId: 1, moduleName: "Dashboard", isActive: true },
-                { moduleId: 2, moduleName: "Tasks", isActive: false },
-                { moduleId: 3, moduleName: "Claim", isActive: true },
-                { moduleId: 4, moduleName: "Notification", isActive: true },
-                { moduleId: 5, moduleName: "Settings", isActive: true },
-                { moduleId: 6, moduleName: "Reports", isActive: false },
-              ],
             });
             self.handleGetCRMGridData();
-            this.handleModulesDefault();
+            self.handleModulesDefault();
+            self.handleGetStoreCrmModule();
           } else if (e === "update") {
             self.toggleEditModal();
             self.setState({
@@ -865,6 +862,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       crmRoles: itemsArray,
     });
     setTimeout(() => {
@@ -903,6 +901,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: false,
       crmRoles: itemsArray,
     });
     setTimeout(() => {
@@ -930,6 +929,28 @@ class StoreCRMRole extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+
+  handleGetStoreCrmModule() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreCrmModule",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var modulesList = response.data.responseData;
+        if (message === "Success" && modulesList) {
+          self.setState({ modulesList });
+        } else {
+          self.setState({ modulesList });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "----handleGetStoreCrmModule");
+      });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -1122,7 +1143,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.roleColor}
+                            className={
+                              this.state.sortHeader === "Role Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "roleName",
@@ -1130,7 +1155,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Role Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Role Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1175,7 +1207,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
@@ -1183,7 +1219,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Created By
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1239,7 +1282,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.statusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isRoleActive",
@@ -1247,7 +1294,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1401,17 +1455,17 @@ class StoreCRMRole extends Component {
                             </label>
                             <input
                               type="checkbox"
-                              id={"i" + item.moduleId}
+                              id={"i" + item.moduleID}
                               name="allModules"
-                              attrIds={item.moduleId}
+                              attrIds={item.moduleID}
                               checked={item.isActive}
                               onChange={this.checkModule.bind(
                                 this,
-                                item.moduleId
+                                item.moduleID
                               )}
                             />
                             <label
-                              htmlFor={"i" + item.moduleId}
+                              htmlFor={"i" + item.moduleID}
                               className="cr cr-float-auto"
                             ></label>
                           </div>
