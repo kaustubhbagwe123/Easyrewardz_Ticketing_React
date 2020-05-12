@@ -2,10 +2,12 @@ import React,{Component} from 'react';
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import Demo from "../../store/Hashtag.js";
+import { MyContext } from './../../context'
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class TaskByTickets extends Component{
     render() {
+    const TranslationContext = this.context.state.translateLanguage.default
         return (
           <div>
             <div className="table-cntr taskByTable">
@@ -734,4 +736,5 @@ class TaskByTickets extends Component{
         );
     }
 }
+TaskByTickets.contextType = MyContext;
 export default TaskByTickets;

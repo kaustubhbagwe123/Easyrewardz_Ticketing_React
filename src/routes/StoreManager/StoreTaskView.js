@@ -2,19 +2,43 @@ import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 import StrImg from "./../../assets/Images/store-black.png";
 import Demo from "./../../store/Hashtag.js";
+import { MyContext } from './../../context'
 
 class StoreTaskView extends Component {
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="store-task-view-top">
-          <p>Store ticket id : ABC1234</p>
+          <p>
+          {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.storeticketid
+                            }
+                            else {
+                              return "Store ticket id"
+                            }
+                          })()
+                        }
+           : ABC1234</p>
           <div className="str-dtls d-flex">
             <div className="str-owner">
               <div className="str-img">
                 <img src={StrImg} alt="store icon" />
               </div>
-              <p>Naman.R</p>
+              <p>
+              {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.namanr
+                            }
+                            else {
+                              return "Naman.R"
+                            }
+                          })()
+                        }
+              </p>
             </div>
             <select>
               <option>Submit as Reopen</option>
@@ -29,27 +53,69 @@ class StoreTaskView extends Component {
               <div className="task-view-cntr">
                 <div className="row mb-3">
                   <div className="col-md-12">
-                    <label>Task Title</label>
+                    <label>
+                    {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.tasktitle
+                            }
+                            else {
+                              return "Task Title"
+                            }
+                          })()
+                        }
+                    </label>
                     <input type="text" placeholder="Task Title"/>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-4 mb-3">
-                    <label>Department</label>
+                    <label>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.department
+                            }
+                            else {
+                              return "Department"
+                            }
+                          })()
+                        }</label>
                     <select>
                       <option>Internet</option>
                       <option>Internet</option>
                     </select>
                   </div>
                   <div className="col-md-4 mb-3">
-                    <label>Function</label>
+                    <label>
+                    {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.function
+                            }
+                            else {
+                              return "Function"
+                            }
+                          })()
+                        }
+                    </label>
                     <select>
                       <option>WiFi</option>
                       <option>WiFi</option>
                     </select>
                   </div>
                   <div className="col-md-4 mb-3">
-                    <label>Priority</label>
+                    <label>
+                    {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.priority
+                            }
+                            else {
+                              return "Priority"
+                            }
+                          })()
+                        }
+                    </label>
                     <select>
                       <option>High</option>
                       <option>High</option>
@@ -58,13 +124,33 @@ class StoreTaskView extends Component {
                 </div>
                 <div className="row mb-3">
                   <div className="col-md-12">
-                    <label>Task Details</label>
+                    <label>
+                    {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.taskdetails
+                            }
+                            else {
+                              return "Task Details"
+                            }
+                          })()
+                        }
+                    </label>
                     <textarea placeholder="Add Task Details"></textarea>
                   </div>
                 </div>
                 <div className="row pt-2">
                   <div className="col-md-12">
-                    <label>Comments</label>
+                    <label>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.comments
+                            }
+                            else {
+                              return "Comments"
+                            }
+                          })()
+                        }</label>
                     <textarea
                       placeholder="Add your comment here"
                       className="store-cmnts"
@@ -72,8 +158,26 @@ class StoreTaskView extends Component {
                   </div>
                 </div>
                 <div className="add-cmnts">
-                  <p>Comments: 02</p>
-                  <a href={Demo.BLANK_LINK}>Add Comment</a>
+                  <p>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.comments
+                            }
+                            else {
+                              return "Comments"
+                            }
+                          })()
+                        }: 02</p>
+                  <a href={Demo.BLANK_LINK}>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.a.addcomments
+                            }
+                            else {
+                              return "Add Comment"
+                            }
+                          })()
+                        }</a>
                 </div>
                 <div className="outer-cmnts">
                   <div className="cmnts-sctn">
@@ -87,7 +191,16 @@ class StoreTaskView extends Component {
                       <p className="fs-14 blak-clr">5 hr ago</p>
                     </div>
                     <div className="cmnts pt-1">
-                      <span>Comment :</span>
+                      <span>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.comments
+                            }
+                            else {
+                              return "Comments"
+                            }
+                          })()
+                        } :</span>
                       <p>
                         Hi Diwakar, I really appreciate you joining us at
                         Voucherify! My top priority is that you have a great
@@ -107,7 +220,16 @@ class StoreTaskView extends Component {
                       <p className="fs-14 blak-clr">5 hr ago</p>
                     </div>
                     <div className="cmnts pt-1">
-                      <span>Comment :</span>
+                      <span>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.comments
+                            }
+                            else {
+                              return "Comments"
+                            }
+                          })()
+                        } :</span>
                       <p>
                         Hi Diwakar, I really appreciate you joining us at
                         Voucherify! My top priority is that you have a great
@@ -123,7 +245,18 @@ class StoreTaskView extends Component {
               <div className="task-view-cntr task-view-right">
                 <div className="row">
                   <div className="col-md-6 mb-4">
-                    <label>Issue Raised By:</label>
+                    <label>
+                    {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.issueraisedby
+                            }
+                            else {
+                              return "Issue Raised By"
+                            }
+                          })()
+                        }
+                    :</label>
                     <div className="str-owner">
                       <div className="str-img">
                         <img src={StrImg} alt="store icon" />
@@ -132,13 +265,31 @@ class StoreTaskView extends Component {
                     </div>
                   </div>
                   <div className="col-md-6 mb-4">
-                    <label>Store Name:</label>
+                    <label>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.storename
+                            }
+                            else {
+                              return "Store Name"
+                            }
+                          })()
+                        }:</label>
                     <p>Bata Store Name</p>
                   </div>
                 </div>
                 <div className="row mb-5">
                   <div className="col-md-12">
-                    <label>Store Address:</label>
+                    <label>{
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.storeaddress
+                            }
+                            else {
+                              return "Store Address"
+                            }
+                          })()
+                        }:</label>
                     <p>
                       Opposite sardar jalebi, Sadar Bazar Rd, Sadar Bazar,
                       Roshan Pura, Gurugram, Haryana 122007
@@ -146,7 +297,18 @@ class StoreTaskView extends Component {
                   </div>
                 </div>
                 <div className="task-closure">
-                  <p className="font-weight-normal mb-2">Task Closure Date</p>
+                  <p className="font-weight-normal mb-2">
+                  {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.taskclosuredate
+                            }
+                            else {
+                              return "Task Closure Date"
+                            }
+                          })()
+                        }
+                  </p>
                   <div className="d-flex">
                     <p className="dte">28 March 19</p>
                     <div className="w-100">
@@ -164,4 +326,5 @@ class StoreTaskView extends Component {
   }
 }
 
+StoreTaskView.contextType = MyContext;
 export default StoreTaskView;

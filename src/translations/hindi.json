@@ -30,6 +30,7 @@
       "gender":"लिंग",
       "alternatenumber":"वैकल्पिक नंबर",
       "alternateemailid":"वैकल्पिक ईमेल आईडी",
+      "alternateemail":"वैकल्पिक ईमेल",
       "editcustomer":"ग्राहक संपादित करें",
       "customerorder":"ग्राहक आदेश संलग्न करना चाहते हैं",
       "yes":"हाँ",
@@ -247,7 +248,18 @@
       "assignto":"को आवंटित",
       "raiseclaim":"राईस क्लैम",
       "createclaimcategory":"दावा श्रेणी बनाएँ",
-      "editdepartment":"विभाग संपादित करें"
+      "editdepartment":"विभाग संपादित करें",
+      "searchbycustomer":"ग्राहक द्वारा खोज",
+      "pneo":"फोन नंबर, ईमेल आईडी, आदेश आईडी",
+      "orderdetials":"ऑर्डर का विवरण",
+      "noorderfound":"कोई आदेश नहीं मिला",
+      "attachproductimage":"उत्पाद छवि संलग्न करें",
+      "enteroldpassword":"पुराना पासवर्ड डालें",
+      "enternewpassword":"नया पासवर्ड दर्ज करें",
+      "enterconfirmpassword":"पासवर्ड की पुष्टि करें",
+      "enteremailid":"ईमेल आईडी दर्ज करें",
+      "forgotpassword":"पासवर्ड भूल गए",
+      "signin":"साइन इन करें"
     },
     "text":{
       "brand": "ब्रांड :",
@@ -344,7 +356,11 @@
       "opeclaimstat":"ओपन स्टैट स्टैट्स",
       "claimvsinvoiceamount":"दावा बनाम चालान राशि",
       "storeaddress":"स्टोर का पता",
-      "function":"समारोह"
+      "function":"समारोह",
+      "storeticketid":"टिकट आईडी स्टोर करें",
+      "namanr":"नमन आर",
+      "comments":"टिप्पणियाँ",
+      "taskclosuredate":"कार्य बंद करने की तारीख"
     },
     "small":{
       "moreinsights": "अधिक जानकारी देखें",
@@ -408,7 +424,8 @@
       "dowloadsamplefile":"डाउनलोड नमूना फ़ाइल",
       "sm":"एस.एम.",
       "campaign":"अभियान",
-      "taskbyticket":"टिकट द्वारा कार्य"
+      "taskbyticket":"टिकट द्वारा कार्य",
+      "addcomments":"टिप्पणी करें"
     },
     "span":{
       "status": "स्थिति",
@@ -526,7 +543,8 @@
       "department": "विभाग",
       "creationon":"निर्माण पर",
       "ticketid":"टिकट आईडी :",
-      "taskid":"कार्य आईडी:"
+      "taskid":"कार्य आईडी:",
+      "comments":"टिप्पणियाँ"
     },
     "div": {
       "viewtickets": "टिकट देखें",
@@ -595,7 +613,10 @@
       "rejectclaim":"अस्वीकार दावा",
       "addcomment":"टिप्पणी जोड़ें",
       "submittask":"कार्य सबमिट करें",
-      "addtask":"कार्य जोड़ें"
+      "addtask":"कार्य जोड़ें",
+      "submitclaim":"दावा प्रस्तुत करें",
+      "setpassword":"पासवर्ड सेट करें",
+      "recoverpassword":"गोपनीय शब्द पुन प्राप्त करे"
     },
     "strong": {
       "hierarchy": "अनुक्रम",
@@ -639,7 +660,8 @@
       "bulkupload":"बल्कू अपलोड",
       "createusers":"उपयोगकर्ता बनाएँ",
       "createalerts":"अलर्ट बनाएं",
-      "createdepartment":"विभाग बनाएँ"
+      "createdepartment":"विभाग बनाएँ",
+      "signin":"साइन इन करें"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
@@ -679,7 +701,9 @@
       "changepassword":"पासवर्ड बदलें",
       "claimcategorymaster":"दावा श्रेणी मास्टर",
       "store":"दुकान",
-      "departmentmaster":"विभाग के मास्टर"
+      "departmentmaster":"विभाग के मास्टर",
+      "tryloginagain":"फिर से लॉगिन का प्रयास करें",
+      "forgotpassword":"पासवर्ड भूल गए"
     },
     "mybutton": {
       "edit":"संपादित करें"

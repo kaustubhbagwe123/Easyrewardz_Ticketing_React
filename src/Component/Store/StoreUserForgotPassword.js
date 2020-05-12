@@ -10,6 +10,7 @@ import {
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
 import { encryption } from "../../helpers/encryption";
+import { MyContext } from '../../context'
 
 class StoreUserForgotPassword extends Component {
   constructor(props) {
@@ -91,6 +92,7 @@ class StoreUserForgotPassword extends Component {
       });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div className="auth-wrapper box-center">
         <div className="auth-content">
@@ -108,14 +110,32 @@ class StoreUserForgotPassword extends Component {
                     className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
                     style={{ fontWeight: "300" }}
                   >
-                    FORGOT PASSWORD
+                     {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.forgotpassword
+                    }
+                    else {
+                      return "FORGOT PASSWORD"
+                    }
+                  })()
+                }
                   </label>
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter New Password
+                     {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.enternewpassword
+                    }
+                    else {
+                      return "Enter New Password"
+                    }
+                  })()
+                }
                   </label>
                 </div>
                 <div className="input-group mb-3">
@@ -135,7 +155,17 @@ class StoreUserForgotPassword extends Component {
                 </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter Confirm Password
+                    
+                    {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.enterconfirmpassword
+                    }
+                    else {
+                      return "Enter Confirm Password"
+                    }
+                  })()
+                }
                   </label>
                 </div>
                 <div className="input-group mb-3">
@@ -158,7 +188,17 @@ class StoreUserForgotPassword extends Component {
                     type="submit"
                     className="recovery-pass-button program-code-button"
                   >
-                    SET PASSWORD
+                    
+                     {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.setpassword
+                    }
+                    else {
+                      return "SET PASSWORD"
+                    }
+                  })()
+                }
                   </button>
                 </div>
               </form>
@@ -171,4 +211,5 @@ class StoreUserForgotPassword extends Component {
   }
 }
 
+StoreUserForgotPassword.contextType = MyContext;
 export default StoreUserForgotPassword;

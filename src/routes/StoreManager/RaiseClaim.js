@@ -7,6 +7,7 @@ import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
 import Headphone2Img from "./../../assets/Images/headphone2.png";
 import SearchBlackImg from "./../../assets/Images/searchBlack.png";
+import { MyContext } from './../../context'
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
@@ -1251,6 +1252,7 @@ class RaiseClaim extends Component {
     }
   };
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const { orderDetailsData, customerData } = this.state;
 
     const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
@@ -1288,7 +1290,16 @@ class RaiseClaim extends Component {
               >
                 <Link to={"/store/claim"}>
                   <button type="button" className="btn-btn-claim">
-                    CANCEL
+                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.button.cancel
+                          }
+                          else {
+                            return "CANCEL"
+                          }
+                        })()
+                      }
                   </button>
                 </Link>
                 <button
@@ -1296,7 +1307,17 @@ class RaiseClaim extends Component {
                   className="btn-claim"
                   onClick={this.handleAddStoreClaim.bind(this)}
                 >
-                  SUBMIT CLAIM
+                  
+                  {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.button.submitclaim
+                          }
+                          else {
+                            return "SUBMIT CLAIM"
+                          }
+                        })()
+                      }
                 </button>
               </div>
             </div>
@@ -1313,10 +1334,33 @@ class RaiseClaim extends Component {
                       <div>
                         <div className="col-md-12">
                           <label className="label-color">
-                            <b>SEARCH CUSTOMER BY</b>
+                            <b>
+                            {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.searchbycustomer
+                          }
+                          else {
+                            return "SEARCH CUSTOMER BY"
+                          }
+                        })()
+                      }
+                            </b>
                           </label>
                           <label>
-                            (PHONE NUMBER, EMAIL ID, ORDER ID)
+                            (
+                            {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.pneo
+                          }
+                          else {
+                            return "PHONE NUMBER, EMAIL ID, ORDER ID"
+                          }
+                        })()
+                      }
+                            )
+                            
                             <span className="span-color">*</span>
                           </label>
                         </div>
@@ -1350,7 +1394,18 @@ class RaiseClaim extends Component {
                     <div className="col-md-12">
                       <div className="claim-status-card">
                         <label>
-                          <b>Claim Status: Open</b>
+                          <b>
+                          {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.claimstatus
+                          }
+                          else {
+                            return "Claim Status: Open"
+                          }
+                        })()
+                      }
+                          </b>
                         </label>
                         <div className="claimplus">
                           <span className="plusline1new"></span>
@@ -1383,7 +1438,17 @@ class RaiseClaim extends Component {
                               <div className="row">
                                 <div className="col-md-6">
                                   <label className="orderdetailtext">
-                                    Order details
+                                    
+                                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.orderdetials
+                          }
+                          else {
+                            return "Order details"
+                          }
+                        })()
+                      }
                                   </label>
                                 </div>
                                 <div className="col-md-6">
@@ -1879,7 +1944,16 @@ class RaiseClaim extends Component {
                                         this
                                       )}
                                     >
-                                      SAVE
+                                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.button.save
+                          }
+                          else {
+                            return "SAVE"
+                          }
+                        })()
+                      }
                                     </button>
                                   </div>
                                   <div className="col-md-3">
@@ -1888,7 +1962,16 @@ class RaiseClaim extends Component {
                                       className="addmanual m-t-15"
                                       onClick={this.handleAddOrder.bind(this)}
                                     >
-                                      CANCEL
+                                       {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.button.cancel
+                          }
+                          else {
+                            return "CANCEL"
+                          }
+                        })()
+                      }
                                     </button>
                                   </div>
                                 </div>
@@ -1898,7 +1981,17 @@ class RaiseClaim extends Component {
                                 <div className="row">
                                   <div className="col-md-12 uploadsechmargin">
                                     <label className="uploadsearch-text">
-                                      No order found with this number
+                                      
+                                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.noorderfound
+                          }
+                          else {
+                            return "No order found with this number"
+                          }
+                        })()
+                      }
                                     </label>
                                   </div>
                                 </div>
@@ -1912,7 +2005,16 @@ class RaiseClaim extends Component {
                                         className="uploadsearchbtn-text"
                                         onClick={this.handleAddOrder.bind(this)}
                                       >
-                                        ADD MANUALLY
+                                         {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.addmanually
+                          }
+                          else {
+                            return "ADD MANUALLY"
+                          }
+                        })()
+                      }
                                       </label>
                                     </button>
                                   </div>
@@ -1925,7 +2027,16 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="row">
                       <div className="form-group col-md-4">
-                        <label className="label-6">Brand</label>
+                        <label className="label-6"> {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.brand
+                          }
+                          else {
+                            return "Brand"
+                          }
+                        })()
+                      }</label>
                         <select
                           id="inputState"
                           className="form-control dropdown-label"
@@ -1949,7 +2060,18 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                       <div className="form-group col-md-4">
-                        <label className="label-6">Claim Category</label>
+                        <label className="label-6">
+                        {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.claimcategory
+                          }
+                          else {
+                            return "Claim Category"
+                          }
+                        })()
+                      }
+                        </label>
                         <select
                           id="inputState"
                           className="form-control dropdown-label"
@@ -1974,7 +2096,16 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                       <div className="form-group col-md-4">
-                        <label className="label-6">Sub Category</label>
+                        <label className="label-6">{
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.subcategory
+                          }
+                          else {
+                            return "Sub Category"
+                          }
+                        })()
+                      }</label>
 
                         <select
                           id="inputState"
@@ -1999,7 +2130,16 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                       <div className="form-group col-md-4">
-                        <label className="label-6">Claim Type</label>
+                        <label className="label-6">{
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.claimtype
+                          }
+                          else {
+                            return "Claim Type"
+                          }
+                        })()
+                      }</label>
                         <select
                           id="inputState"
                           className="form-control dropdown-label"
@@ -2025,7 +2165,18 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="row">
                       <div className="form-group col-md-4">
-                        <label className="label-6"> Claim Asked for %</label>
+                        <label className="label-6"> 
+                        {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.claimaskedfor
+                          }
+                          else {
+                            return "Claim Asked for %"
+                          }
+                        })()
+                      }
+                        </label>
                         <input
                           type="text"
                           className="form-control textBox"
@@ -2050,7 +2201,17 @@ class RaiseClaim extends Component {
                           className=" form-control btn-btn-claim"
                           style={{ marginTop: "0" }}
                         >
-                          Attach Product Image
+                          
+                          {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.attachproductimage
+                          }
+                          else {
+                            return "Attach Product Image"
+                          }
+                        })()
+                      }
                         </label>
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.errors["productImg"]}
@@ -2059,7 +2220,18 @@ class RaiseClaim extends Component {
                     </div>
                     <div className="row">
                       <div className="form-group col-md-4">
-                        <label className="label-6">Attached Image</label>
+                        <label className="label-6">
+                         {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.attachedimage
+                          }
+                          else {
+                            return "Attached Image"
+                          }
+                        })()
+                      }
+                        </label>
                       </div>
                     </div>
                     <div className="col-md-12">
@@ -2077,7 +2249,18 @@ class RaiseClaim extends Component {
               <div className="col-md-3">
                 <div className="card card-radius2" style={{ padding: "20px" }}>
                   <label>
-                    <b>CUSTOMER NAME</b>
+                    <b>
+                     {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.customername
+                          }
+                          else {
+                            return "CUSTOMER NAME"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
 
                   <label>
@@ -2092,27 +2275,78 @@ class RaiseClaim extends Component {
                   </label>
                   <br />
                   <label>
-                    <b>PHONE NUMBER</b>
+                    <b>
+                     {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.phonenumber
+                          }
+                          else {
+                            return "PHONE NUMBER"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{customerData.customerPhoneNumber}</label>
                   <br />
                   <label>
-                    <b>ALTERNATE NUMBER</b>
+                    <b>
+                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.alternatenumber
+                          }
+                          else {
+                            return "ALTERNATE NUMBER"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{customerData.altNumber}</label>
                   <br />
                   <label>
-                    <b>EMAIL</b>
+                    <b>{
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.email
+                          }
+                          else {
+                            return "EMAIL"
+                          }
+                        })()
+                      }</b>
                   </label>
                   <label>{customerData.customerEmailId}</label>
                   <br />
                   <label>
-                    <b>ALTERNATE EMAIL</b>
+                    <b>
+                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.alternateemail
+                          }
+                          else {
+                            return "ALTERNATE EMAIL"
+                          }
+                        })()
+                      }
+                    </b>
                   </label>
                   <label>{customerData.altEmailID}</label>
                   <br />
                   <label>
-                    <b>GENDER</b>
+                    <b>{
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.gender
+                          }
+                          else {
+                            return "GENDER"
+                          }
+                        })()
+                      }</b>
                   </label>
                   {this.state.ticketId > 0 ? (
                     <label>{customerData.gender}</label>
@@ -2136,4 +2370,5 @@ class RaiseClaim extends Component {
   }
 }
 
+RaiseClaim.contextType = MyContext;
 export default RaiseClaim;

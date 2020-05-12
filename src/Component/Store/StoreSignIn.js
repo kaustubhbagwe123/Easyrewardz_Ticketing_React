@@ -10,6 +10,7 @@ import { encryption } from "../../helpers/encryption";
 import axios from "axios";
 import { authHeader } from "../../helpers/authHeader";
 import config from "../../helpers/config";
+import { MyContext } from '../../context'
 import {
   NotificationContainer,
   NotificationManager,
@@ -193,6 +194,7 @@ class StoreSignIn extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div className="auth-wrapper box-center">
         <div className="auth-content">
@@ -203,7 +205,16 @@ class StoreSignIn extends Component {
                 <img src={Logo} alt="logo" style={{ width: "210px" }} />
               </div>
               <form name="form" onSubmit={this.handleSubmit}>
-                <label className="sign-in">SIGN IN</label>
+                <label className="sign-in"> {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.signin
+                    }
+                    else {
+                      return "SIGN IN"
+                    }
+                  })()
+                }</label>
                 <div className="input-group mb-3">
                   <input
                     type="text"
@@ -260,7 +271,16 @@ class StoreSignIn extends Component {
                     to="storeForgotpassword"
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
-                    FORGOT PASSWORD
+                     {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.link.forgotpassword
+                    }
+                    else {
+                      return "FORGOT PASSWORD"
+                    }
+                  })()
+                }
                   </Link>
                 </p>
               </div>
@@ -272,4 +292,5 @@ class StoreSignIn extends Component {
   }
 }
 
+StoreSignIn.contextType = MyContext;
 export default StoreSignIn;

@@ -3,6 +3,7 @@ import logo from "../../assets/Images/logo.jpg";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
+import { MyContext } from '../../context'
 import {
   NotificationContainer,
   NotificationManager,
@@ -150,6 +151,7 @@ class StoreChangePassword extends Component {
       });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div className="auth-wrapper box-center change-password-auth-wrapper">
         <div className="auth-content">
@@ -167,14 +169,34 @@ class StoreChangePassword extends Component {
                     className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
                     style={{ fontWeight: "300" }}
                   >
-                    CHANGE PASSWORD
+                    
+                    {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.changepassword
+                    }
+                    else {
+                      return "CHANGE PASSWORD"
+                    }
+                  })()
+                }
                   </label>
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter Old Password
+                    
+                    {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.enteroldpassword
+                    }
+                    else {
+                      return "Enter Old Password"
+                    }
+                  })()
+                }
                   </label>
                 </div>
                 <div className="input-group mb-3">
@@ -195,7 +217,17 @@ class StoreChangePassword extends Component {
                 </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter New Password
+                    
+                    {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.enternewpassword
+                    }
+                    else {
+                      return "Enter New Password"
+                    }
+                  })()
+                }
                   </label>
                 </div>
                 <div className="input-group mb-3">
@@ -215,7 +247,17 @@ class StoreChangePassword extends Component {
                 </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
-                    Enter Confirm Password
+                    
+                     {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.enterconfirmpassword
+                    }
+                    else {
+                      return "Enter Confirm Password"
+                    }
+                  })()
+                }
                   </label>
                 </div>
                 <div className="input-group mb-3">
@@ -238,7 +280,16 @@ class StoreChangePassword extends Component {
                     type="submit"
                     className="recovery-pass-button program-code-button"
                   >
-                    SET PASSWORD
+                    {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.setpassword
+                    }
+                    else {
+                      return "SET PASSWORD"
+                    }
+                  })()
+                }
                   </button>
                 </div>
               </form>
@@ -251,4 +302,5 @@ class StoreChangePassword extends Component {
   }
 }
 
+StoreChangePassword.contextType = MyContext;
 export default StoreChangePassword;

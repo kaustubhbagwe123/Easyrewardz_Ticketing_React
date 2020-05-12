@@ -7,6 +7,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 import axios from "axios";
+import { MyContext } from '../../context'
 import config from "../../helpers/config";
 
 class StoreProgramCode extends Component {
@@ -85,6 +86,7 @@ class StoreProgramCode extends Component {
   };
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div className="auth-wrapper box-center">
         <NotificationContainer></NotificationContainer>
@@ -94,7 +96,18 @@ class StoreProgramCode extends Component {
               <div className="mb-4">
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
               </div>
-              <h3 className="sign-in">SIGN IN</h3>
+              <h3 className="sign-in">
+              {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.h3.signin
+                    }
+                    else {
+                      return "SIGN IN"
+                    }
+                  })()
+                }
+              </h3>
               <form name="form" onSubmit={this.hanleChange.bind(this)}>
                 <div>
                   <input
@@ -119,7 +132,16 @@ class StoreProgramCode extends Component {
                   className="program-code-button"
                   // onClick={this.hanleChange}
                 >
-                  SUBMIT
+                  {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.submit
+                    }
+                    else {
+                      return "SUBMIT"
+                    }
+                  })()
+                }
                 </button>
               </form>
             </div>
@@ -129,4 +151,5 @@ class StoreProgramCode extends Component {
     );
   }
 }
+StoreProgramCode.contextType = MyContext;
 export default StoreProgramCode;
