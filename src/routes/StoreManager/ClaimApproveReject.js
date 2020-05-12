@@ -347,8 +347,7 @@ class ClaimApproveReject extends Component {
         } else {
           this.setState({ finalClaimPercentage: e.currentTarget.value });
         }
-      }else
-      {
+      } else {
         this.setState({ finalClaimPercentage: "" });
       }
     } else {
@@ -838,7 +837,7 @@ class ClaimApproveReject extends Component {
                       isOpen={this.state.collapse}
                       style={{ width: "100%" }}
                     >
-                      <Card>
+                      <Card className="w-100">
                         <CardBody style={{ padding: "15px 0 0 0" }}>
                           <div className="row mx-0">
                             <div className="col-md-6">
