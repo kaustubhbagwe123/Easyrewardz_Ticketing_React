@@ -172,6 +172,7 @@ class Header extends Component {
           data[i].moduleName === "Reports" &&
           data[i].modulestatus === true
         ) {
+          debugger;
           this.setState({
             reportAccess: "block",
           });
@@ -404,6 +405,12 @@ class Header extends Component {
     });
     this.setState({ cont: contDummy });
   };
+  handleReportIsVisible() {
+    debugger;
+    transferData.sendReport(this.state.reportAccess);
+    // this.props.history.push("/store/settings");
+    // React.createElement("a", { href: "/store/settings" });
+  }
 
   render() {
     return (
@@ -526,10 +533,17 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <Link
+
+            <a
+              href="/store/settings"
+              style={{ display: this.state.settingAccess }}
+              onClick={this.handleReportIsVisible.bind(this)}
+            >
+              {/* <Link
               to="/store/settings"
               style={{ display: this.state.settingAccess }}
-            >
+              onClick={this.handleReportIsVisible.bind(this)}
+            > */}
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
@@ -540,7 +554,9 @@ class Header extends Component {
               <span style={{ display: "none" }} className="icon-fullname">
                 Settings
               </span>
-            </Link>
+              {/* </Link> */}
+            </a>
+
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               {this.state.NameTag}
             </a>
@@ -778,4 +794,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

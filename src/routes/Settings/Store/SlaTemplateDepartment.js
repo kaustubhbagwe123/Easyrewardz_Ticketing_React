@@ -26,6 +26,7 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
 
 class SlaTemplateDepartment extends Component {
   constructor(props) {
@@ -689,8 +690,8 @@ class SlaTemplateDepartment extends Component {
           self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
-          var sortFilterIssueType=[];
-          var sortIssueType=[];
+          var sortFilterIssueType = [];
+          var sortIssueType = [];
 
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].functionName]) {
@@ -709,8 +710,8 @@ class SlaTemplateDepartment extends Component {
 
           var unique = [];
           var distinct = [];
-          var sortCreatedBy=[];
-          var sortFilterCreatedBy=[];
+          var sortCreatedBy = [];
+          var sortFilterCreatedBy = [];
 
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdBy]) {
@@ -727,8 +728,8 @@ class SlaTemplateDepartment extends Component {
 
           var unique = [];
           var distinct = [];
-          var sortStatus=[];
-          var sortFilterStatus=[];
+          var sortStatus = [];
+          var sortFilterStatus = [];
 
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].isSLAActive]) {
@@ -742,6 +743,15 @@ class SlaTemplateDepartment extends Component {
               sortFilterStatus.push({ isSLAActive: distinct[i] });
             }
           }
+          self.setState({
+            sortStatus,
+            sortFilterCreatedBy,
+            sortFilterIssueType,
+            sortFilterStatus,
+            sortCreatedBy,
+            sortIssueType,
+            sortAllData: data,
+          });
         }
 
         if (status === "Success") {
@@ -971,18 +981,30 @@ class SlaTemplateDepartment extends Component {
       });
   }
 
-  fileUpload = (e) => {
-    debugger;
-    var allFiles = [];
-    var selectedFiles = e.target.files;
-    if (selectedFiles) {
-      allFiles.push(selectedFiles[0]);
+  // fileUpload = (e) => {
+  //   debugger;
+  //   var allFiles = [];
+  //   var selectedFiles = e.target.files;
+  //   if (selectedFiles) {
+  //     allFiles.push(selectedFiles[0]);
 
-      var fileSize = formatSizeUnits(selectedFiles[0].size);
+  //     var fileSize = formatSizeUnits(selectedFiles[0].size);
+  //     this.setState({
+  //       fileSize,
+  //       fileN: allFiles,
+  //       fileName: allFiles[0].name,
+  //       bulkuploadCompulsion: "",
+  //     });
+  //   }
+  // };
+  fileUpload = (file) => {
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
       this.setState({
+        fileName,
         fileSize,
-        fileN: allFiles,
-        fileName: allFiles[0].name,
+        fileN: file[0],
         bulkuploadCompulsion: "",
       });
     }
@@ -1129,22 +1151,22 @@ class SlaTemplateDepartment extends Component {
 
   hanldeAddBulkUpload() {
     debugger;
-    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+    if (this.state.fileN) {
       let self = this;
 
       const formData = new FormData();
 
-      formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      formData.append("file", this.state.fileN);
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreSLA/BulkUploadStoreSLA",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
         .then(function(res) {
           debugger;
@@ -1156,8 +1178,8 @@ class SlaTemplateDepartment extends Component {
             self.handleGetSLATemplateGrid();
           } else {
             self.setState({
-              showProgress: false,
-              isFileUploadFail: true,
+              // showProgress: false,
+              // isFileUploadFail: true,
               progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
@@ -1918,7 +1940,7 @@ class SlaTemplateDepartment extends Component {
                         </CSVLink>
                       </div>
                     </div>
-                    <input
+                    {/* <input
                       id="file-upload"
                       className="file-upload d-none"
                       type="file"
@@ -1930,7 +1952,24 @@ class SlaTemplateDepartment extends Component {
                         <img src={FileUpload} alt="file-upload" />
                       </div>
                       <span>Add File</span> or Drop File here
-                    </label>
+                    </label> */}
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>Add File</span>{" "}
+                            or Drop File here
+                          </div>
+                        )}
+                      </Dropzone>
+                    </div>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.bulkuploadCompulsion}
