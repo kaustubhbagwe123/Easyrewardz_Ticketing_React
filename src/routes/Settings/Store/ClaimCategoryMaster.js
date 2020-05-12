@@ -1799,6 +1799,7 @@ class ClaimCategoryMaster extends Component {
       categoryGridData: this.state.sortAllData,
       tempcategoryGridData: [],
     });
+  }
   handleToggleCategoryAdd() {
     this.setState({ showList1: true });
   }
