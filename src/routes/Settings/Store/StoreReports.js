@@ -2450,7 +2450,11 @@ class StoreReports extends Component {
     })
       .then(function(res) {
         debugger;
-        window.open(res.data.responseData);
+        if (res.data.responseData === "") {
+          NotificationManager.error("No data in report");
+        } else {
+          window.open(res.data.responseData);
+        }
       })
       .catch((data) => {
         console.log(data);
