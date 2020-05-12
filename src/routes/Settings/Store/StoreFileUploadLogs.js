@@ -754,8 +754,7 @@ class StoreFileUploadLogs extends Component {
             Type
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false &&
-                this.state.sortHeader === "Type"
+                this.state.isATOZ == false && this.state.sortHeader === "Type"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -774,8 +773,7 @@ class StoreFileUploadLogs extends Component {
             File Name
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false &&
-                this.state.sortHeader === "Name"
+                this.state.isATOZ == false && this.state.sortHeader === "Name"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -794,8 +792,7 @@ class StoreFileUploadLogs extends Component {
             Date
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false &&
-                this.state.sortHeader === "Date"
+                this.state.isATOZ == false && this.state.sortHeader === "Date"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -862,8 +859,7 @@ class StoreFileUploadLogs extends Component {
             Status
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false &&
-                this.state.sortHeader === "Status"
+                this.state.isATOZ == false && this.state.sortHeader === "Status"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -877,7 +873,8 @@ class StoreFileUploadLogs extends Component {
         Header: <span>Error File</span>,
         accessor: "Erroor",
         Cell: (row) =>
-          row.original.fileUploadStatus === "Completed" && (
+          row.original.fileUploadStatus === "Completed" &&
+          row.original.errorFilePath && (
             <div>
               <button
                 className="downloadBtn"
@@ -887,7 +884,6 @@ class StoreFileUploadLogs extends Component {
                 )}
               >
                 DOWNLOAD
-                {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
               </button>
             </div>
           ),
@@ -896,7 +892,8 @@ class StoreFileUploadLogs extends Component {
         Header: <span>Success File</span>,
         accessor: "success",
         Cell: (row) =>
-          row.original.fileUploadStatus === "Completed" && (
+          row.original.fileUploadStatus === "Completed" &&
+          row.original.successFilePath && (
             <div>
               <button
                 className="downloadBtn"
@@ -906,7 +903,6 @@ class StoreFileUploadLogs extends Component {
                 )}
               >
                 DOWNLOAD
-                {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
               </button>
             </div>
           ),

@@ -230,6 +230,15 @@ class DepartmentMaster extends Component {
     ) {
       return false;
     }
+    this.setState({
+      sortFilterBrandName: this.state.sortBrandName,
+      sortFilterStoreCode: this.state.sortStoreCode,
+      sortFilterDepartName: this.state.sortDepartName,
+      sortFilterFunction: this.state.sortFunction,
+      sortFilterCreatedBy: this.state.sortCreated,
+      sortFilterStatus: this.state.sortStatus,
+    });
+
     if (data === "brandName") {
       if (
         this.state.screatedByFilterCheckbox !== "" ||
@@ -1556,16 +1565,16 @@ class DepartmentMaster extends Component {
     if (this.state.fileName) {
       const formData = new FormData();
       formData.append("file", this.state.file);
-      this.setState({ isShowProgress: true });
+      // this.setState({ isShowProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreDepartment/BulkUploadDepartment",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
         .then((response) => {
           var status = response.data.message;
@@ -1576,7 +1585,8 @@ class DepartmentMaster extends Component {
             self.handleGetDepartmentGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            self.setState({ isShowProgress: false });
+            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             NotificationManager.error("File not uploaded.");
           }
         })

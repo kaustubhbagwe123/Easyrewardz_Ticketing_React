@@ -19,7 +19,7 @@ import item from "./../../assets/Images/item.png";
 import department from "./../../assets/Images/department.png";
 import audit from "./../../assets/Images/audit.png";
 // import Demo from "../../store/Hashtag";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { transferData } from "./../../helpers/transferData";
 
 class Settings extends Component {
@@ -36,6 +36,7 @@ class Settings extends Component {
   componentDidMount() {
     debugger;
     this.subscription = transferData.getReport().subscribe((rep) => {
+      debugger;
       if (rep.isReport === "block") {
         this.setState({ showReport: true });
       } else if (rep.isReport === "none") {
@@ -790,4 +791,4 @@ class Settings extends Component {
   }
 }
 
-export default Settings;
+export default withRouter(Settings);

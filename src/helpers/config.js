@@ -179,7 +179,7 @@ let config = {
     ],
   ],
   claimCategoryTemplate: [
-    ["BrandName", "Category", "SubCategory", "IssueType", "StatusID"],
+    ["BrandName", "Category", "SubCategory", "IssueType", "Status"],
     ["EasyRewarz", "Exchange", "Defective Article", "Broken Shoe", "Active"],
     ["EasyRewarz", "Exchange", "Defective Article", "Broken Shoe", "Active"],
   ],
