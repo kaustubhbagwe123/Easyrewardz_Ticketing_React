@@ -20,6 +20,7 @@ import department from "./../../assets/Images/department.png";
 import audit from "./../../assets/Images/audit.png";
 // import Demo from "../../store/Hashtag";
 import { Link } from "react-router-dom";
+import { transferData } from "./../../helpers/transferData";
 
 class Settings extends Component {
   constructor(props) {
@@ -28,11 +29,19 @@ class Settings extends Component {
     this.state = {
       ticketShow: false,
       storeShow: false,
+      showReport: false,
     };
   }
 
   componentDidMount() {
     debugger;
+    this.subscription = transferData.getReport().subscribe((rep) => {
+      if (rep.isReport === "block") {
+        this.setState({ showReport: true });
+      } else if (rep.isReport === "none") {
+        this.setState({ showReport: false });
+      }
+    });
     if (this.props.location.tabName) {
       let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {
@@ -65,6 +74,11 @@ class Settings extends Component {
         storeShow: store,
       });
     }
+  }
+
+  componentWillUnmount() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
   }
 
   render() {
@@ -525,19 +539,21 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="/store/storereports" className="setting-box">
-                        <div className="setting-icons icon-small">
-                          <img src={reports} alt="reports" />
-                        </div>
-                        <div className="setting-desc">
-                          <strong>Reports</strong>
-                          <p>
-                            A system in which members of an organization or
-                            society are ranked according to relative status or
-                            authority.
-                          </p>
-                        </div>
-                      </Link>
+                      {this.state.showReport && (
+                        <Link to="/store/storereports" className="setting-box">
+                          <div className="setting-icons icon-small">
+                            <img src={reports} alt="reports" />
+                          </div>
+                          <div className="setting-desc">
+                            <strong>Reports</strong>
+                            <p>
+                              A system in which members of an organization or
+                              society are ranked according to relative status or
+                              authority.
+                            </p>
+                          </div>
+                        </Link>
+                      )}
                       <Link to="/store/storeModule" className="setting-box">
                         <div className="setting-icons">
                           <img src={modules} alt="modules" />

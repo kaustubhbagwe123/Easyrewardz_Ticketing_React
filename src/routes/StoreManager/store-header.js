@@ -52,6 +52,7 @@ class Header extends Component {
       cont: [],
       notificationAccess: "none",
       settingAccess: "none",
+      reportAccess: "none",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -167,6 +168,16 @@ class Header extends Component {
           this.setState({
             notificationAccess: "block",
           });
+        } else if (
+          data[i].moduleName === "Reports" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({
+            reportAccess: "block",
+          });
+          setTimeout(() => {
+            transferData.sendReport(this.state.reportAccess);
+          }, 100);
         }
       }
     }
