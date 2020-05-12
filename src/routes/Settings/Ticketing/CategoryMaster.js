@@ -1183,39 +1183,17 @@ class CategoryMaster extends Component {
       } else {
         activeStatus = 0;
       }
-      // if (isNaN(this.state.list1Value)) {
-      //   categorydata = this.state.category_Id;
-      // } else {
-      //   categorydata = this.state.categoryDropData.filter(
-      //     (x) => x.categoryName === this.state.list1Value
-      //   )[0].categoryID;
-      //   // categorydata = this.state.list1Value;
-      // }
+      
       categorydata = this.state.categoryDropData.filter(
         (x) => x.categoryName === this.state.list1Value
       )[0].categoryID;
 
-      // if (isNaN(this.state.ListOfSubCate)) {
-      //   subCategoryData = this.state.subCategory_Id;
-      // } else {
-      //   subCategoryData = this.state.SubCategoryDropData.filter(
-      //     (x) => x.subCategoryName === this.state.ListOfSubCate
-      //   )[0].subCategoryID;
-      //   // subCategoryData = this.state.ListOfSubCate;
-      // }
-
+      
       subCategoryData = this.state.SubCategoryDropData.filter(
         (x) => x.subCategoryName === this.state.ListOfSubCate
       )[0].subCategoryID;
 
-      // if (isNaN(this.state.ListOfIssue)) {
-      //   IssueData = this.state.issueType_Id;
-      // } else {
-      //   IssueData = this.state.ListOfIssueData.filter(
-      //     (x) => x.issueTypeName === this.state.ListOfIssue
-      //   )[0].issueTypeID;
-      //   // IssueData = this.state.ListOfIssue;
-      // }
+      
       IssueData = this.state.ListOfIssueData.filter(
         (x) => x.issueTypeName === this.state.ListOfIssue
       )[0].issueTypeID;
