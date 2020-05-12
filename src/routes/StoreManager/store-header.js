@@ -121,6 +121,8 @@ class Header extends Component {
       storeID: "",
       notificationAccess: "none",
       settingAccess: "none",
+      storeAgentDetail: [],
+      AgentID: 0
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -402,6 +404,7 @@ class Header extends Component {
             profile.length
           );
           self.setState({
+            AgentID : data.agentId,
             Email: data.agentEmailId,
             UserName: data.agentName,
             LoginTime: data.loginTime,
@@ -416,12 +419,40 @@ class Header extends Component {
             workTime: data.workTimeInPercentage,
             workTimeHours: data.totalWorkingTime,
           });
+
+          self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
       .catch((data) => {
         console.log(data);
       });
   };
+
+  handleGetStoreAgentDetailsById(agentID) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSSetting/GetStoreAgentDetailsById",
+      headers: authHeader(),
+      params: {
+        AgentID: agentID
+      },
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ storeAgentDetail: data });
+        } else {
+          self.setState({ storeAgentDetail: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
 
   ////handle logout method
   handleLogoutMethod() {
@@ -529,6 +560,7 @@ class Header extends Component {
 
     this.handleGetNewChat();
     this.handleGetOngoingChat("isRead");
+    this.handleGetStoreAgentDetailsById(this.state.AgentID);
   }
 
   ////handleGet Ongoing Chat
@@ -563,7 +595,7 @@ class Header extends Component {
               socket.on("connect", () => {
                 socket.send("hi");
                 socket.on(
-                  ongoingChatsData[i].mobileNo +
+                  "91"+ongoingChatsData[i].mobileNo +
                     ongoingChatsData[i].programCode,
                   function(data) {
                     if (self.state.mobileNo === data[3]) {
@@ -915,7 +947,7 @@ class Header extends Component {
       });
     }
     inputParam.ChatID = this.state.chatId;
-    inputParam.MobileNo = this.state.mobileNo;
+    inputParam.MobileNo = "91"+this.state.mobileNo;
     inputParam.ProgramCode = this.state.programCode;
     inputParam.Message = Message;
     inputParam.InsertChat = 1;
@@ -2263,25 +2295,29 @@ class Header extends Component {
                                     )}
                                 </div>
                               )} */}
-                            <div
-                              className="mobile-ck-send"
-                              onClick={this.handleMessageSuggestion.bind(this)}
-                              title={"Send"}
-                            >
-                              {/* <img src={Assign} alt="send img" /> */}
-                              <img src={SuggSearch} alt="send img" />
-                            </div>
-                            <div
-                              className="mobile-ck-send-btn"
-                              onClick={this.handleSendMessageToCustomer.bind(
-                                this,
-                                this.state.message,
-                                0
-                              )}
-                              title={"Send"}
-                            >
-                              <img src={Assign} alt="send img" />
-                            </div>
+                              {this.state.storeAgentDetail.length!== 0 && 
+                              this.state.storeAgentDetail[0].suggestion === 1?(
+                              <div
+                                className="mobile-ck-send"
+                                onClick={this.handleMessageSuggestion.bind(this)}
+                                title={"Send"}
+                              >
+                                {/* <img src={Assign} alt="send img" /> */}
+                                <img src={SuggSearch} alt="send img" />
+                              </div>):null}
+                              {this.state.storeAgentDetail.length!== 0 && 
+                              this.state.storeAgentDetail[0].freeText === 1?(
+                              <div
+                                className="mobile-ck-send-btn"
+                                onClick={this.handleSendMessageToCustomer.bind(
+                                  this,
+                                  this.state.message,
+                                  0
+                                )}
+                                title={"Send"}
+                              >
+                                <img src={Assign} alt="send img" />
+                              </div>):null}
                           </div>
                         </div>
                         {/* --------Card Tab----- */}

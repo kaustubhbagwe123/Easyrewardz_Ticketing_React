@@ -6,6 +6,10 @@ import SearchIcon from "./../../../assets/Images/search-icon.png";
 import ReactTable from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import { authHeader } from "../../../helpers/authHeader";
+import { NotificationManager } from "react-notifications";
 
 class HomeShopSetting extends Component {
     constructor(props) {
@@ -13,13 +17,165 @@ class HomeShopSetting extends Component {
 
         this.state = {
             FilterCollapse: false,
-            storeAgentData: [{ Id: 1, AgentName: "abc" }]
+            storeAgentData: [],
+            brandID: "",
+            brandData: [],
+            storeCode: "",
+            StoreCodeData: []
         }
     }
+
+    componentDidMount() {
+        this.handleGetBrandData();
+        this.handleGetStoreAgentListData();
+      }
 
     handleFilterCollapse() {
         this.setState((state) => ({ FilterCollapse: !this.state.FilterCollapse }));
     }
+
+    handleGetBrandData() {
+        let self = this;
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Brand/GetBrandList",
+          headers: authHeader(),
+        })
+          .then((res) => {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              self.setState({ brandData: data });
+            } else {
+              self.setState({ brandData: [] });
+            }
+          })
+          .catch((response) => {
+            console.log(response);
+          });
+    }
+
+    handleGetStoreCodeData() {
+        debugger;
+        let self = this;
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreDepartment/GetStoreCodeByBrandID",
+          headers: authHeader(),
+          params: {
+            BrandIDs: this.state.brandID,
+          },
+        })
+          .then((res) => {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              self.setState({ StoreCodeData: data });
+            } else {
+              self.setState({ StoreCodeData: [] });
+            }
+          })
+          .catch((response) => {
+            console.log(response);
+          });
+      }
+
+      handleOnBrandChangeData = async (e) => {
+        debugger;
+        await this.setState({
+          [e.target.name]: e.target.value
+        });
+        this.handleGetStoreCodeData();
+      }
+
+      handleOnStoreCodeChangeData = async (e) => {
+        debugger;
+        await this.setState({
+          [e.target.name]: e.target.value
+        });
+      }
+
+      handleGetStoreAgentListData() {
+        debugger;
+        let self = this;
+        axios({
+          method: "post",
+          url: config.apiUrl + "/HSSetting/GetStoreAgentList",
+          headers: authHeader(),
+          params: {
+            BrandID: this.state.brandID===""?0:parseInt(this.state.brandID),
+            StoreCode: this.state.storeCode
+          },
+        })
+          .then((res) => {
+            debugger;
+            let status = res.data.message;
+            let data = res.data.responseData;
+            if (status === "Success") {
+              self.setState({ storeAgentData: data });
+            } else {
+              self.setState({ storeAgentData: [] });
+            }
+          })
+          .catch((response) => {
+            console.log(response);
+          });
+      }
+
+      checkSuggestionFreeText = async (row, type) => {
+        debugger;
+        let storeAgentData = [...this.state.storeAgentData],
+        suggestion,
+        freeText
+        for (let i = 0; i < storeAgentData.length; i++) {
+            if(type === "suggestion")
+            {
+                if (storeAgentData[i].agentID === row.agentID) {
+                    suggestion = storeAgentData[i].suggestion;
+                    storeAgentData[i].suggestion = suggestion===0?1:0;
+                }
+            }
+            if(type === "freetext"){
+
+                if (storeAgentData[i].agentID === row.agentID) {
+                    freeText = storeAgentData[i].freeText;
+                    storeAgentData[i].freeText = freeText===0?1:0;
+                }
+            }
+            }
+
+        await this.setState({
+            storeAgentData
+        });
+        let self = this;
+        axios({
+            method: "post",
+            url: config.apiUrl + "/HSSetting/InsertUpdateAgentDetails",
+            headers: authHeader(),
+            data: {
+                AgentID: row.agentID,
+                BrandID: row.brandID,
+                StoreCode: row.storeCode,
+                Suggestion: row.suggestion,
+                FreeText: row.freeText
+            },
+          })
+            .then((res) => {
+              debugger;
+              let status = res.data.message;
+              let data = res.data.responseData;
+              if (status === "Success") {
+                NotificationManager.success("Record updated Successfully.");
+              } else {
+                NotificationManager.error(status);
+              }
+            })
+            .catch((response) => {
+              console.log(response);
+            });
+      };
 
     render() {
         return (
@@ -60,23 +216,10 @@ class HomeShopSetting extends Component {
                                             <CardBody>
                                                 <div className="table-expandable-sctn1">
                                                     <div className="tab-content p-0">
-                                                        <ul className="nav nav-tabs" role="tablist">
-                                                            <div className="tasksearchdiv">
-                                                                <button
-                                                                    className="btn-inv"
-                                                                    type="button"
-                                                                    style={{ margin: "10px", width: "180px" }}
-                                                                //onClick={this.handleGetStoreFilterList.bind(this)}
-                                                                >
-                                                                    VIEW SEARCH
-                                                                </button>
-                                                            </div>
-                                                        </ul>
-
                                                         <div className="container-fluid">
                                                             <div className="row all-row">
-                                                                <div className="col-md-3">
-                                                                <select
+                                                                <div className="col-md-4">
+                                                                {/* <select
                                                                         name="isTicketMapped"
                                                                     //value={this.state.isTicketMapped}
                                                                     //onChange={this.handleOnChangeData} 
@@ -84,10 +227,21 @@ class HomeShopSetting extends Component {
                                                                         <option value="">Brand</option>
                                                                         <option value="yes">bataclub</option>
                                                                         <option value="no">soch</option>
+                                                                    </select> */}
+                                                                    <select
+                                                                    name="brandID"
+                                                                    value={this.state.brandID}
+                                                                    onChange={this.handleOnBrandChangeData}
+                                                                    >
+                                                                    <option value="">Brand</option>
+                                                                    {this.state.brandData !== null &&
+                                                                    this.state.brandData.map((item, i) => (
+                                                                        <option value={item.brandID}>{item.brandName}</option>
+                                                                    ))}
                                                                     </select>
                                                                 </div>
-                                                                <div className="col-md-3">
-                                                                    <select
+                                                                <div className="col-md-4">
+                                                                    {/* <select
                                                                         name="isTicketMapped"
                                                                     //value={this.state.isTicketMapped}
                                                                     //onChange={this.handleOnChangeData} 
@@ -95,7 +249,32 @@ class HomeShopSetting extends Component {
                                                                         <option value="">Store Code</option>
                                                                         <option value="yes">Store-1</option>
                                                                         <option value="no">Store-2</option>
+                                                                    </select> */}
+                                                                    <select
+                                                                    name="storeCode"
+                                                                    value={this.state.storeCode}
+                                                                    onChange={this.handleOnStoreCodeChangeData}
+                                                                    >
+                                                                    <option value="">Store Code</option>
+                                                                    {this.state.StoreCodeData !== null &&
+                                                                    this.state.StoreCodeData.map((item, i) => (
+                                                                        <option value={item.storeCode}>{item.storeCode}</option>
+                                                                    ))}
                                                                     </select>
+                                                                </div>
+                                                                <div className="col-md-4">
+                                                                <ul role="tablist">
+                                                                    <div className="tasksearchdiv">
+                                                                        <button
+                                                                            className="btn-inv"
+                                                                            type="button"
+                                                                            style={{ margin: "10px", width: "180px" }}
+                                                                            onClick={this. handleGetStoreAgentListData.bind(this)}
+                                                                        >
+                                                                            VIEW SEARCH
+                                                                        </button>
+                                                                    </div>
+                                                                </ul>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -124,10 +303,13 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            ID <FontAwesomeIcon icon={faCaretDown} />
+                                                            Sr No. <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
-                                                    accessor: "Id",
+                                                    accessor: "agentID",
+                                                    Cell: (row) => {
+                                                        return (row.index + 1)
+                                                    }
                                                 },
                                                 {
                                                     Header: (
@@ -135,51 +317,17 @@ class HomeShopSetting extends Component {
                                                             Agent Name <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
-                                                    accessor: "AgentName",
-                                                    // Cell: (row) => {
-                                                    //     if (row.original.status !== undefined) {
-                                                    //         if (row.original.status === "New") {
-                                                    //             return (
-                                                    //                 <span className="table-btn table-yellow-btn">
-                                                    //                     <label>{row.original.status}</label>
-                                                    //                 </span>
-                                                    //             );
-                                                    //         } else if (row.original.status === "Open") {
-                                                    //             return (
-                                                    //                 <span className="table-btn table-blue-btn">
-                                                    //                     <label>{row.original.status}</label>
-                                                    //                 </span>
-                                                    //             );
-                                                    //         } else {
-                                                    //             return (
-                                                    //                 <span className="table-btn table-green-btn">
-                                                    //                     <label>{row.original.status}</label>
-                                                    //                 </span>
-                                                    //             );
-                                                    //         }
-                                                    //     }
-                                                    //     else {
-                                                    //         if (row.original.claimStatus === "New") {
-                                                    //             return (
-                                                    //                 <span className="table-btn table-yellow-btn">
-                                                    //                     <label>{row.original.claimStatus}</label>
-                                                    //                 </span>
-                                                    //             );
-                                                    //         } else if (row.original.claimStatus === "Open") {
-                                                    //             return (
-                                                    //                 <span className="table-btn table-blue-btn">
-                                                    //                     <label>{row.original.claimStatus}</label>
-                                                    //                 </span>
-                                                    //             );
-                                                    //         } else {
-                                                    //             return (
-                                                    //                 <span className="table-btn table-green-btn">
-                                                    //                     <label>{row.original.claimStatus}</label>
-                                                    //                 </span>
-                                                    //             );
-                                                    //         }
-                                                    //     }
-                                                    // },
+                                                    accessor: "agentName",
+                                                    
+                                                },
+                                                {
+                                                    Header: (
+                                                        <span>
+                                                            Email ID <FontAwesomeIcon icon={faCaretDown} />
+                                                        </span>
+                                                    ),
+                                                    accessor: "emailID",
+                                                    
                                                 },
                                                 {
                                                     Header: (
@@ -187,22 +335,24 @@ class HomeShopSetting extends Component {
                                                             Suggestion
                                                         </span>
                                                     ),
-                                                    accessor: "issueTypeName",
+                                                    accessor: "suggestion",
+                                                    sortable: false,
                                                     Cell: (row) => {
                                                        return (<div className="switch switch-primary d-inline m-r-10">
                                                             <input
                                                                 type="checkbox"
-                                                                id={"i1"}
+                                                                id={"i"+row.index}
                                                                 name="allModules"
                                                                 //attrIds={item.moduleId}
-                                                                //checked={item.isActive}
-                                                                // onChange={this.checkModule.bind(
-                                                                //     this,
-                                                                //     item.moduleId
-                                                                // )}
+                                                                checked={row.original.suggestion===0?true:false}
+                                                                onChange={this.checkSuggestionFreeText.bind(
+                                                                    this,
+                                                                    row.original,
+                                                                    "suggestion"
+                                                                )}
                                                             />
                                                             <label
-                                                                htmlFor={"i1"}
+                                                                htmlFor={"i"+row.index}
                                                                 className="cr cr-float-auto"
                                                                 style={{float: "inherit"}}
                                                             ></label>
@@ -215,22 +365,24 @@ class HomeShopSetting extends Component {
                                                             Free Text
                                                         </span>
                                                     ),
-                                                    accessor: "raiseBy",
+                                                    accessor: "freeText",
+                                                    sortable: false,
                                                     Cell: (row) => {
                                                         return (<div className="switch switch-primary d-inline m-r-10">
                                                             <input
                                                                 type="checkbox"
-                                                                id={"i2"}
+                                                                id={"j"+row.index}
                                                                 name="allModules"
                                                                 //attrIds={item.moduleId}
-                                                                //checked={item.isActive}
-                                                                // onChange={this.checkModule.bind(
-                                                                //     this,
-                                                                //     item.moduleId
-                                                                // )}
+                                                                checked={row.original.freeText===0?true:false}
+                                                                onChange={this.checkSuggestionFreeText.bind(
+                                                                    this,
+                                                                    row.original,
+                                                                    "freetext"
+                                                                )}
                                                             />
                                                             <label
-                                                                htmlFor={"i2"}
+                                                                htmlFor={"j"+row.index}
                                                                 className="cr cr-float-auto"
                                                                 style={{float: "inherit"}}
                                                             ></label>
@@ -242,7 +394,7 @@ class HomeShopSetting extends Component {
                                             defaultPageSize={10}
                                             minRows={2}
                                             showPagination={true}
-                                            getTrProps={this.HandleRowClickPage}
+                                            // getTrProps={this.HandleRowClickPage}
                                         />
                                     </div>
                                 </div>
