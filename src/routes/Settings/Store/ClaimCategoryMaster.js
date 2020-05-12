@@ -1091,7 +1091,13 @@ class ClaimCategoryMaster extends Component {
     let self = this;
     var SubCat_Id = 0;
     if (id === "edit") {
-      SubCat_Id = this.state.editCategory.subCategoryID;
+      if (this.state.SubCategoryDropData.length > 0) {
+        SubCat_Id = this.state.SubCategoryDropData.filter(
+          (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+        )[0].subCategoryID;
+      } else {
+        SubCat_Id = this.state.editCategory.subCategoryID;
+      }
     } else {
       SubCat_Id = this.state.SubCategoryDropData.filter(
         (x) => x.subCategoryName === this.state.ListOfSubCate
@@ -1233,6 +1239,7 @@ class ClaimCategoryMaster extends Component {
               ListOfIssueData: [],
               editCategory,
               editSubCatCompulsory: "",
+              showEditAddSubCategory: false,
             });
 
             self.handleGetSubCategoryList("edit");
@@ -1259,7 +1266,13 @@ class ClaimCategoryMaster extends Component {
     var finalId = 0;
 
     if (type === "edit") {
-      finalId = this.state.editCategory.subCategoryID;
+      if (this.state.SubCategoryDropData.length > 0) {
+        finalId = this.state.SubCategoryDropData.filter(
+          (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+        )[0].subCategoryID;
+      } else {
+        finalId = this.state.editCategory.subCategoryID;
+      }
     } else {
       finalId = this.state.SubCategoryDropData.filter(
         (x) => x.subCategoryName === this.state.ListOfSubCate
@@ -1283,7 +1296,11 @@ class ClaimCategoryMaster extends Component {
           if (type == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["issueTypeID"] = data;
-            self.setState({ editCategory, editIssueCompulsory: "" });
+            self.setState({
+              editCategory,
+              editIssueCompulsory: "",
+              showEditAddIssue: false,
+            });
             self.handleGetIssueTypeList("edit");
           } else {
             self.setState({
@@ -1397,10 +1414,10 @@ class ClaimCategoryMaster extends Component {
     debugger;
     let self = this;
     if (
-      this.state.editCategory.brandID !== null &&
-      this.state.editCategory.categoryID > 0 &&
-      this.state.editCategory.subCategoryID > 0 &&
-      this.state.editCategory.issueTypeID > 0
+      this.state.editCategory.brandID !== "" &&
+      this.state.editCategory.categoryID.length>0 &&
+      this.state.editCategory.subCategoryID.length>0 &&
+      this.state.editCategory.issueTypeID.length>0
     ) {
       var activeStatus = 0;
       var categorydata = 0;
@@ -1412,9 +1429,30 @@ class ClaimCategoryMaster extends Component {
       } else {
         activeStatus = false;
       }
-      categorydata = this.state.editCategory.categoryID;
-      subCategoryData = this.state.editCategory.subCategoryID;
-      IssueData = this.state.editCategory.issueTypeID;
+
+      if (isNaN(this.state.editCategory.categoryName)) {
+        categorydata = this.state.categoryDropData.filter(
+          (x) => x.categoryName === this.state.editCategory.categoryName
+        )[0].categoryID;
+      } else {
+        categorydata = this.state.editCategory.categoryID;
+      }
+
+      if (isNaN(this.state.editCategory.subCategoryName)) {
+        subCategoryData = this.state.SubCategoryDropData.filter(
+          (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+        )[0].subCategoryID;
+      } else {
+        subCategoryData = this.state.editCategory.subCategoryID;
+      }
+
+      if (isNaN(this.state.editCategory.issueTypeNameF)) {
+        IssueData = this.state.ListOfIssueData.filter(
+          (x) => x.issueTypeName === this.state.editCategory.issueTypeName
+        )[0].issueTypeID;
+      } else {
+        IssueData = this.state.editCategory.issueTypeID;
+      }
       this.setState({ editSaveLoading: true });
       axios({
         method: "post",
@@ -1442,6 +1480,9 @@ class ClaimCategoryMaster extends Component {
               ListOfSubCate: "",
               ListOfIssue: "",
               selectStatus: 0,
+              categoryDropData:[],
+              SubCategoryDropData:[],
+              ListOfIssueData:[],
               editBrandCompulsory: "",
               editCategoryCompulsory: "",
               editSubCatCompulsory: "",
@@ -1584,9 +1625,12 @@ class ClaimCategoryMaster extends Component {
   };
   handleBrandChange = (e) => {
     debugger;
-    this.setState({
-      selectBrandMulti: e,
-    });
+    if (e === null) {
+      e = [];
+      this.setState({ selectBrandMulti: e });
+    } else {
+      this.setState({ selectBrandMulti: e });
+    }
   };
   handleEditDropDownChange = (e) => {
     debugger;
