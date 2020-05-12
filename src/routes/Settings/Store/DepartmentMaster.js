@@ -150,7 +150,6 @@ class DepartmentMaster extends Component {
   };
   ////handle detapartment onchange
   handleDepartmentChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       this.setState({
         list1Value: value,
@@ -167,7 +166,6 @@ class DepartmentMaster extends Component {
   };
   ////handle function change name
   handleFunctionOnChange = (value) => {
-    debugger;
     if (value !== NEW_ITEM) {
       this.setState({ listFunction: value });
     } else {
@@ -182,7 +180,6 @@ class DepartmentMaster extends Component {
   }
   ///Get data for department update
   hanldeEditDepartment(rowData) {
-    debugger;
     var editDepartment = {};
 
     editDepartment.brandID = rowData.brandID;
@@ -209,8 +206,6 @@ class DepartmentMaster extends Component {
   }
   //// handle Edit change data
   handleModalEditData = (e) => {
-    debugger;
-
     var name = e.target.name;
     var value = e.target.value;
     var editDepartment = this.state.editDepartment;
@@ -225,7 +220,6 @@ class DepartmentMaster extends Component {
   };
   /// status open modal
   StatusOpenModel(data, header) {
-    debugger;
     if (
       this.state.sortFilterBrandName.length === 0 ||
       this.state.sortFilterStoreCode.length === 0 ||
@@ -485,9 +479,8 @@ class DepartmentMaster extends Component {
 
   /// set sorting status
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
+    debugger;
 
     var sbrandNameFilterCheckbox = this.state.sbrandNameFilterCheckbox;
     var sStoreCodeFilterCheckbox = this.state.sStoreCodeFilterCheckbox;
@@ -820,7 +813,6 @@ class DepartmentMaster extends Component {
   };
   /// filter text change
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "brandName") {
@@ -833,7 +825,7 @@ class DepartmentMaster extends Component {
         this.setState({ sortFilterBrandName });
       } else {
         this.setState({
-          sortFilterBrandName: this.state.sortBrandName,
+          sortFilterBrandName: [],
         });
       }
     }
@@ -847,7 +839,7 @@ class DepartmentMaster extends Component {
         this.setState({ sortFilterStoreCode });
       } else {
         this.setState({
-          sortFilterStoreCode: this.state.sortStoreCode,
+          sortFilterStoreCode: [],
         });
       }
     }
@@ -861,7 +853,7 @@ class DepartmentMaster extends Component {
         this.setState({ sortFilterDepartName });
       } else {
         this.setState({
-          sortFilterDepartName: this.state.sortDepartName,
+          sortFilterDepartName: [],
         });
       }
     }
@@ -875,7 +867,7 @@ class DepartmentMaster extends Component {
         this.setState({ sortFilterFunction });
       } else {
         this.setState({
-          sortFilterFunction: this.state.sortFunction,
+          sortFilterFunction: [],
         });
       }
     }
@@ -889,7 +881,7 @@ class DepartmentMaster extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreated,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -903,14 +895,13 @@ class DepartmentMaster extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
   }
   /// sort status by A to Z
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.departmentGrid;
 
@@ -968,7 +959,6 @@ class DepartmentMaster extends Component {
   }
   /// sort status by Z to A
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.departmentGrid;
 
@@ -1034,7 +1024,6 @@ class DepartmentMaster extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1043,9 +1032,11 @@ class DepartmentMaster extends Component {
           self.setState({ departmentGrid: [] });
         }
         if (data !== null) {
-          self.state.sortAllData = data;
+          debugger;
           var unique = [];
           var distinct = [];
+          var sortBrandName = [];
+          var sortFilterBrandName = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].brandName]) {
               distinct.push(data[i].brandName);
@@ -1053,12 +1044,17 @@ class DepartmentMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortBrandName.push({ brandName: distinct[i] });
-            self.state.sortFilterBrandName.push({ brandName: distinct[i] });
+            if (distinct[i]) {
+              sortBrandName.push({ brandName: distinct[i] });
+              sortFilterBrandName.push({ brandName: distinct[i] });
+            }
           }
 
           var uniqueSC = [];
           var distinctSC = [];
+          var sortStoreCode = [];
+          var sortFilterStoreCode = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!uniqueSC[data[i].storeCode]) {
               distinctSC.push(data[i].storeCode);
@@ -1066,12 +1062,17 @@ class DepartmentMaster extends Component {
             }
           }
           for (let i = 0; i < distinctSC.length; i++) {
-            self.state.sortStoreCode.push({ storeCode: distinctSC[i] });
-            self.state.sortFilterStoreCode.push({ storeCode: distinctSC[i] });
+            if (distinctSC[i]) {
+              sortStoreCode.push({ storeCode: distinctSC[i] });
+              sortFilterStoreCode.push({ storeCode: distinctSC[i] });
+            }
           }
 
           var uniqueDn = [];
           var distinctDn = [];
+          var sortDepartName = [];
+          var sortFilterDepartName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!uniqueDn[data[i].departmentName]) {
               distinctDn.push(data[i].departmentName);
@@ -1079,14 +1080,19 @@ class DepartmentMaster extends Component {
             }
           }
           for (let i = 0; i < distinctDn.length; i++) {
-            self.state.sortDepartName.push({ departmentName: distinctDn[i] });
-            self.state.sortFilterDepartName.push({
-              departmentName: distinctDn[i],
-            });
+            if (distinctDn[i]) {
+              sortDepartName.push({ departmentName: distinctDn[i] });
+              sortFilterDepartName.push({
+                departmentName: distinctDn[i],
+              });
+            }
           }
 
           var uniqueFn = [];
           var distinctFn = [];
+          var sortFilterFunction = [];
+          var sortFunction = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!uniqueFn[data[i].functionName]) {
               distinctFn.push(data[i].functionName);
@@ -1094,14 +1100,19 @@ class DepartmentMaster extends Component {
             }
           }
           for (let i = 0; i < distinctFn.length; i++) {
-            self.state.sortFunction.push({ functionName: distinctFn[i] });
-            self.state.sortFilterFunction.push({
-              functionName: distinctFn[i],
-            });
+            if (distinctFn[i]) {
+              sortFunction.push({ functionName: distinctFn[i] });
+              sortFilterFunction.push({
+                functionName: distinctFn[i],
+              });
+            }
           }
 
           var unique1 = [];
           var distinct1 = [];
+          var sortCreated = [];
+          var sortFilterCreatedBy = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique1[data[i].createdBy]) {
               distinct1.push(data[i].createdBy);
@@ -1109,12 +1120,16 @@ class DepartmentMaster extends Component {
             }
           }
           for (let i = 0; i < distinct1.length; i++) {
-            self.state.sortCreated.push({ createdBy: distinct1[i] });
-            self.state.sortFilterCreatedBy.push({ createdBy: distinct1[i] });
+            if (distinct1[i]) {
+              sortCreated.push({ createdBy: distinct1[i] });
+              sortFilterCreatedBy.push({ createdBy: distinct1[i] });
+            }
           }
 
           var unique2 = [];
           var distinct2 = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique2[data[i].status]) {
               distinct2.push(data[i].status);
@@ -1122,9 +1137,26 @@ class DepartmentMaster extends Component {
             }
           }
           for (let i = 0; i < distinct2.length; i++) {
-            self.state.sortStatus.push({ status: distinct2[i] });
-            self.state.sortFilterStatus.push({ status: distinct2[i] });
+            if (distinct2[i]) {
+              sortStatus.push({ status: distinct2[i] });
+              sortFilterStatus.push({ status: distinct2[i] });
+            }
           }
+          self.setState({
+            sortBrandName,
+            sortStoreCode,
+            sortDepartName,
+            sortFunction,
+            sortCreated,
+            sortStatus,
+            sortFilterBrandName,
+            sortFilterStoreCode,
+            sortFilterDepartName,
+            sortFilterFunction,
+            sortFilterCreatedBy,
+            sortFilterStatus,
+            sortAllData: data,
+          });
         }
       })
       .catch((res) => {
@@ -1140,7 +1172,6 @@ class DepartmentMaster extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1155,7 +1186,6 @@ class DepartmentMaster extends Component {
   }
   ////get Brand data for dropdown
   handleGetStoreCodeData(data) {
-    debugger;
     let self = this;
     var finalBrandId = "";
     var brand_Ids = "";
@@ -1178,7 +1208,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1200,7 +1229,6 @@ class DepartmentMaster extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1216,7 +1244,6 @@ class DepartmentMaster extends Component {
 
   ///hanlde Add new Department
   handleAddDepartment(value) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1227,7 +1254,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1246,7 +1272,6 @@ class DepartmentMaster extends Component {
   }
   ////handle Get function by Department Id
   handleGetFunction(check) {
-    debugger;
     let self = this;
     var finalDepartmentId = 0;
     if (check === "Add") {
@@ -1263,7 +1288,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1278,7 +1302,6 @@ class DepartmentMaster extends Component {
   }
   ////handle add function base on Department Id
   handleAddFunction(value) {
-    debugger;
     let self = this;
     var finalId = 0;
     if (this.state.department_Id === 0) {
@@ -1296,7 +1319,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1316,7 +1338,6 @@ class DepartmentMaster extends Component {
   }
   /// handle create Department
   handleCreateDepartment() {
-    debugger;
     let self = this;
     if (
       this.state.selectedBrand !== null &&
@@ -1372,7 +1393,6 @@ class DepartmentMaster extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetDepartmentGridData();
@@ -1411,7 +1431,6 @@ class DepartmentMaster extends Component {
   }
   //// handle update department
   handleUpdateDepartment() {
-    debugger;
     let self = this;
     var activeStatus = 0;
     if (this.state.editDepartment.status === "Active") {
@@ -1434,7 +1453,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetDepartmentGridData();
@@ -1451,7 +1469,6 @@ class DepartmentMaster extends Component {
   }
   //// delete Department by DepartmentId
   handleDeleteDepartmentData(department_Id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1462,7 +1479,6 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetDepartmentGridData();
@@ -1475,7 +1491,6 @@ class DepartmentMaster extends Component {
   }
 
   handleSearchFunctionData(data) {
-    debugger;
     if (this.state.department_Id > 0 || this.state.list1Value > 0) {
       let self = this;
       if (data.length > 2) {
@@ -1498,7 +1513,6 @@ class DepartmentMaster extends Component {
           },
         })
           .then(function(res) {
-            debugger;
             let status = res.data.message;
             let data = res.data.responseData;
             if (status === "Success") {
@@ -1521,7 +1535,6 @@ class DepartmentMaster extends Component {
     }
   }
   fileUpload = (file) => {
-    debugger;
     if (file) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
@@ -1577,7 +1590,6 @@ class DepartmentMaster extends Component {
   }
 
   DeleteBulkUploadFile = () => {
-    debugger;
     this.setState({
       file: {},
       fileName: "",
@@ -1587,6 +1599,23 @@ class DepartmentMaster extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+
+  handleClearSearch() {
+    this.setState({
+      sbrandNameFilterCheckbox: "",
+      sStoreCodeFilterCheckbox: "",
+      sDepartNameFilterCheckbox: "",
+      sFunctionFilterCheckbox: "",
+      sstatusFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      departmentGrid: this.state.sortAllData,
+      tempDepartment: [],
+    });
+  }
 
   render() {
     const departmentList = this.state.departmentData.map((item, i) => (
@@ -1657,9 +1686,13 @@ class DepartmentMaster extends Component {
                   </div>
                 </div>
                 <a
-                  href=""
-                  style={{ margin: "0 25px", textDecoration: "underline" }}
-                  onClick={this.setSortCheckStatus.bind(this, "all")}
+                  style={{
+                    margin: "0 25px",
+                    textDecoration: "underline",
+                    color: "#2561A8",
+                    cursor: "pointer",
+                  }}
+                  onClick={this.handleClearSearch.bind(this)}
                 >
                   clear search
                 </a>
@@ -1704,9 +1737,9 @@ class DepartmentMaster extends Component {
                               name={item.brandName}
                               id={"fil-open" + item.brandName}
                               value={item.brandName}
-                              checked={this.state.sbrandNameFilterCheckbox.includes(
-                                item.brandName
-                              )}
+                              checked={this.state.sbrandNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.brandName)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "brandName",
@@ -1731,9 +1764,9 @@ class DepartmentMaster extends Component {
                               name={item.storeCode}
                               id={"fil-open" + item.storeCode}
                               value={item.storeCode}
-                              checked={this.state.sStoreCodeFilterCheckbox.includes(
-                                item.storeCode
-                              )}
+                              checked={this.state.sStoreCodeFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.storeCode)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "storeCode",
@@ -1758,9 +1791,9 @@ class DepartmentMaster extends Component {
                               name={item.departmentName}
                               id={"fil-open" + item.departmentName}
                               value={item.departmentName}
-                              checked={this.state.sDepartNameFilterCheckbox.includes(
-                                item.departmentName
-                              )}
+                              checked={this.state.sDepartNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.departmentName)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "departmentName",
@@ -1785,9 +1818,9 @@ class DepartmentMaster extends Component {
                               name={item.functionName}
                               id={"fil-open" + item.functionName}
                               value={item.functionName}
-                              checked={this.state.sFunctionFilterCheckbox.includes(
-                                item.functionName
-                              )}
+                              checked={this.state.sFunctionFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.functionName)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "functionName",
@@ -1812,9 +1845,9 @@ class DepartmentMaster extends Component {
                               name={item.createdBy}
                               id={"fil-open" + item.createdBy}
                               value={item.createdBy}
-                              checked={this.state.screatedByFilterCheckbox.includes(
-                                item.createdBy
-                              )}
+                              checked={this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "createdBy",
@@ -1839,12 +1872,13 @@ class DepartmentMaster extends Component {
                               name={item.status}
                               id={"fil-open" + item.status}
                               value={item.status}
-                              checked={this.state.sstatusFilterCheckbox.includes(
-                                item.status
-                              )}
+                              checked={this.state.sstatusFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.status)}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
-                                "status"
+                                "status",
+                                "value"
                               )}
                             />
                             <label htmlFor={"fil-open" + item.status}>
@@ -2217,7 +2251,6 @@ class DepartmentMaster extends Component {
                       animation="slide-from-top"
                       validationMsg="Please enter a department!"
                       onConfirm={(inputValue) => {
-                        debugger;
                         inputValue = inputValue.trim();
                         if (inputValue.length >= 0 && inputValue.length <= 50) {
                           if (inputValue !== "") {

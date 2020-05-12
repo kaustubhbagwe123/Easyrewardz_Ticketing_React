@@ -766,9 +766,10 @@ class ClaimCategoryMaster extends Component {
         var data = res.data;
 
         if (data !== null) {
-          self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
+          var sortBrandName = [];
+          var sortFilterBrandName = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].brandName]) {
               distinct.push(data[i].brandName);
@@ -776,12 +777,17 @@ class ClaimCategoryMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortBrandName.push({ brandName: distinct[i] });
-            self.state.sortFilterBrandName.push({ brandName: distinct[i] });
+            if (distinct[i]) {
+              sortBrandName.push({ brandName: distinct[i] });
+              sortFilterBrandName.push({ brandName: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCategory = [];
+          var sortFilterCategory = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].categoryName]) {
               distinct.push(data[i].categoryName);
@@ -789,12 +795,16 @@ class ClaimCategoryMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCategory.push({ categoryName: distinct[i] });
-            self.state.sortFilterCategory.push({ categoryName: distinct[i] });
+            if (distinct[i]) {
+              sortCategory.push({ categoryName: distinct[i] });
+              sortFilterCategory.push({ categoryName: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortSubCategory = [];
+          var sortFilterSubCategory = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].subCategoryName]) {
               distinct.push(data[i].subCategoryName);
@@ -802,14 +812,19 @@ class ClaimCategoryMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
-            self.state.sortFilterSubCategory.push({
-              subCategoryName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortSubCategory.push({ subCategoryName: distinct[i] });
+              sortFilterSubCategory.push({
+                subCategoryName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortIssueType = [];
+          var sortFilterIssueType = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].issueTypeName]) {
               distinct.push(data[i].issueTypeName);
@@ -817,12 +832,18 @@ class ClaimCategoryMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortIssueType.push({ issueTypeName: distinct[i] });
-            self.state.sortFilterIssueType.push({ issueTypeName: distinct[i] });
+            if (distinct[i]) {
+              sortIssueType.push({ issueTypeName: distinct[i] });
+              sortFilterIssueType.push({
+                issueTypeName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].statusName]) {
               distinct.push(data[i].statusName);
@@ -830,9 +851,24 @@ class ClaimCategoryMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ statusName: distinct[i] });
-            self.state.sortFilterStatus.push({ statusName: distinct[i] });
+            if (distinct[i]) {
+              sortFilterStatus.push({ statusName: distinct[i] });
+              sortStatus.push({ statusName: distinct[i] });
+            }
           }
+          self.setState({
+            sortFilterCategory,
+            sortFilterSubCategory,
+            sortFilterIssueType,
+            sortFilterStatus,
+            sortFilterBrandName,
+            sortBrandName,
+            sortSubCategory,
+            sortIssueType,
+            sortStatus,
+            sortCategory,
+            sortAllData: data,
+          });
         }
 
         if (data.length > 0) {
@@ -1738,7 +1774,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterBrandName });
       } else {
         this.setState({
-          sortFilterBrandName: this.state.sortBrandName,
+          sortFilterBrandName: [],
         });
       }
     }
@@ -1752,7 +1788,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterCategory });
       } else {
         this.setState({
-          sortFilterCategory: this.state.sortCategory,
+          sortFilterCategory: [],
         });
       }
     }
@@ -1766,7 +1802,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterSubCategory });
       } else {
         this.setState({
-          sortFilterSubCategory: this.state.sortSubCategory,
+          sortFilterSubCategory: [],
         });
       }
     }
@@ -1782,7 +1818,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueType,
+          sortFilterIssueType: [],
         });
       }
     }
@@ -1798,7 +1834,7 @@ class ClaimCategoryMaster extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -1877,6 +1913,22 @@ class ClaimCategoryMaster extends Component {
   ////set progress value of file upload
   updateUploadProgress(value) {
     this.setState({ progressValue: value });
+  }
+
+  handleClearSearch() {
+    this.setState({
+      sbrandNameFilterCheckbox: "",
+      scategoryNameFilterCheckbox: "",
+      ssubCategoryNameFilterCheckbox: "",
+      sissueTypeNameFilterCheckbox: "",
+      sstatusNameFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      categoryGridData: this.state.sortAllData,
+      tempcategoryGridData: [],
+    });
   }
   handleToggleCategoryAdd() {
     this.setState({ showList1: true });
@@ -1963,9 +2015,13 @@ class ClaimCategoryMaster extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>
@@ -2012,9 +2068,9 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox.includes(
-                              item.brandName
-                            )}
+                            checked={this.state.sbrandNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.brandName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -2039,9 +2095,9 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.categoryName}
                             value={item.categoryName}
-                            checked={this.state.scategoryNameFilterCheckbox.includes(
-                              item.categoryName
-                            )}
+                            checked={this.state.scategoryNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.categoryName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "categoryName",
@@ -2066,9 +2122,9 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.subCategoryName}
                             value={item.subCategoryName}
-                            checked={this.state.ssubCategoryNameFilterCheckbox.includes(
-                              item.subCategoryName
-                            )}
+                            checked={this.state.ssubCategoryNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.subCategoryName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "subCategoryName",
@@ -2093,9 +2149,9 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.issueTypeName}
                             value={item.issueTypeName}
-                            checked={this.state.sissueTypeNameFilterCheckbox.includes(
-                              item.issueTypeName
-                            )}
+                            checked={this.state.sissueTypeNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.issueTypeName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "issueTypeName",
@@ -2120,9 +2176,9 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.statusName}
                             value={item.statusName}
-                            checked={this.state.sstatusNameFilterCheckbox.includes(
-                              item.statusName
-                            )}
+                            checked={this.state.sstatusNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.statusName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "statusName",

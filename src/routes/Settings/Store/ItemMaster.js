@@ -1259,6 +1259,24 @@ class ItemMaster extends Component {
       }
     }
   }
+  handleClearSearch() {
+    this.setState({
+      sbrandNameFilterCheckbox: "",
+      sitemCodeFilterCheckbox: "",
+      sitemNameFilterCheckbox: "",
+      sdepartmentNameFilterCheckbox: "",
+      sitemCategoryFilterCheckbox: "",
+      sitemSubCategoryFilterCheckbox: "",
+      sitemGroupFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      itemData: this.state.sortAllData,
+      tempitemData: [],
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -1297,9 +1315,13 @@ class ItemMaster extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>

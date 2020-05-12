@@ -3,7 +3,7 @@ import Demo from "../../../store/Hashtag";
 import { Link } from "react-router-dom";
 import ReactTable from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import DownExcel from "./../../../assets/Images/black-Dld.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
@@ -27,7 +27,8 @@ import {
 } from "react-notifications";
 import moment from "moment";
 import ClaimStatus from "../../../routes/ClaimStatus";
-
+import matchSorter from "match-sorter";
+import Sorting from "./../../../assets/Images/sorting.png";
 class StoreReports extends Component {
   constructor(props) {
     super(props);
@@ -173,6 +174,24 @@ class StoreReports extends Component {
       reportIDHolder: 0,
       selectedTaskStatus: "",
       edit: false,
+      sortAllData: [],
+      sortName: [],
+      sortSchedule: [],
+      sortCreatedBy: [],
+      sortStatus: [],
+      sortColumn: "",
+      sortHeader: "",
+      StatusModel: false,
+      tempReportData: [],
+      sortFilterName: [],
+      sortFilterSchedule: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: [],
+      sreportNameFilterCheckbox: "",
+      sscheduleStatusFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sreportStatusFilterCheckbox: "",
+      isortA: false,
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -1331,9 +1350,95 @@ class StoreReports extends Component {
       .then(function(response) {
         debugger;
         var message = response.data.message;
-        var responseData = response.data.responseData;
-        if (message === "Success" && responseData.length > 0) {
-          self.setState({ storeReportData: responseData });
+        var data = response.data.responseData;
+        if (message === "Success" && data.length > 0) {
+          self.setState({ storeReportData: data });
+          if (data !== null) {
+            var unique = [];
+            var distinct = [];
+            var sortName = [];
+            var sortFilterName = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].reportName]) {
+                distinct.push(data[i].reportName);
+                unique[data[i].reportName] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortName.push({ reportName: distinct[i] });
+                sortFilterName.push({
+                  reportName: distinct[i],
+                });
+              }
+            }
+
+            var unique = [];
+            var distinct = [];
+            var sortSchedule = [];
+            var sortFilterSchedule = [];
+
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].scheduleStatus]) {
+                distinct.push(data[i].scheduleStatus);
+                unique[data[i].scheduleStatus] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortSchedule.push({ scheduleStatus: distinct[i] });
+                sortFilterSchedule.push({
+                  scheduleStatus: distinct[i],
+                });
+              }
+            }
+
+            var unique = [];
+            var distinct = [];
+            var sortCreatedBy = [];
+            var sortFilterCreatedBy = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].createdBy]) {
+                distinct.push(data[i].createdBy);
+                unique[data[i].createdBy] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortCreatedBy.push({ createdBy: distinct[i] });
+                sortFilterCreatedBy.push({ createdBy: distinct[i] });
+              }
+            }
+
+            var unique = [];
+            var distinct = [];
+            var sortStatus = [];
+            var sortFilterStatus = [];
+
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].reportStatus]) {
+                distinct.push(data[i].reportStatus);
+                unique[data[i].reportStatus] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortStatus.push({ reportStatus: distinct[i] });
+                sortFilterStatus.push({ reportStatus: distinct[i] });
+              }
+            }
+            self.setState({
+              sortAllData: data,
+              sortFilterName,
+              sortFilterCreatedBy,
+              sortFilterSchedule,
+              sortFilterStatus,
+              sortName,
+              sortCreatedBy,
+              sortSchedule,
+              sortStatus,
+            });
+          }
         }
       })
       .catch((response) => {
@@ -2352,35 +2457,666 @@ class StoreReports extends Component {
       });
   };
 
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.storeReportData;
+
+    if (this.state.sortColumn === "reportName") {
+      itemsArray.sort((a, b) => {
+        if (a.reportName < b.reportName) return 1;
+        if (a.reportName > b.reportName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.scheduleStatus < b.scheduleStatus) return 1;
+        if (a.scheduleStatus > b.scheduleStatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.reportStatus < b.reportStatus) return 1;
+        if (a.reportStatus > b.reportStatus) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      ReportData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+    itemsArray = this.state.storeReportData;
+
+    if (this.state.sortColumn === "reportName") {
+      itemsArray.sort((a, b) => {
+        if (a.reportName < b.reportName) return -1;
+        if (a.reportName > b.reportName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.scheduleStatus < b.scheduleStatus) return -1;
+        if (a.scheduleStatus > b.scheduleStatus) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.reportStatus < b.reportStatus) return -1;
+        if (a.reportStatus > b.reportStatus) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      ReportData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+  StatusOpenModel(data, header) {
+    debugger;
+
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterName.length === 0 ||
+      this.state.sortFilterSchedule.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "reportName") {
+      if (
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sscheduleStatusFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "scheduleStatus") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          sscheduleStatusFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "reportStatus") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          sscheduleStatusFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+  }
+  StatusCloseModel = (e) => {
+    if (this.state.tempReportData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        storeReportData: this.state.tempReportData,
+        filterTxtValue: "",
+        sortFilterName: this.state.sortFilterName,
+        sortFilterSchedule: this.state.sortSchedule,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
+      });
+      if (this.state.sortColumn === "reportName") {
+        if (this.state.sreportNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sscheduleStatusFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sreportStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "scheduleStatus") {
+        if (this.state.sscheduleStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sreportStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            sscheduleStatusFilterCheckbox: "",
+            sreportStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "reportStatus") {
+        if (this.state.sreportStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            sscheduleStatusFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        storeReportData: this.state.isortA
+          ? this.state.storeReportData
+          : this.state.sortAllData,
+        filterTxtValue: "",
+        sortFilterName: this.state.sortFilterName,
+        sortFilterSchedule: this.state.sortSchedule,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
+      });
+    }
+  };
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
+    var sscheduleStatusFilterCheckbox = this.state
+      .sscheduleStatusFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sreportStatusFilterCheckbox = this.state.sreportStatusFilterCheckbox;
+
+    if (column === "reportName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sreportNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sreportNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportNameFilterCheckbox.includes("all")) {
+          sreportNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportName") {
+            for (let i = 0; i < this.state.sortName.length; i++) {
+              sreportNameFilterCheckbox +=
+                this.state.sortName[i].reportName + ",";
+            }
+            sreportNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "scheduleStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sscheduleStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sscheduleStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sscheduleStatusFilterCheckbox.includes("all")) {
+          sscheduleStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "scheduleStatus") {
+            for (let i = 0; i < this.state.sortSchedule.length; i++) {
+              sscheduleStatusFilterCheckbox +=
+                this.state.sortSchedule[i].scheduleStatus + ",";
+            }
+            sscheduleStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "reportStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sreportStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sreportStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportStatusFilterCheckbox.includes("all")) {
+          sreportStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportStatus") {
+            for (let i = 0; i < this.state.sortState.length; i++) {
+              sreportStatusFilterCheckbox +=
+                this.state.sortState[i].reportStatus + ",";
+            }
+            sreportStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      sreportNameFilterCheckbox,
+      sscheduleStatusFilterCheckbox,
+      screatedByFilterCheckbox,
+      sreportStatusFilterCheckbox,
+      nameColor: "",
+      scheduleColor: "",
+      createdColor: "",
+      statusColor: "",
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "reportName") {
+      var sItems = sreportNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.reportName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        nameColor: "sort-column",
+      });
+    } else if (column === "scheduleStatus") {
+      var sItems = sscheduleStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.scheduleStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        scheduleColor: "sort-column",
+      });
+    } else if (column === "createdBy") {
+      var sItems = screatedByFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdBy === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column",
+      });
+    } else if (column === "reportStatus") {
+      var sItems = sreportStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.reportStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
+      });
+    }
+
+    this.setState({
+      tempReportData: itemsArray,
+    });
+    // this.StatusCloseModel();
+  };
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    if (this.state.sortColumn === "reportName") {
+      var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
+        keys: ["reportName"],
+      });
+      if (sortFilterName.length > 0) {
+        this.setState({ sortFilterName });
+      } else {
+        this.setState({
+          sortFilterName: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      var sortFilterSchedule = matchSorter(
+        this.state.sortSchedule,
+        e.target.value,
+        { keys: ["scheduleStatus"] }
+      );
+      if (sortFilterSchedule.length > 0) {
+        this.setState({ sortFilterSchedule });
+      } else {
+        this.setState({
+          sortFilterSchedule: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["reportStatus"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: [],
+        });
+      }
+    }
+  }
+  handleClearSearch() {
+    this.setState({
+      screatedByFilterCheckbox: "",
+      sreportNameFilterCheckbox: "",
+      sscheduleStatusFilterCheckbox: "",
+      sreportStatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      storeReportData: this.state.sortAllData,
+      tempReportData: [],
+    });
+  }
+
   render() {
     const datareport = this.state.storeReportData;
 
     const columnsreport = [
       {
         Header: (
-          <span>
+          <span
+            className={this.state.sortHeader === "Name" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(this, "reportName", "Name")}
+          >
             Name
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false && this.state.sortHeader === "Name"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "reportName",
       },
       {
         Header: (
-          <span>
+          <span
+            className={
+              this.state.sortHeader === "Schedule Status" ? "sort-column" : ""
+            }
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "scheduleStatus",
+              "Schedule Status"
+            )}
+          >
             Schedule Status
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Schedule Status"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "scheduleStatus",
       },
       {
         Header: (
-          <span>
+          <span
+            className={
+              this.state.sortHeader === "Created by" ? "sort-column" : ""
+            }
+            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created by")}
+          >
             Created by
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Created by"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "createdBy",
         Cell: (row) => {
           var ids = row.original["id"];
@@ -2429,15 +3165,26 @@ class StoreReports extends Component {
       },
       {
         Header: (
-          <span>
+          <span
+            className={this.state.sortHeader === "Status" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(this, "reportStatus", "Status")}
+          >
             Status
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false && this.state.sortHeader === "Status"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "reportStatus",
       },
       {
         Header: <span>Actions</span>,
+        sortable: false,
         accessor: "actionReport",
         Cell: (row) => (
           <div className="report-action">
@@ -2541,6 +3288,192 @@ class StoreReports extends Component {
 
     return (
       <Fragment>
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
+              >
+                clear search
+              </a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+
+                <div className="FTypeScroll">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      checked={
+                        this.state.sreportNameFilterCheckbox.includes("all") ||
+                        this.state.sscheduleStatusFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sreportStatusFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "reportName"
+                    ? this.state.sortFilterName !== null &&
+                      this.state.sortFilterName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportName}
+                            id={"fil-open" + item.reportName}
+                            value={item.reportName}
+                            checked={this.state.sreportNameFilterCheckbox.includes(
+                              item.reportName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "scheduleStatus"
+                    ? this.state.sortFilterSchedule !== null &&
+                      this.state.sortFilterSchedule.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.scheduleStatus}
+                            id={"fil-open" + item.scheduleStatus}
+                            value={item.scheduleStatus}
+                            checked={this.state.sscheduleStatusFilterCheckbox.includes(
+                              item.scheduleStatus
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "scheduleStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.scheduleStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.scheduleStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "reportStatus"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportStatus}
+                            id={"fil-open" + item.reportStatus}
+                            value={item.reportStatus}
+                            checked={this.state.sreportStatusFilterCheckbox.includes(
+                              item.reportStatus
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
             Settings

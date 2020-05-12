@@ -803,13 +803,14 @@ class ClaimApproveReject extends Component {
               <div className="card card-radius" style={{ margin: "0 0 20px" }}>
                 <div
                   className="search-customer-padding cusrow"
-                  style={{ padding: "30px 45px 30px" }}
+                  style={{ padding: "30px" }}
                 >
                   <div
                     className=""
                     style={{
                       border: "1px solid #EEE",
                       borderRadius: "5px",
+                      margin: "0 15px",
                     }}
                   >
                     <div className="claim-status-card">
@@ -972,7 +973,7 @@ class ClaimApproveReject extends Component {
                       </Card>
                     </Collapse>
                   </div>
-                  <div className="row">
+                  <div className="row w-100">
                     <div className="form-group col-md-4">
                       <label className="label-6">Brand</label>
                       <select
@@ -1162,7 +1163,7 @@ class ClaimApproveReject extends Component {
                 className="card card-radius"
                 style={{ padding: "30px 45px 30px" }}
               >
-                <div className="search-customer-padding">
+                <div className="search-customer-padding p-0">
                   <div className="row" style={{ margin: "0" }}>
                     <div
                       className="form-group col-md-4"
@@ -1188,11 +1189,11 @@ class ClaimApproveReject extends Component {
                   <div className="row" style={{ margin: "0" }}>
                     <div style={{ width: "100%" }}>
                       <label className="label-6">Comments By Approval</label>
-                      <hr></hr>
+                      <hr className="mt-0 mb-2" />
                     </div>
                     <div className="" style={{ display: "contents" }}>
                       <textarea
-                        className="ticket-comments-textarea"
+                        className="ticket-comments-textarea mt-1"
                         placeholder="Add your Comment here"
                         name="claimComments"
                         value={this.state.claimComments}
@@ -1212,7 +1213,7 @@ class ClaimApproveReject extends Component {
                       <label className="txt">ADD COMMENT</label>
                     </button>
                   </div>
-                  <div className="row" style={{ margin: "0" }}>
+                  <div className="row mt-4" style={{ margin: "0" }}>
                     <div className="">
                       <label className="label-6">
                         Comments By Approval:{" "}

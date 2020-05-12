@@ -1,6 +1,6 @@
 let config = {
   apiUrl: "https://localhost:44357/api",
-
+ 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
     ["Designation", "ReportTo", "Status"],

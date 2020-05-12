@@ -174,9 +174,11 @@ class StoreCRMRole extends Component {
           self.setState({ crmRoles: [] });
         }
         if (data !== null) {
-          self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
+          var sortRoleName = [];
+          var sortFilterRoleName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].roleName]) {
               distinct.push(data[i].roleName);
@@ -184,12 +186,19 @@ class StoreCRMRole extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortRoleName.push({ roleName: distinct[i] });
-            self.state.sortFilterRoleName.push({ roleName: distinct[i] });
+            if (distinct[i]) {
+              sortRoleName.push({ roleName: distinct[i] });
+              sortFilterRoleName.push({
+                roleName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreated = [];
+          var sortFilterCreated = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdBy]) {
               distinct.push(data[i].createdBy);
@@ -197,12 +206,21 @@ class StoreCRMRole extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreated.push({ createdBy: distinct[i] });
-            self.state.sortFilterCreated.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              sortCreated.push({
+                createdBy: distinct[i],
+              });
+              sortFilterCreated.push({
+                createdBy: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].isRoleActive]) {
               distinct.push(data[i].isRoleActive);
@@ -210,9 +228,24 @@ class StoreCRMRole extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ isRoleActive: distinct[i] });
-            self.state.sortFilterStatus.push({ isRoleActive: distinct[i] });
+            if (distinct[i]) {
+              sortStatus.push({
+                isRoleActive: distinct[i],
+              });
+              sortFilterStatus.push({
+                isRoleActive: distinct[i],
+              });
+            }
           }
+          self.setState({
+            sortCreated,
+            sortRoleName,
+            sortStatus,
+            sortFilterCreated,
+            sortFilterRoleName,
+            sortFilterStatus,
+            sortAllData: data,
+          });
         }
       })
       .catch((res) => {
@@ -954,6 +987,20 @@ class StoreCRMRole extends Component {
       });
   }
 
+  handleClearSearch() {
+    this.setState({
+      sroleNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisRoleActiveFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      crmRoles: this.state.sortAllData,
+      tempcrmRoles: [],
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -1011,9 +1058,13 @@ class StoreCRMRole extends Component {
                   </div>
                 </div>
                 <a
-                  href=""
-                  style={{ margin: "0 25px", textDecoration: "underline" }}
-                  onClick={this.setSortCheckStatus.bind(this, "all")}
+                  style={{
+                    margin: "0 25px",
+                    textDecoration: "underline",
+                    color: "#2561A8",
+                    cursor: "pointer",
+                  }}
+                  onClick={this.handleClearSearch.bind(this)}
                 >
                   clear search
                 </a>

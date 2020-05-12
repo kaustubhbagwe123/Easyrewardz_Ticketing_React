@@ -403,26 +403,73 @@ class Alerts extends Component {
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
+    itemsArray = this.state.alert;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
+    if (this.state.sortColumn === "alertTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.alertTypeName < b.alertTypeName) return -1;
+        if (a.alertTypeName > b.alertTypeName) return 1;
+        return 0;
+      });
+      this.setState({ alertColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+      this.setState({ createdColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isAlertActive < b.isAlertActive) return -1;
+        if (a.isAlertActive > b.isAlertActive) return 1;
+        return 0;
+      });
+      this.setState({ statusColor: "sort-column" });
+    }
     this.setState({
-      hierarchyData: itemsArray,
+      isortA: true,
+      isATOZ: true,
+      alert: itemsArray,
     });
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.alert;
+
+    if (this.state.sortColumn === "alertTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.alertTypeName < b.alertTypeName) return 1;
+        if (a.alertTypeName > b.alertTypeName) return -1;
+        return 0;
+      });
+      this.setState({ alertColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+      this.setState({ createdColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isAlertActive < b.isAlertActive) return 1;
+        if (a.isAlertActive > b.isAlertActive) return -1;
+        return 0;
+      });
+      this.setState({ statusColor: "sort-column" });
+    }
+
     this.setState({
-      hierarchyData: itemsArray,
+      isortA: true,
+      isATOZ: false,
+      alert: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -577,7 +624,6 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.sortAllData,
-
         filterTxtValue: "",
       });
     }
@@ -602,9 +648,17 @@ class Alerts extends Component {
           "all,",
           ""
         );
-        if (salertTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          salertTypeNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -628,9 +682,17 @@ class Alerts extends Component {
       if (type === "value" && type !== "All") {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
-        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -660,9 +722,17 @@ class Alerts extends Component {
           "all,",
           ""
         );
-        if (sisAlertActiveFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sisAlertActiveFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1903,7 +1973,7 @@ class Alerts extends Component {
         this.setState({ sortFilterAlertType });
       } else {
         this.setState({
-          sortFilterAlertType: this.state.sortAlertType,
+          sortFilterAlertType: [],
         });
       }
     }
@@ -1917,7 +1987,7 @@ class Alerts extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -1931,7 +2001,7 @@ class Alerts extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -1996,6 +2066,22 @@ class Alerts extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+  handleClearSearch() {
+    this.setState({
+      salertTypeNameFilterCheckbox: "",
+      sisAlertActiveFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      alert: this.state.sortAllData,
+      tempalert: [],
+      statusColor: "",
+      createdColor: "",
+      alertColor: "",
+    });
+  }
   render() {
     return (
       <React.Fragment>
@@ -2052,9 +2138,13 @@ class Alerts extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>
@@ -2096,9 +2186,9 @@ class Alerts extends Component {
                             name={item.alertTypeName}
                             id={"fil-open" + item.alertTypeName}
                             value={item.alertTypeName}
-                            checked={this.state.salertTypeNameFilterCheckbox.includes(
-                              item.alertTypeName
-                            )}
+                            checked={this.state.salertTypeNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.alertTypeName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "alertTypeName",
@@ -2123,9 +2213,9 @@ class Alerts extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
+                            checked={this.state.screatedByFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.createdBy)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -2150,9 +2240,9 @@ class Alerts extends Component {
                             name={item.isAlertActive}
                             id={"fil-open" + item.isAlertActive}
                             value={item.isAlertActive}
-                            checked={this.state.sisAlertActiveFilterCheckbox.includes(
-                              item.isAlertActive
-                            )}
+                            checked={this.state.sisAlertActiveFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.isAlertActive)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isAlertActive",
