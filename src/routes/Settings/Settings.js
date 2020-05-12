@@ -429,6 +429,19 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
+                      <Link to="/store/homeshopsetting" className="setting-box">
+                        <div className="setting-icons">
+                          <img src={modules} alt="modules" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Home Shop Settings</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">

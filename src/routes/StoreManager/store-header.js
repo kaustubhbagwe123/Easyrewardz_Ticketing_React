@@ -2965,25 +2965,29 @@ class Header extends Component {
                                 </div>
                               )}
 
-                            <div
-                              className="mobile-ck-send"
-                              onClick={this.handleMessageSuggestion.bind(this)}
-                              title={"Send"}
-                            >
-                              {/* <img src={Assign} alt="send img" /> */}
-                              <img src={SuggSearch} alt="send img" />
-                            </div>
-                            <div
-                              className="mobile-ck-send-btn"
-                              onClick={this.handleSendMessageToCustomer.bind(
-                                this,
-                                this.state.message,
-                                0
-                              )}
-                              title={"Send"}
-                            >
-                              <img src={Assign} alt="send img" />
-                            </div>
+                              {this.state.storeAgentDetail.length!== 0 && 
+                              this.state.storeAgentDetail[0].suggestion === 1?(
+                              <div
+                                className="mobile-ck-send"
+                                onClick={this.handleMessageSuggestion.bind(this)}
+                                title={"Send"}
+                              >
+                                {/* <img src={Assign} alt="send img" /> */}
+                                <img src={SuggSearch} alt="send img" />
+                              </div>):null}
+                              {this.state.storeAgentDetail.length!== 0 && 
+                              this.state.storeAgentDetail[0].freeText === 1?(
+                              <div
+                                className="mobile-ck-send-btn"
+                                onClick={this.handleSendMessageToCustomer.bind(
+                                  this,
+                                  this.state.message,
+                                  0
+                                )}
+                                title={"Send"}
+                              >
+                                <img src={Assign} alt="send img" />
+                              </div>):null}
                           </div>
                         </div>
                         {/* -------- Card Modal ----- */}
