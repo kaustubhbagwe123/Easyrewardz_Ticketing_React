@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Demo from "./../../../store/Hashtag.js";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
@@ -71,6 +71,9 @@ class StoreFileUploadLogs extends Component {
           self.state.sortAllData = fileUploadLog;
           var unique = [];
           var distinct = [];
+          var sortFileType = [];
+          var sortFilterFileType = [];
+
           for (let i = 0; i < fileUploadLog.length; i++) {
             if (!unique[fileUploadLog[i].fileType]) {
               distinct.push(fileUploadLog[i].fileType);
@@ -78,12 +81,17 @@ class StoreFileUploadLogs extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortFileType.push({ fileType: distinct[i] });
-            self.state.sortFilterFileType.push({ fileType: distinct[i] });
+            if (distinct[i]) {
+              sortFileType.push({ fileType: distinct[i] });
+              sortFilterFileType.push({ fileType: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortFileName = [];
+          var sortFilterFileName = [];
+
           for (let i = 0; i < fileUploadLog.length; i++) {
             if (!unique[fileUploadLog[i].fileName]) {
               distinct.push(fileUploadLog[i].fileName);
@@ -91,12 +99,17 @@ class StoreFileUploadLogs extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortFileName.push({ fileName: distinct[i] });
-            self.state.sortFilterFileName.push({ fileName: distinct[i] });
+            if (distinct[i]) {
+              sortFileName.push({ fileName: distinct[i] });
+              sortFilterFileName.push({ fileName: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreatedDate = [];
+          var sortFilterCreatedDate = [];
+
           for (let i = 0; i < fileUploadLog.length; i++) {
             if (!unique[fileUploadLog[i].date]) {
               distinct.push(fileUploadLog[i].date);
@@ -104,12 +117,17 @@ class StoreFileUploadLogs extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreatedDate.push({ createdDate: distinct[i] });
-            self.state.sortFilterCreatedDate.push({ createdDate: distinct[i] });
+            if (distinct[i]) {
+              sortCreatedDate.push({ createdDate: distinct[i] });
+              sortFilterCreatedDate.push({ createdDate: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
+
           for (let i = 0; i < fileUploadLog.length; i++) {
             if (!unique[fileUploadLog[i].fileUploadStatus]) {
               distinct.push(fileUploadLog[i].fileUploadStatus);
@@ -117,9 +135,22 @@ class StoreFileUploadLogs extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ fileUploadStatus: distinct[i] });
-            self.state.sortFilterStatus.push({ fileUploadStatus: distinct[i] });
+            if (distinct[i]) {
+              sortStatus.push({ fileUploadStatus: distinct[i] });
+              sortFilterStatus.push({ fileUploadStatus: distinct[i] });
+            }
           }
+          self.setState({
+            sortFilterFileType,
+            sortFilterFileName,
+            sortFilterCreatedDate,
+            sortFilterStatus,
+            sortFileType,
+            sortFileName,
+            sortCreatedDate,
+            sortStatus,
+            sortAllData: fileUploadLog,
+          });
         }
         if (fileUploadLog !== null && fileUploadLog !== undefined) {
           self.setState({ fileUploadLog });
@@ -662,14 +693,38 @@ class StoreFileUploadLogs extends Component {
     });
     // this.StatusCloseModel();
   };
+  handleClearSearch() {
+    this.setState({
+      screatedDateFilterCheckbox: "",
+      sfileNameFilterCheckbox: "",
+      sfileTypeFilterCheckbox: "",
+      sfileUploadStatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      fileUploadLog: this.state.sortAllData,
+      tempfileUploadLog: [],
+    });
+  }
 
   render() {
     const columnsTickFileUpload = [
       {
         Header: (
-          <span onClick={this.StatusOpenModel.bind(this, "fileType", "Type")}>
+          <span
+            className={this.state.sortHeader === "Type" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(this, "fileType", "Type")}
+          >
             Type
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Designation"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
         sortable: false,
@@ -677,9 +732,19 @@ class StoreFileUploadLogs extends Component {
       },
       {
         Header: (
-          <span onClick={this.StatusOpenModel.bind(this, "fileName", "Name")}>
+          <span
+            className={this.state.sortHeader === "Name" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(this, "fileName", "Name")}
+          >
             File Name
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Designation"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
         sortable: false,
@@ -688,10 +753,18 @@ class StoreFileUploadLogs extends Component {
       {
         Header: (
           <span
+            className={this.state.sortHeader === "Date" ? "sort-column" : ""}
             onClick={this.StatusOpenModel.bind(this, "createdDate", "Date")}
           >
             Date
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Designation"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
         sortable: false,
@@ -744,6 +817,7 @@ class StoreFileUploadLogs extends Component {
       {
         Header: (
           <span
+            className={this.state.sortHeader === "Status" ? "sort-column" : ""}
             onClick={this.StatusOpenModel.bind(
               this,
               "fileUploadStatus",
@@ -751,7 +825,14 @@ class StoreFileUploadLogs extends Component {
             )}
           >
             Status
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Designation"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
         sortable: false,
@@ -852,9 +933,13 @@ class StoreFileUploadLogs extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>

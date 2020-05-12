@@ -689,6 +689,9 @@ class SlaTemplateDepartment extends Component {
           self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
+          var sortFilterIssueType=[];
+          var sortIssueType=[];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].functionName]) {
               distinct.push(data[i].functionName);
@@ -697,15 +700,18 @@ class SlaTemplateDepartment extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortFilterIssueType.push({
+              sortFilterIssueType.push({
                 functionName: distinct[i],
               });
-              self.state.sortIssueType.push({ functionName: distinct[i] });
+              sortIssueType.push({ functionName: distinct[i] });
             }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreatedBy=[];
+          var sortFilterCreatedBy=[];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdBy]) {
               distinct.push(data[i].createdBy);
@@ -714,13 +720,16 @@ class SlaTemplateDepartment extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortCreatedBy.push({ createdBy: distinct[i] });
-              self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
+              sortCreatedBy.push({ createdBy: distinct[i] });
+              sortFilterCreatedBy.push({ createdBy: distinct[i] });
             }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus=[];
+          var sortFilterStatus=[];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].isSLAActive]) {
               distinct.push(data[i].isSLAActive);
@@ -729,8 +738,8 @@ class SlaTemplateDepartment extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortStatus.push({ isSLAActive: distinct[i] });
-              self.state.sortFilterStatus.push({ isSLAActive: distinct[i] });
+              sortStatus.push({ isSLAActive: distinct[i] });
+              sortFilterStatus.push({ isSLAActive: distinct[i] });
             }
           }
         }
@@ -1084,7 +1093,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueType,
+          sortFilterIssueType: [],
         });
       }
     }
@@ -1098,7 +1107,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -1112,7 +1121,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -1180,6 +1189,19 @@ class SlaTemplateDepartment extends Component {
     NotificationManager.success("File deleted successfully.");
   };
 
+  handleClearSearch() {
+    this.setState({
+      sissueTpeNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisSLAActiveFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      slaTemplateGrid: this.state.sortAllData,
+      tempsla: [],
+    });
+  }
   render() {
     return (
       <React.Fragment>
@@ -1236,9 +1258,13 @@ class SlaTemplateDepartment extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>

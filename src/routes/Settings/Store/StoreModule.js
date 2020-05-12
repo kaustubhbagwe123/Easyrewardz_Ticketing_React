@@ -983,7 +983,7 @@ class StoreModule extends Component {
         this.setState({ sortFiltercampaignName });
       } else {
         this.setState({
-          sortFiltercampaignName: this.state.sortcampaignName,
+          sortFiltercampaignName: [],
         });
       }
     }
@@ -997,7 +997,7 @@ class StoreModule extends Component {
         this.setState({ sortFiltercreatedBy });
       } else {
         this.setState({
-          sortFiltercreatedBy: this.state.sortcreatedBy,
+          sortFiltercreatedBy: [],
         });
       }
     }
@@ -1011,10 +1011,23 @@ class StoreModule extends Component {
         this.setState({ sortFilteristatus });
       } else {
         this.setState({
-          sortFilteristatus: this.state.sortstatus,
+          sortFilteristatus: [],
         });
       }
     }
+  }
+  handleClearSearch() {
+    this.setState({
+      scampaignNameFilterCheckbox: "",
+      sstatusFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      campaignScriptData: this.state.sortAllData,
+      tempcampaignScriptData: [],
+    });
   }
 
   render() {
@@ -1073,9 +1086,13 @@ class StoreModule extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>
@@ -1116,9 +1133,9 @@ class StoreModule extends Component {
                             name="filter-type"
                             id={"fil-open" + item.campaignName}
                             value={item.campaignName}
-                            checked={this.state.scampaignNameFilterCheckbox.includes(
-                              item.campaignName
-                            )}
+                            checked={this.state.scampaignNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.campaignName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "campaignName",
@@ -1143,9 +1160,9 @@ class StoreModule extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
+                            checked={this.state.screatedByFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.createdBy)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1170,9 +1187,9 @@ class StoreModule extends Component {
                             name="filter-type"
                             id={"fil-open" + item.status}
                             value={item.status}
-                            checked={this.state.sstatusFilterCheckbox.includes(
-                              item.status
-                            )}
+                            checked={this.state.sstatusFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.status)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "status",

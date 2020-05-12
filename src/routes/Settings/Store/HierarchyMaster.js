@@ -880,10 +880,12 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            sortDesignation.push({ designationName: distinct[i] });
-            sortFilterDesignation.push({
-              designationName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortDesignation.push({ designationName: distinct[i] });
+              sortFilterDesignation.push({
+                designationName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
@@ -898,8 +900,10 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            sortReportTo.push({ reportTo: distinct[i] });
-            sortFilterReportTo.push({ reportTo: distinct[i] });
+            if (distinct[i]) {
+              sortReportTo.push({ reportTo: distinct[i] });
+              sortFilterReportTo.push({ reportTo: distinct[i] });
+            }
           }
 
           var unique = [];
@@ -913,10 +917,12 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            sortCreatedBy.push({ createdbyperson: distinct[i] });
-            sortFilterCreatedBy.push({
-              createdbyperson: distinct[i],
-            });
+            if (distinct[i]) {
+              sortCreatedBy.push({ createdbyperson: distinct[i] });
+              sortFilterCreatedBy.push({
+                createdbyperson: distinct[i],
+              });
+            }
           }
 
           var unique = [];
@@ -930,8 +936,10 @@ class HierarchyMaster extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            sortStatus.push({ status: distinct[i] });
-            sortFilterStatus.push({ status: distinct[i] });
+            if (distinct[i]) {
+              sortStatus.push({ status: distinct[i] });
+              sortFilterStatus.push({ status: distinct[i] });
+            }
           }
         }
 
@@ -946,7 +954,6 @@ class HierarchyMaster extends Component {
           sortStatus,
           sortFilterStatus,
         });
-       
       })
       .catch((response) => {
         console.log(response);
@@ -1302,6 +1309,7 @@ class HierarchyMaster extends Component {
                   margin: "0 25px",
                   textDecoration: "underline",
                   color: "#2561A8",
+                  cursor: "pointer",
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
@@ -1741,7 +1749,6 @@ class HierarchyMaster extends Component {
                 </div>
               </div>
               <div className="col-md-4">
-              
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">

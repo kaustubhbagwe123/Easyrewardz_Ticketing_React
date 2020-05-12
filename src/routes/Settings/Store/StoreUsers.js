@@ -1836,9 +1836,12 @@ class StoreUsers extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({ StoreUserData: data });
-          self.state.sortAllData = data;
+
           var unique = [];
           var distinct = [];
+          var sortbrandName = [];
+          var sortFilterbrandName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].brandName] && data[i].brandName !== "") {
               distinct.push(data[i].brandName);
@@ -1847,13 +1850,20 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortbrandName.push({ brandName: distinct[i] });
-              self.state.sortFilterbrandName.push({ brandName: distinct[i] });
+              sortbrandName.push({
+                brandName: distinct[i],
+              });
+              sortFilterbrandName.push({
+                brandName: distinct[i],
+              });
             }
           }
 
           var unique = [];
           var distinct = [];
+          var sortitemCode = [];
+          var sortFilteritemCode = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].storeCode] && data[i].storeCode !== "") {
               distinct.push(data[i].storeCode);
@@ -1862,12 +1872,19 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortitemCode.push({ storeCode: distinct[i] });
-              self.state.sortFilteritemCode.push({ storeCode: distinct[i] });
+              sortitemCode.push({
+                storeCode: distinct[i],
+              });
+              sortFilteritemCode.push({
+                storeCode: distinct[i],
+              });
             }
           }
           var unique = [];
           var distinct = [];
+          var sortuserName = [];
+          var sortFilteruserName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].userName] && data[i].userName !== "") {
               distinct.push(data[i].userName);
@@ -1876,12 +1893,18 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortuserName.push({ userName: distinct[i] });
-              self.state.sortFilteruserName.push({ userName: distinct[i] });
+              sortuserName.push({
+                userName: distinct[i],
+              });
+              sortFilteruserName.push({
+                userName: distinct[i],
+              });
             }
           }
           var unique = [];
           var distinct = [];
+          var sortdesignationName = [];
+          var sortFilterdesignationName = [];
           for (let i = 0; i < data.length; i++) {
             if (
               !unique[data[i].designationName] &&
@@ -1893,16 +1916,18 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortdesignationName.push({
+              sortdesignationName.push({
                 designationName: distinct[i],
               });
-              self.state.sortFilterdesignationName.push({
+              sortFilterdesignationName.push({
                 designationName: distinct[i],
               });
             }
           }
           var unique = [];
           var distinct = [];
+          var sortreporteeName = [];
+          var sortFilterreporteeName = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].reporteeName] && data[i].reporteeName !== "") {
               distinct.push(data[i].reporteeName);
@@ -1911,14 +1936,19 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortreporteeName.push({ reporteeName: distinct[i] });
-              self.state.sortFilterreporteeName.push({
+              sortreporteeName.push({
+                reporteeName: distinct[i],
+              });
+              sortFilterreporteeName.push({
                 reporteeName: distinct[i],
               });
             }
           }
           var unique = [];
           var distinct = [];
+          var sortdepartmentName = [];
+          var sortFilterdepartmentName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (
               !unique[data[i].departmentName] &&
@@ -1930,16 +1960,18 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortdepartmentName.push({
+              sortdepartmentName.push({
                 departmentName: distinct[i],
               });
-              self.state.sortFilterdepartmentName.push({
+              sortFilterdepartmentName.push({
                 departmentName: distinct[i],
               });
             }
           }
           var unique = [];
           var distinct = [];
+          var sortmappedFunctions = [];
+          var sortFiltermappedFunctions = [];
           for (let i = 0; i < data.length; i++) {
             if (
               !unique[data[i].mappedFunctions] &&
@@ -1951,14 +1983,31 @@ class StoreUsers extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortmappedFunctions.push({
+              sortmappedFunctions.push({
                 mappedFunctions: distinct[i],
               });
-              self.state.sortFiltermappedFunctions.push({
+              sortFiltermappedFunctions.push({
                 mappedFunctions: distinct[i],
               });
             }
           }
+          self.setState({
+            sortAllData: data,
+            sortFilterbrandName,
+            sortFilteritemCode,
+            sortFilteruserName,
+            sortFilterdesignationName,
+            sortFilterreporteeName,
+            sortFilterdepartmentName,
+            sortFiltermappedFunctions,
+            sortbrandName,
+            sortitemCode,
+            sortuserName,
+            sortdesignationName,
+            sortreporteeName,
+            sortdepartmentName,
+            sortmappedFunctions,
+          });
         } else {
           self.setState({ StoreUserData: [] });
         }
@@ -3034,6 +3083,23 @@ class StoreUsers extends Component {
     this.setState({ userEdit });
   }
 
+  handleClearSearch() {
+    this.setState({
+      sbrandNameFilterCheckbox: "",
+      sitemCodeFilterCheckbox: "",
+      suserNameFilterCheckbox: "",
+      sdesignationNameFilterCheckbox: "",
+      sreporteeNameFilterCheckbox: "",
+      sdepartmentNameFilterCheckbox: "",
+      smappedFunctionsFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      StoreUserData: this.state.sortAllData,
+      tempitemData: [],
+    });
+  }
   render() {
     return (
       <React.Fragment>
@@ -3071,9 +3137,13 @@ class StoreUsers extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 clear search
               </a>
@@ -3151,9 +3221,9 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox.includes(
-                              item.brandName
-                            )}
+                            checked={this.state.sbrandNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.brandName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -3178,9 +3248,9 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.userName}
                             value={item.userName}
-                            checked={this.state.suserNameFilterCheckbox.includes(
-                              item.userName
-                            )}
+                            checked={this.state.suserNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.userName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "userName",
@@ -3205,9 +3275,9 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.designationName}
                             value={item.designationName}
-                            checked={this.state.sdesignationNameFilterCheckbox.includes(
-                              item.designationName
-                            )}
+                            checked={this.state.sdesignationNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.designationName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "designationName",
@@ -3231,9 +3301,9 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.reporteeName}
                             value={item.reporteeName}
-                            checked={this.state.sreporteeNameFilterCheckbox.includes(
-                              item.reporteeName
-                            )}
+                            checked={this.state.sreporteeNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.reporteeName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reporteeName",
@@ -3257,9 +3327,9 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.departmentName}
                             value={item.departmentName}
-                            checked={this.state.sdepartmentNameFilterCheckbox.includes(
-                              item.departmentName
-                            )}
+                            checked={this.state.sdepartmentNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.departmentName)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "departmentName",
@@ -3283,9 +3353,9 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.mappedFunctions}
                             value={item.mappedFunctions}
-                            checked={this.state.smappedFunctionsFilterCheckbox.includes(
-                              item.mappedFunctions
-                            )}
+                            checked={this.state.smappedFunctionsFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.mappedFunctions)}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "mappedFunctions",
