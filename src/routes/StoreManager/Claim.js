@@ -234,7 +234,14 @@ class Claim extends Component {
   handleGetStoreFilterList() {
     debugger; 
     let self = this;
+    var finalDate="";
     this.setState({ isloading: true });
+    if(this.state.claimCreateDate !== ""){
+      finalDate=moment(this.state.claimCreateDate).format('YYYY-MM-DD')
+    }else{
+      finalDate="";
+    }
+
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardListClaim",
@@ -246,7 +253,7 @@ class Claim extends Component {
         claimsubcat: this.state.subCategoryID === ""?0:parseInt(this.state.subCategoryID),
         assignTo: this.state.assignToID === ""?0:parseInt(this.state.assignToID),
         claimcat: this.state.categoryID === ""?0:parseInt(this.state.categoryID),
-        claimraiseddate: moment(this.state.claimCreateDate).format('YYYY-MM-DD'),
+        claimraiseddate:finalDate,
         taskID: this.state.taskID === ""?0:parseInt(this.state.taskID),
         claimstatus: this.state.statusID === ""?0:parseInt(this.state.statusID),
         taskmapped: this.state.isTaskMapped === "no"?0:1,
@@ -355,7 +362,9 @@ class Claim extends Component {
                                     name="claimID"
                                     value={this.state.claimID}
                                     onChange={this.handleOnChangeData} 
+                                    autoComplete="off"
                                     placeholder="Claim ID" />
+                                    
                                   </div>
                                   <div className="col-md-3">
                                     <select
@@ -398,6 +407,7 @@ class Claim extends Component {
                                     <input type="text" 
                                     name="titleID"
                                     value={this.state.titleID}
+                                    autoComplete="off"
                                     onChange={this.handleOnChangeData}
                                     placeholder="Title ID" />
                                   </div>
@@ -427,9 +437,7 @@ class Claim extends Component {
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
                                   />
-                                    {/* <select>
-                                      <option>Claim Raised On</option>
-                                    </select> */}
+                                  
                                   </div>
                                   <div className="col-md-3">
                                     <select
@@ -473,6 +481,7 @@ class Claim extends Component {
                                     name="taskID"
                                     value={this.state.taskID}
                                     onChange={this.handleOnChangeData}
+                                    autoComplete="off"
                                     placeholder="Task ID" />
                                   </div>
                                   <div className="col-md-3">
