@@ -8534,6 +8534,13 @@ table tr th:last-child {
   border: none;
   padding: 10px;
 }
+.dropdown-next-div + div {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  max-height: 120px !important;
+  z-index: 1;
+}
 .addmanuallytext1::placeholder {
   color: #4a4a4a;
   font-family: Lato;

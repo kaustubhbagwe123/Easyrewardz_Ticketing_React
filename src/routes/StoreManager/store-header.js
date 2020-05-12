@@ -50,6 +50,8 @@ class Header extends Component {
       workTimeHours: "0H 0M",
       selectedUserProfilePicture: "",
       cont: [],
+      notificationAccess: "none",
+      settingAccess: "none",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -102,7 +104,7 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    //debugger;
+    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -272,10 +274,10 @@ class Header extends Component {
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
-          var strTag = data.agentName.split(" ");
+          var strTag = data.agentName.trim().split(" ");
           var nameTag = strTag[0].charAt(0).toUpperCase();
-          if (strTag.length > 0) {
-            nameTag += strTag[1].charAt(0).toUpperCase();
+          if (strTag.length > 1) {
+            nameTag += strTag[strTag.length - 1].charAt(0).toUpperCase();
           }
           let nume =
             data.loggedInDurationInHours * 60 + data.loggedInDurationInMinutes;
@@ -493,7 +495,7 @@ class Header extends Component {
               />
             </a>
             {/* --notification-- */}
-            <a>
+            <a href="#!" style={{ display: this.state.notificationAccess }}>
               <div
                 className="position-relative"
                 // style={{ display: this.state.notificationAccess }}
@@ -513,7 +515,10 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <Link to="/store/settings">
+            <Link
+              to="/store/settings"
+              style={{ display: this.state.settingAccess }}
+            >
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
@@ -526,7 +531,7 @@ class Header extends Component {
               </span>
             </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
-              SM
+              {this.state.NameTag}
             </a>
           </div>
         </div>

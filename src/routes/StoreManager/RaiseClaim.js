@@ -1852,7 +1852,10 @@ class RaiseClaim extends Component {
                                   </div>
                                   <div className="col-md-6">
                                     <ReactAutocomplete
-                                      wrapperStyle={{ display: "block" }}
+                                      wrapperStyle={{
+                                        display: "block",
+                                        position: "relative",
+                                      }}
                                       getItemValue={(item) => item.storeName}
                                       items={this.state.SearchItem}
                                       renderItem={(item, isHighlighted) => (
@@ -1871,7 +1874,7 @@ class RaiseClaim extends Component {
                                         return (
                                           <input
                                             placeholder="Purchase from Store name"
-                                            className="addmanuallytext1"
+                                            className="addmanuallytext1 dropdown-next-div"
                                             type="text"
                                             {...props}
                                           />

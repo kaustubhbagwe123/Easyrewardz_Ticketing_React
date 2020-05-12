@@ -1183,7 +1183,7 @@ class HierarchyMaster extends Component {
         activeStatus = 0;
       }
       var ReportId = this.state.selectReportTo;
-      if (ReportId === "1") {
+      if (ReportId === "-1") {
         ReportId = 0;
       }
       this.setState({ addSaveLoading: true });
@@ -1781,7 +1781,7 @@ class HierarchyMaster extends Component {
                           value={this.state.selectReportTo}
                           onChange={this.handleOnReportToChange}
                         >
-                          <option value="">select</option>
+                          <option value="0">Select</option>
                           <option value={-1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
@@ -1790,7 +1790,7 @@ class HierarchyMaster extends Component {
                               </option>
                             ))}
                         </select>
-                        {parseInt(this.state.selectReportTo) === "" && (
+                        {parseInt(this.state.selectReportTo) === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.reportToCompulsion}
                           </p>
@@ -1804,7 +1804,7 @@ class HierarchyMaster extends Component {
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option value="0">select</option>
+                        <option value="0">Select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>

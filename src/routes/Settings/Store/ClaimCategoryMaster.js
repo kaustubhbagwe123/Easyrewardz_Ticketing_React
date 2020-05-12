@@ -8,7 +8,8 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Select } from "antd";
+import { Select as Aselect } from "antd";
+import Select from "react-select";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +31,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
-const { Option } = Select;
+const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
 
 class ClaimCategoryMaster extends Component {
@@ -58,7 +59,6 @@ class ClaimCategoryMaster extends Component {
       ListOfIssueData: [],
       selectStatus: 0,
       category_Id: 0,
-      selectBrand: 0,
       subCategory_Id: 0,
       issueType_Id: 0,
       selectetedParameters: {},
@@ -110,6 +110,7 @@ class ClaimCategoryMaster extends Component {
       sstatusNameFilterCheckbox: "",
       isATOZ: true,
       selectBrandMulti: [],
+      showAddCategory: false,
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -122,7 +123,6 @@ class ClaimCategoryMaster extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
-    // this.hanldeAddBulkUpload = this.hanldeAddBulkUpload.bind(this);
   }
 
   componentDidMount() {
@@ -904,35 +904,40 @@ class ClaimCategoryMaster extends Component {
       });
   }
 
-  handleGetCategoryList = async (id, type) => {
-    let self = this;
-    var braindID;
-    if (type == "edit") {
-      braindID = this.state.editCategory.brandID;
-    } else {
-      if (id) {
-        braindID = id;
+  handleGetCategoryList(data, check) {
+    debugger;
+    if (data.length > 2) {
+      let self = this;
+      var categoryText = "";
+      if (check === "edit") {
+        categoryText = data;
       } else {
-        braindID = this.state.selectBrand;
+        categoryText = data;
       }
-    }
-    await axios({
-      method: "post",
-      url: config.apiUrl + "/Category/GetClaimCategoryListByBrandID",
-      headers: authHeader(),
-      params: {
-        BrandID: braindID,
-      },
-    })
-      .then(function(res) {
-        debugger;
-        let data = res.data;
-        self.setState({ categoryDropData: data });
+
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Category/GetClaimCategoryBySearch",
+        headers: authHeader(),
+        params: {
+          CategoryName: categoryText,
+        },
       })
-      .catch((data) => {
-        console.log(data);
-      });
-  };
+        .then(function(res) {
+          debugger;
+          let msg = res.data.message;
+          let data = res.data.responseData;
+          if (msg === "Success") {
+            self.setState({ categoryDropData: data });
+          } else {
+            self.setState({ categoryDropData: [], showAddCategory: true });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    }
+  }
 
   handleGetSubCategoryList = async (id) => {
     debugger;
@@ -941,7 +946,9 @@ class ClaimCategoryMaster extends Component {
     if (id === "edit") {
       Category_Id = this.state.editCategory.categoryID;
     } else {
-      Category_Id = this.state.list1Value;
+      Category_Id = this.state.categoryDropData.filter(
+        (x) => x.categoryName === this.state.list1Value
+      )[0].categoryID;
     }
     await axios({
       method: "post",
@@ -1019,12 +1026,7 @@ class ClaimCategoryMaster extends Component {
 
   handleAddCategory(value, check) {
     debugger;
-    var brand_Id = "";
-    if (check === "edit") {
-      brand_Id = Number(this.state.editCategory.brandID);
-    } else {
-      brand_Id = Number(this.state.selectBrand);
-    }
+
     let self = this;
     axios({
       method: "post",
@@ -1032,7 +1034,7 @@ class ClaimCategoryMaster extends Component {
       headers: authHeader(),
       params: {
         CategoryName: value,
-        BrandID: brand_Id,
+        BrandID: 0,
       },
     })
       .then(function(res) {
@@ -1054,13 +1056,13 @@ class ClaimCategoryMaster extends Component {
               ListOfIssueData: [],
               SubCategoryDropData: [],
               editCategoryCompulsory: "",
+              showAddCategory: false,
             });
             self.handleGetCategoryList(data, "edit");
           } else {
             self.setState({
               category_Id: data,
-              // inputValue: "",
-              // list1Value: ""
+              showAddCategory: false,
             });
             self.handleGetCategoryList();
           }
@@ -1180,18 +1182,19 @@ class ClaimCategoryMaster extends Component {
   handleSubmitData() {
     debugger;
     if (
-      this.state.selectBrand !== 0 &&
-      this.state.selectBrand !== "Select" &&
+      this.state.selectBrandMulti !== null &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== "") &&
       (this.state.ListOfIssue > 0 || this.state.ListOfIssue !== "") &&
       (this.state.selectStatus !== 0 && this.state.selectStatus !== "select")
     ) {
+      debugger;
       let self = this;
       var activeStatus = 0;
       var categorydata = 0;
       var subCategoryData = 0;
       var IssueData = 0;
+      var brandIds = "";
       var status = this.state.selectStatus;
       if (status === "Active") {
         activeStatus = true;
@@ -1199,9 +1202,11 @@ class ClaimCategoryMaster extends Component {
         activeStatus = false;
       }
       if (isNaN(this.state.list1Value)) {
-        categorydata = this.state.category_Id;
-      } else {
-        categorydata = this.state.list1Value;
+        // categorydata = this.state.category_Id;
+        // categorydata = this.state.list1Value;
+        categorydata = this.state.categoryDropData.filter(
+          (x) => x.categoryName === this.state.list1Value
+        )[0].categoryID;
       }
 
       if (isNaN(this.state.ListOfSubCate)) {
@@ -1215,14 +1220,18 @@ class ClaimCategoryMaster extends Component {
       } else {
         IssueData = this.state.ListOfIssue;
       }
-      debugger;
+      if (this.state.selectBrandMulti !== null) {
+        for (let i = 0; i < this.state.selectBrandMulti.length; i++) {
+          brandIds += this.state.selectBrandMulti[i].brandID + ",";
+        }
+      }
 
       axios({
         method: "post",
         url: config.apiUrl + "/Category/CreateClaimCategorybrandmapping",
         headers: authHeader(),
         data: {
-          BraindID: this.state.selectBrand,
+          BraindID: brandIds.substring(",", brandIds.length - 1),
           CategoryID: categorydata,
           SubCategoryID: subCategoryData,
           IssueTypeID: IssueData,
@@ -1236,7 +1245,7 @@ class ClaimCategoryMaster extends Component {
             self.handleGetCategoryGridData();
             NotificationManager.success("Category added successfully.");
             self.setState({
-              selectBrand: 0,
+              selectBrandMulti: [],
               list1Value: "",
               ListOfSubCate: "",
               ListOfIssue: "",
@@ -1313,7 +1322,6 @@ class ClaimCategoryMaster extends Component {
             self.handleGetCategoryGridData();
             NotificationManager.success("Category updated successfully.");
             self.setState({
-              selectBrand: 0,
               list1Value: "",
               ListOfSubCate: "",
               ListOfIssue: "",
@@ -1398,36 +1406,27 @@ class ClaimCategoryMaster extends Component {
   };
   handleCategoryChange = (value) => {
     debugger;
-    if (this.state.selectBrand.length > 0) {
-      if (value !== NEW_ITEM) {
-        this.setState({
-          list1Value: value,
-          SubCategoryDropData: [],
-          ListOfSubCate: "",
-          ListOfIssue: "",
-          ListOfIssueData: [],
-        });
-        setTimeout(() => {
-          if (this.state.list1Value) {
-            this.handleGetSubCategoryList(value);
-          }
-        }, 10);
-      } else {
-        this.setState({ showList1: true });
-      }
-    } else {
+    if (value !== NEW_ITEM) {
       this.setState({
-        brandCompulsion: "Please Select Brand",
+        list1Value: value,
+        SubCategoryDropData: [],
+        ListOfSubCate: "",
+        ListOfIssue: "",
+        ListOfIssueData: [],
       });
+      setTimeout(() => {
+        if (this.state.list1Value) {
+          this.handleGetSubCategoryList(value);
+        }
+      }, 10);
+    } else {
+      this.setState({ showList1: true });
     }
   };
 
   handleSubCatOnChange = (value) => {
     debugger;
-    if (
-      this.state.selectBrand.length > 0 &&
-      (this.state.list1Value > 0 || this.state.list1Value !== "")
-    ) {
+    if (this.state.list1Value > 0 || this.state.list1Value !== "") {
       if (value !== NEW_ITEM) {
         this.setState({
           ListOfSubCate: value,
@@ -1444,7 +1443,6 @@ class ClaimCategoryMaster extends Component {
       }
     } else {
       this.setState({
-        brandCompulsion: "Please Select Brand",
         categoryCompulsion: "Please Select category",
       });
     }
@@ -1453,7 +1451,6 @@ class ClaimCategoryMaster extends Component {
   handleIssueOnChange = (value) => {
     debugger;
     if (
-      this.state.selectBrand.length > 0 &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== "")
     ) {
@@ -1464,7 +1461,6 @@ class ClaimCategoryMaster extends Component {
       }
     } else {
       this.setState({
-        brandCompulsion: "Please Select Brand",
         categoryCompulsion: "Please Select category",
         subcategoryCompulsion: "Please Select SubCategory",
       });
@@ -1472,7 +1468,6 @@ class ClaimCategoryMaster extends Component {
   };
   handleBrandChange = (e) => {
     debugger;
-    // let value = e.target.value;
     this.setState({
       selectBrandMulti: e,
       categoryDropData: [],
@@ -1482,11 +1477,6 @@ class ClaimCategoryMaster extends Component {
       ListOfSubCate: "",
       ListOfIssue: "",
     });
-    // setTimeout(() => {
-    //   if (this.state.selectBrand) {
-    //     this.handleGetCategoryList();
-    //   }
-    // }, 1);
   };
   handleEditDropDownChange = (e) => {
     debugger;
@@ -1501,39 +1491,43 @@ class ClaimCategoryMaster extends Component {
   };
 
   ////handle table row edit button click to set value in modal
-  hanldeEditCategory = async (rowData) => {
+  hanldeEditCategory(rowData) {
     debugger;
     var editCategory = {};
     editCategory.brandCategoryMappingID = rowData.brandCategoryMappingID;
     editCategory.brandID = rowData.braindID;
     editCategory.brandName = rowData.brandName;
 
-    await this.handleGetCategoryList(rowData.braindID);
-
     editCategory.categoryID = rowData.categoryID;
     editCategory.categoryName = rowData.categoryName;
 
-    await this.handleModalCategoryChange(rowData.categoryID);
-
+    setTimeout(() => {
+      this.handleModalCategoryChange(rowData.categoryID, rowData.categoryName);
+    }, 50);
     editCategory.subCategoryID = rowData.subCategoryID;
     editCategory.subCategoryName = rowData.subCategoryName;
-
-    await this.handleModalSubCatOnChange(rowData.subCategoryID);
+    setTimeout(() => {
+      this.handleModalSubCatOnChange(rowData.subCategoryID);
+    }, 50);
 
     editCategory.issueTypeID = rowData.issueTypeID;
     editCategory.issueTypeName = rowData.issueTypeName;
+    setTimeout(() => {
+      this.handleModalIssueOnChange(rowData.issueTypeID);
+    }, 50);
 
-    await this.handleModalIssueOnChange(rowData.issueTypeID);
     editCategory.statusName = rowData.statusName;
     var Id = rowData.brandCategoryMappingID;
 
-    this.setState({
-      editmodel: true,
-      editCategory,
-      brandCatmapId: Id,
-      editBrandCompulsory: "",
-    });
-  };
+    setTimeout(() => {
+      this.setState({
+        editmodel: true,
+        editCategory,
+        brandCatmapId: Id,
+        editBrandCompulsory: "",
+      });
+    }, 50);
+  }
   ////handle toggle edit modal pop
   toggleEditModal() {
     this.setState({
@@ -1547,40 +1541,27 @@ class ClaimCategoryMaster extends Component {
   handleModalBrandChange = (e) => {
     debugger;
     let value = e.target.value;
-    var editCategory = {};
+    var editCategory = this.state.editCategory;
     if (value === "0") {
       editCategory[e.target.name] = value;
       this.setState({
         editBrandCompulsory: "Please Select Brand.",
         editCategory,
-        categoryDropData: [],
-        SubCategoryDropData: [],
-        ListOfIssueData: [],
       });
     } else {
       editCategory[e.target.name] = value;
       this.setState({
         editCategory,
         editBrandCompulsory: "",
-        categoryDropData: [],
-        SubCategoryDropData: [],
-        ListOfIssueData: [],
       });
     }
-    setTimeout(() => {
-      if (value) {
-        this.handleGetCategoryList(value);
-      }
-    }, 1);
   };
   ////handle edit modal pop category change
-  handleModalCategoryChange = (value) => {
+  handleModalCategoryChange = (value, categoryName) => {
     debugger;
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
-      var categoryName = this.state.categoryDropData.filter(
-        (x) => x.categoryID === value
-      )[0].categoryName;
+
       editCategory["categoryID"] = value;
       editCategory["categoryName"] = categoryName;
       editCategory["subCategoryID"] = "";
@@ -1597,8 +1578,9 @@ class ClaimCategoryMaster extends Component {
       setTimeout(() => {
         if (value) {
           this.handleGetSubCategoryList("edit");
+          this.handleGetCategoryList(categoryName, "edit");
         }
-      }, 1);
+      }, 100);
     } else {
       this.setState({ editshowList1: true });
     }
@@ -1609,8 +1591,7 @@ class ClaimCategoryMaster extends Component {
     if (value !== NEW_ITEM) {
       var editCategory = this.state.editCategory;
       editCategory["subCategoryID"] = value;
-      // var subCategoryName=this.state.SubCategoryDropData.filter(x=>x.subCategoryID===value)[0].subCategoryName;
-      // editCategory["subCategoryName"] = subCategoryName;
+
       editCategory["issueTypeID"] = "";
       editCategory["issueTypeName"] = "";
       this.setState({
@@ -1623,7 +1604,7 @@ class ClaimCategoryMaster extends Component {
         if (value) {
           this.handleGetIssueTypeList("edit");
         }
-      }, 1);
+      }, 100);
     } else {
       this.setState({ editShowSubCate: true });
     }
@@ -1818,19 +1799,16 @@ class ClaimCategoryMaster extends Component {
       categoryGridData: this.state.sortAllData,
       tempcategoryGridData: [],
     });
+  handleToggleCategoryAdd() {
+    this.setState({ showList1: true });
+  }
+  handleGetEditCategoryList(data) {
+    debugger;
+    this.handleGetCategoryList(data, "edit");
   }
   render() {
     const { categoryGridData } = this.state;
-    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
-      <Option key={o} value={item.categoryID}>
-        {item.categoryName}
-      </Option>
-    ));
-    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
-      <Option key={o} value={item.subCategoryID}>
-        {item.subCategoryName}
-      </Option>
-    ));
+
     const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
       <Option key={i} value={item.issueTypeID}>
         {item.issueTypeName}
@@ -2310,48 +2288,18 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Brand Name</label>
-                        {/* <select
-                          className="store-create-select"
-                          value={this.state.selectBrand}
-                          onChange={this.handleBrandChange}
-                        >
-                          <option>Select</option>
-                          {this.state.brandData !== null &&
-                            this.state.brandData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.brandID}
-                                className="select-category-placeholder"
-                              >
-                                {item.brandName}
-                              </option>
-                            ))}
-                        </select> */}
-                        {/* <Select
+                        <Select
                           getOptionLabel={(option) => option.brandName}
                           getOptionValue={(option) => option.brandID}
                           options={this.state.brandData}
-                          placeholder="Select"
-                          className="store-create-select"
+                          placeholder="Please Select Brand"
                           closeMenuOnSelect={false}
-                          name="selectedClaimBrand"
+                          name="selectBrandMulti"
                           onChange={this.handleBrandChange.bind(this)}
                           value={this.state.selectBrandMulti}
                           isMulti
-                        /> */}
-                        <Select
-                          mode="multiple"
-                          className="store-create-select showborder-select"
-                          placeholder="Please select brand"
-                          onChange={this.handleBrandChange.bind(this)}
-                        >
-                          {this.state.brandData !== null &&
-                            this.state.brandData.map((item, i) => (
-                              <Option key={i} value={item.brandID}>
-                                {item.brandName}
-                              </Option>
-                            ))}
-                        </Select>
+                        />
+
                         {this.state.selectBrandMulti.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.brandCompulsion}
@@ -2364,34 +2312,31 @@ class ClaimCategoryMaster extends Component {
                         <label className="reports-to reports-dis">
                           Claim Category
                         </label>
-                        <Select
+                        <Aselect
                           className="store-create-select showborder-select"
                           showSearch={true}
                           value={this.state.list1Value}
                           onChange={this.handleCategoryChange}
                           placeholder="Please select claim cateogry"
-                          optionFilterProp="children"
-                          // onSearch={onSearch}
-                          filterOption={(input, option) =>
-                            option.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          }
+                          onSearch={this.handleGetCategoryList.bind(this)}
+                          notFoundContent="No Data Found"
                         >
-                          {this.state.categoryDropData !== null ? (
+                          {this.state.categoryDropData !== null &&
                             this.state.categoryDropData.map((item, i) => (
-                              <Option key={i} value={item.categoryID}>
+                              <Option key={i} value={item.categoryName}>
                                 {item.categoryName}
                               </Option>
-                            ))
-                          ) : (
-                            <Option value={NEW_ITEM}>
-                              <span className="sweetAlert-inCategory">
-                                + ADD NEW
-                              </span>
-                            </Option>
-                          )}
-                        </Select>
+                            ))}
+                        </Aselect>
+                        {this.state.showAddCategory ? (
+                          <span
+                            className="sweetAlert-inCategory"
+                            style={{ marginTop: "-68px" }}
+                            onClick={this.handleToggleCategoryAdd.bind(this)}
+                          >
+                            + ADD NEW
+                          </span>
+                        ) : null}
                         {this.state.list1Value === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.categoryCompulsion}
@@ -2446,20 +2391,25 @@ class ClaimCategoryMaster extends Component {
                         <label className="reports-to reports-dis">
                           Claim Sub Category
                         </label>
-                        <Select
+                        <Aselect
                           showSearch={true}
                           value={this.state.ListOfSubCate}
                           style={{ width: "100%" }}
                           onChange={this.handleSubCatOnChange}
                           placeholder="Select Claim Sub Category"
                         >
-                          {listSubCategory}
+                          {this.state.SubCategoryDropData !== null &&
+                            this.state.SubCategoryDropData.map((item, o) => (
+                              <Option key={o} value={item.subCategoryID}>
+                                {item.subCategoryName}
+                              </Option>
+                            ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
                               + ADD NEW
                             </span>
                           </Option>
-                        </Select>
+                        </Aselect>
                         {this.state.ListOfSubCate === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.subcategoryCompulsion}
@@ -2507,7 +2457,7 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Claim Issue Type</label>
-                        <Select
+                        <Aselect
                           showSearch={true}
                           value={this.state.ListOfIssue}
                           style={{ width: "100%" }}
@@ -2520,7 +2470,7 @@ class ClaimCategoryMaster extends Component {
                               + ADD NEW
                             </span>
                           </Option>
-                        </Select>
+                        </Aselect>
                         {this.state.ListOfIssue === "" && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.issueCompulsion}
@@ -2571,7 +2521,7 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.selectStatus}
                           onChange={this.handleStatusChange}
                         >
-                          <option>select</option>
+                          <option>Select</option>
                           {this.state.activeData !== null &&
                             this.state.activeData.map((item, j) => (
                               <option key={j} value={item.ActiveID}>
@@ -2738,7 +2688,7 @@ class ClaimCategoryMaster extends Component {
             modalId="categoryEditModal"
           >
             <div className="edtpadding cus-cs">
-              <label className="popover-header-text">EDIT CATEGORY</label>
+              <label className="popover-header-text">EDIT CLAIM CATEGORY</label>
               <div className="pop-over-div">
                 <label className="edit-label-1">Brand Name</label>
                 <select
@@ -2770,18 +2720,25 @@ class ClaimCategoryMaster extends Component {
                 <div className="divSpace">
                   <div className="dropDrownSpace">
                     <label className="edit-label-1">Claim Category</label>
-                    <Select
+                    <Aselect
                       showSearch={true}
                       value={this.state.editCategory.categoryID}
                       style={{ width: "100%" }}
                       onChange={this.handleModalCategoryChange}
+                      onSearch={this.handleGetEditCategoryList.bind(this)}
+                      notFoundContent="No Data Found"
                     >
-                      {list1SelectOptions}
+                      {this.state.categoryDropData !== null &&
+                        this.state.categoryDropData.map((item, o) => (
+                          <Option key={o} value={item.categoryID}>
+                            {item.categoryName}
+                          </Option>
+                        ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
-                    </Select>
-                    {this.state.editCategory.categoryID !== null && (
+                    </Aselect>
+                    {this.state.editCategory.categoryID === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editCategoryCompulsory}
                       </p>
@@ -2831,17 +2788,22 @@ class ClaimCategoryMaster extends Component {
                 <div className="divSpace">
                   <div className="dropDrownSpace">
                     <label className="edit-label-1">Claim Sub Category</label>
-                    <Select
+                    <Aselect
                       showSearch={true}
                       value={this.state.editCategory.subCategoryID}
                       style={{ width: "100%" }}
                       onChange={this.handleModalSubCatOnChange}
                     >
-                      {listSubCategory}
+                      {this.state.SubCategoryDropData !== null &&
+                        this.state.SubCategoryDropData.map((item, o) => (
+                          <Option key={o} value={item.subCategoryID}>
+                            {item.subCategoryName}
+                          </Option>
+                        ))}
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
-                    </Select>
+                    </Aselect>
                     {this.state.editCategory.subCategoryID !== null && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editSubCatCompulsory}
@@ -2898,7 +2860,7 @@ class ClaimCategoryMaster extends Component {
                 <div className="divSpace">
                   <div className="dropDrownSpace">
                     <label className="edit-label-1">Claim Issue Type</label>
-                    <Select
+                    <Aselect
                       showSearch={true}
                       value={this.state.editCategory.issueTypeID}
                       style={{ width: "100%" }}
@@ -2908,7 +2870,7 @@ class ClaimCategoryMaster extends Component {
                       <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
                       </Option>
-                    </Select>
+                    </Aselect>
                     {this.state.editCategory.issueTypeID !== null && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editIssueCompulsory}
