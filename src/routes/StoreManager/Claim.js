@@ -29,7 +29,7 @@ class Claim extends Component {
       categoryID: "",
       subCategoryID: "",
       issueTypeID: "",
-      assignToID: 0, 
+      assignToID: 0,
       raisedByID: 0,
       claimID: "",
       isTicketMapped: "",
@@ -38,10 +38,14 @@ class Claim extends Component {
       taskID: "",
       tabFor: 1,
       statusID: "",
-      claimCreateDate: ""
+      claimCreateDate: "",
     };
-    this.handleOnCategoryChangeData = this.handleOnCategoryChangeData.bind(this);
-    this.handleOnSubCategoryChangeData = this.handleOnSubCategoryChangeData.bind(this);
+    this.handleOnCategoryChangeData = this.handleOnCategoryChangeData.bind(
+      this
+    );
+    this.handleOnSubCategoryChangeData = this.handleOnSubCategoryChangeData.bind(
+      this
+    );
     this.handleOnChangeData = this.handleOnChangeData.bind(this);
   }
 
@@ -116,88 +120,88 @@ class Claim extends Component {
   }
 
   handleGetClaimCategory() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
       params: { BrandIds: "" },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimCategoryName: responseData});
+          self.setState({ claimCategoryName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimSubCategory() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimSubCategory",
       params: { CategoryIDs: this.state.categoryID },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimSubCategoryName: responseData});
+          self.setState({ claimSubCategoryName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimIssueType() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimIssueType",
       params: { subCategoryIDs: this.state.subCategoryID },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimIssueTypeName: responseData});
+          self.setState({ claimIssueTypeName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetStoreUser() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimUserDate: responseData});
+          self.setState({ claimUserDate: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -207,22 +211,22 @@ class Claim extends Component {
     await this.setState({
       [e.target.name]: e.target.value,
       claimSubCategoryName: [],
-      claimIssueTypeName: []
+      claimIssueTypeName: [],
     });
     this.handleGetClaimSubCategory();
-  }
+  };
 
   handleOnSubCategoryChangeData = async (e) => {
     await this.setState({
       [e.target.name]: e.target.value,
-      claimIssueTypeName: []
+      claimIssueTypeName: [],
     });
     this.handleGetClaimIssueType();
-  }
+  };
 
   handleOnChangeData(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -232,27 +236,37 @@ class Claim extends Component {
   }
 
   handleGetStoreFilterList() {
-    debugger; 
+    debugger;
     let self = this;
     this.setState({ isloading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardListClaim",
       data: {
-        claimID: this.state.claimID === ""?0:parseInt(this.state.claimID),
-        ticketID: this.state.titleID === ""?0:parseInt(this.state.titleID),
-        claimissueType: this.state.issueTypeID === ""?0:parseInt(this.state.issueTypeID),
-        ticketMapped: this.state.isTicketMapped === "yes"?1:0,
-        claimsubcat: this.state.subCategoryID === ""?0:parseInt(this.state.subCategoryID),
-        assignTo: this.state.assignToID === ""?0:parseInt(this.state.assignToID),
-        claimcat: this.state.categoryID === ""?0:parseInt(this.state.categoryID),
-        claimraiseddate: moment(this.state.claimCreateDate).format('YYYY-MM-DD'),
-        taskID: this.state.taskID === ""?0:parseInt(this.state.taskID),
-        claimstatus: this.state.statusID === ""?0:parseInt(this.state.statusID),
-        taskmapped: this.state.isTaskMapped === "no"?0:1,
-        raisedby: this.state.raisedByID === ""?0:parseInt(this.state.raisedByID)
+        claimID: this.state.claimID === "" ? 0 : parseInt(this.state.claimID),
+        ticketID: this.state.titleID === "" ? 0 : parseInt(this.state.titleID),
+        claimissueType:
+          this.state.issueTypeID === "" ? 0 : parseInt(this.state.issueTypeID),
+        ticketMapped: this.state.isTicketMapped === "yes" ? 1 : 0,
+        claimsubcat:
+          this.state.subCategoryID === ""
+            ? 0
+            : parseInt(this.state.subCategoryID),
+        assignTo:
+          this.state.assignToID === "" ? 0 : parseInt(this.state.assignToID),
+        claimcat:
+          this.state.categoryID === "" ? 0 : parseInt(this.state.categoryID),
+        claimraiseddate: this.state.claimCreateDate
+          ? moment(this.state.claimCreateDate).format("YYYY-MM-DD")
+          : "",
+        taskID: this.state.taskID === "" ? 0 : parseInt(this.state.taskID),
+        claimstatus:
+          this.state.statusID === "" ? 0 : parseInt(this.state.statusID),
+        taskmapped: this.state.isTaskMapped === "no" ? 0 : 1,
+        raisedby:
+          this.state.raisedByID === "" ? 0 : parseInt(this.state.raisedByID),
       },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
@@ -265,7 +279,7 @@ class Claim extends Component {
           if (self.state.tabFor === 2) {
             self.setState({ assignToMeData: responseData, isloading: false });
           }
-        }else{
+        } else {
           if (self.state.tabFor === 1) {
             self.setState({ raisedByMeData: responseData, isloading: false });
           }
@@ -274,7 +288,7 @@ class Claim extends Component {
           }
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -330,6 +344,20 @@ class Claim extends Component {
                   </div>
                 ) : (
                   <div>
+                    <a
+                      href="#!"
+                      className="float-search"
+                      onClick={this.handleFilterCollapse.bind(this)}
+                    >
+                      <small>
+                        {this.state.FilterCollapse ? "Close Search" : "Search"}
+                      </small>
+                      <img
+                        className="search-icon"
+                        src={SearchIcon}
+                        alt="search-icon"
+                      />
+                    </a>
                     <Collapse isOpen={this.state.FilterCollapse}>
                       <Card>
                         <CardBody>
@@ -341,7 +369,9 @@ class Claim extends Component {
                                     className="btn-inv"
                                     type="button"
                                     style={{ margin: "10px", width: "180px" }}
-                                    onClick={this.handleGetStoreFilterList.bind(this)}
+                                    onClick={this.handleGetStoreFilterList.bind(
+                                      this
+                                    )}
                                   >
                                     VIEW SEARCH
                                   </button>
@@ -351,17 +381,19 @@ class Claim extends Component {
                               <div className="container-fluid">
                                 <div className="row all-row">
                                   <div className="col-md-3">
-                                    <input type="text" 
-                                    name="claimID"
-                                    value={this.state.claimID}
-                                    onChange={this.handleOnChangeData} 
-                                    placeholder="Claim ID" />
+                                    <input
+                                      type="text"
+                                      name="claimID"
+                                      value={this.state.claimID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder="Claim ID"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="isTicketMapped"
-                                     value={this.state.isTicketMapped}
-                                     onChange={this.handleOnChangeData} 
+                                      name="isTicketMapped"
+                                      value={this.state.isTicketMapped}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option value="">Ticket Mapped</option>
                                       <option value="yes">Yes</option>
@@ -374,68 +406,83 @@ class Claim extends Component {
                                       value={this.state.categoryID}
                                       onChange={this.handleOnCategoryChangeData}
                                     >
-                                    <option>Claim Category</option>
-                                    {this.state.claimCategoryName !== null &&
-                                      this.state.claimCategoryName.map((item, i) => (
-                                        <option value={item.categoryID}>{item.categoryName}</option>
-                                    ))}
+                                      <option>Claim Category</option>
+                                      {this.state.claimCategoryName !== null &&
+                                        this.state.claimCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.categoryID}>
+                                              {item.categoryName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="statusID"
-                                     value={this.state.statusID}
-                                     onChange={this.handleOnChangeData}
+                                      name="statusID"
+                                      value={this.state.statusID}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option>Claim Status</option>
                                       {this.state.statusData !== null &&
                                         this.state.statusData.map((item, i) => (
-                                        <option value={item.claimStatusID}>{item.claimStatusName}</option>
-                                      ))}
+                                          <option value={item.claimStatusID}>
+                                            {item.claimStatusName}
+                                          </option>
+                                        ))}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
-                                    <input type="text" 
-                                    name="titleID"
-                                    value={this.state.titleID}
-                                    onChange={this.handleOnChangeData}
-                                    placeholder="Title ID" />
+                                    <input
+                                      type="text"
+                                      name="titleID"
+                                      value={this.state.titleID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder="Title ID"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
                                       name="subCategoryID"
                                       value={this.state.subCategoryID}
-                                      onChange={this.handleOnSubCategoryChangeData}
+                                      onChange={
+                                        this.handleOnSubCategoryChangeData
+                                      }
                                     >
                                       <option>Claim Sub Category</option>
-                                      {this.state.claimSubCategoryName !== null &&
-                                        this.state.claimSubCategoryName.map((item, i) => (
-                                         <option value={item.subCategoryID}>{item.subCategoryName}</option>
-                                      ))}
+                                      {this.state.claimSubCategoryName !==
+                                        null &&
+                                        this.state.claimSubCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.subCategoryID}>
+                                              {item.subCategoryName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
-                                  <DatePicker
-                                    selected={this.state.claimCreateDate}
-                                    value={this.state.claimCreateDate}
-                                    onChange={this.handleClaimCreateDate.bind(
-                                      this,
-                                      "claimCreateDate"
-                                    )}
-                                    placeholderText="Claim Raised On"
-                                    showMonthDropdown
-                                    showYearDropdown
-                                    dateFormat="dd/MM/yyyy"
-                                  />
+                                    <DatePicker
+                                      selected={this.state.claimCreateDate}
+                                      value={this.state.claimCreateDate}
+                                      onChange={this.handleClaimCreateDate.bind(
+                                        this,
+                                        "claimCreateDate"
+                                      )}
+                                      placeholderText="Claim Raised On"
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dateFormat="dd/MM/yyyy"
+                                    />
                                     {/* <select>
                                       <option>Claim Raised On</option>
                                     </select> */}
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="isTaskMapped"
-                                     value={this.state.isTaskMapped}
-                                     onChange={this.handleOnChangeData} 
+                                      name="isTaskMapped"
+                                      value={this.state.isTaskMapped}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option value="">Task Mapped</option>
                                       <option value="yes">Yes</option>
@@ -444,15 +491,19 @@ class Claim extends Component {
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="issueTypeID"
-                                     value={this.state.issueTypeID}
-                                     onChange={this.handleOnChangeData}
+                                      name="issueTypeID"
+                                      value={this.state.issueTypeID}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option>Claim Issue Type</option>
                                       {this.state.claimIssueTypeName !== null &&
-                                        this.state.claimIssueTypeName.map((item, i) => (
-                                         <option value={item.issueTypeID}>{item.issueTypeName}</option>
-                                      ))}
+                                        this.state.claimIssueTypeName.map(
+                                          (item, i) => (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -463,17 +514,23 @@ class Claim extends Component {
                                     >
                                       <option>Assign To</option>
                                       {this.state.claimUserDate !== null &&
-                                        this.state.claimUserDate.map((item, i) => (
-                                         <option value={item.userID}>{item.userName}</option>
-                                      ))}
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
-                                    <input type="text" 
-                                    name="taskID"
-                                    value={this.state.taskID}
-                                    onChange={this.handleOnChangeData}
-                                    placeholder="Task ID" />
+                                    <input
+                                      type="text"
+                                      name="taskID"
+                                      value={this.state.taskID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder="Task ID"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
@@ -483,9 +540,13 @@ class Claim extends Component {
                                     >
                                       <option>Raised By</option>
                                       {this.state.claimUserDate !== null &&
-                                        this.state.claimUserDate.map((item, i) => (
-                                         <option value={item.userID}>{item.userName}</option>
-                                      ))}
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                 </div>
@@ -495,19 +556,6 @@ class Claim extends Component {
                         </CardBody>
                       </Card>
                     </Collapse>
-                    <div
-                      className="float-search"
-                      onClick={this.handleFilterCollapse.bind(this)}
-                    >
-                      <small>
-                        {this.state.FilterCollapse ? "Close Search" : "Search"}
-                      </small>
-                      <img
-                        className="search-icon"
-                        src={SearchIcon}
-                        alt="search-icon"
-                      />
-                    </div>
 
                     <div className="table-cntr raisereactTable">
                       <ReactTable
@@ -529,49 +577,49 @@ class Claim extends Component {
                             ),
                             accessor: "status",
                             Cell: (row) => {
-                              if(row.original.status !== undefined)
-                              {
-                              if (row.original.status === "New") {
-                                return (
-                                  <span className="table-btn table-yellow-btn">
-                                    <label>{row.original.status}</label>
-                                  </span>
-                                );
-                              } else if (row.original.status === "Open") {
-                                return (
-                                  <span className="table-btn table-blue-btn">
-                                    <label>{row.original.status}</label>
-                                  </span>
-                                );
+                              if (row.original.status !== undefined) {
+                                if (row.original.status === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                } else if (row.original.status === "Open") {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                }
                               } else {
-                                return (
-                                  <span className="table-btn table-green-btn">
-                                    <label>{row.original.status}</label>
-                                  </span>
-                                );
+                                if (row.original.claimStatus === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else if (
+                                  row.original.claimStatus === "Open"
+                                ) {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                }
                               }
-                            }
-                            else{
-                              if (row.original.claimStatus === "New") {
-                                return (
-                                  <span className="table-btn table-yellow-btn">
-                                    <label>{row.original.claimStatus}</label>
-                                  </span>
-                                );
-                              } else if (row.original.claimStatus === "Open") {
-                                return (
-                                  <span className="table-btn table-blue-btn">
-                                    <label>{row.original.claimStatus}</label>
-                                  </span>
-                                );
-                              } else {
-                                return (
-                                  <span className="table-btn table-green-btn">
-                                    <label>{row.original.claimStatus}</label>
-                                  </span>
-                                );
-                              }
-                            }
                             },
                           },
                           {
@@ -646,12 +694,11 @@ class Claim extends Component {
                             accessor: "raiseBy",
                             Cell: (row) => {
                               if (row.original.raiseBy !== undefined) {
-                                return row.original.raiseBy
+                                return row.original.raiseBy;
+                              } else {
+                                return row.original.claimRaisedBy;
                               }
-                              else{
-                                return row.original.claimRaisedBy
-                              }
-                            }
+                            },
                           },
                           {
                             Header: (
@@ -726,7 +773,7 @@ class Claim extends Component {
                                 <FontAwesomeIcon icon={faCaretDown} />
                               </span>
                             ),
-                            accessor: "assignTo"
+                            accessor: "assignTo",
                             // Cell: (props) => (
                             //   <span>
                             //     <label>A, Bansal</label>
@@ -760,6 +807,18 @@ class Claim extends Component {
                   </div>
                 ) : (
                   <div>
+                    <a
+                      href="#!"
+                      className="float-search"
+                      onClick={this.handleFilterCollapse.bind(this)}
+                    >
+                      <small>Search</small>
+                      <img
+                        className="search-icon"
+                        src={SearchIcon}
+                        alt="search-icon"
+                      />
+                    </a>
                     <Collapse isOpen={this.state.FilterCollapse}>
                       <Card>
                         <CardBody>
@@ -771,7 +830,9 @@ class Claim extends Component {
                                     className="btn-inv"
                                     type="button"
                                     style={{ margin: "10px", width: "180px" }}
-                                    onClick={this.handleGetStoreFilterList.bind(this)}
+                                    onClick={this.handleGetStoreFilterList.bind(
+                                      this
+                                    )}
                                   >
                                     VIEW SEARCH
                                   </button>
@@ -781,17 +842,19 @@ class Claim extends Component {
                               <div className="container-fluid">
                                 <div className="row all-row">
                                   <div className="col-md-3">
-                                    <input type="text" 
-                                    name="claimID"
-                                    value={this.state.claimID}
-                                    onChange={this.handleOnChangeData} 
-                                    placeholder="Claim ID" />
+                                    <input
+                                      type="text"
+                                      name="claimID"
+                                      value={this.state.claimID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder="Claim ID"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="isTicketMapped"
-                                     value={this.state.isTicketMapped}
-                                     onChange={this.handleOnChangeData} 
+                                      name="isTicketMapped"
+                                      value={this.state.isTicketMapped}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option value="">Ticket Mapped</option>
                                       <option value="yes">Yes</option>
@@ -804,65 +867,80 @@ class Claim extends Component {
                                       value={this.state.categoryID}
                                       onChange={this.handleOnCategoryChangeData}
                                     >
-                                    <option>Claim Category</option>
-                                    {this.state.claimCategoryName !== null &&
-                                      this.state.claimCategoryName.map((item, i) => (
-                                        <option value={item.categoryID}>{item.categoryName}</option>
-                                    ))}
+                                      <option>Claim Category</option>
+                                      {this.state.claimCategoryName !== null &&
+                                        this.state.claimCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.categoryID}>
+                                              {item.categoryName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="statusID"
-                                     value={this.state.statusID}
-                                     onChange={this.handleOnChangeData}
+                                      name="statusID"
+                                      value={this.state.statusID}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option>Claim Status</option>
                                       {this.state.statusData !== null &&
                                         this.state.statusData.map((item, i) => (
-                                        <option value={item.claimStatusID}>{item.claimStatusName}</option>
-                                      ))}
+                                          <option value={item.claimStatusID}>
+                                            {item.claimStatusName}
+                                          </option>
+                                        ))}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
-                                    <input type="text" 
-                                    name="titleID"
-                                    value={this.state.titleID}
-                                    onChange={this.handleOnChangeData}
-                                    placeholder="Title ID" />
+                                    <input
+                                      type="text"
+                                      name="titleID"
+                                      value={this.state.titleID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder="Title ID"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
                                       name="subCategoryID"
                                       value={this.state.subCategoryID}
-                                      onChange={this.handleOnSubCategoryChangeData}
+                                      onChange={
+                                        this.handleOnSubCategoryChangeData
+                                      }
                                     >
                                       <option>Claim Sub Category</option>
-                                      {this.state.claimSubCategoryName !== null &&
-                                        this.state.claimSubCategoryName.map((item, i) => (
-                                         <option value={item.subCategoryID}>{item.subCategoryName}</option>
-                                      ))}
+                                      {this.state.claimSubCategoryName !==
+                                        null &&
+                                        this.state.claimSubCategoryName.map(
+                                          (item, i) => (
+                                            <option value={item.subCategoryID}>
+                                              {item.subCategoryName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
-                                  <DatePicker
-                                    selected={this.state.claimCreateDate}
-                                    value={this.state.claimCreateDate}
-                                    onChange={this.handleClaimCreateDate.bind(
-                                      this,
-                                      "claimCreateDate"
-                                    )}
-                                    placeholderText="Claim Raised On"
-                                    showMonthDropdown
-                                    showYearDropdown
-                                    dateFormat="dd/MM/yyyy"
-                                  />
+                                    <DatePicker
+                                      selected={this.state.claimCreateDate}
+                                      value={this.state.claimCreateDate}
+                                      onChange={this.handleClaimCreateDate.bind(
+                                        this,
+                                        "claimCreateDate"
+                                      )}
+                                      placeholderText="Claim Raised On"
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dateFormat="dd/MM/yyyy"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="isTaskMapped"
-                                     value={this.state.isTaskMapped}
-                                     onChange={this.handleOnChangeData} 
+                                      name="isTaskMapped"
+                                      value={this.state.isTaskMapped}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option value="">Task Mapped</option>
                                       <option value="yes">Yes</option>
@@ -871,15 +949,19 @@ class Claim extends Component {
                                   </div>
                                   <div className="col-md-3">
                                     <select
-                                     name="issueTypeID"
-                                     value={this.state.issueTypeID}
-                                     onChange={this.handleOnChangeData}
+                                      name="issueTypeID"
+                                      value={this.state.issueTypeID}
+                                      onChange={this.handleOnChangeData}
                                     >
                                       <option>Claim Issue Type</option>
                                       {this.state.claimIssueTypeName !== null &&
-                                        this.state.claimIssueTypeName.map((item, i) => (
-                                         <option value={item.issueTypeID}>{item.issueTypeName}</option>
-                                      ))}
+                                        this.state.claimIssueTypeName.map(
+                                          (item, i) => (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
@@ -890,17 +972,23 @@ class Claim extends Component {
                                     >
                                       <option>Assign To</option>
                                       {this.state.claimUserDate !== null &&
-                                        this.state.claimUserDate.map((item, i) => (
-                                         <option value={item.userID}>{item.userName}</option>
-                                      ))}
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                   <div className="col-md-3">
-                                    <input type="text" 
-                                    name="taskID"
-                                    value={this.state.taskID}
-                                    onChange={this.handleOnChangeData}
-                                    placeholder="Task ID" />
+                                    <input
+                                      type="text"
+                                      name="taskID"
+                                      value={this.state.taskID}
+                                      onChange={this.handleOnChangeData}
+                                      placeholder="Task ID"
+                                    />
                                   </div>
                                   <div className="col-md-3">
                                     <select
@@ -910,9 +998,13 @@ class Claim extends Component {
                                     >
                                       <option>Raised By</option>
                                       {this.state.claimUserDate !== null &&
-                                        this.state.claimUserDate.map((item, i) => (
-                                         <option value={item.userID}>{item.userName}</option>
-                                      ))}
+                                        this.state.claimUserDate.map(
+                                          (item, i) => (
+                                            <option value={item.userID}>
+                                              {item.userName}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
                                   </div>
                                 </div>
@@ -922,17 +1014,6 @@ class Claim extends Component {
                         </CardBody>
                       </Card>
                     </Collapse>
-                    <div
-                      className="float-search"
-                      onClick={this.handleFilterCollapse.bind(this)}
-                    >
-                      <small>Search</small>
-                      <img
-                        className="search-icon"
-                        src={SearchIcon}
-                        alt="search-icon"
-                      />
-                    </div>
 
                     <div className="table-cntr raisereactTable">
                       <ReactTable
@@ -954,49 +1035,50 @@ class Claim extends Component {
                             ),
                             accessor: "status",
                             Cell: (row) => {
-                              if(row.original.status !== undefined)
-                              {
-                              if (row.original.status === "New") {
-                                return (
-                                  <span className="table-btn table-yellow-btn">
-                                    <label>{row.original.status}</label>
-                                  </span>
-                                );
-                              } else if (row.original.status === "Open") {
-                                return (
-                                  <span className="table-btn table-blue-btn">
-                                    <label>{row.original.status}</label>
-                                  </span>
-                                );
+                              if (row.original.status !== undefined) {
+                                if (row.original.status === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                } else if (row.original.status === "Open") {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.status}</label>
+                                    </span>
+                                  );
+                                }
                               } else {
-                                return (
-                                  <span className="table-btn table-green-btn">
-                                    <label>{row.original.status}</label>
-                                  </span>
-                                );
+                                if (row.original.claimStatus === "New") {
+                                  return (
+                                    <span className="table-btn table-yellow-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else if (
+                                  row.original.claimStatus === "Open"
+                                ) {
+                                  return (
+                                    <span className="table-btn table-blue-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="table-btn table-green-btn">
+                                      <label>{row.original.claimStatus}</label>
+                                    </span>
+                                  );
+                                }
                               }
-                              }else{
-                              if (row.original.claimStatus === "New") {
-                                return (
-                                  <span className="table-btn table-yellow-btn">
-                                    <label>{row.original.claimStatus}</label>
-                                  </span>
-                                );
-                              } else if (row.original.claimStatus === "Open") {
-                                return (
-                                  <span className="table-btn table-blue-btn">
-                                    <label>{row.original.claimStatus}</label>
-                                  </span>
-                                );
-                              } else {
-                                return (
-                                  <span className="table-btn table-green-btn">
-                                    <label>{row.original.claimStatus}</label>
-                                  </span>
-                                );
-                              }
-                            }
-                           }
+                            },
                           },
                           {
                             Header: (

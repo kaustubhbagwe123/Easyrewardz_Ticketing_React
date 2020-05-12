@@ -272,10 +272,10 @@ class Header extends Component {
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
-          var strTag = data.agentName.split(" ");
+          var strTag = data.agentName.trim().split(" ");
           var nameTag = strTag[0].charAt(0).toUpperCase();
-          if (strTag.length > 0) {
-            nameTag += strTag[1].charAt(0).toUpperCase();
+          if (strTag.length > 1) {
+            nameTag += strTag[strTag.length - 1].charAt(0).toUpperCase();
           }
           let nume =
             data.loggedInDurationInHours * 60 + data.loggedInDurationInMinutes;
@@ -526,7 +526,7 @@ class Header extends Component {
               </span>
             </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
-              SM
+              {this.state.NameTag}
             </a>
           </div>
         </div>
