@@ -112,7 +112,7 @@ class StoreSignIn extends Component {
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/admin/settings");
+                  self.props.history.push("/store/settings");
                 }, 400);
                 return;
               }

@@ -16,7 +16,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-import { faCaretDown,faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePickerComponenet from "./../Settings/Store/DatePickerComponenet";
 import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
@@ -119,7 +119,7 @@ class StoreDashboard extends Component {
       tempitemData: [],
       sortAllData: [],
       isATOZ: true,
-      itemData:[]
+      itemData: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -1772,7 +1772,7 @@ class StoreDashboard extends Component {
     }
 
     this.setState({
-      isATOZ:true,
+      isATOZ: true,
       tempitemData: itemsArray,
     });
   };
@@ -2215,7 +2215,7 @@ class StoreDashboard extends Component {
                                             value={item.departmentID}
                                             className="select-category-placeholder"
                                           >
-                                            {item.claimStatus}
+                                            {item.departmentName}
                                           </option>
                                         )
                                       )}
