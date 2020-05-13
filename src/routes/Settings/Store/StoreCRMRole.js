@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";
@@ -36,14 +36,15 @@ class StoreCRMRole extends Component {
       crmRoles: [],
       ModulesEnabled: "",
       ModulesDisabled: "",
-      modulesList: [
-        { moduleId: 1, moduleName: "Dashboard", isActive: true },
-        { moduleId: 2, moduleName: "Tasks", isActive: false },
-        { moduleId: 3, moduleName: "Claim", isActive: true },
-        { moduleId: 4, moduleName: "Notification", isActive: true },
-        { moduleId: 5, moduleName: "Settings", isActive: true },
-        { moduleId: 6, moduleName: "Reports", isActive: false },
-      ],
+      modulesList: [],
+      // modulesList: [
+      //   { moduleId: 1, moduleName: "Dashboard", isActive: true },
+      //   { moduleId: 2, moduleName: "Tasks", isActive: false },
+      //   { moduleId: 3, moduleName: "Claim", isActive: true },
+      //   { moduleId: 4, moduleName: "Notification", isActive: true },
+      //   { moduleId: 5, moduleName: "Settings", isActive: true },
+      //   { moduleId: 6, moduleName: "Reports", isActive: false },
+      // ],
       RoleName: "",
       checkRoleName: "",
       RoleisActive: 0,
@@ -79,6 +80,8 @@ class StoreCRMRole extends Component {
       progressValue: 0,
       statusCompulsory: "",
       isortA: false,
+      isATOZ: true,
+      crmData: [],
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -88,6 +91,7 @@ class StoreCRMRole extends Component {
   componentDidMount() {
     this.handleGetCRMGridData();
     this.handleModulesDefault();
+    this.handleGetStoreCrmModule();
   }
   handleTabChange(index) {
     this.setState({
@@ -126,23 +130,23 @@ class StoreCRMRole extends Component {
     this.setState({ RoleisActive });
   };
   ///handle change Module
-  checkModule = async (moduleId) => {
+  checkModule = async (moduleID) => {
     debugger;
     let modulesList = [...this.state.modulesList],
       isActive,
       ModulesEnabled = "",
       ModulesDisabled = "";
     for (let i = 0; i < modulesList.length; i++) {
-      if (modulesList[i].moduleId === moduleId) {
+      if (modulesList[i].moduleID === moduleID) {
         isActive = modulesList[i].isActive;
         modulesList[i].isActive = !isActive;
       }
     }
     for (let i = 0; i < modulesList.length; i++) {
       if (modulesList[i].isActive === true) {
-        ModulesEnabled += modulesList[i].moduleId + ",";
+        ModulesEnabled += modulesList[i].moduleID + ",";
       } else if (modulesList[i].isActive === false) {
-        ModulesDisabled += modulesList[i].moduleId + ",";
+        ModulesDisabled += modulesList[i].moduleID + ",";
       }
     }
     await this.setState({
@@ -170,9 +174,11 @@ class StoreCRMRole extends Component {
           self.setState({ crmRoles: [] });
         }
         if (data !== null) {
-          self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
+          var sortRoleName = [];
+          var sortFilterRoleName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].roleName]) {
               distinct.push(data[i].roleName);
@@ -180,12 +186,19 @@ class StoreCRMRole extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortRoleName.push({ roleName: distinct[i] });
-            self.state.sortFilterRoleName.push({ roleName: distinct[i] });
+            if (distinct[i]) {
+              sortRoleName.push({ roleName: distinct[i] });
+              sortFilterRoleName.push({
+                roleName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreated = [];
+          var sortFilterCreated = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdBy]) {
               distinct.push(data[i].createdBy);
@@ -193,12 +206,21 @@ class StoreCRMRole extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreated.push({ createdBy: distinct[i] });
-            self.state.sortFilterCreated.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              sortCreated.push({
+                createdBy: distinct[i],
+              });
+              sortFilterCreated.push({
+                createdBy: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].isRoleActive]) {
               distinct.push(data[i].isRoleActive);
@@ -206,9 +228,24 @@ class StoreCRMRole extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ isRoleActive: distinct[i] });
-            self.state.sortFilterStatus.push({ isRoleActive: distinct[i] });
+            if (distinct[i]) {
+              sortStatus.push({
+                isRoleActive: distinct[i],
+              });
+              sortFilterStatus.push({
+                isRoleActive: distinct[i],
+              });
+            }
           }
+          self.setState({
+            sortCreated,
+            sortRoleName,
+            sortStatus,
+            sortFilterCreated,
+            sortFilterRoleName,
+            sortFilterStatus,
+            sortAllData: data,
+          });
         }
       })
       .catch((res) => {
@@ -341,17 +378,10 @@ class StoreCRMRole extends Component {
               updateModulesDisabled: "",
               checkRoleName: "",
               statusCompulsory: "",
-              modulesList: [
-                { moduleId: 1, moduleName: "Dashboard", isActive: true },
-                { moduleId: 2, moduleName: "Tasks", isActive: false },
-                { moduleId: 3, moduleName: "Claim", isActive: true },
-                { moduleId: 4, moduleName: "Notification", isActive: true },
-                { moduleId: 5, moduleName: "Settings", isActive: true },
-                { moduleId: 6, moduleName: "Reports", isActive: false },
-              ],
             });
             self.handleGetCRMGridData();
-            this.handleModulesDefault();
+            self.handleModulesDefault();
+            self.handleGetStoreCrmModule();
           } else if (e === "update") {
             self.toggleEditModal();
             self.setState({
@@ -364,7 +394,7 @@ class StoreCRMRole extends Component {
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
             NotificationManager.error("Record Already Exists ");
-          }else{
+          } else {
             NotificationManager.error("Record Already Exists ");
           }
         } else {
@@ -800,7 +830,8 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterRoleName });
       } else {
         this.setState({
-          sortFilterRoleName: this.state.sortRoleName,
+          // sortFilterRoleName: this.state.sortRoleName,
+          sortFilterRoleName: [],
         });
       }
     }
@@ -814,7 +845,8 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterCreated });
       } else {
         this.setState({
-          sortFilterCreated: this.state.sortCreated,
+          // sortFilterCreated: this.state.sortCreated,
+          sortFilterCreated: [],
         });
       }
     }
@@ -828,7 +860,8 @@ class StoreCRMRole extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          // sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -865,6 +898,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       crmRoles: itemsArray,
     });
     setTimeout(() => {
@@ -903,6 +937,7 @@ class StoreCRMRole extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: false,
       crmRoles: itemsArray,
     });
     setTimeout(() => {
@@ -930,6 +965,42 @@ class StoreCRMRole extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+
+  handleGetStoreCrmModule() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreCrmModule",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        var message = response.data.message;
+        var modulesList = response.data.responseData;
+        if (message === "Success" && modulesList) {
+          self.setState({ modulesList });
+        } else {
+          self.setState({ modulesList });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "----handleGetStoreCrmModule");
+      });
+  }
+
+  handleClearSearch() {
+    this.setState({
+      sroleNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisRoleActiveFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      crmRoles: this.state.sortAllData,
+      tempcrmRoles: [],
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -987,9 +1058,13 @@ class StoreCRMRole extends Component {
                   </div>
                 </div>
                 <a
-                  href=""
-                  style={{ margin: "0 25px", textDecoration: "underline" }}
-                  onClick={this.setSortCheckStatus.bind(this, "all")}
+                  style={{
+                    margin: "0 25px",
+                    textDecoration: "underline",
+                    color: "#2561A8",
+                    cursor: "pointer",
+                  }}
+                  onClick={this.handleClearSearch.bind(this)}
                 >
                   clear search
                 </a>
@@ -1115,14 +1190,18 @@ class StoreCRMRole extends Component {
             </Modal>
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StorCrmRoleReact align-table">
+                <div className="table-cntr table-height StorCrmRoleReact align-table setting-table-des">
                   <ReactTable
                     data={this.state.crmRoles}
                     columns={[
                       {
                         Header: (
                           <span
-                            className={this.state.roleColor}
+                            className={
+                              this.state.sortHeader === "Role Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "roleName",
@@ -1130,7 +1209,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Role Name
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Role Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1175,7 +1261,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
@@ -1183,7 +1273,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Created By
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1239,7 +1336,11 @@ class StoreCRMRole extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.statusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isRoleActive",
@@ -1247,7 +1348,14 @@ class StoreCRMRole extends Component {
                             )}
                           >
                             Status
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1260,7 +1368,7 @@ class StoreCRMRole extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">
@@ -1401,17 +1509,17 @@ class StoreCRMRole extends Component {
                             </label>
                             <input
                               type="checkbox"
-                              id={"i" + item.moduleId}
+                              id={"i" + item.moduleID}
                               name="allModules"
-                              attrIds={item.moduleId}
+                              attrIds={item.moduleID}
                               checked={item.isActive}
                               onChange={this.checkModule.bind(
                                 this,
-                                item.moduleId
+                                item.moduleID
                               )}
                             />
                             <label
-                              htmlFor={"i" + item.moduleId}
+                              htmlFor={"i" + item.moduleID}
                               className="cr cr-float-auto"
                             ></label>
                           </div>
