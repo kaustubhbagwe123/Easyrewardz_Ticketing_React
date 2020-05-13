@@ -468,7 +468,7 @@ class Header extends Component {
         if (status === true) {
           //NotificationManager.success(Msg);
           localStorage.clear();
-          window.location.href = "/";
+          window.location.href = "/StoreProgramCode";
         }
       })
       .catch((data) => {
@@ -947,7 +947,7 @@ class Header extends Component {
       });
     }
     inputParam.ChatID = this.state.chatId;
-    inputParam.MobileNo = "91"+this.state.mobileNo;
+    inputParam.MobileNo = this.state.mobileNo.length > 10?this.state.mobileNo:"91"+this.state.mobileNo;
     inputParam.ProgramCode = this.state.programCode;
     inputParam.Message = Message;
     inputParam.InsertChat = 1;
