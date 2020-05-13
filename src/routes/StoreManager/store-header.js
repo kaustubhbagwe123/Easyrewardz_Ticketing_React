@@ -895,12 +895,7 @@ class Header extends Component {
       // inputParam.StoreID = this.state.storeID;
       inputParam.StoreID = 1;
 
-      var messagedata =
-        "Your appointment is booked at " +
-        this.state.selectedDate +
-        " on " +
-        this.state.selectedSlot.timeSlot;
-      this.setState({ message: messagedata, isSendClick: true });
+      this.setState({isSendClick: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/ScheduleVisit",
@@ -911,11 +906,19 @@ class Header extends Component {
           var message = response.data.message;
           var timeSlotData = response.data.responseData;
           if (message == "Success" && timeSlotData) {
+            var messagedata = "Your appointment is booked at " +
+            self.state.selectedDate +
+            " on " +
+            self.state.selectedSlot.timeSlot+", Appoitment ID: "+timeSlotData[0].appointmentID+
+            ", Customer: "+timeSlotData[0].customerName+", "+timeSlotData[0].mobileNo+", Store Name: "+
+            timeSlotData[0].storeName+", Address: "+timeSlotData[0].storeAddress+", Contact Number: "
+            +(timeSlotData[0].mobileNo.length > 10?"+"+timeSlotData[0].mobileNo:"+91"+timeSlotData[0].mobileNo);
             self.setState({
               noOfPeople: "",
               selectSlot: {},
               scheduleModal: false,
               selectedSlot: {},
+              message: messagedata
             });
             self.handleGetTimeSlot();
             debugger;
