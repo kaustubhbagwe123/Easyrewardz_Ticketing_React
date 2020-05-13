@@ -259,7 +259,23 @@
       "enterconfirmpassword":"पासवर्ड की पुष्टि करें",
       "enteremailid":"ईमेल आईडी दर्ज करें",
       "forgotpassword":"पासवर्ड भूल गए",
-      "signin":"साइन इन करें"
+      "signin":"साइन इन करें",
+      "departmentname":"विभाग का नाम",
+      "functionname":"समारोह का नाम",
+      "sla":"% sla",
+      "ordropfilehere":"या फ़ाइल यहाँ छोड़ें",
+      "rolename":"भूमिका का नाम",
+      "editcampignscript":"संपादित शिविर स्क्रिप्ट",
+      "campignname":"अभियान का नाम",
+      "scriptdetail":"स्क्रिप्ट विवरण",
+      "fileformat":"फाइल प्रारूप",
+      "attachmentsetting":"अनुलग्नक सेटिंग्स",
+      "maximumattachmentsize":"अधिकतम अनुलग्नक का आकार",
+      "alerttype":"अलर्ट प्रकार",
+      "editalerts":"अलर्ट संपादित करें",
+      "composeyournotification":"अपनी अधिसूचना लिखें",
+      "composeyoursms":"अपना एसएमएस लिखें",
+      "composeyouremail":"अपना ईमेल लिखें"
     },
     "text":{
       "brand": "ब्रांड :",
@@ -425,7 +441,8 @@
       "sm":"एस.एम.",
       "campaign":"अभियान",
       "taskbyticket":"टिकट द्वारा कार्य",
-      "addcomments":"टिप्पणी करें"
+      "addcomments":"टिप्पणी करें",
+      "email":"ईमेल"
     },
     "span":{
       "status": "स्थिति",
@@ -544,7 +561,18 @@
       "creationon":"निर्माण पर",
       "ticketid":"टिकट आईडी :",
       "taskid":"कार्य आईडी:",
-      "comments":"टिप्पणियाँ"
+      "comments":"टिप्पणियाँ",
+      "retry":"पुन: प्रयास करें",
+      "itemcode":"आइटम कोड",
+      "itemname":"वस्तु का नाम",
+      "itemcat":"आइटम श्रेणी",
+      "itemsubcat":"आइटम उप श्रेणी",
+      "itemgroup":"आइटम समूह",
+      "functionname":"समारोह का नाम",
+      "prioritytype":"प्राथमिकता प्रकार",
+      "cancel":"इसे रद्द करें",
+      "campignname":"अभियान का नाम",
+      "alerttype":"अलर्ट प्रकार"
     },
     "div": {
       "viewtickets": "टिकट देखें",
@@ -561,7 +589,8 @@
       "tickettodate":"टिकट टू डेट",
       "ticketsource":"टिकट स्रोत",
       "status":"स्थिति",
-      "view":"राय देखना"
+      "view":"राय देखना",
+      "ordropfilehere":"या फ़ाइल यहाँ छोड़ें"
     },
     "button": {
       "logout": "लॉगआउट",
@@ -616,7 +645,8 @@
       "addtask":"कार्य जोड़ें",
       "submitclaim":"दावा प्रस्तुत करें",
       "setpassword":"पासवर्ड सेट करें",
-      "recoverpassword":"गोपनीय शब्द पुन प्राप्त करे"
+      "recoverpassword":"गोपनीय शब्द पुन प्राप्त करे",
+      "addrole":"भूमिका जोड़ें"
     },
     "strong": {
       "hierarchy": "अनुक्रम",
@@ -679,7 +709,8 @@
       "sun":"रवि",
       "customer":"ग्राहक",
       "internal":"अंदर का",
-      "store":"दुकान"
+      "store":"दुकान",
+      "ticketing": "टिकिट लेना"
     },
     "link": {
       "setting":"समायोजन",
@@ -703,7 +734,11 @@
       "store":"दुकान",
       "departmentmaster":"विभाग के मास्टर",
       "tryloginagain":"फिर से लॉगिन का प्रयास करें",
-      "forgotpassword":"पासवर्ड भूल गए"
+      "forgotpassword":"पासवर्ड भूल गए",
+      "hierarchymaster":"पदानुक्रम मास्टर",
+      "itemmaster":"आइटम मास्टर",
+      "slatemplatedepart":"SLA टेम्पलेट-विभाग",
+      "fileuploadlog":"फ़ाइल अपलोड लॉग"
     },
     "mybutton": {
       "edit":"संपादित करें"

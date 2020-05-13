@@ -2023,7 +2023,18 @@ class Alerts extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2033,7 +2044,18 @@ class Alerts extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -2041,10 +2063,30 @@ class Alerts extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.clearsearch
+                    }
+                    else {
+                      return "clear search"
+                    }
+                  })()
+                } 
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -2159,7 +2201,16 @@ class Alerts extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -2169,11 +2220,29 @@ class Alerts extends Component {
             }}
             className="header-path"
           >
-            Store
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Alerts
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.alerts
+                }
+                else {
+                  return "Alerts"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="container-fluid">
@@ -2194,7 +2263,16 @@ class Alerts extends Component {
                               "AlertType"
                             )}
                           >
-                            Alert Type
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.alerttype
+                                }
+                                else {
+                                  return "Alert Type"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2244,7 +2322,16 @@ class Alerts extends Component {
                               "Created By"
                             )}
                           >
-                            Created by
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created By"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2260,23 +2347,63 @@ class Alerts extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.createdby
+                                                }
+                                                else {
+                                                  return "Created By:"
+                                                }
+                                              })()
+                                            }  
+                                            {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.createddate
+                                              }
+                                              else {
+                                                return "Created Date:"
+                                              }
+                                            })()
+                                          }
+                                          {" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.updatedby
+                                                }
+                                                else {
+                                                  return "Updated By:"
+                                                }
+                                              })()
+                                            }
+                                            {" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.updateddate
+                                              }
+                                              else {
+                                                return "Updated Date:"
+                                              }
+                                            })()
+                                          }
+                                          {" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -2307,7 +2434,16 @@ class Alerts extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -2330,14 +2466,42 @@ class Alerts extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.deletefile
+                                              }
+                                              else {
+                                                return "Delete file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.areyousuredeletefile
+                                              }
+                                              else {
+                                                return "Are you sure you want to delete this file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.a.cancel
+                                                }
+                                                else {
+                                                  return "CANCEL"
+                                                }
+                                              })()
+                                            }
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteAlert.bind(
@@ -2345,7 +2509,16 @@ class Alerts extends Component {
                                               row.original.alertID
                                             )}
                                           >
-                                            Delete
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.button.delete
+                                                }
+                                                else {
+                                                  return "Delete"
+                                                }
+                                              })()
+                                            }
                                           </button>
                                         </div>
                                       </div>
@@ -2373,7 +2546,16 @@ class Alerts extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.label.edit
+                                        }
+                                        else {
+                                          return "EDIT"
+                                        }
+                                      })()
+                                    }
                                   </label>
                                 </button>
                               </span>
@@ -2430,9 +2612,31 @@ class Alerts extends Component {
               </div>
               <div className="col-md-4">
                 <div className="right-sect-div">
-                  <h3>Create ALERTS</h3>
+                  <h3>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.h3.createalerts
+                        }
+                        else {
+                          return "Create ALERTS"
+                        }
+                      })()
+                    }
+                  </h3>
                   <div className="div-cntr">
-                    <label>Alert Type</label>
+                    <label>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.alerttype
+                        }
+                        else {
+                          return "Alert Type"
+                        }
+                      })()
+                    }
+                    </label>
 
                     <select
                       className="add-select-category"
@@ -2459,7 +2663,18 @@ class Alerts extends Component {
                       </p>
                     )}
                   </div>
-                  <h4>Communication Mode</h4>
+                  <h4>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.h4.communicationmode
+                        }
+                        else {
+                          return "Communication Mode"
+                        }
+                      })()
+                    }
+                  </h4>
                   {this.state.selectedEmailCustomer === false &&
                     this.state.selectedEmailInternal === false &&
                     this.state.selectedEmailStore === false &&
@@ -2471,7 +2686,18 @@ class Alerts extends Component {
                       </p>
                     )}
                   <div className="div-cntr">
-                    <label>Email</label>
+                    <label>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.email
+                        }
+                        else {
+                          return "Email"
+                        }
+                      })()
+                    }
+                    </label>
                     <br />
                     <Checkbox
                       className="cre-str-alrt"
@@ -2479,7 +2705,16 @@ class Alerts extends Component {
                       value="emailCust"
                       checked={this.state.viewEmailCustomer}
                     >
-                      Customer
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.Checkbox.customer
+                          }
+                          else {
+                            return "Customer"
+                          }
+                        })()
+                      }
                     </Checkbox>
                     <Checkbox
                       className="cre-str-alrt"
@@ -2487,7 +2722,16 @@ class Alerts extends Component {
                       value="emailInt"
                       checked={this.state.viewEmailInternal}
                     >
-                      Internal
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.Checkbox.internal
+                          }
+                          else {
+                            return "Internal"
+                          }
+                        })()
+                      }
                     </Checkbox>
                     <Checkbox
                       className="cre-str-alrt"
@@ -2495,11 +2739,31 @@ class Alerts extends Component {
                       value="emailTicketing"
                       checked={this.state.viewEmailStore}
                     >
-                      Ticketing
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.Checkbox.ticketing
+                          }
+                          else {
+                            return "Ticketing"
+                          }
+                        })()
+                      }
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>SMS</label>
+                    <label>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.sms
+                          }
+                          else {
+                            return "SMS"
+                          }
+                        })()
+                      }
+                    </label>
                     <br />
                     <Checkbox
                       className="cre-str-alrt"
@@ -2507,11 +2771,31 @@ class Alerts extends Component {
                       value="smsCust"
                       checked={this.state.viewSMSCustomer}
                     >
-                      Customer
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.Checkbox.customer
+                          }
+                          else {
+                            return "Customer"
+                          }
+                        })()
+                      }
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>Notification</label>
+                    <label>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.notification
+                          }
+                          else {
+                            return "Notification"
+                          }
+                        })()
+                      }
+                    </label>
                     <br />
                     <Checkbox
                       className="cre-str-alrt"
@@ -2519,7 +2803,16 @@ class Alerts extends Component {
                       value="notiInt"
                       checked={this.state.viewNotifInternal}
                     >
-                      Internal
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.Checkbox.internal
+                          }
+                          else {
+                            return "Internal"
+                          }
+                        })()
+                      }
                     </Checkbox>
                     <Checkbox
                       className="cre-str-alrt"
@@ -2527,11 +2820,31 @@ class Alerts extends Component {
                       value="notiTicketing"
                       checked={this.state.viewNotifTicketing}
                     >
-                      Ticketing
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.Checkbox.ticketing
+                          }
+                          else {
+                            return "Ticketing"
+                          }
+                        })()
+                      }
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>Status</label>
+                    <label>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.status
+                          }
+                          else {
+                            return "Status"
+                          }
+                        })()
+                      }
+                    </label>
                     <select
                       name="selectedStatus"
                       value={this.state.selectedStatus}
@@ -2551,7 +2864,16 @@ class Alerts extends Component {
                     className="butn"
                     onClick={this.handleAddAlertTabsOpen}
                   >
-                    Next
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.next
+                        }
+                        else {
+                          return "Next"
+                        }
+                      })()
+                    }
                   </button>
                   <Modal
                     size="lg"
@@ -2579,7 +2901,16 @@ class Alerts extends Component {
                                 aria-controls="email-tab"
                                 aria-selected="true"
                               >
-                                Email
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.a.email
+                                    }
+                                    else {
+                                      return "Email"
+                                    }
+                                  })()
+                                }
                               </a>
                             </li>
                           )}
@@ -2595,7 +2926,16 @@ class Alerts extends Component {
                                 aria-controls="sms-tab"
                                 aria-selected="false"
                               >
-                                SMS
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.a.sms
+                                    }
+                                    else {
+                                      return "SMS"
+                                    }
+                                  })()
+                                }
                               </a>
                             </li>
                           )}
@@ -2611,7 +2951,16 @@ class Alerts extends Component {
                                 aria-controls="notification-tab"
                                 aria-selected="false"
                               >
-                                Notification
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.a.notification
+                                    }
+                                    else {
+                                      return "Notification"
+                                    }
+                                  })()
+                                }
                               </a>
                             </li>
                           )}
@@ -2652,7 +3001,16 @@ class Alerts extends Component {
                                       aria-controls="customer-tab"
                                       aria-selected="true"
                                     >
-                                      Customer
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.customer
+                                          }
+                                          else {
+                                            return "Customer"
+                                          }
+                                        })()
+                                      }
                                     </a>
                                   </li>
                                 )}
@@ -2667,7 +3025,16 @@ class Alerts extends Component {
                                       aria-controls="Internal-tab"
                                       aria-selected="false"
                                     >
-                                      Internal
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.internal
+                                          }
+                                          else {
+                                            return "Internal"
+                                          }
+                                        })()
+                                      }
                                     </a>
                                   </li>
                                 )}
@@ -2682,7 +3049,16 @@ class Alerts extends Component {
                                       aria-controls="ticket-tab"
                                       aria-selected="false"
                                     >
-                                      Ticketing
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.ticketing
+                                          }
+                                          else {
+                                            return "Ticketing"
+                                          }
+                                        })()
+                                      }
                                     </a>
                                   </li>
                                 )}
@@ -2697,12 +3073,30 @@ class Alerts extends Component {
                                 aria-labelledby="customer-tab"
                               >
                                 <label className="alert-main-popuplbl">
-                                  Compose your Email
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.composeyouremail
+                                      }
+                                      else {
+                                        return "Compose your Email"
+                                      }
+                                    })()
+                                  }
                                 </label>
                                 <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
-                                      Subject
+                                    {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.subject
+                                          }
+                                          else {
+                                            return "Subject"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                     <div className="col-sm">
                                       <input
@@ -2800,12 +3194,30 @@ class Alerts extends Component {
                                 aria-labelledby="Internal-tab"
                               >
                                 <label className="alert-main-popuplbl">
-                                  Compose your Email
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.composeyouremail
+                                      }
+                                      else {
+                                        return "Compose your Email"
+                                      }
+                                    })()
+                                  }
                                 </label>
                                 <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
-                                      Subject
+                                    {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.subject
+                                          }
+                                          else {
+                                            return "Subject"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                     <div className="col-sm">
                                       <input
@@ -2904,12 +3316,30 @@ class Alerts extends Component {
                                 aria-labelledby="ticket-tab"
                               >
                                 <label className="alert-main-popuplbl">
-                                  Compose your Email
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.composeyouremail
+                                      }
+                                      else {
+                                        return "Compose your Email"
+                                      }
+                                    })()
+                                  }
                                 </label>
                                 <div className="div-padding-alert">
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
-                                      Subject
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.subject
+                                          }
+                                          else {
+                                            return "Subject"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                     <div className="col-sm">
                                       <input
@@ -3020,7 +3450,16 @@ class Alerts extends Component {
                         >
                           <div className="sms-mainLabel alert-p1">
                             <label className="alert-main-popuplbl">
-                              Compose your SMS
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.label.composeyoursms
+                                  }
+                                  else {
+                                    return "Compose your SMS"
+                                  }
+                                })()
+                              }
                             </label>
                             <textarea
                               rows="10"
@@ -3066,7 +3505,16 @@ class Alerts extends Component {
                                       aria-controls="Internal-noti-tab"
                                       aria-selected="false"
                                     >
-                                      Internal
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.internal
+                                          }
+                                          else {
+                                            return "Internal"
+                                          }
+                                        })()
+                                      }
                                     </a>
                                   </li>
                                 )}
@@ -3081,7 +3529,16 @@ class Alerts extends Component {
                                       aria-controls="ticket-noti-tab"
                                       aria-selected="false"
                                     >
-                                      Ticketing
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.ticketing
+                                          }
+                                          else {
+                                            return "Ticketing"
+                                          }
+                                        })()
+                                      }
                                     </a>
                                   </li>
                                 )}
@@ -3098,7 +3555,16 @@ class Alerts extends Component {
                                 <div className="sms-mainLabel alert-p1">
                                   <div className="noti-plchldr-cntr">
                                     <label className="alert-main-popuplbl">
-                                      Compose your Notification
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.composeyournotification
+                                          }
+                                          else {
+                                            return "Compose your Notification"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                     {/* <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
                                     <select
@@ -3163,7 +3629,16 @@ class Alerts extends Component {
                                 <div className="sms-mainLabel alert-p1">
                                   <div className="noti-plchldr-cntr">
                                     <label className="alert-main-popuplbl">
-                                      Compose your Notification
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.composeyournotification
+                                          }
+                                          else {
+                                            return "Compose your Notification"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                     {/* <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
                                     <select
@@ -3246,7 +3721,16 @@ class Alerts extends Component {
                             ) : (
                               ""
                             )}
-                            SAVE
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.button.save
+                                }
+                                else {
+                                  return "SAVE"
+                                }
+                              })()
+                            }
                           </button>
                         </div>
                       </div>
@@ -3255,9 +3739,31 @@ class Alerts extends Component {
                 </div>
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.h3.bulkupload
+                          }
+                          else {
+                            return "Bulk Upload"
+                          }
+                        })()
+                      }
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.template
+                            }
+                            else {
+                              return "Template"
+                            }
+                          })()
+                        }
+                      </p>
                       <a href={Demo.BLANK_LINK}>
                         <img src={DownExcel} alt="download icon" />
                       </a>
@@ -3278,7 +3784,28 @@ class Alerts extends Component {
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
                     </div>
-                    <span>Add File</span> or Drop File here
+                    <span>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.addfile
+                          }
+                          else {
+                            return "Add File"
+                          }
+                        })()
+                      }  
+                    </span>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.ordropfilehere
+                        }
+                        else {
+                          return "or Drop File here"
+                        }
+                      })()
+                    }
                   </label>
                   {this.state.fileN.length === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3305,18 +3832,56 @@ class Alerts extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file?"
+                                      }
+                                    })()
+                                  }
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousuredeletefile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file?"
+                                      }
+                                    })()
+                                  }
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.a.cancel
+                                        }
+                                        else {
+                                          return "CANCEL"
+                                        }
+                                      })()
+                                    }
+                                  </a>
                                   <button
                                     className="butn"
                                     onClick={this.handleDeleteBulkupload}
                                   >
-                                    Delete
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.button.delete
+                                        }
+                                        else {
+                                          return "Delete"
+                                        }
+                                      })()
+                                    }
                                   </button>
                                 </div>
                               </div>
@@ -3338,11 +3903,31 @@ class Alerts extends Component {
                               className="file-retry"
                               // onClick={this.hanldeAddBulkUpload.bind(this)}
                             >
-                              Retry
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.a.retry
+                                    }
+                                    else {
+                                      return "Retry"
+                                    }
+                                  })()
+                                }
                             </a>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.span.failed
+                                    }
+                                    else {
+                                      return "Failed"
+                                    }
+                                  })()
+                                }
+                            </span>
                           </div>
                         </div>
                       ) : null}
@@ -3374,7 +3959,18 @@ class Alerts extends Component {
                   >
                     ADD
                   </button> */}
-                  <button className="butn">ADD</button>
+                  <button className="butn">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.add
+                        }
+                        else {
+                          return "ADD"
+                        }
+                      })()
+                    }
+                  </button>
                 </div>
               </div>
             </div>
@@ -3387,11 +3983,33 @@ class Alerts extends Component {
         >
           <div className="edtpadding right-sect-div">
             <div className="">
-              <label className="popover-header-text">EDIT ALERTS</label>
+              <label className="popover-header-text">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.editalerts
+                    }
+                    else {
+                      return "EDIT ALERTS"
+                    }
+                  })()
+                }
+              </label>
             </div>
 
             <div className="div-cntr">
-              <label>Alert Type</label>
+              <label>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.alerttype
+                    }
+                    else {
+                      return "Alert Type"
+                    }
+                  })()
+                }
+              </label>
 
               <select
                 className="add-select-category disabled-input"
@@ -3414,7 +4032,18 @@ class Alerts extends Component {
                 </p>
               )}
             </div>
-            <h4>Communication Mode</h4>
+            <h4>
+              {
+                (() => {
+                  if (TranslationContext !== undefined) {
+                    return TranslationContext.h4.communicationmode
+                  }
+                  else {
+                    return "Communication Mode"
+                  }
+                })()
+              }
+            </h4>
             {this.state.emailCust === false &&
               this.state.emailTicketing === false &&
               this.state.notiTicketing === false &&
@@ -3426,62 +4055,160 @@ class Alerts extends Component {
                 </p>
               )}
             <div className="div-cntr">
-              <label>Email</label>
+              <label>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.email
+                    }
+                    else {
+                      return "Email"
+                    }
+                  })()
+                }
+              </label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailCust}
                 value="emailCust"
               >
-                Customer
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.Checkbox.customer
+                    }
+                    else {
+                      return "Customer"
+                    }
+                  })()
+                }
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailInt}
                 value="emailInt"
               >
-                Internal
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.Checkbox.internal
+                    }
+                    else {
+                      return "Internal"
+                    }
+                  })()
+                }
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailTicketing}
                 value="emailTicketing"
               >
-                Ticketing
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.Checkbox.ticketing
+                    }
+                    else {
+                      return "Ticketing"
+                    }
+                  })()
+                }
               </Checkbox>
             </div>
             <div className="div-cntr">
-              <label>SMS</label>
+              <label>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.sms
+                    }
+                    else {
+                      return "SMS"
+                    }
+                  })()
+                }
+              </label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.smsCust}
                 value="smsCust"
               >
-                Customer
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.Checkbox.customer
+                    }
+                    else {
+                      return "Customer"
+                    }
+                  })()
+                }
               </Checkbox>
             </div>
             <div className="div-cntr">
-              <label>Notification</label>
+              <label>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.notification
+                    }
+                    else {
+                      return "Notification"
+                    }
+                  })()
+                }
+              </label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.notiInt}
                 value="notiInt"
               >
-                Internal
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.Checkbox.internal
+                    }
+                    else {
+                      return "Internal"
+                    }
+                  })()
+                }
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.notiTicketing}
                 value="notiTicketing"
               >
-                Ticketing
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.Checkbox.ticketing
+                    }
+                    else {
+                      return "Ticketing"
+                    }
+                  })()
+                }
               </Checkbox>
             </div>
 
             <div className="div-cntr">
-              <label>Status</label>
+              <label>
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.status
+                    }
+                    else {
+                      return "Status"
+                    }
+                  })()
+                }
+              </label>
               <select
                 name="alertIsActive"
                 value={this.state.alertEdit.alertIsActive}
@@ -3501,13 +4228,31 @@ class Alerts extends Component {
             <br />
             <div className="text-center">
               <span className="pop-over-cancle" onClick={this.handleEditModal}>
-                CANCEL
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.span.cancel
+                    }
+                    else {
+                      return "CANCEL"
+                    }
+                  })()
+                }
               </span>
               <button
                 className="pop-over-button FlNone"
                 onClick={this.handleOpenAdd.bind(this)}
               >
-                SAVE
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.save
+                    }
+                    else {
+                      return "SAVE"
+                    }
+                  })()
+                }
               </button>
             </div>
           </div>

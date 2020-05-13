@@ -608,7 +608,16 @@ class StoreFileUploadLogs extends Component {
       {
         Header: (
           <span onClick={this.StatusOpenModel.bind(this, "fileType", "Type")}>
-            Type
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.type
+                }
+                else {
+                  return "Type"
+                }
+              })()
+            }
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
@@ -617,7 +626,16 @@ class StoreFileUploadLogs extends Component {
       {
         Header: (
           <span onClick={this.StatusOpenModel.bind(this, "fileName", "Name")}>
-            File Name
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.filename
+                }
+                else {
+                  return "File Name"
+                }
+              })()
+            }
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
@@ -628,7 +646,16 @@ class StoreFileUploadLogs extends Component {
           <span
             onClick={this.StatusOpenModel.bind(this, "createdDate", "Date")}
           >
-            Date
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.date
+                }
+                else {
+                  return "Date"
+                }
+              })()
+            }
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
@@ -644,22 +671,62 @@ class StoreFileUploadLogs extends Component {
                     <>
                       <div>
                         <b>
-                          <p className="title">
-                            Created By: {row.original.createdBy}
+                          <p className="title"> 
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.p.createdby
+                                }
+                                else {
+                                  return "Created By:"
+                                }
+                              })()
+                            }
+                            {row.original.createdBy}
                           </p>
                         </b>
-                        <p className="sub-title">
-                          Created Date: {row.original.createdDate}
+                        <p className="sub-title"> 
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.p.createddate
+                                }
+                                else {
+                                  return "Created Date:"
+                                }
+                              })()
+                            }
+                          {row.original.createdDate}
                         </p>
                       </div>
                       <div>
                         <b>
-                          <p className="title">
-                            Updated By: {row.original.modifiedBy}
+                          <p className="title"> 
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.p.updatedby
+                                }
+                                else {
+                                  return "Updated By:"
+                                }
+                              })()
+                            }
+                            {row.original.modifiedBy}
                           </p>
                         </b>
-                        <p className="sub-title">
-                          Updated Date: {row.original.modifiedDate}
+                        <p className="sub-title"> 
+                           {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.p.updateddate
+                                }
+                                else {
+                                  return "Updated Date:"
+                                }
+                              })()
+                            }
+                          {row.original.modifiedDate}
                         </p>
                       </div>
                     </>
@@ -687,14 +754,34 @@ class StoreFileUploadLogs extends Component {
               "Status"
             )}
           >
-            Status
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.status
+                }
+                else {
+                  return "Status"
+                }
+              })()
+            }
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "fileUploadStatus",
       },
       {
-        Header: <span>Error File</span>,
+        Header: <span>
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.errorfile
+                }
+                else {
+                  return "Error File"
+                }
+              })()
+            }
+        </span>,
         accessor: "Erroor",
         Cell: (row) =>
           row.original.fileUploadStatus === "Completed" && (
@@ -706,14 +793,34 @@ class StoreFileUploadLogs extends Component {
                   row.original.errorFilePath
                 )}
               >
-                DOWNLOAD
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.download
+                    }
+                    else {
+                      return "DOWNLOAD"
+                    }
+                  })()
+                }
                 {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
               </button>
             </div>
           ),
       },
       {
-        Header: <span>Success File</span>,
+        Header: <span>
+          {
+            (() => {
+              if (TranslationContext !== undefined) {
+                return TranslationContext.span.successfile
+              }
+              else {
+                return "Success File"
+              }
+            })()
+          }
+        </span>,
         accessor: "success",
         Cell: (row) =>
           row.original.fileUploadStatus === "Completed" && (
@@ -725,7 +832,16 @@ class StoreFileUploadLogs extends Component {
                   row.original.successFilePath
                 )}
               >
-                DOWNLOAD
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.button.download
+                    }
+                    else {
+                      return "DOWNLOAD"
+                    }
+                  })()
+                }
                 {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
               </button>
             </div>
@@ -755,7 +871,18 @@ class StoreFileUploadLogs extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -765,7 +892,18 @@ class StoreFileUploadLogs extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -773,10 +911,30 @@ class StoreFileUploadLogs extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                  {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.clearsearch
+                        }
+                        else {
+                          return "clear search"
+                        }
+                      })()
+                    }
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -918,7 +1076,16 @@ class StoreFileUploadLogs extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -928,11 +1095,29 @@ class StoreFileUploadLogs extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            File Upload Logs
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.fileuploadlog
+                }
+                else {
+                  return "File Upload Logs"
+                }
+              })()
+            }
           </Link>
         </div>
         <br />

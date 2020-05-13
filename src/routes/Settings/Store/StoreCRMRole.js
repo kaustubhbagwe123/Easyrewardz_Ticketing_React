@@ -897,7 +897,16 @@ class StoreCRMRole extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -907,11 +916,29 @@ class StoreCRMRole extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            CRM Roles
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.crmroles
+                }
+                else {
+                  return "CRM Roles"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="container-fluid">
@@ -935,7 +962,18 @@ class StoreCRMRole extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -945,7 +983,18 @@ class StoreCRMRole extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                    </p>
                   </div>
                 </div>
                 <a
@@ -953,10 +1002,30 @@ class StoreCRMRole extends Component {
                   style={{ margin: "0 25px", textDecoration: "underline" }}
                   onClick={this.setSortCheckStatus.bind(this, "all")}
                 >
-                  clear search
+                  {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.clearsearch
+                        }
+                        else {
+                          return "clear search"
+                        }
+                      })()
+                    }
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -1081,7 +1150,16 @@ class StoreCRMRole extends Component {
                               "Role Name"
                             )}
                           >
-                            Role Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.rolename
+                                }
+                                else {
+                                  return "Role Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1133,7 +1211,16 @@ class StoreCRMRole extends Component {
                               "Created By"
                             )}
                           >
-                            Created By
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created By"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1150,23 +1237,63 @@ class StoreCRMRole extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.createdby
+                                                }
+                                                else {
+                                                  return "Created By:"
+                                                }
+                                              })()
+                                            } 
+                                            {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.createddate
+                                              }
+                                              else {
+                                                return "Created Date:"
+                                              }
+                                            })()
+                                          }
+                                          {" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.updatedby
+                                                }
+                                                else {
+                                                  return "Updated By:"
+                                                }
+                                              })()
+                                            }
+                                            {" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.updateddate
+                                              }
+                                              else {
+                                                return "Updated Date:"
+                                              }
+                                            })()
+                                          }
+                                          {" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1196,14 +1323,34 @@ class StoreCRMRole extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "isRoleActive",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.actions
+                              }
+                              else {
+                                return "Actions"
+                              }
+                            })()
+                          }
+                        </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1218,14 +1365,42 @@ class StoreCRMRole extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                        {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.deletefile
+                                              }
+                                              else {
+                                                return "Delete file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                        {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.areyousuredeletefile
+                                              }
+                                              else {
+                                                return "Are you sure you want to delete this file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.a.cancel
+                                                }
+                                                else {
+                                                  return "CANCEL"
+                                                }
+                                              })()
+                                            }
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteCrmRole.bind(
@@ -1233,7 +1408,16 @@ class StoreCRMRole extends Component {
                                               row.original.crmRoleID
                                             )}
                                           >
-                                            Delete
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.button.delete
+                                                }
+                                                else {
+                                                  return "Delete"
+                                                }
+                                              })()
+                                            }
                                           </button>
                                         </div>
                                       </div>
@@ -1258,7 +1442,16 @@ class StoreCRMRole extends Component {
                                     row.original
                                   )}
                                 >
-                                  EDIT
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.button.edit
+                                        }
+                                        else {
+                                          return "EDIT"
+                                        }
+                                      })()
+                                    }
                                 </button>
                               </span>
                             </>
@@ -1314,9 +1507,31 @@ class StoreCRMRole extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="create-department">CREATE CRM ROLE</label>
+                    <label className="create-department">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.createcrmrole
+                          }
+                          else {
+                            return "CREATE CRM ROLE"
+                          }
+                        })()
+                      }
+                    </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Role Name</label>
+                      <label className="designation-name">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.rolename
+                          }
+                          else {
+                            return "Role Name"
+                          }
+                        })()
+                      }
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -1368,7 +1583,18 @@ class StoreCRMRole extends Component {
                       ))}
 
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.status
+                          }
+                          else {
+                            return "Status"
+                          }
+                        })()
+                      }
+                      </label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.RoleisActive}
@@ -1396,7 +1622,16 @@ class StoreCRMRole extends Component {
                           "add"
                         )}
                       >
-                        ADD ROLE
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.button.addrole
+                            }
+                            else {
+                              return "ADD ROLE"
+                            }
+                          })()
+                        }
                       </button>
                     </div>
                   </div>
@@ -1405,7 +1640,18 @@ class StoreCRMRole extends Component {
                 <div className="store-col-2">
                 <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
+                    <h3>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.h3.bulkupload
+                          }
+                          else {
+                            return "Bulk Upload"
+                          }
+                        })()
+                      }
+                    </h3>
                     Template
                     <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
                       <img
@@ -1425,8 +1671,28 @@ class StoreCRMRole extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>
-                            or Drop File here
+                            <span className={"fileupload-span"}>
+                            {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.addfile
+                                  }
+                                  else {
+                                    return "Add File"
+                                  }
+                                })()
+                              }  
+                            </span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.div.ordropfilehere
+                                }
+                                else {
+                                  return "or Drop File here"
+                                }
+                              })()
+                            }
                           </div>
                         )}
                       </Dropzone>
@@ -1456,18 +1722,56 @@ class StoreCRMRole extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file?"
+                                      }
+                                    })()
+                                  }
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousuredeletefile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file?"
+                                      }
+                                    })()
+                                  }
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}>
+                                    {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.cancel
+                                          }
+                                          else {
+                                            return "CANCEL"
+                                          }
+                                        })()
+                                      }
+                                    </a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.button.delete
+                                          }
+                                          else {
+                                            return "Delete"
+                                          }
+                                        })()
+                                      }
                                     </button>
                                   </div>
                                 </div>
@@ -1489,11 +1793,31 @@ class StoreCRMRole extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                Retry
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.retry
+                                      }
+                                      else {
+                                        return "Retry"
+                                      }
+                                    })()
+                                  }
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-failed">
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.failed
+                                  }
+                                  else {
+                                    return "Failed"
+                                  }
+                                })()
+                              }
+                              </span>
                             </div>
                           </div>
                         ) : null}
@@ -1523,7 +1847,16 @@ class StoreCRMRole extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.button.add
+                          }
+                          else {
+                            return "ADD"
+                          }
+                        })()
+                      }
                     </button>
                     <br />
                   </div>
@@ -1536,10 +1869,32 @@ class StoreCRMRole extends Component {
               >
                 <div className="edtpadding">
                   <div className="">
-                    <label className="popover-header-text">EDIT CRM ROLE</label>
+                    <label className="popover-header-text">
+                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.editcrmrole
+                          }
+                          else {
+                            return "EDIT CRM ROLE"
+                          }
+                        })()
+                      }
+                    </label>
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Role Name</label>
+                    <label className="edit-label-1">
+                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.rolename
+                          }
+                          else {
+                            return "Role Name"
+                          }
+                        })()
+                      }
+                    </label>
                     <input
                       type="text"
                       className="txt-edit-popover"
@@ -1584,7 +1939,18 @@ class StoreCRMRole extends Component {
                       </div>
                     ))}
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Status</label>
+                    <label className="edit-label-1">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.status
+                          }
+                          else {
+                            return "Status"
+                          }
+                        })()
+                      }
+                    </label>
                     <select
                       id="inputStatus"
                       className="edit-dropDwon dropdown-setting"
@@ -1602,7 +1968,16 @@ class StoreCRMRole extends Component {
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >
-                      CANCEL
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.a.cancel
+                          }
+                          else {
+                            return "CANCEL"
+                          }
+                        })()
+                      }
                     </a>
                     <button
                       className="pop-over-button FlNone"
@@ -1623,7 +1998,16 @@ class StoreCRMRole extends Component {
                         ) : (
                           ""
                         )}
-                        SAVE
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.save
+                            }
+                            else {
+                              return "SAVE"
+                            }
+                          })()
+                        }
                       </label>
                     </button>
                   </div>

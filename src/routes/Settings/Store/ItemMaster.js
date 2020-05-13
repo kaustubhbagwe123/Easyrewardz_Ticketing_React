@@ -1235,7 +1235,18 @@ class ItemMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1245,7 +1256,18 @@ class ItemMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -1253,10 +1275,30 @@ class ItemMaster extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                  {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.clearsearch
+                        }
+                        else {
+                          return "clear search"
+                        }
+                      })()
+                    }
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1288,7 +1330,18 @@ class ItemMaster extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.all
+                            }
+                            else {
+                              return "ALL"
+                            }
+                          })()
+                        }
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "itemCode"
@@ -1482,7 +1535,16 @@ class ItemMaster extends Component {
           </Modal>
 
           <Link to="/store/settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1492,11 +1554,29 @@ class ItemMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Item Master
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.itemmaster
+                }
+                else {
+                  return "Item Master"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="container-fluid">
@@ -1517,7 +1597,16 @@ class ItemMaster extends Component {
                               "Brand Name"
                             )}
                           >
-                            Brand Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.brandname
+                                }
+                                else {
+                                  return "Brand Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1534,7 +1623,16 @@ class ItemMaster extends Component {
                               "Item Code"
                             )}
                           >
-                            Item Code
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.itemcode
+                                }
+                                else {
+                                  return "Item Code"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1551,7 +1649,16 @@ class ItemMaster extends Component {
                               "Item Name"
                             )}
                           >
-                            Item Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.itemname
+                                }
+                                else {
+                                  return "Item Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1568,7 +1675,16 @@ class ItemMaster extends Component {
                               "Department Name"
                             )}
                           >
-                            Department Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.departmentname
+                                }
+                                else {
+                                  return "Department Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1585,7 +1701,16 @@ class ItemMaster extends Component {
                               "Item Cat"
                             )}
                           >
-                            Item Cat
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.itemcat
+                                }
+                                else {
+                                  return "Item Cat"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1602,7 +1727,16 @@ class ItemMaster extends Component {
                               "Item Sub Cat"
                             )}
                           >
-                            Item Sub Cat
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.itemsubcat
+                                }
+                                else {
+                                  return "Item Sub Cat"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1619,7 +1753,16 @@ class ItemMaster extends Component {
                               "Item Group"
                             )}
                           >
-                            Item Group
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.itemgroup
+                                }
+                                else {
+                                  return "Item Group"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1636,9 +1779,31 @@ class ItemMaster extends Component {
               <div className="col-md-4">
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.h3.bulkupload
+                            }
+                            else {
+                              return "Bulk Upload"
+                            }
+                          })()
+                        }
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.template
+                            }
+                            else {
+                              return "Template"
+                            }
+                          })()
+                        }
+                      </p>
                       <CSVLink
                         filename={"ItemMaster.csv"}
                         data={config.itemMasterTemplate}
@@ -1658,8 +1823,28 @@ class ItemMaster extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.addfile
+                              }
+                              else {
+                                return "Add File"
+                              }
+                            })()
+                          }
+                          </span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.div.ordropfilehere
+                              }
+                              else {
+                                return "or Drop File here"
+                              }
+                            })()
+                          }
                         </div>
                       )}
                     </Dropzone>
@@ -1690,18 +1875,56 @@ class ItemMaster extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file?"
+                                      }
+                                    })()
+                                  }
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousuredeletefile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file?"
+                                      }
+                                    })()
+                                  }
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.cancel
+                                          }
+                                          else {
+                                            return "CANCEL"
+                                          }
+                                        })()
+                                      }
+                                  </a>
                                   <button
                                     className="butn"
                                     onClick={this.DeleteBulkUploadFile}
                                   >
-                                    Delete
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.button.delete
+                                        }
+                                        else {
+                                          return "Delete"
+                                        }
+                                      })()
+                                    }
                                   </button>
                                 </div>
                               </div>
@@ -1722,11 +1945,31 @@ class ItemMaster extends Component {
                               className="file-retry"
                               onClick={this.handleBulkUpload.bind(this)}
                             >
-                              Retry
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.retry
+                                  }
+                                  else {
+                                    return "Retry"
+                                  }
+                                })()
+                              }
                             </span>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.failed
+                                  }
+                                  else {
+                                    return "Failed"
+                                  }
+                                })()
+                              }
+                            </span>
                           </div>
                         </div>
                       ) : null}
@@ -1753,7 +1996,16 @@ class ItemMaster extends Component {
                     className="butn"
                     onClick={this.handleBulkUpload.bind(this)}
                   >
-                    ADD
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.add
+                        }
+                        else {
+                          return "ADD"
+                        }
+                      })()
+                    }
                   </button>
                 </div>
               </div>

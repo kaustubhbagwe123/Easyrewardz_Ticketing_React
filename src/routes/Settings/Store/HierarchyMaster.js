@@ -1133,7 +1133,18 @@ class HierarchyMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1143,7 +1154,18 @@ class HierarchyMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -1151,10 +1173,30 @@ class HierarchyMaster extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.clearsearch
+                        }
+                        else {
+                          return "clear search"
+                        }
+                      })()
+                    }
               </a>
               <div className="filter-type ">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1181,7 +1223,18 @@ class HierarchyMaster extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.all
+                            }
+                            else {
+                              return "ALL"
+                            }
+                          })()
+                        }
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "designationName"
@@ -1298,7 +1351,16 @@ class HierarchyMaster extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1308,11 +1370,29 @@ class HierarchyMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Hierarchy Master
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.hierarchymaster
+                }
+                else {
+                  return "Hierarchy Master"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="container-fluid">
@@ -1333,7 +1413,16 @@ class HierarchyMaster extends Component {
                               "Designation"
                             )}
                           >
-                            Designation
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.designation
+                                }
+                                else {
+                                  return "Designation"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1349,7 +1438,16 @@ class HierarchyMaster extends Component {
                               "Report To"
                             )}
                           >
-                            Report To
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.reportto
+                                }
+                                else {
+                                  return "Report To"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1365,7 +1463,16 @@ class HierarchyMaster extends Component {
                               "Created By"
                             )}
                           >
-                            Created By
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created By"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1428,14 +1535,34 @@ class HierarchyMaster extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "status",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.action
+                                }
+                                else {
+                                  return "Actions"
+                                }
+                              })()
+                            }
+                        </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["designationID"];
@@ -1453,11 +1580,28 @@ class HierarchyMaster extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.deletefile
+                                              }
+                                              else {
+                                                return "Delete file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.areyousuredeletefile
+                                              }
+                                              else {
+                                                return "Are you sure you want to delete this file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <div className="del-can">
                                           <a
@@ -1466,7 +1610,16 @@ class HierarchyMaster extends Component {
                                               this.hide(this, "samdel" + ids)
                                             }
                                           >
-                                            CANCEL
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.a.cancel
+                                                }
+                                                else {
+                                                  return "CANCEL"
+                                                }
+                                              })()
+                                            }
                                           </a>
                                           <button
                                             className="butn"
@@ -1476,7 +1629,16 @@ class HierarchyMaster extends Component {
                                               ids
                                             )}
                                           >
-                                            Delete
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.button.delete
+                                                }
+                                                else {
+                                                  return "Delete"
+                                                }
+                                              })()
+                                            }
                                           </button>
                                         </div>
                                       </div>
@@ -1532,7 +1694,18 @@ class HierarchyMaster extends Component {
                                     EDIT
                                   </button> */}
                                   <label className="Table-action-edit-button-text">
-                                    <MyButton>EDIT</MyButton>
+                                    <MyButton>
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.MyButton.edit
+                                          }
+                                          else {
+                                            return "EDIT"
+                                          }
+                                        })()
+                                      }
+                                    </MyButton>
                                   </label>
                                 </Popover>
                               </span>
@@ -1575,11 +1748,29 @@ class HierarchyMaster extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
-                      CREATE HIERARCHY
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.createhierarchy
+                          }
+                          else {
+                            return "CREATE HIERARCHY"
+                          }
+                        })()
+                      }
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                        Designation Name
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.designationname
+                            }
+                            else {
+                              return "Designation Name"
+                            }
+                          })()
+                        }
                       </label>
                       <input
                         type="text"
@@ -1598,7 +1789,18 @@ class HierarchyMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Reports To</label>
+                        <label className="reports-to">
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.reportto
+                              }
+                              else {
+                                return "Reports To"
+                              }
+                            })()
+                          }
+                        </label>
                         <select
                           className="form-control dropdown-setting"
                           value={this.state.selectReportTo}
@@ -1621,7 +1823,18 @@ class HierarchyMaster extends Component {
                       </div>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">
+                      {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.status
+                            }
+                            else {
+                              return "Status"
+                            }
+                          })()
+                        }
+                      </label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectStatus}
@@ -1657,7 +1870,16 @@ class HierarchyMaster extends Component {
                           ) : (
                             ""
                           )}
-                          ADD
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.add
+                              }
+                              else {
+                                return "ADD"
+                              }
+                            })()
+                          }
                         </label>
                       </button>
                     </div>
@@ -1666,9 +1888,31 @@ class HierarchyMaster extends Component {
                 <br />
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                      {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.h3.bulkupload
+                            }
+                            else {
+                              return "Bulk Upload"
+                            }
+                          })()
+                        }
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.template
+                            }
+                            else {
+                              return "Template"
+                            }
+                          })()
+                        }
+                      </p>
                       <CSVLink
                         filename={"Hierarchy.xlsx"}
                         data={config.Store_HierarchyTemplate}
@@ -1688,8 +1932,28 @@ class HierarchyMaster extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.addfile
+                              }
+                              else {
+                                return "Add File"
+                              }
+                            })()
+                          }
+                          </span> 
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.div.ordropfilehere
+                              }
+                              else {
+                                return "or Drop File here"
+                              }
+                            })()
+                          }
                         </div>
                       )}
                     </Dropzone>
@@ -1720,18 +1984,56 @@ class HierarchyMaster extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file?"
+                                      }
+                                    })()
+                                  }
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousuredeletefile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file?"
+                                      }
+                                    })()
+                                  }
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                    {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.cancel
+                                          }
+                                          else {
+                                            return "CANCEL"
+                                          }
+                                        })()
+                                      }
+                                  </a>
                                   <button
                                     className="butn"
                                     onClick={this.DeleteBulkUploadFile}
-                                  >
-                                    Delete
+                                  > 
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.button.delete
+                                        }
+                                        else {
+                                          return "Delete"
+                                        }
+                                      })()
+                                    }
                                   </button>
                                 </div>
                               </div>
@@ -1752,11 +2054,31 @@ class HierarchyMaster extends Component {
                               className="file-retry"
                               onClick={this.handleBulkUpload.bind(this)}
                             >
-                              Retry
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.retry
+                                  }
+                                  else {
+                                    return "Retry"
+                                  }
+                                })()
+                              }
                             </span>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.failed
+                                  }
+                                  else {
+                                    return "Failed"
+                                  }
+                                })()
+                              }
+                            </span>
                           </div>
                         </div>
                       ) : null}
@@ -1782,8 +2104,17 @@ class HierarchyMaster extends Component {
                   <button
                     className="butn"
                     onClick={this.handleBulkUpload.bind(this)}
-                  >
-                    ADD
+                  > 
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.add
+                        }
+                        else {
+                          return "ADD"
+                        }
+                      })()
+                    }
                   </button>
                 </div>
               </div>

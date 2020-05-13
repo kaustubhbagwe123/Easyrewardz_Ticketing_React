@@ -1036,7 +1036,18 @@ class StoreModule extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1046,7 +1057,18 @@ class StoreModule extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -1054,10 +1076,30 @@ class StoreModule extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.clearsearch
+                    }
+                    else {
+                      return "clear search"
+                    }
+                  })()
+                } 
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1171,7 +1213,16 @@ class StoreModule extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1181,11 +1232,29 @@ class StoreModule extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Modules
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.modules
+                }
+                else {
+                  return "Modules"
+                }
+              })()
+            }
           </Link>
         </div>
 
@@ -1203,10 +1272,28 @@ class StoreModule extends Component {
                     <div className="row">
                       <div className="col-md-4 chatallowed">
                         <label className="claimtab-lbl">
-                          Attachment Settings
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.attachmentsetting
+                              }
+                              else {
+                                return "Attachment Settings"
+                              }
+                            })()
+                          }
                         </label>
                         <label className="claimTab-DDl">
-                          Maximum Attachment Size
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.maximumattachmentsize
+                              }
+                              else {
+                                return "Maximum Attachment Size"
+                              }
+                            })()
+                          }
                         </label>
                         <select
                           name="selectedMaxAttachSize"
@@ -1230,7 +1317,18 @@ class StoreModule extends Component {
                     </div>
                     <div className="row claim-mgn">
                       <div className="col-md-3 chatallowed">
-                        <label className="claimTab-DDl">File Format</label>
+                        <label className="claimTab-DDl">
+                        {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.fileformat
+                              }
+                              else {
+                                return "File Format"
+                              }
+                            })()
+                          }
+                        </label>
                         <select
                           name="selectedFileFormat"
                           value={this.state.selectedFileFormat}
@@ -1264,7 +1362,16 @@ class StoreModule extends Component {
                             ) : (
                               ""
                             )}
-                            SAVE
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.button.save
+                                }
+                                else {
+                                  return "SAVE"
+                                }
+                              })()
+                            }
                           </button>
                         </div>
                       </div>
@@ -1290,7 +1397,16 @@ class StoreModule extends Component {
                                       "Campaign Name"
                                     )}
                                   >
-                                    Campaign Name
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.span.campignname
+                                        }
+                                        else {
+                                          return "Campaign Name"
+                                        }
+                                      })()
+                                    }
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -1344,7 +1460,16 @@ class StoreModule extends Component {
                                       "Created by"
                                     )}
                                   >
-                                    Created by
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.span.createdby
+                                        }
+                                        else {
+                                          return "Created By"
+                                        }
+                                      })()
+                                    }
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -1360,24 +1485,64 @@ class StoreModule extends Component {
                                               <div>
                                                 <b>
                                                   <p className="title">
-                                                    Created By:{" "}
+                                                    {
+                                                      (() => {
+                                                        if (TranslationContext !== undefined) {
+                                                          return TranslationContext.p.createdby
+                                                        }
+                                                        else {
+                                                          return "Created By:"
+                                                        }
+                                                      })()
+                                                    } 
+                                                    {" "}
                                                     {row.original.createdBy}
                                                   </p>
                                                 </b>
                                                 <p className="sub-title">
-                                                  Created Date:{" "}
+                                                  {
+                                                    (() => {
+                                                      if (TranslationContext !== undefined) {
+                                                        return TranslationContext.p.createddate
+                                                      }
+                                                      else {
+                                                        return "Created Date:"
+                                                      }
+                                                    })()
+                                                  }
+                                                  {" "}
                                                   {row.original.createdOn}
                                                 </p>
                                               </div>
                                               <div>
                                                 <b>
                                                   <p className="title">
-                                                    Updated By:{" "}
+                                                    {
+                                                      (() => {
+                                                        if (TranslationContext !== undefined) {
+                                                          return TranslationContext.p.updatedby
+                                                        }
+                                                        else {
+                                                          return "Updated By:"
+                                                        }
+                                                      })()
+                                                    }
+                                                    {" "}
                                                     {row.original.modifiedBy}
                                                   </p>
                                                 </b>
                                                 <p className="sub-title">
-                                                  Updated Date:{" "}
+                                                  {
+                                                    (() => {
+                                                      if (TranslationContext !== undefined) {
+                                                        return TranslationContext.p.updateddate
+                                                      }
+                                                      else {
+                                                        return "Updated Date:"
+                                                      }
+                                                    })()
+                                                  }
+                                                  {" "}
                                                   {row.original.modifiedOn}
                                                 </p>
                                               </div>
@@ -1408,7 +1573,16 @@ class StoreModule extends Component {
                                       "Status"
                                     )}
                                   >
-                                    Status
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.span.status
+                                        }
+                                        else {
+                                          return "Status"
+                                        }
+                                      })()
+                                    }
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -1440,15 +1614,41 @@ class StoreModule extends Component {
                                               </div>
                                               <div>
                                                 <p className="font-weight-bold blak-clr">
-                                                  Delete file?
+                                                  {
+                                                    (() => {
+                                                      if (TranslationContext !== undefined) {
+                                                        return TranslationContext.p.deletefile
+                                                      }
+                                                      else {
+                                                        return "Delete file?"
+                                                      }
+                                                    })()
+                                                  }
                                                 </p>
                                                 <p className="mt-1 fs-12">
-                                                  Are you sure you want to
-                                                  delete this file?
+                                                  {
+                                                    (() => {
+                                                      if (TranslationContext !== undefined) {
+                                                        return TranslationContext.p.areyousuredeletefile
+                                                      }
+                                                      else {
+                                                        return "Are you sure you want to delete this file?"
+                                                      }
+                                                    })()
+                                                  }
                                                 </p>
                                                 <div className="del-can">
                                                   <a href={Demo.BLANK_LINK}>
-                                                    CANCEL
+                                                    {
+                                                      (() => {
+                                                        if (TranslationContext !== undefined) {
+                                                          return TranslationContext.a.cancel
+                                                        }
+                                                        else {
+                                                          return "CANCEL"
+                                                        }
+                                                      })()
+                                                    }
                                                   </a>
                                                   <button
                                                     className="butn"
@@ -1457,7 +1657,16 @@ class StoreModule extends Component {
                                                       row.original.campaignID
                                                     )}
                                                   >
-                                                    Delete
+                                                    {
+                                                      (() => {
+                                                        if (TranslationContext !== undefined) {
+                                                          return TranslationContext.button.delete
+                                                        }
+                                                        else {
+                                                          return "Delete"
+                                                        }
+                                                      })()
+                                                    }
                                                   </button>
                                                 </div>
                                               </div>
@@ -1526,7 +1735,16 @@ class StoreModule extends Component {
                                             row.original
                                           )}
                                         >
-                                          EDIT
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.button.edit
+                                              }
+                                              else {
+                                                return "EDIT"
+                                              }
+                                            })()
+                                          }
                                         </button>
                                         {/* </Popover> */}
                                       </span>
@@ -1543,9 +1761,31 @@ class StoreModule extends Component {
                       </div>
                       <div className="col-md-4">
                         <div className="right-sect-div">
-                          <h3>Create CAMPAIGN SCRIPT</h3>
+                          <h3>
+                          {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.h3.createcampaignxcript
+                                }
+                                else {
+                                  return "Create CAMPAIGN SCRIPT"
+                                }
+                              })()
+                            }
+                          </h3>
                           <div className="div-cntr issuetype-cusdrp">
-                            <label>Campaign Name</label>
+                            <label>
+                            {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.label.campignname
+                                  }
+                                  else {
+                                    return "Campaign Name"
+                                  }
+                                })()
+                              }
+                            </label>
                             <div className="dropdown">
                               <button
                                 className="btn issuesladrop"
@@ -1554,7 +1794,16 @@ class StoreModule extends Component {
                                 id="campaignNameValue"
                                 onClick={this.handleCampaignButton}
                               >
-                                Select
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.button.select
+                                    }
+                                    else {
+                                      return "Select"
+                                    }
+                                  })()
+                                }
                                 <span className="caret"></span>
                               </button>
                               {this.state.indiCampaign === "" && (
@@ -1606,7 +1855,16 @@ class StoreModule extends Component {
                                             this
                                           )}
                                         >
-                                          Select All
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.label.selectall
+                                              }
+                                              else {
+                                                return "Select All"
+                                              }
+                                            })()
+                                          }
                                         </label>
                                       </li>
                                       <li>
@@ -1615,7 +1873,16 @@ class StoreModule extends Component {
                                             this
                                           )}
                                         >
-                                          Clear
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.label.clear
+                                              }
+                                              else {
+                                                return "Clear"
+                                              }
+                                            })()
+                                          }
                                         </label>
                                       </li>
                                     </ul>
@@ -1661,7 +1928,16 @@ class StoreModule extends Component {
                                         className="cancel"
                                         onClick={this.handleCampaignButton}
                                       >
-                                        Cancel
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.button.cancel
+                                            }
+                                            else {
+                                              return "Cancel"
+                                            }
+                                          })()
+                                        }
                                       </button>
                                     </li>
                                     <li
@@ -1673,7 +1949,16 @@ class StoreModule extends Component {
                                         className="done"
                                         onClick={this.handleCampaignButton}
                                       >
-                                        Done
+                                        {
+                                          (() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.button.done
+                                            }
+                                            else {
+                                              return "Done"
+                                            }
+                                          })()
+                                        }
                                       </button>
                                     </li>
                                   </ul>
@@ -1688,7 +1973,18 @@ class StoreModule extends Component {
                           </div>
 
                           <div className="div-cntr">
-                            <label>Script Details</label>
+                            <label>
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.label.scriptdetail
+                                }
+                                else {
+                                  return "Script Details"
+                                }
+                              })()
+                            }
+                            </label>
                             <textarea
                               className="stort-textArea"
                               rows="7"
@@ -1716,14 +2012,45 @@ class StoreModule extends Component {
                             ) : (
                               ""
                             )}
-                            ADD
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.button.add
+                                }
+                                else {
+                                  return "ADD"
+                                }
+                              })()
+                            }
                           </button>
                         </div>
                         <div className="right-sect-div">
                           <div className="d-flex justify-content-between align-items-center pb-2">
-                            <h3 className="pb-0">Bulk Upload</h3>
+                            <h3 className="pb-0">
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.h3.bulkupload
+                                  }
+                                  else {
+                                    return "Bulk Upload"
+                                  }
+                                })()
+                              }
+                            </h3>
                             <div className="down-excel">
-                              <p>Template</p>
+                              <p>
+                                {
+                                  (() => {
+                                    if (TranslationContext !== undefined) {
+                                      return TranslationContext.p.template
+                                    }
+                                    else {
+                                      return "Template"
+                                    }
+                                  })()
+                                }
+                              </p>
                               <CSVLink
                                 filename={"Campaign.csv"}
                                 data={config.campaignTemplate}
@@ -1744,9 +2071,27 @@ class StoreModule extends Component {
                                     <img src={FileUpload} alt="file-upload" />
                                   </div>
                                   <span className={"fileupload-span"}>
-                                    Add File
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.span.addfile
+                                        }
+                                        else {
+                                          return "Add File"
+                                        }
+                                      })()
+                                    } 
                                   </span>{" "}
-                                  or Drop File here
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.div.ordropfilehere
+                                      }
+                                      else {
+                                        return "or Drop File here"
+                                      }
+                                    })()
+                                  }
                                 </div>
                               )}
                             </Dropzone>
@@ -1778,19 +2123,56 @@ class StoreModule extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.deletefile
+                                              }
+                                              else {
+                                                return "Delete file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.areyousuredeletefile
+                                              }
+                                              else {
+                                                return "Are you sure you want to delete this file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.a.cancel
+                                                }
+                                                else {
+                                                  return "CANCEL"
+                                                }
+                                              })()
+                                            }
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.DeleteBulkUploadFile}
                                           >
-                                            Delete
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.button.delete
+                                                }
+                                                else {
+                                                  return "Delete"
+                                                }
+                                              })()
+                                            }
                                           </button>
                                         </div>
                                       </div>
@@ -1813,11 +2195,31 @@ class StoreModule extends Component {
                                       className="file-retry"
                                       onClick={this.handleBulkUpload.bind(this)}
                                     >
-                                      Retry
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.span.retry
+                                          }
+                                          else {
+                                            return "Retry"
+                                          }
+                                        })()
+                                      }
                                     </span>
                                   </div>
                                   <div>
-                                    <span className="file-failed">Failed</span>
+                                    <span className="file-failed">
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.span.failed
+                                          }
+                                          else {
+                                            return "Failed"
+                                          }
+                                        })()
+                                      }
+                                    </span>
                                   </div>
                                 </div>
                               ) : null}
@@ -1850,7 +2252,16 @@ class StoreModule extends Component {
                             className="butn"
                             onClick={this.handleBulkUpload.bind(this)}
                           >
-                            ADD
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.button.add
+                                }
+                                else {
+                                  return "ADD"
+                                }
+                              })()
+                            }
                           </button>
                         </div>
                       </div>
@@ -1868,11 +2279,31 @@ class StoreModule extends Component {
               <div className="edtpadding">
                 <div className="">
                   <label className="popover-header-text">
-                    EDIT CAMPAIGN SCRIPT
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.editcampignscript
+                        }
+                        else {
+                          return "EDIT CAMPAIGN SCRIPT"
+                        }
+                      })()
+                    }
                   </label>
                 </div>
                 <div className=" pop-over-div">
-                  <label className="pop-over-lbl-text"> Campaign Name</label>
+                  <label className="pop-over-lbl-text">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.campignname
+                        }
+                        else {
+                          return "Campaign Name"
+                        }
+                      })()
+                    }
+                  </label>
                   <select
                     className="pop-over-select w-100 disabled-input"
                     // name="selectedMaxAttachSize"
@@ -1890,7 +2321,18 @@ class StoreModule extends Component {
                   </select>
                 </div>
                 <div className="div-cntr">
-                  <label className="pop-over-lbl-text">Script Details</label>
+                  <label className="pop-over-lbl-text">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.scriptdetail
+                        }
+                        else {
+                          return "Script Details"
+                        }
+                      })()
+                    }
+                  </label>
                   <textarea
                     className="stort-textArea"
                     rows="4"
@@ -1911,7 +2353,16 @@ class StoreModule extends Component {
                     className="pop-over-cancle"
                     onClick={this.handleEditModal}
                   >
-                    CANCEL
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.cancel
+                        }
+                        else {
+                          return "CANCEL"
+                        }
+                      })()
+                    }
                   </span>
                   <button
                     className="pop-over-button FlNone"
@@ -1927,7 +2378,16 @@ class StoreModule extends Component {
                     ) : (
                       ""
                     )}
-                    SAVE
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.button.save
+                        }
+                        else {
+                          return "SAVE"
+                        }
+                      })()
+                    }
                   </button>
                 </div>
               </div>

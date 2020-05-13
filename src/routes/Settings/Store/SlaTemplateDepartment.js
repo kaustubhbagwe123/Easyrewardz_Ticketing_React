@@ -1137,7 +1137,18 @@ class SlaTemplateDepartment extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortatoz
+                        }
+                        else {
+                          return "SORT BY A TO Z"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1147,7 +1158,18 @@ class SlaTemplateDepartment extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.p.sortztoa
+                        }
+                        else {
+                          return "SORT BY Z TO A"
+                        }
+                      })()
+                    }
+                  </p>
                 </div>
               </div>
               <a
@@ -1155,10 +1177,30 @@ class SlaTemplateDepartment extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                  {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.a.clearsearch
+                        }
+                        else {
+                          return "clear search"
+                        }
+                      })()
+                    }
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                 {
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.p.filterbytype
+                      }
+                      else {
+                        return "FILTER BY TYPE"
+                      }
+                    })()
+                  }
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1182,7 +1224,18 @@ class SlaTemplateDepartment extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.span.all
+                            }
+                            else {
+                              return "ALL"
+                            }
+                          })()
+                        }
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "functionName"
@@ -1272,7 +1325,16 @@ class SlaTemplateDepartment extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1282,11 +1344,29 @@ class SlaTemplateDepartment extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            SLA Template-Department
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.slatemplatedepart
+                }
+                else {
+                  return "SLA Template-Department"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="container-fluid">
@@ -1308,7 +1388,16 @@ class SlaTemplateDepartment extends Component {
                               "Function Name"
                             )}
                           >
-                            Function Name
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.functionname
+                                }
+                                else {
+                                  return "Function Name"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1317,7 +1406,16 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span>
-                            Priority Type
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.prioritytype
+                                }
+                                else {
+                                  return "Priority Type"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1345,18 +1443,54 @@ class SlaTemplateDepartment extends Component {
                                       <div className="general-popover created-popover">
                                         <div>
                                           <label className="slatargettext-1">
-                                            SLA TARGETS
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.label.slatargets
+                                                }
+                                                else {
+                                                  return "SLA TARGETS"
+                                                }
+                                              })()
+                                            }
                                           </label>
                                         </div>
                                         <div>
                                           <label className="createhead-text-1">
-                                            Priority
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.label.priority
+                                                }
+                                                else {
+                                                  return "Priority"
+                                                }
+                                              })()
+                                            }
                                           </label>
                                           <label className="createhead-text-1">
-                                            %SLA
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.label.sla
+                                                }
+                                                else {
+                                                  return "% SLA"
+                                                }
+                                              })()
+                                            }
                                           </label>
                                           <label className="createhead-text-1">
-                                            Resolve
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.label.resolve
+                                                }
+                                                else {
+                                                  return "Resolve"
+                                                }
+                                              })()
+                                            }
                                           </label>
                                         </div>
                                         {slaTarget !== null &&
@@ -1402,7 +1536,16 @@ class SlaTemplateDepartment extends Component {
                               "Created By"
                             )}
                           >
-                            Created By
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.createdby
+                                }
+                                else {
+                                  return "Created By"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
@@ -1419,23 +1562,63 @@ class SlaTemplateDepartment extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.createdby
+                                                }
+                                                else {
+                                                  return "Created By:"
+                                                }
+                                              })()
+                                            } 
+                                            {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.createddate
+                                              }
+                                              else {
+                                                return "Created Date:"
+                                              }
+                                            })()
+                                          } 
+                                          {" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.p.updatedby
+                                                }
+                                                else {
+                                                  return "Updated By:"
+                                                }
+                                              })()
+                                            } 
+                                            {" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.updateddate
+                                              }
+                                              else {
+                                                return "Updated Date:"
+                                              }
+                                            })()
+                                          } 
+                                          {" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1466,14 +1649,34 @@ class SlaTemplateDepartment extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.status
+                                }
+                                else {
+                                  return "Status"
+                                }
+                              })()
+                            }
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "isSLAActive",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.actions
+                              }
+                              else {
+                                return "Actions"
+                              }
+                            })()
+                          }
+                        </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           // var ids = row.original["slaid"];
@@ -1488,14 +1691,42 @@ class SlaTemplateDepartment extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.deletefile
+                                              }
+                                              else {
+                                                return "Delete file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                          {
+                                            (() => {
+                                              if (TranslationContext !== undefined) {
+                                                return TranslationContext.p.areyousuredeletefile
+                                              }
+                                              else {
+                                                return "Are you sure you want to delete this file?"
+                                              }
+                                            })()
+                                          }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.a.cancel
+                                                }
+                                                else {
+                                                  return "CANCEL"
+                                                }
+                                              })()
+                                            }
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteSLA.bind(
@@ -1503,7 +1734,16 @@ class SlaTemplateDepartment extends Component {
                                               row.original.slaid
                                             )}
                                           >
-                                            Delete
+                                            {
+                                              (() => {
+                                                if (TranslationContext !== undefined) {
+                                                  return TranslationContext.button.delete
+                                                }
+                                                else {
+                                                  return "Delete"
+                                                }
+                                              })()
+                                            }
                                           </button>
                                         </div>
                                       </div>
@@ -1528,7 +1768,16 @@ class SlaTemplateDepartment extends Component {
                                   )}
                                 >
                                   <label className="Table-action-edit-button-text">
-                                    EDIT
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.label.edit
+                                        }
+                                        else {
+                                          return "EDIT"
+                                        }
+                                      })()
+                                    }
                                   </label>
                                 </button>
                               </span>
@@ -1547,10 +1796,32 @@ class SlaTemplateDepartment extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="Create-store-text">CREATE SLA</label>
+                    <label className="Create-store-text">
+                    {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.createsla
+                          }
+                          else {
+                            return "CREATE SLA"
+                          }
+                        })()
+                      }
+                    </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to">
+                        {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.issuetype
+                              }
+                              else {
+                                return "Issue Type"
+                              }
+                            })()
+                          }
+                        </label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"
@@ -1558,7 +1829,16 @@ class SlaTemplateDepartment extends Component {
                             id="issueTypeValue"
                             onClick={this.handleSlaButton}
                           >
-                            Select
+                            {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.button.select
+                                }
+                                else {
+                                  return "Select"
+                                }
+                              })()
+                            }
                             <span className="caret"></span>
                           </button>
                           {this.state.indiSla === "" && (
@@ -1598,14 +1878,32 @@ class SlaTemplateDepartment extends Component {
                                     <label
                                       onClick={this.selectAllSLA.bind(this)}
                                     >
-                                      Select All
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.selectall
+                                          }
+                                          else {
+                                            return "Select All"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                   </li>
                                   <li>
                                     <label
                                       onClick={this.selectNoSLA.bind(this)}
                                     >
-                                      Clear
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.label.clear
+                                          }
+                                          else {
+                                            return "Clear"
+                                          }
+                                        })()
+                                      }
                                     </label>
                                   </li>
                                 </ul>
@@ -1652,7 +1950,16 @@ class SlaTemplateDepartment extends Component {
                                     className="cancel"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Cancel
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.button.cancel
+                                        }
+                                        else {
+                                          return "Cancel"
+                                        }
+                                      })()
+                                    }
                                   </button>
                                 </li>
                                 <li style={{ float: "right" }}>
@@ -1660,7 +1967,16 @@ class SlaTemplateDepartment extends Component {
                                     className="done"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Done
+                                    {
+                                      (() => {
+                                        if (TranslationContext !== undefined) {
+                                          return TranslationContext.button.done
+                                        }
+                                        else {
+                                          return "Done"
+                                        }
+                                      })()
+                                    }
                                   </button>
                                 </li>
                               </ul>
@@ -1671,9 +1987,42 @@ class SlaTemplateDepartment extends Component {
                     </div>
 
                     <div className="slatargetRow-3 ma">
-                      <label className="createhead-text-new-1">Priority</label>
-                      <label className="createhead-text-5">% SLA</label>
-                      <label className="createhead-text-6">Resolve</label>
+                      <label className="createhead-text-new-1">
+                      {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.priority
+                            }
+                            else {
+                              return "Priority"
+                            }
+                          })()
+                        }
+                      </label>
+                      <label className="createhead-text-5">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.sla
+                            }
+                            else {
+                              return "% SLA"
+                            }
+                          })()
+                        }
+                      </label>
+                      <label className="createhead-text-6">
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.label.resolve
+                            }
+                            else {
+                              return "Resolve"
+                            }
+                          })()
+                        }
+                      </label>
                     </div>
                     {this.state.finalData !== null &&
                       this.state.finalData.map((item, i) => (
@@ -1744,7 +2093,18 @@ class SlaTemplateDepartment extends Component {
 
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">
+                        {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.status
+                              }
+                              else {
+                                return "Status"
+                              }
+                            })()
+                          }
+                        </label>
                         <select
                           className="store-create-select"
                           value={this.state.SlaIsActive}
@@ -1761,7 +2121,16 @@ class SlaTemplateDepartment extends Component {
                         type="button"
                         onClick={this.handleCreateSlaTemplate.bind(this)}
                       >
-                        ADD
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.button.add
+                            }
+                            else {
+                              return "ADD"
+                            }
+                          })()
+                        }
                       </button>
                     </div>
                   </div>
@@ -1770,9 +2139,31 @@ class SlaTemplateDepartment extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <h3>Bulk Upload</h3>
+                    <h3>
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.h3.bulkupload
+                          }
+                          else {
+                            return "Bulk Upload"
+                          }
+                        })()
+                      }
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                        {
+                          (() => {
+                            if (TranslationContext !== undefined) {
+                              return TranslationContext.p.template
+                            }
+                            else {
+                              return "Template"
+                            }
+                          })()
+                        }
+                      </p>
                       <CSVLink filename={"SLA.csv"} data={config.storeSlaTemplate}>
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
@@ -1788,7 +2179,28 @@ class SlaTemplateDepartment extends Component {
                       <div className="file-icon">
                         <img src={FileUpload} alt="file-upload" />
                       </div>
-                      <span>Add File</span> or Drop File here
+                      <span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.span.addfile
+                              }
+                              else {
+                                return "Add File"
+                              }
+                            })()
+                          }  
+                      </span>
+                          {
+                            (() => {
+                              if (TranslationContext !== undefined) {
+                                return TranslationContext.label.ordropfilehere
+                              }
+                              else {
+                                return "or Drop File here"
+                              }
+                            })()
+                          }
                     </label>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
@@ -1815,18 +2227,56 @@ class SlaTemplateDepartment extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file?"
+                                      }
+                                    })()
+                                  }
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousuredeletefile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file?"
+                                      }
+                                    })()
+                                  }
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}>
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.a.cancel
+                                          }
+                                          else {
+                                            return "CANCEL"
+                                          }
+                                        })()
+                                      }
+                                    </a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                      {
+                                        (() => {
+                                          if (TranslationContext !== undefined) {
+                                            return TranslationContext.button.delete
+                                          }
+                                          else {
+                                            return "Delete"
+                                          }
+                                        })()
+                                      }
                                     </button>
                                   </div>
                                 </div>
@@ -1848,11 +2298,31 @@ class SlaTemplateDepartment extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                Retry
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.retry
+                                      }
+                                      else {
+                                        return "Retry"
+                                      }
+                                    })()
+                                  }
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-failed">
+                              {
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.failed
+                                  }
+                                  else {
+                                    return "Failed"
+                                  }
+                                })()
+                              }
+                              </span>
                             </div>
                           </div>
                         ) : null}
@@ -1882,7 +2352,16 @@ class SlaTemplateDepartment extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.button.add
+                          }
+                          else {
+                            return "ADD"
+                          }
+                        })()
+                      }
                     </button>
                     <br />
                   </div>
@@ -1905,17 +2384,48 @@ class SlaTemplateDepartment extends Component {
         >
           <div className="edtpadding">
             <label className="Create-store-text" style={{ paddingTop: "0" }}>
-              EDIT SLA
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.editsla
+                        }
+                    else {
+                      return "EDIT SLA"
+                    }
+                  })()
+                }
             </label>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Brand Name: </label>
+                <label className="createhead-text-new"> 
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.brandname
+                        }
+                    else {
+                      return "Brand Name:"
+                    }
+                  })()
+                }
+                </label>
                 <label className="createhead-text-1">
                   {this.state.brandName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Store Name: </label>
+                <label className="createhead-text-new">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.storename
+                        }
+                    else {
+                      return "Store Name: "
+                    }
+                  })()
+                }
+                </label>
                 <label className="createhead-text-1">
                   {this.state.departmentName}
                 </label>
@@ -1923,13 +2433,35 @@ class SlaTemplateDepartment extends Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Department Name:</label>
+                <label className="createhead-text-new">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.departmentname
+                        }
+                    else {
+                      return "Department Name:"
+                    }
+                  })()
+                }
+                </label>
                 <label className="createhead-text-1">
                   {this.state.storeName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Function Name: </label>
+                <label className="createhead-text-new"> 
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.functionname
+                        }
+                    else {
+                      return "Function Name:"
+                    }
+                  })()
+                }
+                </label>
                 <label className="createhead-text-1">
                   {this.state.functionName}
                 </label>
@@ -1938,9 +2470,42 @@ class SlaTemplateDepartment extends Component {
             <br />
 
             <div className="slatargetRow-3 ma">
-              <label className="createhead-text-new-1">Priority</label>
-              <label className="createhead-text-5">% SLA</label>
-              <label className="createhead-text-6">Resolve</label>
+              <label className="createhead-text-new-1">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.priority
+                        }
+                    else {
+                      return "Priority"
+                    }
+                  })()
+                }
+              </label>
+              <label className="createhead-text-5">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.sla
+                        }
+                    else {
+                      return "% SLA"
+                    }
+                  })()
+                }
+              </label>
+              <label className="createhead-text-6">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.resolve
+                        }
+                    else {
+                      return "Resolve"
+                    }
+                  })()
+                }
+              </label>
             </div>
             {this.state.finalEditData !== null &&
               this.state.finalEditData.map((item, i) => (
@@ -2011,7 +2576,18 @@ class SlaTemplateDepartment extends Component {
 
             <div className="divSpace-3">
               <div className="dropDrownSpace">
-                <label className="reports-to">Status</label>
+                <label className="reports-to">
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.label.status
+                        }
+                    else {
+                      return "Status"
+                    }
+                  })()
+                }
+                </label>
                 <select
                   className="store-create-select"
                   value={
@@ -2029,7 +2605,16 @@ class SlaTemplateDepartment extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                {
+                  (() => {
+                    if (TranslationContext !== undefined) {
+                      return TranslationContext.a.cancel
+                        }
+                    else {
+                      return "CANCEL"
+                    }
+                  })()
+                }
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2046,7 +2631,18 @@ class SlaTemplateDepartment extends Component {
                 ) : (
                   ""
                 )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                <label className="pop-over-btnsave-text">
+                    {
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.label.save
+                        }
+                        else {
+                          return "SAVE"
+                        }
+                      })()
+                    }
+                </label>
               </button>
             </div>
           </div>
