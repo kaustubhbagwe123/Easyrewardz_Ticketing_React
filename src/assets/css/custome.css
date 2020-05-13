@@ -11312,6 +11312,9 @@ table tr th:last-child {
     max-width: 70%;
     min-width: 70%;
   }
+  .rolle-name-text {
+    width: 90px;
+  }
 }
 
 @media only screen and (max-width: 480px) {
