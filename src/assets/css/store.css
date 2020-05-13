@@ -2130,6 +2130,12 @@ table tr th:last-child {
   border-radius: 10px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
 }
+.ChecknoDataCamp{
+  text-align: center;
+  display: block;
+  font-weight: bold;
+  margin-top: 103px;
+}
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {

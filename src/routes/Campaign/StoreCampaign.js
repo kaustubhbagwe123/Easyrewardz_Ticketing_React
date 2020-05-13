@@ -747,6 +747,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
+    debugger
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -991,12 +992,12 @@ class StoreCampaign extends Component {
           ) {
             self.setState({
               lastTransactionItem: data.lasttransactiondetails.itemDetails,
-              showLastTransactiondtab:false
+              showLastTransactiondtab: false,
             });
           } else {
             self.setState({
               lastTransactionItem: [],
-              showLastTransactiondtab:true
+              showLastTransactiondtab: true,
             });
           }
           if (data.campaignrecommended[0].itemCode !== "") {
@@ -1982,15 +1983,26 @@ class StoreCampaign extends Component {
                         <td>
                           <h4>Lifetime Value</h4>
                           <label>
-                            ₹{this.state.useratvdetails.lifeTimeValue}
+                            {this.state.useratvdetails.lifeTimeValue !==
+                            null ? (
+                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
+                            ) : (
+                              "₹0"
+                            )}
                           </label>
                         </td>
                         <td>
                           <h4>Visit Count</h4>
                           <label>
-                            {this.state.useratvdetails.visitCount < 9
-                              ? "0" + this.state.useratvdetails.visitCount
-                              : this.state.useratvdetails.visitCount}
+                            {this.state.useratvdetails.visitCount !== null ? (
+                              <>
+                                {this.state.useratvdetails.visitCount < 9
+                                  ? "0" + this.state.useratvdetails.visitCount
+                                  : this.state.useratvdetails.visitCount}
+                              </>
+                            ) : (
+                              "0"
+                            )}
                           </label>
                         </td>
                       </tr>
@@ -2005,15 +2017,26 @@ class StoreCampaign extends Component {
                         <td>
                           <h4>Lifetime Value</h4>
                           <label>
-                            ₹{this.state.useratvdetails.lifeTimeValue}
+                            {this.state.useratvdetails.lifeTimeValue !==
+                            null ? (
+                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
+                            ) : (
+                              "₹0"
+                            )}
                           </label>
                         </td>
                         <td>
                           <h4>Visit Count</h4>
                           <label>
-                            {this.state.useratvdetails.visitCount < 9
-                              ? "0" + this.state.useratvdetails.visitCount
-                              : this.state.useratvdetails.visitCount}
+                            {this.state.useratvdetails.visitCount !== null ? (
+                              <>
+                                {this.state.useratvdetails.visitCount < 9
+                                  ? "0" + this.state.useratvdetails.visitCount
+                                  : this.state.useratvdetails.visitCount}
+                              </>
+                            ) : (
+                              "0"
+                            )}
                           </label>
                         </td>
                       </tr>
@@ -2040,7 +2063,8 @@ class StoreCampaign extends Component {
                 <div>
                   <ul
                     className={
-                      this.state.showRecommandedtab === false ||  this.state.showLastTransactiondtab === true
+                      this.state.showRecommandedtab === false ||
+                      this.state.showLastTransactiondtab === true
                         ? "nav alert-nav-tabs3 store-nav-tabs tab-single"
                         : "nav alert-nav-tabs3 store-nav-tabs"
                     }
@@ -2296,68 +2320,75 @@ class StoreCampaign extends Component {
                     aria-labelledby="lastTransaction-tab"
                   >
                     <div>
-                      <div className="transactionbox">
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <h5>Bill No.</h5>
-                                <label>
-                                  {this.state.lasttransactiondetails.billNo}
-                                </label>
-                              </td>
-                              <td>
-                                <h5>Amount</h5>
-                                <label>
-                                  {this.state.lasttransactiondetails.amount}
-                                </label>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h5>Store</h5>
-                                <label>
-                                  {this.state.lasttransactiondetails.storeName}
-                                </label>
-                              </td>
-                              <td>
-                                <h5>Date</h5>
-                                <label>
-                                  {this.state.lasttransactiondetails.billDate}
-                                </label>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div className="trasactablist">
-                          <div className="myTicket-table remov agentlist last-trans-table">
-                            <ReactTable
-                              className="limit-react-table-body tabscrol"
-                              data={this.state.lastTransactionItem}
-                              columns={[
-                                {
-                                  Header: <span>Article</span>,
-                                  accessor: "article",
-                                },
-                                {
-                                  Header: <span>Qty.</span>,
-                                  accessor: "quantity",
-                                  width: 60,
-                                },
-                                {
-                                  Header: <span>Amount</span>,
-                                  accessor: "amount",
-                                  width: 80,
-                                },
-                              ]}
-                              minRows={2}
-                              // defaultPageSize={5}
-                              showPagination={false}
-                              resizable={false}
-                            />
+                      {this.state.lasttransactiondetails.amount !== "" ? (
+                        <div className="transactionbox">
+                          <table>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <h5>Bill No.</h5>
+                                  <label>
+                                    {this.state.lasttransactiondetails.billNo}
+                                  </label>
+                                </td>
+                                <td>
+                                  <h5>Amount</h5>
+                                  <label>
+                                    {this.state.lasttransactiondetails.amount}
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <h5>Store</h5>
+                                  <label>
+                                    {
+                                      this.state.lasttransactiondetails
+                                        .storeName
+                                    }
+                                  </label>
+                                </td>
+                                <td>
+                                  <h5>Date</h5>
+                                  <label>
+                                    {this.state.lasttransactiondetails.billDate}
+                                  </label>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="trasactablist">
+                            <div className="myTicket-table remov agentlist last-trans-table">
+                              <ReactTable
+                                className="limit-react-table-body tabscrol"
+                                data={this.state.lastTransactionItem}
+                                columns={[
+                                  {
+                                    Header: <span>Article</span>,
+                                    accessor: "article",
+                                  },
+                                  {
+                                    Header: <span>Qty.</span>,
+                                    accessor: "quantity",
+                                    width: 60,
+                                  },
+                                  {
+                                    Header: <span>Amount</span>,
+                                    accessor: "amount",
+                                    width: 80,
+                                  },
+                                ]}
+                                minRows={2}
+                                // defaultPageSize={5}
+                                showPagination={false}
+                                resizable={false}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        <label className="ChecknoDataCamp">No Record Found</label>
+                      )}
                     </div>
                   </div>
                 </div>
