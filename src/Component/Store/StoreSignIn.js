@@ -157,7 +157,7 @@ class StoreSignIn extends Component {
       //   "enc"
       // );
       let X_Authorized_Domainname = encryption(
-        "http://erbelltktstore.dcdev.brainvire.net",
+        "https://erbelltkthomeshop.dcdev.brainvire.net",
         "enc"
       );
 
