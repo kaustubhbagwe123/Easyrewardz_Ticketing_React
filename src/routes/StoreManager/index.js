@@ -27,6 +27,7 @@ import StoreFileUploadLogs from "../Settings/Store/StoreFileUploadLogs";
 import UserProfile from "./UserProfile";
 import Appointment from "./Appointment"
 import StoreCampaign from "../Campaign/StoreCampaign";
+import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 
 export class StoreApp extends Component {
   render() {
@@ -131,6 +132,7 @@ export class StoreApp extends Component {
           path={`${match.url}/campaign`}
           component={StoreCampaign}
         />
+        <Route exact path={`${match.url}/homeshopsetting`} component={HomeShopSetting} />
         <NotificationContainer />
       </StoreLayout>
     );

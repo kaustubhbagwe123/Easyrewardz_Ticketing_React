@@ -2168,9 +2168,41 @@ table tr th:last-child {
     height: 13px;
     margin-right: 5px;
   }
+  .headers-menu a {
+    font-size: 13px !important;
+}
 }
 
 @media screen and (max-width: 600px) {
+  .cusheade {
+    display: none !important;
+  }
+  .headers-menu .single-menu:first-child {
+    margin-left: 10px !important;
+  }
+  .single-menu {
+    margin-left: 5px !important;
+  }
+  .headers-menu {
+    display: flex;
+    align-items: center;
+    max-width: calc(100vw - 235px) !important;
+  }
+  .chatImg {
+    width: 20px !important;
+    cursor: pointer;
+}
+.notifi {
+  width: 15px !important;
+  cursor: pointer;
+}
+.setting {
+  width: 18px !important;
+  cursor: pointer;
+}
+.header-right-icons a {
+  margin-right: 12px !important;
+}
   .custompop {
     right: 0 !important;
     width: 100% !important;
