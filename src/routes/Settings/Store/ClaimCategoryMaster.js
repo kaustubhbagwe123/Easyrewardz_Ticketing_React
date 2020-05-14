@@ -935,7 +935,14 @@ class ClaimCategoryMaster extends Component {
           if (msg === "Success") {
             self.setState({ categoryDropData: data });
           } else {
-            self.setState({ categoryDropData: [], showAddCategory: true });
+            if (check === "edit") {
+              self.setState({
+                categoryDropData: [],
+                showEditAddCategory: true,
+              });
+            } else {
+              self.setState({ categoryDropData: [], showAddCategory: true });
+            }
           }
         })
         .catch((data) => {
@@ -1184,13 +1191,13 @@ class ClaimCategoryMaster extends Component {
               editCategoryCompulsory: "",
               showEditAddCategory: false,
             });
-            self.handleGetCategoryList(data, "edit");
+            self.handleGetCategoryList(value, "edit");
           } else {
             self.setState({
               category_Id: data,
               showAddCategory: false,
             });
-            self.handleGetCategoryList();
+            self.handleGetCategoryList(value);
           }
         } else {
           NotificationManager.error("Category not added.");
@@ -1415,9 +1422,9 @@ class ClaimCategoryMaster extends Component {
     let self = this;
     if (
       this.state.editCategory.brandID !== "" &&
-      this.state.editCategory.categoryID.length>0 &&
-      this.state.editCategory.subCategoryID.length>0 &&
-      this.state.editCategory.issueTypeID.length>0
+      this.state.editCategory.categoryID.length > 0 &&
+      this.state.editCategory.subCategoryID.length > 0 &&
+      this.state.editCategory.issueTypeID.length > 0
     ) {
       var activeStatus = 0;
       var categorydata = 0;
@@ -1480,9 +1487,9 @@ class ClaimCategoryMaster extends Component {
               ListOfSubCate: "",
               ListOfIssue: "",
               selectStatus: 0,
-              categoryDropData:[],
-              SubCategoryDropData:[],
-              ListOfIssueData:[],
+              categoryDropData: [],
+              SubCategoryDropData: [],
+              ListOfIssueData: [],
               editBrandCompulsory: "",
               editCategoryCompulsory: "",
               editSubCatCompulsory: "",
