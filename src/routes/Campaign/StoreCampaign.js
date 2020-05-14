@@ -92,6 +92,7 @@ class StoreCampaign extends Component {
       showLastTransactiondtab: false,
       insightShowImg: false,
       handleArrowImg: false,
+      expandedRowKeys: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -141,8 +142,10 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
+        for (let obj of data) obj.key = obj.campaignID;
         if (status === "Success") {
           const indexOfLastpost =
             self.state.currentPage * self.state.postsPerPage;
@@ -764,10 +767,10 @@ class StoreCampaign extends Component {
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
       headers: authHeader(),
-      params:{
-        campaignName:this.state.filterCampName,
-        statusId:this.state.strCampStatus
-      }
+      params: {
+        campaignName: this.state.filterCampName,
+        statusId: this.state.strCampStatus,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -793,11 +796,13 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
-
+    var keys = [];
     if (data) {
+      keys.push(row.campaignID);
       this.setState({
         childCurrentPage: 1,
         childTotalGridRecord: 0,
+        expandedRowKeys: keys,
       });
     }
     var campaignId = 0;
@@ -1084,14 +1089,14 @@ class StoreCampaign extends Component {
       });
   }
 
-  handleCheckCampIndividualStatus(){
+  handleCheckCampIndividualStatus() {
     var checkboxes = document.getElementsByName("allStatus");
     var strCampStatus = "";
     for (var i in checkboxes) {
       if (isNaN(i) === false) {
         if (checkboxes[i].checked === true) {
           if (checkboxes[i].getAttribute("attrIds") !== null)
-          strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+            strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     }
@@ -1166,7 +1171,7 @@ class StoreCampaign extends Component {
     }
   }
 
-  handleCampaignNameOnchange(e){
+  handleCampaignNameOnchange(e) {
     this.setState({
       filterCampName: e.target.value,
     });
@@ -1397,7 +1402,9 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="status100"
                             className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(this)}
+                            onChange={this.handleCheckCampIndividualStatus.bind(
+                              this
+                            )}
                             name="allStatus"
                             attrIds={100}
                           />
@@ -1410,7 +1417,9 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="status101"
                             className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(this)}
+                            onChange={this.handleCheckCampIndividualStatus.bind(
+                              this
+                            )}
                             name="allStatus"
                             attrIds={101}
                           />
@@ -1423,7 +1432,9 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="status102"
                             className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(this )}
+                            onChange={this.handleCheckCampIndividualStatus.bind(
+                              this
+                            )}
                             name="allStatus"
                             attrIds={102}
                           />
@@ -2027,6 +2038,7 @@ class StoreCampaign extends Component {
               );
             }}
             onExpand={this.handleGetCampaignCustomerData}
+            expandedRowKeys={this.state.expandedRowKeys}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
