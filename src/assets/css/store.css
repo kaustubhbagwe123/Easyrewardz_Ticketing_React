@@ -2075,6 +2075,9 @@ table tr th:last-child {
 .camp-status-header-cust-name .ant-table-filter-icon {
   left: 122px;
 }
+.camp-status-header-statusFilter .ant-table-filter-icon {
+  left: 65px;
+}
 .camp-status-header .ant-table-filter-icon::before {
   content: "";
   background: url("./../Images//dropdown3.png") no-repeat center center;
@@ -2731,6 +2734,9 @@ table tr th:last-child {
   }
   .camp-status-header-cust-name .ant-table-filter-icon {
     left: 95px;
+  }
+  .camp-status-header-statusFilter .ant-table-filter-icon {
+    left: 43px;
   }
   .campaign-status-drpdwn input:checked + label::after {
     left: 1.5px;

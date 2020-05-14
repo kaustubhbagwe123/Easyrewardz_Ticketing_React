@@ -73,18 +73,20 @@ class StoreCampaign extends Component {
       ResponsiveShareNow: false,
       campaignID: 0,
       ResponsiveChooseChannel: 0,
-      CheckBoxAllStatus: false,
       Respo_ChannelMessanger: false,
       Respo_ChannelBot: false,
       Respo_ChannelSMS: false,
       Respo_ChannelEmail: false,
       filterDropdownVisible: false,
       filterCustomerNumber: false,
+      filterCampaignName: false,
+      filterCampaignStatus: false,
       strStatusIds: "",
       chatbotScript: "",
       smsScript: "",
       campaingPeriod: "",
       filterCustNO: "",
+      filterCampName: "",
       showRecommandedtab: false,
       showLastTransactiondtab: false,
     };
@@ -747,7 +749,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    debugger
+    debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -1085,18 +1087,6 @@ class StoreCampaign extends Component {
     }, 50);
   }
 
-  HandleSearchCustomerNumber = () => {
-    debugger;
-    this.setState({
-      filterCustomerNumber: true,
-    });
-  };
-
-  handleCloseCustomerFilter() {
-    this.setState({
-      filterCustomerNumber: false,
-    });
-  }
   handleCustomerFilerOnchange(campaignID, customerCount, e) {
     debugger;
     this.setState({
@@ -1196,20 +1186,35 @@ class StoreCampaign extends Component {
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: () => {
-                  return (
-                    <div>
-                      Campaign Name{" "}
-                      <img
-                        src={Dropdown3}
-                        className="table-drpdwn"
-                        alt="dropdown img"
-                      />
-                    </div>
-                  );
-                },
+                title: "Campaign Name",
                 dataIndex: "campaignName",
-                className: "abc",
+                className: "camp-status-header camp-status-header-cust-name",
+                filterDropdown: (dataIndex) => (
+                  <div className="cust-name-drpdwn">
+                    <label>Campaign Name</label>
+                    <input
+                      type="text"
+                      className="txt-1"
+                      autoComplete="off"
+                      maxLength={100}
+                      placeholder="Enter Campaign Name"
+                      value={this.state.filterCampName}
+                      // onChange={this.handleCustomerFilerOnchange.bind(
+                      //   this,
+                      //   row.campaignID,
+                      //   row.customerCount
+                      // )}
+                    />
+                  </div>
+                ),
+                filterDropdownVisible: this.state.filterCampaignName,
+                onFilterDropdownVisibleChange: (visible) =>
+                  this.setState({ filterCampaignName: visible }),
+                filterIcon: (filtered) => (
+                  <span
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                  ></span>
+                ),
                 render: (row, item) => {
                   return (
                     <div>
@@ -1295,14 +1300,91 @@ class StoreCampaign extends Component {
               {
                 title: "Status",
                 dataIndex: "status",
-                className: "particular-hide",
-                // render: (row, item) => {
-                //   return (
-                //     <button className="closebtn" type="button">
-                //       <label className="hdrcloselabel">{item.status}</label>
-                //     </button>
-                //   );
-                // },
+                className: "camp-status-header camp-status-header-statusFilter",
+                filterDropdown: (data,row) => {
+                  return (
+                    <div className="campaign-status-drpdwn">
+                      <ul>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="all-status"
+                            className="ch1"
+                            // onChange={this.checkAllStatus.bind(
+                            //   this,
+                            //   row.campaignID,
+                            //   row.customerCount
+                            // )}
+                            checked={this.state.CheckBoxAllStatus}
+                            name="allStatus"
+                          />
+                          <label htmlFor="all-status">
+                            <span className="ch1-text">All</span>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="status100"
+                            className="ch1"
+                            // onChange={this.checkIndividualStatus.bind(
+                            //   this,
+                            //   row.campaignID,
+                            //   row.customerCount
+                            // )}
+                            name="allStatus"
+                            attrIds={100}
+                          />
+                          <label htmlFor="status100">
+                            <span className="ch1-text">New</span>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="status101"
+                            className="ch1"
+                            // onChange={this.checkIndividualStatus.bind(
+                            //   this,
+                            //   row.campaignID,
+                            //   row.customerCount
+                            // )}
+                            name="allStatus"
+                            attrIds={101}
+                          />
+                          <label htmlFor="status101">
+                            <span className="ch1-text">InProgress</span>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="status102"
+                            className="ch1"
+                            // onChange={this.checkIndividualStatus.bind(
+                            //   this,
+                            //   row.campaignID,
+                            //   row.customerCount
+                            // )}
+                            name="allStatus"
+                            attrIds={102}
+                          />
+                          <label htmlFor="status102">
+                            <span className="ch1-text">Close</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  );
+                },
+                filterDropdownVisible: this.state.filterCampaignStatus,
+                onFilterDropdownVisibleChange: (visible) =>
+                  this.setState({ filterCampaignStatus: visible }),
+                filterIcon: (filtered) => (
+                  <span
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                  ></span>
+                ),
               },
               {
                 title: "Actions",
@@ -1377,6 +1459,7 @@ class StoreCampaign extends Component {
                               className="txt-1"
                               autoComplete="off"
                               placeholder="Enter Mobile No"
+                              maxLength={10}
                               value={this.state.filterCustNO}
                               onChange={this.handleCustomerFilerOnchange.bind(
                                 this,
@@ -2387,7 +2470,9 @@ class StoreCampaign extends Component {
                           </div>
                         </div>
                       ) : (
-                        <label className="ChecknoDataCamp">No Record Found</label>
+                        <label className="ChecknoDataCamp">
+                          No Record Found
+                        </label>
                       )}
                     </div>
                   </div>
