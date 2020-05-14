@@ -707,7 +707,6 @@ class StoreCampaign extends Component {
   }
 
   handleShareNowOpenModal() {
-    //
     if (this.state.Respo_ChannelMessanger === true) {
       this.handleSendViaMessanger(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelBot === true) {
@@ -759,15 +758,22 @@ class StoreCampaign extends Component {
 
   /// handle Search Campaign name and status
   handleSearchCampaignNameandStatus() {
+    debugger;
     let self = this;
+    var filterIds = "";
+    if (this.state.strCampStatus !== "") {
+      filterIds = this.state.strCampStatus;
+    } else {
+      filterIds = "All";
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
       headers: authHeader(),
-      params:{
-        campaignName:this.state.filterCampName,
-        statusId:this.state.strCampStatus
-      }
+      params: {
+        campaignName: this.state.filterCampName,
+        statusId: filterIds,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -1083,17 +1089,48 @@ class StoreCampaign extends Component {
         console.log(response);
       });
   }
-
-  handleCheckCampIndividualStatus(){
-    var checkboxes = document.getElementsByName("allStatus");
+  /// handle Campaign status filter for individual select
+  handleCheckCampIndividualStatus() {
+    var checkboxes = document.getElementsByName("CampallStatus");
     var strCampStatus = "";
     for (var i in checkboxes) {
       if (isNaN(i) === false) {
         if (checkboxes[i].checked === true) {
           if (checkboxes[i].getAttribute("attrIds") !== null)
-          strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+            strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
+    }
+    this.setState({
+      filterCampaignStatus: false,
+      strCampStatus,
+    });
+    setTimeout(() => {
+      this.handleSearchCampaignNameandStatus();
+    }, 50);
+  }
+  /// handle Campaign status filter for all select
+  handleCheckCampAllStatus(event) {
+    debugger;
+    this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    var strCampStatus = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("CampallStatus");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strCampStatus = "All";
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strCampStatus = "";
     }
     this.setState({
       filterCampaignStatus: false,
@@ -1166,7 +1203,7 @@ class StoreCampaign extends Component {
     }
   }
 
-  handleCampaignNameOnchange(e){
+  handleCampaignNameOnchange(e) {
     this.setState({
       filterCampName: e.target.value,
     });
@@ -1382,52 +1419,58 @@ class StoreCampaign extends Component {
                         <li>
                           <input
                             type="checkbox"
-                            id="all-status"
+                            id="Campall-status"
                             className="ch1"
-                            onChange={this.checkAllStatus.bind(this)}
+                            onChange={this.handleCheckCampAllStatus.bind(this)}
                             checked={this.state.CheckBoxAllStatus}
-                            name="allStatus"
+                            name="CampallStatus"
                           />
-                          <label htmlFor="all-status">
+                          <label htmlFor="Campall-status">
                             <span className="ch1-text">All</span>
                           </label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
-                            id="status100"
+                            id="New100"
                             className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(this)}
-                            name="allStatus"
+                            onChange={this.handleCheckCampIndividualStatus.bind(
+                              this
+                            )}
+                            name="CampallStatus"
                             attrIds={100}
                           />
-                          <label htmlFor="status100">
+                          <label htmlFor="New100">
                             <span className="ch1-text">New</span>
                           </label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
-                            id="status101"
+                            id="Inproress101"
                             className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(this)}
-                            name="allStatus"
+                            onChange={this.handleCheckCampIndividualStatus.bind(
+                              this
+                            )}
+                            name="CampallStatus"
                             attrIds={101}
                           />
-                          <label htmlFor="status101">
+                          <label htmlFor="Inproress101">
                             <span className="ch1-text">InProgress</span>
                           </label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
-                            id="status102"
+                            id="Close102"
                             className="ch1"
-                            onChange={this.handleCheckCampIndividualStatus.bind(this )}
-                            name="allStatus"
+                            onChange={this.handleCheckCampIndividualStatus.bind(
+                              this
+                            )}
+                            name="CampallStatus"
                             attrIds={102}
                           />
-                          <label htmlFor="status102">
+                          <label htmlFor="Close102">
                             <span className="ch1-text">Close</span>
                           </label>
                         </li>

@@ -1,5 +1,5 @@
 let config = {
-   //apiUrl: "https://localhost:44357/api",
+  // apiUrl: "https://localhost:44357/api",
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -70,22 +70,7 @@ let config = {
     ["Tata", "Category-1", "SubCat-1", "IssueType-1", "Active"],
     ["Bata", "Category-2", "SubCat-2", "IssueType-2", "In-Active"],
   ],
-  // slaTemplate: [
-  //   [
-  //     "IssueType",
-  //     "Priority",
-  //     "SLABreachPercent",
-  //     "RespondValue",
-  //     ,
-  //     "RespondDuration",
-  //     "ResolutionValue",
-  //     "ResolutionDuration",
-  //     "Status",
-  //   ],
-  //   ["Issue1", "High", "30", "1", "Day", "2", "Day", "Active"],
-  //   ["Issue1", "Medium", "30", "1", "Day", "2", "Day", "Active"],
-  //   ["Issue1", "Low", "30", "1", "Day", "2", "Day", "Active"],
-  // ],
+
   crmRoleTemplate: [
     ["RoleName", "Status", "EnabledModules", "DisabledModules"],
     [
@@ -258,7 +243,7 @@ let config = {
     ["Issue1", "Medium", "30", "2", "Day", "Active"],
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
- // apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------Client Home Shop API----------
+  //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------Client Home Shop API----------
   apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
