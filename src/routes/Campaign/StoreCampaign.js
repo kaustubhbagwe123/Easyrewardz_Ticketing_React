@@ -81,6 +81,7 @@ class StoreCampaign extends Component {
       filterCustomerNumber: false,
       filterCampaignName: false,
       filterCampaignStatus: false,
+      strCampStatus: "",
       strStatusIds: "",
       chatbotScript: "",
       smsScript: "",
@@ -756,6 +757,35 @@ class StoreCampaign extends Component {
     }
   };
 
+  /// handle Search Campaign name and status
+  handleSearchCampaignNameandStatus() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
+      headers: authHeader(),
+      params:{
+        campaignName:this.state.filterCampName,
+        statusId:this.state.strCampStatus
+      }
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            campaignGridData: data,
+          });
+        } else {
+          self.setState({
+            campaignGridData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
     debugger;
@@ -1054,6 +1084,26 @@ class StoreCampaign extends Component {
       });
   }
 
+  handleCheckCampIndividualStatus(){
+    var checkboxes = document.getElementsByName("allStatus");
+    var strCampStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+          strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      filterCampaignStatus: false,
+      strCampStatus,
+    });
+    setTimeout(() => {
+      this.handleSearchCampaignNameandStatus();
+    }, 50);
+  }
+
   checkIndividualStatus(campaignScriptID, customerCount, event) {
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
@@ -1113,6 +1163,17 @@ class StoreCampaign extends Component {
       setTimeout(() => {
         this.handleGetCampaignCustomer(campaignID, customerCount);
       }, 50);
+    }
+  }
+
+  handleCampaignNameOnchange(e){
+    this.setState({
+      filterCampName: e.target.value,
+    });
+    if (this.state.filterCampName.length > 5) {
+      setTimeout(() => {
+        this.handleSearchCampaignNameandStatus();
+      }, 10);
     }
   }
   handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
@@ -1216,11 +1277,7 @@ class StoreCampaign extends Component {
                       maxLength={100}
                       placeholder="Enter Campaign Name"
                       value={this.state.filterCampName}
-                      // onChange={this.handleCustomerFilerOnchange.bind(
-                      //   this,
-                      //   row.campaignID,
-                      //   row.customerCount
-                      // )}
+                      onChange={this.handleCampaignNameOnchange.bind(this)}
                     />
                   </div>
                 ),
@@ -1318,7 +1375,7 @@ class StoreCampaign extends Component {
                 title: "Status",
                 dataIndex: "status",
                 className: "camp-status-header camp-status-header-statusFilter",
-                filterDropdown: (data,row) => {
+                filterDropdown: (data, row) => {
                   return (
                     <div className="campaign-status-drpdwn">
                       <ul>
@@ -1327,11 +1384,7 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="all-status"
                             className="ch1"
-                            // onChange={this.checkAllStatus.bind(
-                            //   this,
-                            //   row.campaignID,
-                            //   row.customerCount
-                            // )}
+                            onChange={this.checkAllStatus.bind(this)}
                             checked={this.state.CheckBoxAllStatus}
                             name="allStatus"
                           />
@@ -1344,11 +1397,7 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="status100"
                             className="ch1"
-                            // onChange={this.checkIndividualStatus.bind(
-                            //   this,
-                            //   row.campaignID,
-                            //   row.customerCount
-                            // )}
+                            onChange={this.handleCheckCampIndividualStatus.bind(this)}
                             name="allStatus"
                             attrIds={100}
                           />
@@ -1361,11 +1410,7 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="status101"
                             className="ch1"
-                            // onChange={this.checkIndividualStatus.bind(
-                            //   this,
-                            //   row.campaignID,
-                            //   row.customerCount
-                            // )}
+                            onChange={this.handleCheckCampIndividualStatus.bind(this)}
                             name="allStatus"
                             attrIds={101}
                           />
@@ -1378,11 +1423,7 @@ class StoreCampaign extends Component {
                             type="checkbox"
                             id="status102"
                             className="ch1"
-                            // onChange={this.checkIndividualStatus.bind(
-                            //   this,
-                            //   row.campaignID,
-                            //   row.customerCount
-                            // )}
+                            onChange={this.handleCheckCampIndividualStatus.bind(this )}
                             name="allStatus"
                             attrIds={102}
                           />
