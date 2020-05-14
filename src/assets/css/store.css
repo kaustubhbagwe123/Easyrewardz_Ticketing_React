@@ -2133,11 +2133,22 @@ table tr th:last-child {
   border-radius: 10px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
 }
-.ChecknoDataCamp{
+.ChecknoDataCamp {
   text-align: center;
   display: block;
   font-weight: bold;
   margin-top: 103px;
+}
+#insight-data {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.keyingsightdrp-invert {
+  transform: rotate(180deg);
+}
+.full-data-insight {
+  white-space: initial !important;
 }
 /* ------------------Campain Media Queries ------------------------- */
 
@@ -2179,7 +2190,21 @@ table tr th:last-child {
   }
   .headers-menu a {
     font-size: 13px !important;
-}
+  }
+  .ChecknoDataCamp {
+    margin: 30px 0;
+  }
+  .lt-single td {
+    display: table-cell;
+    padding: 18px 20px;
+    text-align: left;
+  }
+  .productbox {
+    margin-top: 0;
+  }
+  .keyinsights {
+    margin-bottom: 15px;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -2200,18 +2225,18 @@ table tr th:last-child {
   .chatImg {
     width: 20px !important;
     cursor: pointer;
-}
-.notifi {
-  width: 15px !important;
-  cursor: pointer;
-}
-.setting {
-  width: 18px !important;
-  cursor: pointer;
-}
-.header-right-icons a {
-  margin-right: 12px !important;
-}
+  }
+  .notifi {
+    width: 15px !important;
+    cursor: pointer;
+  }
+  .setting {
+    width: 18px !important;
+    cursor: pointer;
+  }
+  .header-right-icons a {
+    margin-right: 12px !important;
+  }
   .custompop {
     right: 0 !important;
     width: 100% !important;

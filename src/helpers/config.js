@@ -261,7 +261,7 @@ let config = {
  // apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------Client Home Shop API----------
  // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
-   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
+  //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
