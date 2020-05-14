@@ -2202,7 +2202,7 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <span className="message-initial">
-                              {this.state.customerName.charAt(0).toUpperCase()}
+                              {this.state.UserName.charAt(0).toUpperCase()}
                             </span>
                             <textarea
                               placeholder="Search to get suggestions..."
@@ -2936,7 +2936,7 @@ class Header extends Component {
                         >
                           <div className="message-div">
                             <span className="message-initial">
-                              {this.state.customerName.charAt(0).toUpperCase()}
+                              {this.state.UserName.charAt(0).toUpperCase()}
                             </span>
                             <textarea
                               placeholder="Search to get suggestions..."
