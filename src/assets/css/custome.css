@@ -6278,7 +6278,8 @@ progress::-webkit-progress-bar {
   border-radius: 60px;
   cursor: pointer;
   z-index: 0;
-  top: 10px;
+  /* top: 10px; */
+  top: 2px;
   margin-left: 115px;
 }
 .switch input[type="checkbox"] + .cr:after,
@@ -11281,6 +11282,13 @@ table tr th:last-child {
     left: 5px;
   }
   /* dashboard ends */
+
+  .storeRole-name-text {
+    width: 105px;
+  }
+  .module-switch {
+    padding: 0;
+  }
 }
 
 @media only screen and (max-width: 580px) {
