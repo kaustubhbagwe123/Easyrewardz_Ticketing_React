@@ -593,11 +593,13 @@ class Header extends Component {
               //   transports: ["polling"],
               // });
               socket.on("connect", () => {
+                // alert("Message Recieved");
                 socket.send("hi");
                 socket.on(
                   "91"+ongoingChatsData[i].mobileNo +
                     ongoingChatsData[i].programCode,
                   function(data) {
+                    console.log("Message Received")
                     if (self.state.mobileNo === data[3]) {
                       self.handleGetOngoingChat("isRead");
                       self.handleGetChatMessagesList(self.state.chatId);
@@ -2266,7 +2268,7 @@ class Header extends Component {
                                               : ""
                                           }
                                           key={i}
-                                          onClick={this.handleSendMessageToCustomer.bind(
+                                          onClick={this.handleSaveChatMessages.bind(
                                             this,
                                             item.suggestionText,
                                             i+1,
@@ -2324,7 +2326,7 @@ class Header extends Component {
                               this.state.storeAgentDetail[0].freeText === 1?(
                               <div
                                 className="mobile-ck-send-btn"
-                                onClick={this.handleSendMessageToCustomer.bind(
+                                onClick={this.handleSaveChatMessages.bind(
                                   this,
                                   this.state.message,
                                   0,
@@ -2964,7 +2966,7 @@ class Header extends Component {
                                           //   item.suggestionText,
                                           //   i
                                           // )}
-                                          onClick={this.handleSendMessageToCustomer.bind(
+                                          onClick={this.handleSaveChatMessages.bind(
                                             this,
                                             item.suggestionText,
                                             i+1,
@@ -2998,7 +3000,7 @@ class Header extends Component {
                               this.state.storeAgentDetail[0].freeText === 1?(
                               <div
                                 className="mobile-ck-send-btn"
-                                onClick={this.handleSendMessageToCustomer.bind(
+                                onClick={this.handleSaveChatMessages.bind(
                                   this,
                                   this.state.message,
                                   0,
