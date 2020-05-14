@@ -92,6 +92,7 @@ class StoreCampaign extends Component {
       showLastTransactiondtab: false,
       insightShowImg: false,
       handleArrowImg: false,
+      expandedRowKeys: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -141,8 +142,10 @@ class StoreCampaign extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
+        for (let obj of data) obj.key = obj.campaignID;
         if (status === "Success") {
           const indexOfLastpost =
             self.state.currentPage * self.state.postsPerPage;
@@ -799,11 +802,13 @@ class StoreCampaign extends Component {
       ChildTblLoading: true,
       CampChildTableData: [],
     });
-
+    var keys = [];
     if (data) {
+      keys.push(row.campaignID);
       this.setState({
         childCurrentPage: 1,
         childTotalGridRecord: 0,
+        expandedRowKeys: keys,
       });
     }
     var campaignId = 0;
@@ -2070,6 +2075,7 @@ class StoreCampaign extends Component {
               );
             }}
             onExpand={this.handleGetCampaignCustomerData}
+            expandedRowKeys={this.state.expandedRowKeys}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}

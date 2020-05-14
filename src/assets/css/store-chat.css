@@ -940,7 +940,11 @@ p {
     display: block;
   }
   .mobile-ck-send {
-    top: 25px;
+    /* top: 25px; */
+    top: 7px;
+  }
+  .mobile-ck-send-btn {
+    top: 43px;
   }
   .butn,
   .butn-inv {
