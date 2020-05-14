@@ -819,7 +819,6 @@ class Header extends Component {
           searchCardData.forEach((element, i) => {
             element["itemID"] = i + 1;
           });
-          debugger;
           self.setState({
             searchCardData,
           });
@@ -1144,7 +1143,7 @@ class Header extends Component {
   };
 
   onCloseCardModal = () => {
-    this.handleSendCard();
+    // this.handleSendCard();
     this.setState({ cardModal: false });
   };
   onOpenCardModal = () => {
@@ -1277,7 +1276,7 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         CustomerID: this.state.customerId,
-        MobileNumber: this.state.mobileNo.length > 10?this.state.mobileNo:"91"+this.state.mobileNo,
+        MobileNumber: this.state.mobileNo,
       },
     })
       .then(function(res) {
