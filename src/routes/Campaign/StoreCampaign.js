@@ -87,6 +87,8 @@ class StoreCampaign extends Component {
       filterCustNO: "",
       showRecommandedtab: false,
       showLastTransactiondtab: false,
+      insightShowImg: false,
+      handleArrowImg: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -97,6 +99,13 @@ class StoreCampaign extends Component {
   componentDidMount() {
     this.handleGetCampaignGridData();
     this.handleGetBrand();
+  }
+
+  handleArrowImg() {
+    let handleArrowImg = this.state.handleArrowImg;
+    this.setState({
+      handleArrowImg: !handleArrowImg,
+    });
   }
 
   onResponseChange(campaignCustomerID, item, e) {
@@ -747,7 +756,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
-    debugger
+    debugger;
     this.setState({
       ChildTblLoading: true,
       CampChildTableData: [],
@@ -1018,6 +1027,14 @@ class StoreCampaign extends Component {
             lasttransactiondetails: data.lasttransactiondetails,
             sortCustName: sortName,
           });
+          if (data.campaignkeyinsight.insightText.length > 0) {
+            if (
+              document.getElementById("insight-data").offsetWidth <
+              document.getElementById("insight-data").scrollWidth
+            ) {
+              self.setState({ insightShowImg: true });
+            }
+          }
         } else {
           self.setState({
             custNameModal: true,
@@ -2048,13 +2065,26 @@ class StoreCampaign extends Component {
               {this.state.campaignkeyinsight.insightText !== "" ? (
                 <div className="keyinsights">
                   <h4>Key Insights</h4>
-                  <p>{this.state.campaignkeyinsight.insightText}</p>
-                  <img
-                    className="keyingsightdrp"
-                    src={Dropdown3}
-                    alt="Down Arrow"
-                    style={{ display: "none" }}
-                  />
+                  <p
+                    id="insight-data"
+                    className={
+                      this.state.handleArrowImg ? "full-data-insight" : ""
+                    }
+                  >
+                    {this.state.campaignkeyinsight.insightText}
+                  </p>
+                  {this.state.insightShowImg && (
+                    <img
+                      className={
+                        this.state.handleArrowImg
+                          ? "keyingsightdrp keyingsightdrp-invert"
+                          : "keyingsightdrp"
+                      }
+                      src={Dropdown3}
+                      alt="Down Arrow"
+                      onClick={this.handleArrowImg.bind(this)}
+                    />
+                  )}
                 </div>
               ) : null}
             </div>
@@ -2387,7 +2417,9 @@ class StoreCampaign extends Component {
                           </div>
                         </div>
                       ) : (
-                        <label className="ChecknoDataCamp">No Record Found</label>
+                        <label className="ChecknoDataCamp">
+                          No Record Found
+                        </label>
                       )}
                     </div>
                   </div>
