@@ -1190,6 +1190,7 @@ class Header extends Component {
       selectedDate,
       isSelectSlot: "",
       noOfPeople: "",
+      noOfPeopleMax: ""
     });
   };
 
