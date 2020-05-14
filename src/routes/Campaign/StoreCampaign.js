@@ -805,6 +805,7 @@ class StoreCampaign extends Component {
     var keys = [];
     if (data) {
       keys.push(row.campaignID);
+
       this.setState({
         childCurrentPage: 1,
         childTotalGridRecord: 0,
