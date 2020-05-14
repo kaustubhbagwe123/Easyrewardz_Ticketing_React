@@ -7,6 +7,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import ReactTable from "react-table";
 import { Link } from "react-router-dom";
 import { authHeader } from "./../../../helpers/authHeader";
+import { MyContext } from './../../../context'
 import axios from "axios";
 import config from "./../../../helpers/config";
 import Modal from "react-bootstrap/Modal";
@@ -604,6 +605,7 @@ class StoreFileUploadLogs extends Component {
   };
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const columnsTickFileUpload = [
       {
         Header: (
@@ -1174,4 +1176,5 @@ class StoreFileUploadLogs extends Component {
   }
 }
 
+StoreFileUploadLogs.contextType = MyContext;
 export default StoreFileUploadLogs;

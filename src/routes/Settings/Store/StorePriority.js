@@ -11,6 +11,7 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import { Link } from "react-router-dom";
 import { authHeader } from "./../../../helpers/authHeader";
+import { MyContext } from './../../../context'
 import activeStatus from "./../../activeStatus";
 import {
   NotificationContainer,
@@ -926,6 +927,7 @@ class CreatePriority extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         {/* <NotificationContainer /> */}
@@ -1870,4 +1872,5 @@ class CreatePriority extends Component {
   }
 }
 
+CreatePriority.contextType = MyContext;
 export default CreatePriority;

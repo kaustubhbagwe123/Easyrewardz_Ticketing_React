@@ -275,7 +275,9 @@
       "editalerts":"अलर्ट संपादित करें",
       "composeyournotification":"अपनी अधिसूचना लिखें",
       "composeyoursms":"अपना एसएमएस लिखें",
-      "composeyouremail":"अपना ईमेल लिखें"
+      "composeyouremail":"अपना ईमेल लिखें",
+      "claimapprover":"दावे को मंजूरी",
+      "validemail":"कृपया मान्य ईमेल आईडी दर्ज करें"
     },
     "text":{
       "brand": "ब्रांड :",
@@ -335,7 +337,7 @@
       "template":"टेम्पलेट",
       "brandname":"ब्रांड का नाम",
       "entervalidpincode":"कृपया मान्य पिन कोड दर्ज करें",
-      "validemail":"कृपया मान्य ईमेल आईडी दर्ज करें।",
+      "profiledetails":"कृपया मान्य ईमेल आईडी दर्ज करें।",
       "validphone":"कृपया एक वैध नंबर डालें।",
       "validmobilenumber":"कृपया मान्य मोबाइल नंबर दर्ज करें",
       "reporteedesignation":"रिपोर्टी पदनाम",
@@ -376,7 +378,13 @@
       "storeticketid":"टिकट आईडी स्टोर करें",
       "namanr":"नमन आर",
       "comments":"टिप्पणियाँ",
-      "taskclosuredate":"कार्य बंद करने की तारीख"
+      "taskclosuredate":"कार्य बंद करने की तारीख",
+      "mobileno":"मोबाइल न",
+      "emailid":"ईमेल आईडी",
+      "crmrole":"सी आर एम भूमिका",
+      "claimcategory":"दावा श्रेणी",
+      "claimsubcategory":"उप श्रेणी का दावा करें",
+      "claimissuetype":"दावा जारी करने का प्रकार"
     },
     "small":{
       "moreinsights": "अधिक जानकारी देखें",
@@ -442,7 +450,10 @@
       "campaign":"अभियान",
       "taskbyticket":"टिकट द्वारा कार्य",
       "addcomments":"टिप्पणी करें",
-      "email":"ईमेल"
+      "email":"ईमेल",
+      "storedetails":"विवरण स्टोर करें",
+      "profiledetails":"प्रोफ़ाइल विवरण",
+      "mappedclaimcategory":"मैप किए गए दावे श्रेणी"
     },
     "span":{
       "status": "स्थिति",
@@ -572,7 +583,9 @@
       "prioritytype":"प्राथमिकता प्रकार",
       "cancel":"इसे रद्द करें",
       "campignname":"अभियान का नाम",
-      "alerttype":"अलर्ट प्रकार"
+      "alerttype":"अलर्ट प्रकार",
+      "userdesignation":"उपयोगकर्ता पदनाम",
+      "reporteename":"रिपोर्ट का नाम"
     },
     "div": {
       "viewtickets": "टिकट देखें",
@@ -697,7 +710,8 @@
       "personaldetails":"व्यक्तिगत विवरण",
       "profiledetails":"प्रोफ़ाइल विवरण",
       "mappedcategory":"मैप की गई श्रेणी",
-      "communicationmode":"संचार मोड"
+      "communicationmode":"संचार मोड",
+      "mappedclaimcategory":"मैप किए गए दावे श्रेणी"
     },
     "checkbox": {
       "mon":"सोम",
@@ -738,7 +752,8 @@
       "hierarchymaster":"पदानुक्रम मास्टर",
       "itemmaster":"आइटम मास्टर",
       "slatemplatedepart":"SLA टेम्पलेट-विभाग",
-      "fileuploadlog":"फ़ाइल अपलोड लॉग"
+      "fileuploadlog":"फ़ाइल अपलोड लॉग",
+      "usermaster":"उपयोगकर्ता मास्टर"
     },
     "mybutton": {
       "edit":"संपादित करें"

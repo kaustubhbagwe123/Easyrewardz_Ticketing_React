@@ -10,6 +10,7 @@ import Correct from "./../../../assets/Images/correct.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import Cancel from "./../../../assets/Images/cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
+import { MyContext } from './../../../context'
 import { ProgressBar } from "react-bootstrap";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -1115,6 +1116,7 @@ class SlaTemplateDepartment extends Component {
   };
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -2651,4 +2653,5 @@ class SlaTemplateDepartment extends Component {
     );
   }
 }
+SlaTemplateDepartment.contextType = MyContext;
 export default SlaTemplateDepartment;

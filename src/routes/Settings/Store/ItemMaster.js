@@ -5,6 +5,7 @@ import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import { MyContext } from './../../../context'
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -1212,6 +1213,7 @@ class ItemMaster extends Component {
     }
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <NotificationContainer />
@@ -2017,4 +2019,5 @@ class ItemMaster extends Component {
   }
 }
 
+ItemMaster.contextType = MyContext;
 export default ItemMaster;

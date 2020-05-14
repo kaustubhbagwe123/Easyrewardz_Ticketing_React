@@ -12,6 +12,7 @@ import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import { MyContext } from './../../../context'
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
@@ -1014,6 +1015,7 @@ class StoreModule extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         <div className="position-relative d-inline-block">
@@ -2399,4 +2401,5 @@ class StoreModule extends Component {
   }
 }
 
+StoreModule.contextType = MyContext;
 export default StoreModule;

@@ -7,6 +7,7 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import DownExcel from "./../../../assets/Images/csv.png";
+import { MyContext } from './../../../context'
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import ActiveStatus from "../../activeStatus";
@@ -1109,6 +1110,7 @@ class HierarchyMaster extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const { hierarchyData } = this.state;
 
     return (
@@ -2126,4 +2128,5 @@ class HierarchyMaster extends Component {
   }
 }
 
+HierarchyMaster.contextType = MyContext;
 export default HierarchyMaster;

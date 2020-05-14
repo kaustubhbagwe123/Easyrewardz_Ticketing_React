@@ -12,6 +12,7 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
+import { MyContext } from './../../../context'
 import Demo from "./../../../store/Hashtag";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import LetterBox from "./../../../assets/Images/SecuredLetter2.png";
@@ -2001,6 +2002,7 @@ class Alerts extends Component {
     NotificationManager.success("File deleted successfully.");
   };
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="position-relative d-inline-block">
@@ -4263,4 +4265,5 @@ class Alerts extends Component {
   }
 }
 
+Alerts.contextType = MyContext;
 export default Alerts;

@@ -12,6 +12,7 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import Correct from "./../../../assets/Images/correct.png";
+import { MyContext } from './../../../context'
 import Select from "react-select";
 import StoreTaskStatus from "./../../StoreTaskStatus";
 import DatePickerComponenet from "./../Ticketing/DatePickerComponent";
@@ -2064,6 +2065,7 @@ class StoreReports extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const datareport = this.state.storeReportData;
 
     const columnsreport = [
@@ -3895,4 +3897,5 @@ class StoreReports extends Component {
   }
 }
 
+StoreReports.contextType = MyContext;
 export default StoreReports;

@@ -9,6 +9,7 @@ import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import Demo from "../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
+import { MyContext } from './../../../context'
 import Sorting from "./../../../assets/Images/sorting.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import DownExcel from "./../../../assets/Images/csv.png";
@@ -893,6 +894,7 @@ class StoreCRMRole extends Component {
     NotificationManager.success("File deleted successfully.");
   };
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -2021,4 +2023,5 @@ class StoreCRMRole extends Component {
   }
 }
 
+StoreCRMRole.contextType = MyContext;
 export default StoreCRMRole;
