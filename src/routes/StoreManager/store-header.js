@@ -728,7 +728,7 @@ class Header extends Component {
       });
   }
   ////handle save chat messgae
-  handleSaveChatMessages(messageStringData, index) {
+  handleSaveChatMessages(messageStringData, messagewhatsAppContent, imageURL) {
     let self = this;
     debugger;
 
@@ -768,7 +768,7 @@ class Header extends Component {
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
-            self.handleSendMessageToCustomer(messagecontent, 0);
+            self.handleSendMessageToCustomer(messagecontent, 0, messagewhatsAppContent, imageURL);
             
           } else {
           }
@@ -922,7 +922,7 @@ class Header extends Component {
             });
             self.handleGetTimeSlot();
             debugger;
-            self.handleSaveChatMessages("");
+            self.handleSaveChatMessages("","","");
           }
         })
         .catch((response) => {
@@ -931,7 +931,7 @@ class Header extends Component {
     }
   }
 
-  handleSendMessageToCustomer(Message, index) {
+  handleSendMessageToCustomer(Message, index, messagewhatsAppContent, imageURL) {
     let self = this;
     var inputParam = {};
     if(Message.trim()!==""){
@@ -953,6 +953,8 @@ class Header extends Component {
     inputParam.MobileNo = this.state.mobileNo.length > 10?this.state.mobileNo:"91"+this.state.mobileNo;
     inputParam.ProgramCode = this.state.programCode;
     inputParam.Message = Message;
+    inputParam.WhatsAppMessage = messagewhatsAppContent;
+    inputParam.ImageURL = imageURL;
     inputParam.InsertChat = 1;
     if (this.state.chatId > 0) {
       axios({
@@ -1227,9 +1229,17 @@ class Header extends Component {
       var messageStringData = document.getElementById(
         "card" + this.state.selectedCard
       ).innerHTML;
+
+      var messagewhatsAppData = this.state.searchCardData.filter(
+        (x) => x.itemID === this.state.selectedCard);
+
+      var messagewhatsAppContent = messagewhatsAppData[0].productName+" Product Code: "+
+      messagewhatsAppData[0].uniqueItemCode+" "+messagewhatsAppData[0].url
+
+      var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
 
-      this.handleSaveChatMessages(messageStringData);
+      this.handleSaveChatMessages(messageStringData, messagewhatsAppContent, imageURL);
     }
   }
 
@@ -1267,7 +1277,7 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         CustomerID: this.state.customerId,
-        MobileNumber: this.state.mobileNo,
+        MobileNumber: this.state.mobileNo.length > 10?this.state.mobileNo:"91"+this.state.mobileNo,
       },
     })
       .then(function(res) {
@@ -2259,7 +2269,9 @@ class Header extends Component {
                                           onClick={this.handleSendMessageToCustomer.bind(
                                             this,
                                             item.suggestionText,
-                                            i+1
+                                            i+1,
+                                            "",
+                                            ""
                                           )}
                                           // onClick={this.handleSaveChatMessages.bind(
                                           //   this,
@@ -2315,7 +2327,9 @@ class Header extends Component {
                                 onClick={this.handleSendMessageToCustomer.bind(
                                   this,
                                   this.state.message,
-                                  0
+                                  0,
+                                  "",
+                                  ""
                                 )}
                                 title={"Send"}
                               >
@@ -2953,7 +2967,9 @@ class Header extends Component {
                                           onClick={this.handleSendMessageToCustomer.bind(
                                             this,
                                             item.suggestionText,
-                                            i+1
+                                            i+1,
+                                            "",
+                                            ""
                                           )}
                                         >
                                           <Tooltip
@@ -2985,7 +3001,9 @@ class Header extends Component {
                                 onClick={this.handleSendMessageToCustomer.bind(
                                   this,
                                   this.state.message,
-                                  0
+                                  0,
+                                  "",
+                                  ""
                                 )}
                                 title={"Send"}
                               >
