@@ -92,7 +92,7 @@ class StoreCampaign extends Component {
       showLastTransactiondtab: false,
       insightShowImg: false,
       handleArrowImg: false,
-      expandedRowKeys: "",
+      // expandedRowKeys: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -800,16 +800,16 @@ class StoreCampaign extends Component {
     debugger;
     this.setState({
       ChildTblLoading: true,
-      CampChildTableData: [],
+      // CampChildTableData: [],
     });
-    var keys = [];
+    // var keys = [];
     if (data) {
-      keys.push(row.campaignID);
+      // keys.push(row.campaignID);
 
       this.setState({
         childCurrentPage: 1,
         childTotalGridRecord: 0,
-        expandedRowKeys: keys,
+        // expandedRowKeys: keys,
       });
     }
     var campaignId = 0;
@@ -2076,7 +2076,7 @@ class StoreCampaign extends Component {
               );
             }}
             onExpand={this.handleGetCampaignCustomerData}
-            expandedRowKeys={this.state.expandedRowKeys}
+            // expandedRowKeys={this.state.expandedRowKeys}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
