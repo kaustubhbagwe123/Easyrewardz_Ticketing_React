@@ -122,7 +122,7 @@ class Header extends Component {
       notificationAccess: "none",
       settingAccess: "none",
       storeAgentDetail: [],
-      AgentID: 0
+      AgentID: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -404,7 +404,7 @@ class Header extends Component {
             profile.length
           );
           self.setState({
-            AgentID : data.agentId,
+            AgentID: data.agentId,
             Email: data.agentEmailId,
             UserName: data.agentName,
             LoginTime: data.loginTime,
@@ -436,7 +436,7 @@ class Header extends Component {
       url: config.apiUrl + "/HSSetting/GetStoreAgentDetailsById",
       headers: authHeader(),
       params: {
-        AgentID: agentID
+        AgentID: agentID,
       },
     })
       .then((res) => {
@@ -596,11 +596,12 @@ class Header extends Component {
                 // alert("Message Recieved");
                 socket.send("hi");
                 socket.on(
-                  "91"+ongoingChatsData[i].mobileNo +
+                  "91" +
+                    ongoingChatsData[i].mobileNo +
                     ongoingChatsData[i].programCode,
                   function(data) {
-                    console.log("Message Received")
-                    if (self.state.mobileNo === data[3]) {
+                    console.log("Message Received");
+                    if ("91" + self.state.mobileNo === data[3]) {
                       self.handleGetOngoingChat("isRead");
                       self.handleGetChatMessagesList(self.state.chatId);
                     } else {
@@ -770,8 +771,12 @@ class Header extends Component {
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
-            self.handleSendMessageToCustomer(messagecontent, 0, messagewhatsAppContent, imageURL);
-            
+            self.handleSendMessageToCustomer(
+              messagecontent,
+              0,
+              messagewhatsAppContent,
+              imageURL
+            );
           } else {
           }
         })
@@ -896,7 +901,7 @@ class Header extends Component {
       // inputParam.StoreID = this.state.storeID;
       inputParam.StoreID = 1;
 
-      this.setState({isSendClick: true });
+      this.setState({ isSendClick: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/ScheduleVisit",
@@ -907,23 +912,35 @@ class Header extends Component {
           var message = response.data.message;
           var timeSlotData = response.data.responseData;
           if (message == "Success" && timeSlotData) {
-            var messagedata = "Your appointment is booked at " +
-            self.state.selectedDate +
-            " on " +
-            self.state.selectedSlot.timeSlot+", Appoitment ID: "+timeSlotData[0].appointmentID+
-            ", Customer: "+timeSlotData[0].customerName+", "+timeSlotData[0].mobileNo+", Store Name: "+
-            timeSlotData[0].storeName+", Address: "+timeSlotData[0].storeAddress+", Contact Number: "
-            +(timeSlotData[0].mobileNo.length > 10?"+"+timeSlotData[0].mobileNo:"+91"+timeSlotData[0].mobileNo);
+            var messagedata =
+              "Your appointment is booked at " +
+              self.state.selectedDate +
+              " on " +
+              self.state.selectedSlot.timeSlot +
+              ", Appoitment ID: " +
+              timeSlotData[0].appointmentID +
+              ", Customer: " +
+              timeSlotData[0].customerName +
+              ", " +
+              timeSlotData[0].mobileNo +
+              ", Store Name: " +
+              timeSlotData[0].storeName +
+              ", Address: " +
+              timeSlotData[0].storeAddress +
+              ", Contact Number: " +
+              (timeSlotData[0].mobileNo.length > 10
+                ? "+" + timeSlotData[0].mobileNo
+                : "+91" + timeSlotData[0].mobileNo);
             self.setState({
               noOfPeople: "",
               selectSlot: {},
               scheduleModal: false,
               selectedSlot: {},
-              message: messagedata
+              message: messagedata,
             });
             self.handleGetTimeSlot();
             debugger;
-            self.handleSaveChatMessages("","","");
+            self.handleSaveChatMessages("", "", "");
           }
         })
         .catch((response) => {
@@ -932,50 +949,62 @@ class Header extends Component {
     }
   }
 
-  handleSendMessageToCustomer(Message, index, messagewhatsAppContent, imageURL) {
+  handleSendMessageToCustomer(
+    Message,
+    index,
+    messagewhatsAppContent,
+    imageURL
+  ) {
     let self = this;
     var inputParam = {};
-    if(Message.trim()!==""){
-    if (index > 0) {
-      if (this.state.chkSuggestion.length > 0) {
-        if (this.state.chkSuggestion[index] === 1) {
-          this.state.chkSuggestion[index] = 0;
+    if (Message.trim() !== "") {
+      if (index > 0) {
+        if (this.state.chkSuggestion.length > 0) {
+          if (this.state.chkSuggestion[index] === 1) {
+            this.state.chkSuggestion[index] = 0;
+          } else {
+            this.state.chkSuggestion[index] = 1;
+          }
         } else {
           this.state.chkSuggestion[index] = 1;
         }
-      } else {
-        this.state.chkSuggestion[index] = 1;
-      }
-      this.setState({
-        chkSuggestion: this.state.chkSuggestion,
-      });
-    }
-    inputParam.ChatID = this.state.chatId;
-    inputParam.MobileNo = this.state.mobileNo.length > 10?this.state.mobileNo:"91"+this.state.mobileNo;
-    inputParam.ProgramCode = this.state.programCode;
-    inputParam.Message = Message;
-    inputParam.WhatsAppMessage = messagewhatsAppContent;
-    inputParam.ImageURL = imageURL;
-    inputParam.InsertChat = 1;
-    if (this.state.chatId > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
-        headers: authHeader(),
-        params: inputParam,
-      })
-        .then(function(response) {
-          var message = response.data.message;
-          if (message == "Success") {
-            self.setState({ chkSuggestion: [], message: "", messageSuggestionData: [] });
-            self.handleGetChatMessagesList(self.state.chatId);
-          }
-        })
-        .catch((response) => {
-          console.log(response, "---handleSendMessageToCustomer");
+        this.setState({
+          chkSuggestion: this.state.chkSuggestion,
         });
+      }
+      inputParam.ChatID = this.state.chatId;
+      inputParam.MobileNo =
+        this.state.mobileNo.length > 10
+          ? this.state.mobileNo
+          : "91" + this.state.mobileNo;
+      inputParam.ProgramCode = this.state.programCode;
+      inputParam.Message = Message;
+      inputParam.WhatsAppMessage = messagewhatsAppContent;
+      inputParam.ImageURL = imageURL;
+      inputParam.InsertChat = 1;
+      if (this.state.chatId > 0) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/CustomerChat/sendMessageToCustomer",
+          headers: authHeader(),
+          params: inputParam,
+        })
+          .then(function(response) {
+            var message = response.data.message;
+            if (message == "Success") {
+              self.setState({
+                chkSuggestion: [],
+                message: "",
+                messageSuggestionData: [],
+              });
+              self.handleGetChatMessagesList(self.state.chatId);
+            }
+          })
+          .catch((response) => {
+            console.log(response, "---handleSendMessageToCustomer");
+          });
+      }
     }
-  }
   }
 
   ////handlecselect card in card tab
@@ -1192,7 +1221,7 @@ class Header extends Component {
       selectedDate,
       isSelectSlot: "",
       noOfPeople: "",
-      noOfPeopleMax: ""
+      noOfPeopleMax: "",
     });
   };
 
@@ -1233,15 +1262,24 @@ class Header extends Component {
       ).innerHTML;
 
       var messagewhatsAppData = this.state.searchCardData.filter(
-        (x) => x.itemID === this.state.selectedCard);
+        (x) => x.itemID === this.state.selectedCard
+      );
 
-      var messagewhatsAppContent = messagewhatsAppData[0].productName+" Product Code: "+
-      messagewhatsAppData[0].uniqueItemCode+" "+messagewhatsAppData[0].url
+      var messagewhatsAppContent =
+        messagewhatsAppData[0].productName +
+        " Product Code: " +
+        messagewhatsAppData[0].uniqueItemCode +
+        " " +
+        messagewhatsAppData[0].url;
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
 
-      this.handleSaveChatMessages(messageStringData, messagewhatsAppContent, imageURL);
+      this.handleSaveChatMessages(
+        messageStringData,
+        messagewhatsAppContent,
+        imageURL
+      );
     }
   }
 
@@ -2263,7 +2301,8 @@ class Header extends Component {
                                       (item, i) => (
                                         <div
                                           className={
-                                            this.state.chkSuggestion[i+1] === 1
+                                            this.state.chkSuggestion[i + 1] ===
+                                            1
                                               ? "suggestions-tick"
                                               : ""
                                           }
@@ -2271,7 +2310,7 @@ class Header extends Component {
                                           onClick={this.handleSaveChatMessages.bind(
                                             this,
                                             item.suggestionText,
-                                            i+1,
+                                            i + 1,
                                             "",
                                             ""
                                           )}
@@ -2312,18 +2351,21 @@ class Header extends Component {
                                     )}
                                 </div>
                               )} */}
-                              {this.state.storeAgentDetail.length!== 0 && 
-                              this.state.storeAgentDetail[0].suggestion === 1?(
+                            {this.state.storeAgentDetail.length !== 0 &&
+                            this.state.storeAgentDetail[0].suggestion === 1 ? (
                               <div
                                 className="mobile-ck-send"
-                                onClick={this.handleMessageSuggestion.bind(this)}
+                                onClick={this.handleMessageSuggestion.bind(
+                                  this
+                                )}
                                 title={"Send"}
                               >
                                 {/* <img src={Assign} alt="send img" /> */}
                                 <img src={SuggSearch} alt="send img" />
-                              </div>):null}
-                              {this.state.storeAgentDetail.length!== 0 && 
-                              this.state.storeAgentDetail[0].freeText === 1?(
+                              </div>
+                            ) : null}
+                            {this.state.storeAgentDetail.length !== 0 &&
+                            this.state.storeAgentDetail[0].freeText === 1 ? (
                               <div
                                 className="mobile-ck-send-btn"
                                 onClick={this.handleSaveChatMessages.bind(
@@ -2336,7 +2378,8 @@ class Header extends Component {
                                 title={"Send"}
                               >
                                 <img src={Assign} alt="send img" />
-                              </div>):null}
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                         {/* --------Card Tab----- */}
@@ -2956,7 +2999,8 @@ class Header extends Component {
                                       (item, i) => (
                                         <div
                                           className={
-                                            this.state.chkSuggestion[i+1] === 1
+                                            this.state.chkSuggestion[i + 1] ===
+                                            1
                                               ? "suggestions-tick"
                                               : ""
                                           }
@@ -2969,7 +3013,7 @@ class Header extends Component {
                                           onClick={this.handleSaveChatMessages.bind(
                                             this,
                                             item.suggestionText,
-                                            i+1,
+                                            i + 1,
                                             "",
                                             ""
                                           )}
@@ -2986,18 +3030,21 @@ class Header extends Component {
                                 </div>
                               )}
 
-                              {this.state.storeAgentDetail.length!== 0 && 
-                              this.state.storeAgentDetail[0].suggestion === 1?(
+                            {this.state.storeAgentDetail.length !== 0 &&
+                            this.state.storeAgentDetail[0].suggestion === 1 ? (
                               <div
                                 className="mobile-ck-send"
-                                onClick={this.handleMessageSuggestion.bind(this)}
+                                onClick={this.handleMessageSuggestion.bind(
+                                  this
+                                )}
                                 title={"Send"}
                               >
                                 {/* <img src={Assign} alt="send img" /> */}
                                 <img src={SuggSearch} alt="send img" />
-                              </div>):null}
-                              {this.state.storeAgentDetail.length!== 0 && 
-                              this.state.storeAgentDetail[0].freeText === 1?(
+                              </div>
+                            ) : null}
+                            {this.state.storeAgentDetail.length !== 0 &&
+                            this.state.storeAgentDetail[0].freeText === 1 ? (
                               <div
                                 className="mobile-ck-send-btn"
                                 onClick={this.handleSaveChatMessages.bind(
@@ -3010,7 +3057,8 @@ class Header extends Component {
                                 title={"Send"}
                               >
                                 <img src={Assign} alt="send img" />
-                              </div>):null}
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                         {/* -------- Card Modal ----- */}
