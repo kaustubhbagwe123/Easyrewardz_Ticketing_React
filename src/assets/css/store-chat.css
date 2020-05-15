@@ -1260,3 +1260,26 @@ p {
   /* schedule modal ends */
 }
 /* Responsive ends */
+
+.search-customerChatSrch{
+  width: 88%;
+  height: 43px;
+  padding: 10px;
+  border: none;
+  padding-left: 15px;
+}
+
+.seacrh-img-chatsearch {
+  width: 12%;
+  display: inline-block;
+  height: 43px;
+  padding: 13px 0 0 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #ecf2f4 !important;
+}
+
+.chatsearchtxt-span {
+  background-color: #fff !important;
+  border-radius: 0px 5px 5px 0px !important;
+}
