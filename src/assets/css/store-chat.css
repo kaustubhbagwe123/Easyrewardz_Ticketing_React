@@ -416,6 +416,7 @@ p {
 .chat-trail-chat-cntr {
   margin-top: 15px;
   margin-left: 10px;
+  white-space: pre-line;
 }
 .chat-trail-cntr-right .chat-trail-chat-cntr {
   margin-right: 10px;

@@ -573,6 +573,9 @@ class Header extends Component {
       search = event.target.value;
       this.setState({ searchChat: event.target.value });
     }
+    else{
+      search = this.state.searchChat;
+    }
 
     axios({
       method: "post",
@@ -635,74 +638,10 @@ class Header extends Component {
       });
   }
 
-  handleClearChatSearch(){
+  handleClearChatSearch = async () => {
+    await this.setState({ searchChat: "" });
     this.handleGetOngoingChat("");
-    this.setState({ searchChat: "" });
   }
-
-  // handleSearchChatChange = (e) => {
-  //   this.setState({ searchChat: e.target.value });
-  //   let self = this;
-  //   axios({
-  //     method: "post",
-  //     url: config.apiUrl + "/CustomerChat/GetOngoingChatSearch",
-  //     headers: authHeader(),
-  //     params: {Search: e.target.value}
-  //   })
-  //     .then(function (response) {
-  //       var message = response.data.message;
-  //       var ongoingChatsData = response.data.responseData;
-  //       if (message === "Success" && ongoingChatsData) {
-  //         self.setState({
-  //           ongoingChatsData,
-  //         });
-
-  //         if (value == "") {
-  //           // const socket = io.connect(config.socketUrl, {
-  //           //   transports: ["polling", "flashsocket"],
-  //           // });
-  //           for (let i = 0; i < ongoingChatsData.length; i++) {
-  //             const socket = io.connect(config.socketUrl, {
-  //               transports: ["polling"],
-  //             });
-  //             // const socket = io.connect(config.socketUrl, {
-  //             //   secure: true,
-  //             //   transports: ["polling"],
-  //             // });
-  //             socket.on("connect", () => {
-  //               // alert("Message Recieved");
-  //               socket.send("hi");
-  //               socket.on(
-  //                 "91" +
-  //                 ongoingChatsData[i].mobileNo +
-  //                 ongoingChatsData[i].programCode,
-  //                 function (data) {
-  //                   console.log("Message Received");
-  //                   if ("91" + self.state.mobileNo === data[3]) {
-  //                     self.handleGetOngoingChat("isRead");
-  //                     self.handleGetChatMessagesList(self.state.chatId);
-  //                   } else {
-  //                     self.handleGetOngoingChat("isRead");
-  //                     self.handleGetChatNotificationCount();
-  //                   }
-  //                 }
-  //               );
-  //               window.onbeforeunload = function () {
-  //                 console.log("unloading resources");
-  //                 socket.disconnect();
-  //                 socket.close();
-  //               };
-  //             });
-  //           }
-  //         }
-  //       } else {
-  //         self.setState({ ongoingChatsData });
-  //       }
-  //     })
-  //     .catch((response) => {
-  //       console.log(response, "---handleGetOngoingChat");
-  //     });
-  // };
 
   ////handle Get New Chat
   handleGetNewChat() {
@@ -996,17 +935,17 @@ class Header extends Component {
               self.state.selectedDate +
               " on " +
               self.state.selectedSlot.timeSlot +
-              ", Appoitment ID: " +
+              " \n \n Appoitment ID: " +
               timeSlotData[0].appointmentID +
-              ", Customer: " +
+              " \n Customer: " +
               timeSlotData[0].customerName +
               ", " +
               timeSlotData[0].mobileNo +
-              ", Store Name: " +
+              " \n Store Name: " +
               timeSlotData[0].storeName +
-              ", Address: " +
+              " \n Address: " +
               timeSlotData[0].storeAddress +
-              ", Contact Number: " +
+              " \n Contact Number: " +
               (timeSlotData[0].mobileNo.length > 10
                 ? "+" + timeSlotData[0].mobileNo
                 : "+91" + timeSlotData[0].mobileNo);
