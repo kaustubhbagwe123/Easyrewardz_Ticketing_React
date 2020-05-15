@@ -51,6 +51,7 @@ import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
 import { ItemMeta } from "semantic-ui-react";
+import CancelBlueImg from "./../../assets/Images/CancelBlue.png";
 import moment from "moment";
 import io from "socket.io-client";
 
@@ -632,6 +633,11 @@ class Header extends Component {
       .catch((response) => {
         console.log(response, "---handleGetOngoingChat");
       });
+  }
+
+  handleClearChatSearch(){
+    this.handleGetOngoingChat("");
+    this.setState({ searchChat: "" });
   }
 
   // handleSearchChatChange = (e) => {
@@ -1834,12 +1840,22 @@ class Header extends Component {
                     // )}
                     className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span"
                   >
+                  {this.state.searchChat === ""?(
                     <img
                       src={SearchBlueImg}
                       alt="SearchBlueImg"
                       className="srch-imge"
                     // onClick={this.handleSearchCustomer}
-                    />
+                    />):(
+                    <img
+                      src={CancelBlueImg}
+                      alt="SearchBlueImg"
+                      className="srch-imge"
+                      style={{width:"35%"}}
+                      onClick={this.handleClearChatSearch.bind(this)}
+                    />)
+                  }
+                    
                   </span>
                   </div>
                   <div className="chat-cntr">
