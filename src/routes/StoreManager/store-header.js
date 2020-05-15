@@ -768,6 +768,7 @@ class Header extends Component {
             self.setState({
               message: "",
               messageSuggestionData: [],
+              cardModal: false
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
@@ -3161,7 +3162,7 @@ class Header extends Component {
                               </button>
                               <button
                                 className="butn"
-                                onClick={this.onCloseCardModal}
+                                onClick={this.handleSendCard.bind(this)}
                               >
                                 Send
                                 <img
