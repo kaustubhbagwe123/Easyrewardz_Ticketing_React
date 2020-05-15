@@ -4908,6 +4908,9 @@ progress::-webkit-progress-bar {
   width: 135px;
   height: 76px;
 }
+.batashoes-icon img {
+  width: 100%;
+}
 .reacttableclaimdrawer .ReactTable {
   border: none;
 }

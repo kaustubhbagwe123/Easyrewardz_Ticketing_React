@@ -703,7 +703,7 @@ class EditStoreTask extends Component {
       <Fragment>
         <div className="edit-storeTask-header">
           <label className="store-header-lbl">
-            Store ticket id : <span>{this.state.taskId}</span>
+            Store Task ID : <span>{this.state.taskId}</span>
           </label>
           <a
             className="loading-rectangle-cntr"

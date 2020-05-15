@@ -1453,6 +1453,7 @@ class StoreDashboard extends Component {
   }
   ////handle cliam table row click
   HandleRowClickPage = (rowInfo, column) => {
+    debugger;
     return {
       onClick: (e) => {
         var claimID = column.original["claimID"];
@@ -2732,7 +2733,7 @@ class StoreDashboard extends Component {
                                         Creation details
                                       </li>
                                       <li>
-                                        <p>Naman Created</p>
+                                        <p>Created by Naman</p>
                                         <p>2 Hrs ago</p>
                                       </li>
                                       <li>
@@ -2740,7 +2741,7 @@ class StoreDashboard extends Component {
                                         <p>1.5 Hrs ago</p>
                                       </li>
                                       <li>
-                                        <p>Vikas updated</p>
+                                        <p>Updated by Vikas</p>
                                         <p>1 Hr ago</p>
                                       </li>
                                       <li>
@@ -2790,6 +2791,7 @@ class StoreDashboard extends Component {
                       minRows={2}
                       defaultPageSize={10}
                       showPagination={true}
+                      getTrProps={this.handleRowClickredirectPage}
                     />
                   ) : this.state.isViewSerach ? (
                     <div className="loader-icon-cntr">
@@ -2996,7 +2998,8 @@ class StoreDashboard extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {row.original.createdByName} Created
+                                          {"Created by " +
+                                            row.original.createdByName}
                                         </p>
                                         <p>2 Hrs ago</p>
                                       </li>
@@ -3007,7 +3010,7 @@ class StoreDashboard extends Component {
                                         <p>1.5 Hrs ago</p>
                                       </li>
                                       <li>
-                                        <p>Vikas updated</p>
+                                        <p>Updated by Vikas</p>
                                         <p>1 Hr ago</p>
                                       </li>
                                       <li>

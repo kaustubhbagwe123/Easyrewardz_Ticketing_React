@@ -1421,10 +1421,13 @@ class ClaimCategoryMaster extends Component {
     debugger;
     let self = this;
     if (
-      this.state.editCategory.brandID !== "" &&
-      this.state.editCategory.categoryID.length > 0 &&
-      this.state.editCategory.subCategoryID.length > 0 &&
-      this.state.editCategory.issueTypeID.length > 0
+      (this.state.editCategory.brandID !== "0" &&
+        (this.state.editCategory.categoryID.length > 0 ||
+          this.state.editCategory.categoryID !== "") &&
+        (this.state.editCategory.subCategoryID.length > 0 ||
+          this.state.editCategory.subCategoryID !== "") &&
+        this.state.editCategory.issueTypeID.length > 0) ||
+      this.state.editCategory.issueTypeID !== ""
     ) {
       var activeStatus = 0;
       var categorydata = 0;
@@ -1453,7 +1456,7 @@ class ClaimCategoryMaster extends Component {
         subCategoryData = this.state.editCategory.subCategoryID;
       }
 
-      if (isNaN(this.state.editCategory.issueTypeNameF)) {
+      if (isNaN(this.state.editCategory.issueTypeName)) {
         IssueData = this.state.ListOfIssueData.filter(
           (x) => x.issueTypeName === this.state.editCategory.issueTypeName
         )[0].issueTypeID;
@@ -2911,7 +2914,7 @@ class ClaimCategoryMaster extends Component {
                   onChange={this.handleModalBrandChange}
                   name="brandID"
                 >
-                  <option value={0}>Select</option>
+                  <option value="0">Select</option>
                   {this.state.brandData !== null &&
                     this.state.brandData.map((item, i) => (
                       <option
@@ -2923,7 +2926,7 @@ class ClaimCategoryMaster extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.editCategory.brandID !== null && (
+                {this.state.editCategory.brandID === "0" && (
                   <p style={{ color: "red", marginBottom: "21px" }}>
                     {this.state.editBrandCompulsory}
                   </p>

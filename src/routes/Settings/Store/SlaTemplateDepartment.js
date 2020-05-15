@@ -621,6 +621,14 @@ class SlaTemplateDepartment extends Component {
       };
       this.setState({ finalData });
     }
+    if (value !== "" && name === "ResolveType") {
+      let finalData = [...this.state.finalData];
+      finalData[i] = {
+        ...finalData[i],
+        [name]: value,
+      };
+      this.setState({ finalData });
+    }
   };
   handleSlaTargetsDropdowns(e) {
     debugger;

@@ -2290,7 +2290,8 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {row.original.createdBy + " Created"}
+                                          {"Created by " +
+                                            row.original.createdBy}
                                         </p>
                                         <p>{row.original.createdago}</p>
                                       </li>
@@ -2303,7 +2304,8 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {row.original.updatedBy + " "} updated
+                                          {"Updated by " +
+                                            row.original.updatedBy}
                                         </p>
                                         <p>{row.original.updatedago}</p>
                                       </li>
@@ -2833,8 +2835,8 @@ class StoreTask extends Component {
                                         </li>
                                         <li>
                                           <p>
-                                            {row.original.createdBy +
-                                              " Created"}
+                                            {"Created by " +
+                                              row.original.createdBy}
                                           </p>
                                           <p>{row.original.createdago}</p>
                                         </li>
@@ -2847,8 +2849,8 @@ class StoreTask extends Component {
                                         </li>
                                         <li>
                                           <p>
-                                            {row.original.updatedBy + " "}{" "}
-                                            updated
+                                            {"Updated by " +
+                                              row.original.updatedBy}
                                           </p>
                                           <p>{row.original.updatedago}</p>
                                         </li>
@@ -3403,7 +3405,8 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {row.original.createdBy + " "} Created
+                                          {"Created by " +
+                                            row.original.createdBy}
                                         </p>
                                         <p>{row.original.createdago}</p>
                                       </li>
@@ -3416,7 +3419,8 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {row.original.updatedBy + " "} updated
+                                          {"Updated by " +
+                                            row.original.updatedBy}
                                         </p>
                                         <p>{row.original.updatedago}</p>
                                       </li>
