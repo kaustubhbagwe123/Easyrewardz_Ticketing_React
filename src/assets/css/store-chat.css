@@ -1284,3 +1284,14 @@ p {
   background-color: #fff !important;
   border-radius: 0px 5px 5px 0px !important;
 }
+
+.chat-trail-img .chat-initial{
+  background: #ddf6fc;
+  display: block;
+  height: 45px;
+  line-height: 45px;
+  color: #11b4db;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 16px;
+}
