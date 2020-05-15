@@ -935,17 +935,17 @@ class Header extends Component {
               self.state.selectedDate +
               " on " +
               self.state.selectedSlot.timeSlot +
-              " \n \n Appoitment ID: " +
+              " \n \n Appoitment ID : " +
               timeSlotData[0].appointmentID +
-              " \n Customer: " +
+              " \n Customer : " +
               timeSlotData[0].customerName +
               ", " +
               timeSlotData[0].mobileNo +
-              " \n Store Name: " +
+              " \n Store Name : " +
               timeSlotData[0].storeName +
-              " \n Address: " +
+              " \n Address : " +
               timeSlotData[0].storeAddress +
-              " \n Contact Number: " +
+              " \n Contact Number : " +
               (timeSlotData[0].mobileNo.length > 10
                 ? "+" + timeSlotData[0].mobileNo
                 : "+91" + timeSlotData[0].mobileNo);
