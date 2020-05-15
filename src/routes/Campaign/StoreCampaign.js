@@ -857,11 +857,19 @@ class StoreCampaign extends Component {
         if (message == "Success") {
           for (let obj of data.campaignCustomerModel)
             obj.dateTimeHighlight = false;
+          var CampChildData = self.state.CampChildTableData;
+
+          for (let i = 0; i < data.campaignCustomerModel.length; i++) {
+            CampChildData.push(data.campaignCustomerModel[i]);
+          }
+          var TotalGridRecord = self.state.childTotalGridRecord;
+          TotalGridRecord.push(data.campaignCustomerCount);
+
           self.setState({
-            CampChildTableData: data.campaignCustomerModel,
+            CampChildTableData: CampChildData,
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord: data.campaignCustomerCount,
+            childTotalGridRecord: TotalGridRecord,
           });
         } else {
           self.setState({
@@ -1249,9 +1257,15 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
+          var CampChildData = self.state.CampChildTableData;
+          for (let i = 0; i < data.campaignCustomerModel.length; i++) {
+            CampChildData.push(data.campaignCustomerModel[i]);
+          }
+          var TotalGridRecord = self.state.childTotalGridRecord;
+          TotalGridRecord.push(data.campaignCustomerCount);
           self.setState({
-            CampChildTableData: data.campaignCustomerModel,
-            childTotalGridRecord: data.campaignCustomerCount,
+            CampChildTableData: CampChildData,
+            childTotalGridRecord: TotalGridRecord,
             filterCustomerNumber: false,
             // filterCustNO: "",
           });

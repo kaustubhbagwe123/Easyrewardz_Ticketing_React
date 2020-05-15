@@ -103,7 +103,7 @@ class StoreProgramCode extends Component {
                     placeholder="Store Program Code*"
                     style={{ border: 0 }}
                     name="programCode"
-                    maxLength={10}
+                    maxLength={100}
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
                     autoComplete="off"
