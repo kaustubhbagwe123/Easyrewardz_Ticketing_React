@@ -2592,7 +2592,7 @@
   text-align: center;
 }
 .cmpaign-channel-table {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .cmpaign-channel-table select {
   background-color: #fff;
@@ -2623,6 +2623,9 @@
 .cmpaign-channel-table tr td:last-child {
   min-width: 65px;
   padding-right: 0;
+}
+.module-switch-cntr .module-switch {
+  margin-top: 10px;
 }
 .module-tabs .nav-tabs {
   border: none;
