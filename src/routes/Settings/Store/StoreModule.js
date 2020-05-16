@@ -80,8 +80,8 @@ class StoreModule extends Component {
       isShowProgress: false,
       isATOZ: true,
       itemData: [],
-      editCampSettingModal: false,
-      campaignChannelData:[]
+      editCampChannelModal: false,
+      campaignChannelData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -180,7 +180,7 @@ class StoreModule extends Component {
   }
 
   handleEditCampSettingModal() {
-    this.setState({ editCampSettingModal: false });
+    this.setState({ editCampChannelModal: false });
   }
 
   handleCampaignButton() {
@@ -377,13 +377,13 @@ class StoreModule extends Component {
     });
   }
 
-  EditCampaignSetting(individualData) {
+  EditCampaignChannel(individualData) {
     debugger;
     this.setState({
-      editCampSettingModal: true,
-      updateIndiCampaignId: individualData.campaignNameID,
-      updateScriptDetails: individualData.campaignScript,
-      updateCampaignId: individualData.campaignID,
+      editCampChannelModal: true,
+      // updateIndiCampaignId: individualData.campaignNameID,
+      // updateScriptDetails: individualData.campaignScript,
+      // updateCampaignId: individualData.campaignID,
     });
   }
 
@@ -409,24 +409,25 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
-  handleCampaignChannelGridData(){
+  handleCampaignChannelGridData() {
     debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
       headers: authHeader(),
-    }).then(function(res) {
+    })
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            campaignChannelData: data,
+            campaignChannelData: data.campaignSetting
           });
-        }else{
+        } else {
           self.setState({
-            campaignChannelData: []
+            campaignChannelData: [],
           });
         }
       })
@@ -1892,198 +1893,95 @@ class StoreModule extends Component {
                             columns={[
                               {
                                 Header: (
-                                  <span
-                                    className={
-                                      this.state.sortHeader === "Campaign Name"
-                                        ? "table-column sort-column"
-                                        : "table-column"
-                                    }
-                                    onClick={this.StatusOpenModel.bind(
-                                      this,
-                                      "campaignName",
-                                      "Campaign Name"
-                                    )}
-                                  >
+                                  <span>
                                     Campaign Name
-                                    <FontAwesomeIcon
-                                      icon={
-                                        this.state.isATOZ == false &&
-                                        this.state.sortHeader ===
-                                          "Campaign Name"
-                                          ? faCaretUp
-                                          : faCaretDown
-                                      }
-                                    />
+                                    <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
-                                sortable: false,
                                 accessor: "campaignName",
                               },
                               {
-                                Header: "Campaign Script",
-                                accessor: "campaignScriptLess",
-                                className: "communication-labelHeader",
-                                sortable: false,
-                                Cell: (row) => {
-                                  var ids = row.original["id"];
-                                  return (
-                                    <div>
-                                      <span className="d-flex align-items-end">
-                                        <span className="campaign-script-less">
-                                          {/* {row.original.campaignScriptLess} */}
-                                          {row.original.campaignScript}
-                                        </span>
-                                        <Popover
-                                          content={
-                                            <div className="store-popDiv">
-                                              <label className="storePop-lbl">
-                                                {row.original.campaignScript}
-                                              </label>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                        >
-                                          <img
-                                            className="info-icon-cp"
-                                            src={BlackInfoIcon}
-                                            alt="info-icon"
-                                            id={ids}
-                                          />
-                                        </Popover>
-                                      </span>
-                                    </div>
-                                  );
-                                },
-                              },
-                              {
-                                id: "createdBy",
-                                sortable: false,
                                 Header: (
-                                  <span
-                                    className={
-                                      this.state.sortHeader === "Department"
-                                        ? "table-column sort-column"
-                                        : "table-column"
-                                    }
-                                    onClick={this.StatusOpenModel.bind(
-                                      this,
-                                      "createdBy",
-                                      "Created by"
-                                    )}
-                                  >
-                                    Created by
-                                    <FontAwesomeIcon
-                                      icon={
-                                        this.state.isATOZ == false &&
-                                        this.state.sortHeader === "Created by"
-                                          ? faCaretUp
-                                          : faCaretDown
-                                      }
-                                    />
+                                  <span>
+                                    Campaign Code
+                                    <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
-                                Cell: (row) => {
-                                  var ids = row.original["id"];
-                                  return (
-                                    <div>
-                                      <span>
-                                        {row.original.createdBy}
-                                        <Popover
-                                          content={
-                                            <>
-                                              <div>
-                                                <b>
-                                                  <p className="title">
-                                                    Created By:{" "}
-                                                    {row.original.createdBy}
-                                                  </p>
-                                                </b>
-                                                <p className="sub-title">
-                                                  Created Date:{" "}
-                                                  {row.original.createdOn}
-                                                </p>
-                                              </div>
-                                              <div>
-                                                <b>
-                                                  <p className="title">
-                                                    Updated By:{" "}
-                                                    {row.original.modifiedBy}
-                                                  </p>
-                                                </b>
-                                                <p className="sub-title">
-                                                  Updated Date:{" "}
-                                                  {row.original.modifiedOn}
-                                                </p>
-                                              </div>
-                                            </>
-                                          }
-                                          placement="bottom"
-                                        >
-                                          <img
-                                            className="info-icon-cp"
-                                            src={BlackInfoIcon}
-                                            alt="info-icon"
-                                            id={ids}
-                                          />
-                                        </Popover>
-                                      </span>
-                                    </div>
-                                  );
-                                },
-                                // accessor: "createdBy"
+                                accessor: "campaignCode",
                               },
                               {
                                 Header: (
-                                  <span
-                                    className={
-                                      this.state.sortHeader === "Status"
-                                        ? "table-column sort-column"
-                                        : "table-column"
-                                    }
-                                    onClick={this.StatusOpenModel.bind(
-                                      this,
-                                      "status",
-                                      "Status"
-                                    )}
-                                  >
-                                    Status
-                                    <FontAwesomeIcon
-                                      icon={
-                                        this.state.isATOZ == false &&
-                                        this.state.sortHeader === "Status"
-                                          ? faCaretUp
-                                          : faCaretDown
-                                      }
-                                    />
+                                  <span>
+                                    Sms
+                                    <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
-                                sortable: false,
-                                accessor: "status",
-                                width: 110,
+                                accessor: "smsFlag",
                                 Cell: (row) => {
-                                  return row.original.status
+                                  return row.original.smsFlag
                                     ? "Active"
                                     : "Inactive";
                                 },
                               },
                               {
-                                Header: "Actions",
-                                // accessor: "action",
-                                sortable: false,
+                                Header: (
+                                  <span>
+                                    Email
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "emailFlag",
                                 Cell: (row) => {
+                                  return row.original.emailFlag
+                                    ? "Active"
+                                    : "Inactive";
+                                },
+                              },
+                              {
+                                Header: (
+                                  <span>
+                                    Messenger
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "messengerFlag",
+                                Cell: (row) => {
+                                  return row.original.messengerFlag
+                                    ? "Active"
+                                    : "Inactive";
+                                },
+                              },
+                              {
+                                Header: (
+                                  <span>
+                                    Bot
+                                    <FontAwesomeIcon icon={faCaretDown} />
+                                  </span>
+                                ),
+                                accessor: "botFlag",
+                                Cell: (row) => {
+                                  return row.original.botFlag
+                                    ? "Active"
+                                    : "Inactive";
+                                },
+                              },
+                              {
+                                Header: <span>Actions</span>,
+                                accessor: "actionReport",
+                                Cell: (row) => {
+                                  var ids = row.original["id"];
                                   return (
-                                    <span>
-                                      <button
-                                        className="react-tabel-button editre"
-                                        id="p-edit-pop-2"
-                                        onClick={this.EditCampaignSetting.bind(
-                                          this,
-                                          row.original
-                                        )}
-                                      >
-                                        EDIT
-                                      </button>
-                                    </span>
+                                      <span>
+                                        <button
+                                          className="react-tabel-button editre"
+                                          onClick={this.EditCampaignChannel.bind(
+                                            this,
+                                            row.original
+                                          )}
+                                        >
+                                          EDIT
+                                        </button>
+                                      </span>
                                   );
                                 },
                               },
@@ -2193,7 +2091,7 @@ class StoreModule extends Component {
             </Modal>
             <Modal
               className="EditModa"
-              show={this.state.editCampSettingModal}
+              show={this.state.editCampChannelModal}
               onHide={this.handleEditCampSettingModal.bind(this)}
             >
               <div className="edtpadding">
