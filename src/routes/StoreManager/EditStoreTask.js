@@ -452,6 +452,7 @@ class EditStoreTask extends Component {
 
   ////handle Update Task
   handleUpdateTask(statusId) {
+    debugger;
     let self = this;
 
     if (this.state.departmentID == 0) {
@@ -499,6 +500,7 @@ class EditStoreTask extends Component {
         inputParam.TaskTitle = this.state.taskTitle;
         inputParam.TaskDescription = this.state.taskDetails;
 
+        debugger;
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -506,6 +508,7 @@ class EditStoreTask extends Component {
           data: inputParam,
         })
           .then(function(response) {
+            debugger;
             var message = response.data.message;
             if (message === "Success") {
               self.setState({ isSubmit: false });
@@ -633,18 +636,18 @@ class EditStoreTask extends Component {
     }
     if (name == "comment") {
       if (value !== "") {
-        if (value.length < 50) {
-          this.setState({
-            comment: value,
-            iscomment: "",
-            isCommentMax: "",
-          });
-        } else {
-          this.setState({
-            isCommentMax: "Comment Has Certain Limit",
-            iscomment: "",
-          });
-        }
+        // if (value.length < 50) {
+        this.setState({
+          comment: value,
+          iscomment: "",
+          isCommentMax: "",
+        });
+        // } else {
+        //   this.setState({
+        //     isCommentMax: "Comment Has Certain Limit",
+        //     iscomment: "",
+        //   });
+        // }
       } else {
         this.setState({
           iscomment: "Please Enter Comment.",
@@ -956,11 +959,11 @@ class EditStoreTask extends Component {
                       {this.state.iscomment}
                     </p>
                   )}
-                  {this.state.isCommentMax !== "" && (
+                  {/* {this.state.isCommentMax !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.isCommentMax}
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="row">
