@@ -1555,7 +1555,6 @@ class StoreCampaign extends Component {
               },
             ]}
             expandedRowRender={(row, item) => {
-              debugger;
               return (
                 <div>
                   <Table
@@ -1899,7 +1898,6 @@ class StoreCampaign extends Component {
                       },
                     ]}
                     expandedRowRender={(row, item) => {
-                      debugger;
                       return (
                         <div className="innertabcollapse">
                           <table>

@@ -81,7 +81,6 @@ class StoreModule extends Component {
       isATOZ: true,
       itemData: [],
       editCampChannelModal: false,
-      campaignChannelData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1886,113 +1885,6 @@ class StoreModule extends Component {
                 <Tab label="Campaign Channel">
                   <div className="store-mdl backNone">
                     <div className="row">
-                      {/* <div className="col-md-8">
-                        <div className="table-cntr table-height alertsTable align-table">
-                          <ReactTable
-                            data={this.state.campaignChannelData}
-                            columns={[
-                              {
-                                Header: (
-                                  <span>
-                                    Campaign Name
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "campaignName",
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    Campaign Code
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "campaignCode",
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    Sms
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "smsFlag",
-                                Cell: (row) => {
-                                  return row.original.smsFlag
-                                    ? "Active"
-                                    : "Inactive";
-                                },
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    Email
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "emailFlag",
-                                Cell: (row) => {
-                                  return row.original.emailFlag
-                                    ? "Active"
-                                    : "Inactive";
-                                },
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    Messenger
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "messengerFlag",
-                                Cell: (row) => {
-                                  return row.original.messengerFlag
-                                    ? "Active"
-                                    : "Inactive";
-                                },
-                              },
-                              {
-                                Header: (
-                                  <span>
-                                    Bot
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "botFlag",
-                                Cell: (row) => {
-                                  return row.original.botFlag
-                                    ? "Active"
-                                    : "Inactive";
-                                },
-                              },
-                              {
-                                Header: <span>Actions</span>,
-                                accessor: "actionReport",
-                                Cell: (row) => {
-                                  var ids = row.original["id"];
-                                  return (
-                                    <span>
-                                      <button
-                                        className="react-tabel-button editre"
-                                        onClick={this.EditCampaignChannel.bind(
-                                          this,
-                                          row.original
-                                        )}
-                                      >
-                                        EDIT
-                                      </button>
-                                    </span>
-                                  );
-                                },
-                              },
-                            ]}
-                            resizable={false}
-                            minRows={2}
-                            defaultPageSize={5}
-                            showPagination={true}
-                          />
-                        </div>
-                      </div> */}
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
