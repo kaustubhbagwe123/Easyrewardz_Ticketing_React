@@ -4917,7 +4917,7 @@ progress::-webkit-progress-bar {
 }
 .batashoes-icon img {
   width: 100%;
-  }
+}
 .reacttableclaimdrawer .ReactTable {
   border: none;
 }
@@ -9703,6 +9703,11 @@ table tr th:last-child {
 .DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(3) {
   background-color: #def3ff;
 }
+
+.modal-content {
+  border: 0;
+}
+
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
     flex: 0 0 33.333333%;
