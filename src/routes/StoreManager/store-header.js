@@ -127,7 +127,7 @@ class Header extends Component {
       storeAgentDetail: [],
       AgentID: 0,
       searchChat: "",
-      isSendRecomended: true,
+      isSendRecomended: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
