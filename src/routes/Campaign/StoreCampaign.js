@@ -826,9 +826,9 @@ class StoreCampaign extends Component {
       }
     }
     if (row !== "") {
-      this.setState({
-        childTotalGridRecord: Number(row.customerCount),
-      });
+        this.setState({
+          childTotalGridRecord: Number(row.customerCount),
+        });
     } else {
     }
     var filterIds = "";
@@ -866,7 +866,7 @@ class StoreCampaign extends Component {
             CampChildTableData: CampChildData,
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord: data.campaignCustomerCount,
+            // childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -1258,10 +1258,10 @@ class StoreCampaign extends Component {
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
             CampChildData.push(data.campaignCustomerModel[i]);
           }
-        
+
           self.setState({
             CampChildTableData: CampChildData,
-            childTotalGridRecord: data.campaignCustomerCount,
+            // childTotalGridRecord: data.campaignCustomerCount,
             filterCustomerNumber: false,
             // filterCustNO: "",
           });
@@ -1555,7 +1555,7 @@ class StoreCampaign extends Component {
               },
             ]}
             expandedRowRender={(row, item) => {
-              debugger
+              debugger;
               return (
                 <div>
                   <Table
@@ -1899,7 +1899,7 @@ class StoreCampaign extends Component {
                       },
                     ]}
                     expandedRowRender={(row, item) => {
-                      debugger
+                      debugger;
                       return (
                         <div className="innertabcollapse">
                           <table>
