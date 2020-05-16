@@ -1330,7 +1330,7 @@ class StoreReports extends Component {
       .then(function(response) {
         debugger;
         var message = response.data.message;
-        if (message === "Success") {
+        if (message === "Success" || message === "Record Not Found") {
           self.setState({ totalResult: response.data.responseData });
         }
       })
@@ -2450,7 +2450,11 @@ class StoreReports extends Component {
     })
       .then(function(res) {
         debugger;
-        window.open(res.data.responseData);
+        if (res.data.responseData === "") {
+          NotificationManager.error("No data in report");
+        } else {
+          window.open(res.data.responseData);
+        }
       })
       .catch((data) => {
         console.log(data);

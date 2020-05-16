@@ -73,7 +73,6 @@ class EditStoreTask extends Component {
   }
 
   componentDidMount() {
-    debugger;
     if (this.props.location.state) {
       var taskId = this.props.location.state.TaskID;
       this.setState({ taskId });
@@ -89,7 +88,6 @@ class EditStoreTask extends Component {
   }
 
   componentDidUpdate() {
-    debugger;
     if (this.props.location.state) {
       if (this.state.taskId !== this.props.location.state.TaskID) {
         var taskId = this.props.location.state.TaskID;
@@ -120,7 +118,6 @@ class EditStoreTask extends Component {
       params: { TaskID: taskId, taskFor: 1 },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var commentData = response.data.responseData;
         var commentCount = commentData.length;
@@ -145,9 +142,9 @@ class EditStoreTask extends Component {
       params: { TaskID: taskId },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
-
         var departmentID = 0;
         var funcationID = 0;
         var priorityID = 0;
@@ -164,7 +161,6 @@ class EditStoreTask extends Component {
         var taskStatusName = "";
         var taskStatusId = 0;
 
-        debugger;
         if (message == "Success" && data) {
           departmentID = data.departmentId;
           funcationID = data.functionID;
@@ -177,9 +173,9 @@ class EditStoreTask extends Component {
           storeName = data.storeName;
           storeAddress = data.address;
           assignToName = data.assignToName;
-          canEdit = data.canEdit == 1 ? true : false;
-          canSubmit = data.canSubmit == 1 ? true : false;
-          canAssignTo = data.isAssignTo == 1 ? true : false;
+          canEdit = data.canEdit === 1 ? true : false;
+          canSubmit = data.canSubmit === 1 ? true : false;
+          canAssignTo = data.isAssignTo === 1 ? true : false;
           taskStatusId = data.taskStatusId;
           taskStatusName = data.taskStatusName;
 
@@ -216,7 +212,6 @@ class EditStoreTask extends Component {
 
   ////handle get department list
   handleGetDepartement() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -298,7 +293,6 @@ class EditStoreTask extends Component {
 
   ////handle add comment by task id
   handleAddCommentByTaskId(type) {
-    debugger;
     let self = this;
 
     if (type == true) {
@@ -435,7 +429,6 @@ class EditStoreTask extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && responseData) {
@@ -544,7 +537,6 @@ class EditStoreTask extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var progressData = response.data.responseData[0];
         if (message == "Success") {
@@ -558,7 +550,6 @@ class EditStoreTask extends Component {
 
   ////handle input filed change
   handleOnchange = (e) => {
-    debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
       if (value !== "") {
@@ -712,7 +703,7 @@ class EditStoreTask extends Component {
       <Fragment>
         <div className="edit-storeTask-header">
           <label className="store-header-lbl">
-            Store ticket id : <span>{this.state.taskId}</span>
+            Store Task ID : <span>{this.state.taskId}</span>
           </label>
           <a
             className="loading-rectangle-cntr"
@@ -740,7 +731,7 @@ class EditStoreTask extends Component {
             <button
               type="button"
               className={
-                this.state.canSubmit
+                this.state.canSubmit || this.state.canEdit
                   ? "btn-store-resolved"
                   : "btn-store-resolved disabled-link"
               }
@@ -774,21 +765,26 @@ class EditStoreTask extends Component {
                   </label>
                 </div>
               ) : (
-                <div className="row">
-                  <label
-                    disabled={this.state.isSubmit}
-                    className={
-                      this.state.isSubmit
-                        ? "modal-lbl disabled-link"
-                        : "modal-lbl"
-                    }
-                    onClick={this.handleUpdateTask.bind(this, 222)}
-                  >
-                    Submit as <span className="modal-lbl-1">Solved</span>
-                  </label>
+                <div>
+                  {this.state.canSubmit || this.state.canAssignTo ? (
+                    <div className="row">
+                      <label
+                        disabled={this.state.isSubmit}
+                        className={
+                          this.state.isSubmit
+                            ? "modal-lbl disabled-link"
+                            : "modal-lbl"
+                        }
+                        onClick={this.handleUpdateTask.bind(this, 222)}
+                      >
+                        Submit as <span className="modal-lbl-1">Solved</span>
+                      </label>
+                    </div>
+                  ) : null}
                 </div>
               )}
-              {this.state.taskStatusId !== 222 ? (
+
+              {this.state.taskStatusId !== 222 || this.state.canEdit ? (
                 <div className="row" style={{ marginTop: "8px" }}>
                   <label
                     disabled={this.state.isSubmit}

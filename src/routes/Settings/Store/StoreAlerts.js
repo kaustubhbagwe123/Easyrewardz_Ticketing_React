@@ -1526,14 +1526,14 @@ class Alerts extends Component {
   handleAddAlertTabsOpen() {
     debugger;
     if (
-      (this.state.selectedAlertType > 0 &&
-        this.state.selectedStatus !== "" &&
-        this.state.selectedEmailCustomer === true) ||
-      this.state.selectedEmailInternal === true ||
-      this.state.selectedEmailStore === true ||
-      this.state.selectedSMSCustomer === true ||
-      this.state.selectedNotifInternal === true ||
-      this.state.selectedNotifTicketing === true
+      this.state.selectedAlertType > 0 &&
+      this.state.selectedStatus !== "" &&
+      (this.state.selectedEmailCustomer === true ||
+        this.state.selectedEmailInternal === true ||
+        this.state.selectedEmailStore === true ||
+        this.state.selectedSMSCustomer === true ||
+        this.state.selectedNotifInternal === true ||
+        this.state.selectedNotifTicketing === true)
     ) {
       this.setState({ AddAlertTabsPopup: true });
       // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });

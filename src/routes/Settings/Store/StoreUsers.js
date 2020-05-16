@@ -1776,27 +1776,36 @@ class StoreUsers extends Component {
     ////for Multi category binding drop down
     var cName = userEdit.mappedCategory.split(",");
     var cId = userEdit.categoryIDs.split(",").map(Number);
-    if (userEdit.categoryIDs !== null) {
-      for (let k = 0; k < bId.length; k++) {
-        category.push({ categoryID: cId[k], categoryName: cName[k] });
+    if (userEdit.categoryIDs !== null || userEdit.categoryIDs !== "") {
+      for (let k = 0; k < cId.length; k++) {
+        if (cId[k] !== 0) {
+          category.push({ categoryID: cId[k], categoryName: cName[k] });
+        }
       }
     }
 
     ////for Multi sub-category binding drop down
     var sName = userEdit.mappedSubCategory.split(",");
     var sId = userEdit.subCategoryIDs.split(",").map(Number);
-    if (userEdit.subCategoryIDs !== null) {
+    if (userEdit.subCategoryIDs !== null || userEdit.subCategoryIDs !== "") {
       for (let k = 0; k < sId.length; k++) {
-        subCategory.push({ subCategoryID: sId[k], subCategoryName: sName[k] });
+        if (sId[k] !== 0) {
+          subCategory.push({
+            subCategoryID: sId[k],
+            subCategoryName: sName[k],
+          });
+        }
       }
     }
 
     ////for Multi issuetype binding drop down
     var iName = userEdit.mappedIssuetype.split(",");
     var iId = userEdit.issueTypeIDs.split(",").map(Number);
-    if (userEdit.issueTypeIDs !== null) {
+    if (userEdit.issueTypeIDs !== null || userEdit.issueTypeIDs !== "") {
       for (let k = 0; k < iId.length; k++) {
-        issueType.push({ issueTypeID: iId[k], issueTypeName: iName[k] });
+        if (iId[k] !== 0) {
+          issueType.push({ issueTypeID: iId[k], issueTypeName: iName[k] });
+        }
       }
     }
 
