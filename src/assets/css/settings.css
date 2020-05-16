@@ -2587,8 +2587,41 @@
   background-color: #f3f3f3;
   font-family: lato;
   /* width: 180px; */
-  width: 190px;
+  /* width: 190px; */
+  width: 200px;
   text-align: center;
+}
+.cmpaign-channel-table {
+  margin-top: 10px;
+}
+.cmpaign-channel-table select {
+  background-color: #fff;
+  border: 1px solid #9b9b9b;
+  padding: 5px 7px;
+  font-size: 12px;
+  background-position: center right 5px;
+  background-size: 10px;
+  margin: 0;
+  padding-right: 18px;
+}
+.cmpaign-channel-table th {
+  padding: 5px 0;
+  color: #2561a8;
+}
+.cmpaign-channel-table td {
+  padding: 5px 0;
+  color: #4a4a4a;
+}
+.cmpaign-channel-table tr {
+  border: 0;
+}
+.cmpaign-channel-table tr th:first-child,
+.cmpaign-channel-table tr td:first-child {
+  padding-right: 15px;
+}
+.cmpaign-channel-table tr th:last-child {
+  min-width: 65px;
+  text-align: left;
 }
 .module-tabs .nav-tabs {
   border: none;

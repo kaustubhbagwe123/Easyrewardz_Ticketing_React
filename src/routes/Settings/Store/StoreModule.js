@@ -2069,7 +2069,28 @@ class StoreModule extends Component {
                         </div>
                       </div>
                       <div className="col-md-4">
-
+                        <div className="right-sect-div">
+                          <h3>Create CAMPAIGN SCRIPT</h3>
+                          <table className="cmpaign-channel-table">
+                            <tr>
+                              <th>Max. click allowed on any channel CTA</th>
+                              <th>Click</th>
+                            </tr>
+                            <tr>
+                              <td>Click will be enabled after</td>
+                              <td>
+                                <select>
+                                  <option>Min/Hr</option>
+                                </select>
+                              </td>
+                            </tr>
+                            {/* <label className="createhead-text-new-1">
+                              Priority
+                            </label>
+                            <label className="createhead-text-5">% SLA</label>
+                            <label className="createhead-text-6">Resolve</label> */}
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>
