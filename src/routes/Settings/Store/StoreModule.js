@@ -1551,6 +1551,7 @@ class StoreModule extends Component {
                               },
                             ]}
                             resizable={false}
+                            minRows={2}
                             defaultPageSize={5}
                             showPagination={true}
                           />
@@ -1854,10 +1855,10 @@ class StoreModule extends Component {
                     onClick={this.handleCampaignButton}
                   />
                 </Tab>
-                <Tab label="Campaign Setting">
+                <Tab label="Campaign Channel">
                   <div className="store-mdl backNone">
                     <div className="row">
-                      <div className="col-md-12">
+                      <div className="col-md-8">
                         <div className="table-cntr table-height alertsTable align-table">
                           <ReactTable
                             data={this.state.campaignScriptData}
@@ -2061,10 +2062,14 @@ class StoreModule extends Component {
                               },
                             ]}
                             resizable={false}
+                            minRows={2}
                             defaultPageSize={5}
                             showPagination={true}
                           />
                         </div>
+                      </div>
+                      <div className="col-md-4">
+
                       </div>
                     </div>
                   </div>

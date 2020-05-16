@@ -1559,6 +1559,7 @@ class StoreCampaign extends Component {
               },
             ]}
             expandedRowRender={(row, item) => {
+              debugger
               return (
                 <div>
                   <Table
@@ -1902,6 +1903,7 @@ class StoreCampaign extends Component {
                       },
                     ]}
                     expandedRowRender={(row, item) => {
+                      debugger
                       return (
                         <div className="innertabcollapse">
                           <table>
@@ -2068,7 +2070,8 @@ class StoreCampaign extends Component {
                   />
                   <Pagination
                     currentPage={this.state.childCurrentPage}
-                    totalSize={this.state.childTotalGridRecord}
+                    // totalSize={this.state.childTotalGridRecord}
+                    totalSize={row.customerCount}
                     sizePerPage={this.state.ChildPostsPerPage}
                     changeCurrentPage={this.PaginationOnChange}
                     theme="bootstrap"
