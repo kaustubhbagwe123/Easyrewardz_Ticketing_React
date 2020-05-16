@@ -81,6 +81,7 @@ class StoreModule extends Component {
       isATOZ: true,
       itemData: [],
       editCampSettingModal: false,
+      campaignChannelData:[]
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -312,6 +313,7 @@ class StoreModule extends Component {
     this.handleClaimTabData();
     this.handleCampaignNameList();
     this.handleCampaignScriptGridData();
+    this.handleCampaignChannelGridData();
   }
 
   setClaimTabData = (e) => {
@@ -400,6 +402,31 @@ class StoreModule extends Component {
         if (status === "Success" && data) {
           self.setState({
             campaignName: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  handleCampaignChannelGridData(){
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      headers: authHeader(),
+    }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            campaignChannelData: data,
+          });
+        }else{
+          self.setState({
+            campaignChannelData: []
           });
         }
       })
@@ -1861,7 +1888,7 @@ class StoreModule extends Component {
                       <div className="col-md-8">
                         <div className="table-cntr table-height alertsTable align-table">
                           <ReactTable
-                            data={this.state.campaignScriptData}
+                            data={this.state.campaignChannelData}
                             columns={[
                               {
                                 Header: (
@@ -2084,11 +2111,6 @@ class StoreModule extends Component {
                                 </select>
                               </td>
                             </tr>
-                            {/* <label className="createhead-text-new-1">
-                              Priority
-                            </label>
-                            <label className="createhead-text-5">% SLA</label>
-                            <label className="createhead-text-6">Resolve</label> */}
                           </table>
                         </div>
                       </div>
