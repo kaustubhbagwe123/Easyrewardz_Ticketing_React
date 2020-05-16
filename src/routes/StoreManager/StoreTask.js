@@ -152,6 +152,7 @@ class StoreTask extends Component {
         screationOnFilterCheckbox: "",
         sassigntoFilterCheckbox: "",
         screatedByFilterCheckbox: "",
+        staskStatusFilterCheckbox: "",
 
         sortFilterdepartmentName: [],
         sortFilterstoreName: [],
@@ -159,6 +160,7 @@ class StoreTask extends Component {
         sortFiltercreationOn: [],
         sortFilterassignto: [],
         sortFiltercreatedBy: [],
+        sortFiltertaskStatus: [],
 
         sortdepartmentName: [],
         sortstoreName: [],
@@ -166,6 +168,7 @@ class StoreTask extends Component {
         sortcreationOn: [],
         sortassignto: [],
         sortcreatedBy: [],
+        sorttaskStatus: [],
       });
       let self = this;
       axios({
@@ -179,15 +182,29 @@ class StoreTask extends Component {
           var message = response.data.message;
           var data = response.data.responseData;
           if (message === "Success" && data.length > 0) {
+            var unique = [];
+            var distinct = [];
+            var sortFilterdepartmentName = [];
+            var sortFilterstoreName = [];
+            var sortFilterpriorityName = [];
+            var sortFiltercreationOn = [];
+            var sortFilterassignto = [];
+            var sortFiltercreatedBy = [];
+            var sortFiltertaskStatus = [];
+            var sortdepartmentName = [];
+            var sortstoreName = [];
+            var sortpriorityName = [];
+            var sortcreationOn = [];
+            var sortassignto = [];
+            var sortcreatedBy = [];
+            var sorttaskStatus = [];
             if (tabFor === 1) {
               self.setState({
                 raisedByMeData: data,
                 isloading: false,
                 tabIndex: tabFor,
               });
-              self.state.sortAllData = data;
-              var unique = [];
-              var distinct = [];
+
               for (let i = 0; i < data.length; i++) {
                 if (
                   !unique[data[i].departmentName] &&
@@ -198,12 +215,14 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortdepartmentName.push({
-                  departmentName: distinct[i],
-                });
-                self.state.sortFilterdepartmentName.push({
-                  departmentName: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                  sortFilterdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -214,8 +233,14 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortstoreName.push({ storeName: distinct[i] });
-                self.state.sortFilterstoreName.push({ storeName: distinct[i] });
+                if (distinct[i]) {
+                  sortFilterstoreName.push({
+                    storeName: distinct[i],
+                  });
+                  sortstoreName.push({
+                    storeName: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -229,10 +254,14 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortpriorityName.push({ priorityName: distinct[i] });
-                self.state.sortFilterpriorityName.push({
-                  priorityName: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortpriorityName.push({
+                    priorityName: distinct[i],
+                  });
+                  sortFilterpriorityName.push({
+                    priorityName: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -243,12 +272,14 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortcreationOn.push({
-                  creationOn: distinct[i],
-                });
-                self.state.sortFiltercreationOn.push({
-                  creationOn: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortcreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                  sortFiltercreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -259,10 +290,32 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortassignto.push({ assignto: distinct[i] });
-                self.state.sortFilterassignto.push({
-                  assignto: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortassignto.push({
+                    assignto: distinct[i],
+                  });
+                  sortFilterassignto.push({
+                    assignto: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].taskStatus] && data[i].taskStatus !== "") {
+                  distinct.push(data[i].taskStatus);
+                  unique[data[i].taskStatus] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sorttaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                  sortFiltertaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                }
               }
             }
             if (tabFor === 2) {
@@ -284,12 +337,14 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortdepartmentName.push({
-                  departmentName: distinct[i],
-                });
-                self.state.sortFilterdepartmentName.push({
-                  departmentName: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                  sortFilterdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -300,8 +355,10 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortstoreName.push({ storeName: distinct[i] });
-                self.state.sortFilterstoreName.push({ storeName: distinct[i] });
+                if (distinct[i]) {
+                  sortstoreName.push({ storeName: distinct[i] });
+                  sortFilterstoreName.push({ storeName: distinct[i] });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -315,10 +372,12 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortpriorityName.push({ priorityName: distinct[i] });
-                self.state.sortFilterpriorityName.push({
-                  priorityName: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortpriorityName.push({ priorityName: distinct[i] });
+                  sortFilterpriorityName.push({
+                    priorityName: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -329,12 +388,14 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortcreationOn.push({
-                  creationOn: distinct[i],
-                });
-                self.state.sortFiltercreationOn.push({
-                  creationOn: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortcreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                  sortFiltercreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                }
               }
               var unique = [];
               var distinct = [];
@@ -345,18 +406,62 @@ class StoreTask extends Component {
                 }
               }
               for (let i = 0; i < distinct.length; i++) {
-                self.state.sortcreatedBy.push({ createdBy: distinct[i] });
-                self.state.sortFiltercreatedBy.push({
-                  createdBy: distinct[i],
-                });
+                if (distinct[i]) {
+                  sortcreatedBy.push({ createdBy: distinct[i] });
+                  sortFiltercreatedBy.push({
+                    createdBy: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].taskStatus] && data[i].taskStatus !== "") {
+                  distinct.push(data[i].taskStatus);
+                  unique[data[i].taskStatus] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sorttaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                  sortFiltertaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                }
               }
             }
+            self.setState({
+              sortdepartmentName,
+              sortstoreName,
+              sortpriorityName,
+              sortcreationOn,
+              sortassignto,
+              sortcreatedBy,
+              sorttaskStatus,
+              sortFilterdepartmentName,
+              sortFilterstoreName,
+              sortFilterpriorityName,
+              sortFiltercreationOn,
+              sortFilterassignto,
+              sortFiltercreatedBy,
+              sortFiltertaskStatus,
+            });
           } else {
             if (tabFor === 1) {
-              self.setState({ raisedByMeData: data, isloading: false });
+              self.setState({
+                raisedByMeData: data,
+                isloading: false,
+                sortAllData: data,
+              });
             }
             if (tabFor === 2) {
-              self.setState({ assignToMeData: data, isloading: false });
+              self.setState({
+                assignToMeData: data,
+                isloading: false,
+                sortAllData: data,
+              });
             }
           }
         })
@@ -959,7 +1064,8 @@ class StoreTask extends Component {
         this.state.spriorityNameFilterCheckbox !== "" ||
         this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
       ) {
         this.setState({
           StatusModel: true,
@@ -973,6 +1079,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
           screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -985,7 +1092,8 @@ class StoreTask extends Component {
         this.state.spriorityNameFilterCheckbox !== "" ||
         this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
       ) {
         this.setState({
           StatusModel: true,
@@ -999,6 +1107,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
           screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -1011,7 +1120,9 @@ class StoreTask extends Component {
         this.state.sdepartmentNameFilterCheckbox !== "" ||
         this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
       ) {
         this.setState({
           StatusModel: true,
@@ -1025,6 +1136,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
           screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -1036,6 +1148,92 @@ class StoreTask extends Component {
         this.state.sstoreNameFilterCheckbox !== "" ||
         this.state.sdepartmentNameFilterCheckbox !== "" ||
         this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.sassigntoFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          spriorityNameFilterCheckbox: "",
+          sassigntoFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "assignto") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          spriorityNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassigntoFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          spriorityNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassigntoFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+
+    if (data === "taskStatus") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
         this.state.screatedByFilterCheckbox !== ""
       ) {
@@ -1049,60 +1247,9 @@ class StoreTask extends Component {
           sstoreNameFilterCheckbox: "",
           sdepartmentNameFilterCheckbox: "",
           spriorityNameFilterCheckbox: "",
-          sassigntoFilterCheckbox: "",
-          screatedByFilterCheckbox: "",
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      }
-    }
-    if (data === "assignto") {
-      if (
-        this.state.sstoreNameFilterCheckbox !== "" ||
-        this.state.sdepartmentNameFilterCheckbox !== "" ||
-        this.state.spriorityNameFilterCheckbox !== "" ||
-        this.state.screationOnFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
-      ) {
-        this.setState({
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      } else {
-        this.setState({
-          sstoreNameFilterCheckbox: "",
-          sdepartmentNameFilterCheckbox: "",
-          spriorityNameFilterCheckbox: "",
-          screationOnFilterCheckbox: "",
-          screatedByFilterCheckbox: "",
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      }
-    }
-    if (data === "createdBy") {
-      if (
-        this.state.sstoreNameFilterCheckbox !== "" ||
-        this.state.sdepartmentNameFilterCheckbox !== "" ||
-        this.state.spriorityNameFilterCheckbox !== "" ||
-        this.state.screationOnFilterCheckbox !== "" ||
-        this.state.sassigntoFilterCheckbox !== ""
-      ) {
-        this.setState({
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      } else {
-        this.setState({
-          sstoreNameFilterCheckbox: "",
-          sdepartmentNameFilterCheckbox: "",
-          spriorityNameFilterCheckbox: "",
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -1119,6 +1266,7 @@ class StoreTask extends Component {
       sortFiltercreationOn: this.state.sortcreationOn,
       sortFilterassignto: this.state.sortassignto,
       sortFiltercreatedBy: this.state.sortcreatedBy,
+      sortFiltertaskStatus: this.state.sorttaskStatus,
     });
     if (this.state.tempitemData.length > 0) {
       this.setState({
@@ -1144,6 +1292,7 @@ class StoreTask extends Component {
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -1156,6 +1305,7 @@ class StoreTask extends Component {
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -1168,6 +1318,7 @@ class StoreTask extends Component {
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -1180,6 +1331,7 @@ class StoreTask extends Component {
             spriorityNameFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -1192,6 +1344,7 @@ class StoreTask extends Component {
             spriorityNameFilterCheckbox: "",
             screationOnFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -1204,6 +1357,20 @@ class StoreTask extends Component {
             spriorityNameFilterCheckbox: "",
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "taskStatus") {
+        if (this.state.staskStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            spriorityNameFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassigntoFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -1249,6 +1416,7 @@ class StoreTask extends Component {
     var screationOnFilterCheckbox = this.state.screationOnFilterCheckbox;
     var sassigntoFilterCheckbox = this.state.sassigntoFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var staskStatusFilterCheckbox = this.state.staskStatusFilterCheckbox;
 
     if (column === "storeName" || column === "all") {
       if (type === "value" && type !== "All") {
@@ -1473,6 +1641,46 @@ class StoreTask extends Component {
       }
     }
 
+    if (column === "taskStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          staskStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          staskStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (staskStatusFilterCheckbox.includes("all")) {
+          staskStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "taskStatus") {
+            for (let i = 0; i < this.state.sorttaskStatus.length; i++) {
+              staskStatusFilterCheckbox +=
+                this.state.sorttaskStatus[i].taskStatus + ",";
+            }
+            staskStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
     var allData = this.state.sortAllData;
 
     this.setState({
@@ -1482,6 +1690,7 @@ class StoreTask extends Component {
       screationOnFilterCheckbox,
       sassigntoFilterCheckbox,
       screatedByFilterCheckbox,
+      staskStatusFilterCheckbox,
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -1593,6 +1802,22 @@ class StoreTask extends Component {
           }
         }
       }
+    } else if (column === "taskStatus") {
+      var sItems = staskStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.taskStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
     }
 
     this.setState({
@@ -1614,7 +1839,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterstoreName });
       } else {
         this.setState({
-          sortFilterstoreName: this.state.sortstoreName,
+          sortFilterstoreName: [],
         });
       }
     }
@@ -1628,7 +1853,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName,
+          sortFilterdepartmentName: [],
         });
       }
     }
@@ -1644,7 +1869,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterpriorityName });
       } else {
         this.setState({
-          sortFilterpriorityName: this.state.sortpriorityName,
+          sortFilterpriorityName: [],
         });
       }
     }
@@ -1660,7 +1885,7 @@ class StoreTask extends Component {
         this.setState({ sortFiltercreationOn });
       } else {
         this.setState({
-          sortFiltercreationOn: this.state.sortcreationOn,
+          sortFiltercreationOn: [],
         });
       }
     }
@@ -1676,7 +1901,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterassignto });
       } else {
         this.setState({
-          sortFilterassignto: this.state.sortassignto,
+          sortFilterassignto: [],
         });
       }
     }
@@ -1694,7 +1919,25 @@ class StoreTask extends Component {
         });
       } else {
         this.setState({
-          sortFiltercreatedBy: this.state.sortcreatedBy,
+          sortFiltercreatedBy: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "taskStatus") {
+      var sortFiltertaskStatus = matchSorter(
+        this.state.sortcreatedBy,
+        e.target.value,
+        {
+          keys: ["createdBy"],
+        }
+      );
+      if (sortFiltertaskStatus.length > 0) {
+        this.setState({
+          sortFiltertaskStatus,
+        });
+      } else {
+        this.setState({
+          sortFiltertaskStatus: [],
         });
       }
     }
@@ -2083,7 +2326,30 @@ class StoreTask extends Component {
                           accessor: "storeTaskID",
                         },
                         {
-                          Header: <span>Status</span>,
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskStatus",
+                                "Status"
+                              )}
+                            >
+                              Status
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                           accessor: "taskStatus",
                           Cell: (row) => {
                             if (row.original.taskStatus === "New") {
@@ -2603,7 +2869,30 @@ class StoreTask extends Component {
                           accessor: "storeTaskID",
                         },
                         {
-                          Header: <span>Status</span>,
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskStatus",
+                                "Status"
+                              )}
+                            >
+                              Status
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                           accessor: "taskStatus",
                           Cell: (row) => {
                             if (row.original.taskStatus === "New") {
@@ -3201,7 +3490,30 @@ class StoreTask extends Component {
                           accessor: "ticketID",
                         },
                         {
-                          Header: <span>Status</span>,
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskStatus",
+                                "Status"
+                              )}
+                            >
+                              Status
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                           accessor: "taskStatus",
                           Cell: (row) => {
                             if (row.original.taskStatus === "New") {
@@ -3727,6 +4039,32 @@ class StoreTask extends Component {
                         <label htmlFor={"fil-open" + item.createdBy}>
                           <span className="table-btn table-blue-btn">
                             {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+                {this.state.sortColumn === "taskStatus"
+                  ? this.state.sortFiltertaskStatus !== null &&
+                    this.state.sortFiltertaskStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.taskStatus}
+                          value={item.taskStatus}
+                          checked={this.state.staskStatusFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.taskStatus)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "taskStatus",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.taskStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.taskStatus}
                           </span>
                         </label>
                       </div>
