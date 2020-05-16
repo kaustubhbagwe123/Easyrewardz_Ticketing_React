@@ -423,7 +423,7 @@ class StoreModule extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            campaignChannelData: data.campaignSetting
+            campaignChannelData: data.campaignSetting,
           });
         } else {
           self.setState({
@@ -1971,17 +1971,17 @@ class StoreModule extends Component {
                                 Cell: (row) => {
                                   var ids = row.original["id"];
                                   return (
-                                      <span>
-                                        <button
-                                          className="react-tabel-button editre"
-                                          onClick={this.EditCampaignChannel.bind(
-                                            this,
-                                            row.original
-                                          )}
-                                        >
-                                          EDIT
-                                        </button>
-                                      </span>
+                                    <span>
+                                      <button
+                                        className="react-tabel-button editre"
+                                        onClick={this.EditCampaignChannel.bind(
+                                          this,
+                                          row.original
+                                        )}
+                                      >
+                                        EDIT
+                                      </button>
+                                    </span>
                                   );
                                 },
                               },
@@ -1995,14 +1995,20 @@ class StoreModule extends Component {
                       </div>
                       <div className="col-md-4">
                         <div className="right-sect-div">
-                          <h3>Create CAMPAIGN SCRIPT</h3>
+                          <h3>CAMPAIGN CHANNEL</h3>
                           <table className="cmpaign-channel-table">
                             <tr>
-                              <th>Max. click allowed on any channel CTA</th>
-                              <th>Click</th>
+                              <td>Max. click allowed on any channel CTA</td>
+                              <td>
+                                <input type="text" />
+                              </td>
+                              <td>Click</td>
                             </tr>
                             <tr>
                               <td>Click will be enabled after</td>
+                              <td>
+                                <input type="text" />
+                              </td>
                               <td>
                                 <select>
                                   <option>Min/Hr</option>
@@ -2010,6 +2016,9 @@ class StoreModule extends Component {
                               </td>
                             </tr>
                           </table>
+                          <button class="Schedulenext1 w-100 mb-0 mt-4">
+                            UPDATE
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -2098,6 +2107,50 @@ class StoreModule extends Component {
                 <label className="popover-header-text">
                   EDIT CAMPAIGN SETTING
                 </label>
+                <div className="module-switch-cntr">
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">SMS</label>
+                      <input type="checkbox" id="new1" name="allModules" />
+                      <label
+                        htmlFor="new1"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">
+                        Whatsapp
+                      </label>
+                      <input type="checkbox" id="new2" name="allModules" />
+                      <label
+                        htmlFor="new2"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">Chatbot</label>
+                      <input type="checkbox" id="new3" name="allModules" />
+                      <label
+                        htmlFor="new3"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">Email</label>
+                      <input type="checkbox" id="new4" name="allModules" />
+                      <label
+                        htmlFor="new4"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </Modal>
           </div>
