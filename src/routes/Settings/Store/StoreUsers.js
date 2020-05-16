@@ -272,16 +272,16 @@ class StoreUsers extends Component {
     if (this.state.fileName) {
       const formData = new FormData();
       formData.append("file", this.state.file);
-      this.setState({ isShowProgress: true });
+      // this.setState({ isShowProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreUser/BulkUploadStoreUser",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
         .then((response) => {
           var status = response.data.message;
@@ -292,7 +292,7 @@ class StoreUsers extends Component {
             self.handleGetStoreUserGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             NotificationManager.error("File not uploaded.");
           }
         })

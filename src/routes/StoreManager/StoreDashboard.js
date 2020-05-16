@@ -1787,7 +1787,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFiltercategoryName });
       } else {
         this.setState({
-          sortFiltercategoryName: this.state.sortcategoryName,
+          sortFiltercategoryName: [],
         });
       }
     }
@@ -1801,7 +1801,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFilterclaimStatus });
       } else {
         this.setState({
-          sortFilterclaimStatus: this.state.sortclaimStatus,
+          sortFilterclaimStatus: [],
         });
       }
     }
@@ -1817,7 +1817,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFiltercreatedByName });
       } else {
         this.setState({
-          sortFiltercreatedByName: this.state.sortcreatedByName,
+          sortFiltercreatedByName: [],
         });
       }
     }
@@ -1833,7 +1833,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFiltercreationOn });
       } else {
         this.setState({
-          sortFiltercreationOn: this.state.sortcreationOn,
+          sortFiltercreationOn: [],
         });
       }
     }
@@ -1849,7 +1849,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFilterassignTo });
       } else {
         this.setState({
-          sortFilterassignTo: this.state.sortassignTo,
+          sortFilterassignTo: [],
         });
       }
     }

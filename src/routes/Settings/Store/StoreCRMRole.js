@@ -419,16 +419,16 @@ class StoreCRMRole extends Component {
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreCRMRole/BulkUploadStoreCRMRole",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
         .then(function(res) {
           debugger;
@@ -439,11 +439,11 @@ class StoreCRMRole extends Component {
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetCRMGridData();
           } else {
-            self.setState({
-              showProgress: false,
-              isFileUploadFail: true,
-              progressValue: 0,
-            });
+            // self.setState({
+            //   showProgress: false,
+            //   isFileUploadFail: true,
+            //   progressValue: 0,
+            // });
             NotificationManager.error("File not uploaded.");
           }
         })
