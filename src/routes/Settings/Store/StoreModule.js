@@ -81,6 +81,7 @@ class StoreModule extends Component {
       isATOZ: true,
       itemData: [],
       editCampChannelModal: false,
+      campaignChannelData: {},
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -409,7 +410,6 @@ class StoreModule extends Component {
       });
   }
   handleCampaignChannelGridData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -422,11 +422,11 @@ class StoreModule extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            campaignChannelData: data.campaignSetting,
+            campaignChannelData: data.campaignSettingTimer,
           });
         } else {
           self.setState({
-            campaignChannelData: [],
+            campaignChannelData: {},
           });
         }
       })
@@ -1064,6 +1064,68 @@ class StoreModule extends Component {
         });
       }
     }
+  }
+  /// handle toggle change data
+  CampChannelSmsFlageOnchange = (id) => {
+    debugger;
+    var CampId = id.target.id;
+    if (CampId === "ckSmsCamp1") {
+      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
+        .smsFlag;
+    } else if (CampId === "ckWhatCamp2") {
+      this.state.campaignChannelData.messengerFlag = !this.state
+        .campaignChannelData.messengerFlag;
+    } else if (CampId === "ckChatCamp3") {
+      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
+        .botFlag;
+    } else if (CampId === "ckEmailCamp4") {
+      this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
+        .emailFlag;
+    }
+
+    this.setState({ campaignChannelData: this.state.campaignChannelData });
+  };
+
+  /// update campaign change data
+  CampCannelOnChange(e) {
+    debugger;
+    const { name, value } = e.target;
+    var campaignChannelData = this.state.campaignChannelData;
+    campaignChannelData[name] = value;
+    this.setState({ campaignChannelData });
+  }
+
+  handleUpdateCampChannelData() {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
+      headers: authHeader(),
+      data: {
+        ID: this.state.campaignChannelData.id,
+        MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
+        EnableClickAfterValue: this.state.campaignChannelData
+          .enableClickAfterValue,
+        EnableClickAfterDuration: this.state.campaignChannelData
+          .enableClickAfterDuration,
+        SmsFlag: this.state.campaignChannelData.smsFlag,
+        EmailFlag: this.state.campaignChannelData.emailFlag,
+        MessengerFlag: this.state.campaignChannelData.messengerFlag,
+        BotFlag: this.state.campaignChannelData.botFlag,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Campaign Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -1899,11 +1961,18 @@ class StoreModule extends Component {
                                       </label>
                                       <input
                                         type="checkbox"
-                                        id="new1"
+                                        id="ckSmsCamp1"
                                         name="allModules"
+                                        attrIds="ckSmsCamp1"
+                                        checked={
+                                          this.state.campaignChannelData.smsFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
                                       />
                                       <label
-                                        htmlFor="new1"
+                                        htmlFor="ckSmsCamp1"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
@@ -1915,11 +1984,18 @@ class StoreModule extends Component {
                                       </label>
                                       <input
                                         type="checkbox"
-                                        id="new2"
+                                        id="ckWhatCamp2"
                                         name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .messengerFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
                                       />
                                       <label
-                                        htmlFor="new2"
+                                        htmlFor="ckWhatCamp2"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
@@ -1931,11 +2007,17 @@ class StoreModule extends Component {
                                       </label>
                                       <input
                                         type="checkbox"
-                                        id="new3"
+                                        id="ckChatCamp3"
                                         name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.botFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
                                       />
                                       <label
-                                        htmlFor="new3"
+                                        htmlFor="ckChatCamp3"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
@@ -1947,11 +2029,18 @@ class StoreModule extends Component {
                                       </label>
                                       <input
                                         type="checkbox"
-                                        id="new4"
+                                        id="ckEmailCamp4"
                                         name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .emailFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
                                       />
                                       <label
-                                        htmlFor="new4"
+                                        htmlFor="ckEmailCamp4"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
@@ -1963,23 +2052,63 @@ class StoreModule extends Component {
                                       Max. click allowed on any channel CTA
                                     </td>
                                     <td>
-                                      <input type="text" />
+                                      <input
+                                        type="text"
+                                        name="maxClickAllowed"
+                                        value={
+                                          this.state.campaignChannelData
+                                            .maxClickAllowed
+                                        }
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
                                     </td>
                                     <td>Click</td>
                                   </tr>
                                   <tr>
                                     <td>Click will be enabled after</td>
                                     <td>
-                                      <input type="text" />
+                                      <input
+                                        type="text"
+                                        name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterValue
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
                                     </td>
                                     <td>
-                                      <select>
-                                        <option>Min/Hr</option>
+                                      <select
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterDuration
+                                        }
+                                        name="enableClickAfterDuration"
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="M">Min</option>
+                                        <option value="H">Hr</option>
                                       </select>
                                     </td>
                                   </tr>
                                 </table>
-                                <button class="Schedulenext1 w-100 mb-0 mt-4">
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleUpdateCampChannelData.bind(
+                                    this
+                                  )}
+                                >
                                   UPDATE
                                 </button>
                               </div>
