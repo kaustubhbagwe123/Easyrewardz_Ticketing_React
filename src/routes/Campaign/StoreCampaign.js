@@ -826,9 +826,9 @@ class StoreCampaign extends Component {
       }
     }
     if (row !== "") {
-        this.setState({
-          childTotalGridRecord: Number(row.customerCount),
-        });
+      this.setState({
+        childTotalGridRecord: Number(row.customerCount),
+      });
     } else {
     }
     var filterIds = "";
@@ -860,7 +860,12 @@ class StoreCampaign extends Component {
           var CampChildData = self.state.CampChildTableData;
 
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-            CampChildData.push(data.campaignCustomerModel[i]);
+            var filtd = CampChildData.filter(
+              (d) => d.id === data.campaignCustomerModel[i].id
+            );
+            if (filtd.length === 0) {
+              CampChildData.push(data.campaignCustomerModel[i]);
+            }
           }
           self.setState({
             CampChildTableData: CampChildData,
@@ -1256,7 +1261,12 @@ class StoreCampaign extends Component {
         if (message == "Success") {
           var CampChildData = self.state.CampChildTableData;
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-            CampChildData.push(data.campaignCustomerModel[i]);
+            var filtd = CampChildData.filter(
+              (d) => d.id === data.campaignCustomerModel[i].id
+            );
+            if (filtd.length === 0) {
+              CampChildData.push(data.campaignCustomerModel[i]);
+            }
           }
 
           self.setState({
