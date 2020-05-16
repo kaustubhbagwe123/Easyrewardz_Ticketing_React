@@ -566,14 +566,14 @@ class Header extends Component {
   }
 
   ////handleGet Ongoing Chat
-  handleGetOngoingChat(value,event) {
+  handleGetOngoingChat(value, event) {
     let self = this;
     var search = "";
-    if(event!==undefined){
+    if (event !== undefined) {
       search = event.target.value;
       this.setState({ searchChat: event.target.value });
     }
-    else{
+    else {
       search = this.state.searchChat;
     }
 
@@ -581,7 +581,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetOngoingChat",
       headers: authHeader(),
-      params:{Search: search}
+      params: { Search: search }
     })
       .then(function (response) {
         var message = response.data.message;
@@ -1759,43 +1759,43 @@ class Header extends Component {
               <div className="col-lg-3 p-0">
                 <div className="chatbot-left">
                   <div class="chat-cntr">
-                  <input
-                    type="text"
-                    className="search-customerChatSrch"
-                    placeholder="Search"
-                    name="Search"
-                    maxLength="100"
-                    autoComplete="off"
-                    value={this.state.searchChat}
-                    // onChange={this.handleSearchItemChange.bind(
-                    //   this
-                    // )}
-                    // onKeyPress={this.enterPressed.bind(this)}
-                    onChange={this.handleGetOngoingChat.bind(this,"")}
-                  />
-                  <span
-                    // onClick={this.handleSearchChatItemDetails.bind(
-                    //   this
-                    // )}
-                    className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span"
-                  >
-                  {this.state.searchChat === ""?(
-                    <img
-                      src={SearchBlueImg}
-                      alt="SearchBlueImg"
-                      className="srch-imge"
-                    // onClick={this.handleSearchCustomer}
-                    />):(
-                    <img
-                      src={CancelBlueImg}
-                      alt="SearchBlueImg"
-                      className="srch-imge"
-                      style={{width:"35%"}}
-                      onClick={this.handleClearChatSearch.bind(this)}
-                    />)
-                  }
-                    
-                  </span>
+                    <input
+                      type="text"
+                      className="search-customerChatSrch"
+                      placeholder="Search"
+                      name="Search"
+                      maxLength="100"
+                      autoComplete="off"
+                      value={this.state.searchChat}
+                      // onChange={this.handleSearchItemChange.bind(
+                      //   this
+                      // )}
+                      // onKeyPress={this.enterPressed.bind(this)}
+                      onChange={this.handleGetOngoingChat.bind(this, "")}
+                    />
+                    <span
+                      // onClick={this.handleSearchChatItemDetails.bind(
+                      //   this
+                      // )}
+                      className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span"
+                    >
+                      {this.state.searchChat === "" ? (
+                        <img
+                          src={SearchBlueImg}
+                          alt="SearchBlueImg"
+                          className="srch-imge"
+                        // onClick={this.handleSearchCustomer}
+                        />) : (
+                          <img
+                            src={CancelBlueImg}
+                            alt="SearchBlueImg"
+                            className="srch-imge"
+                            style={{ width: "35%" }}
+                            onClick={this.handleClearChatSearch.bind(this)}
+                          />)
+                      }
+
+                    </span>
                   </div>
                   <div className="chat-cntr">
                     <p className="chats-heading">
@@ -2153,11 +2153,25 @@ class Header extends Component {
                                   }
                                 >
                                   <div className="chat-trail-img">
-                                    <img
+                                    <span className="chat-initial"
+                                    alt="face image"
+                                    title={item.byCustomer?item.customerName:this.state.UserName}
+                                    >
+                                      {item.byCustomer?(item.customerName
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")
+                                        .toUpperCase()):(this.state.UserName
+                                          .split(" ")
+                                          .map((n) => n[0])         
+                                          .join("")
+                                          .toUpperCase())}
+                                    </span>
+                                    {/* <img
                                       src={DummyFace2}
                                       alt="face image"
                                       title={item.customerName}
-                                    />
+                                    /> */}
                                   </div>
                                   <div className="chat-trail-chat-cntr">
                                     <p className="chat-trail-chat pd-0">
