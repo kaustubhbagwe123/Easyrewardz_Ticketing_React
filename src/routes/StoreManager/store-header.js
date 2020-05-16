@@ -2647,16 +2647,14 @@ class Header extends Component {
                               <img
                                 src={SendUp}
                                 alt="send"
-                                className="send-up"
+                                className="send-up float-none"
                               />
                               {this.state.isSendRecomended ? (
-                                <div>
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader"
-                                    spin
-                                  />
-                                </div>
+                                <FontAwesomeIcon
+                                  icon={faCircleNotch}
+                                  className="circular-loader ml-2"
+                                  spin
+                                />
                               ) : (
                                 ""
                               )}
