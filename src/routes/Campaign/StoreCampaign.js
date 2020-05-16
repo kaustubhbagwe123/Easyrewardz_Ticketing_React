@@ -862,14 +862,14 @@ class StoreCampaign extends Component {
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
             CampChildData.push(data.campaignCustomerModel[i]);
           }
-          var TotalGridRecord = self.state.childTotalGridRecord;
-          TotalGridRecord.push(data.campaignCustomerCount);
+          // var TotalGridRecord = self.state.childTotalGridRecord;
+          // TotalGridRecord.push(data.campaignCustomerCount);
 
           self.setState({
             CampChildTableData: CampChildData,
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord: TotalGridRecord,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -1261,11 +1261,11 @@ class StoreCampaign extends Component {
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
             CampChildData.push(data.campaignCustomerModel[i]);
           }
-          var TotalGridRecord = self.state.childTotalGridRecord;
-          TotalGridRecord.push(data.campaignCustomerCount);
+          // var TotalGridRecord = self.state.childTotalGridRecord;
+          // TotalGridRecord.push(data.campaignCustomerCount);
           self.setState({
             CampChildTableData: CampChildData,
-            childTotalGridRecord: TotalGridRecord,
+            childTotalGridRecord: data.campaignCustomerCount,
             filterCustomerNumber: false,
             // filterCustNO: "",
           });

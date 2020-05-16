@@ -80,6 +80,7 @@ class StoreModule extends Component {
       isShowProgress: false,
       isATOZ: true,
       itemData: [],
+      editCampSettingModal: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -174,8 +175,11 @@ class StoreModule extends Component {
   };
 
   handleEditModal() {
-    debugger;
     this.setState({ editModal: false });
+  }
+
+  handleEditCampSettingModal() {
+    this.setState({ editCampSettingModal: false });
   }
 
   handleCampaignButton() {
@@ -365,6 +369,16 @@ class StoreModule extends Component {
     debugger;
     this.setState({
       editModal: true,
+      updateIndiCampaignId: individualData.campaignNameID,
+      updateScriptDetails: individualData.campaignScript,
+      updateCampaignId: individualData.campaignID,
+    });
+  }
+
+  EditCampaignSetting(individualData) {
+    debugger;
+    this.setState({
+      editCampSettingModal: true,
       updateIndiCampaignId: individualData.campaignNameID,
       updateScriptDetails: individualData.campaignScript,
       updateCampaignId: individualData.campaignID,
@@ -1283,7 +1297,6 @@ class StoreModule extends Component {
                   </div>
                 </Tab>
                 <Tab label="Campaign Script">
-                  {/* <div className="container-fluid"> */}
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-8">
@@ -1520,51 +1533,7 @@ class StoreModule extends Component {
                                             id={ids}
                                           />
                                         </Popover>
-                                        {/* <Popover
-                                          content={
-                                            <div className="edtpadding">
-                                              <div className="">
-                                                <label className="popover-header-text">
-                                                  EDIT CAMPAIGN SCRIPT
-                                                </label>
-                                              </div>
-                                              <div className=" pop-over-div">
-                                                <label className="pop-over-lbl-text">
-                                                  {" "}
-                                                  Campaign Name
-                                                </label>
-                                                <select className="pop-over-select">
-                                                  <option>Birthday</option>
-                                                  <option>Anniversary</option>
-                                                </select>
-                                              </div>
-                                              <div className="div-cntr">
-                                                <label className="pop-over-lbl-text">
-                                                  Script Details
-                                                </label>
-                                                <textarea
-                                                  className="stort-textArea"
-                                                  rows="4"
-                                                ></textarea>
-                                              </div>
 
-                                              <br />
-                                              <div>
-                                                <a
-                                                  className="pop-over-cancle"
-                                                  href={Demo.BLANK_LINK}
-                                                >
-                                                  CANCEL
-                                                </a>
-                                                <button className="pop-over-button">
-                                                  SAVE
-                                                </button>
-                                              </div>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        > */}
                                         <button
                                           className="react-tabel-button editre"
                                           id="p-edit-pop-2"
@@ -1575,14 +1544,13 @@ class StoreModule extends Component {
                                         >
                                           EDIT
                                         </button>
-                                        {/* </Popover> */}
                                       </span>
                                     </>
                                   );
                                 },
                               },
                             ]}
-                            // resizable={false}
+                            resizable={false}
                             defaultPageSize={5}
                             showPagination={true}
                           />
@@ -1622,29 +1590,6 @@ class StoreModule extends Component {
                                 }
                               >
                                 <div className="cat-mainbox">
-                                  {/* <div className="campaignScriptData-cancel-search">
-                                                        <input
-                                                          type="text"
-                                                          className="searchf"
-                                                          placeholder="Search"
-                                                          maxLength={25}
-                                                          name="store_code"
-                                                          onChange={
-                                                            this.handleSearchSla
-                                                          }
-                                                          id="SlaInput"
-                                                        />
-
-                                                        <img
-                                                          src={Cancel}
-                                                          alt="cancelimg"
-                                                          onClick={
-                                                            this
-                                                              .handleClearSearchSla
-                                                          }
-                                                        />
-                                                      </div> */}
-
                                   <div className="category-button">
                                     <ul>
                                       <li>
@@ -1908,7 +1853,221 @@ class StoreModule extends Component {
                     className={this.state.campaignOvrlayShow ? "show" : ""}
                     onClick={this.handleCampaignButton}
                   />
-                  {/* </div> */}
+                </Tab>
+                <Tab label="Campaign Setting">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="table-cntr table-height alertsTable align-table">
+                          <ReactTable
+                            data={this.state.campaignScriptData}
+                            columns={[
+                              {
+                                Header: (
+                                  <span
+                                    className={
+                                      this.state.sortHeader === "Campaign Name"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "campaignName",
+                                      "Campaign Name"
+                                    )}
+                                  >
+                                    Campaign Name
+                                    <FontAwesomeIcon
+                                      icon={
+                                        this.state.isATOZ == false &&
+                                        this.state.sortHeader ===
+                                          "Campaign Name"
+                                          ? faCaretUp
+                                          : faCaretDown
+                                      }
+                                    />
+                                  </span>
+                                ),
+                                sortable: false,
+                                accessor: "campaignName",
+                              },
+                              {
+                                Header: "Campaign Script",
+                                accessor: "campaignScriptLess",
+                                className: "communication-labelHeader",
+                                sortable: false,
+                                Cell: (row) => {
+                                  var ids = row.original["id"];
+                                  return (
+                                    <div>
+                                      <span className="d-flex align-items-end">
+                                        <span className="campaign-script-less">
+                                          {/* {row.original.campaignScriptLess} */}
+                                          {row.original.campaignScript}
+                                        </span>
+                                        <Popover
+                                          content={
+                                            <div className="store-popDiv">
+                                              <label className="storePop-lbl">
+                                                {row.original.campaignScript}
+                                              </label>
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                        >
+                                          <img
+                                            className="info-icon-cp"
+                                            src={BlackInfoIcon}
+                                            alt="info-icon"
+                                            id={ids}
+                                          />
+                                        </Popover>
+                                      </span>
+                                    </div>
+                                  );
+                                },
+                              },
+                              {
+                                id: "createdBy",
+                                sortable: false,
+                                Header: (
+                                  <span
+                                    className={
+                                      this.state.sortHeader === "Department"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "createdBy",
+                                      "Created by"
+                                    )}
+                                  >
+                                    Created by
+                                    <FontAwesomeIcon
+                                      icon={
+                                        this.state.isATOZ == false &&
+                                        this.state.sortHeader === "Created by"
+                                          ? faCaretUp
+                                          : faCaretDown
+                                      }
+                                    />
+                                  </span>
+                                ),
+                                Cell: (row) => {
+                                  var ids = row.original["id"];
+                                  return (
+                                    <div>
+                                      <span>
+                                        {row.original.createdBy}
+                                        <Popover
+                                          content={
+                                            <>
+                                              <div>
+                                                <b>
+                                                  <p className="title">
+                                                    Created By:{" "}
+                                                    {row.original.createdBy}
+                                                  </p>
+                                                </b>
+                                                <p className="sub-title">
+                                                  Created Date:{" "}
+                                                  {row.original.createdOn}
+                                                </p>
+                                              </div>
+                                              <div>
+                                                <b>
+                                                  <p className="title">
+                                                    Updated By:{" "}
+                                                    {row.original.modifiedBy}
+                                                  </p>
+                                                </b>
+                                                <p className="sub-title">
+                                                  Updated Date:{" "}
+                                                  {row.original.modifiedOn}
+                                                </p>
+                                              </div>
+                                            </>
+                                          }
+                                          placement="bottom"
+                                        >
+                                          <img
+                                            className="info-icon-cp"
+                                            src={BlackInfoIcon}
+                                            alt="info-icon"
+                                            id={ids}
+                                          />
+                                        </Popover>
+                                      </span>
+                                    </div>
+                                  );
+                                },
+                                // accessor: "createdBy"
+                              },
+                              {
+                                Header: (
+                                  <span
+                                    className={
+                                      this.state.sortHeader === "Status"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
+                                    onClick={this.StatusOpenModel.bind(
+                                      this,
+                                      "status",
+                                      "Status"
+                                    )}
+                                  >
+                                    Status
+                                    <FontAwesomeIcon
+                                      icon={
+                                        this.state.isATOZ == false &&
+                                        this.state.sortHeader === "Status"
+                                          ? faCaretUp
+                                          : faCaretDown
+                                      }
+                                    />
+                                  </span>
+                                ),
+                                sortable: false,
+                                accessor: "status",
+                                width: 110,
+                                Cell: (row) => {
+                                  return row.original.status
+                                    ? "Active"
+                                    : "Inactive";
+                                },
+                              },
+                              {
+                                Header: "Actions",
+                                // accessor: "action",
+                                sortable: false,
+                                Cell: (row) => {
+                                  return (
+                                    <span>
+                                      <button
+                                        className="react-tabel-button editre"
+                                        id="p-edit-pop-2"
+                                        onClick={this.EditCampaignSetting.bind(
+                                          this,
+                                          row.original
+                                        )}
+                                      >
+                                        EDIT
+                                      </button>
+                                    </span>
+                                  );
+                                },
+                              },
+                            ]}
+                            resizable={false}
+                            defaultPageSize={5}
+                            showPagination={true}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </Tab>
               </Tabs>
             </section>
@@ -1982,6 +2141,17 @@ class StoreModule extends Component {
                     SAVE
                   </button>
                 </div>
+              </div>
+            </Modal>
+            <Modal
+              className="EditModa"
+              show={this.state.editCampSettingModal}
+              onHide={this.handleEditCampSettingModal.bind(this)}
+            >
+              <div className="edtpadding">
+                <label className="popover-header-text">
+                  EDIT CAMPAIGN SETTING
+                </label>
               </div>
             </Modal>
           </div>
