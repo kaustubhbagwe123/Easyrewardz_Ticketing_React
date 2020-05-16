@@ -2604,24 +2604,25 @@
   margin: 0;
   padding-right: 18px;
 }
-.cmpaign-channel-table th {
-  padding: 5px 0;
-  color: #2561a8;
+.cmpaign-channel-table input {
+  background-color: #fff;
+  border: 1px solid #9b9b9b;
+  padding: 5px 7px;
+  margin: 0;
+  width: 50px;
 }
 .cmpaign-channel-table td {
   padding: 5px 0;
   color: #4a4a4a;
+  vertical-align: top;
+  padding-right: 15px;
 }
 .cmpaign-channel-table tr {
   border: 0;
 }
-.cmpaign-channel-table tr th:first-child,
-.cmpaign-channel-table tr td:first-child {
-  padding-right: 15px;
-}
-.cmpaign-channel-table tr th:last-child {
+.cmpaign-channel-table tr td:last-child {
   min-width: 65px;
-  text-align: left;
+  padding-right: 0;
 }
 .module-tabs .nav-tabs {
   border: none;
