@@ -68,6 +68,7 @@ class StoreCampaign extends Component {
       useratvdetails: {},
       campaignkeyinsight: {},
       campaignrecommended: [],
+      shareCampaignViaSettingModal: {},
       lasttransactiondetails: {},
       lastTransactionItem: [],
       ResponsiveShareNow: false,
@@ -949,6 +950,7 @@ class StoreCampaign extends Component {
 
   ///handle Send Via SMS
   handleSendViaSMS(data) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -964,6 +966,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
@@ -1087,6 +1090,7 @@ class StoreCampaign extends Component {
             useratvdetails: data.useratvdetails,
             campaignrecommended: data.campaignrecommended,
             lasttransactiondetails: data.lasttransactiondetails,
+            shareCampaignViaSettingModal: data.shareCampaignViaSettingModal,
             sortCustName: sortName,
           });
           if (data.campaignkeyinsight.insightText.length > 0) {
@@ -1105,6 +1109,7 @@ class StoreCampaign extends Component {
             useratvdetails: {},
             campaignrecommended: [],
             lasttransactiondetails: {},
+            shareCampaignViaSettingModal: {},
             lastTransactionItem: [],
           });
         }
@@ -2186,8 +2191,10 @@ class StoreCampaign extends Component {
               </div>
               <div className="nr-name">
                 <h3>
-                  {this.state.customerModalDetails.customerName}{" "}
-                  <span>{this.state.customerModalDetails.customerNumber}</span>
+                  {this.state.shareCampaignViaSettingModal.customerName}{" "}
+                  <span>
+                    {this.state.shareCampaignViaSettingModal.customerNumber}
+                  </span>
                 </h3>
                 <p>{this.state.useratvdetails.tiername}</p>
               </div>
@@ -2643,40 +2650,64 @@ class StoreCampaign extends Component {
               <div className="sharecamp">
                 <h4>Share Campaign Via</h4>
                 <ul>
-                  {this.state.customerModalDetails.smsFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.smsFlag === true ? (
                     <li
                       onClick={this.handleSendViaSMS.bind(
                         this,
                         this.state.customerModalDetails
                       )}
+                      className={
+                        this.state.shareCampaignViaSettingModal.smsClickable
+                          ? ""
+                          : "dis-btns"
+                      }
                     >
                       <img className="ico" src={Sms1} alt="SMS Icon" />
                       SMS
                     </li>
                   ) : null}
-                  {this.state.customerModalDetails.emailFlag === true ? (
-                    <li>
+                  {this.state.shareCampaignViaSettingModal.emailFlag ===
+                  true ? (
+                    <li
+                      className={
+                        this.state.shareCampaignViaSettingModal.emailClickable
+                          ? ""
+                          : "dis-btns"
+                      }
+                    >
                       <img className="emailico" src={Email} alt="Email Icon" />
                       Email
                     </li>
                   ) : null}
-                  {this.state.customerModalDetails.messengerFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.messengerFlag ===
+                  true ? (
                     <li
                       onClick={this.handleSendViaMessanger.bind(
                         this,
                         this.state.customerModalDetails
                       )}
+                      className={
+                        this.state.shareCampaignViaSettingModal
+                          .messengerClickable
+                          ? ""
+                          : "dis-btns"
+                      }
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Messanger
                     </li>
                   ) : null}
-                  {this.state.customerModalDetails.botFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.botFlag === true ? (
                     <li
                       onClick={this.handleSendViaBotData.bind(
                         this,
                         this.state.customerModalDetails
                       )}
+                      className={
+                        this.state.shareCampaignViaSettingModal.botClickable
+                          ? ""
+                          : "dis-btns"
+                      }
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Bot
@@ -2770,9 +2801,18 @@ class StoreCampaign extends Component {
             <table className="w-100">
               <tbody>
                 <tr>
-                  {this.state.customerModalDetails.messengerFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.messengerFlag ===
+                  true ? (
                     <td>
-                      <a href={Demo.BLANK_LINK}>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        className={
+                          this.state.shareCampaignViaSettingModal
+                            .messengerClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
                         <div
                           className="chatbox"
                           onClick={this.handleSelectChannelsOnchange.bind(
@@ -2793,9 +2833,16 @@ class StoreCampaign extends Component {
                       </a>
                     </td>
                   ) : null}
-                  {this.state.customerModalDetails.botFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.botFlag === true ? (
                     <td>
-                      <a href={Demo.BLANK_LINK}>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        className={
+                          this.state.shareCampaignViaSettingModal.botClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
                         <div
                           className="chatbox"
                           onClick={this.handleSelectChannelsOnchange.bind(
@@ -2818,9 +2865,16 @@ class StoreCampaign extends Component {
                   ) : null}
                 </tr>
                 <tr>
-                  {this.state.customerModalDetails.smsFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.smsFlag === true ? (
                     <td>
-                      <a href={Demo.BLANK_LINK}>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        className={
+                          this.state.shareCampaignViaSettingModal.smsClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
                         <div
                           className="chatbox"
                           onClick={this.handleSelectChannelsOnchange.bind(
@@ -2837,9 +2891,17 @@ class StoreCampaign extends Component {
                       </a>
                     </td>
                   ) : null}
-                  {this.state.customerModalDetails.emailFlag === true ? (
+                  {this.state.shareCampaignViaSettingModal.emailFlag ===
+                  true ? (
                     <td>
-                      <a href={Demo.BLANK_LINK}>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        className={
+                          this.state.shareCampaignViaSettingModal.emailClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
                         <div
                           className="chatbox"
                           onClick={this.handleSelectChannelsOnchange.bind(

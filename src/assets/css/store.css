@@ -810,6 +810,10 @@
   margin-left: 6px;
   margin-bottom: 3px;
 }
+.dis-btns {
+  opacity: 0.5;
+  pointer-events: none;
+}
 .progressbar-lbl {
   color: #4a4a4a;
   font-family: Lato;
