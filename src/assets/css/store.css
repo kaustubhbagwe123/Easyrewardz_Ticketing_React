@@ -1524,6 +1524,9 @@ table tr th:last-child {
   overflow: auto;
   padding-right: 10px;
 }
+.keyinsights-big p {
+  max-height: 150px;
+}
 .keyinsights p::-webkit-scrollbar {
   width: 4px;
 }

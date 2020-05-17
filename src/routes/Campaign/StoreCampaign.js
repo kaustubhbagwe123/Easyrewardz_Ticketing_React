@@ -857,6 +857,14 @@ class StoreCampaign extends Component {
         if (message == "Success") {
           for (let obj of data.campaignCustomerModel)
             obj.dateTimeHighlight = false;
+
+          var campId = data.campaignCustomerModel[0].campaignScriptID;
+          var presentData = self.state.CampChildTableData;
+          var newArr = presentData.filter((d) => d.campaignScriptID !== campId);
+          self.setState({
+            CampChildTableData: newArr,
+          });
+
           var CampChildData = self.state.CampChildTableData;
 
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
@@ -2258,8 +2266,16 @@ class StoreCampaign extends Component {
               )}
 
               {this.state.campaignkeyinsight.insightText !== "" ? (
-                <div className="keyinsights">
-                  <h4>Key Insights</h4>
+                <div
+                  className={
+                    this.state.campaignkeyinsight.showKeyInsights
+                      ? "keyinsights"
+                      : "keyinsights keyinsights-big"
+                  }
+                >
+                  {this.state.campaignkeyinsight.showKeyInsights && (
+                    <h4>Key Insights</h4>
+                  )}
                   <p
                     id="insight-data"
                     className={
