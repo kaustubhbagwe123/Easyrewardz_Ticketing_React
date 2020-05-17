@@ -3652,6 +3652,22 @@ table tr th:last-child {
   color: #989898;
   background: #f0f0f0 !important;
 }
+.custom-table-bg
+  .custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-thead
+  > tr
+  > th {
+  background: #f5f8f9 !important;
+}
+.custom-table-bg
+  .custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
+  background: rgb(250, 254, 255) !important;
+}
 .custom-antd-table.antd-table-campaign
   .ant-table-expanded-row
   .ant-table-tbody
