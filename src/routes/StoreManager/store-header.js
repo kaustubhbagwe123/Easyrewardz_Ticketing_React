@@ -128,6 +128,7 @@ class Header extends Component {
       AgentID: 0,
       searchChat: "",
       isSendRecomended: false,
+      chatAccess: "none"
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -283,6 +284,14 @@ class Header extends Component {
         ) {
           this.setState({
             notificationAccess: "block",
+          });
+        }
+        else if (
+          data[i].moduleName === "Chat" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({
+            chatAccess: "block",
           });
         }
       }
@@ -589,6 +598,10 @@ class Header extends Component {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
+          // if (self.state.chatId > 0) {
+          //   ongoingChatsData.filter(x=>x.chatID===self.state.chatId)[0].messageCount=0
+          // }
+          debugger;
           self.setState({
             ongoingChatsData,
           });
@@ -611,7 +624,7 @@ class Header extends Component {
                 socket.on(
                   "91" +
                     ongoingChatsData[i].mobileNo +
-                    (ongoingChatsData[i].programCode).toLowerCase(),
+                    ongoingChatsData[i].programCode.toLowerCase(),
                   function(data) {
                     console.log("Message Received");
                     if ("91" + self.state.mobileNo === data[3]) {
@@ -785,9 +798,11 @@ class Header extends Component {
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
             self.setState({
+              isSendRecomended: false,
               message: "",
               messageSuggestionData: [],
               cardModal: false,
+              selectedCard: 0,
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
@@ -798,6 +813,7 @@ class Header extends Component {
               imageURL
             );
           } else {
+            self.setState({ isSendRecomended: false });
           }
         })
         .catch((response) => {
@@ -846,6 +862,10 @@ class Header extends Component {
           searchCardData.forEach((element, i) => {
             element["itemID"] = i + 1;
           });
+          self.setState({
+            searchCardData,
+          });
+        } else {
           self.setState({
             searchCardData,
           });
@@ -921,7 +941,7 @@ class Header extends Component {
       // inputParam.StoreID = this.state.storeID;
       inputParam.StoreID = 1;
 
-      this.setState({ isSendClick: true });
+      this.setState({ isSendClick: true, isSendRecomended: true });
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/ScheduleVisit",
@@ -957,10 +977,13 @@ class Header extends Component {
               scheduleModal: false,
               selectedSlot: {},
               message: messagedata,
+              isSendRecomended: false,
             });
             self.handleGetTimeSlot();
             debugger;
             self.handleSaveChatMessages("", "", "");
+          } else {
+            self.setState({ isSendRecomended: false });
           }
         })
         .catch((response) => {
@@ -1194,8 +1217,7 @@ class Header extends Component {
   };
 
   onCloseCardModal = () => {
-    // this.handleSendCard();
-    this.setState({ cardModal: false });
+    this.setState({ cardModal: false, searchCardData: [], selectedCard: 0 });
   };
   onOpenCardModal = () => {
     this.setState({ cardModal: true });
@@ -1247,7 +1269,14 @@ class Header extends Component {
 
   onCloseScheduleModal = () => {
     // this.handleScheduleVisit();
-    this.setState({ scheduleModal: false });
+    this.setState({
+      scheduleModal: false,
+      selectedSlot: {},
+      selectedDate: "",
+      isSelectSlot: "",
+      noOfPeople: "",
+      noOfPeopleMax: "",
+    });
   };
   onOpenScheduleModal = () => {
     this.setState({ scheduleModal: true });
@@ -1294,7 +1323,7 @@ class Header extends Component {
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
-
+      this.setState({ isSendRecomended: true });
       this.handleSaveChatMessages(
         messageStringData,
         messagewhatsAppContent,
@@ -1457,7 +1486,7 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a onClick={this.handleChatModalOpen.bind(this)}>
+            <a onClick={this.handleChatModalOpen.bind(this)} style={{ display: this.state.chatAccess }}>
               <div className="position-relative">
                 <img src={ChatLogo} alt="logo" className="chatImg" />
                 <img
@@ -2617,8 +2646,17 @@ class Header extends Component {
                                   <img
                                     src={SendUp}
                                     alt="send"
-                                    className="send-up"
+                                    className="send-up float-none"
                                   />
+                                  {this.state.isSendRecomended ? (
+                                    <FontAwesomeIcon
+                                      icon={faCircleNotch}
+                                      className="circular-loader ml-2"
+                                      spin
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
                                 </button>
                               </div>
                             ) : null}
@@ -2893,8 +2931,17 @@ class Header extends Component {
                                   <img
                                     src={SendUp}
                                     alt="send"
-                                    className="send-up"
+                                    className="send-up float-none"
                                   />
+                                  {this.state.isSendRecomended ? (
+                                    <FontAwesomeIcon
+                                      icon={faCircleNotch}
+                                      className="circular-loader ml-2"
+                                      spin
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -3258,8 +3305,17 @@ class Header extends Component {
                                 <img
                                   src={SendUp}
                                   alt="send"
-                                  className="send-up"
+                                  className="send-up float-none"
                                 />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
                               </button>
                             </div>
                           </div>
@@ -3289,6 +3345,15 @@ class Header extends Component {
                                   alt="send"
                                   className="send-up"
                                 />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
                               </button>
                               <button
                                 className="butn-inv"
@@ -3516,8 +3581,17 @@ class Header extends Component {
                                 <img
                                   src={SendUp}
                                   alt="send"
-                                  className="send-up"
+                                  className="send-up float-none"
                                 />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
                               </button>
                             </div>
                           </div>
@@ -3589,6 +3663,15 @@ class Header extends Component {
                                   alt="send"
                                   className="send-up"
                                 />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
                               </button>
                             </div>
                           </div>
