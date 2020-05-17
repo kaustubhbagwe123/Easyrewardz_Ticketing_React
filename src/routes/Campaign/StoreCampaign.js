@@ -94,6 +94,10 @@ class StoreCampaign extends Component {
       insightShowImg: false,
       handleArrowImg: false,
       // expandedRowKeys: "",
+      smsDisable: false,
+      msngrDisable: false,
+      botDisable: false,
+      shareDisable: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -711,6 +715,9 @@ class StoreCampaign extends Component {
   }
 
   handleShareNowOpenModal() {
+    this.setState({
+      shareDisable: true,
+    });
     if (this.state.Respo_ChannelMessanger === true) {
       this.handleSendViaMessanger(this.state.customerModalDetails);
     } else if (this.state.Respo_ChannelBot === true) {
@@ -897,6 +904,9 @@ class StoreCampaign extends Component {
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
+    this.setState({
+      botDisable: true,
+    });
     let self = this;
     axios({
       method: "post",
@@ -942,6 +952,10 @@ class StoreCampaign extends Component {
             NotificationManager.error("Failed");
           }
         }
+        self.setState({
+          botDisable: false,
+          shareDisable: false,
+        });
       })
       .catch((response) => {
         console.log(response);
@@ -951,6 +965,9 @@ class StoreCampaign extends Component {
   ///handle Send Via SMS
   handleSendViaSMS(data) {
     debugger;
+    this.setState({
+      smsDisable: true,
+    });
     let self = this;
     axios({
       method: "post",
@@ -987,6 +1004,10 @@ class StoreCampaign extends Component {
             NotificationManager.error("SMS Send Failed.");
           }
         }
+        self.setState({
+          smsDisable: false,
+          shareDisable: false,
+        });
       })
       .catch((response) => {
         console.log(response);
@@ -995,6 +1016,9 @@ class StoreCampaign extends Component {
 
   /// Send Via Messanger data
   handleSendViaMessanger(data) {
+    this.setState({
+      msngrDisable: true,
+    });
     let self = this;
     axios({
       method: "post",
@@ -1030,6 +1054,10 @@ class StoreCampaign extends Component {
         } else {
           NotificationManager.error("Server temporarily not available.");
         }
+        self.setState({
+          msngrDisable: false,
+          shareDisable: false,
+        });
       })
       .catch((response) => {
         console.log(response);
@@ -2662,6 +2690,7 @@ class StoreCampaign extends Component {
                           ? ""
                           : "dis-btns"
                       }
+                      id={this.state.smsDisable ? "dis-sms" : ""}
                     >
                       <img className="ico" src={Sms1} alt="SMS Icon" />
                       SMS
@@ -2693,6 +2722,7 @@ class StoreCampaign extends Component {
                           ? ""
                           : "dis-btns"
                       }
+                      id={this.state.msngrDisable ? "dis-msngr" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Messanger
@@ -2709,6 +2739,7 @@ class StoreCampaign extends Component {
                           ? ""
                           : "dis-btns"
                       }
+                      id={this.state.botDisable ? "dis-bot" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Bot
@@ -2926,6 +2957,7 @@ class StoreCampaign extends Component {
               <label
                 className="shareviabtn"
                 onClick={this.handleShareNowOpenModal.bind(this)}
+                id={this.state.shareDisable ? "dis-share" : ""}
               >
                 Share Now
               </label>

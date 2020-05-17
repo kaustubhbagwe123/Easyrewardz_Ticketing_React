@@ -814,6 +814,12 @@
   opacity: 0.5;
   pointer-events: none;
 }
+#dis-sms,
+#dis-msngr,
+#dis-bot,
+#dis-share {
+  pointer-events: none;
+}
 .progressbar-lbl {
   color: #4a4a4a;
   font-family: Lato;
