@@ -611,7 +611,7 @@ class Header extends Component {
                 socket.on(
                   "91" +
                     ongoingChatsData[i].mobileNo +
-                    ongoingChatsData[i].programCode,
+                    (ongoingChatsData[i].programCode).toLowerCase(),
                   function(data) {
                     console.log("Message Received");
                     if ("91" + self.state.mobileNo === data[3]) {
