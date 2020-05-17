@@ -1269,6 +1269,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
