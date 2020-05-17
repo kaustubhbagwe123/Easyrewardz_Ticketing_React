@@ -1486,7 +1486,8 @@ table tr th:last-child {
 .lifetimevalue {
   background-color: #f2f5f8;
   border-radius: 10px;
-  margin: 20px 0 15px 0;
+  /* margin: 20px 0 15px 0; */
+  margin: 20px 0 0px 0;
 }
 .lifetimevalue h4 {
   color: #8694a0;
@@ -1505,6 +1506,7 @@ table tr th:last-child {
   margin: 0;
   padding: 18px 23px;
   height: calc(100% - 128px);
+  margin-top: 15px;
 }
 .keyinsights h4 {
   color: #8694a0;
@@ -1516,7 +1518,25 @@ table tr th:last-child {
   color: #828282;
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
+  margin-bottom: 0px;
+  max-height: 120px;
+  overflow: auto;
+  padding-right: 10px;
+}
+.keyinsights p::-webkit-scrollbar {
+  width: 4px;
+}
+.keyinsights p::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.keyinsights p::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.keyinsights p::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 .ki-al {
   margin: 20px 0 15px 0;
@@ -1527,13 +1547,15 @@ table tr th:last-child {
   border-radius: 10px;
   margin: 20px 0 0 0;
   padding: 18px 15px;
-  height: calc(100% - 33px);
+  /* height: calc(100% - 33px); */
+  height: calc(100% - 18px);
 }
 .productbox .tab-content {
   padding: 24px 0px 0;
 }
 .productbox .prodscro {
-  max-height: 210px;
+  /* max-height: 210px; */
+  max-height: 200px;
   overflow: auto;
   padding: 0 15px;
 }
@@ -2134,15 +2156,15 @@ table tr th:last-child {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
 }
 .ChecknoDataCamp {
-  text-align: center;
-  display: block;
+  /* text-align: center;
+  display: block; */
   font-weight: bold;
-  margin-top: 103px;
-}
-#insight-data {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  /* margin-top: 103px; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 11px;
 }
 .keyingsightdrp-invert {
   transform: rotate(180deg);
@@ -2192,7 +2214,8 @@ table tr th:last-child {
     font-size: 13px !important;
   }
   .ChecknoDataCamp {
-    margin: 30px 0;
+    /* margin: 30px 0; */
+    margin: 0;
   }
   .lt-single td {
     display: table-cell;
@@ -2431,6 +2454,8 @@ table tr th:last-child {
   .keyinsights p {
     font-size: 12px;
     margin-bottom: 5px;
+    padding-right: 0;
+    max-height: initial;
   }
   .productbox .nav-tabs .nav-link.active {
     font-size: 13px;
@@ -2458,6 +2483,10 @@ table tr th:last-child {
   .productbox {
     padding: 18px 20px;
     height: auto;
+    min-height: 80px;
+  }
+  .lt-single {
+    margin-bottom: 15px;
   }
   .keyinsights {
     padding: 18px 20px;
@@ -2774,6 +2803,11 @@ table tr th:last-child {
   }
   .productbox .nav {
     margin-bottom: 20px;
+  }
+  #insight-data {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 /* ------------------Campain Css End ------------------------- */

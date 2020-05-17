@@ -80,7 +80,8 @@ class StoreModule extends Component {
       isShowProgress: false,
       isATOZ: true,
       itemData: [],
-      editCampSettingModal: false,
+      editCampChannelModal: false,
+      campaignChannelData: {},
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -179,7 +180,7 @@ class StoreModule extends Component {
   }
 
   handleEditCampSettingModal() {
-    this.setState({ editCampSettingModal: false });
+    this.setState({ editCampChannelModal: false });
   }
 
   handleCampaignButton() {
@@ -312,6 +313,7 @@ class StoreModule extends Component {
     this.handleClaimTabData();
     this.handleCampaignNameList();
     this.handleCampaignScriptGridData();
+    this.handleCampaignChannelGridData();
   }
 
   setClaimTabData = (e) => {
@@ -375,13 +377,13 @@ class StoreModule extends Component {
     });
   }
 
-  EditCampaignSetting(individualData) {
+  EditCampaignChannel(individualData) {
     debugger;
     this.setState({
-      editCampSettingModal: true,
-      updateIndiCampaignId: individualData.campaignNameID,
-      updateScriptDetails: individualData.campaignScript,
-      updateCampaignId: individualData.campaignID,
+      editCampChannelModal: true,
+      // updateIndiCampaignId: individualData.campaignNameID,
+      // updateScriptDetails: individualData.campaignScript,
+      // updateCampaignId: individualData.campaignID,
     });
   }
 
@@ -400,6 +402,31 @@ class StoreModule extends Component {
         if (status === "Success" && data) {
           self.setState({
             campaignName: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  handleCampaignChannelGridData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            campaignChannelData: data.campaignSettingTimer,
+          });
+        } else {
+          self.setState({
+            campaignChannelData: {},
           });
         }
       })
@@ -1038,6 +1065,68 @@ class StoreModule extends Component {
       }
     }
   }
+  /// handle toggle change data
+  CampChannelSmsFlageOnchange = (id) => {
+    debugger;
+    var CampId = id.target.id;
+    if (CampId === "ckSmsCamp1") {
+      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
+        .smsFlag;
+    } else if (CampId === "ckWhatCamp2") {
+      this.state.campaignChannelData.messengerFlag = !this.state
+        .campaignChannelData.messengerFlag;
+    } else if (CampId === "ckChatCamp3") {
+      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
+        .botFlag;
+    } else if (CampId === "ckEmailCamp4") {
+      this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
+        .emailFlag;
+    }
+
+    this.setState({ campaignChannelData: this.state.campaignChannelData });
+  };
+
+  /// update campaign change data
+  CampCannelOnChange(e) {
+    debugger;
+    const { name, value } = e.target;
+    var campaignChannelData = this.state.campaignChannelData;
+    campaignChannelData[name] = value;
+    this.setState({ campaignChannelData });
+  }
+
+  handleUpdateCampChannelData() {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
+      headers: authHeader(),
+      data: {
+        ID: this.state.campaignChannelData.id,
+        MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
+        EnableClickAfterValue: this.state.campaignChannelData
+          .enableClickAfterValue,
+        EnableClickAfterDuration: this.state.campaignChannelData
+          .enableClickAfterDuration,
+        SmsFlag: this.state.campaignChannelData.smsFlag,
+        EmailFlag: this.state.campaignChannelData.emailFlag,
+        MessengerFlag: this.state.campaignChannelData.messengerFlag,
+        BotFlag: this.state.campaignChannelData.botFlag,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Campaign Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
 
   render() {
     return (
@@ -1551,6 +1640,7 @@ class StoreModule extends Component {
                               },
                             ]}
                             resizable={false}
+                            minRows={2}
                             defaultPageSize={5}
                             showPagination={true}
                           />
@@ -1854,216 +1944,176 @@ class StoreModule extends Component {
                     onClick={this.handleCampaignButton}
                   />
                 </Tab>
-                <Tab label="Campaign Setting">
+                <Tab label="Campaign Channel">
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
-                        <div className="table-cntr table-height alertsTable align-table">
-                          <ReactTable
-                            data={this.state.campaignScriptData}
-                            columns={[
-                              {
-                                Header: (
-                                  <span
-                                    className={
-                                      this.state.sortHeader === "Campaign Name"
-                                        ? "table-column sort-column"
-                                        : "table-column"
-                                    }
-                                    onClick={this.StatusOpenModel.bind(
-                                      this,
-                                      "campaignName",
-                                      "Campaign Name"
-                                    )}
-                                  >
-                                    Campaign Name
-                                    <FontAwesomeIcon
-                                      icon={
-                                        this.state.isATOZ == false &&
-                                        this.state.sortHeader ===
-                                          "Campaign Name"
-                                          ? faCaretUp
-                                          : faCaretDown
-                                      }
-                                    />
-                                  </span>
-                                ),
-                                sortable: false,
-                                accessor: "campaignName",
-                              },
-                              {
-                                Header: "Campaign Script",
-                                accessor: "campaignScriptLess",
-                                className: "communication-labelHeader",
-                                sortable: false,
-                                Cell: (row) => {
-                                  var ids = row.original["id"];
-                                  return (
-                                    <div>
-                                      <span className="d-flex align-items-end">
-                                        <span className="campaign-script-less">
-                                          {/* {row.original.campaignScriptLess} */}
-                                          {row.original.campaignScript}
-                                        </span>
-                                        <Popover
-                                          content={
-                                            <div className="store-popDiv">
-                                              <label className="storePop-lbl">
-                                                {row.original.campaignScript}
-                                              </label>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                        >
-                                          <img
-                                            className="info-icon-cp"
-                                            src={BlackInfoIcon}
-                                            alt="info-icon"
-                                            id={ids}
-                                          />
-                                        </Popover>
-                                      </span>
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>CAMPAIGN CHANNEL</h3>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        SMS
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckSmsCamp1"
+                                        name="allModules"
+                                        attrIds="ckSmsCamp1"
+                                        checked={
+                                          this.state.campaignChannelData.smsFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckSmsCamp1"
+                                        className="cr cr-float-auto"
+                                      ></label>
                                     </div>
-                                  );
-                                },
-                              },
-                              {
-                                id: "createdBy",
-                                sortable: false,
-                                Header: (
-                                  <span
-                                    className={
-                                      this.state.sortHeader === "Department"
-                                        ? "table-column sort-column"
-                                        : "table-column"
-                                    }
-                                    onClick={this.StatusOpenModel.bind(
-                                      this,
-                                      "createdBy",
-                                      "Created by"
-                                    )}
-                                  >
-                                    Created by
-                                    <FontAwesomeIcon
-                                      icon={
-                                        this.state.isATOZ == false &&
-                                        this.state.sortHeader === "Created by"
-                                          ? faCaretUp
-                                          : faCaretDown
-                                      }
-                                    />
-                                  </span>
-                                ),
-                                Cell: (row) => {
-                                  var ids = row.original["id"];
-                                  return (
-                                    <div>
-                                      <span>
-                                        {row.original.createdBy}
-                                        <Popover
-                                          content={
-                                            <>
-                                              <div>
-                                                <b>
-                                                  <p className="title">
-                                                    Created By:{" "}
-                                                    {row.original.createdBy}
-                                                  </p>
-                                                </b>
-                                                <p className="sub-title">
-                                                  Created Date:{" "}
-                                                  {row.original.createdOn}
-                                                </p>
-                                              </div>
-                                              <div>
-                                                <b>
-                                                  <p className="title">
-                                                    Updated By:{" "}
-                                                    {row.original.modifiedBy}
-                                                  </p>
-                                                </b>
-                                                <p className="sub-title">
-                                                  Updated Date:{" "}
-                                                  {row.original.modifiedOn}
-                                                </p>
-                                              </div>
-                                            </>
-                                          }
-                                          placement="bottom"
-                                        >
-                                          <img
-                                            className="info-icon-cp"
-                                            src={BlackInfoIcon}
-                                            alt="info-icon"
-                                            id={ids}
-                                          />
-                                        </Popover>
-                                      </span>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Whatsapp
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckWhatCamp2"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .messengerFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckWhatCamp2"
+                                        className="cr cr-float-auto"
+                                      ></label>
                                     </div>
-                                  );
-                                },
-                                // accessor: "createdBy"
-                              },
-                              {
-                                Header: (
-                                  <span
-                                    className={
-                                      this.state.sortHeader === "Status"
-                                        ? "table-column sort-column"
-                                        : "table-column"
-                                    }
-                                    onClick={this.StatusOpenModel.bind(
-                                      this,
-                                      "status",
-                                      "Status"
-                                    )}
-                                  >
-                                    Status
-                                    <FontAwesomeIcon
-                                      icon={
-                                        this.state.isATOZ == false &&
-                                        this.state.sortHeader === "Status"
-                                          ? faCaretUp
-                                          : faCaretDown
-                                      }
-                                    />
-                                  </span>
-                                ),
-                                sortable: false,
-                                accessor: "status",
-                                width: 110,
-                                Cell: (row) => {
-                                  return row.original.status
-                                    ? "Active"
-                                    : "Inactive";
-                                },
-                              },
-                              {
-                                Header: "Actions",
-                                // accessor: "action",
-                                sortable: false,
-                                Cell: (row) => {
-                                  return (
-                                    <span>
-                                      <button
-                                        className="react-tabel-button editre"
-                                        id="p-edit-pop-2"
-                                        onClick={this.EditCampaignSetting.bind(
-                                          this,
-                                          row.original
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Chatbot
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckChatCamp3"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.botFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckChatCamp3"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Email
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckEmailCamp4"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .emailFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckEmailCamp4"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <table className="cmpaign-channel-table">
+                                  <tr>
+                                    <td>
+                                      Max. click allowed on any channel CTA
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="maxClickAllowed"
+                                        value={
+                                          this.state.campaignChannelData
+                                            .maxClickAllowed
+                                        }
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                    </td>
+                                    <td>Click</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Click will be enabled after</td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterValue
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                    </td>
+                                    <td>
+                                      <select
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterDuration
+                                        }
+                                        name="enableClickAfterDuration"
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
                                         )}
                                       >
-                                        EDIT
-                                      </button>
-                                    </span>
-                                  );
-                                },
-                              },
-                            ]}
-                            resizable={false}
-                            defaultPageSize={5}
-                            showPagination={true}
-                          />
+                                        <option value="M">Min</option>
+                                        <option value="H">Hr</option>
+                                      </select>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleUpdateCampChannelData.bind(
+                                    this
+                                  )}
+                                >
+                                  UPDATE
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2145,13 +2195,57 @@ class StoreModule extends Component {
             </Modal>
             <Modal
               className="EditModa"
-              show={this.state.editCampSettingModal}
+              show={this.state.editCampChannelModal}
               onHide={this.handleEditCampSettingModal.bind(this)}
             >
               <div className="edtpadding">
                 <label className="popover-header-text">
                   EDIT CAMPAIGN SETTING
                 </label>
+                <div className="module-switch-cntr">
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">SMS</label>
+                      <input type="checkbox" id="new1" name="allModules" />
+                      <label
+                        htmlFor="new1"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">
+                        Whatsapp
+                      </label>
+                      <input type="checkbox" id="new2" name="allModules" />
+                      <label
+                        htmlFor="new2"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">Chatbot</label>
+                      <input type="checkbox" id="new3" name="allModules" />
+                      <label
+                        htmlFor="new3"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">Email</label>
+                      <input type="checkbox" id="new4" name="allModules" />
+                      <label
+                        htmlFor="new4"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </Modal>
           </div>

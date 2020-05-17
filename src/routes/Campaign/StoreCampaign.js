@@ -860,16 +860,18 @@ class StoreCampaign extends Component {
           var CampChildData = self.state.CampChildTableData;
 
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-            CampChildData.push(data.campaignCustomerModel[i]);
+            var filtd = CampChildData.filter(
+              (d) => d.id === data.campaignCustomerModel[i].id
+            );
+            if (filtd.length === 0) {
+              CampChildData.push(data.campaignCustomerModel[i]);
+            }
           }
-          // var TotalGridRecord = self.state.childTotalGridRecord;
-          // TotalGridRecord.push(data.campaignCustomerCount);
-
           self.setState({
             CampChildTableData: CampChildData,
             ChildTblLoading: false,
             loading: false,
-            childTotalGridRecord: data.campaignCustomerCount,
+            // childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -1259,13 +1261,17 @@ class StoreCampaign extends Component {
         if (message == "Success") {
           var CampChildData = self.state.CampChildTableData;
           for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-            CampChildData.push(data.campaignCustomerModel[i]);
+            var filtd = CampChildData.filter(
+              (d) => d.id === data.campaignCustomerModel[i].id
+            );
+            if (filtd.length === 0) {
+              CampChildData.push(data.campaignCustomerModel[i]);
+            }
           }
-          // var TotalGridRecord = self.state.childTotalGridRecord;
-          // TotalGridRecord.push(data.campaignCustomerCount);
+
           self.setState({
             CampChildTableData: CampChildData,
-            childTotalGridRecord: data.campaignCustomerCount,
+            // childTotalGridRecord: data.campaignCustomerCount,
             filterCustomerNumber: false,
             // filterCustNO: "",
           });
@@ -2068,7 +2074,8 @@ class StoreCampaign extends Component {
                   />
                   <Pagination
                     currentPage={this.state.childCurrentPage}
-                    totalSize={this.state.childTotalGridRecord}
+                    // totalSize={this.state.childTotalGridRecord}
+                    totalSize={row.customerCount}
                     sizePerPage={this.state.ChildPostsPerPage}
                     changeCurrentPage={this.PaginationOnChange}
                     theme="bootstrap"
