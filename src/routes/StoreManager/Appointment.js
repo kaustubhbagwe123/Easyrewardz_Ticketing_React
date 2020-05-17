@@ -185,7 +185,7 @@ class Appointment extends Component {
   render() {
     const { Option } = Select;
     return (
-      <div className="custom-tableak custom-table-ck">
+      <div className="custom-tableak custom-table-ck custom-table-bg">
         <div className="custom-tabs">
           <div
             className={
@@ -240,15 +240,18 @@ class Appointment extends Component {
               {
                 title: "Date",
                 dataIndex: "appointmentDate",
+                width: "20%",
               },
               {
                 title: "Time",
                 dataIndex: "timeSlot",
+                width: "20%",
               },
               {
                 title: "Appointments",
                 dataIndex: "nOofPeople",
                 className: "appointment-desktop",
+                width: "20%",
               },
               {
                 title: "Appt.",
@@ -259,6 +262,7 @@ class Appointment extends Component {
                 title: "Max Capacity",
                 dataIndex: "maxCapacity",
                 className: "appointment-desktop",
+                width: "20%",
               },
               {
                 title: "Max Cap.",
@@ -268,6 +272,7 @@ class Appointment extends Component {
               {
                 title: "Actions",
                 // dataIndex: "orderPricePaid"
+                width: "20%",
               },
             ]}
             expandedRowRender={(row) => {
@@ -279,16 +284,19 @@ class Appointment extends Component {
                       title: "Customer Name",
                       dataIndex: "customerName",
                       className: "appointment-desktop",
+                      width: "20%",
                     },
                     {
                       title: "Mobile No.",
                       dataIndex: "customerNumber",
                       className: "appointment-desktop",
+                      width: "20%",
                     },
                     {
                       title: "No. of People",
                       dataIndex: "nOofPeople",
                       className: "appointment-desktop",
+                      width: "20%",
                     },
                     {
                       title: "Customer Name",
@@ -312,6 +320,7 @@ class Appointment extends Component {
                     },
                     {
                       title: "Status",
+                      width: "20%",
                       render: (row, item) => {
                         if (item.status !== "") {
                           return (
@@ -442,6 +451,7 @@ class Appointment extends Component {
                     },
                     {
                       title: "Actions",
+                      width: "20%",
                       render: (row, item) => {
                         if (item.status === "") {
                           return (

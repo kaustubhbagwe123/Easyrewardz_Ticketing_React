@@ -128,6 +128,7 @@ class Header extends Component {
       AgentID: 0,
       searchChat: "",
       isSendRecomended: false,
+      chatAccess: "none"
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -283,6 +284,14 @@ class Header extends Component {
         ) {
           this.setState({
             notificationAccess: "block",
+          });
+        }
+        else if (
+          data[i].moduleName === "Chat" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({
+            chatAccess: "block",
           });
         }
       }
@@ -1477,7 +1486,7 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a onClick={this.handleChatModalOpen.bind(this)}>
+            <a onClick={this.handleChatModalOpen.bind(this)} style={{ display: this.state.chatAccess }}>
               <div className="position-relative">
                 <img src={ChatLogo} alt="logo" className="chatImg" />
                 <img
