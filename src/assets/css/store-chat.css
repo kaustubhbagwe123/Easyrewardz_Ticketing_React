@@ -713,6 +713,7 @@ p {
   color: #2aa2fd;
   width: 100%;
   cursor: pointer;
+  word-break: break-all;
 }
 .chat-product-img {
   width: 100%;
@@ -1262,7 +1263,7 @@ p {
 }
 /* Responsive ends */
 
-.search-customerChatSrch{
+.search-customerChatSrch {
   width: 88%;
   height: 43px;
   padding: 10px;
@@ -1285,7 +1286,7 @@ p {
   border-radius: 0px 5px 5px 0px !important;
 }
 
-.chat-trail-img .chat-initial{
+.chat-trail-img .chat-initial {
   background: #ddf6fc;
   display: block;
   height: 45px;
