@@ -1414,10 +1414,13 @@ class ClaimCategoryMaster extends Component {
     debugger;
     let self = this;
     if (
-      this.state.editCategory.brandID !== "" &&
-      this.state.editCategory.categoryID.length>0 &&
-      this.state.editCategory.subCategoryID.length>0 &&
-      this.state.editCategory.issueTypeID.length>0
+      (this.state.editCategory.brandID !== "" &&
+        (this.state.editCategory.categoryID.length > 0 ||
+          this.state.editCategory.categoryID !== "") &&
+        (this.state.editCategory.subCategoryID.length > 0 ||
+          this.state.editCategory.subCategoryID !== "") &&
+        this.state.editCategory.issueTypeID.length > 0) ||
+      this.state.editCategory.issueTypeID !== ""
     ) {
       var activeStatus = 0;
       var categorydata = 0;
@@ -1480,9 +1483,9 @@ class ClaimCategoryMaster extends Component {
               ListOfSubCate: "",
               ListOfIssue: "",
               selectStatus: 0,
-              categoryDropData:[],
-              SubCategoryDropData:[],
-              ListOfIssueData:[],
+              categoryDropData: [],
+              SubCategoryDropData: [],
+              ListOfIssueData: [],
               editBrandCompulsory: "",
               editCategoryCompulsory: "",
               editSubCatCompulsory: "",
