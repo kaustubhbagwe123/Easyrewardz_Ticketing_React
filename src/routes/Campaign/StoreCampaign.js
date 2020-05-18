@@ -2422,10 +2422,9 @@ class StoreCampaign extends Component {
                               {this.state.campaignrecommended !== null &&
                                 this.state.campaignrecommended.map(
                                   (item, j) => {
-                                    debugger
+                                    debugger;
                                     var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
-                                    // var FinalSize = item.size.replace(/<[^>]+>/g, "")
-                                    
+                                    var FinalSize = item.size;
                                     return (
                                       <td key={j}>
                                         {item.imageURL !== "" ? (
@@ -2506,80 +2505,92 @@ class StoreCampaign extends Component {
                                                           <label>Sizes:</label>
                                                         </td>
                                                         <td>
-                                                          <ul className="sizes">
-                                                            <li>
-                                                              <a
-                                                                className={
-                                                                  item.size ===
-                                                                  "6"
-                                                                    ? ""
-                                                                    : "active"
-                                                                }
-                                                              >
-                                                                6
-                                                              </a>
-                                                            </li>
-                                                            <li>
-                                                              <a
-                                                                className={
-                                                                  item.size ===
-                                                                  "7"
-                                                                    ? ""
-                                                                    : "active"
-                                                                }
-                                                              >
-                                                                7
-                                                              </a>
-                                                            </li>
-                                                            <li>
-                                                              <a
-                                                                className={
-                                                                  item.size ===
-                                                                  "8"
-                                                                    ? ""
-                                                                    : "active"
-                                                                }
-                                                              >
-                                                                8
-                                                              </a>
-                                                            </li>
-                                                            <li>
-                                                              <a
-                                                                className={
-                                                                  item.size ===
-                                                                  "9"
-                                                                    ? ""
-                                                                    : "active"
-                                                                }
-                                                              >
-                                                                9
-                                                              </a>
-                                                            </li>
-                                                            <li>
-                                                              <a
-                                                                className={
-                                                                  item.size ===
-                                                                  "10"
-                                                                    ? ""
-                                                                    : "active"
-                                                                }
-                                                              >
-                                                                10
-                                                              </a>
-                                                            </li>
-                                                            <li>
-                                                              <a
-                                                                className={
-                                                                  item.size ===
-                                                                  "11"
-                                                                    ? ""
-                                                                    : "active"
-                                                                }
-                                                              >
-                                                                11
-                                                              </a>
-                                                            </li>
-                                                          </ul>
+                                                          {isNaN(
+                                                            parseInt(FinalSize)
+                                                          ) === false ? (
+                                                            <ul className="sizes">
+                                                              <li>
+                                                                <a
+                                                                  className={
+                                                                    item.size ===
+                                                                    "6"
+                                                                      ? ""
+                                                                      : "active"
+                                                                  }
+                                                                >
+                                                                  6
+                                                                </a>
+                                                              </li>
+                                                              <li>
+                                                                <a
+                                                                  className={
+                                                                    item.size ===
+                                                                    "7"
+                                                                      ? ""
+                                                                      : "active"
+                                                                  }
+                                                                >
+                                                                  7
+                                                                </a>
+                                                              </li>
+                                                              <li>
+                                                                <a
+                                                                  className={
+                                                                    item.size ===
+                                                                    "8"
+                                                                      ? ""
+                                                                      : "active"
+                                                                  }
+                                                                >
+                                                                  8
+                                                                </a>
+                                                              </li>
+                                                              <li>
+                                                                <a
+                                                                  className={
+                                                                    item.size ===
+                                                                    "9"
+                                                                      ? ""
+                                                                      : "active"
+                                                                  }
+                                                                >
+                                                                  9
+                                                                </a>
+                                                              </li>
+                                                              <li>
+                                                                <a
+                                                                  className={
+                                                                    item.size ===
+                                                                    "10"
+                                                                      ? ""
+                                                                      : "active"
+                                                                  }
+                                                                >
+                                                                  10
+                                                                </a>
+                                                              </li>
+                                                              <li>
+                                                                <a
+                                                                  className={
+                                                                    item.size ===
+                                                                    "11"
+                                                                      ? ""
+                                                                      : "active"
+                                                                  }
+                                                                >
+                                                                  11
+                                                                </a>
+                                                              </li>
+                                                            </ul>
+                                                          ) : (
+                                                            <ul>
+                                                              <li>
+                                                                <a>
+                                                                  {item.size}
+                                                                </a>
+                                                              </li>
+                                                            </ul>
+                                                          )}
                                                         </td>
                                                       </tr>
                                                     </tbody>
