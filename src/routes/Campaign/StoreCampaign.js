@@ -25,6 +25,7 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
+import ReactHtmlParser from "react-html-parser";
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -815,13 +816,13 @@ class StoreCampaign extends Component {
     if (data) {
       keys.push(row.campaignID);
       this.state.childCurrentPage = 1;
-      this.state.filterCustNO="";
+      this.state.filterCustNO = "";
       setTimeout(() => {
         this.setState({
           childCurrentPage: 1,
           childTotalGridRecord: 0,
           expandedRowKeys: keys,
-          filterCustNO:""
+          filterCustNO: "",
         });
       }, 50);
     }
@@ -2421,7 +2422,10 @@ class StoreCampaign extends Component {
                               {this.state.campaignrecommended !== null &&
                                 this.state.campaignrecommended.map(
                                   (item, j) => {
+                                    debugger
                                     var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
+                                    // var FinalSize = item.size.replace(/<[^>]+>/g, "")
+                                    
                                     return (
                                       <td key={j}>
                                         {item.imageURL !== "" ? (
@@ -2432,7 +2436,7 @@ class StoreCampaign extends Component {
                                                 <div className="productdesc">
                                                   <h4>{FullProductName}</h4>
                                                   <p>
-                                                    Product Code -{" "}
+                                                    Product Code -
                                                     {item.itemCode}
                                                   </p>
                                                   <table>
@@ -2520,8 +2524,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "7"
-                                                                  ? ""
-                                                                  : "active"
+                                                                    ? ""
+                                                                    : "active"
                                                                 }
                                                               >
                                                                 7
@@ -2532,8 +2536,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "8"
-                                                                  ? ""
-                                                                  : "active"
+                                                                    ? ""
+                                                                    : "active"
                                                                 }
                                                               >
                                                                 8
@@ -2544,8 +2548,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "9"
-                                                                  ? ""
-                                                                  : "active"
+                                                                    ? ""
+                                                                    : "active"
                                                                 }
                                                               >
                                                                 9
@@ -2556,8 +2560,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "10"
-                                                                  ? ""
-                                                                  : "active"
+                                                                    ? ""
+                                                                    : "active"
                                                                 }
                                                               >
                                                                 10
@@ -2568,8 +2572,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "11"
-                                                                  ? ""
-                                                                  : "active"
+                                                                    ? ""
+                                                                    : "active"
                                                                 }
                                                               >
                                                                 11
