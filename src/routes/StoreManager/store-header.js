@@ -129,7 +129,8 @@ class Header extends Component {
       searchChat: "",
       isSendRecomended: false,
       chatAccess: "none",
-      noProductFound: ""
+      noProductFound: "",
+      remainingCount: "100 characters remaining..."
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -804,6 +805,7 @@ class Header extends Component {
               messageSuggestionData: [],
               cardModal: false,
               selectedCard: 0,
+              remainingCount: "100 characters remaining..."
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
@@ -1069,8 +1071,17 @@ class Header extends Component {
     // var message = evt.editor.getData();
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
     // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
+    var remLength = 0;
+    remLength = 100 - parseInt(message.length);
+    if(remLength < 0)
+     {
+      message = message.substring(0, 100);
+      return false;
+     }
+
     this.setState({
       message,
+      remainingCount: remLength + " characters remaining..."
       // messageSuggestion,
     });
   };
@@ -2368,6 +2379,7 @@ class Header extends Component {
                               value={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                             ></textarea>
+                            <p className="cls-charcount">{this.state.remainingCount}</p>
                             {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
@@ -2931,6 +2943,7 @@ class Header extends Component {
                                         style={{
                                           color: "red",
                                           marginBottom: "0px",
+                                          width: "131px"
                                         }}
                                       >
                                         {this.state.noOfPeopleMax}
@@ -3146,6 +3159,7 @@ class Header extends Component {
                               value={this.state.message}
                               onChange={this.handleOnChangeCKEditor.bind(this)}
                             ></textarea>
+                            <p className="cls-charcount" style={{fontSize: "x-small"}}>{this.state.remainingCount}</p>
 
                             {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
@@ -3580,6 +3594,16 @@ class Header extends Component {
                                         />
                                       </button>
                                     ) : null}
+                                    {this.state.isSelectSlot !== "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.isSelectSlot}
+                                      </p>
+                                    )}
                                 </div>
                                 <div>
                                   <label className="s-lable">
@@ -3592,6 +3616,17 @@ class Header extends Component {
                                       this
                                     )}
                                   />
+                                  {this.state.noOfPeopleMax !== "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                          width: "131px"
+                                        }}
+                                      >
+                                        {this.state.noOfPeopleMax}
+                                      </p>
+                                    )}
                                 </div>
                               </div>
                             </div>
