@@ -406,12 +406,14 @@ p {
   align-items: flex-start;
   margin-bottom: 20px;
   margin-right: 10px;
+  max-width: 70%;
 }
 .chatcontentDiv .chat-trail-cntr:last-child {
   margin-bottom: 0px;
 }
 .chat-trail-cntr-right {
   flex-direction: row-reverse;
+  margin-left: auto;
 }
 .chat-trail-chat-cntr {
   margin-top: 15px;
@@ -1029,6 +1031,7 @@ p {
   }
   .chat-trail-cntr {
     margin-bottom: 10px;
+    max-width: 80%;
   }
   .chatcontentDiv {
     margin-right: 5px;
