@@ -128,7 +128,7 @@ class Header extends Component {
       AgentID: 0,
       searchChat: "",
       isSendRecomended: false,
-      chatAccess: "none"
+      chatAccess: "none",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -285,8 +285,7 @@ class Header extends Component {
           this.setState({
             notificationAccess: "block",
           });
-        }
-        else if (
+        } else if (
           data[i].moduleName === "Chat" &&
           data[i].modulestatus === true
         ) {
@@ -1486,7 +1485,10 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a onClick={this.handleChatModalOpen.bind(this)} style={{ display: this.state.chatAccess }}>
+            <a
+              onClick={this.handleChatModalOpen.bind(this)}
+              style={{ display: this.state.chatAccess }}
+            >
               <div className="position-relative">
                 <img src={ChatLogo} alt="logo" className="chatImg" />
                 <img
@@ -1789,7 +1791,7 @@ class Header extends Component {
           </div>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-lg-3 p-0">
+              <div className="col-lg-4 p-0">
                 <div className="chatbot-left">
                   <div class="chat-cntr">
                     <input
@@ -2158,7 +2160,7 @@ class Header extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-9 p-0">
+              <div className="col-lg-8 p-0">
                 <div className="chatbot-right">
                   <div className="row" style={{ margin: "0" }}>
                     <div className="chatdivtitle">
@@ -2468,7 +2470,7 @@ class Header extends Component {
                                 onClick={this.handleMessageSuggestion.bind(
                                   this
                                 )}
-                                title={"Send"}
+                                title={"Search"}
                               >
                                 {/* <img src={Assign} alt="send img" /> */}
                                 <img src={SuggSearch} alt="send img" />
@@ -2536,11 +2538,12 @@ class Header extends Component {
                               </span>
                             </div>
                           </div>
-                          <div className="container">
+                          <div className="container p-0">
                             <div
                               className="row product-card"
                               style={{
-                                height: !this.state.isDownbtn ? "600px" : "",
+                                height: !this.state.isDownbtn ? "100%" : "",
+                                maxHeight: !this.state.isDownbtn ? "600px" : "",
                               }}
                             >
                               {this.state.searchCardData !== null &&
@@ -2625,7 +2628,7 @@ class Header extends Component {
                                 })}
                             </div>
                             {this.state.searchCardData.length > 0 ? (
-                              <div className="row">
+                              <div className="row m-0">
                                 <button
                                   className="storeUpbtn"
                                   onClick={this.handleDownButtonClick.bind(
@@ -2710,14 +2713,8 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="schedule-visit-tab"
                         >
-                          <div
-                            className="row"
-                            style={{
-                              marginLeft: "5px",
-                              marginTop: "10px",
-                            }}
-                          >
-                            <div className="col-md-8 schedule-left-cntr">
+                          <div className="row">
+                            <div className="col-md-7 schedule-left-cntr">
                               {this.state.timeSlotData !== null
                                 ? this.state.timeSlotData.map((item, i) => {
                                     return (
@@ -2855,7 +2852,7 @@ class Header extends Component {
                                   })
                                 : null}
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-5">
                               <div className="schedule-right-outer-cntr">
                                 <div className="schedule-right-cntr">
                                   <div>
@@ -2922,8 +2919,8 @@ class Header extends Component {
                                 <button
                                   className={
                                     this.state.isSendClick
-                                      ? "butn ml-auto isSendClick-dsle"
-                                      : "butn ml-auto"
+                                      ? "butn ml-auto mt-4 isSendClick-dsle"
+                                      : "butn ml-auto mt-4"
                                   }
                                   onClick={this.handleScheduleVisit.bind(this)}
                                 >
@@ -3175,7 +3172,7 @@ class Header extends Component {
                                 onClick={this.handleMessageSuggestion.bind(
                                   this
                                 )}
-                                title={"Send"}
+                                title={"Search"}
                               >
                                 {/* <img src={Assign} alt="send img" /> */}
                                 <img src={SuggSearch} alt="send img" />

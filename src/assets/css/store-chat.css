@@ -15,7 +15,8 @@ p {
   background-color: rgba(77, 92, 116, 0.6);
 }
 #chat-popup-overlay .styles_modal__gNwvD {
-  max-width: 100%;
+  /* max-width: 100%; */
+  max-width: 85%;
   width: 100%;
   padding: 0;
   /* height: calc(100vh - 40px);
@@ -358,7 +359,7 @@ p {
   align-items: flex-end;
 }
 .searchtxt-new {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   margin-bottom: 10px;
 }
 .no-record {
@@ -406,7 +407,7 @@ p {
   align-items: flex-start;
   margin-bottom: 20px;
   margin-right: 10px;
-  max-width: 70%;
+  max-width: 80%;
 }
 .chatcontentDiv .chat-trail-cntr:last-child {
   margin-bottom: 0px;
@@ -442,7 +443,7 @@ p {
 .butn-inv {
   font-weight: 700;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 14px;
   height: 40px;
   padding: 6px 10px;
   padding-left: 15px;
@@ -517,8 +518,9 @@ p {
 
 /* recommended list starts */
 .recommended-cntr {
-  margin-left: 20px;
-  margin-top: 15px;
+  /* margin-left: 20px; */
+  /* margin-top: 15px; */
+  margin-top: 6px;
 }
 .recommended-cntr .send-up {
   margin-left: 25px;
@@ -549,19 +551,19 @@ p {
 /* payment link starts */
 .payment-link-butn {
   float: right;
-  margin-right: 18px;
+  /* margin-right: 18px; */
   margin-top: 30px;
 }
 .payment-details {
-  margin-left: 17px;
-  padding-top: 5px;
+  /* margin-left: 17px; */
+  /* padding-top: 5px; */
 }
 .payment-details span {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 .payment-details label {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #000;
   display: block;
@@ -574,7 +576,8 @@ p {
 /* Deepak CSS starts */
 .chattitlelbl {
   padding: 15px;
-  font-size: 20px;
+  font-size: 15px;
+  /* font-size: 20px; */
   font-weight: bold;
   color: #2561a8;
 }
@@ -607,26 +610,35 @@ p {
   height: 40%;
   width: 100%;
 }
+.chatcontentdivtab .tab-content {
+  padding-top: 18px;
+  padding-bottom: 0;
+}
 .chatcontentdivtab .nav-tabs .nav-link.active {
   color: #fff;
   background-color: #2561a8;
 }
 .chatcontentdivtab .nav-tabs .nav-link {
   color: #000000;
-  border: 2px solid #2561a8;
+  border: 1px solid #2561a8;
   box-shadow: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: #fff;
   font-weight: 500;
+  font-size: 11px;
+  padding: 9px 15px;
 }
 .chatcontentdivtab .nav-tabs {
   border: none;
 }
 .chatcontentdivtab .nav-item {
-  margin-left: 20px;
+  margin-right: 10px;
+}
+.chatcontentdivtab ul .nav-item:last-child {
+  margin-right: 0px;
 }
 .message-div {
-  margin: 20px;
+  /* margin: 20px; */
   position: relative;
 }
 .chatcontentdivtab .cke_contents {
@@ -683,11 +695,12 @@ p {
 }
 .searchtxt-new .search-customerAddSrch {
   background-color: #ecf2f4;
-  width: 92%;
+  width: 96%;
   height: 43px;
   padding: 10px;
   border: none;
   padding-left: 15px;
+  margin-left: 0;
 }
 .bkcprdt {
   background-color: #f3f3f3;
@@ -734,6 +747,7 @@ p {
   margin-top: 10px;
   height: 30px;
   padding: 0;
+  transform: translateX(50%);
 }
 .product-card {
   height: 138px;
@@ -786,7 +800,7 @@ p {
 .schedule-btn-cntr {
   display: flex;
   flex-wrap: wrap;
-  margin-left: -7px;
+  margin-left: -5px;
 }
 .schedule-btn-cntr button {
   cursor: pointer;
@@ -794,12 +808,13 @@ p {
 .schedule-btn-cntr button,
 .select-slot-cntr,
 .schedule-right-cntr input {
-  font-size: 12px;
+  font-size: 10px;
   position: relative;
-  padding: 6px 24px 6px 8px;
-  margin: 0 7px;
+  padding: 6px 24px 6px 6px;
+  margin: 0 5px;
   margin-top: 14px;
-  flex: 0 1 22%;
+  /* flex: 0 1 22%; */
+  flex: 0 1 29%;
   border-radius: 3px;
   min-width: auto;
 }
@@ -841,6 +856,7 @@ p {
   margin-bottom: -8px;
   color: #000;
   display: block;
+  font-size: 12px;
 }
 .s-img-select {
   width: 18px;
@@ -851,17 +867,17 @@ p {
   filter: invert(1);
 }
 .selectdot-blue {
-  height: 24px;
-  line-height: 21px;
-  flex: 0 0 24px;
+  height: 20px;
+  line-height: 17px;
+  flex: 0 0 20px;
   background-color: #2561a8;
   border-radius: 50%;
-  margin-top: 17px;
+  margin-top: 19px;
   text-align: center;
   margin-left: 10px;
 }
 .selectdot-blue img {
-  width: 17px;
+  width: 14px;
   filter: invert(1);
 }
 .schedule-left-cntr {
@@ -888,16 +904,16 @@ p {
   border: 1px solid #b6b6b6;
   margin-left: 0;
   margin-right: 0;
-  width: 85px;
+  width: 75px;
   padding: 5px 8px;
   font-size: 14px;
 }
 .schedule-right-cntr .s-lable {
   color: #4a4a4a;
-  font-size: 15px;
+  font-size: 13px;
 }
 .ant-tooltip-inner {
-  font-size: 11px;
+  font-size: 10px;
   max-width: 100px;
   min-height: auto;
   text-align: center;
@@ -925,6 +941,9 @@ p {
 @media all and (max-width: 576px) {
   #chat-popup-overlay {
     padding: 0px;
+  }
+  #chat-popup-overlay .styles_modal__gNwvD {
+    max-width: 100%;
   }
   .rounded-cross,
   .chatbot-left,
@@ -976,10 +995,10 @@ p {
   .chatcontentdivtab .nav-tabs {
     margin: 10px 0px 10px 15px;
   }
-  .chatcontentdivtab .nav-item {
+  /* .chatcontentdivtab .nav-item {
     margin-left: 0;
     padding-right: 10px;
-  }
+  } */
   .chatcontentdivtab .nav-tabs .nav-item:last-child {
     padding-right: 15px;
   }
@@ -1031,7 +1050,6 @@ p {
   }
   .chat-trail-cntr {
     margin-bottom: 10px;
-    max-width: 80%;
   }
   .chatcontentDiv {
     margin-right: 5px;
@@ -1255,7 +1273,7 @@ p {
   /* card modal ends */
 }
 
-@media all and (max-width: 385px) {
+@media all and (max-width: 387px) {
   /* schedule modal starts */
   .schedule-btn-cntr button,
   .select-slot-cntr,
