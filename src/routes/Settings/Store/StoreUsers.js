@@ -454,7 +454,12 @@ class StoreUsers extends Component {
         selectedClaimIssueType: [],
       });
     } else {
-      this.setState({ selectedClaimBrand: e });
+      this.setState({
+        selectedClaimBrand: e,
+        selectedClaimCategory: [],
+        selectedClaimSubCategory: [],
+        selectedClaimIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.selectedClaimBrand) {
           this.handleGetClaimCategoryData();
@@ -472,7 +477,11 @@ class StoreUsers extends Component {
         selectedClaimIssueType: [],
       });
     } else {
-      this.setState({ selectedClaimCategory: e });
+      this.setState({
+        selectedClaimCategory: e,
+        selectedClaimSubCategory: [],
+        selectedClaimIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.selectedClaimCategory) {
           this.handleGetClaimSubCategoryData();
@@ -489,7 +498,10 @@ class StoreUsers extends Component {
         selectedClaimIssueType: [],
       });
     } else {
-      this.setState({ selectedClaimSubCategory: e });
+      this.setState({
+        selectedClaimSubCategory: e,
+        selectedClaimIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.selectedClaimSubCategory) {
           this.handleGetClaimIssueType();
@@ -661,7 +673,16 @@ class StoreUsers extends Component {
         EditmappedBrandCompulsory: "Please Select Brand",
       });
     } else {
-      this.setState({ editBrand: e, EditmappedBrandCompulsory: "" });
+      this.setState({
+        editBrand: e,
+        EditmappedBrandCompulsory: "",
+        editCategory: [],
+        claimCategoryData: [],
+        editSubCategory: [],
+        claimSubCategoryData: [],
+        editIssueType: [],
+        claimIssueTypeData: [],
+      });
       setTimeout(() => {
         if (this.state.editBrand) {
           this.handleGetClaimCategoryData("edit");
@@ -683,7 +704,14 @@ class StoreUsers extends Component {
         EditmappedCategoryCompulsory: "Please Select Category.",
       });
     } else {
-      this.setState({ editCategory: e, EditmappedCategoryCompulsory: "" });
+      this.setState({
+        editCategory: e,
+        EditmappedCategoryCompulsory: "",
+        editSubCategory: [],
+        claimSubCategoryData: [],
+        claimIssueTypeData: [],
+        editIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.editCategory) {
           this.handleGetClaimSubCategoryData("edit");
@@ -705,6 +733,7 @@ class StoreUsers extends Component {
     } else {
       this.setState({
         editSubCategory: e,
+        editIssueType: [],
         EditmappedSubCategoryCompulsory: "",
       });
       setTimeout(() => {
@@ -1745,9 +1774,10 @@ class StoreUsers extends Component {
     userEdit.mappedIssuetype = data.mappedIssuetype;
     userEdit.designationID = data.designationID;
     userEdit.designationName = data.designationName;
-    userEdit.reporteeID = data.reporteeID;
+    userEdit.reporteeID = data.reporteeID === 0 ? "-1" : data.reporteeID;
     userEdit.reporteeName = data.reporteeName;
-    userEdit.reporteeDesignationID = data.reporteeDesignationID;
+    userEdit.reporteeDesignationID =
+      data.reporteeDesignationID === 0 ? "-1" : data.reporteeDesignationID;
     userEdit.reporteeDesignation = data.reporteeDesignation;
     userEdit.departmentID = data.departmentID;
     userEdit.departmentName = data.departmentName;
@@ -2611,8 +2641,8 @@ class StoreUsers extends Component {
       this.state.selectDepartment > 0 &&
       this.state.selectedFunction.length > 0 &&
       this.state.selectDesignation > 0 &&
-      this.state.selectReportDesignation > 0 &&
-      this.state.selectReportTo > 0
+      this.state.selectReportDesignation !== 0 &&
+      this.state.selectReportTo !== 0
     ) {
       var function_ids = "";
       if (this.state.selectedFunction !== null) {
@@ -2630,8 +2660,12 @@ class StoreUsers extends Component {
           storeID: this.state.selectStore,
           departmentId: this.state.selectDepartment,
           functionIDs: function_ids.substring(",", function_ids.length - 1),
-          designationID: this.state.selectDesignation,
-          reporteeID: this.state.selectReportTo,
+          designationID:
+            this.state.selectDesignation === "-1"
+              ? 0
+              : this.state.selectDesignation,
+          reporteeID:
+            this.state.selectReportTo === "-1" ? 0 : this.state.selectReportTo,
         },
       })
         .then(function(res) {
@@ -2911,8 +2945,8 @@ class StoreUsers extends Component {
       this.state.userEdit.departmentID > 0 &&
       this.state.editFuncation.length > 0 &&
       this.state.userEdit.designationID > 0 &&
-      this.state.userEdit.reporteeDesignationID > 0 &&
-      this.state.userEdit.reporteeID > 0 &&
+      this.state.userEdit.reporteeDesignationID !== 0 &&
+      this.state.userEdit.reporteeID !== 0 &&
       /// --------Mapped Claim Category validation------------
       this.state.editBrand.length > 0 &&
       this.state.editCategory.length > 0 &&
@@ -3047,7 +3081,7 @@ class StoreUsers extends Component {
       });
     }
 
-    if (this.state.userEdit.reporteeID > 0) {
+    if (this.state.userEdit.reporteeID !== 0) {
       this.setState({ EditReportDesignationCompulsory: "" });
     } else {
       this.setState({
@@ -3055,7 +3089,7 @@ class StoreUsers extends Component {
       });
     }
 
-    if (this.state.userEdit.reporteeDesignationID > 0) {
+    if (this.state.userEdit.reporteeDesignationID !== 0) {
       this.setState({ EditReporteeDesignationCompulsory: "" });
     } else {
       this.setState({
@@ -4190,6 +4224,11 @@ class StoreUsers extends Component {
                                 {item.designationName}
                               </option>
                             ))}
+
+                          {this.state.reportDesignation.length === 0 && (
+                            // this.state.selectReportDesignation &&
+                            <option value="-1">Root</option>
+                          )}
                         </select>
                         {this.state.selectReportDesignation === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4221,6 +4260,10 @@ class StoreUsers extends Component {
                                 {item.agentName}
                               </option>
                             ))}
+                          {this.state.reportToData.length === 0 && (
+                            // this.state.selectReportTo &&
+                            <option value="-1">Root</option>
+                          )}
                         </select>
                         {this.state.selectReportTo === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4846,6 +4889,10 @@ class StoreUsers extends Component {
                                   {item.designationName}
                                 </option>
                               ))}
+                            {this.state.reportDesignation.length === 0 && (
+                              // this.state.selectedDesignation &&
+                              <option value="-1">Root</option>
+                            )}
                           </select>
                           {this.state.userEdit.reporteeDesignationID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4872,6 +4919,10 @@ class StoreUsers extends Component {
                                   {item.agentName}
                                 </option>
                               ))}
+                            {this.state.reportToData.length === 0 && (
+                              // this.state.selectedDesignation &&
+                              <option value="-1">Root</option>
+                            )}
                           </select>
                           {this.state.userEdit.reporteeID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>

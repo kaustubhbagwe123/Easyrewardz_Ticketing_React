@@ -125,7 +125,7 @@ class DepartmentMaster extends Component {
       e = [];
       this.setState({ selectedBrand: e, StoreCode: [] });
     } else {
-      this.setState({ selectedBrand: e });
+      this.setState({ selectedBrand: e, StoreCode: [], selectedStoreCode: [] });
       setTimeout(() => {
         if (this.state.selectedBrand) {
           this.handleGetStoreCodeData(data);
@@ -157,6 +157,7 @@ class DepartmentMaster extends Component {
       });
       setTimeout(() => {
         if (this.state.list1Value) {
+          this.setState({ functionData: [], listFunction: "" });
           this.handleGetFunction("Add");
         }
       }, 1);
@@ -2237,6 +2238,7 @@ class DepartmentMaster extends Component {
                       showSearch={true}
                       value={this.state.list1Value}
                       style={{ width: "100%" }}
+                      className="depatselect"
                       onChange={this.handleDepartmentChange}
                     >
                       {departmentList}
@@ -2294,6 +2296,7 @@ class DepartmentMaster extends Component {
                       onChange={this.handleFunctionOnChange}
                       onSearch={this.handleSearchFunctionData.bind(this)}
                       notFoundContent="No Data Found"
+                      className="depatselect"
                     >
                       {/* {functionList} */}
                       {this.state.functionData !== null &&

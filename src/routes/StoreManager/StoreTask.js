@@ -136,6 +136,11 @@ class StoreTask extends Component {
       });
     } else {
       this.setState({
+        sortColumn: "",
+        sortHeader: "",
+        isATOZ: true,
+        isortA: false,
+        filterTxtValue: "",
         showAddTask: true,
       });
     }
@@ -182,6 +187,7 @@ class StoreTask extends Component {
           var message = response.data.message;
           var data = response.data.responseData;
           if (message === "Success" && data.length > 0) {
+            self.setState({ sortAllData: data });
             var unique = [];
             var distinct = [];
             var sortFilterdepartmentName = [];
@@ -474,6 +480,11 @@ class StoreTask extends Component {
 
   handleGetTaskbyTicket() {
     this.setState({
+      sortColumn: "",
+      sortHeader: "",
+      isATOZ: true,
+      isortA: false,
+      filterTxtValue: "",
       showAddTask: true,
       tabIndex: 3,
       isloading: true,
@@ -516,8 +527,23 @@ class StoreTask extends Component {
           self.setState({
             isloading: false,
             taskByTicketData: data,
+            sortAllData: data,
           });
-          self.state.sortAllData = data;
+          var sortFilterdepartmentName = [];
+          var sortFilterstoreName = [];
+          var sortFilterpriorityName = [];
+          var sortFiltercreationOn = [];
+          var sortFilterassignto = [];
+          var sortFiltercreatedBy = [];
+          var sortFiltertaskStatus = [];
+          var sortdepartmentName = [];
+          var sortstoreName = [];
+          var sortpriorityName = [];
+          var sortcreationOn = [];
+          var sortassignto = [];
+          var sortcreatedBy = [];
+          var sorttaskStatus = [];
+
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
@@ -530,12 +556,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortdepartmentName.push({
-              departmentName: distinct[i],
-            });
-            self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortdepartmentName.push({
+                departmentName: distinct[i],
+              });
+              sortFilterdepartmentName.push({
+                departmentName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -546,12 +574,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortstoreName.push({
-              storeName: distinct[i],
-            });
-            self.state.sortFilterstoreName.push({
-              storeName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortstoreName.push({
+                storeName: distinct[i],
+              });
+              sortFilterstoreName.push({
+                storeName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -562,12 +592,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreatedBy.push({
-              createdBy: distinct[i],
-            });
-            self.state.sortFiltercreatedBy.push({
-              createdBy: distinct[i],
-            });
+            if (distinct[i]) {
+              sortcreatedBy.push({
+                createdBy: distinct[i],
+              });
+              sortFiltercreatedBy.push({
+                createdBy: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -578,12 +610,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreationOn.push({
-              creationOn: distinct[i],
-            });
-            self.state.sortFiltercreationOn.push({
-              creationOn: distinct[i],
-            });
+            if (distinct[i]) {
+              sortcreationOn.push({
+                creationOn: distinct[i],
+              });
+              sortFiltercreationOn.push({
+                creationOn: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -594,13 +628,50 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortassignto.push({
-              assignto: distinct[i],
-            });
-            self.state.sortFilterassignto.push({
-              assignto: distinct[i],
-            });
+            if (distinct[i]) {
+              sortassignto.push({
+                assignto: distinct[i],
+              });
+              sortFilterassignto.push({
+                assignto: distinct[i],
+              });
+            }
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].taskStatus] && data[i].taskStatus !== "") {
+              distinct.push(data[i].taskStatus);
+              unique[data[i].taskStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortFiltertaskStatus.push({
+                taskStatus: distinct[i],
+              });
+              sorttaskStatus.push({
+                taskStatus: distinct[i],
+              });
+            }
+          }
+          self.setState({
+            sortdepartmentName,
+            sortstoreName,
+            sortpriorityName,
+            sortcreationOn,
+            sortassignto,
+            sortcreatedBy,
+            sorttaskStatus,
+            sortFilterdepartmentName,
+            sortFilterstoreName,
+            sortFilterpriorityName,
+            sortFiltercreationOn,
+            sortFilterassignto,
+            sortFiltercreatedBy,
+            sortFiltertaskStatus,
+          });
         } else {
           self.setState({ isloading: false, data });
         }
@@ -969,6 +1040,13 @@ class StoreTask extends Component {
         return 0;
       });
     }
+    if (this.state.sortColumn === "taskStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskStatus < b.taskStatus) return 1;
+        if (a.taskStatus > b.taskStatus) return -1;
+        return 0;
+      });
+    }
     this.setState({
       isortA: true,
       isATOZ: false,
@@ -1037,6 +1115,13 @@ class StoreTask extends Component {
       });
     }
 
+    if (this.state.sortColumn === "taskStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskStatus < b.taskStatus) return -1;
+        if (a.taskStatus > b.taskStatus) return 1;
+        return 0;
+      });
+    }
     this.setState({
       isortA: true,
       isATOZ: true,
@@ -1925,10 +2010,10 @@ class StoreTask extends Component {
     }
     if (this.state.sortColumn === "taskStatus") {
       var sortFiltertaskStatus = matchSorter(
-        this.state.sortcreatedBy,
+        this.state.sorttaskStatus,
         e.target.value,
         {
-          keys: ["createdBy"],
+          keys: ["taskStatus"],
         }
       );
       if (sortFiltertaskStatus.length > 0) {
@@ -2350,6 +2435,7 @@ class StoreTask extends Component {
                               />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "taskStatus",
                           Cell: (row) => {
                             if (row.original.taskStatus === "New") {
@@ -2893,6 +2979,7 @@ class StoreTask extends Component {
                               />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "taskStatus",
                           Cell: (row) => {
                             if (row.original.taskStatus === "New") {
@@ -3514,6 +3601,7 @@ class StoreTask extends Component {
                               />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "taskStatus",
                           Cell: (row) => {
                             if (row.original.taskStatus === "New") {
