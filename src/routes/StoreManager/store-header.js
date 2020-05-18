@@ -187,6 +187,16 @@ class Header extends Component {
     }
   }
 
+  handleScrollRight(num) {
+    debugger;
+    document.getElementById("schedule-btn-cntr" + num).scrollLeft += 20;
+  }
+
+  handleScrollLeft(num) {
+    debugger;
+    document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
+  }
+
   toggleFilter(e) {
     this.setState({
       toggle: {
@@ -771,9 +781,9 @@ class Header extends Component {
 
     var messagecontent = "";
     if (messageStringData) {
-      messagecontent = messageStringData
-        .replace("col-md-4", "col-md-2")
-        .replace("col-md-8", "col-md-10");
+      // messagecontent = messageStringData
+      //   .replace("col-md-4", "col-md-4")
+      //   .replace("col-md-8", "col-md-8");
     } else {
       messagecontent = this.state.message;
     }
@@ -2243,7 +2253,11 @@ class Header extends Component {
                                     </div>
                                     <div className="chat-trail-chat-cntr">
                                       <p className="chat-trail-chat pd-0">
-                                        {ReactHtmlParser(item.message)}
+                                        {ReactHtmlParser(
+                                          item.message
+                                            .replace("col-md-2", "col-md-4")
+                                            .replace("col-md-10", "col-md-8")
+                                        )}
                                       </p>
                                       <span className="chat-trail-time">
                                         {item.chatDate + " "}
@@ -2774,7 +2788,22 @@ class Header extends Component {
                                           {item.day}:{item.dates}
                                         </label>
                                         <div className="schedule-btn-outer-cntr">
-                                          <div className="schedule-btn-cntr">
+                                          <div
+                                            className="selectdot-blue selectdot-blue-left"
+                                            onClick={this.handleScrollLeft.bind(
+                                              this,
+                                              i
+                                            )}
+                                          >
+                                            <img
+                                              src={SchRight}
+                                              alt="right arrow"
+                                            />
+                                          </div>
+                                          <div
+                                            className="schedule-btn-cntr"
+                                            id={"schedule-btn-cntr" + i}
+                                          >
                                             {item.alreadyScheduleDetails
                                               .length > 0 &&
                                               item.alreadyScheduleDetails.map(
@@ -2895,7 +2924,13 @@ class Header extends Component {
                                                 }
                                               )}
                                           </div>
-                                          <div className="selectdot-blue">
+                                          <div
+                                            className="selectdot-blue"
+                                            onClick={this.handleScrollRight.bind(
+                                              this,
+                                              i
+                                            )}
+                                          >
                                             <img
                                               src={SchRight}
                                               alt="right arrow"
