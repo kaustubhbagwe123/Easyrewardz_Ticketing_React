@@ -935,12 +935,21 @@ class ClaimCategoryMaster extends Component {
           if (msg === "Success") {
             self.setState({ categoryDropData: data });
           } else {
-            self.setState({ categoryDropData: [], showAddCategory: true });
+            if (check === "edit") {
+              self.setState({
+                categoryDropData: [],
+                showEditAddCategory: true,
+              });
+            } else {
+              self.setState({ categoryDropData: [], showAddCategory: true });
+            }
           }
         })
         .catch((data) => {
           console.log(data);
         });
+    } else {
+      this.setState({ categoryDropData: [] });
     }
   }
 
@@ -1184,13 +1193,17 @@ class ClaimCategoryMaster extends Component {
               editCategoryCompulsory: "",
               showEditAddCategory: false,
             });
-            self.handleGetCategoryList(data, "edit");
+            self.handleGetCategoryList(value, "edit");
           } else {
             self.setState({
               category_Id: data,
               showAddCategory: false,
+              ListOfSubCate: "",
+              SubCategoryDropData: [],
+              ListOfIssue: "",
+              ListOfIssueData: [],
             });
-            self.handleGetCategoryList();
+            self.handleGetCategoryList(value);
           }
         } else {
           NotificationManager.error("Category not added.");
@@ -1247,6 +1260,8 @@ class ClaimCategoryMaster extends Component {
             self.setState({
               subCategory_Id: data,
               showAddSubCategory: false,
+              ListOfIssue: "",
+              ListOfIssueData: [],
             });
             self.handleGetSubCategoryList();
           }
@@ -1414,7 +1429,7 @@ class ClaimCategoryMaster extends Component {
     debugger;
     let self = this;
     if (
-      (this.state.editCategory.brandID !== "" &&
+      (this.state.editCategory.brandID !== "0" &&
         (this.state.editCategory.categoryID.length > 0 ||
           this.state.editCategory.categoryID !== "") &&
         (this.state.editCategory.subCategoryID.length > 0 ||
@@ -1449,7 +1464,7 @@ class ClaimCategoryMaster extends Component {
         subCategoryData = this.state.editCategory.subCategoryID;
       }
 
-      if (isNaN(this.state.editCategory.issueTypeNameF)) {
+      if (isNaN(this.state.editCategory.issueTypeName)) {
         IssueData = this.state.ListOfIssueData.filter(
           (x) => x.issueTypeName === this.state.editCategory.issueTypeName
         )[0].issueTypeID;
@@ -2907,7 +2922,7 @@ class ClaimCategoryMaster extends Component {
                   onChange={this.handleModalBrandChange}
                   name="brandID"
                 >
-                  <option value={0}>Select</option>
+                  <option value="0">Select</option>
                   {this.state.brandData !== null &&
                     this.state.brandData.map((item, i) => (
                       <option
@@ -2919,7 +2934,7 @@ class ClaimCategoryMaster extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.editCategory.brandID !== null && (
+                {this.state.editCategory.brandID === "0" && (
                   <p style={{ color: "red", marginBottom: "21px" }}>
                     {this.state.editBrandCompulsory}
                   </p>

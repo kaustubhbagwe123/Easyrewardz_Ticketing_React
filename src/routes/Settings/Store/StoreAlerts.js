@@ -1312,21 +1312,9 @@ class Alerts extends Component {
         } else {
           this.setState({ ckCustomerCompulsion: "" });
         }
-        if (this.state.selectedSubjectCustomer === "") {
-          this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
-          // return false;
-        } else {
-          this.setState({ subjectCustomerCompulsion: "" });
-        }
       }
 
       if (this.state.emailInt == true) {
-        if (this.state.selectedCKInternal === "") {
-          this.setState({ ckInternalCompulsion: "Please Enter Subject." });
-          // return false;
-        } else {
-          this.setState({ ckInternalCompulsion: "" });
-        }
         if (this.state.selectedSubjectInternal === "") {
           this.setState({
             subjectInternalCompulsion: "Please Enter Description.",
@@ -1338,13 +1326,6 @@ class Alerts extends Component {
       }
 
       if (this.state.emailTicketing == true) {
-        if (this.state.selectedCKStore === "") {
-          this.setState({ ckStoreCompulsion: "Please Enter Subject." });
-
-          // return false;
-        } else {
-          this.setState({ ckStoreCompulsion: "" });
-        }
         if (this.state.selectedSubjectStore === "") {
           this.setState({
             subjectStoreCompulsion: "Please Enter Description.",
@@ -1469,6 +1450,21 @@ class Alerts extends Component {
                 self.setState({
                   AddAlertTabsPopup: false,
                   editSaveLoading: false,
+                  selectedAlertType: 0,
+                  viewEmailCustomer: false,
+                  viewEmailInternal: false,
+                  viewEmailStore: false,
+                  viewSMSCustomer: false,
+                  viewNotifInternal: false,
+                  viewNotifTicketing: false,
+                  selectedCKCustomer: "",
+                  selectedSubjectCustomer: "",
+                  selectedSubjectInternal: "",
+                  selectedCKInternal: "",
+                  selectedSubjectStore: "",
+                  selectedCKStore: "",
+                  selectedNotifContent: "",
+                  selectedNotifTicketingContent: "",
                 });
               } else {
                 self.setState({
@@ -1526,14 +1522,14 @@ class Alerts extends Component {
   handleAddAlertTabsOpen() {
     debugger;
     if (
-      (this.state.selectedAlertType > 0 &&
-        this.state.selectedStatus !== "" &&
-        this.state.selectedEmailCustomer === true) ||
-      this.state.selectedEmailInternal === true ||
-      this.state.selectedEmailStore === true ||
-      this.state.selectedSMSCustomer === true ||
-      this.state.selectedNotifInternal === true ||
-      this.state.selectedNotifTicketing === true
+      this.state.selectedAlertType > 0 &&
+      this.state.selectedStatus !== "" &&
+      (this.state.selectedEmailCustomer === true ||
+        this.state.selectedEmailInternal === true ||
+        this.state.selectedEmailStore === true ||
+        this.state.selectedSMSCustomer === true ||
+        this.state.selectedNotifInternal === true ||
+        this.state.selectedNotifTicketing === true)
     ) {
       this.setState({ AddAlertTabsPopup: true });
       // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
@@ -1608,7 +1604,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailCustomer === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectCustomer.length > 0 &&
+        // this.state.selectedSubjectCustomer.length > 0 &&
         this.state.selectedCKCustomer.length > 0
       ) {
         validation.push("1");
@@ -1618,7 +1614,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailInternal === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectInternal.length > 0 &&
+        // this.state.selectedSubjectInternal.length > 0 &&
         this.state.selectedCKInternal.length > 0
       ) {
         validation.push("1");
@@ -1628,7 +1624,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailStore === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectStore.length > 0 &&
+        // this.state.selectedSubjectStore.length > 0 &&
         this.state.selectedCKStore.length > 0
       ) {
         validation.push("1");
@@ -1796,12 +1792,21 @@ class Alerts extends Component {
             SMSContentCompulsion: "",
             NotifContentCompulsion: "",
             NotifTicketingContentCompulsion: "",
+            selectedAlertType: 0,
             viewEmailCustomer: false,
             viewEmailInternal: false,
             viewEmailStore: false,
             viewSMSCustomer: false,
             viewNotifInternal: false,
             viewNotifTicketing: false,
+            selectedCKCustomer: "",
+            selectedSubjectCustomer: "",
+            selectedSubjectInternal: "",
+            selectedCKInternal: "",
+            selectedSubjectStore: "",
+            selectedCKStore: "",
+            selectedNotifContent: "",
+            selectedNotifTicketingContent: "",
           });
         } else if (status === "Record Already Exists ") {
           NotificationManager.error("Record Already Exists.");
@@ -2841,49 +2846,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Customer"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
-                                {/* {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Customer"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                )} */}
+
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -2947,50 +2910,6 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Internal"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
-                                {/* {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Internal"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                )} */}
-
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
@@ -3052,49 +2971,6 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Ticketing"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
-                                {/* {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Ticketing"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                )} */}
 
                                 <CKEditor
                                   content={this.state.content}
@@ -3117,17 +2993,6 @@ class Alerts extends Component {
                                     {this.state.ckStoreCompulsion}
                                   </p>
                                 )}
-                                {/*<div className="div-button1">
-                                <button
-                                  className="butn-2"
-                                  type="submit"
-                                  id="sms-tab"
-                                  onClick={this.handleTabChange.bind(this,1)}
-                                  
-                                >
-                                  SAVE & NEXT
-                                </button>
-                              </div>*/}
                               </div>
                             </div>
                           </div>
@@ -3153,14 +3018,6 @@ class Alerts extends Component {
                                 {this.state.SMSContentCompulsion}
                               </p>
                             )}
-                            {/*<div className="div-button1">
-                              <button className="butn-2" type="submit" 
-                              onClick={this.handleTabChange.bind(this,2)}
-                              
-                              >
-                                SAVE & NEXT
-                              </button>
-                            </div>*/}
                           </div>
                         </div>
                         {(this.state.notiInt || this.state.notiTicketing) && (
@@ -3219,29 +3076,6 @@ class Alerts extends Component {
                                     <label className="alert-main-popuplbl">
                                       Compose your Notification
                                     </label>
-                                    {/* <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Notification"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div> */}
                                   </div>
                                   <textarea
                                     rows="10"
@@ -3263,13 +3097,6 @@ class Alerts extends Component {
                                       {this.state.NotifContentCompulsion}
                                     </p>
                                   )}
-                                  {/* <div className="div-button1">
-                                <button className="butn-2" type="submit"
-                              
-                                >
-                                  SAVE & NEXT
-                                </button>
-                                </div>*/}
                                 </div>
                               </div>
                               <div
@@ -3284,29 +3111,6 @@ class Alerts extends Component {
                                     <label className="alert-main-popuplbl">
                                       Compose your Notification
                                     </label>
-                                    {/* <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Notification"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div> */}
                                   </div>
                                   <textarea
                                     rows="10"
@@ -3333,13 +3137,6 @@ class Alerts extends Component {
                                       }
                                     </p>
                                   )}
-                                  {/* <div className="div-button1">
-                                <button className="butn-2" type="submit"
-                              
-                                >
-                                  SAVE & NEXT
-                                </button>
-                                </div>*/}
                                 </div>
                               </div>
                             </div>

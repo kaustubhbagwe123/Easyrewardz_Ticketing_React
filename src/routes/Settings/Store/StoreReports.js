@@ -1330,7 +1330,7 @@ class StoreReports extends Component {
       .then(function(response) {
         debugger;
         var message = response.data.message;
-        if (message === "Success") {
+        if (message === "Success" || message === "Record Not Found") {
           self.setState({ totalResult: response.data.responseData });
         }
       })

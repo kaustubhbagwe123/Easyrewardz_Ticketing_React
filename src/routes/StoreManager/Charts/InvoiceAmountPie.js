@@ -9,10 +9,10 @@ import NVD3Chart from "react-nvd3";
 class InvoiceAmountPie extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
-      values:[],
-      sort: null
+      values: [],
+      sort: null,
     };
 
     this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
@@ -24,23 +24,23 @@ class InvoiceAmountPie extends Component {
   }
 
   handleGetDashboardGraphData() {
-   debugger;
-      var propsData = this.props.data;
-      if (propsData !== null) {
-        let values = [];
-        for (let i = 0; i < propsData.length; i++) {
-          var obj={}
-          let name = propsData[i].name;
-          let value = propsData[i].value;
-           obj = {key: `${name}`, y: value};
-          values.push(obj);
-        }
-        this.setState({
-          values
-        });
+    debugger;
+    var propsData = this.props.data;
+    if (propsData !== null) {
+      let values = [];
+      for (let i = 0; i < propsData.length; i++) {
+        var obj = {};
+        let name = propsData[i].name;
+        let value = propsData[i].value;
+        obj = { key: `${name}`, y: value };
+        values.push(obj);
       }
+      this.setState({
+        values,
+      });
+    }
   }
-  
+
   render() {
     return (
       <NVD3Chart

@@ -3396,3 +3396,8 @@
   font-weight: 700;
   color: #4a4a4a;
 }
+
+.depatselect .ant-select-search--inline .ant-select-search__field {
+  padding: 0;
+  margin: 0;
+}

@@ -723,8 +723,9 @@ class Claim extends Component {
                                             </li>
                                             <li>
                                               <p>
-                                                {row.original.raiseBy + " "}{" "}
-                                                Created
+                                                {"Created by " +
+                                                  row.original.raiseBy +
+                                                  " "}{" "}
                                               </p>
                                               <p>2 Hrs ago</p>
                                             </li>
@@ -736,7 +737,7 @@ class Claim extends Component {
                                               <p>1.5 Hrs ago</p>
                                             </li>
                                             <li>
-                                              <p>Vikas updated</p>
+                                              <p>Updated by Vikas</p>
                                               <p>1 Hr ago</p>
                                             </li>
                                             <li>
@@ -1172,8 +1173,9 @@ class Claim extends Component {
                                             </li>
                                             <li>
                                               <p>
-                                                {row.original.raiseBy + " "}{" "}
-                                                Created
+                                                {"Created by " +
+                                                  row.original.raiseBy +
+                                                  " "}{" "}
                                               </p>
                                               <p>2 Hrs ago</p>
                                             </li>
@@ -1185,7 +1187,7 @@ class Claim extends Component {
                                               <p>1.5 Hrs ago</p>
                                             </li>
                                             <li>
-                                              <p>Vikas updated</p>
+                                              <p>Updated by Vikas</p>
                                               <p>1 Hr ago</p>
                                             </li>
                                             <li>
