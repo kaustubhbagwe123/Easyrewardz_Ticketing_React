@@ -2585,7 +2585,6 @@ class Header extends Component {
                                   style={{
                                     color: "red",
                                     marginBottom: "0px",
-                                    marginLeft: "16px",
                                   }}
                                 >
                                   {this.state.noProductFound}
@@ -2755,16 +2754,15 @@ class Header extends Component {
                                 ""
                               )}
                             </button>
-                            {
-                              <p
-                                style={{
-                                  color: "red",
-                                  marginBottom: "0px",
-                                }}
-                              >
-                                {this.state.noRecommendedFound}
-                              </p>
-                            }
+
+                            <p
+                              style={{
+                                color: "red",
+                                marginBottom: "0px",
+                              }}
+                            >
+                              {this.state.noRecommendedFound}
+                            </p>
                           </div>
                         </div>
                         {/* --------Schedule Visit Tab----- */}
@@ -3462,6 +3460,14 @@ class Header extends Component {
                                   ""
                                 )}
                               </button>
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginBottom: "0px",
+                                }}
+                              >
+                                {this.state.noRecommendedFound}
+                              </p>
                               <button
                                 className="butn-inv"
                                 onClick={this.onCloseRecommendedModal}
