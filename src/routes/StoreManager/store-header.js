@@ -972,7 +972,7 @@ class Header extends Component {
               self.state.selectedDate +
               " on " +
               self.state.selectedSlot.timeSlot +
-              " \n \n Appoitment ID : " +
+              " \n \n Appointment ID : " +
               timeSlotData[0].appointmentID +
               " \n Customer : " +
               timeSlotData[0].customerName +
@@ -1388,6 +1388,9 @@ class Header extends Component {
         [e.target.id]: !this.state.toggle[e.target.id],
       },
       noRecommendedFound: "",
+      noOfPeopleMax: "",
+      noProductFound: "",
+      isSelectSlot: ""
     });
   };
   handleSendRecommendedList() {
