@@ -99,6 +99,7 @@ class StoreCampaign extends Component {
       msngrDisable: false,
       botDisable: false,
       shareDisable: false,
+      custMobileValidation: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -808,105 +809,94 @@ class StoreCampaign extends Component {
   /// Handle Get Campaign customer details
   handleGetCampaignCustomerData(data, row, check) {
     debugger;
-    this.setState({
-      ChildTblLoading: true,
-      CampChildTableData: [],
-    });
-    var keys = [];
     if (data) {
-      keys.push(row.campaignID);
-      this.state.childCurrentPage = 1;
-      this.state.filterCustNO = "";
-      setTimeout(() => {
-        this.setState({
-          childCurrentPage: 1,
-          childTotalGridRecord: 0,
-          expandedRowKeys: keys,
-          filterCustNO: "",
-        });
-      }, 50);
-    }
-    var campaignId = 0;
-    if (check !== undefined || check > 0) {
-      campaignId = check;
-    } else {
+      this.setState({
+        ChildTblLoading: true,
+        CampChildTableData: [],
+      });
+      var keys = [];
+      if (data) {
+        keys.push(row.campaignID);
+        this.state.childCurrentPage = 1;
+        this.state.filterCustNO = "";
+        setTimeout(() => {
+          this.setState({
+            childCurrentPage: 1,
+            childTotalGridRecord: 0,
+            expandedRowKeys: keys,
+            filterCustNO: "",
+          });
+        }, 50);
+      }
+      var campaignId = 0;
+      if (check !== undefined || check > 0) {
+        campaignId = check;
+      } else {
+        if (row !== "") {
+          this.setState({
+            campaignID: row.campaignID,
+          });
+          campaignId = row.campaignID;
+        } else {
+          campaignId = this.state.campaignID;
+        }
+      }
       if (row !== "") {
         this.setState({
-          campaignID: row.campaignID,
+          childTotalGridRecord: Number(row.customerCount),
         });
-        campaignId = row.campaignID;
       } else {
-        campaignId = this.state.campaignID;
       }
-    }
-    if (row !== "") {
-      this.setState({
-        childTotalGridRecord: Number(row.customerCount),
-      });
-    } else {
-    }
-    var filterIds = "";
-    if (this.state.strStatusIds !== "") {
-      filterIds = this.state.strStatusIds;
-    } else {
-      filterIds = "All";
-    }
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
-      headers: authHeader(),
-      data: {
-        campaignScriptID: campaignId,
-        pageNo: this.state.childCurrentPage,
-        pageSize: this.state.ChildPostsPerPage,
-        FilterStatus: filterIds,
-        MobileNumber: this.state.filterCustNO,
-      },
-    })
-      .then(function(response) {
-        debugger;
-        var message = response.data.message;
-        var data = response.data.responseData;
-        if (message == "Success") {
-          for (let obj of data.campaignCustomerModel)
-            obj.dateTimeHighlight = false;
-
-          // var campId = data.campaignCustomerModel[0].campaignScriptID;
-          // var presentData = self.state.CampChildTableData;
-          // var newArr = presentData.filter((d) => d.campaignScriptID !== campId);
-          // self.setState({
-          //   CampChildTableData: newArr,
-          // });
-
-          // var CampChildData = self.state.CampChildTableData;
-
-          // for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-          //   var filtd = CampChildData.filter(
-          //     (d) => d.id === data.campaignCustomerModel[i].id
-          //   );
-          //   if (filtd.length === 0) {
-          //     CampChildData.push(data.campaignCustomerModel[i]);
-          //   }
-          // }
-          self.setState({
-            CampChildTableData: data.campaignCustomerModel,
-            ChildTblLoading: false,
-            loading: false,
-            childTotalGridRecord: data.campaignCustomerCount,
-          });
-        } else {
-          self.setState({
-            CampChildTableData: [],
-            ChildTblLoading: false,
-            loading: false,
-            childTotalGridRecord: 0,
-          });
-        }
+      var filterIds = "";
+      if (this.state.strStatusIds !== "") {
+        filterIds = this.state.strStatusIds;
+      } else {
+        filterIds = "All";
+      }
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/GetCampaignCustomer",
+        headers: authHeader(),
+        data: {
+          campaignScriptID: campaignId,
+          pageNo: this.state.childCurrentPage,
+          pageSize: this.state.ChildPostsPerPage,
+          FilterStatus: filterIds,
+          MobileNumber: this.state.filterCustNO,
+        },
       })
-      .catch((response) => {
-        console.log(response);
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          var data = response.data.responseData;
+          if (message == "Success") {
+            for (let obj of data.campaignCustomerModel)
+              obj.dateTimeHighlight = false;
+
+            self.setState({
+              CampChildTableData: data.campaignCustomerModel,
+              ChildTblLoading: false,
+              loading: false,
+              childTotalGridRecord: data.campaignCustomerCount,
+            });
+          } else {
+            self.setState({
+              CampChildTableData: [],
+              ChildTblLoading: false,
+              loading: false,
+              childTotalGridRecord: 0,
+            });
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    } else {
+      this.setState({
+        expandedRowKeys: [],
       });
+    }
   }
   /// Send Via Bot data
   handleSendViaBotData(data) {
@@ -945,7 +935,7 @@ class StoreCampaign extends Component {
           }
         } else {
           if (message === "Success") {
-            NotificationManager.success("Send Successfully.");
+            NotificationManager.success("Sent Successfully.");
             self.setState({
               custNameModal: false,
             });
@@ -1005,7 +995,7 @@ class StoreCampaign extends Component {
             self.setState({
               custNameModal: false,
             });
-            NotificationManager.success("SMS Send Successfully.");
+            NotificationManager.success("SMS Sent Successfully.");
           } else {
             NotificationManager.error("SMS Send Failed.");
           }
@@ -1048,7 +1038,7 @@ class StoreCampaign extends Component {
             custNameModal: false,
           });
           if (self.state.Respo_ChannelMessanger === false) {
-            NotificationManager.success("Send Successfully.");
+            NotificationManager.success("Sent Successfully.");
           }
           window.open("//" + data, "_blank");
           if (self.state.Respo_ChannelMessanger === true) {
@@ -1260,7 +1250,9 @@ class StoreCampaign extends Component {
     debugger;
     this.setState({
       filterCustNO: e.target.value,
+      custMobileValidation: "Max 3 character required",
     });
+
     if (this.state.filterCustNO.length > 3) {
       setTimeout(() => {
         this.handleGetCampaignCustomer(campaignID, customerCount);
@@ -1309,33 +1301,18 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          // var campId = data.campaignCustomerModel[0].campaignScriptID;
-          // var presentData = self.state.CampChildTableData;
-          // var CampChildData = self.state.CampChildTableData;
-          // CampChildData = presentData.filter(
-          //   (d) => d.campaignScriptID !== campId
-          // );
-
-          // for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-          //   var filtd = CampChildData.filter(
-          //     (d) => d.id === data.campaignCustomerModel[i].id
-          //   );
-          //   if (filtd.length === 0) {
-          //     CampChildData.push(data.campaignCustomerModel[i]);
-          //   }
-          // }
-
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
             filterCustomerNumber: false,
-            // filterCustNO: "",
+            custMobileValidation: "",
           });
         } else {
           self.setState({
             CampChildTableData: [],
             childTotalGridRecord: 0,
             filterCustomerNumber: false,
+            custMobileValidation:""
           });
         }
       })
@@ -1650,6 +1627,11 @@ class StoreCampaign extends Component {
                                 row.customerCount
                               )}
                             />
+                            {this.state.filterCustNO.length > 3 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.custMobileValidation}
+                              </p>
+                            )}
                           </div>
                         ),
                         filterDropdownVisible: this.state.filterCustomerNumber,
@@ -2422,7 +2404,6 @@ class StoreCampaign extends Component {
                               {this.state.campaignrecommended !== null &&
                                 this.state.campaignrecommended.map(
                                   (item, j) => {
-                                    debugger;
                                     var FullProductName = `${item.color}  ${item.subCategory}  ${item.category}`;
                                     var FinalSize = item.size;
                                     return (
@@ -2440,159 +2421,187 @@ class StoreCampaign extends Component {
                                                   </p>
                                                   <table>
                                                     <tbody>
-                                                      <tr>
-                                                        <td>
-                                                          <label>Colors:</label>
-                                                        </td>
-                                                        <td>
-                                                          <ul>
-                                                            {item.color ===
-                                                            "Blue" ? (
-                                                              <li>
-                                                                <a className="colorblue">
-                                                                  <span>1</span>
-                                                                </a>
-                                                              </li>
-                                                            ) : null}
+                                                      {item.color !== "" ? (
+                                                        <>
+                                                          <tr>
+                                                            <td
+                                                              style={{
+                                                                width: "50px",
+                                                              }}
+                                                            >
+                                                              <label>
+                                                                Colors:
+                                                              </label>
+                                                            </td>
+                                                            <td>
+                                                              <ul>
+                                                                {item.color ===
+                                                                "Blue" ? (
+                                                                  <li>
+                                                                    <a className="colorblue">
+                                                                      <span>
+                                                                        1
+                                                                      </span>
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
 
-                                                            {item.color ===
-                                                            "Black" ? (
-                                                              <li>
-                                                                <a className="colorblack">
-                                                                  <span>1</span>
-                                                                </a>
-                                                              </li>
-                                                            ) : null}
+                                                                {item.color ===
+                                                                "Black" ? (
+                                                                  <li>
+                                                                    <a className="colorblack">
+                                                                      <span>
+                                                                        1
+                                                                      </span>
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
 
-                                                            {item.color ===
-                                                            "Grey" ? (
-                                                              <li>
-                                                                <a className="colorgrey">
-                                                                  <span>1</span>
-                                                                </a>
-                                                              </li>
-                                                            ) : null}
+                                                                {item.color ===
+                                                                "Grey" ? (
+                                                                  <li>
+                                                                    <a className="colorgrey">
+                                                                      <span>
+                                                                        1
+                                                                      </span>
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
 
-                                                            {item.color ===
-                                                            "Red" ? (
-                                                              <li>
-                                                                <a className="colorRed">
-                                                                  <span>1</span>
-                                                                </a>
-                                                              </li>
-                                                            ) : null}
-                                                            {item.color ===
-                                                            "Yellow" ? (
-                                                              <li>
-                                                                <a className="colorYellow">
-                                                                  <span>1</span>
-                                                                </a>
-                                                              </li>
-                                                            ) : null}
-                                                            {item.color ===
-                                                            "Green" ? (
-                                                              <li>
-                                                                <a className="colorGreen">
-                                                                  <span>1</span>
-                                                                </a>
-                                                              </li>
-                                                            ) : null}
-                                                          </ul>
-                                                        </td>
-                                                      </tr>
-                                                      <tr>
-                                                        <td>
-                                                          <label>Sizes:</label>
-                                                        </td>
-                                                        <td>
-                                                          {isNaN(
-                                                            parseInt(FinalSize)
-                                                          ) === false ? (
-                                                            <ul className="sizes">
-                                                              <li>
-                                                                <a
-                                                                  className={
-                                                                    item.size ===
-                                                                    "6"
-                                                                      ? ""
-                                                                      : "active"
-                                                                  }
-                                                                >
-                                                                  6
-                                                                </a>
-                                                              </li>
-                                                              <li>
-                                                                <a
-                                                                  className={
-                                                                    item.size ===
-                                                                    "7"
-                                                                      ? ""
-                                                                      : "active"
-                                                                  }
-                                                                >
-                                                                  7
-                                                                </a>
-                                                              </li>
-                                                              <li>
-                                                                <a
-                                                                  className={
-                                                                    item.size ===
-                                                                    "8"
-                                                                      ? ""
-                                                                      : "active"
-                                                                  }
-                                                                >
-                                                                  8
-                                                                </a>
-                                                              </li>
-                                                              <li>
-                                                                <a
-                                                                  className={
-                                                                    item.size ===
-                                                                    "9"
-                                                                      ? ""
-                                                                      : "active"
-                                                                  }
-                                                                >
-                                                                  9
-                                                                </a>
-                                                              </li>
-                                                              <li>
-                                                                <a
-                                                                  className={
-                                                                    item.size ===
-                                                                    "10"
-                                                                      ? ""
-                                                                      : "active"
-                                                                  }
-                                                                >
-                                                                  10
-                                                                </a>
-                                                              </li>
-                                                              <li>
-                                                                <a
-                                                                  className={
-                                                                    item.size ===
-                                                                    "11"
-                                                                      ? ""
-                                                                      : "active"
-                                                                  }
-                                                                >
-                                                                  11
-                                                                </a>
-                                                              </li>
-                                                            </ul>
-                                                          ) : (
-                                                            <ul>
-                                                              <li>
-                                                                <a>
-                                                                  {item.size}
-                                                                </a>
-                                                              </li>
-                                                            </ul>
-                                                          )}
-                                                        </td>
-                                                      </tr>
+                                                                {item.color ===
+                                                                "Red" ? (
+                                                                  <li>
+                                                                    <a className="colorRed">
+                                                                      <span>
+                                                                        1
+                                                                      </span>
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
+                                                                {item.color ===
+                                                                "Yellow" ? (
+                                                                  <li>
+                                                                    <a className="colorYellow">
+                                                                      <span>
+                                                                        1
+                                                                      </span>
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
+                                                                {item.color ===
+                                                                "Green" ? (
+                                                                  <li>
+                                                                    <a className="colorGreen">
+                                                                      <span>
+                                                                        1
+                                                                      </span>
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
+                                                              </ul>
+                                                            </td>
+                                                          </tr>
+                                                        </>
+                                                      ) : null}
+
+                                                      {item.size !== "" ? (
+                                                        <>
+                                                          <tr>
+                                                            <td>
+                                                              <label>
+                                                                Sizes:
+                                                              </label>
+                                                            </td>
+                                                            <td>
+                                                              {isNaN(
+                                                                parseInt(
+                                                                  FinalSize
+                                                                )
+                                                              ) === false ? (
+                                                                <ul className="sizes">
+                                                                  <li>
+                                                                    <a>
+                                                                      {
+                                                                        item.size
+                                                                      }
+                                                                    </a>
+                                                                  </li>
+                                                                  {/* <li>
+                                                                    <a
+                                                                      className={
+                                                                        item.size ===
+                                                                        "7"
+                                                                          ? ""
+                                                                          : "active"
+                                                                      }
+                                                                    >
+                                                                      7
+                                                                    </a>
+                                                                  </li>
+                                                                  <li>
+                                                                    <a
+                                                                      className={
+                                                                        item.size ===
+                                                                        "8"
+                                                                          ? ""
+                                                                          : "active"
+                                                                      }
+                                                                    >
+                                                                      8
+                                                                    </a>
+                                                                  </li>
+                                                                  <li>
+                                                                    <a
+                                                                      className={
+                                                                        item.size ===
+                                                                        "9"
+                                                                          ? ""
+                                                                          : "active"
+                                                                      }
+                                                                    >
+                                                                      9
+                                                                    </a>
+                                                                  </li>
+                                                                  <li>
+                                                                    <a
+                                                                      className={
+                                                                        item.size ===
+                                                                        "10"
+                                                                          ? ""
+                                                                          : "active"
+                                                                      }
+                                                                    >
+                                                                      10
+                                                                    </a>
+                                                                  </li>
+                                                                  <li>
+                                                                    <a
+                                                                      className={
+                                                                        item.size ===
+                                                                        "11"
+                                                                          ? ""
+                                                                          : "active"
+                                                                      }
+                                                                    >
+                                                                      11
+                                                                    </a>
+                                                                  </li> */}
+                                                                </ul>
+                                                              ) : (
+                                                                <ul>
+                                                                  <li>
+                                                                    <a>
+                                                                      {
+                                                                        item.size
+                                                                      }
+                                                                    </a>
+                                                                  </li>
+                                                                </ul>
+                                                              )}
+                                                            </td>
+                                                          </tr>
+                                                        </>
+                                                      ) : null}
                                                     </tbody>
                                                   </table>
                                                   <h3>INR {item.price}/-</h3>
