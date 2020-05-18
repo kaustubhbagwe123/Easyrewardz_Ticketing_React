@@ -130,7 +130,8 @@ class Header extends Component {
       isSendRecomended: false,
       chatAccess: "none",
       noProductFound: "",
-      remainingCount: "100 characters remaining..."
+      remainingCount: "100 characters remaining...",
+      noRecommendedFound: ""
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -585,7 +586,7 @@ class Header extends Component {
     var search = "";
     if (event !== undefined) {
       search = event.target.value;
-      this.setState({ searchChat: event.target.value });
+      this.setState({ searchChat: event.target.value, noRecommendedFound: "" });
     } else {
       search = this.state.searchChat;
     }
@@ -1373,8 +1374,9 @@ class Header extends Component {
 
     this.setState({
       toggle: {
-        [e.target.id]: !this.state.toggle[e.target.id],
+        [e.target.id]: !this.state.toggle[e.target.id]
       },
+      noRecommendedFound: ""
     });
   };
   handleSendRecommendedList() {
@@ -1402,12 +1404,12 @@ class Header extends Component {
           //   self.state.programCode,
           //   self.state.storeID
           // );
-          self.setState({ isSendRecomended: false });
+          self.setState({ isSendRecomended: false, noRecommendedFound: "" });
           self.handleGetChatMessagesList(self.state.chatId);
           self.onCloseRecommendedModal();
         } else {
           self.setState({ isSendRecomended: false });
-          self.setState({ messageSuggestionData: [], chkSuggestion: [] });
+          self.setState({ messageSuggestionData: [], chkSuggestion: [], noRecommendedFound: "No Record Found"  });
         }
       })
       .catch((res) => {
@@ -2728,6 +2730,16 @@ class Header extends Component {
                                   ""
                                 )}
                             </button>
+                            {(
+                                <p
+                                  style={{
+                                    color: "red",
+                                    marginBottom: "0px"
+                                  }}
+                                >
+                                  {this.state.noRecommendedFound}
+                                </p>
+                            )}
                           </div>
                         </div>
                         {/* --------Schedule Visit Tab----- */}
@@ -2798,8 +2810,9 @@ class Header extends Component {
                                                   );
                                                 }
                                                 if (
-                                                  data.remaining <
-                                                  data.maxCapacity
+                                                  // data.remaining <
+                                                  // data.maxCapacity
+                                                  data.visitedCount >= (1/2 * data.maxCapacity)
                                                 ) {
                                                   return (
                                                     <Tooltip
@@ -2835,8 +2848,9 @@ class Header extends Component {
                                                   );
                                                 }
                                                 if (
-                                                  data.maxCapacity ===
-                                                  data.remaining
+                                                  // data.maxCapacity ===
+                                                  // data.remaining
+                                                  data.visitedCount < (1/2 * data.maxCapacity)
                                                 ) {
                                                   return (
                                                     <Tooltip
@@ -2897,8 +2911,10 @@ class Header extends Component {
                                       .length !== 0 ? (
                                         <button
                                           className={
-                                            this.state.selectedSlot.maxCapacity ==
-                                              this.state.selectedSlot.remaining
+                                            this.state.selectedSlot
+                                              .visitedCount < (1/2 * this.state.selectedSlot.maxCapacity)
+                                            // this.state.selectedSlot.maxCapacity ==
+                                            //   this.state.selectedSlot.remaining
                                               ? "s-green-btn s-green-active select-slot-cntr mx-0"
                                               : this.state.selectedSlot
                                                 .visitedCount <
@@ -3576,8 +3592,10 @@ class Header extends Component {
                                     .length !== 0 ? (
                                       <button
                                         className={
-                                          this.state.selectedSlot.maxCapacity ==
-                                            this.state.selectedSlot.remaining
+                                          this.state.selectedSlot
+                                              .visitedCount < (1/2 * this.state.selectedSlot.maxCapacity)
+                                          // this.state.selectedSlot.maxCapacity ==
+                                          //   this.state.selectedSlot.remaining
                                             ? "s-green-btn s-green-active select-slot-cntr mx-0"
                                             : this.state.selectedSlot
                                               .visitedCount <
