@@ -93,7 +93,7 @@ class StoreCampaign extends Component {
       showLastTransactiondtab: false,
       insightShowImg: false,
       handleArrowImg: false,
-      // expandedRowKeys: "",
+      expandedRowKeys: "",
       smsDisable: false,
       msngrDisable: false,
       botDisable: false,
@@ -752,6 +752,7 @@ class StoreCampaign extends Component {
   };
   /// Pagination Onchange
   PaginationOnChange = async (numPage) => {
+    debugger;
     await this.setState({
       childCurrentPage: numPage,
     });
@@ -808,17 +809,21 @@ class StoreCampaign extends Component {
     debugger;
     this.setState({
       ChildTblLoading: true,
-      // CampChildTableData: [],
+      CampChildTableData: [],
     });
-    // var keys = [];
+    var keys = [];
     if (data) {
-      // keys.push(row.campaignID);
-
-      this.setState({
-        childCurrentPage: 1,
-        childTotalGridRecord: 0,
-        // expandedRowKeys: keys,
-      });
+      keys.push(row.campaignID);
+      this.state.childCurrentPage = 1;
+      this.state.filterCustNO="";
+      setTimeout(() => {
+        this.setState({
+          childCurrentPage: 1,
+          childTotalGridRecord: 0,
+          expandedRowKeys: keys,
+          filterCustNO:""
+        });
+      }, 50);
     }
     var campaignId = 0;
     if (check !== undefined || check > 0) {
@@ -866,28 +871,28 @@ class StoreCampaign extends Component {
           for (let obj of data.campaignCustomerModel)
             obj.dateTimeHighlight = false;
 
-          var campId = data.campaignCustomerModel[0].campaignScriptID;
-          var presentData = self.state.CampChildTableData;
-          var newArr = presentData.filter((d) => d.campaignScriptID !== campId);
-          self.setState({
-            CampChildTableData: newArr,
-          });
+          // var campId = data.campaignCustomerModel[0].campaignScriptID;
+          // var presentData = self.state.CampChildTableData;
+          // var newArr = presentData.filter((d) => d.campaignScriptID !== campId);
+          // self.setState({
+          //   CampChildTableData: newArr,
+          // });
 
-          var CampChildData = self.state.CampChildTableData;
+          // var CampChildData = self.state.CampChildTableData;
 
-          for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-            var filtd = CampChildData.filter(
-              (d) => d.id === data.campaignCustomerModel[i].id
-            );
-            if (filtd.length === 0) {
-              CampChildData.push(data.campaignCustomerModel[i]);
-            }
-          }
+          // for (let i = 0; i < data.campaignCustomerModel.length; i++) {
+          //   var filtd = CampChildData.filter(
+          //     (d) => d.id === data.campaignCustomerModel[i].id
+          //   );
+          //   if (filtd.length === 0) {
+          //     CampChildData.push(data.campaignCustomerModel[i]);
+          //   }
+          // }
           self.setState({
-            CampChildTableData: CampChildData,
+            CampChildTableData: data.campaignCustomerModel,
             ChildTblLoading: false,
             loading: false,
-            // childTotalGridRecord: data.campaignCustomerCount,
+            childTotalGridRecord: data.campaignCustomerCount,
           });
         } else {
           self.setState({
@@ -1014,7 +1019,7 @@ class StoreCampaign extends Component {
       });
   }
 
-  /// Send Via Messanger data
+  /// Send Via Messenger data
   handleSendViaMessanger(data) {
     this.setState({
       msngrDisable: true,
@@ -1199,6 +1204,7 @@ class StoreCampaign extends Component {
   }
 
   checkIndividualStatus(campaignScriptID, customerCount, event) {
+    debugger;
     var checkboxes = document.getElementsByName("allStatus");
     var strStatusIds = "";
     for (var i in checkboxes) {
@@ -1219,6 +1225,7 @@ class StoreCampaign extends Component {
   }
 
   checkAllStatus(campaignScriptID, customerCount, event) {
+    debugger;
     this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strStatusIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -1301,19 +1308,25 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          var CampChildData = self.state.CampChildTableData;
-          for (let i = 0; i < data.campaignCustomerModel.length; i++) {
-            var filtd = CampChildData.filter(
-              (d) => d.id === data.campaignCustomerModel[i].id
-            );
-            if (filtd.length === 0) {
-              CampChildData.push(data.campaignCustomerModel[i]);
-            }
-          }
+          // var campId = data.campaignCustomerModel[0].campaignScriptID;
+          // var presentData = self.state.CampChildTableData;
+          // var CampChildData = self.state.CampChildTableData;
+          // CampChildData = presentData.filter(
+          //   (d) => d.campaignScriptID !== campId
+          // );
+
+          // for (let i = 0; i < data.campaignCustomerModel.length; i++) {
+          //   var filtd = CampChildData.filter(
+          //     (d) => d.id === data.campaignCustomerModel[i].id
+          //   );
+          //   if (filtd.length === 0) {
+          //     CampChildData.push(data.campaignCustomerModel[i]);
+          //   }
+          // }
 
           self.setState({
-            CampChildTableData: CampChildData,
-            // childTotalGridRecord: data.campaignCustomerCount,
+            CampChildTableData: data.campaignCustomerModel,
+            childTotalGridRecord: data.campaignCustomerCount,
             filterCustomerNumber: false,
             // filterCustNO: "",
           });
@@ -1331,7 +1344,7 @@ class StoreCampaign extends Component {
   };
 
   handleSelectChannelsOnchange(check) {
-    if (check === "Messanger") {
+    if (check === "Messenger") {
       this.setState({
         Respo_ChannelMessanger: true,
         Respo_ChannelBot: false,
@@ -2116,8 +2129,8 @@ class StoreCampaign extends Component {
                   />
                   <Pagination
                     currentPage={this.state.childCurrentPage}
-                    // totalSize={this.state.childTotalGridRecord}
-                    totalSize={row.customerCount}
+                    totalSize={this.state.childTotalGridRecord}
+                    // totalSize={row.customerCount}
                     sizePerPage={this.state.ChildPostsPerPage}
                     changeCurrentPage={this.PaginationOnChange}
                     theme="bootstrap"
@@ -2139,7 +2152,7 @@ class StoreCampaign extends Component {
               );
             }}
             onExpand={this.handleGetCampaignCustomerData}
-            // expandedRowKeys={this.state.expandedRowKeys}
+            expandedRowKeys={this.state.expandedRowKeys}
             expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
@@ -2465,6 +2478,22 @@ class StoreCampaign extends Component {
                                                                 </a>
                                                               </li>
                                                             ) : null}
+                                                            {item.color ===
+                                                            "Yellow" ? (
+                                                              <li>
+                                                                <a className="colorYellow">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
+                                                            {item.color ===
+                                                            "Green" ? (
+                                                              <li>
+                                                                <a className="colorGreen">
+                                                                  <span>1</span>
+                                                                </a>
+                                                              </li>
+                                                            ) : null}
                                                           </ul>
                                                         </td>
                                                       </tr>
@@ -2479,8 +2508,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "6"
-                                                                    ? "active"
-                                                                    : ""
+                                                                    ? ""
+                                                                    : "active"
                                                                 }
                                                               >
                                                                 6
@@ -2491,8 +2520,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "7"
-                                                                    ? "active"
-                                                                    : ""
+                                                                  ? ""
+                                                                  : "active"
                                                                 }
                                                               >
                                                                 7
@@ -2503,8 +2532,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "8"
-                                                                    ? "active"
-                                                                    : ""
+                                                                  ? ""
+                                                                  : "active"
                                                                 }
                                                               >
                                                                 8
@@ -2515,8 +2544,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "9"
-                                                                    ? "active"
-                                                                    : ""
+                                                                  ? ""
+                                                                  : "active"
                                                                 }
                                                               >
                                                                 9
@@ -2527,8 +2556,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "10"
-                                                                    ? "active"
-                                                                    : ""
+                                                                  ? ""
+                                                                  : "active"
                                                                 }
                                                               >
                                                                 10
@@ -2539,8 +2568,8 @@ class StoreCampaign extends Component {
                                                                 className={
                                                                   item.size ===
                                                                   "11"
-                                                                    ? "active"
-                                                                    : ""
+                                                                  ? ""
+                                                                  : "active"
                                                                 }
                                                               >
                                                                 11
@@ -2725,7 +2754,7 @@ class StoreCampaign extends Component {
                       id={this.state.msngrDisable ? "dis-msngr" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      Send Via Messanger
+                      Send Via Messenger
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.botFlag === true ? (
@@ -2849,7 +2878,7 @@ class StoreCampaign extends Component {
                           className="chatbox"
                           onClick={this.handleSelectChannelsOnchange.bind(
                             this,
-                            "Messanger"
+                            "Messenger"
                           )}
                         >
                           <img
@@ -2860,7 +2889,7 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelMessanger === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Send Via Messanger
+                          Send Via Messenger
                         </div>
                       </a>
                     </td>
