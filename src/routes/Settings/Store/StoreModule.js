@@ -1291,8 +1291,7 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label="Campaign Script">
-                  {/* <div className="container-fluid"> */}
+                {/* <Tab label="Campaign Script">
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-8">
@@ -1340,7 +1339,6 @@ class StoreModule extends Component {
                                     <div>
                                       <span className="d-flex align-items-end">
                                         <span className="campaign-script-less">
-                                          {/* {row.original.campaignScriptLess} */}
                                           {row.original.campaignScript}
                                         </span>
                                         <Popover
@@ -1440,7 +1438,6 @@ class StoreModule extends Component {
                                     </div>
                                   );
                                 },
-                                // accessor: "createdBy"
                               },
                               {
                                 Header: (
@@ -1478,7 +1475,6 @@ class StoreModule extends Component {
                               },
                               {
                                 Header: "Actions",
-                                // accessor: "action",
                                 sortable: false,
                                 Cell: (row) => {
                                   var ids = row.original["id"];
@@ -1529,51 +1525,7 @@ class StoreModule extends Component {
                                             id={ids}
                                           />
                                         </Popover>
-                                        {/* <Popover
-                                          content={
-                                            <div className="edtpadding">
-                                              <div className="">
-                                                <label className="popover-header-text">
-                                                  EDIT CAMPAIGN SCRIPT
-                                                </label>
-                                              </div>
-                                              <div className=" pop-over-div">
-                                                <label className="pop-over-lbl-text">
-                                                  {" "}
-                                                  Campaign Name
-                                                </label>
-                                                <select className="pop-over-select">
-                                                  <option>Birthday</option>
-                                                  <option>Anniversary</option>
-                                                </select>
-                                              </div>
-                                              <div className="div-cntr">
-                                                <label className="pop-over-lbl-text">
-                                                  Script Details
-                                                </label>
-                                                <textarea
-                                                  className="stort-textArea"
-                                                  rows="4"
-                                                ></textarea>
-                                              </div>
-
-                                              <br />
-                                              <div>
-                                                <a
-                                                  className="pop-over-cancle"
-                                                  href={Demo.BLANK_LINK}
-                                                >
-                                                  CANCEL
-                                                </a>
-                                                <button className="pop-over-button">
-                                                  SAVE
-                                                </button>
-                                              </div>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        > */}
+                                        
                                         <button
                                           className="react-tabel-button editre"
                                           id="p-edit-pop-2"
@@ -1584,14 +1536,12 @@ class StoreModule extends Component {
                                         >
                                           EDIT
                                         </button>
-                                        {/* </Popover> */}
                                       </span>
                                     </>
                                   );
                                 },
                               },
                             ]}
-                            // resizable={false}
                             minRows={2}
                             defaultPageSize={10}
                             showPagination={true}
@@ -1632,29 +1582,6 @@ class StoreModule extends Component {
                                 }
                               >
                                 <div className="cat-mainbox">
-                                  {/* <div className="campaignScriptData-cancel-search">
-                                                        <input
-                                                          type="text"
-                                                          className="searchf"
-                                                          placeholder="Search"
-                                                          maxLength={25}
-                                                          name="store_code"
-                                                          onChange={
-                                                            this.handleSearchSla
-                                                          }
-                                                          id="SlaInput"
-                                                        />
-
-                                                        <img
-                                                          src={Cancel}
-                                                          alt="cancelimg"
-                                                          onClick={
-                                                            this
-                                                              .handleClearSearchSla
-                                                          }
-                                                        />
-                                                      </div> */}
-
                                   <div className="category-button">
                                     <ul>
                                       <li>
@@ -1918,8 +1845,7 @@ class StoreModule extends Component {
                     className={this.state.campaignOvrlayShow ? "show" : ""}
                     onClick={this.handleCampaignButton}
                   />
-                  {/* </div> */}
-                </Tab>
+                </Tab> */}
               </Tabs>
             </section>
             <Modal

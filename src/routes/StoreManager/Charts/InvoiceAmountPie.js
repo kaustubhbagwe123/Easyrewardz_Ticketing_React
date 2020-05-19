@@ -44,7 +44,7 @@ class InvoiceAmountPie extends Component {
   render() {
     return (
       <NVD3Chart
-        tooltip={{ enabled: false }}
+        tooltip={{ enabled: true }}
         id="chart"
         height={250}
         width={215}

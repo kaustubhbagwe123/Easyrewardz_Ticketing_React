@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+  //apiUrl: "https://localhost:44357/api",
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -70,22 +70,7 @@ let config = {
     ["Tata", "Category-1", "SubCat-1", "IssueType-1", "Active"],
     ["Bata", "Category-2", "SubCat-2", "IssueType-2", "In-Active"],
   ],
-  // slaTemplate: [
-  //   [
-  //     "IssueType",
-  //     "Priority",
-  //     "SLABreachPercent",
-  //     "RespondValue",
-  //     ,
-  //     "RespondDuration",
-  //     "ResolutionValue",
-  //     "ResolutionDuration",
-  //     "Status",
-  //   ],
-  //   ["Issue1", "High", "30", "1", "Day", "2", "Day", "Active"],
-  //   ["Issue1", "Medium", "30", "1", "Day", "2", "Day", "Active"],
-  //   ["Issue1", "Low", "30", "1", "Day", "2", "Day", "Active"],
-  // ],
+ 
   crmRoleTemplate: [
     ["RoleName", "Status", "EnabledModules", "DisabledModules"],
     [
@@ -261,7 +246,7 @@ let config = {
   //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
   // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
-  // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
+   apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
