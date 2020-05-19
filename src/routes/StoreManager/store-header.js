@@ -2649,21 +2649,68 @@ class Header extends Component {
                                                 </label>
                                               </div>
                                               <div>
+                                              {item.brandName !== ""?(
                                                 <label className="chat-product-code">
-                                                  Product Code:
-                                                  {item.uniqueItemCode}
+                                                  
+                                                  Brand :
+                                                  {" "+item.brandName}
                                                   {/* {item.alternativeText} */}
-                                                </label>
+                                                </label>):null}
                                               </div>
                                               <div>
+                                              {item.categoryName !== ""?(
+                                                <label className="chat-product-code">
+                                                  Category :
+                                                  {" "+item.categoryName}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+                                              </div>
+                                              <div>
+                                              {item.subCategoryName !== ""?(
+                                                <label className="chat-product-code">
+                                                  SubCategory :
+                                                  {" "+item.subCategoryName}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+                                              </div>
+                                              <div>
+                                              {item.color !== ""?(
+                                                <label className="chat-product-code">
+                                                  Color :
+                                                  {" "+item.color}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+                                              </div>
+                                              <div>
+                                              {item.size !== ""?(
+                                                <label className="chat-product-code">
+                                                  Size :
+                                                  {" "+item.size}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+                                              </div>
+                                              <div>
+                                              {item.uniqueItemCode !== ""?(
+                                                <label className="chat-product-code">
+                                                  Item Code :
+                                                  {" "+item.uniqueItemCode}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+                                              </div>
+                                              <div>
+                                              {item.discount !== ""?(
+                                                <label className="chat-product-code">
+                                                  Discount :
+                                                  {" "+item.discount}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+                                              </div>
+                                              <div>
+                                              {item.price !== ""?(
                                                 <label className="chat-product-prize">
-                                                  {item.price}
-                                                  {item.discount
-                                                    ? " (-" +
-                                                      item.discount +
-                                                      ")"
-                                                    : ""}
-                                                </label>
+                                                  Price :
+                                                  {" "+item.price}
+                                                </label>):null}
                                               </div>
                                               <div>
                                                 <a
@@ -3374,17 +3421,61 @@ class Header extends Component {
                                             <label className="chat-product-name">
                                               {item.productName}
                                             </label>
-                                            <label className="chat-product-code">
-                                              Product Code:
-                                              {item.uniqueItemCode}
-                                            </label>
+                                            {item.brandName !== ""?(
+                                              <label className="chat-product-code">
+                                                  
+                                                Brand :
+                                                {" "+item.brandName}
+                                                {/* {item.alternativeText} */}
+                                              </label>):null}
 
-                                            <label className="chat-product-prize">
-                                              {item.price}
-                                              {item.discount
-                                                ? " (-" + item.discount + ")"
-                                                : ""}
-                                            </label>
+                                              {item.categoryName !== ""?(
+                                                <label className="chat-product-code">
+                                                  Category :
+                                                  {" "+item.categoryName}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.subCategoryName !== ""?(
+                                                <label className="chat-product-code">
+                                                  SubCategory :
+                                                  {" "+item.subCategoryName}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.color !== ""?(
+                                                <label className="chat-product-code">
+                                                  Color :
+                                                  {" "+item.color}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.size !== ""?(
+                                                <label className="chat-product-code">
+                                                  Size :
+                                                  {" "+item.size}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.uniqueItemCode !== ""?(
+                                                <label className="chat-product-code">
+                                                  Item Code :
+                                                  {" "+item.uniqueItemCode}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.discount !== ""?(
+                                                <label className="chat-product-code">
+                                                  Discount :
+                                                  {" "+item.discount}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.price !== ""?(
+                                                <label className="chat-product-prize">
+                                                  Price :
+                                                  {" "+item.price}
+                                                </label>):null}
 
                                             <label className="chat-product-url">
                                               {item.url}
