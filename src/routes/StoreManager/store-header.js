@@ -781,9 +781,7 @@ class Header extends Component {
 
     var messagecontent = "";
     if (messageStringData) {
-      // messagecontent = messageStringData
-      //   .replace("col-md-4", "col-md-4")
-      //   .replace("col-md-8", "col-md-8");
+      messagecontent = messageStringData;
     } else {
       messagecontent = this.state.message;
     }
@@ -1390,7 +1388,7 @@ class Header extends Component {
       noRecommendedFound: "",
       noOfPeopleMax: "",
       noProductFound: "",
-      isSelectSlot: ""
+      isSelectSlot: "",
     });
   };
   handleSendRecommendedList() {
