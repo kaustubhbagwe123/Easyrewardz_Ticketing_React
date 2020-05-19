@@ -1581,7 +1581,7 @@ class Header extends Component {
               </span>
             </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
-              SM
+              {this.state.UserName.split(" ").map((n) => n[0]).join("").toUpperCase()}
             </a>
           </div>
         </div>
