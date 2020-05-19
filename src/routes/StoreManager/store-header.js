@@ -1345,10 +1345,15 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-        " Product Code: " +
-        messagewhatsAppData[0].uniqueItemCode +
-        " " +
-        messagewhatsAppData[0].url;
+        (messagewhatsAppData[0].brandName !== ""?"\nBrand: "+messagewhatsAppData[0].brandName:"")+
+        (messagewhatsAppData[0].categoryName!== ""?", Category: "+messagewhatsAppData[0].categoryName:"")+
+        (messagewhatsAppData[0].subCategoryName!== ""?", Sub Category: "+messagewhatsAppData[0].subCategoryName:"")+
+        (messagewhatsAppData[0].color!== ""?", Color: "+messagewhatsAppData[0].color:"")+
+        (messagewhatsAppData[0].size!== ""?", Size: "+messagewhatsAppData[0].size:"")+
+        (messagewhatsAppData[0].uniqueItemCode!== ""?", Item Code: "+messagewhatsAppData[0].uniqueItemCode:"")+
+        (messagewhatsAppData[0].discount!== ""?", Discount: "+messagewhatsAppData[0].discount:"")+
+        (messagewhatsAppData[0].price!== ""?", Price: "+messagewhatsAppData[0].price:"")+
+        "\n"+messagewhatsAppData[0].url;
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
