@@ -3322,7 +3322,12 @@ class Header extends Component {
                                 )}
                                 onKeyPress={this.enterPressed.bind(this)}
                               />
-                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                              <span
+                                onClick={this.handleSearchChatItemDetails.bind(
+                                  this
+                                )}
+                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                              >
                                 <img
                                   src={SearchBlueImg}
                                   alt="SearchBlueImg"
