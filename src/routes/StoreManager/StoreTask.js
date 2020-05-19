@@ -2105,6 +2105,38 @@ class StoreTask extends Component {
     }
   };
 
+  handleClearSearch() {
+    this.setState({
+      sdepartmentNameFilterCheckbox: "",
+      sstoreNameFilterCheckbox: "",
+      spriorityNameFilterCheckbox: "",
+      screationOnFilterCheckbox: "",
+      sassigntoFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      staskStatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      tempitemData: [],
+    });
+    if (this.state.tabIndex === 1) {
+      this.setState({
+        raisedByMeData: this.state.sortAllData,
+      });
+    }
+    if (this.state.tabIndex === 2) {
+      this.setState({
+        assignToMeData: this.state.sortAllData,
+      });
+    }
+    if (this.state.tabIndex === 3) {
+      this.setState({
+        taskByTicketData: this.state.sortAllData,
+      });
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -3936,9 +3968,13 @@ class StoreTask extends Component {
               </div>
             </div>
             <a
-              href=""
-              style={{ margin: "0 25px", textDecoration: "underline" }}
-              onClick={this.setSortCheckStatus.bind(this, "all")}
+              style={{
+                margin: "0 25px",
+                textDecoration: "underline",
+                color: "#2561A8",
+                cursor: "pointer",
+              }}
+              onClick={this.handleClearSearch.bind(this)}
             >
               clear search
             </a>

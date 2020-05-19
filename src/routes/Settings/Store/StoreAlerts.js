@@ -1316,9 +1316,9 @@ class Alerts extends Component {
 
       if (this.state.emailInt == true) {
         if (this.state.selectedSubjectInternal === "") {
-          this.setState({
-            subjectInternalCompulsion: "Please Enter Description.",
-          });
+          // this.setState({
+          //   subjectInternalCompulsion: "Please Enter Description.",
+          // });
           // return false;
         } else {
           this.setState({ subjectInternalCompulsion: "" });
@@ -1327,9 +1327,9 @@ class Alerts extends Component {
 
       if (this.state.emailTicketing == true) {
         if (this.state.selectedSubjectStore === "") {
-          this.setState({
-            subjectStoreCompulsion: "Please Enter Description.",
-          });
+          // this.setState({
+          //   subjectStoreCompulsion: "Please Enter Description.",
+          // });
 
           // return false;
         } else {

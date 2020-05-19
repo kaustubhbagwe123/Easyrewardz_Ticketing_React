@@ -100,6 +100,9 @@ class DepartmentMaster extends Component {
       isShowProgress: false,
       functionStatus: false,
       isATOZ: true,
+      showDepartment: false,
+      showFuncation: false,
+      departmentId: 0,
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -115,7 +118,7 @@ class DepartmentMaster extends Component {
 
   componentDidMount() {
     this.handleGetBrandData();
-    this.handleGetDepartmentList();
+    // this.handleGetDepartmentList();
     this.handleGetDepartmentGridData();
   }
 
@@ -151,13 +154,21 @@ class DepartmentMaster extends Component {
   ////handle detapartment onchange
   handleDepartmentChange = (value) => {
     if (value !== NEW_ITEM) {
+      var departId = this.state.departmentData.filter(
+        (x) => x.departmentName === value
+      )[0].departmentID;
+
       this.setState({
         list1Value: value,
+        department_Id: departId,
         functionData: [],
       });
       setTimeout(() => {
         if (this.state.list1Value) {
-          this.setState({ functionData: [], listFunction: "" });
+          this.setState({
+            functionData: [],
+            listFunction: "",
+          });
           this.handleGetFunction("Add");
         }
       }, 1);
@@ -177,11 +188,12 @@ class DepartmentMaster extends Component {
     this.setState({ ShowFunction: true });
   }
   toggleEditModal() {
-    this.setState({ editmodel: false });
+    this.setState({ editmodel: false, departmentData: [], functionData: [] });
   }
   ///Get data for department update
   hanldeEditDepartment(rowData) {
     var editDepartment = {};
+    debugger;
 
     editDepartment.brandID = rowData.brandID;
     editDepartment.brandName = rowData.brandName;
@@ -190,6 +202,7 @@ class DepartmentMaster extends Component {
     editDepartment.storeID = rowData.storeID;
     editDepartment.storeCode = rowData.storeCode;
 
+    this.handleGetDepartmentList(rowData.departmentName, "edit");
     editDepartment.departmentID = rowData.departmentID;
     editDepartment.departmentName = rowData.departmentName;
     this.handleGetFunction(rowData.departmentID);
@@ -1231,25 +1244,53 @@ class DepartmentMaster extends Component {
       });
   }
   ////get Department data for dropdown
-  handleGetDepartmentList() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader(),
-    })
-      .then((res) => {
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          self.setState({ departmentData: data });
-        } else {
-          self.setState({ departmentData: [] });
-        }
-      })
-      .catch((response) => {
-        console.log(response);
+  handleGetDepartmentList(value, type) {
+    debugger;
+    if (value.length >= 3) {
+      this.setState({
+        departmentData: [],
       });
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreDepartment/GetStoreDepartmentBySearch",
+        headers: authHeader(),
+        params: {
+          DepartmentName: value,
+        },
+      })
+        .then((res) => {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            self.setState({
+              departmentData: data,
+              showDepartment: false,
+            });
+          } else {
+            if (type === "edit") {
+              self.setState({
+                departmentData: [],
+                showDepartment: true,
+              });
+            } else {
+              self.setState({
+                departmentData: [],
+                showDepartment: true,
+                list1Value: "",
+              });
+            }
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    } else {
+      this.setState({
+        departmentData: [],
+      });
+    }
   }
 
   ///hanlde Add new Department
@@ -1271,7 +1312,7 @@ class DepartmentMaster extends Component {
           self.setState({
             department_Id: data,
           });
-          self.handleGetDepartmentList();
+          self.handleGetDepartmentList(value);
         } else {
           NotificationManager.error("Department not added.");
         }
@@ -1285,7 +1326,7 @@ class DepartmentMaster extends Component {
     let self = this;
     var finalDepartmentId = 0;
     if (check === "Add") {
-      finalDepartmentId = this.state.list1Value;
+      finalDepartmentId = this.state.department_Id;
     } else {
       finalDepartmentId = parseInt(check);
     }
@@ -1337,6 +1378,7 @@ class DepartmentMaster extends Component {
           self.setState({
             function_Id: data,
             functionStatus: false,
+            showFuncation: false,
           });
         } else {
           NotificationManager.error("Function not added.");
@@ -1503,7 +1545,7 @@ class DepartmentMaster extends Component {
   handleSearchFunctionData(data) {
     if (this.state.department_Id > 0 || this.state.list1Value > 0) {
       let self = this;
-      if (data.length > 2) {
+      if (data.length >= 3) {
         var departmentId = 0;
 
         if (isNaN(this.state.list1Value)) {
@@ -1528,11 +1570,13 @@ class DepartmentMaster extends Component {
             if (status === "Success") {
               self.setState({
                 functionData: data,
+                showFuncation: false,
               });
             } else {
               self.setState({
                 functionData: [],
                 functionStatus: true,
+                showFuncation: true,
               });
             }
           })
@@ -1628,12 +1672,64 @@ class DepartmentMaster extends Component {
     });
   }
 
+  handleToggleDepartmentAdd() {
+    this.setState({
+      showList1: true,
+    });
+  }
+  handleToggleFuncationAdd() {
+    this.setState({
+      ShowFunction: true,
+    });
+  }
+
+  handleToggleEditDepartmentAdd() {
+    this.setState({
+      showList1: true,
+    });
+  }
+  handleToggleEditFuncationAdd() {
+    this.setState({
+      ShowFunction: true,
+    });
+  }
+
+  handleSearchFuncation(value) {
+    debugger;
+    if (value.length >= 3) {
+      let self = this;
+      axios({
+        method: "post",
+        url:
+          config.apiUrl + "/StoreDepartment/searchFunctionNameByDepartmentId",
+        headers: authHeader(),
+        params: {
+          DepartmentId: this.state.department_Id,
+          SearchText: value,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            self.setState({ functionData: data, showFuncation: false });
+          } else {
+            self.setState({ functionData: data, showFuncation: true });
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleSearchFuncation");
+        });
+    } else {
+    }
+  }
+
   render() {
-    const departmentList = this.state.departmentData.map((item, i) => (
-      <Option key={i} value={item.departmentID}>
-        {item.departmentName}
-      </Option>
-    ));
+    // const departmentList = this.state.departmentData.map((item, i) => (
+    //   <Option key={i} value={item.departmentID}>
+    //     {item.departmentName}
+    //   </Option>
+    // ));
     // const functionList = this.state.functionData.map((item, j) => (
     //   <Option key={j} value={item.functionID}>
     //     {item.funcationName}
@@ -2240,12 +2336,29 @@ class DepartmentMaster extends Component {
                       style={{ width: "100%" }}
                       className="depatselect"
                       onChange={this.handleDepartmentChange}
+                      onSearch={this.handleGetDepartmentList.bind(this)}
+                      notFoundContent="No Data Found"
                     >
-                      {departmentList}
-                      <Option value={NEW_ITEM}>
+                      {this.state.departmentData !== null
+                        ? this.state.departmentData.map((item, i) => (
+                            <Option key={i} value={item.departmentName}>
+                              {item.departmentName}
+                            </Option>
+                          ))
+                        : null}
+                      {/* <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
-                      </Option>
+                      </Option> */}
                     </Aselect>
+                    {this.state.showDepartment ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-55px" }}
+                        onClick={this.handleToggleDepartmentAdd.bind(this)}
+                      >
+                        + ADD NEW
+                      </span>
+                    ) : null}
                     {this.state.list1Value === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.departmentCompulsory}
@@ -2294,7 +2407,7 @@ class DepartmentMaster extends Component {
                       value={this.state.listFunction}
                       style={{ width: "100%" }}
                       onChange={this.handleFunctionOnChange}
-                      onSearch={this.handleSearchFunctionData.bind(this)}
+                      onSearch={this.handleSearchFuncation.bind(this)}
                       notFoundContent="No Data Found"
                       className="depatselect"
                     >
@@ -2305,10 +2418,19 @@ class DepartmentMaster extends Component {
                             {item.funcationName}
                           </Option>
                         ))}
-                      <Option value={NEW_ITEM}>
+                      {/* <Option value={NEW_ITEM}>
                         <span className="sweetAlert-inCategory">+ ADD NEW</span>
-                      </Option>
+                      </Option> */}
                     </Aselect>
+                    {this.state.showFuncation ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-55px" }}
+                        onClick={this.handleToggleFuncationAdd.bind(this)}
+                      >
+                        + ADD NEW
+                      </span>
+                    ) : null}
                     {this.state.functionStatus === true ? (
                       <span
                         className="sweetAlert-inCategory"
@@ -2505,7 +2627,7 @@ class DepartmentMaster extends Component {
               <Modal
                 open={this.state.editmodel}
                 onClose={this.toggleEditModal}
-                modalId="storeEditModal"
+                modalId="departmenteditmodal"
               >
                 <div className="edtpadding">
                   <label className="popover-header-text">Edit Department</label>
@@ -2581,6 +2703,34 @@ class DepartmentMaster extends Component {
                           </option>
                         ))}
                     </select>
+                    {/* <Aselect
+                      showSearch={true}
+                      value={this.state.editDepartment.departmentName}
+                      style={{ width: "100%" }}
+                      className="depatselect"
+                      onChange={this.handleDepartmentChange}
+                      onSearch={this.handleGetDepartmentList.bind(this)}
+                      notFoundContent="No Data Found"
+                      onChange={this.handleModalEditData}
+                    >
+                      {this.state.departmentData !== null
+                        ? this.state.departmentData.map((item, i) => (
+                            <Option key={i} value={item.departmentName}>
+                              {item.departmentName}
+                            </Option>
+                          ))
+                        : null}
+                      
+                    </Aselect>
+                    {this.state.showDepartment ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-55px" }}
+                        onClick={this.handleToggleDepartmentAdd.bind(this)}
+                      >
+                        + ADD NEW
+                      </span>
+                    ) : null} */}
                     {this.state.editDepartment.departmentID === "0" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editDepartmentCompulsory}

@@ -21,6 +21,7 @@ import audit from "./../../assets/Images/audit.png";
 // import Demo from "../../store/Hashtag";
 import { Link, withRouter } from "react-router-dom";
 import { transferData } from "./../../helpers/transferData";
+import Header from "./../../routes/StoreManager/store-header";
 
 class Settings extends Component {
   constructor(props) {
@@ -31,18 +32,22 @@ class Settings extends Component {
       storeShow: false,
       showReport: false,
     };
+    this.NewHeader=new Header();
   }
 
   componentDidMount() {
     debugger;
-    this.subscription = transferData.getReport().subscribe((rep) => {
-      debugger;
-      if (rep.isReport === "block") {
+    
+    // this.subscription = transferData.getReport().subscribe((rep) => {
+    //   debugger;
+    var isReport=document.getElementById("isReport").value;
+
+      if (isReport === "block") {
         this.setState({ showReport: true });
-      } else if (rep.isReport === "none") {
+      } else if (isReport === "none") {
         this.setState({ showReport: false });
       }
-    });
+    // });
     if (this.props.location.tabName) {
       let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {
@@ -79,10 +84,11 @@ class Settings extends Component {
 
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   render() {
+    console.log(this.state.showReport,"--------------showReport")
     return (
       <React.Fragment>
         <div className="container-fluid setting-title">

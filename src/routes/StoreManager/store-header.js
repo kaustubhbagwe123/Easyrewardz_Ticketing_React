@@ -53,6 +53,7 @@ class Header extends Component {
       notificationAccess: "none",
       settingAccess: "none",
       reportAccess: "none",
+      isReportAccess: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -413,6 +414,8 @@ class Header extends Component {
   }
 
   render() {
+    console.log(this.state.isReportAccess, "---Report");
+
     return (
       <React.Fragment>
         <div
@@ -534,16 +537,16 @@ class Header extends Component {
               </div>
             </a>
 
-            <a
+            {/* <a
               href="/store/settings"
               style={{ display: this.state.settingAccess }}
               onClick={this.handleReportIsVisible.bind(this)}
-            >
-              {/* <Link
+            > */}
+            <Link
               to="/store/settings"
               style={{ display: this.state.settingAccess }}
-              onClick={this.handleReportIsVisible.bind(this)}
-            > */}
+              // onClick={this.handleReportIsVisible.bind(this)}
+            >
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
@@ -554,9 +557,13 @@ class Header extends Component {
               <span style={{ display: "none" }} className="icon-fullname">
                 Settings
               </span>
-              {/* </Link> */}
-            </a>
-
+            </Link>
+            {/* </a> */}
+            <input
+              type="hidden"
+              value={this.state.reportAccess}
+              id="isReport"
+            />
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               {this.state.NameTag}
             </a>
@@ -794,4 +801,4 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+export default Header;
