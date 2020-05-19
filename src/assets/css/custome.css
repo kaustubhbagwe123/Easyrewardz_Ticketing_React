@@ -10019,6 +10019,9 @@ table tr th:last-child {
   background: transparent !important;
   display: inherit;
 }
+.dashallbrand1 .dropdown li {
+  display: block;
+}
 .ticketSycard {
   padding: 0 0 0 10px;
   background-color: #f5f8f9;
