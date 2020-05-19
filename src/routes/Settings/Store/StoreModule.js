@@ -1090,9 +1090,43 @@ class StoreModule extends Component {
   CampCannelOnChange(e) {
     debugger;
     const { name, value } = e.target;
-    var campaignChannelData = this.state.campaignChannelData;
-    campaignChannelData[name] = value;
-    this.setState({ campaignChannelData });
+    if (name === "enableClickAfterValue") {
+      var campaignChannelData = this.state.campaignChannelData;
+      if (campaignChannelData["enableClickAfterDuration"] == "M") {
+        if (parseInt(value) <= 60) {
+          campaignChannelData[name] = value;
+          this.setState({ campaignChannelData });
+        } else {
+          campaignChannelData[name] = "";
+          this.setState({ campaignChannelData });
+        }
+      } else {
+        if (parseInt(value) <= 99) {
+          campaignChannelData[name] = value;
+          this.setState({ campaignChannelData });
+        } else {
+          campaignChannelData[name] = "";
+          this.setState({ campaignChannelData });
+        }
+      }
+    } else {
+      var campaignChannelData = this.state.campaignChannelData;
+      if (name === "enableClickAfterDuration") {
+        if (value === "M") {
+          if (campaignChannelData["enableClickAfterValue"] > 60)
+            campaignChannelData["enableClickAfterValue"] = "";
+        }
+
+        if (value === "H") {
+          if (campaignChannelData["enableClickAfterValue"] > 99)
+            campaignChannelData["enableClickAfterValue"] = "";
+        }
+      }
+      // const { name, value } = e.target;
+
+      campaignChannelData[name] = value;
+      this.setState({ campaignChannelData });
+    }
   }
 
   handleUpdateCampChannelData() {
