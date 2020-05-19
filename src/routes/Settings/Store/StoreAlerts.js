@@ -1577,7 +1577,7 @@ class Alerts extends Component {
       // viewSMSCustomer: false,
       // viewNotifInternal: false,
       // viewNotifTicketing: false,
-      // isEdit: false
+      isEdit: false,
     });
   }
   updateContent(newContent) {
@@ -2676,6 +2676,12 @@ class Alerts extends Component {
                   >
                     <Modal.Header>
                       <div className="setting-tabs alert-tabs">
+                        <h5 className="alert-desc">
+                          Alert Type :{" "}
+                          {this.state.isEdit
+                            ? this.state.alertEdit.AlertTypeName
+                            : this.state.selectedAlertTypeName}
+                        </h5>
                         <ul
                           className="nav nav-tabs margin-Alerttab"
                           role="tablist"
@@ -2734,7 +2740,7 @@ class Alerts extends Component {
                         <img
                           src={CancelImg}
                           alt="CancelImg"
-                          className="cancelImg-alert"
+                          className="cancelImg-alert cancelImg-alert-top"
                           onClick={this.handleAddAlertTabsClose.bind(this)}
                         />
                       </div>

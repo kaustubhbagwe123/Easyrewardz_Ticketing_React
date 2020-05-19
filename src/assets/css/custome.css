@@ -6624,11 +6624,18 @@ table thead tr {
 .margin-Alerttab {
   margin-left: 250px;
 }
+.alert-desc {
+  color: #2561a8;
+  margin-bottom: 15px;
+}
 .cancelImg-alert {
   height: 20px;
   float: right;
   margin-top: -42px;
   margin-right: -13px;
+}
+.cancelImg-alert-top {
+  margin-top: -77px;
 }
 .alert-sec-div h3 {
   color: #2561a8;
