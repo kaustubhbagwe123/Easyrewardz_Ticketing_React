@@ -2631,10 +2631,12 @@ class Header extends Component {
                                             className="row"
                                             style={{
                                               margin: "0",
-                                              alignItems: "flex-end",
                                             }}
                                           >
-                                            <div className="col-md-4">
+                                            <div
+                                              className="col-md-4 mb-md-0 mb-2"
+                                              style={{ alignSelf: "center" }}
+                                            >
                                               <img
                                                 className="chat-product-img"
                                                 src={item.imageURL}
@@ -3367,7 +3369,12 @@ class Header extends Component {
                                 )}
                                 onKeyPress={this.enterPressed.bind(this)}
                               />
-                              <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
+                              <span
+                                onClick={this.handleSearchChatItemDetails.bind(
+                                  this
+                                )}
+                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                              >
                                 <img
                                   src={SearchBlueImg}
                                   alt="SearchBlueImg"

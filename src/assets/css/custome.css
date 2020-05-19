@@ -11347,6 +11347,19 @@ table tr th:last-child {
   .rolle-name-text {
     width: 90px;
   }
+
+  /* program code starts */
+  .auth-wrapper .auth-content {
+    width: 360px;
+  }
+  .sign-in {
+    font-size: 24px;
+  }
+  .programcode-card-new img,
+  .main-logo {
+    width: 160px !important;
+  }
+  /* program code ends */
 }
 
 @media only screen and (max-width: 480px) {
@@ -11701,6 +11714,12 @@ table tr th:last-child {
     padding: 70px 0px 0 0;
   }
   /* dashboard ends */
+
+  /* program code starts */
+  .auth-wrapper .auth-content {
+    width: 100%;
+  }
+  /* program code ends */
 }
 #customer-tab {
   position: relative;

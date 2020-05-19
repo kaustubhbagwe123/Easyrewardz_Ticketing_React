@@ -389,6 +389,9 @@ p {
   color: #fff;
   word-break: break-all;
 }
+.chat-trail-chat .card-body {
+  margin: 0 -10px;
+}
 .chatcontentDiv::-webkit-scrollbar {
   width: 6px;
 }
@@ -1050,6 +1053,9 @@ p {
   .chat-trail-chat {
     font-size: 12px;
     padding: 8px 15px;
+  }
+  .chat-trail-chat .card-body {
+    margin: 0 -7px;
   }
   .chat-trail-time {
     font-size: 10px;

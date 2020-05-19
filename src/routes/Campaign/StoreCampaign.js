@@ -100,6 +100,7 @@ class StoreCampaign extends Component {
       botDisable: false,
       shareDisable: false,
       custMobileValidation: "",
+      CampCustNameValidation: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -749,7 +750,7 @@ class StoreCampaign extends Component {
       ChildPostsPerPage: e.target.value,
     });
     setTimeout(() => {
-      this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+      this.handleGetCampaignCustomerData(true, "", this.state.campaignID);
     }, 50);
   };
   /// Pagination Onchange
@@ -765,7 +766,7 @@ class StoreCampaign extends Component {
       );
     } else {
       await setTimeout(() => {
-        this.handleGetCampaignCustomerData(false, "", this.state.campaignID);
+        this.handleGetCampaignCustomerData(true, "", this.state.campaignID);
       }, 500);
     }
   };
@@ -795,10 +796,12 @@ class StoreCampaign extends Component {
         if (status === "Success") {
           self.setState({
             campaignGridData: data,
+            CampCustNameValidation: "",
           });
         } else {
           self.setState({
             campaignGridData: [],
+            CampCustNameValidation: "",
           });
         }
       })
@@ -814,20 +817,35 @@ class StoreCampaign extends Component {
         ChildTblLoading: true,
         CampChildTableData: [],
       });
-      var keys = [];
-      if (data) {
-        keys.push(row.campaignID);
-        this.state.childCurrentPage = 1;
+      if (row === "") {
+        // this.state.childCurrentPage = 1;
         this.state.filterCustNO = "";
         setTimeout(() => {
           this.setState({
-            childCurrentPage: 1,
+            // childCurrentPage: 1,
             childTotalGridRecord: 0,
-            expandedRowKeys: keys,
             filterCustNO: "",
           });
         }, 50);
+      } else {
+        var keys = [];
+        if (data) {
+          keys.push(row.campaignID);
+          this.state.childCurrentPage = 1;
+          this.state.ChildPostsPerPage = 10;
+          this.state.filterCustNO = "";
+          setTimeout(() => {
+            this.setState({
+              childCurrentPage: 1,
+              ChildPostsPerPage:10,
+              childTotalGridRecord: 0,
+              expandedRowKeys: keys,
+              filterCustNO: "",
+            });
+          }, 50);
+        }
       }
+
       var campaignId = 0;
       if (check !== undefined || check > 0) {
         campaignId = check;
@@ -895,6 +913,10 @@ class StoreCampaign extends Component {
     } else {
       this.setState({
         expandedRowKeys: [],
+        CampChildTableData: [],
+        strStatusIds: "All",
+        ChildPostsPerPage: 10,
+        childCurrentPage: 1,
       });
     }
   }
@@ -925,11 +947,7 @@ class StoreCampaign extends Component {
               ResponsiveShareNow: true,
               custNameModal: false,
             });
-            self.handleGetCampaignCustomerData(
-              false,
-              "",
-              self.state.campaignID
-            );
+            self.handleGetCampaignCustomerData(true, "", self.state.campaignID);
           } else {
             NotificationManager.error("Server temporarily not available.");
           }
@@ -939,11 +957,7 @@ class StoreCampaign extends Component {
             self.setState({
               custNameModal: false,
             });
-            self.handleGetCampaignCustomerData(
-              false,
-              "",
-              self.state.campaignID
-            );
+            self.handleGetCampaignCustomerData(true, "", self.state.campaignID);
           } else {
             NotificationManager.error("Failed");
           }
@@ -1248,12 +1262,22 @@ class StoreCampaign extends Component {
 
   handleCustomerFilerOnchange(campaignID, customerCount, e) {
     debugger;
-    this.setState({
-      filterCustNO: e.target.value,
-      custMobileValidation: "Max 3 character required",
-    });
+    var reg = /^[0-9\b]+$/;
 
-    if (this.state.filterCustNO.length > 3) {
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({
+        filterCustNO: e.target.value,
+        custMobileValidation: "Please enter altest 3 numbers.",
+      });
+    } else {
+      e.target.value = "";
+    }
+    // this.setState({
+    //   filterCustNO: e.target.value,
+    //   custMobileValidation: "Please enter altest 3 numbers.",
+    // });
+
+    if (this.state.filterCustNO.length > 2) {
       setTimeout(() => {
         this.handleGetCampaignCustomer(campaignID, customerCount);
       }, 50);
@@ -1263,6 +1287,7 @@ class StoreCampaign extends Component {
   handleCampaignNameOnchange(e) {
     this.setState({
       filterCampName: e.target.value,
+      CampCustNameValidation: "Please enter altest 5 characters.",
     });
     if (this.state.filterCampName.length > 5) {
       setTimeout(() => {
@@ -1304,15 +1329,15 @@ class StoreCampaign extends Component {
           self.setState({
             CampChildTableData: data.campaignCustomerModel,
             childTotalGridRecord: data.campaignCustomerCount,
-            filterCustomerNumber: false,
+            // filterCustomerNumber: false,
             custMobileValidation: "",
           });
         } else {
           self.setState({
             CampChildTableData: [],
             childTotalGridRecord: 0,
-            filterCustomerNumber: false,
-            custMobileValidation:""
+            // filterCustomerNumber: false,
+            custMobileValidation: "",
           });
         }
       })
@@ -1375,6 +1400,11 @@ class StoreCampaign extends Component {
                       value={this.state.filterCampName}
                       onChange={this.handleCampaignNameOnchange.bind(this)}
                     />
+                    {this.state.filterCampName.length > 1 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.CampCustNameValidation}
+                      </p>
+                    )}
                   </div>
                 ),
                 filterDropdownVisible: this.state.filterCampaignName,
@@ -1627,7 +1657,7 @@ class StoreCampaign extends Component {
                                 row.customerCount
                               )}
                             />
-                            {this.state.filterCustNO.length > 3 && (
+                            {this.state.filterCustNO.length > 1 && (
                               <p style={{ color: "red", marginBottom: "0px" }}>
                                 {this.state.custMobileValidation}
                               </p>
