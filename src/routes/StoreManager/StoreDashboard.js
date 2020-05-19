@@ -1777,7 +1777,7 @@ class StoreDashboard extends Component {
             sortcreationOn,
             sortassignTo,
             sortclaimStatus,
-            sortAllData:data  
+            sortAllData: data,
           });
         } else {
           self.setState({
