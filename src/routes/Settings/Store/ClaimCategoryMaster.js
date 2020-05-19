@@ -948,6 +948,8 @@ class ClaimCategoryMaster extends Component {
         .catch((data) => {
           console.log(data);
         });
+    } else {
+      this.setState({ categoryDropData: [] });
     }
   }
 
@@ -1196,6 +1198,10 @@ class ClaimCategoryMaster extends Component {
             self.setState({
               category_Id: data,
               showAddCategory: false,
+              ListOfSubCate: "",
+              SubCategoryDropData: [],
+              ListOfIssue: "",
+              ListOfIssueData: [],
             });
             self.handleGetCategoryList(value);
           }
@@ -1254,6 +1260,8 @@ class ClaimCategoryMaster extends Component {
             self.setState({
               subCategory_Id: data,
               showAddSubCategory: false,
+              ListOfIssue: "",
+              ListOfIssueData: [],
             });
             self.handleGetSubCategoryList();
           }
