@@ -781,9 +781,9 @@ class Header extends Component {
 
     var messagecontent = "";
     if (messageStringData) {
-      // messagecontent = messageStringData
-      //   .replace("col-md-4", "col-md-4")
-      //   .replace("col-md-8", "col-md-8");
+      messagecontent = messageStringData
+        .replace("col-md-4", "col-md-4")
+        .replace("col-md-8", "col-md-8");
     } else {
       messagecontent = this.state.message;
     }
