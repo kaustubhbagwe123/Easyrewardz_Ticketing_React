@@ -1838,7 +1838,7 @@ table tr th:last-child {
   display: inline;
 }
 .productdesc .colorYellow {
-  background-color: #FFFF00;
+  background-color: #ffff00;
   padding: 2px 6px;
   border-radius: 50px;
   margin-right: 5px;
@@ -3064,7 +3064,73 @@ table tr th:last-child {
   .appt-status .ant-select-selection::after {
     right: 7px;
   }
+
+  /* ant pagination starts */
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    font-size: 10px !important;
+  }
+  .ant-pagination-item a {
+    font-size: 10px !important;
+    padding: 0 4px !important;
+  }
+  .ant-pagination-prev,
+  .ant-pagination-next,
+  .ant-pagination-jump-prev,
+  .ant-pagination-jump-next,
+  .ant-pagination-item {
+    min-width: 22px !important;
+    height: 22px !important;
+    line-height: 17px !important;
+    margin-right: 5px !important;
+  }
+  .ant-pagination-jump-prev,
+  .ant-pagination-jump-next {
+    min-width: 17px !important;
+    height: 17px !important;
+  }
+  .ant-pagination-jump-prev
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis,
+  .ant-pagination-jump-next
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis {
+    font-size: 10px;
+  }
+  .ant-pagination-item {
+    line-height: 20px !important;
+  }
+  .ant-select-selection--single {
+    font-size: 10px !important;
+    height: 22px !important;
+  }
+  .ant-select-selection__rendered {
+    line-height: 20px !important;
+    margin-left: 8px !important;
+  }
+  .ant-pagination-options {
+    margin-left: 5px !important;
+  }
+  .ant-select-dropdown-menu-item {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 12px !important;
+  }
+  .ant-table-pagination.ant-pagination {
+    margin: 10px 0 !important;
+  }
+  .ant-select-selection--single .ant-select-selection__rendered {
+    margin-right: 10px !important;
+  }
+  /* ant pagination ends */
 }
+
+@media screen and (max-width: 576px) {
+  .ant-pagination-options {
+    display: inline-block !important;
+  }
+}
+
 /* ------------------Appointment Css End ------------------------- */
 
 /* Datepicker responsive starts */
