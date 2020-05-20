@@ -132,6 +132,9 @@ class Header extends Component {
       noProductFound: "",
       remainingCount: "100 characters remaining...",
       noRecommendedFound: "",
+      suggestionModal: false,
+      suggestionText: "",
+      suggestionModalMob: false
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -814,6 +817,8 @@ class Header extends Component {
               cardModal: false,
               selectedCard: 0,
               remainingCount: "100 characters remaining...",
+              suggestionModal: false,
+              suggestionModalMob: false
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
@@ -1437,6 +1442,56 @@ class Header extends Component {
         console.log(res);
       });
   }
+
+  onOpenSuggestionModal(suggestionText, index){
+    if (index > 0) {
+      // if (this.state.chkSuggestion.length > 0) {
+        // if (this.state.chkSuggestion[index] === 1) {
+        //   this.state.chkSuggestion = [];
+        //   this.state.chkSuggestion[index] = 0;
+        // } else {
+          this.state.chkSuggestion = [];
+          this.state.chkSuggestion[index] = 1;
+          this.setState({ suggestionModal: true, chkSuggestion: this.state.chkSuggestion, 
+            suggestionText: suggestionText});
+        // }
+      // } else {
+      //   this.state.chkSuggestion[index] = 1;
+      // }
+      // this.setState({
+      //   chkSuggestion: this.state.chkSuggestion,
+      // });
+    }    
+  };
+
+  onOpenMobSuggestionModal(suggestionText, index){
+    if (index > 0) {
+      // if (this.state.chkSuggestion.length > 0) {
+        // if (this.state.chkSuggestion[index] === 1) {
+        //   this.state.chkSuggestion = [];
+        //   this.state.chkSuggestion[index] = 0;
+        // } else {
+          this.state.chkSuggestion = [];
+          this.state.chkSuggestion[index] = 1;
+          this.setState({ suggestionModalMob: true, chkSuggestion: this.state.chkSuggestion, 
+            suggestionText: suggestionText});
+        // }
+      // } else {
+      //   this.state.chkSuggestion[index] = 1;
+      // }
+      // this.setState({
+      //   chkSuggestion: this.state.chkSuggestion,
+      // });
+    }    
+  };
+
+  onCloseSuggestionModal = () => {
+    this.setState({ suggestionModal: false });
+  };
+
+  onCloseMobSuggestionModal = () => {
+    this.setState({ suggestionModalMob: false });
+  };
 
   render() {
     return (
@@ -2469,13 +2524,17 @@ class Header extends Component {
                                               : ""
                                           }
                                           key={i}
-                                          onClick={this.handleSaveChatMessages.bind(
-                                            this,
-                                            item.suggestionText,
-                                            i + 1,
-                                            "",
-                                            ""
-                                          )}
+                                          // onClick={this.handleSaveChatMessages.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i + 1,
+                                          //   "",
+                                          //   ""
+                                          // )}
+                                          onClick={this.onOpenSuggestionModal.bind(
+                                               this,
+                                               item.suggestionText,
+                                               i + 1)}
                                           // onClick={this.handleSaveChatMessages.bind(
                                           //   this,
                                           //   item.suggestionText,
@@ -3298,13 +3357,18 @@ class Header extends Component {
                                           //   item.suggestionText,
                                           //   i
                                           // )}
-                                          onClick={this.handleSaveChatMessages.bind(
+                                          // onClick={this.handleSaveChatMessages.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i + 1,
+                                          //   "",
+                                          //   ""
+                                          // )}
+
+                                          onClick={this.onOpenMobSuggestionModal.bind(
                                             this,
                                             item.suggestionText,
-                                            i + 1,
-                                            "",
-                                            ""
-                                          )}
+                                            i + 1)}
                                         >
                                           <Tooltip
                                             placement="left"
@@ -3917,6 +3981,115 @@ class Header extends Component {
                             </div>
                           </div>
                         </Modal>
+                        {/*Message Suggestion Modal*/}
+                        <Modal
+                          open={this.state.suggestionModal}
+                          onClose={this.onCloseSuggestionModal}
+                          center
+                          modalId="desktop-conf-popup"
+                          overlayId="mobile-tabs-overlay"
+                        >
+                          <div className="">
+                            <div
+                              className="input-group"
+                              style={{ background: "none" }}
+                            >
+                              
+                             <p className="cls-p-conf">Are you sure & want to send?</p>
+                              
+                            </div>
+                            <hr style={{borderTop: "1px solid #bbb"}}></hr>
+                            <p className="cls-p-sugg">{this.state.suggestionText}</p>
+                              <div className="chat-btn-conf">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseSuggestionModal}
+                              >
+                                No
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.handleSaveChatMessages.bind(
+                                         this,
+                                         this.state.suggestionText,
+                                         "",
+                                         ""
+                                        )}
+                              >
+                                Yes
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up float-none"
+                                />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
+                        {/* Mobile View Message Suggestion*/}
+                        <Modal
+                          open={this.state.suggestionModalMob}
+                          onClose={this.onCloseMobSuggestionModal}
+                          center
+                          modalId="desktop-conf-mob-popup"
+                          overlayId="mobile-tabs-overlay"
+                        >
+                          <div className="">
+                            <div
+                              className="input-group"
+                              style={{ background: "none" }}
+                            >
+                              
+                             <p className="cls-p-conf-mob">Are you sure & want to send?</p>
+                              
+                            </div>
+                            <hr style={{borderTop: "1px solid #bbb"}}></hr>
+                            <p className="cls-p-sugg">{this.state.suggestionText}</p>
+                              <div className="chat-btn-conf-mob">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseMobSuggestionModal}
+                              >
+                                No
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.handleSaveChatMessages.bind(
+                                         this,
+                                         this.state.suggestionText,
+                                         "",
+                                         ""
+                                        )}
+                              >
+                                Yes
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up float-none"
+                                />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
+
                       </div>
                     </div>
                   </div>
