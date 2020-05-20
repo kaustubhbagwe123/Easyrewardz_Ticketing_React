@@ -1419,7 +1419,7 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label="Campaign Script">
+                {/* <Tab label="Campaign Script" style={{ display: "none" }}>
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-8">
@@ -1467,7 +1467,7 @@ class StoreModule extends Component {
                                     <div>
                                       <span className="d-flex align-items-end">
                                         <span className="campaign-script-less">
-                                          {/* {row.original.campaignScriptLess} */}
+                                          {row.original.campaignScriptLess}
                                           {row.original.campaignScript}
                                         </span>
                                         <Popover
@@ -1977,7 +1977,7 @@ class StoreModule extends Component {
                     className={this.state.campaignOvrlayShow ? "show" : ""}
                     onClick={this.handleCampaignButton}
                   />
-                </Tab>
+                </Tab> */}
                 <Tab label="Campaign Channel">
                   <div className="store-mdl backNone">
                     <div className="row">

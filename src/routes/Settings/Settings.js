@@ -28,11 +28,18 @@ class Settings extends Component {
     this.state = {
       ticketShow: false,
       storeShow: false,
+      showReport: false,
     };
   }
 
   componentDidMount() {
-    
+    var isReport = document.getElementById("isReport").value;
+
+    if (isReport === "block") {
+      this.setState({ showReport: true });
+    } else if (isReport === "none") {
+      this.setState({ showReport: false });
+    }
     if (this.props.location.tabName) {
       let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {
@@ -538,19 +545,21 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="/store/storereports" className="setting-box">
-                        <div className="setting-icons icon-small">
-                          <img src={reports} alt="reports" />
-                        </div>
-                        <div className="setting-desc">
-                          <strong>Reports</strong>
-                          <p>
-                            A system in which members of an organization or
-                            society are ranked according to relative status or
-                            authority.
-                          </p>
-                        </div>
-                      </Link>
+                      {this.state.showReport && (
+                        <Link to="/store/storereports" className="setting-box">
+                          <div className="setting-icons icon-small">
+                            <img src={reports} alt="reports" />
+                          </div>
+                          <div className="setting-desc">
+                            <strong>Reports</strong>
+                            <p>
+                              A system in which members of an organization or
+                              society are ranked according to relative status or
+                              authority.
+                            </p>
+                          </div>
+                        </Link>
+                      )}
                       <Link to="/store/storeModule" className="setting-box">
                         <div className="setting-icons">
                           <img src={modules} alt="modules" />

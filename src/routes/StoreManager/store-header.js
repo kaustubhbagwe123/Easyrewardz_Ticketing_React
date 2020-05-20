@@ -206,84 +206,55 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
+    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
-    // var dashboard = {
-    //   data: "Dashboards",
-    //   urls: "storedashboard",
-    //   logoBlack: DashboardLogo,
-    //   logoBlue: DashboardLogoBlue,
-    //   imgAlt: "dashboard icon",
-    //   imgClass: "dashboardImg1",
-    //   activeClass:
-    //     page === "storedashboard" ? "active single-menu" : "single-menu",
-    // };
-    // var task = {
-    //   data: "Task",
-    //   urls: "StoreTask",
-    //   logoBlack: TicketLogo,
-    //   logoBlue: TicketLogoBlue,
-    //   imgAlt: "ticket icon",
-    //   imgClass: "myTicket",
-    //   activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
-    // };
-    // var claim = {
-    //   data: "Claim",
-    //   urls: "claim",
-    //   logoBlack: ClaimLogo,
-    //   logoBlue: ClaimLogoBlue,
-    //   imgAlt: "claim icon",
-    //   imgClass: "claim-logo",
-    //   activeClass: page === "claim" ? "active single-menu" : "single-menu",
-    // };
-    var campaign = {
-      data: "Campaign",
-      urls: "campaign",
-      logoBlack: CampaignLogo,
-      logoBlue: CampaignLogoBlue,
-      imgAlt: "campaign icon",
-      imgClass: "campaign-icon",
-      activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
-    };
-    var appointment = {
-      data: "Appointment",
-      urls: "appointment",
-      logoBlack: AppointmentLogo,
-      logoBlue: AppointmentLogoBlue,
-      imgAlt: "campaign icon",
-      imgClass: "campaign-icon",
+    var dashboard = {
+      data: "Dashboards",
+      urls: "storedashboard",
+      logoBlack: DashboardLogo,
+      logoBlue: DashboardLogoBlue,
+      imgAlt: "dashboard icon",
+      imgClass: "dashboardImg1",
       activeClass:
-        page === "Appointment" ? "active single-menu" : "single-menu",
+        page === "storedashboard" ? "active single-menu" : "single-menu",
+    };
+    var task = {
+      data: "Task",
+      urls: "StoreTask",
+      logoBlack: TicketLogo,
+      logoBlue: TicketLogoBlue,
+      imgAlt: "ticket icon",
+      imgClass: "myTicket",
+      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+    };
+    var claim = {
+      data: "Claim",
+      urls: "claim",
+      logoBlack: ClaimLogo,
+      logoBlue: ClaimLogoBlue,
+      imgAlt: "claim icon",
+      imgClass: "claim-logo",
+      activeClass: page === "claim" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
-        // if (
-        //   data[i].moduleName === "Dashboard" &&
-        //   data[i].modulestatus === true
-        // ) {
-        //   accessdata.push(dashboard);
-        // } else if (
-        //   data[i].moduleName === "Tasks" &&
-        //   data[i].modulestatus === true
-        // ) {
-        //   accessdata.push(task);
-        // } else if (
-        //   data[i].moduleName === "Claim" &&
-        //   data[i].modulestatus === true
-        // ) {
-        //   accessdata.push(claim);
-        // } else
         if (
-          data[i].moduleName === "Campaign" &&
+          data[i].moduleName === "Dashboard" &&
           data[i].modulestatus === true
         ) {
-          accessdata.push(campaign);
+          accessdata.push(dashboard);
         } else if (
-          data[i].moduleName === "Appointment" &&
+          data[i].moduleName === "Tasks" &&
           data[i].modulestatus === true
         ) {
-          accessdata.push(appointment);
+          accessdata.push(task);
+        } else if (
+          data[i].moduleName === "Claim" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(claim);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -299,12 +270,16 @@ class Header extends Component {
             notificationAccess: "block",
           });
         } else if (
-          data[i].moduleName === "Chat" &&
+          data[i].moduleName === "Reports" &&
           data[i].modulestatus === true
         ) {
+          debugger;
           this.setState({
-            chatAccess: "block",
+            reportAccess: "block",
           });
+          setTimeout(() => {
+            transferData.sendReport(this.state.reportAccess);
+          }, 100);
         }
       }
     }
@@ -1580,8 +1555,16 @@ class Header extends Component {
                 Settings
               </span>
             </Link>
+            <input
+              type="hidden"
+              value={this.state.reportAccess}
+              id="isReport"
+            />
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
-              {this.state.UserName.split(" ").map((n) => n[0]).join("").toUpperCase()}
+              {this.state.UserName.split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()}
             </a>
           </div>
         </div>
@@ -2656,68 +2639,72 @@ class Header extends Component {
                                                 </label>
                                               </div>
                                               <div>
-                                              {item.brandName !== ""?(
-                                                <label className="chat-product-code">
-                                                  
-                                                  Brand :
-                                                  {" "+item.brandName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.brandName !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    Brand :
+                                                    {" " + item.brandName}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.categoryName !== ""?(
-                                                <label className="chat-product-code">
-                                                  Category :
-                                                  {" "+item.categoryName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.categoryName !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    Category :
+                                                    {" " + item.categoryName}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.subCategoryName !== ""?(
-                                                <label className="chat-product-code">
-                                                  SubCategory :
-                                                  {" "+item.subCategoryName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.subCategoryName !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    SubCategory :
+                                                    {" " + item.subCategoryName}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.color !== ""?(
-                                                <label className="chat-product-code">
-                                                  Color :
-                                                  {" "+item.color}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.color !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    Color :{" " + item.color}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.size !== ""?(
-                                                <label className="chat-product-code">
-                                                  Size :
-                                                  {" "+item.size}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.size !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    Size :{" " + item.size}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.uniqueItemCode !== ""?(
-                                                <label className="chat-product-code">
-                                                  Item Code :
-                                                  {" "+item.uniqueItemCode}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.uniqueItemCode !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    Item Code :
+                                                    {" " + item.uniqueItemCode}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.discount !== ""?(
-                                                <label className="chat-product-code">
-                                                  Discount :
-                                                  {" "+item.discount}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.discount !== "" ? (
+                                                  <label className="chat-product-code">
+                                                    Discount :
+                                                    {" " + item.discount}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.price !== ""?(
-                                                <label className="chat-product-prize">
-                                                  Price :
-                                                  {" "+item.price}
-                                                </label>):null}
+                                                {item.price !== "" ? (
+                                                  <label className="chat-product-prize">
+                                                    Price :{" " + item.price}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
                                                 <a
@@ -3433,61 +3420,63 @@ class Header extends Component {
                                             <label className="chat-product-name">
                                               {item.productName}
                                             </label>
-                                            {item.brandName !== ""?(
+                                            {item.brandName !== "" ? (
                                               <label className="chat-product-code">
-                                                  
-                                                Brand :
-                                                {" "+item.brandName}
+                                                Brand :{" " + item.brandName}
                                                 {/* {item.alternativeText} */}
-                                              </label>):null}
+                                              </label>
+                                            ) : null}
 
-                                              {item.categoryName !== ""?(
-                                                <label className="chat-product-code">
-                                                  Category :
-                                                  {" "+item.categoryName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.categoryName !== "" ? (
+                                              <label className="chat-product-code">
+                                                Category :
+                                                {" " + item.categoryName}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.subCategoryName !== ""?(
-                                                <label className="chat-product-code">
-                                                  SubCategory :
-                                                  {" "+item.subCategoryName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.subCategoryName !== "" ? (
+                                              <label className="chat-product-code">
+                                                SubCategory :
+                                                {" " + item.subCategoryName}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.color !== ""?(
-                                                <label className="chat-product-code">
-                                                  Color :
-                                                  {" "+item.color}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.color !== "" ? (
+                                              <label className="chat-product-code">
+                                                Color :{" " + item.color}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.size !== ""?(
-                                                <label className="chat-product-code">
-                                                  Size :
-                                                  {" "+item.size}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.size !== "" ? (
+                                              <label className="chat-product-code">
+                                                Size :{" " + item.size}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.uniqueItemCode !== ""?(
-                                                <label className="chat-product-code">
-                                                  Item Code :
-                                                  {" "+item.uniqueItemCode}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.uniqueItemCode !== "" ? (
+                                              <label className="chat-product-code">
+                                                Item Code :
+                                                {" " + item.uniqueItemCode}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.discount !== ""?(
-                                                <label className="chat-product-code">
-                                                  Discount :
-                                                  {" "+item.discount}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.discount !== "" ? (
+                                              <label className="chat-product-code">
+                                                Discount :{" " + item.discount}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.price !== ""?(
-                                                <label className="chat-product-prize">
-                                                  Price :
-                                                  {" "+item.price}
-                                                </label>):null}
+                                            {item.price !== "" ? (
+                                              <label className="chat-product-prize">
+                                                Price :{" " + item.price}
+                                              </label>
+                                            ) : null}
 
                                             <label className="chat-product-url">
                                               {item.url}
