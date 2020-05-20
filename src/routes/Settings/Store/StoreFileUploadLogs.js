@@ -754,7 +754,7 @@ class StoreFileUploadLogs extends Component {
             Type
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Type"
+                this.state.isATOZ === false && this.state.sortHeader === "Type"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -773,7 +773,7 @@ class StoreFileUploadLogs extends Component {
             File Name
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Name"
+                this.state.isATOZ === false && this.state.sortHeader === "Name"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -792,7 +792,7 @@ class StoreFileUploadLogs extends Component {
             Date
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Date"
+                this.state.isATOZ === false && this.state.sortHeader === "Date"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -964,6 +964,7 @@ class StoreFileUploadLogs extends Component {
                 </div>
               </div>
               <a
+              href="#!"
                 style={{
                   margin: "0 25px",
                   textDecoration: "underline",
