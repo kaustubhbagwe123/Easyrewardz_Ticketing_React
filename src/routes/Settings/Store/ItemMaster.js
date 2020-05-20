@@ -65,7 +65,6 @@ class ItemMaster extends Component {
       tempitemData: [],
       isortA: false,
       isATOZ: true,
-      itemData: [],
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -1605,7 +1604,7 @@ class ItemMaster extends Component {
                             Brand Name
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Brand Name"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1633,7 +1632,7 @@ class ItemMaster extends Component {
                             Item Code
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Item Code"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1689,7 +1688,7 @@ class ItemMaster extends Component {
                             Department Name
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Department Name"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1717,7 +1716,7 @@ class ItemMaster extends Component {
                             Item Cat
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Item Cat"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1745,7 +1744,7 @@ class ItemMaster extends Component {
                             Item Sub Cat
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Item Sub Cat"
                                   ? faCaretUp
                                   : faCaretDown
@@ -1773,7 +1772,7 @@ class ItemMaster extends Component {
                             Item Group
                             <FontAwesomeIcon
                               icon={
-                                this.state.isATOZ == false &&
+                                this.state.isATOZ === false &&
                                 this.state.sortHeader === "Item Group"
                                   ? faCaretUp
                                   : faCaretDown

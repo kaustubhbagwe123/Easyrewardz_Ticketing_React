@@ -843,7 +843,7 @@ class FileUploadLogs extends Component {
                 </div>
               </div>
               <a
-                href=""
+                href="#!"
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >

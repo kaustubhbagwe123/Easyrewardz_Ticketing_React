@@ -132,6 +132,9 @@ class Header extends Component {
       noProductFound: "",
       remainingCount: "100 characters remaining...",
       noRecommendedFound: "",
+      suggestionModal: false,
+      suggestionText: "",
+      suggestionModalMob: false
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -421,7 +424,7 @@ class Header extends Component {
             workTimeHours: data.totalWorkingTime,
           });
 
-          self.handleGetStoreAgentDetailsById(data.agentId);
+          // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
       .catch((data) => {
@@ -789,6 +792,8 @@ class Header extends Component {
               cardModal: false,
               selectedCard: 0,
               remainingCount: "100 characters remaining...",
+              suggestionModal: false,
+              suggestionModalMob: false
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
@@ -1320,14 +1325,15 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-        (messagewhatsAppData[0].brandName !== ""?"\nBrand: "+messagewhatsAppData[0].brandName:"")+
-        (messagewhatsAppData[0].categoryName!== ""?", Category: "+messagewhatsAppData[0].categoryName:"")+
-        (messagewhatsAppData[0].subCategoryName!== ""?", Sub Category: "+messagewhatsAppData[0].subCategoryName:"")+
-        (messagewhatsAppData[0].color!== ""?", Color: "+messagewhatsAppData[0].color:"")+
-        (messagewhatsAppData[0].size!== ""?", Size: "+messagewhatsAppData[0].size:"")+
-        (messagewhatsAppData[0].uniqueItemCode!== ""?", Item Code: "+messagewhatsAppData[0].uniqueItemCode:"")+
-        (messagewhatsAppData[0].discount!== ""?", Discount: "+messagewhatsAppData[0].discount:"")+
-        (messagewhatsAppData[0].price!== ""?", Price: "+messagewhatsAppData[0].price:"")+
+        (messagewhatsAppData[0].brandName !== ""?"\nBrand: "+messagewhatsAppData[0].brandName.trim():"")+
+        (messagewhatsAppData[0].categoryName!== ""?", Category: "+messagewhatsAppData[0].categoryName.trim():"")+
+        (messagewhatsAppData[0].subCategoryName!== ""?", Sub Category: "+messagewhatsAppData[0].subCategoryName.trim():"")+
+        (messagewhatsAppData[0].color!== ""?", Color: "+messagewhatsAppData[0].color.trim():"")+
+        (messagewhatsAppData[0].size!== ""?", Size: "+messagewhatsAppData[0].size.trim():"")+
+        (messagewhatsAppData[0].uniqueItemCode!== ""?", Item Code: "+messagewhatsAppData[0].uniqueItemCode.trim():"")+
+        (messagewhatsAppData[0].discount!== "" && parseFloat(messagewhatsAppData[0].discount)!==0?
+        ", Discount: "+messagewhatsAppData[0].discount.trim():"")+
+        (messagewhatsAppData[0].price!== "" && parseFloat(messagewhatsAppData[0].price)!==0?", Price: "+messagewhatsAppData[0].price.trim():"")+
         "\n"+messagewhatsAppData[0].url;
 
       var imageURL = messagewhatsAppData[0].imageURL;
@@ -1412,6 +1418,56 @@ class Header extends Component {
         console.log(res);
       });
   }
+
+  onOpenSuggestionModal(suggestionText, index){
+    if (index > 0) {
+      // if (this.state.chkSuggestion.length > 0) {
+        // if (this.state.chkSuggestion[index] === 1) {
+        //   this.state.chkSuggestion = [];
+        //   this.state.chkSuggestion[index] = 0;
+        // } else {
+          this.state.chkSuggestion = [];
+          this.state.chkSuggestion[index] = 1;
+          this.setState({ suggestionModal: true, chkSuggestion: this.state.chkSuggestion, 
+            suggestionText: suggestionText});
+        // }
+      // } else {
+      //   this.state.chkSuggestion[index] = 1;
+      // }
+      // this.setState({
+      //   chkSuggestion: this.state.chkSuggestion,
+      // });
+    }    
+  };
+
+  onOpenMobSuggestionModal(suggestionText, index){
+    if (index > 0) {
+      // if (this.state.chkSuggestion.length > 0) {
+        // if (this.state.chkSuggestion[index] === 1) {
+        //   this.state.chkSuggestion = [];
+        //   this.state.chkSuggestion[index] = 0;
+        // } else {
+          this.state.chkSuggestion = [];
+          this.state.chkSuggestion[index] = 1;
+          this.setState({ suggestionModalMob: true, chkSuggestion: this.state.chkSuggestion, 
+            suggestionText: suggestionText});
+        // }
+      // } else {
+      //   this.state.chkSuggestion[index] = 1;
+      // }
+      // this.setState({
+      //   chkSuggestion: this.state.chkSuggestion,
+      // });
+    }    
+  };
+
+  onCloseSuggestionModal = () => {
+    this.setState({ suggestionModal: false });
+  };
+
+  onCloseMobSuggestionModal = () => {
+    this.setState({ suggestionModalMob: false });
+  };
 
   render() {
     return (
@@ -2452,13 +2508,17 @@ class Header extends Component {
                                               : ""
                                           }
                                           key={i}
-                                          onClick={this.handleSaveChatMessages.bind(
-                                            this,
-                                            item.suggestionText,
-                                            i + 1,
-                                            "",
-                                            ""
-                                          )}
+                                          // onClick={this.handleSaveChatMessages.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i + 1,
+                                          //   "",
+                                          //   ""
+                                          // )}
+                                          onClick={this.onOpenSuggestionModal.bind(
+                                               this,
+                                               item.suggestionText,
+                                               i + 1)}
                                           // onClick={this.handleSaveChatMessages.bind(
                                           //   this,
                                           //   item.suggestionText,
@@ -2691,20 +2751,19 @@ class Header extends Component {
                                                 ) : null}
                                               </div>
                                               <div>
-                                                {item.discount !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    Discount :
-                                                    {" " + item.discount}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
+                                              {item.discount !== "" && parseFloat(item.discount) !== 0?(
+                                                <label className="chat-product-code">
+                                                  Discount :
+                                                  {" "+item.discount}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
                                               </div>
                                               <div>
-                                                {item.price !== "" ? (
-                                                  <label className="chat-product-prize">
-                                                    Price :{" " + item.price}
-                                                  </label>
-                                                ) : null}
+                                              {item.price !== "" && parseFloat(item.price) !== 0?(
+                                                <label className="chat-product-prize">
+                                                  Price :
+                                                  {" "+item.price}
+                                                </label>):null}
                                               </div>
                                               <div>
                                                 <a
@@ -3285,13 +3344,18 @@ class Header extends Component {
                                           //   item.suggestionText,
                                           //   i
                                           // )}
-                                          onClick={this.handleSaveChatMessages.bind(
+                                          // onClick={this.handleSaveChatMessages.bind(
+                                          //   this,
+                                          //   item.suggestionText,
+                                          //   i + 1,
+                                          //   "",
+                                          //   ""
+                                          // )}
+
+                                          onClick={this.onOpenMobSuggestionModal.bind(
                                             this,
                                             item.suggestionText,
-                                            i + 1,
-                                            "",
-                                            ""
-                                          )}
+                                            i + 1)}
                                         >
                                           <Tooltip
                                             placement="left"
@@ -3469,14 +3533,55 @@ class Header extends Component {
                                               <label className="chat-product-code">
                                                 Discount :{" " + item.discount}
                                                 {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
+                                              </label>):null}
 
-                                            {item.price !== "" ? (
-                                              <label className="chat-product-prize">
-                                                Price :{" " + item.price}
-                                              </label>
-                                            ) : null}
+                                              {item.categoryName !== ""?(
+                                                <label className="chat-product-code">
+                                                  Category :
+                                                  {" "+item.categoryName}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.subCategoryName !== ""?(
+                                                <label className="chat-product-code">
+                                                  SubCategory :
+                                                  {" "+item.subCategoryName}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.color !== ""?(
+                                                <label className="chat-product-code">
+                                                  Color :
+                                                  {" "+item.color}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.size !== ""?(
+                                                <label className="chat-product-code">
+                                                  Size :
+                                                  {" "+item.size}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.uniqueItemCode !== ""?(
+                                                <label className="chat-product-code">
+                                                  Item Code :
+                                                  {" "+item.uniqueItemCode}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.discount !== "" && parseFloat(item.discount) !== 0?(
+                                                <label className="chat-product-code">
+                                                  Discount :
+                                                  {" "+item.discount}
+                                                  {/* {item.alternativeText} */}
+                                                </label>):null}
+
+                                              {item.price !== "" && parseFloat(item.price) !== 0?(
+                                                <label className="chat-product-prize">
+                                                  Price :
+                                                  {" "+item.price}
+                                                </label>):null}
 
                                             <label className="chat-product-url">
                                               {item.url}
@@ -3906,6 +4011,115 @@ class Header extends Component {
                             </div>
                           </div>
                         </Modal>
+                        {/*Message Suggestion Modal*/}
+                        <Modal
+                          open={this.state.suggestionModal}
+                          onClose={this.onCloseSuggestionModal}
+                          center
+                          modalId="desktop-conf-popup"
+                          overlayId="mobile-tabs-overlay"
+                        >
+                          <div className="">
+                            <div
+                              className="input-group"
+                              style={{ background: "none" }}
+                            >
+                              
+                             <p className="cls-p-conf">Are you sure & want to send?</p>
+                              
+                            </div>
+                            <hr style={{borderTop: "1px solid #bbb"}}></hr>
+                            <p className="cls-p-sugg">{this.state.suggestionText}</p>
+                              <div className="chat-btn-conf">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseSuggestionModal}
+                              >
+                                No
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.handleSaveChatMessages.bind(
+                                         this,
+                                         this.state.suggestionText,
+                                         "",
+                                         ""
+                                        )}
+                              >
+                                Yes
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up float-none"
+                                />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
+                        {/* Mobile View Message Suggestion*/}
+                        <Modal
+                          open={this.state.suggestionModalMob}
+                          onClose={this.onCloseMobSuggestionModal}
+                          center
+                          modalId="desktop-conf-mob-popup"
+                          overlayId="mobile-tabs-overlay"
+                        >
+                          <div className="">
+                            <div
+                              className="input-group"
+                              style={{ background: "none" }}
+                            >
+                              
+                             <p className="cls-p-conf-mob">Are you sure & want to send?</p>
+                              
+                            </div>
+                            <hr style={{borderTop: "1px solid #bbb"}}></hr>
+                            <p className="cls-p-sugg">{this.state.suggestionText}</p>
+                              <div className="chat-btn-conf-mob">
+                              <button
+                                className="butn-inv"
+                                onClick={this.onCloseMobSuggestionModal}
+                              >
+                                No
+                              </button>
+                              <button
+                                className="butn"
+                                onClick={this.handleSaveChatMessages.bind(
+                                         this,
+                                         this.state.suggestionText,
+                                         "",
+                                         ""
+                                        )}
+                              >
+                                Yes
+                                <img
+                                  src={SendUp}
+                                  alt="send"
+                                  className="send-up float-none"
+                                />
+                                {this.state.isSendRecomended ? (
+                                  <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    className="circular-loader ml-2"
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
+
                       </div>
                     </div>
                   </div>

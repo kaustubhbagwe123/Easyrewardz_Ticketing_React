@@ -1349,3 +1349,55 @@ p {
   font-weight: bold;
   color: #757575;
 }
+
+.cls-p-conf{
+  margin: 7px;
+  margin-top: 14px;
+  position: relative;
+  left: 32%;
+}
+
+.cls-p-sugg{
+  padding: 15px;
+}
+
+#desktop-conf-popup{
+  background: #ecf2f4;
+  padding: 15px;
+  padding-right: 5px;
+  border-radius: 8px;
+  box-shadow: none;
+  width: 42%;
+}
+
+.chat-btn-conf{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-right: 120px;
+  padding-left: 116px;
+}
+
+#desktop-conf-mob-popup{
+  background: #ecf2f4;
+  padding: 8px;
+  padding-right: 5px;
+  border-radius: 8px;
+  box-shadow: none;
+  width: 100%;
+}
+
+.cls-p-conf-mob{
+  margin: 7px;
+  margin-top: 14px;
+  position: relative;
+  left: 24%;
+}
+
+.chat-btn-conf-mob{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-right: 64px;
+  padding-left: 65px;
+}
