@@ -449,7 +449,7 @@ class Header extends Component {
             workTimeHours: data.totalWorkingTime,
           });
 
-          self.handleGetStoreAgentDetailsById(data.agentId);
+          // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
       .catch((data) => {
