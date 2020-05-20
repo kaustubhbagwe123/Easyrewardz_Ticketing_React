@@ -209,55 +209,84 @@ class Header extends Component {
   }
 
   setAccessUser(data) {
-    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
-    var dashboard = {
-      data: "Dashboards",
-      urls: "storedashboard",
-      logoBlack: DashboardLogo,
-      logoBlue: DashboardLogoBlue,
-      imgAlt: "dashboard icon",
-      imgClass: "dashboardImg1",
+    // var dashboard = {
+    //   data: "Dashboards",
+    //   urls: "storedashboard",
+    //   logoBlack: DashboardLogo,
+    //   logoBlue: DashboardLogoBlue,
+    //   imgAlt: "dashboard icon",
+    //   imgClass: "dashboardImg1",
+    //   activeClass:
+    //     page === "storedashboard" ? "active single-menu" : "single-menu",
+    // };
+    // var task = {
+    //   data: "Task",
+    //   urls: "StoreTask",
+    //   logoBlack: TicketLogo,
+    //   logoBlue: TicketLogoBlue,
+    //   imgAlt: "ticket icon",
+    //   imgClass: "myTicket",
+    //   activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+    // };
+    // var claim = {
+    //   data: "Claim",
+    //   urls: "claim",
+    //   logoBlack: ClaimLogo,
+    //   logoBlue: ClaimLogoBlue,
+    //   imgAlt: "claim icon",
+    //   imgClass: "claim-logo",
+    //   activeClass: page === "claim" ? "active single-menu" : "single-menu",
+    // };
+    var campaign = {
+      data: "Campaign",
+      urls: "campaign",
+      logoBlack: CampaignLogo,
+      logoBlue: CampaignLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
+    };
+    var appointment = {
+      data: "Appointment",
+      urls: "appointment",
+      logoBlack: AppointmentLogo,
+      logoBlue: AppointmentLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
       activeClass:
-        page === "storedashboard" ? "active single-menu" : "single-menu",
-    };
-    var task = {
-      data: "Task",
-      urls: "StoreTask",
-      logoBlack: TicketLogo,
-      logoBlue: TicketLogoBlue,
-      imgAlt: "ticket icon",
-      imgClass: "myTicket",
-      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
-    };
-    var claim = {
-      data: "Claim",
-      urls: "claim",
-      logoBlack: ClaimLogo,
-      logoBlue: ClaimLogoBlue,
-      imgAlt: "claim icon",
-      imgClass: "claim-logo",
-      activeClass: page === "claim" ? "active single-menu" : "single-menu",
+        page === "Appointment" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
+        // if (
+        //   data[i].moduleName === "Dashboard" &&
+        //   data[i].modulestatus === true
+        // ) {
+        //   accessdata.push(dashboard);
+        // } else if (
+        //   data[i].moduleName === "Tasks" &&
+        //   data[i].modulestatus === true
+        // ) {
+        //   accessdata.push(task);
+        // } else if (
+        //   data[i].moduleName === "Claim" &&
+        //   data[i].modulestatus === true
+        // ) {
+        //   accessdata.push(claim);
+        // } else
         if (
-          data[i].moduleName === "Dashboard" &&
+          data[i].moduleName === "Campaign" &&
           data[i].modulestatus === true
         ) {
-          accessdata.push(dashboard);
+          accessdata.push(campaign);
         } else if (
-          data[i].moduleName === "Tasks" &&
+          data[i].moduleName === "Appointment" &&
           data[i].modulestatus === true
         ) {
-          accessdata.push(task);
-        } else if (
-          data[i].moduleName === "Claim" &&
-          data[i].modulestatus === true
-        ) {
-          accessdata.push(claim);
+          accessdata.push(appointment);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -273,16 +302,12 @@ class Header extends Component {
             notificationAccess: "block",
           });
         } else if (
-          data[i].moduleName === "Reports" &&
+          data[i].moduleName === "Chat" &&
           data[i].modulestatus === true
         ) {
-          debugger;
           this.setState({
-            reportAccess: "block",
+            chatAccess: "block",
           });
-          setTimeout(() => {
-            transferData.sendReport(this.state.reportAccess);
-          }, 100);
         }
       }
     }
