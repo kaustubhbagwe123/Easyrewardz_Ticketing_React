@@ -1350,14 +1350,15 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-        (messagewhatsAppData[0].brandName !== ""?"\nBrand: "+messagewhatsAppData[0].brandName:"")+
-        (messagewhatsAppData[0].categoryName!== ""?", Category: "+messagewhatsAppData[0].categoryName:"")+
-        (messagewhatsAppData[0].subCategoryName!== ""?", Sub Category: "+messagewhatsAppData[0].subCategoryName:"")+
-        (messagewhatsAppData[0].color!== ""?", Color: "+messagewhatsAppData[0].color:"")+
-        (messagewhatsAppData[0].size!== ""?", Size: "+messagewhatsAppData[0].size:"")+
-        (messagewhatsAppData[0].uniqueItemCode!== ""?", Item Code: "+messagewhatsAppData[0].uniqueItemCode:"")+
-        (messagewhatsAppData[0].discount!== ""?", Discount: "+messagewhatsAppData[0].discount:"")+
-        (messagewhatsAppData[0].price!== ""?", Price: "+messagewhatsAppData[0].price:"")+
+        (messagewhatsAppData[0].brandName !== ""?"\nBrand: "+messagewhatsAppData[0].brandName.trim():"")+
+        (messagewhatsAppData[0].categoryName!== ""?", Category: "+messagewhatsAppData[0].categoryName.trim():"")+
+        (messagewhatsAppData[0].subCategoryName!== ""?", Sub Category: "+messagewhatsAppData[0].subCategoryName.trim():"")+
+        (messagewhatsAppData[0].color!== ""?", Color: "+messagewhatsAppData[0].color.trim():"")+
+        (messagewhatsAppData[0].size!== ""?", Size: "+messagewhatsAppData[0].size.trim():"")+
+        (messagewhatsAppData[0].uniqueItemCode!== ""?", Item Code: "+messagewhatsAppData[0].uniqueItemCode.trim():"")+
+        (messagewhatsAppData[0].discount!== "" && parseFloat(messagewhatsAppData[0].discount)!==0?
+        ", Discount: "+messagewhatsAppData[0].discount.trim():"")+
+        (messagewhatsAppData[0].price!== "" && parseFloat(messagewhatsAppData[0].price)!==0?", Price: "+messagewhatsAppData[0].price.trim():"")+
         "\n"+messagewhatsAppData[0].url;
 
       var imageURL = messagewhatsAppData[0].imageURL;
@@ -2764,7 +2765,7 @@ class Header extends Component {
                                                 </label>):null}
                                               </div>
                                               <div>
-                                              {item.discount !== ""?(
+                                              {item.discount !== "" && parseFloat(item.discount) !== 0?(
                                                 <label className="chat-product-code">
                                                   Discount :
                                                   {" "+item.discount}
@@ -2772,7 +2773,7 @@ class Header extends Component {
                                                 </label>):null}
                                               </div>
                                               <div>
-                                              {item.price !== ""?(
+                                              {item.price !== "" && parseFloat(item.price) !== 0?(
                                                 <label className="chat-product-prize">
                                                   Price :
                                                   {" "+item.price}
@@ -3540,14 +3541,14 @@ class Header extends Component {
                                                   {/* {item.alternativeText} */}
                                                 </label>):null}
 
-                                              {item.discount !== ""?(
+                                              {item.discount !== "" && parseFloat(item.discount) !== 0?(
                                                 <label className="chat-product-code">
                                                   Discount :
                                                   {" "+item.discount}
                                                   {/* {item.alternativeText} */}
                                                 </label>):null}
 
-                                              {item.price !== ""?(
+                                              {item.price !== "" && parseFloat(item.price) !== 0?(
                                                 <label className="chat-product-prize">
                                                   Price :
                                                   {" "+item.price}
