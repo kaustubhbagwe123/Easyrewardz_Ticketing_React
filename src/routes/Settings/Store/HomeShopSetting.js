@@ -106,7 +106,7 @@ class HomeShopSetting extends Component {
           headers: authHeader(),
           params: {
             BrandID: this.state.brandID===""?0:parseInt(this.state.brandID),
-            StoreCode: this.state.storeCode
+            StoreID: this.state.storeCode===""?0:parseInt(this.state.storeCode)
           },
         })
           .then((res) => {
@@ -258,7 +258,7 @@ class HomeShopSetting extends Component {
                                                                     <option value="">Store Code</option>
                                                                     {this.state.StoreCodeData !== null &&
                                                                     this.state.StoreCodeData.map((item, i) => (
-                                                                        <option value={item.storeCode}>{item.storeCode}</option>
+                                                                        <option value={item.storeID}>{item.storeCode}</option>
                                                                     ))}
                                                                     </select>
                                                                 </div>
