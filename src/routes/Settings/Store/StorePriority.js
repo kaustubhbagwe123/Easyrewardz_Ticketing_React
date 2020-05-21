@@ -1338,7 +1338,7 @@ class CreatePriority extends Component {
       spriortyNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       screatedDateFilterCheckbox: "",
-      sortFilterCreatedDate: "",
+      spriortyStatusFilterCheckbox: "",
       filterTxtValue: "",
       sortHeader: "",
       sortColumn: "",

@@ -21,7 +21,7 @@ import audit from "./../../assets/Images/audit.png";
 // import Demo from "../../store/Hashtag";
 import { Link, withRouter } from "react-router-dom";
 import { transferData } from "./../../helpers/transferData";
-import Header from "./../../routes/StoreManager/store-header";
+
 
 class Settings extends Component {
   constructor(props) {
@@ -30,9 +30,9 @@ class Settings extends Component {
     this.state = {
       ticketShow: false,
       storeShow: false,
-      showReport: false,
+      showReport: true,
     };
-    this.NewHeader=new Header();
+
   }
 
   componentDidMount() {
@@ -88,7 +88,7 @@ class Settings extends Component {
   }
 
   render() {
-    console.log(this.state.showReport,"--------------showReport")
+    
     return (
       <React.Fragment>
         <div className="container-fluid setting-title">
