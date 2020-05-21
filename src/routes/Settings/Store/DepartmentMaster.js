@@ -220,6 +220,7 @@ class DepartmentMaster extends Component {
   }
   //// handle Edit change data
   handleModalEditData = (e) => {
+    debugger;
     var name = e.target.name;
     var value = e.target.value;
     var editDepartment = this.state.editDepartment;
@@ -227,6 +228,8 @@ class DepartmentMaster extends Component {
     this.setState({ editDepartment });
 
     if (name === "brandID") {
+      editDepartment.storeID = 0;
+      this.setState({ StoreCode: [], editDepartment });
       this.handleGetStoreCodeData(value);
     } else if (name === "departmentID") {
       this.handleGetFunction(value);
@@ -1209,6 +1212,7 @@ class DepartmentMaster extends Component {
   }
   ////get Brand data for dropdown
   handleGetStoreCodeData(data) {
+    debugger;
     let self = this;
     var finalBrandId = "";
     var brand_Ids = "";
@@ -1390,13 +1394,14 @@ class DepartmentMaster extends Component {
   }
   /// handle create Department
   handleCreateDepartment() {
+    debugger;
     let self = this;
     if (
       this.state.selectedBrand !== null &&
       this.state.selectedStoreCode !== null &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.listFunction > 0 || this.state.listFunction !== "") &&
-      this.state.selectStatus.length > 0
+      (this.state.selectStatus !== "0" && this.state.selectStatus !== 0)
     ) {
       var activeStatus = 0;
       var departmentData = 0;
@@ -1461,6 +1466,10 @@ class DepartmentMaster extends Component {
               functionCompulsory: "",
               statusCompulsory: "",
               functionStatus: false,
+              brandData: [],
+              StoreCode: [],
+              departmentData: [],
+              functionData: [],
             });
           } else if (status === "Record Already Exists") {
             NotificationManager.error("Record Already Exists.");
@@ -1472,7 +1481,7 @@ class DepartmentMaster extends Component {
           console.log(data);
         });
     } else {
-      this.setState({
+      self.setState({
         brandCompulsory: "Please Select Brand",
         storeCodeCompulsory: "Please Select Store Code",
         departmentCompulsory: "Please Selet Department",
@@ -1484,43 +1493,59 @@ class DepartmentMaster extends Component {
   //// handle update department
   handleUpdateDepartment() {
     let self = this;
-    var activeStatus = 0;
-    if (this.state.editDepartment.status === "Active") {
-      activeStatus = 1;
-    } else {
-      activeStatus = 0;
-    }
-    this.setState({ editSaveLoading: true });
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreDepartment/UpdateBrandDepartmentMapping",
-      headers: authHeader(),
-      data: {
-        DepartmentBrandID: this.state.departmentMapId,
-        BrandID: this.state.editDepartment.brandID,
-        StoreID: this.state.editDepartment.storeID,
-        DepartmentID: parseInt(this.state.editDepartment.departmentID),
-        FunctionID: parseInt(this.state.editDepartment.functionID),
-        Status: activeStatus,
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetDepartmentGridData();
-          NotificationManager.success("Department updated successfully.");
-          self.toggleEditModal();
-          self.setState({
-            editSaveLoading: false,
-          });
-        }
+    if (
+      this.state.editDepartment.brandID !== "0" &&
+      (this.state.editDepartment.storeID !== "0" ||
+        this.state.editDepartment.storeID !== 0) &&
+      this.state.editDepartment.departmentID !== "0" &&
+      this.state.editDepartment.functionID !== "0"
+    ) {
+      var activeStatus = 0;
+      if (this.state.editDepartment.status === "Active") {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
+      }
+      this.setState({ editSaveLoading: true });
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreDepartment/UpdateBrandDepartmentMapping",
+        headers: authHeader(),
+        data: {
+          DepartmentBrandID: this.state.departmentMapId,
+          BrandID: this.state.editDepartment.brandID,
+          StoreID: this.state.editDepartment.storeID,
+          DepartmentID: parseInt(this.state.editDepartment.departmentID),
+          FunctionID: parseInt(this.state.editDepartment.functionID),
+          Status: activeStatus,
+        },
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetDepartmentGridData();
+            NotificationManager.success("Department updated successfully.");
+            self.toggleEditModal();
+            self.setState({
+              editSaveLoading: false,
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      self.setState({
+        editBrandCompulsory: "Please Select Brand.",
+        editStoreCompulsory: "Please Select Store.",
+        editDepartmentCompulsory: "Please Select Department.",
+        editFunctionCompulsory: "Please Select Function.",
       });
+    }
   }
   //// delete Department by DepartmentId
   handleDeleteDepartmentData(department_Id) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1531,10 +1556,13 @@ class DepartmentMaster extends Component {
       },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetDepartmentGridData();
           NotificationManager.success("Department deleted successfully.");
+        } else {
+          NotificationManager.error("Department not deleted.");
         }
       })
       .catch((data) => {
@@ -2206,7 +2234,10 @@ class DepartmentMaster extends Component {
                                         <a href={Demo.BLANK_LINK}>CANCEL</a>
                                         <button
                                           className="butn"
-                                          onClick={this.DeleteBulkUploadFile}
+                                          onClick={this.handleDeleteDepartmentData.bind(
+                                            this,
+                                            ids
+                                          )}
                                         >
                                           Delete
                                         </button>
@@ -2486,7 +2517,7 @@ class DepartmentMaster extends Component {
                       value={this.state.selectStatus}
                       onChange={this.handleStatusChange}
                     >
-                      <option>Select</option>
+                      <option value={0}>Select</option>
                       {this.state.activeData !== null &&
                         this.state.activeData.map((item, j) => (
                           <option key={j} value={item.ActiveID}>
@@ -2494,7 +2525,7 @@ class DepartmentMaster extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.selectStatus === 0 && (
+                    {parseInt(this.state.selectStatus) === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.statusCompulsory}
                       </p>
@@ -2571,7 +2602,12 @@ class DepartmentMaster extends Component {
                                 </p>
                                 <div className="del-can">
                                   <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                  <button className="butn">Delete</button>
+                                  <button
+                                    className="butn"
+                                    onClick={this.DeleteBulkUploadFile}
+                                  >
+                                    Delete
+                                  </button>
                                 </div>
                               </div>
                             </PopoverBody>

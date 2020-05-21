@@ -10208,6 +10208,7 @@ table tr th:last-child {
 }
 .dashallbrand1 .dropdown-menu.show {
   min-width: 155px;
+  display: grid;
 }
 .DashTimeRange .inputDate form-control {
   margin: 0 0 0 100px;
