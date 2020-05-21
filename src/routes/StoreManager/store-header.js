@@ -134,7 +134,7 @@ class Header extends Component {
       noRecommendedFound: "",
       suggestionModal: false,
       suggestionText: "",
-      suggestionModalMob: false
+      suggestionModalMob: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -212,34 +212,34 @@ class Header extends Component {
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
-    // var dashboard = {
-    //   data: "Dashboards",
-    //   urls: "storedashboard",
-    //   logoBlack: DashboardLogo,
-    //   logoBlue: DashboardLogoBlue,
-    //   imgAlt: "dashboard icon",
-    //   imgClass: "dashboardImg1",
-    //   activeClass:
-    //     page === "storedashboard" ? "active single-menu" : "single-menu",
-    // };
-    // var task = {
-    //   data: "Task",
-    //   urls: "StoreTask",
-    //   logoBlack: TicketLogo,
-    //   logoBlue: TicketLogoBlue,
-    //   imgAlt: "ticket icon",
-    //   imgClass: "myTicket",
-    //   activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
-    // };
-    // var claim = {
-    //   data: "Claim",
-    //   urls: "claim",
-    //   logoBlack: ClaimLogo,
-    //   logoBlue: ClaimLogoBlue,
-    //   imgAlt: "claim icon",
-    //   imgClass: "claim-logo",
-    //   activeClass: page === "claim" ? "active single-menu" : "single-menu",
-    // };
+    var dashboard = {
+      data: "Dashboards",
+      urls: "storedashboard",
+      logoBlack: DashboardLogo,
+      logoBlue: DashboardLogoBlue,
+      imgAlt: "dashboard icon",
+      imgClass: "dashboardImg1",
+      activeClass:
+        page === "storedashboard" ? "active single-menu" : "single-menu",
+    };
+    var task = {
+      data: "Task",
+      urls: "StoreTask",
+      logoBlack: TicketLogo,
+      logoBlue: TicketLogoBlue,
+      imgAlt: "ticket icon",
+      imgClass: "myTicket",
+      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+    };
+    var claim = {
+      data: "Claim",
+      urls: "claim",
+      logoBlack: ClaimLogo,
+      logoBlue: ClaimLogoBlue,
+      imgAlt: "claim icon",
+      imgClass: "claim-logo",
+      activeClass: page === "claim" ? "active single-menu" : "single-menu",
+    };
     var campaign = {
       data: "Campaign",
       urls: "campaign",
@@ -261,23 +261,22 @@ class Header extends Component {
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
-        // if (
-        //   data[i].moduleName === "Dashboard" &&
-        //   data[i].modulestatus === true
-        // ) {
-        //   accessdata.push(dashboard);
-        // } else if (
-        //   data[i].moduleName === "Tasks" &&
-        //   data[i].modulestatus === true
-        // ) {
-        //   accessdata.push(task);
-        // } else if (
-        //   data[i].moduleName === "Claim" &&
-        //   data[i].modulestatus === true
-        // ) {
-        //   accessdata.push(claim);
-        // } else
         if (
+          data[i].moduleName === "Dashboard" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(dashboard);
+        } else if (
+          data[i].moduleName === "Tasks" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(task);
+        } else if (
+          data[i].moduleName === "Claim" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(claim);
+        } else if (
           data[i].moduleName === "Campaign" &&
           data[i].modulestatus === true
         ) {
@@ -308,6 +307,17 @@ class Header extends Component {
           this.setState({
             chatAccess: "block",
           });
+        } else if (
+          data[i].moduleName === "Reports" &&
+          data[i].modulestatus === true
+        ) {
+          debugger;
+          this.setState({
+            reportAccess: "block",
+          });
+          setTimeout(() => {
+            transferData.sendReport(this.state.reportAccess);
+          }, 100);
         }
       }
     }
@@ -645,9 +655,11 @@ class Header extends Component {
                     if ("91" + self.state.mobileNo === data[3]) {
                       self.handleGetOngoingChat("isRead");
                       self.handleGetChatMessagesList(self.state.chatId);
-                    } else {
-                      self.handleGetOngoingChat("isRead");
                       self.handleGetChatNotificationCount();
+
+                    } else {
+                      self.handleGetChatNotificationCount();
+                      self.handleGetOngoingChat("isRead");
                     }
                   }
                 );
@@ -818,7 +830,7 @@ class Header extends Component {
               selectedCard: 0,
               remainingCount: "100 characters remaining...",
               suggestionModal: false,
-              suggestionModalMob: false
+              suggestionModalMob: false,
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat("isRead");
@@ -1350,16 +1362,34 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-        (messagewhatsAppData[0].brandName !== ""?"\nBrand: "+messagewhatsAppData[0].brandName.trim():"")+
-        (messagewhatsAppData[0].categoryName!== ""?", Category: "+messagewhatsAppData[0].categoryName.trim():"")+
-        (messagewhatsAppData[0].subCategoryName!== ""?", Sub Category: "+messagewhatsAppData[0].subCategoryName.trim():"")+
-        (messagewhatsAppData[0].color!== ""?", Color: "+messagewhatsAppData[0].color.trim():"")+
-        (messagewhatsAppData[0].size!== ""?", Size: "+messagewhatsAppData[0].size.trim():"")+
-        (messagewhatsAppData[0].uniqueItemCode!== ""?", Item Code: "+messagewhatsAppData[0].uniqueItemCode.trim():"")+
-        (messagewhatsAppData[0].discount!== "" && parseFloat(messagewhatsAppData[0].discount)!==0?
-        ", Discount: "+messagewhatsAppData[0].discount.trim():"")+
-        (messagewhatsAppData[0].price!== "" && parseFloat(messagewhatsAppData[0].price)!==0?", Price: "+messagewhatsAppData[0].price.trim():"")+
-        "\n"+messagewhatsAppData[0].url;
+        (messagewhatsAppData[0].brandName !== ""
+          ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
+          : "") +
+        (messagewhatsAppData[0].categoryName !== ""
+          ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
+          : "") +
+        (messagewhatsAppData[0].subCategoryName !== ""
+          ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
+          : "") +
+        (messagewhatsAppData[0].color !== ""
+          ? ", Color: " + messagewhatsAppData[0].color.trim()
+          : "") +
+        (messagewhatsAppData[0].size !== ""
+          ? ", Size: " + messagewhatsAppData[0].size.trim()
+          : "") +
+        (messagewhatsAppData[0].uniqueItemCode !== ""
+          ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
+          : "") +
+        (messagewhatsAppData[0].discount !== "" &&
+        parseFloat(messagewhatsAppData[0].discount) !== 0
+          ? ", Discount: " + messagewhatsAppData[0].discount.trim()
+          : "") +
+        (messagewhatsAppData[0].price !== "" &&
+        parseFloat(messagewhatsAppData[0].price) !== 0
+          ? ", Price: " + messagewhatsAppData[0].price.trim()
+          : "") +
+        "\n" +
+        messagewhatsAppData[0].url;
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -1444,47 +1474,53 @@ class Header extends Component {
       });
   }
 
-  onOpenSuggestionModal(suggestionText, index){
+  onOpenSuggestionModal(suggestionText, index) {
     if (index > 0) {
       // if (this.state.chkSuggestion.length > 0) {
-        // if (this.state.chkSuggestion[index] === 1) {
-        //   this.state.chkSuggestion = [];
-        //   this.state.chkSuggestion[index] = 0;
-        // } else {
-          this.state.chkSuggestion = [];
-          this.state.chkSuggestion[index] = 1;
-          this.setState({ suggestionModal: true, chkSuggestion: this.state.chkSuggestion, 
-            suggestionText: suggestionText});
-        // }
+      // if (this.state.chkSuggestion[index] === 1) {
+      //   this.state.chkSuggestion = [];
+      //   this.state.chkSuggestion[index] = 0;
+      // } else {
+      this.state.chkSuggestion = [];
+      this.state.chkSuggestion[index] = 1;
+      this.setState({
+        suggestionModal: true,
+        chkSuggestion: this.state.chkSuggestion,
+        suggestionText: suggestionText,
+      });
+      // }
       // } else {
       //   this.state.chkSuggestion[index] = 1;
       // }
       // this.setState({
       //   chkSuggestion: this.state.chkSuggestion,
       // });
-    }    
-  };
+    }
+  }
 
-  onOpenMobSuggestionModal(suggestionText, index){
+  onOpenMobSuggestionModal(suggestionText, index) {
     if (index > 0) {
       // if (this.state.chkSuggestion.length > 0) {
-        // if (this.state.chkSuggestion[index] === 1) {
-        //   this.state.chkSuggestion = [];
-        //   this.state.chkSuggestion[index] = 0;
-        // } else {
-          this.state.chkSuggestion = [];
-          this.state.chkSuggestion[index] = 1;
-          this.setState({ suggestionModalMob: true, chkSuggestion: this.state.chkSuggestion, 
-            suggestionText: suggestionText});
-        // }
+      // if (this.state.chkSuggestion[index] === 1) {
+      //   this.state.chkSuggestion = [];
+      //   this.state.chkSuggestion[index] = 0;
+      // } else {
+      this.state.chkSuggestion = [];
+      this.state.chkSuggestion[index] = 1;
+      this.setState({
+        suggestionModalMob: true,
+        chkSuggestion: this.state.chkSuggestion,
+        suggestionText: suggestionText,
+      });
+      // }
       // } else {
       //   this.state.chkSuggestion[index] = 1;
       // }
       // this.setState({
       //   chkSuggestion: this.state.chkSuggestion,
       // });
-    }    
-  };
+    }
+  }
 
   onCloseSuggestionModal = () => {
     this.setState({ suggestionModal: false });
@@ -2541,9 +2577,10 @@ class Header extends Component {
                                           //   ""
                                           // )}
                                           onClick={this.onOpenSuggestionModal.bind(
-                                               this,
-                                               item.suggestionText,
-                                               i + 1)}
+                                            this,
+                                            item.suggestionText,
+                                            i + 1
+                                          )}
                                           // onClick={this.handleSaveChatMessages.bind(
                                           //   this,
                                           //   item.suggestionText,
@@ -2776,19 +2813,23 @@ class Header extends Component {
                                                 ) : null}
                                               </div>
                                               <div>
-                                              {item.discount !== "" && parseFloat(item.discount) !== 0?(
-                                                <label className="chat-product-code">
-                                                  Discount :
-                                                  {" "+item.discount}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                                {item.discount !== "" &&
+                                                parseFloat(item.discount) !==
+                                                  0 ? (
+                                                  <label className="chat-product-code">
+                                                    Discount :
+                                                    {" " + item.discount}
+                                                    {/* {item.alternativeText} */}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
-                                              {item.price !== "" && parseFloat(item.price) !== 0?(
-                                                <label className="chat-product-prize">
-                                                  Price :
-                                                  {" "+item.price}
-                                                </label>):null}
+                                                {item.price !== "" &&
+                                                parseFloat(item.price) !== 0 ? (
+                                                  <label className="chat-product-prize">
+                                                    Price :{" " + item.price}
+                                                  </label>
+                                                ) : null}
                                               </div>
                                               <div>
                                                 <a
@@ -3380,7 +3421,8 @@ class Header extends Component {
                                           onClick={this.onOpenMobSuggestionModal.bind(
                                             this,
                                             item.suggestionText,
-                                            i + 1)}
+                                            i + 1
+                                          )}
                                         >
                                           <Tooltip
                                             placement="left"
@@ -3558,55 +3600,61 @@ class Header extends Component {
                                               <label className="chat-product-code">
                                                 Discount :{" " + item.discount}
                                                 {/* {item.alternativeText} */}
-                                              </label>):null}
+                                              </label>
+                                            ) : null}
 
-                                              {item.categoryName !== ""?(
-                                                <label className="chat-product-code">
-                                                  Category :
-                                                  {" "+item.categoryName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.categoryName !== "" ? (
+                                              <label className="chat-product-code">
+                                                Category :
+                                                {" " + item.categoryName}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.subCategoryName !== ""?(
-                                                <label className="chat-product-code">
-                                                  SubCategory :
-                                                  {" "+item.subCategoryName}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.subCategoryName !== "" ? (
+                                              <label className="chat-product-code">
+                                                SubCategory :
+                                                {" " + item.subCategoryName}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.color !== ""?(
-                                                <label className="chat-product-code">
-                                                  Color :
-                                                  {" "+item.color}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.color !== "" ? (
+                                              <label className="chat-product-code">
+                                                Color :{" " + item.color}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.size !== ""?(
-                                                <label className="chat-product-code">
-                                                  Size :
-                                                  {" "+item.size}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.size !== "" ? (
+                                              <label className="chat-product-code">
+                                                Size :{" " + item.size}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.uniqueItemCode !== ""?(
-                                                <label className="chat-product-code">
-                                                  Item Code :
-                                                  {" "+item.uniqueItemCode}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.uniqueItemCode !== "" ? (
+                                              <label className="chat-product-code">
+                                                Item Code :
+                                                {" " + item.uniqueItemCode}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.discount !== "" && parseFloat(item.discount) !== 0?(
-                                                <label className="chat-product-code">
-                                                  Discount :
-                                                  {" "+item.discount}
-                                                  {/* {item.alternativeText} */}
-                                                </label>):null}
+                                            {item.discount !== "" &&
+                                            parseFloat(item.discount) !== 0 ? (
+                                              <label className="chat-product-code">
+                                                Discount :{" " + item.discount}
+                                                {/* {item.alternativeText} */}
+                                              </label>
+                                            ) : null}
 
-                                              {item.price !== "" && parseFloat(item.price) !== 0?(
-                                                <label className="chat-product-prize">
-                                                  Price :
-                                                  {" "+item.price}
-                                                </label>):null}
+                                            {item.price !== "" &&
+                                            parseFloat(item.price) !== 0 ? (
+                                              <label className="chat-product-prize">
+                                                Price :{" " + item.price}
+                                              </label>
+                                            ) : null}
 
                                             <label className="chat-product-url">
                                               {item.url}
@@ -4049,13 +4097,15 @@ class Header extends Component {
                               className="input-group"
                               style={{ background: "none" }}
                             >
-                              
-                             <p className="cls-p-conf">Are you sure & want to send?</p>
-                              
+                              <p className="cls-p-conf">
+                                Are you sure & want to send?
+                              </p>
                             </div>
-                            <hr style={{borderTop: "1px solid #bbb"}}></hr>
-                            <p className="cls-p-sugg">{this.state.suggestionText}</p>
-                              <div className="chat-btn-conf">
+                            <hr style={{ borderTop: "1px solid #bbb" }}></hr>
+                            <p className="cls-p-sugg">
+                              {this.state.suggestionText}
+                            </p>
+                            <div className="chat-btn-conf">
                               <button
                                 className="butn-inv"
                                 onClick={this.onCloseSuggestionModal}
@@ -4065,11 +4115,11 @@ class Header extends Component {
                               <button
                                 className="butn"
                                 onClick={this.handleSaveChatMessages.bind(
-                                         this,
-                                         this.state.suggestionText,
-                                         "",
-                                         ""
-                                        )}
+                                  this,
+                                  this.state.suggestionText,
+                                  "",
+                                  ""
+                                )}
                               >
                                 Yes
                                 <img
@@ -4103,13 +4153,15 @@ class Header extends Component {
                               className="input-group"
                               style={{ background: "none" }}
                             >
-                              
-                             <p className="cls-p-conf-mob">Are you sure & want to send?</p>
-                              
+                              <p className="cls-p-conf-mob">
+                                Are you sure & want to send?
+                              </p>
                             </div>
-                            <hr style={{borderTop: "1px solid #bbb"}}></hr>
-                            <p className="cls-p-sugg">{this.state.suggestionText}</p>
-                              <div className="chat-btn-conf-mob">
+                            <hr style={{ borderTop: "1px solid #bbb" }}></hr>
+                            <p className="cls-p-sugg">
+                              {this.state.suggestionText}
+                            </p>
+                            <div className="chat-btn-conf-mob">
                               <button
                                 className="butn-inv"
                                 onClick={this.onCloseMobSuggestionModal}
@@ -4119,11 +4171,11 @@ class Header extends Component {
                               <button
                                 className="butn"
                                 onClick={this.handleSaveChatMessages.bind(
-                                         this,
-                                         this.state.suggestionText,
-                                         "",
-                                         ""
-                                        )}
+                                  this,
+                                  this.state.suggestionText,
+                                  "",
+                                  ""
+                                )}
                               >
                                 Yes
                                 <img
@@ -4144,7 +4196,6 @@ class Header extends Component {
                             </div>
                           </div>
                         </Modal>
-
                       </div>
                     </div>
                   </div>

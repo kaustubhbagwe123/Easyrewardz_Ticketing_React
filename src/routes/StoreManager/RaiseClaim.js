@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Collapse, CardBody, Card } from "reactstrap";
+import { Collapse, CardBody, Card, Input } from "reactstrap";
 // import TableDemo from "../TableDemo";
 import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
@@ -366,7 +366,18 @@ class RaiseClaim extends Component {
       });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    debugger;
+    const input = e.target.value;
+    let IsNumber = false;
+    let RE = /^-?\d*(\.\d+)?$/;
+    //IsNumber= RE.test(value);
+    if (!isNaN(input)) {
+      this.setState({ claimPercentage: input });
+    } else {
+      this.setState({ claimPercentage: "" });
+    }
+  };
   handleGetBrandList() {
     let self = this;
     axios({
@@ -912,9 +923,33 @@ class RaiseClaim extends Component {
       if (e.currentTarget.name === "claimPercentage") {
         this.state.errors["ClaimPercent"] = "";
         this.setState({
-          [e.currentTarget.name]: e.currentTarget.value,
           errors: this.state.errors,
         });
+
+        if (isNaN(e.currentTarget.value)) {
+          return false;
+        }
+        var splitText = e.currentTarget.value.split(".");
+        var index = e.currentTarget.value.indexOf(".");
+        if (parseFloat(e.currentTarget.value) <= 100) {
+          if (index != -1) {
+            if (splitText) {
+              if (splitText[1].length <= 2) {
+                if (index != -1 && splitText.length === 2) {
+                  this.setState({ claimPercentage: e.currentTarget.value });
+                }
+              } else {
+                return false;
+              }
+            } else {
+              this.setState({ claimPercentage: e.currentTarget.value });
+            }
+          } else {
+            this.setState({ claimPercentage: e.currentTarget.value });
+          }
+        } else {
+          this.setState({ claimPercentage: "" });
+        }
       } else {
         this.setState({
           [e.currentTarget.name]: e.currentTarget.value,
@@ -1817,7 +1852,10 @@ class RaiseClaim extends Component {
                                   </div>
                                   <div className="col-md-6">
                                     <ReactAutocomplete
-                                      wrapperStyle={{ display: "block" }}
+                                      wrapperStyle={{
+                                        display: "block",
+                                        position: "relative",
+                                      }}
                                       getItemValue={(item) => item.storeName}
                                       items={this.state.SearchItem}
                                       renderItem={(item, isHighlighted) => (
@@ -1836,7 +1874,7 @@ class RaiseClaim extends Component {
                                         return (
                                           <input
                                             placeholder="Purchase from Store name"
-                                            className="addmanuallytext1"
+                                            className="addmanuallytext1 dropdown-next-div"
                                             type="text"
                                             {...props}
                                           />
@@ -2048,6 +2086,7 @@ class RaiseClaim extends Component {
                           className="form-control textBox"
                           placeholder="Claim Percentage"
                           name="claimPercentage"
+                          onKeyUp={this.handlePercentageOnChange}
                           value={this.state.claimPercentage}
                           onChange={this.handleOnChange}
                         />

@@ -48,6 +48,7 @@ class ClaimApproveReject extends Component {
       ticketID: 0,
       ticketingTaskID: 0,
       assignToName: "",
+      targetClouserDate: "",
       userModel: false,
       userData: [],
       assigneeID: 0,
@@ -229,6 +230,7 @@ class ClaimApproveReject extends Component {
           var ticketingTaskID = responseData.ticketingTaskID;
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
+          var targetClouserDate = responseData.targetClouserDate;
           var assigneeID = responseData.assigneeID;
           var oldAssignID = responseData.assigneeID;
           var status = responseData.status;
@@ -244,6 +246,7 @@ class ClaimApproveReject extends Component {
             status,
             assigneeID,
             assignToName,
+            targetClouserDate,
             ticketingTaskID,
             ticketID,
             imageURL,
@@ -278,45 +281,78 @@ class ClaimApproveReject extends Component {
   ////handle add comment on claim
   handleAddStoreClaimCommentsApproveReject(isRejectComment) {
     debugger;
-    var comment = "";
-    if (this.state.claimComments !== "") {
-      comment = this.state.claimComments;
-    } else {
-      comment = this.state.rejectComment;
-    }
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
-      params: {
-        ClaimID: this.state.claimID,
-        Comment: comment,
-        iSRejectComment: isRejectComment,
-      },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success("Record saved successfully");
-          self.setState({
-            claimComments: "",
-            rejectComment: "",
-            rejectModal: false,
-          });
-          self.handleGetStoreClaimComments(self.state.claimID);
-        } else {
-          NotificationManager.error(res.data.message);
-        }
+    if (this.state.claimComments !== "" || this.state.rejectComment !== "") {
+      var comment = "";
+      if (this.state.claimComments !== "") {
+        comment = this.state.claimComments;
+      } else {
+        comment = this.state.rejectComment;
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
+        params: {
+          ClaimID: this.state.claimID,
+          Comment: comment,
+          iSRejectComment: isRejectComment,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(res) {
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            if (!isRejectComment)
+              NotificationManager.success("Record saved successfully");
+            self.setState({
+              claimComments: "",
+              rejectComment: "",
+              rejectModal: false,
+            });
+            self.handleGetStoreClaimComments(self.state.claimID);
+          } else {
+            NotificationManager.error(res.data.message);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Please Enter Comment.");
+    }
   }
 
   handleOnChange(e) {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    debugger;
+    if (e.currentTarget.name === "finalClaimPercentage") {
+      if (isNaN(e.currentTarget.value)) {
+        return false;
+      }
+      var splitText = e.currentTarget.value.split(".");
+      var index = e.currentTarget.value.indexOf(".");
+      if (parseFloat(e.currentTarget.value) <= 100) {
+        if (index != -1) {
+          if (splitText) {
+            if (splitText[1].length <= 2) {
+              if (index != -1 && splitText.length === 2) {
+                this.setState({ finalClaimPercentage: e.currentTarget.value });
+              }
+            } else {
+              return false;
+            }
+          } else {
+            this.setState({ finalClaimPercentage: e.currentTarget.value });
+          }
+        } else {
+          this.setState({ finalClaimPercentage: e.currentTarget.value });
+        }
+      } else {
+        this.setState({ finalClaimPercentage: "" });
+      }
+    } else {
+      this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    }
   }
   ////handle get store claim comment by id
   handleGetStoreClaimComments(claimId) {
@@ -376,8 +412,10 @@ class ClaimApproveReject extends Component {
           if (status === "Success") {
             if (IsApprove == true) {
               NotificationManager.success("Record approved successfully");
+              self.props.history.push("/store/claim");
             } else {
               NotificationManager.success("Record rejected successfully");
+              self.props.history.push("/store/claim");
             }
           } else {
             NotificationManager.error(res.data.message);
@@ -553,7 +591,16 @@ class ClaimApproveReject extends Component {
       this.setState({ errors: this.state.errors });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    alert();
+    const value = e.target.value;
+    let IsNumber = false;
+    let RE = /^-{0,1}\d*\.{0,1}\d+$/;
+    IsNumber = RE.test(value);
+    if (IsNumber) {
+      console.log(IsNumber);
+    }
+  };
   handleOrderChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
@@ -710,17 +757,26 @@ class ClaimApproveReject extends Component {
             ) : null}
           </div>
           <div className="col-md-5">
-            <a
-              style={{ marginTop: "10px" }}
-              className="d-inline-block"
-              onClick={this.handleGetUserDropdown.bind(this)}
-            >
-              <div className="oval-5-1-new-store">
-                <img src={storeImg} alt="headphone" className="storeImg-11" />
-              </div>
-              <label className="naman-r">{this.state.assignToName}</label>
-              <img src={DownImg} alt="down" className="down-header" />
-            </a>
+            <div className="d-inline-block">
+              <a
+                style={{
+                  marginTop: this.state.targetClouserDate ? "5px" : "11px",
+                }}
+                className="d-inline-block"
+                onClick={this.handleGetUserDropdown.bind(this)}
+              >
+                <div className="oval-5-1-new-store">
+                  <img src={storeImg} alt="headphone" className="storeImg-11" />
+                </div>
+                <label className="naman-r">{this.state.assignToName}</label>
+                <img src={DownImg} alt="down" className="down-header" />
+              </a>
+              {this.state.targetClouserDate && (
+                <p className="closure-date">
+                  Closure Date: {this.state.targetClouserDate}
+                </p>
+              )}
+            </div>
 
             <div className="btn-approrej">
               <button
@@ -746,14 +802,15 @@ class ClaimApproveReject extends Component {
             <div className="col-md-9" style={{ padding: "0" }}>
               <div className="card card-radius" style={{ margin: "0 0 20px" }}>
                 <div
-                  className="search-customer-padding"
-                  style={{ padding: "30px 45px 30px" }}
+                  className="search-customer-padding cusrow"
+                  style={{ padding: "30px" }}
                 >
                   <div
                     className=""
                     style={{
                       border: "1px solid #EEE",
                       borderRadius: "5px",
+                      margin: "0 15px",
                     }}
                   >
                     <div className="claim-status-card">
@@ -781,7 +838,7 @@ class ClaimApproveReject extends Component {
                       isOpen={this.state.collapse}
                       style={{ width: "100%" }}
                     >
-                      <Card>
+                      <Card className="w-100">
                         <CardBody style={{ padding: "15px 0 0 0" }}>
                           <div className="row mx-0">
                             <div className="col-md-6">
@@ -916,7 +973,7 @@ class ClaimApproveReject extends Component {
                       </Card>
                     </Collapse>
                   </div>
-                  <div className="row">
+                  <div className="row w-100">
                     <div className="form-group col-md-4">
                       <label className="label-6">Brand</label>
                       <select
@@ -1044,18 +1101,22 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6">Attached Image</label>
+                      <label className="label-6" style={{ display: "block" }}>
+                        Attached Image
+                      </label>
+                      {this.state.imageURL !== "" ? (
+                        <img
+                          src={this.state.imageURL}
+                          alt="Bata"
+                          className="claim-bataShoes"
+                        />
+                      ) : null}
                     </div>
                   </div>
-                  {this.state.imageUR !== "" ? (
-                    <img
-                      src={this.state.imageURL}
-                      alt="Bata"
-                      className="claim-bataShoes"
-                    />
-                  ) : null}
                   <div className="row" style={{ margin: "0" }}>
-                    <label className="label-6">Comments By Store</label>
+                    <div className="col-md-4">
+                      <label className="label-6">Comments By Store</label>
+                    </div>
                   </div>
                   {this.state.storeCommetData !== null &&
                     this.state.storeCommetData.map((item, i) => {
@@ -1102,7 +1163,7 @@ class ClaimApproveReject extends Component {
                 className="card card-radius"
                 style={{ padding: "30px 45px 30px" }}
               >
-                <div className="search-customer-padding">
+                <div className="search-customer-padding p-0">
                   <div className="row" style={{ margin: "0" }}>
                     <div
                       className="form-group col-md-4"
@@ -1128,11 +1189,11 @@ class ClaimApproveReject extends Component {
                   <div className="row" style={{ margin: "0" }}>
                     <div style={{ width: "100%" }}>
                       <label className="label-6">Comments By Approval</label>
-                      <hr></hr>
+                      <hr className="mt-0 mb-2" />
                     </div>
                     <div className="" style={{ display: "contents" }}>
                       <textarea
-                        className="ticket-comments-textarea"
+                        className="ticket-comments-textarea mt-1"
                         placeholder="Add your Comment here"
                         name="claimComments"
                         value={this.state.claimComments}
@@ -1152,7 +1213,7 @@ class ClaimApproveReject extends Component {
                       <label className="txt">ADD COMMENT</label>
                     </button>
                   </div>
-                  <div className="row" style={{ margin: "0" }}>
+                  <div className="row mt-4" style={{ margin: "0" }}>
                     <div className="">
                       <label className="label-6">
                         Comments By Approval:{" "}
