@@ -1401,3 +1401,11 @@ p {
   padding-right: 64px;
   padding-left: 65px;
 }
+
+.slot-span{
+  display: block;
+  margin: 10px 10px 10px 10px;
+  padding: 5px 10px;
+  text-align: center;
+  color: #757575;
+}
