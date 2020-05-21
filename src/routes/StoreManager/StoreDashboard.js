@@ -16,7 +16,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-import { faCaretDown,faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePickerComponenet from "./../Settings/Store/DatePickerComponenet";
 import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
@@ -119,7 +119,22 @@ class StoreDashboard extends Component {
       tempitemData: [],
       sortAllData: [],
       isATOZ: true,
-      itemData:[]
+      itemData: [],
+      sdepartmentFilterCheckbox: "",
+      sstoreNameFilterCheckbox: "",
+      sassigntoIdFilterCheckbox: "",
+      staskstatusFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      sortFilterdepartment: [],
+      sortFilterstoreName: [],
+      sortFilterassigntoId: [],
+      sortFiltertaskstatus: [],
+      sortFiltercreatedOn: [],
+      sortdepartment: [],
+      sortstoreName: [],
+      sortassigntoId: [],
+      sorttaskstatus: [],
+      sortcreatedOn: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -152,7 +167,11 @@ class StoreDashboard extends Component {
     debugger;
     var itemsArray = [];
 
-    itemsArray = this.state.cliamSearchData;
+    if (this.state.activeTab == 1) {
+      itemsArray = this.state.dashboardGridData;
+    } else {
+      itemsArray = this.state.cliamSearchData;
+    }
 
     if (this.state.sortColumn === "categoryName") {
       itemsArray.sort((a, b) => {
@@ -190,6 +209,44 @@ class StoreDashboard extends Component {
       });
     }
 
+    if (this.state.sortColumn === "department") {
+      itemsArray.sort((a, b) => {
+        if (a.department < b.department) return 1;
+        if (a.department > b.department) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "storeName") {
+      itemsArray.sort((a, b) => {
+        if (a.storeName < b.storeName) return 1;
+        if (a.storeName > b.storeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assigntoId") {
+      itemsArray.sort((a, b) => {
+        if (a.assigntoId < b.assigntoId) return 1;
+        if (a.assigntoId > b.assigntoId) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "taskstatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskstatus < b.taskstatus) return 1;
+        if (a.taskstatus > b.taskstatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdOn") {
+      itemsArray.sort((a, b) => {
+        if (a.createdOn < b.createdOn) return 1;
+        if (a.createdOn > b.createdOn) return -1;
+        return 0;
+      });
+    }
+
     this.setState({
       isortA: true,
       isATOZ: false,
@@ -204,7 +261,11 @@ class StoreDashboard extends Component {
     debugger;
     var itemsArray = [];
 
-    itemsArray = this.state.cliamSearchData;
+    if (this.state.activeTab == 1) {
+      itemsArray = this.state.dashboardGridData;
+    } else {
+      itemsArray = this.state.cliamSearchData;
+    }
 
     if (this.state.sortColumn === "categoryName") {
       itemsArray.sort((a, b) => {
@@ -242,6 +303,43 @@ class StoreDashboard extends Component {
       });
     }
 
+    if (this.state.sortColumn === "department") {
+      itemsArray.sort((a, b) => {
+        if (a.department < b.department) return -1;
+        if (a.department > b.department) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "storeName") {
+      itemsArray.sort((a, b) => {
+        if (a.storeName < b.storeName) return -1;
+        if (a.storeName > b.storeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assigntoId") {
+      itemsArray.sort((a, b) => {
+        if (a.assigntoId < b.assigntoId) return -1;
+        if (a.assigntoId > b.assigntoId) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "taskstatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskstatus < b.taskstatus) return -1;
+        if (a.taskstatus > b.taskstatus) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdOn") {
+      itemsArray.sort((a, b) => {
+        if (a.createdOn < b.createdOn) return -1;
+        if (a.createdOn > b.createdOn) return 1;
+        return 0;
+      });
+    }
     this.setState({
       isortA: true,
       isATOZ: true,
@@ -379,6 +477,133 @@ class StoreDashboard extends Component {
         });
       }
     }
+
+    if (data === "department") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+
+    if (data === "storeName") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "assigntoId") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "taskstatus") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdOn") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
   }
   StatusCloseModel() {
     debugger;
@@ -388,14 +613,22 @@ class StoreDashboard extends Component {
       sortFiltercreatedByName: this.state.sortcreatedByName,
       sortFiltercreationOn: this.state.sortcreationOn,
       sortFilterassignTo: this.state.sortassignTo,
+      sortFilterdepartment: this.state.sortdepartment,
+      sortFilterstoreName: this.state.sortstoreName,
+      sortFilterassigntoId: this.state.sortassigntoId,
+      sortFiltertaskstatus: this.state.sorttaskstatus,
+      sortFiltercreatedOn: this.state.sortcreatedOn,
     });
     if (this.state.tempitemData.length > 0) {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
       });
-
-      this.setState({ cliamSearchData: this.state.tempitemData });
+      if (this.state.activeTab === 1) {
+        this.setState({ dashboardGridData: this.state.tempitemData });
+      } else {
+        this.setState({ cliamSearchData: this.state.tempitemData });
+      }
 
       if (this.state.sortColumn === "categoryName") {
         if (this.state.scategoryNameFilterCheckbox === "") {
@@ -452,6 +685,64 @@ class StoreDashboard extends Component {
           });
         }
       }
+      if (this.state.sortColumn === "department") {
+        if (this.state.sdepartmentFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+            staskstatusFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "storeName") {
+        if (this.state.sstoreNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdepartmentFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+            staskstatusFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "assigntoId") {
+        if (this.state.sassigntoIdFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentFilterCheckbox: "",
+
+            staskstatusFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "taskstatus") {
+        if (this.state.staskstatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdOn") {
+        if (this.state.screatedOnFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+
+            staskstatusFilterCheckbox: "",
+          });
+        }
+      }
     } else {
       this.setState({
         StatusModel: false,
@@ -459,11 +750,19 @@ class StoreDashboard extends Component {
         sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
 
-      this.setState({
-        cliamSearchData: this.state.isortA
-          ? this.state.itemData
-          : this.state.sortAllData,
-      });
+      if (this.state.activeTab == 1) {
+        this.setState({
+          dashboardGridData: this.state.isortA
+            ? this.state.itemData
+            : this.state.sortAllData,
+        });
+      } else {
+        this.setState({
+          cliamSearchData: this.state.isortA
+            ? this.state.itemData
+            : this.state.sortAllData,
+        });
+      }
     }
   }
   hanldetoggleOnChange = (e) => {
@@ -1086,7 +1385,125 @@ class StoreDashboard extends Component {
         var data = response.data.responseData;
 
         if (message === "Success") {
-          self.setState({ dashboardGridData: data, taskCount: data.length });
+          self.setState({
+            dashboardGridData: data,
+            taskCount: data.length,
+            sortAllData: data,
+          });
+          var sortFilterdepartment = [];
+          var sortFilterstoreName = [];
+          var sortFilterassigntoId = [];
+          var sortFiltertaskstatus = [];
+          var sortFiltercreatedOn = [];
+          var sortdepartment = [];
+          var sortstoreName = [];
+          var sortassigntoId = [];
+          var sorttaskstatus = [];
+          var sortcreatedOn = [];
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].department]) {
+              distinct.push(data[i].department);
+              unique[data[i].department] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortdepartment.push({ department: distinct[i] });
+              sortFilterdepartment.push({
+                department: distinct[i],
+              });
+            }
+          }
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].storeName]) {
+              distinct.push(data[i].storeName);
+              unique[data[i].storeName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortstoreName.push({ storeName: distinct[i] });
+              sortFilterstoreName.push({
+                storeName: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].assigntoId]) {
+              distinct.push(data[i].assigntoId);
+              unique[data[i].assigntoId] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortassigntoId.push({ assigntoId: distinct[i] });
+              sortFilterassigntoId.push({
+                assigntoId: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].taskstatus]) {
+              distinct.push(data[i].taskstatus);
+              unique[data[i].taskstatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sorttaskstatus.push({ taskstatus: distinct[i] });
+              sortFiltertaskstatus.push({
+                taskstatus: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdOn]) {
+              distinct.push(data[i].createdOn);
+              unique[data[i].createdOn] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortcreatedOn.push({
+                createdOn: distinct[i],
+              });
+              sortFiltercreatedOn.push({
+                createdOn: distinct[i],
+              });
+            }
+          }
+          self.setState({
+            sortFilterdepartment,
+            sortFilterstoreName,
+            sortFilterassigntoId,
+            sortFiltertaskstatus,
+            sortFiltercreatedOn,
+            sortdepartment,
+            sortstoreName,
+            sortassigntoId,
+            sorttaskstatus,
+            sortcreatedOn,
+            sortAllData: data,
+          });
         } else {
           self.setState({ dashboardGridData: [], taskCount: 0 });
         }
@@ -1237,7 +1654,18 @@ class StoreDashboard extends Component {
         var cliamSearchData = response.data.responseData;
         if (message === "Success" && cliamSearchData) {
           var data = response.data.responseData;
-          self.state.sortAllData = data;
+
+          var sortcategoryName = [];
+          var sortcreatedByName = [];
+          var sortcreationOn = [];
+          var sortassignTo = [];
+          var sortclaimStatus = [];
+          var sortFiltercategoryName = [];
+          var sortFiltercreatedByName = [];
+          var sortFiltercreationOn = [];
+          var sortFilterassignTo = [];
+          var sortFilterclaimStatus = [];
+
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
@@ -1248,10 +1676,10 @@ class StoreDashboard extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortcategoryName.push({
+              sortcategoryName.push({
                 categoryName: distinct[i],
               });
-              self.state.sortFiltercategoryName.push({
+              sortFiltercategoryName.push({
                 categoryName: distinct[i],
               });
             }
@@ -1270,10 +1698,10 @@ class StoreDashboard extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortcreatedByName.push({
+              sortcreatedByName.push({
                 createdByName: distinct[i],
               });
-              self.state.sortFiltercreatedByName.push({
+              sortFiltercreatedByName.push({
                 createdByName: distinct[i],
               });
             }
@@ -1289,10 +1717,10 @@ class StoreDashboard extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortcreationOn.push({
+              sortcreationOn.push({
                 creationOn: distinct[i],
               });
-              self.state.sortFiltercreationOn.push({
+              sortFiltercreationOn.push({
                 creationOn: distinct[i],
               });
             }
@@ -1308,10 +1736,10 @@ class StoreDashboard extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortassignTo.push({
+              sortassignTo.push({
                 assignTo: distinct[i],
               });
-              self.state.sortFilterassignTo.push({
+              sortFilterassignTo.push({
                 assignTo: distinct[i],
               });
             }
@@ -1327,10 +1755,10 @@ class StoreDashboard extends Component {
           }
           for (let i = 0; i < distinct.length; i++) {
             if (distinct[i]) {
-              self.state.sortclaimStatus.push({
+              sortclaimStatus.push({
                 claimStatus: distinct[i],
               });
-              self.state.sortFilterclaimStatus.push({
+              sortFilterclaimStatus.push({
                 claimStatus: distinct[i],
               });
             }
@@ -1339,6 +1767,17 @@ class StoreDashboard extends Component {
             cliamSearchData,
             cliamCount: cliamSearchData.length,
             isViewSerach: false,
+            sortFiltercategoryName,
+            sortFiltercreatedByName,
+            sortFiltercreationOn,
+            sortFilterassignTo,
+            sortFilterclaimStatus,
+            sortcategoryName,
+            sortcreatedByName,
+            sortcreationOn,
+            sortassignTo,
+            sortclaimStatus,
+            sortAllData: data,
           });
         } else {
           self.setState({
@@ -1453,6 +1892,7 @@ class StoreDashboard extends Component {
   }
   ////handle cliam table row click
   HandleRowClickPage = (rowInfo, column) => {
+    debugger;
     return {
       onClick: (e) => {
         var claimID = column.original["claimID"];
@@ -1478,6 +1918,12 @@ class StoreDashboard extends Component {
     var screationOnFilterCheckbox = this.state.screationOnFilterCheckbox;
     var sassignToFilterCheckbox = this.state.sassignToFilterCheckbox;
     var screatedByNameFilterCheckbox = this.state.screatedByNameFilterCheckbox;
+
+    var sdepartmentFilterCheckbox = this.state.sdepartmentFilterCheckbox;
+    var sstoreNameFilterCheckbox = this.state.sstoreNameFilterCheckbox;
+    var sassigntoIdFilterCheckbox = this.state.sassigntoIdFilterCheckbox;
+    var staskstatusFilterCheckbox = this.state.staskstatusFilterCheckbox;
+    var screatedOnFilterCheckbox = this.state.screatedOnFilterCheckbox;
 
     if (column === "categoryName" || column === "all") {
       if (type === "value" && type !== "All") {
@@ -1675,14 +2121,211 @@ class StoreDashboard extends Component {
       }
     }
 
-    var allData = this.state.sortAllData;
+    if (column === "department" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sdepartmentFilterCheckbox = sdepartmentFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sdepartmentFilterCheckbox = sdepartmentFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sdepartmentFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sdepartmentFilterCheckbox = sdepartmentFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sdepartmentFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sdepartmentFilterCheckbox.includes("all")) {
+          sdepartmentFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "department") {
+            for (let i = 0; i < this.state.sortdepartment.length; i++) {
+              sdepartmentFilterCheckbox +=
+                this.state.sortdepartment[i].department + ",";
+            }
+            sdepartmentFilterCheckbox += "all";
+          }
+        }
+      }
+    }
 
+    if (column === "storeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all", "");
+        sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all,", "");
+        if (
+          sstoreNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sstoreNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstoreNameFilterCheckbox.includes("all")) {
+          sstoreNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "storeName") {
+            for (let i = 0; i < this.state.sortstoreName.length; i++) {
+              sstoreNameFilterCheckbox +=
+                this.state.sortstoreName[i].storeName + ",";
+            }
+            sstoreNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "assigntoId" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sassigntoIdFilterCheckbox = sassigntoIdFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sassigntoIdFilterCheckbox = sassigntoIdFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sassigntoIdFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sassigntoIdFilterCheckbox = sassigntoIdFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sassigntoIdFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sassigntoIdFilterCheckbox.includes("all")) {
+          sassigntoIdFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "assigntoId") {
+            for (let i = 0; i < this.state.sortassigntoId.length; i++) {
+              sassigntoIdFilterCheckbox +=
+                this.state.sortassigntoId[i].assigntoId + ",";
+            }
+            sassigntoIdFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "taskstatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        staskstatusFilterCheckbox = staskstatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        staskstatusFilterCheckbox = staskstatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          staskstatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          staskstatusFilterCheckbox = staskstatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          staskstatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (staskstatusFilterCheckbox.includes("all")) {
+          staskstatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "taskstatus") {
+            for (let i = 0; i < this.state.sorttaskstatus.length; i++) {
+              staskstatusFilterCheckbox +=
+                this.state.sorttaskstatus[i].taskstatus + ",";
+            }
+            staskstatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdOn" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all", "");
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all,", "");
+        if (
+          screatedOnFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screatedOnFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedOnFilterCheckbox.includes("all")) {
+          screatedOnFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdOn") {
+            for (let i = 0; i < this.state.sortcreatedOn.length; i++) {
+              screatedOnFilterCheckbox +=
+                this.state.sortcreatedOn[i].createdOn + ",";
+            }
+            screatedOnFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+    debugger;
     this.setState({
       scategoryNameFilterCheckbox,
       sclaimStatusFilterCheckbox,
       screationOnFilterCheckbox,
       sassignToFilterCheckbox,
       screatedByNameFilterCheckbox,
+      sdepartmentFilterCheckbox,
+      sstoreNameFilterCheckbox,
+      sassigntoIdFilterCheckbox,
+      staskstatusFilterCheckbox,
+      screatedOnFilterCheckbox,
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -1769,14 +2412,95 @@ class StoreDashboard extends Component {
           }
         }
       }
+    } else if (column === "department") {
+      var sItems = sdepartmentFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.department === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "storeName") {
+      var sItems = sstoreNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.storeName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "assigntoId") {
+      var sItems = sassigntoIdFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.assigntoId === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "taskstatus") {
+      var sItems = staskstatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.taskstatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "createdOn") {
+      var sItems = screatedOnFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdOn === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
     }
 
     this.setState({
-      isATOZ:true,
+      isATOZ: true,
       tempitemData: itemsArray,
     });
   };
   filteTextChange(e) {
+    debugger;
     if (this.state.sortColumn === "categoryName") {
       var sortFiltercategoryName = matchSorter(
         this.state.sortcategoryName,
@@ -1787,7 +2511,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFiltercategoryName });
       } else {
         this.setState({
-          sortFiltercategoryName: this.state.sortcategoryName,
+          sortFiltercategoryName: [],
         });
       }
     }
@@ -1801,7 +2525,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFilterclaimStatus });
       } else {
         this.setState({
-          sortFilterclaimStatus: this.state.sortclaimStatus,
+          sortFilterclaimStatus: [],
         });
       }
     }
@@ -1817,7 +2541,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFiltercreatedByName });
       } else {
         this.setState({
-          sortFiltercreatedByName: this.state.sortcreatedByName,
+          sortFiltercreatedByName: [],
         });
       }
     }
@@ -1833,7 +2557,7 @@ class StoreDashboard extends Component {
         this.setState({ sortFiltercreationOn });
       } else {
         this.setState({
-          sortFiltercreationOn: this.state.sortcreationOn,
+          sortFiltercreationOn: [],
         });
       }
     }
@@ -1849,9 +2573,121 @@ class StoreDashboard extends Component {
         this.setState({ sortFilterassignTo });
       } else {
         this.setState({
-          sortFilterassignTo: this.state.sortassignTo,
+          sortFilterassignTo: [],
         });
       }
+    }
+
+    if (this.state.sortColumn === "department") {
+      var sortFilterdepartment = matchSorter(
+        this.state.sortdepartment,
+        e.target.value,
+        {
+          keys: ["department"],
+        }
+      );
+      if (sortFilterdepartment.length > 0) {
+        this.setState({ sortFilterdepartment });
+      } else {
+        this.setState({
+          sortFilterdepartment: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "storeName") {
+      var sortFilterstoreName = matchSorter(
+        this.state.sortstoreName,
+        e.target.value,
+        {
+          keys: ["storeName"],
+        }
+      );
+      if (sortFilterstoreName.length > 0) {
+        this.setState({ sortFilterstoreName });
+      } else {
+        this.setState({
+          sortFilterstoreName: [],
+        });
+      }
+    }
+
+    if (this.state.sortColumn === "assigntoId") {
+      var sortFilterassigntoId = matchSorter(
+        this.state.sortassigntoId,
+        e.target.value,
+        {
+          keys: ["assigntoId"],
+        }
+      );
+      if (sortFilterassigntoId.length > 0) {
+        this.setState({ sortFilterassigntoId });
+      } else {
+        this.setState({
+          sortFilterassigntoId: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "taskstatus") {
+      var sortFiltertaskstatus = matchSorter(
+        this.state.sorttaskstatus,
+        e.target.value,
+        {
+          keys: ["taskstatus"],
+        }
+      );
+      if (sortFiltertaskstatus.length > 0) {
+        this.setState({ sortFiltertaskstatus });
+      } else {
+        this.setState({
+          sortFiltertaskstatus: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdOn") {
+      var sortFiltercreatedOn = matchSorter(
+        this.state.sortcreatedOn,
+        e.target.value,
+        {
+          keys: ["createdOn"],
+        }
+      );
+      if (sortFiltercreatedOn.length > 0) {
+        this.setState({ sortFiltercreatedOn });
+      } else {
+        this.setState({
+          sortFiltercreatedOn: [],
+        });
+      }
+    }
+    this.setState({ filterTxtValue: e.target.value });
+  }
+
+  handleClearSearch() {
+    this.setState({
+      scategoryNameFilterCheckbox: "",
+      screatedByNameFilterCheckbox: "",
+      screationOnFilterCheckbox: "",
+      sassignToFilterCheckbox: "",
+      sclaimStatusFilterCheckbox: "",
+      sdepartmentFilterCheckbox: "",
+      sstoreNameFilterCheckbox: "",
+      sassigntoIdFilterCheckbox: "",
+      staskstatusFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      itemData: [],
+    });
+    if (this.state.activeTab === 1) {
+      this.setState({
+        dashboardGridData: this.state.sortAllData,
+      });
+    } else {
+      this.setState({
+        cliamSearchData: this.state.sortAllData,
+      });
     }
   }
 
@@ -2215,7 +3051,7 @@ class StoreDashboard extends Component {
                                             value={item.departmentID}
                                             className="select-category-placeholder"
                                           >
-                                            {item.claimStatus}
+                                            {item.departmentName}
                                           </option>
                                         )
                                       )}
@@ -2634,12 +3470,23 @@ class StoreDashboard extends Component {
                         },
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel}>
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskstatus",
+                                "Status"
+                              )}
+                            >
                               Status{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
-                                  this.state.sortHeader === "Department"
+                                  this.state.sortHeader === "Status"
                                     ? faCaretUp
                                     : faCaretDown
                                 }
@@ -2647,6 +3494,7 @@ class StoreDashboard extends Component {
                             </span>
                           ),
                           accessor: "taskstatus",
+                          sortable: false,
                           Cell: (row) => {
                             if (row.original.taskstatus === "New") {
                               return (
@@ -2672,10 +3520,22 @@ class StoreDashboard extends Component {
                         {
                           Header: <span>Task Title</span>,
                           accessor: "tasktitle",
+                          sortable: false,
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "department",
+                                "Department"
+                              )}
+                            >
                               Department{" "}
                               <FontAwesomeIcon
                                 icon={
@@ -2688,37 +3548,62 @@ class StoreDashboard extends Component {
                             </span>
                           ),
                           accessor: "department",
+                          sortable: false,
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
                               Store Name{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
-                                  this.state.sortHeader === "Department"
+                                  this.state.sortHeader === "Store Name"
                                     ? faCaretUp
                                     : faCaretDown
                                 }
                               />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "storeName",
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdOn",
+                                "Creation On"
+                              )}
+                            >
                               Creation On{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
-                                  this.state.sortHeader === "Department"
+                                  this.state.sortHeader === "Creation On"
                                     ? faCaretUp
                                     : faCaretDown
                                 }
                               />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "createdOn",
                           Cell: (row) => (
                             <span>
@@ -2732,7 +3617,7 @@ class StoreDashboard extends Component {
                                         Creation details
                                       </li>
                                       <li>
-                                        <p>Naman Created</p>
+                                        <p>Created by Naman</p>
                                         <p>2 Hrs ago</p>
                                       </li>
                                       <li>
@@ -2740,7 +3625,7 @@ class StoreDashboard extends Component {
                                         <p>1.5 Hrs ago</p>
                                       </li>
                                       <li>
-                                        <p>Vikas updated</p>
+                                        <p>Updated by Vikas</p>
                                         <p>1 Hr ago</p>
                                       </li>
                                       <li>
@@ -2771,18 +3656,30 @@ class StoreDashboard extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assigntoId",
+                                "Assign to"
+                              )}
+                            >
                               Assign to
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
-                                  this.state.sortHeader === "Department"
+                                  this.state.sortHeader === "Assign to"
                                     ? faCaretUp
                                     : faCaretDown
                                 }
                               />
                             </span>
                           ),
+                          sortable: false,
                           accessor: "assigntoId",
                         },
                       ]}
@@ -2790,6 +3687,7 @@ class StoreDashboard extends Component {
                       minRows={2}
                       defaultPageSize={10}
                       showPagination={true}
+                      getTrProps={this.handleRowClickredirectPage}
                     />
                   ) : this.state.isViewSerach ? (
                     <div className="loader-icon-cntr">
@@ -2996,7 +3894,8 @@ class StoreDashboard extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          {row.original.createdByName} Created
+                                          {"Created by " +
+                                            row.original.createdByName}
                                         </p>
                                         <p>2 Hrs ago</p>
                                       </li>
@@ -3007,7 +3906,7 @@ class StoreDashboard extends Component {
                                         <p>1.5 Hrs ago</p>
                                       </li>
                                       <li>
-                                        <p>Vikas updated</p>
+                                        <p>Updated by Vikas</p>
                                         <p>1 Hr ago</p>
                                       </li>
                                       <li>
@@ -3106,12 +4005,13 @@ class StoreDashboard extends Component {
                         </div>
                       </div>
                       <a
-                        href=""
                         style={{
                           margin: "0 25px",
                           textDecoration: "underline",
+                          color: "#2561A8",
+                          cursor: "pointer",
                         }}
-                        onClick={this.setSortCheckStatus.bind(this, "all")}
+                        onClick={this.handleClearSearch.bind(this)}
                       >
                         clear search
                       </a>
@@ -3304,6 +4204,137 @@ class StoreDashboard extends Component {
                                   <label htmlFor={"fil-open" + item.assignTo}>
                                     <span className="table-btn table-blue-btn">
                                       {item.assignTo}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+
+                          {this.state.sortColumn === "department"
+                            ? this.state.sortFilterdepartment !== null &&
+                              this.state.sortFilterdepartment.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.department}
+                                    value={item.department}
+                                    checked={this.state.sdepartmentFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.department)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "department",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.department}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.department}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "storeName"
+                            ? this.state.sortFilterstoreName !== null &&
+                              this.state.sortFilterstoreName.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.storeName}
+                                    value={item.storeName}
+                                    checked={this.state.sstoreNameFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.storeName)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "storeName",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.storeName}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.storeName}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "assigntoId"
+                            ? this.state.sortFilterassigntoId !== null &&
+                              this.state.sortFilterassigntoId.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.assigntoId}
+                                    value={item.assigntoId}
+                                    checked={this.state.sassigntoIdFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.assigntoId)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "assigntoId",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.assigntoId}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.assigntoId}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "taskstatus"
+                            ? this.state.sortFiltertaskstatus !== null &&
+                              this.state.sortFiltertaskstatus.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.taskstatus}
+                                    value={item.taskstatus}
+                                    checked={this.state.staskstatusFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.taskstatus)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "taskstatus",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.taskstatus}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.taskstatus}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "createdOn"
+                            ? this.state.sortFiltercreatedOn !== null &&
+                              this.state.sortFiltercreatedOn.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.createdOn}
+                                    value={item.createdOn}
+                                    checked={this.state.screatedOnFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.createdOn)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "createdOn",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.createdOn}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.createdOn}
                                     </span>
                                   </label>
                                 </div>

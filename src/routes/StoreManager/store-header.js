@@ -135,6 +135,7 @@ class Header extends Component {
       suggestionModal: false,
       suggestionText: "",
       suggestionModalMob: false,
+      availableSlot: 0
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -922,9 +923,15 @@ class Header extends Component {
         debugger;
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
+        var availableSlot = 0;
 
         if (message == "Success" && timeSlotData) {
-          self.setState({ timeSlotData, isSendClick: false });
+          for(var i = 0; i<timeSlotData.length; i++){
+            if(timeSlotData[i].alreadyScheduleDetails.length>0){
+              availableSlot+=1;
+            }
+          }
+          self.setState({ timeSlotData, isSendClick: false, availableSlot });
         } else {
           self.setState({ timeSlotData, isSendClick: false });
         }
@@ -2943,11 +2950,14 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="schedule-visit-tab"
                         >
+                          {this.state.availableSlot>0?(
                           <div className="row">
                             <div className="col-md-7 schedule-left-cntr">
                               {this.state.timeSlotData !== null
                                 ? this.state.timeSlotData.map((item, i) => {
                                     return (
+                                      item.alreadyScheduleDetails
+                                        .length > 0?(
                                       <div key={i}>
                                         <label className="s-lable">
                                           {item.day}:{item.dates}
@@ -3103,7 +3113,8 @@ class Header extends Component {
                                           </div>
                                         </div>
                                       </div>
-                                    );
+                                        ):null
+                                      );
                                   })
                                 : null}
                             </div>
@@ -3202,6 +3213,7 @@ class Header extends Component {
                               </div>
                             </div>
                           </div>
+                          ):(<div><span className="slot-span">No slot added for this store</span></div>)}
                         </div>
                         {/* --------Generate Payment Link Tab----- */}
                         <div
@@ -3759,6 +3771,7 @@ class Header extends Component {
                             modal: "schedule-visit-popup",
                           }}
                         >
+                           {this.state.availableSlot>0?(
                           <div className="schedule-mobile-cntr">
                             <div>
                               <div className="schedule-left-outer-cntr">
@@ -3766,6 +3779,8 @@ class Header extends Component {
                                   {this.state.timeSlotData !== null
                                     ? this.state.timeSlotData.map((item, i) => {
                                         return (
+                                          item.alreadyScheduleDetails
+                                        .length > 0?(
                                           <div key={i}>
                                             <label className="s-lable">
                                               {item.day}:{item.dates}
@@ -3815,8 +3830,8 @@ class Header extends Component {
                                                         );
                                                       }
                                                       if (
-                                                        data.remaining <
-                                                        data.maxCapacity
+                                                        data.visitedCount >=
+                                                        (1 / 2) * data.maxCapacity
                                                       ) {
                                                         return (
                                                           <Tooltip
@@ -3854,8 +3869,8 @@ class Header extends Component {
                                                         );
                                                       }
                                                       if (
-                                                        data.maxCapacity ===
-                                                        data.remaining
+                                                        data.visitedCount <
+                                                        (1 / 2) * data.maxCapacity
                                                       ) {
                                                         return (
                                                           <Tooltip
@@ -3903,6 +3918,7 @@ class Header extends Component {
                                               </div>
                                             </div>
                                           </div>
+                                        ):null
                                         );
                                       })
                                     : null}
@@ -4003,6 +4019,7 @@ class Header extends Component {
                               </button>
                             </div>
                           </div>
+                          ):(<div><span className="slot-span">No slot added for this store</span></div>)}
                         </Modal>
                         {/* -------- Generate Payment Link Modal ----- */}
                         <Modal

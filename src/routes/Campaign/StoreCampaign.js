@@ -211,7 +211,8 @@ class StoreCampaign extends Component {
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
-                campaignScriptID
+                campaignScriptID,
+                ""
               );
             } else {
               self.setState({
@@ -248,7 +249,8 @@ class StoreCampaign extends Component {
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
-                campaignScriptID
+                campaignScriptID,
+                ""
               );
             } else {
               self.setState({
@@ -750,7 +752,12 @@ class StoreCampaign extends Component {
       ChildPostsPerPage: e.target.value,
     });
     setTimeout(() => {
-      this.handleGetCampaignCustomerData(true, "", this.state.campaignID);
+      this.handleGetCampaignCustomerData(
+        true,
+        "",
+        this.state.campaignID,
+        "filter"
+      );
     }, 50);
   };
   /// Pagination Onchange
@@ -766,7 +773,7 @@ class StoreCampaign extends Component {
       );
     } else {
       await setTimeout(() => {
-        this.handleGetCampaignCustomerData(true, "", this.state.campaignID);
+        this.handleGetCampaignCustomerData(true, "", this.state.campaignID, "");
       }, 500);
     }
   };
@@ -810,7 +817,7 @@ class StoreCampaign extends Component {
       });
   }
   /// Handle Get Campaign customer details
-  handleGetCampaignCustomerData(data, row, check) {
+  handleGetCampaignCustomerData(data, row, check, filter) {
     debugger;
     if (data) {
       this.setState({
@@ -837,7 +844,7 @@ class StoreCampaign extends Component {
           setTimeout(() => {
             this.setState({
               childCurrentPage: 1,
-              ChildPostsPerPage:10,
+              ChildPostsPerPage: 10,
               childTotalGridRecord: 0,
               expandedRowKeys: keys,
               filterCustNO: "",
@@ -871,6 +878,10 @@ class StoreCampaign extends Component {
       } else {
         filterIds = "All";
       }
+      var pageNumber = this.state.childCurrentPage;
+      if (filter === "filter") {
+        pageNumber = 1;
+      }
       let self = this;
       axios({
         method: "post",
@@ -878,7 +889,7 @@ class StoreCampaign extends Component {
         headers: authHeader(),
         data: {
           campaignScriptID: campaignId,
-          pageNo: this.state.childCurrentPage,
+          pageNo: pageNumber,
           pageSize: this.state.ChildPostsPerPage,
           FilterStatus: filterIds,
           MobileNumber: this.state.filterCustNO,
@@ -946,8 +957,14 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
+              Respo_ChannelBot:false
             });
-            self.handleGetCampaignCustomerData(true, "", self.state.campaignID);
+            self.handleGetCampaignCustomerData(
+              true,
+              "",
+              self.state.campaignID,
+              ""
+            );
           } else {
             NotificationManager.error("Server temporarily not available.");
           }
@@ -957,7 +974,12 @@ class StoreCampaign extends Component {
             self.setState({
               custNameModal: false,
             });
-            self.handleGetCampaignCustomerData(true, "", self.state.campaignID);
+            self.handleGetCampaignCustomerData(
+              true,
+              "",
+              self.state.campaignID,
+              ""
+            );
           } else {
             NotificationManager.error("Failed");
           }
@@ -1000,6 +1022,7 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
+              Respo_ChannelMessanger:false
             });
           } else {
             NotificationManager.error("Server temporarily not available.");
@@ -1059,6 +1082,7 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
+              Respo_ChannelMessanger:false
             });
           }
         } else {
@@ -1076,6 +1100,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1084,6 +1109,7 @@ class StoreCampaign extends Component {
       params: {
         programCode: rowData.programcode,
         mobileNumber: rowData.customerNumber,
+        campaignID: rowData.campaignScriptID,
       },
     })
       .then(function(response) {
@@ -1225,7 +1251,7 @@ class StoreCampaign extends Component {
       strStatusIds,
     });
     setTimeout(() => {
-      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount, "filter");
     }, 50);
   }
 
@@ -1256,7 +1282,7 @@ class StoreCampaign extends Component {
       strStatusIds,
     });
     setTimeout(() => {
-      this.handleGetCampaignCustomer(campaignScriptID, customerCount);
+      this.handleGetCampaignCustomer(campaignScriptID, customerCount, "filter");
     }, 50);
   }
 
@@ -1279,7 +1305,7 @@ class StoreCampaign extends Component {
 
     if (this.state.filterCustNO.length > 2) {
       setTimeout(() => {
-        this.handleGetCampaignCustomer(campaignID, customerCount);
+        this.handleGetCampaignCustomer(campaignID, customerCount, "filter");
       }, 50);
     }
   }
@@ -1295,9 +1321,14 @@ class StoreCampaign extends Component {
       }, 10);
     }
   }
-  handleGetCampaignCustomer = (campaignScriptID, customerCount) => {
+  handleGetCampaignCustomer = (campaignScriptID, customerCount, check) => {
     debugger;
     let self = this;
+    var pageNumber = this.state.childCurrentPage;
+    if (check === "filter") {
+      pageNumber = 1;
+      this.state.childCurrentPage = 1;
+    }
     if (customerCount !== "") {
       this.setState({
         childTotalGridRecord: Number(customerCount),
@@ -1315,7 +1346,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
       data: {
         campaignScriptID: campaignScriptID,
-        pageNo: this.state.childCurrentPage,
+        pageNo: pageNumber,
         pageSize: this.state.ChildPostsPerPage,
         FilterStatus: filterIds,
         MobileNumber: this.state.filterCustNO,
@@ -1347,6 +1378,7 @@ class StoreCampaign extends Component {
   };
 
   handleSelectChannelsOnchange(check) {
+    debugger
     if (check === "Messenger") {
       this.setState({
         Respo_ChannelMessanger: true,

@@ -3432,3 +3432,18 @@
   margin: 100px auto;
   display: inline-block;
 }
+
+.setting-table-des .ReactTable .rt-tbody .rt-td {
+  font-weight: 700;
+  font-size: 13px;
+}
+.setting-table-des .ReactTable .rt-thead .rt-resizable-header-content,
+.setting-table-des .ReactTable .rt-thead .rt-th {
+  font-weight: 700;
+  font-size: 12px;
+}
+.setting-table-des-antd th span {
+  font-size: 12px !important;
+  font-weight: 700;
+  color: #4a4a4a;
+}
