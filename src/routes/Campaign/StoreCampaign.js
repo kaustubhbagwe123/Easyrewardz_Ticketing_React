@@ -837,7 +837,7 @@ class StoreCampaign extends Component {
           setTimeout(() => {
             this.setState({
               childCurrentPage: 1,
-              ChildPostsPerPage:10,
+              ChildPostsPerPage: 10,
               childTotalGridRecord: 0,
               expandedRowKeys: keys,
               filterCustNO: "",
@@ -1076,6 +1076,7 @@ class StoreCampaign extends Component {
 
   /// Handle Get Customer data
   handleGetCustomerDataForModal(rowData) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1084,6 +1085,7 @@ class StoreCampaign extends Component {
       params: {
         programCode: rowData.programcode,
         mobileNumber: rowData.customerNumber,
+        campaignID: rowData.campaignScriptID,
       },
     })
       .then(function(response) {

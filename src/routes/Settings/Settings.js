@@ -28,7 +28,7 @@ class Settings extends Component {
     this.state = {
       ticketShow: false,
       storeShow: false,
-      showReport: false,
+      showReport: true,
     };
   }
 

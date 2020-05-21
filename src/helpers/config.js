@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "https://localhost:44357/api",
+  //apiUrl: "https://localhost:44357/api",
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -244,7 +244,7 @@ let config = {
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
   //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
-  // apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
+   apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
   //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'

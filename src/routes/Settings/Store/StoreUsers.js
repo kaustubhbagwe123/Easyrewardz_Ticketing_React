@@ -2833,11 +2833,20 @@ class StoreUsers extends Component {
               self.setState({
                 brandData: [],
                 storeCodeData: [],
+                selectStore: 0,
                 userName: "",
                 mobile_no: "",
                 email_Id: "",
+                selectClaimApprover: "",
+                buttonStoreToggle: false,
+                StoreReadOnly: false,
+                personalReadOnly: false,
+                btnPersonalToggle: false,
+                profileReadOnly: false,
+                btnProfileToggle: false,
                 departmentData: [],
                 selectedFunction: [],
+                functionData: [],
                 userDesignationData: [],
                 reportDesignation: [],
                 reportToData: [],
@@ -2845,6 +2854,10 @@ class StoreUsers extends Component {
                 selectedClaimCategory: [],
                 selectedClaimSubCategory: [],
                 selectedClaimIssueType: [],
+                claimSubCategoryData: [],
+                claimCategoryData: [],
+                brandData: [],
+                claimIssueTypeData: [],
                 CrmRoleData: [],
                 activeData: [],
               });
@@ -2871,8 +2884,6 @@ class StoreUsers extends Component {
     }
   }
   handleSendMail(user_Id) {
-    debugger;
-
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/SendMailforchangepassword",
@@ -2888,7 +2899,7 @@ class StoreUsers extends Component {
         if (reportto === "Mail sent successfully") {
           NotificationManager.success("Please Check Email.");
         } else {
-          NotificationManager.error(reportto);
+          NotificationManager.error("Mail Sent Failed.");
         }
       })
       .catch((res) => {
