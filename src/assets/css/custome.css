@@ -1575,7 +1575,7 @@ table {
 }
 
 .sort-column {
-  color: #0066cc;
+  color: #0066cc !important;
   font-weight: bold;
   text-decoration-line: underline;
 }
