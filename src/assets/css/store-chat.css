@@ -443,8 +443,8 @@ p {
 .chat-trail-cntr-right .chat-trail-time {
   text-align: right;
 }
-.butn,
-.butn-inv {
+#chat-popup .butn,
+#chat-popup .butn-inv {
   font-weight: 700;
   border-radius: 8px;
   font-size: 14px;
@@ -453,10 +453,10 @@ p {
   padding-left: 15px;
   min-width: 95px;
 }
-.butn {
+#chat-popup .butn {
   color: rgba(255, 255, 255, 0.85);
 }
-.butn-inv {
+#chat-popup .butn-inv {
   background: transparent;
 }
 .send-up {
@@ -987,8 +987,8 @@ p {
   .mobile-ck-send-btn {
     top: 43px;
   }
-  .butn,
-  .butn-inv {
+  #chat-popup .butn,
+  #chat-popup .butn-inv {
     min-width: 85px;
     height: 36px;
     font-size: 14px;
@@ -1350,18 +1350,18 @@ p {
   color: #757575;
 }
 
-.cls-p-conf{
+.cls-p-conf {
   margin: 7px;
   margin-top: 14px;
   position: relative;
   left: 32%;
 }
 
-.cls-p-sugg{
+.cls-p-sugg {
   padding: 15px;
 }
 
-#desktop-conf-popup{
+#desktop-conf-popup {
   background: #ecf2f4;
   padding: 15px;
   padding-right: 5px;
@@ -1370,7 +1370,7 @@ p {
   width: 42%;
 }
 
-.chat-btn-conf{
+.chat-btn-conf {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
@@ -1378,7 +1378,7 @@ p {
   padding-left: 116px;
 }
 
-#desktop-conf-mob-popup{
+#desktop-conf-mob-popup {
   background: #ecf2f4;
   padding: 8px;
   padding-right: 5px;
@@ -1387,14 +1387,14 @@ p {
   width: 100%;
 }
 
-.cls-p-conf-mob{
+.cls-p-conf-mob {
   margin: 7px;
   margin-top: 14px;
   position: relative;
   left: 24%;
 }
 
-.chat-btn-conf-mob{
+.chat-btn-conf-mob {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
