@@ -1492,7 +1492,7 @@ class StoreReports extends Component {
     }
   };
 
-  handleScheduleDateChange = (e) => {
+  handleScheduleDateChange(e){
     debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
@@ -1612,9 +1612,9 @@ class StoreReports extends Component {
         selectedNameOfDayForWeekCommaSeperated: "",
       });
     }
-    this.setState({
-      selectScheduleDate: SelectData,
-    });
+    // this.setState({
+      this.state.selectScheduleDate = SelectData
+    // });
   };
 
   handleWeekly = (e) => {
@@ -1831,37 +1831,23 @@ class StoreReports extends Component {
     let self = this;
     var SearchParams = {};
 
-    var month, day, year, hours, minutes, seconds;
-    var date = new Date(this.state.selectedScheduleTime),
-      month = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2);
-    hours = ("0" + date.getHours()).slice(-2);
-    minutes = ("0" + date.getMinutes()).slice(-2);
-    seconds = ("0" + date.getSeconds()).slice(-2);
-
-    var mySQLDate = [date.getFullYear(), month, day].join("-");
-    var mySQLTime = [hours, minutes, seconds].join(":");
-    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-
     SearchParams = JSON.stringify(this.state.ReportParams);
-    if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please add report name.");
-      return;
-    }
     debugger;
-    if (this.state.selectedTeamMemberCommaSeperated == undefined) {
-      NotificationManager.error("Please add team name for schedule.");
-      return;
-    }
-    if (this.state.selectScheduleDate == "") {
-      NotificationManager.error("Please select schedule type.");
-      return;
-    }
-    if (this.state.selectedScheduleTime == "") {
-      NotificationManager.error("Please select schedule time.");
-      return;
-    }
-    if (SearchParams != "") {
+    if (SearchParams != "" && this.state.selectedReportName !== "" &&
+    this.state.selectScheduleDate !== "" && this.state.selectedScheduleTime !== ""
+    
+    ) {
+      var month, day, year, hours, minutes, seconds;
+      var date = new Date(this.state.selectedScheduleTime),
+        month = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      hours = ("0" + date.getHours()).slice(-2);
+      minutes = ("0" + date.getMinutes()).slice(-2);
+      seconds = ("0" + date.getSeconds()).slice(-2);
+
+      var mySQLDate = [date.getFullYear(), month, day].join("-");
+      var mySQLTime = [hours, minutes, seconds].join(":");
+      this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
       debugger;
       self = this;
       axios({
@@ -1936,7 +1922,23 @@ class StoreReports extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please add report for create scheduler.");
+      if (this.state.selectedReportName == "") {
+        NotificationManager.error("Please add report name.");
+        return false;
+      }
+      if (this.state.selectedTeamMemberCommaSeperated == undefined && 
+        this.state.selectedTeamMemberCommaSeperated != "") {
+        NotificationManager.error("Please add team name for schedule.");
+      }
+      if (this.state.selectScheduleDate == "") {
+        NotificationManager.error("Please select schedule type.");
+      }
+      if (this.state.selectedScheduleTime == "") {
+        NotificationManager.error("Please select schedule time.");
+      }
+      if(SearchParams === ""){
+       NotificationManager.error("Please add report for create scheduler.");
+      }
     }
   }
 
@@ -4967,7 +4969,7 @@ class StoreReports extends Component {
                   id="inputState"
                   className="form-control dropdown-setting1 ScheduleDate-to"
                   value={this.state.selectScheduleDate}
-                  onChange={this.handleScheduleDateChange}
+                  onChange={this.handleScheduleDateChange.bind(this)}
                 >
                   {this.state.ScheduleOption !== null &&
                     this.state.ScheduleOption.map((item, i) => (
