@@ -957,7 +957,8 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
-              Respo_ChannelBot:false
+              Respo_ChannelBot:false,
+              responsiveShareVia:false
             });
             self.handleGetCampaignCustomerData(
               true,
@@ -1022,7 +1023,8 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
-              Respo_ChannelMessanger:false
+              Respo_ChannelMessanger:false,
+              responsiveShareVia:false
             });
           } else {
             NotificationManager.error("Server temporarily not available.");
@@ -1082,7 +1084,8 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
-              Respo_ChannelMessanger:false
+              Respo_ChannelMessanger:false,
+              responsiveShareVia:false
             });
           }
         } else {

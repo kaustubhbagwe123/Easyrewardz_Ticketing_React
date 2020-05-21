@@ -313,13 +313,13 @@ class StoreAddTask extends Component {
       <Fragment>
         <div className="row card1">
           <div className="col-md-8">
-            <div className="card" style={{ padding: "35px 35px" }}>
+            <div className="card" style={{ padding: "35px", height: "46.3vw" }}>
               <label className="store-Edit-lblcre">Create Task</label>
               <label className="store-Edit-lbl1"> Task Title</label>
               <input
                 type="text"
                 className="store-edit-txt"
-                placeholder="Wifi is not working from 5hrs"
+                // placeholder="Wifi is not working from 5hrs"
                 name="tasktitle"
                 value={this.state.taskTitle}
                 onChange={this.handleOnchange}
@@ -452,7 +452,7 @@ class StoreAddTask extends Component {
                     name="taskdetails"
                     rows="8"
                     className="textarea-store"
-                    placeholder="Customer History/Security Check when.."
+                    // placeholder="Customer History/Security Check when.."
                   ></textarea>
                   {this.state.istaskDetails !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>

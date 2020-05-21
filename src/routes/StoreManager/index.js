@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import StoreLayout from "./../StoreManager/storelayout";
 import StoreDashboard from "./StoreDashboard";
 import StoreTask from "./StoreTask";
-import StoreTaskView from "./StoreTaskView";
 import EditStoreTask from "./EditStoreTask";
 import StoreTaskByTicket from "./StoreTaskByTicket";
 import RaiseClaim from "./RaiseClaim";
@@ -40,11 +39,6 @@ export class StoreApp extends Component {
           component={StoreDashboard}
         />
         <Route exact path={`${match.url}/storetask`} component={StoreTask} />
-        <Route
-          exact
-          path={`${match.url}/storetaskview`}
-          component={StoreTaskView}
-        />
 
         <Route
           exact
