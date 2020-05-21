@@ -135,7 +135,7 @@ class Header extends Component {
       suggestionModal: false,
       suggestionText: "",
       suggestionModalMob: false,
-      availableSlot: 0
+      availableSlot: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -654,10 +654,9 @@ class Header extends Component {
                   function(data) {
                     console.log("Message Received");
                     if ("91" + self.state.mobileNo === data[3]) {
+                      self.handleGetChatNotificationCount();
                       self.handleGetOngoingChat("isRead");
                       self.handleGetChatMessagesList(self.state.chatId);
-                      self.handleGetChatNotificationCount();
-
                     } else {
                       self.handleGetChatNotificationCount();
                       self.handleGetOngoingChat("isRead");
@@ -926,9 +925,9 @@ class Header extends Component {
         var availableSlot = 0;
 
         if (message == "Success" && timeSlotData) {
-          for(var i = 0; i<timeSlotData.length; i++){
-            if(timeSlotData[i].alreadyScheduleDetails.length>0){
-              availableSlot+=1;
+          for (var i = 0; i < timeSlotData.length; i++) {
+            if (timeSlotData[i].alreadyScheduleDetails.length > 0) {
+              availableSlot += 1;
             }
           }
           self.setState({ timeSlotData, isSendClick: false, availableSlot });
@@ -2950,270 +2949,282 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="schedule-visit-tab"
                         >
-                          {this.state.availableSlot>0?(
-                          <div className="row">
-                            <div className="col-md-7 schedule-left-cntr">
-                              {this.state.timeSlotData !== null
-                                ? this.state.timeSlotData.map((item, i) => {
-                                    return (
-                                      item.alreadyScheduleDetails
-                                        .length > 0?(
-                                      <div key={i}>
-                                        <label className="s-lable">
-                                          {item.day}:{item.dates}
-                                        </label>
-                                        <div className="schedule-btn-outer-cntr">
-                                          <div
-                                            className="selectdot-blue selectdot-blue-left"
-                                            onClick={this.handleScrollLeft.bind(
-                                              this,
-                                              i
-                                            )}
-                                          >
-                                            <img
-                                              src={SchRight}
-                                              alt="right arrow"
-                                            />
-                                          </div>
-                                          <div
-                                            className="schedule-btn-cntr"
-                                            id={"schedule-btn-cntr" + i}
-                                          >
-                                            {item.alreadyScheduleDetails
-                                              .length > 0 &&
-                                              item.alreadyScheduleDetails.map(
-                                                (data, k) => {
-                                                  var selectSlot = false;
-                                                  if (
-                                                    this.state.timeSlotData[i]
-                                                      .alreadyScheduleDetails[
-                                                      k
-                                                    ] ===
-                                                    this.state.selectedSlot
-                                                  ) {
-                                                    selectSlot = true;
-                                                  }
-
-                                                  if (
-                                                    data.maxCapacity ==
-                                                    data.visitedCount
-                                                  ) {
-                                                    return (
-                                                      <Tooltip
-                                                        placement="left"
-                                                        title={
-                                                          data.remaining +
-                                                          " MORE PEOPLE LEFT"
-                                                        }
-                                                      >
-                                                        <button
-                                                          key={k}
-                                                          className="s-red-active"
-                                                          style={{
-                                                            cursor: "no-drop",
-                                                          }}
-                                                        >
-                                                          {data.timeSlot}
-                                                        </button>
-                                                      </Tooltip>
-                                                    );
-                                                  }
-                                                  if (
-                                                    // data.remaining <
-                                                    // data.maxCapacity
-                                                    data.visitedCount >=
-                                                    (1 / 2) * data.maxCapacity
-                                                  ) {
-                                                    return (
-                                                      <Tooltip
-                                                        placement="left"
-                                                        title={
-                                                          data.remaining +
-                                                          " MORE PEOPLE LEFT"
-                                                        }
-                                                      >
-                                                        <button
-                                                          key={k}
-                                                          className={
-                                                            selectSlot
-                                                              ? "s-yellow-active"
-                                                              : "s-yellow-btn"
-                                                          }
-                                                          onClick={this.handleSelectSlot.bind(
-                                                            this,
-                                                            data,
-                                                            item.dates
-                                                          )}
-                                                        >
-                                                          {data.timeSlot}
-                                                          {selectSlot ? (
-                                                            <img
-                                                              className="s-img-select"
-                                                              src={CircleRight}
-                                                              alt="circle-right"
-                                                            />
-                                                          ) : null}
-                                                        </button>
-                                                      </Tooltip>
-                                                    );
-                                                  }
-                                                  if (
-                                                    // data.maxCapacity ===
-                                                    // data.remaining
-                                                    data.visitedCount <
-                                                    (1 / 2) * data.maxCapacity
-                                                  ) {
-                                                    return (
-                                                      <Tooltip
-                                                        placement="left"
-                                                        title={
-                                                          data.remaining +
-                                                          " MORE PEOPLE LEFT"
-                                                        }
-                                                      >
-                                                        <button
-                                                          key={k}
-                                                          className={
-                                                            selectSlot
-                                                              ? "s-green-active"
-                                                              : "s-green-btn"
-                                                          }
-                                                          onClick={this.handleSelectSlot.bind(
-                                                            this,
-                                                            data,
-                                                            item.dates
-                                                          )}
-                                                        >
-                                                          {data.timeSlot}
-                                                          {selectSlot ? (
-                                                            <img
-                                                              className="s-img-select"
-                                                              src={CircleRight}
-                                                              alt="circle-right"
-                                                            />
-                                                          ) : null}
-                                                        </button>
-                                                      </Tooltip>
-                                                    );
-                                                  }
-                                                }
+                          {this.state.availableSlot > 0 ? (
+                            <div className="row">
+                              <div className="col-md-7 schedule-left-cntr">
+                                {this.state.timeSlotData !== null
+                                  ? this.state.timeSlotData.map((item, i) => {
+                                      return item.alreadyScheduleDetails
+                                        .length > 0 ? (
+                                        <div key={i}>
+                                          <label className="s-lable">
+                                            {item.day}:{item.dates}
+                                          </label>
+                                          <div className="schedule-btn-outer-cntr">
+                                            <div
+                                              className="selectdot-blue selectdot-blue-left"
+                                              onClick={this.handleScrollLeft.bind(
+                                                this,
+                                                i
                                               )}
-                                          </div>
-                                          <div
-                                            className="selectdot-blue"
-                                            onClick={this.handleScrollRight.bind(
-                                              this,
-                                              i
-                                            )}
-                                          >
-                                            <img
-                                              src={SchRight}
-                                              alt="right arrow"
-                                            />
+                                            >
+                                              <img
+                                                src={SchRight}
+                                                alt="right arrow"
+                                              />
+                                            </div>
+                                            <div
+                                              className="schedule-btn-cntr"
+                                              id={"schedule-btn-cntr" + i}
+                                            >
+                                              {item.alreadyScheduleDetails
+                                                .length > 0 &&
+                                                item.alreadyScheduleDetails.map(
+                                                  (data, k) => {
+                                                    var selectSlot = false;
+                                                    if (
+                                                      this.state.timeSlotData[i]
+                                                        .alreadyScheduleDetails[
+                                                        k
+                                                      ] ===
+                                                      this.state.selectedSlot
+                                                    ) {
+                                                      selectSlot = true;
+                                                    }
+
+                                                    if (
+                                                      data.maxCapacity ==
+                                                      data.visitedCount
+                                                    ) {
+                                                      return (
+                                                        <Tooltip
+                                                          placement="left"
+                                                          title={
+                                                            data.remaining +
+                                                            " MORE PEOPLE LEFT"
+                                                          }
+                                                        >
+                                                          <button
+                                                            key={k}
+                                                            className="s-red-active"
+                                                            style={{
+                                                              cursor: "no-drop",
+                                                            }}
+                                                          >
+                                                            {data.timeSlot}
+                                                          </button>
+                                                        </Tooltip>
+                                                      );
+                                                    }
+                                                    if (
+                                                      // data.remaining <
+                                                      // data.maxCapacity
+                                                      data.visitedCount >=
+                                                      (1 / 2) * data.maxCapacity
+                                                    ) {
+                                                      return (
+                                                        <Tooltip
+                                                          placement="left"
+                                                          title={
+                                                            data.remaining +
+                                                            " MORE PEOPLE LEFT"
+                                                          }
+                                                        >
+                                                          <button
+                                                            key={k}
+                                                            className={
+                                                              selectSlot
+                                                                ? "s-yellow-active"
+                                                                : "s-yellow-btn"
+                                                            }
+                                                            onClick={this.handleSelectSlot.bind(
+                                                              this,
+                                                              data,
+                                                              item.dates
+                                                            )}
+                                                          >
+                                                            {data.timeSlot}
+                                                            {selectSlot ? (
+                                                              <img
+                                                                className="s-img-select"
+                                                                src={
+                                                                  CircleRight
+                                                                }
+                                                                alt="circle-right"
+                                                              />
+                                                            ) : null}
+                                                          </button>
+                                                        </Tooltip>
+                                                      );
+                                                    }
+                                                    if (
+                                                      // data.maxCapacity ===
+                                                      // data.remaining
+                                                      data.visitedCount <
+                                                      (1 / 2) * data.maxCapacity
+                                                    ) {
+                                                      return (
+                                                        <Tooltip
+                                                          placement="left"
+                                                          title={
+                                                            data.remaining +
+                                                            " MORE PEOPLE LEFT"
+                                                          }
+                                                        >
+                                                          <button
+                                                            key={k}
+                                                            className={
+                                                              selectSlot
+                                                                ? "s-green-active"
+                                                                : "s-green-btn"
+                                                            }
+                                                            onClick={this.handleSelectSlot.bind(
+                                                              this,
+                                                              data,
+                                                              item.dates
+                                                            )}
+                                                          >
+                                                            {data.timeSlot}
+                                                            {selectSlot ? (
+                                                              <img
+                                                                className="s-img-select"
+                                                                src={
+                                                                  CircleRight
+                                                                }
+                                                                alt="circle-right"
+                                                              />
+                                                            ) : null}
+                                                          </button>
+                                                        </Tooltip>
+                                                      );
+                                                    }
+                                                  }
+                                                )}
+                                            </div>
+                                            <div
+                                              className="selectdot-blue"
+                                              onClick={this.handleScrollRight.bind(
+                                                this,
+                                                i
+                                              )}
+                                            >
+                                              <img
+                                                src={SchRight}
+                                                alt="right arrow"
+                                              />
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                        ):null
-                                      );
-                                  })
-                                : null}
-                            </div>
-                            <div className="col-md-5">
-                              <div className="schedule-right-outer-cntr">
-                                <div className="schedule-right-cntr">
-                                  <div>
-                                    <label className="s-lable">
-                                      Selected Slot
-                                    </label>
-                                    {Object.keys(this.state.selectedSlot)
-                                      .length !== 0 ? (
-                                      <button
-                                        className={
-                                          this.state.selectedSlot.visitedCount <
-                                          (1 / 2) *
-                                            this.state.selectedSlot.maxCapacity
-                                            ? // this.state.selectedSlot.maxCapacity ==
-                                              //   this.state.selectedSlot.remaining
-                                              "s-green-btn s-green-active select-slot-cntr mx-0"
-                                            : this.state.selectedSlot
-                                                .visitedCount <
+                                      ) : null;
+                                    })
+                                  : null}
+                              </div>
+                              <div className="col-md-5">
+                                <div className="schedule-right-outer-cntr">
+                                  <div className="schedule-right-cntr">
+                                    <div>
+                                      <label className="s-lable">
+                                        Selected Slot
+                                      </label>
+                                      {Object.keys(this.state.selectedSlot)
+                                        .length !== 0 ? (
+                                        <button
+                                          className={
+                                            this.state.selectedSlot
+                                              .visitedCount <
+                                            (1 / 2) *
                                               this.state.selectedSlot
                                                 .maxCapacity
-                                            ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                            : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                        }
-                                      >
-                                        {this.state.selectedSlot.timeSlot}
-                                        <img
-                                          className="s-img-select"
-                                          src={CircleRight}
-                                          alt="circle-right"
-                                        />
-                                      </button>
-                                    ) : null}
-                                    {this.state.isSelectSlot !== "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.isSelectSlot}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div>
-                                    <label className="s-lable">
-                                      No of People
-                                    </label>
-                                    <input
-                                      type="text"
-                                      value={this.state.noOfPeople}
-                                      onChange={this.handleNoOfPeopleChange.bind(
-                                        this
+                                              ? // this.state.selectedSlot.maxCapacity ==
+                                                //   this.state.selectedSlot.remaining
+                                                "s-green-btn s-green-active select-slot-cntr mx-0"
+                                              : this.state.selectedSlot
+                                                  .visitedCount <
+                                                this.state.selectedSlot
+                                                  .maxCapacity
+                                              ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                              : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                          }
+                                        >
+                                          {this.state.selectedSlot.timeSlot}
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                      ) : null}
+                                      {this.state.isSelectSlot !== "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.isSelectSlot}
+                                        </p>
                                       )}
-                                    />
-                                    {this.state.noOfPeopleMax !== "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                          width: "131px",
-                                        }}
-                                      >
-                                        {this.state.noOfPeopleMax}
-                                      </p>
-                                    )}
+                                    </div>
+                                    <div>
+                                      <label className="s-lable">
+                                        No of People
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={this.state.noOfPeople}
+                                        onChange={this.handleNoOfPeopleChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.noOfPeopleMax !== "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                            width: "131px",
+                                          }}
+                                        >
+                                          {this.state.noOfPeopleMax}
+                                        </p>
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                                <button
-                                  className={
-                                    this.state.isSendClick
-                                      ? "butn ml-auto mt-4 isSendClick-dsle"
-                                      : "butn ml-auto mt-4"
-                                  }
-                                  onClick={this.handleScheduleVisit.bind(this)}
-                                >
-                                  Send
-                                  <img
-                                    src={SendUp}
-                                    alt="send"
-                                    className="send-up float-none"
-                                  />
-                                  {this.state.isSendRecomended ? (
-                                    <FontAwesomeIcon
-                                      icon={faCircleNotch}
-                                      className="circular-loader ml-2"
-                                      spin
+                                  <button
+                                    className={
+                                      this.state.isSendClick
+                                        ? "butn ml-auto mt-4 isSendClick-dsle"
+                                        : "butn ml-auto mt-4"
+                                    }
+                                    onClick={this.handleScheduleVisit.bind(
+                                      this
+                                    )}
+                                  >
+                                    Send
+                                    <img
+                                      src={SendUp}
+                                      alt="send"
+                                      className="send-up float-none"
                                     />
-                                  ) : (
-                                    ""
-                                  )}
-                                </button>
+                                    {this.state.isSendRecomended ? (
+                                      <FontAwesomeIcon
+                                        icon={faCircleNotch}
+                                        className="circular-loader ml-2"
+                                        spin
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          ):(<div><span className="slot-span">No slot added for this store</span></div>)}
+                          ) : (
+                            <div>
+                              <span className="slot-span">
+                                No slot added for this store
+                              </span>
+                            </div>
+                          )}
                         </div>
                         {/* --------Generate Payment Link Tab----- */}
                         <div
@@ -3771,255 +3782,270 @@ class Header extends Component {
                             modal: "schedule-visit-popup",
                           }}
                         >
-                           {this.state.availableSlot>0?(
-                          <div className="schedule-mobile-cntr">
-                            <div>
-                              <div className="schedule-left-outer-cntr">
-                                <div className="schedule-left-cntr">
-                                  {this.state.timeSlotData !== null
-                                    ? this.state.timeSlotData.map((item, i) => {
-                                        return (
-                                          item.alreadyScheduleDetails
-                                        .length > 0?(
-                                          <div key={i}>
-                                            <label className="s-lable">
-                                              {item.day}:{item.dates}
-                                            </label>
-                                            <div className="schedule-btn-outer-cntr">
-                                              <div className="schedule-btn-cntr">
-                                                {item.alreadyScheduleDetails
-                                                  .length > 0 &&
-                                                  item.alreadyScheduleDetails.map(
-                                                    (data, k) => {
-                                                      var selectSlot = false;
-                                                      if (
-                                                        this.state.timeSlotData[
-                                                          i
-                                                        ]
-                                                          .alreadyScheduleDetails[
-                                                          k
-                                                        ] ===
-                                                        this.state.selectedSlot
-                                                      ) {
-                                                        selectSlot = true;
-                                                      }
+                          {this.state.availableSlot > 0 ? (
+                            <div className="schedule-mobile-cntr">
+                              <div>
+                                <div className="schedule-left-outer-cntr">
+                                  <div className="schedule-left-cntr">
+                                    {this.state.timeSlotData !== null
+                                      ? this.state.timeSlotData.map(
+                                          (item, i) => {
+                                            return item.alreadyScheduleDetails
+                                              .length > 0 ? (
+                                              <div key={i}>
+                                                <label className="s-lable">
+                                                  {item.day}:{item.dates}
+                                                </label>
+                                                <div className="schedule-btn-outer-cntr">
+                                                  <div className="schedule-btn-cntr">
+                                                    {item.alreadyScheduleDetails
+                                                      .length > 0 &&
+                                                      item.alreadyScheduleDetails.map(
+                                                        (data, k) => {
+                                                          var selectSlot = false;
+                                                          if (
+                                                            this.state
+                                                              .timeSlotData[i]
+                                                              .alreadyScheduleDetails[
+                                                              k
+                                                            ] ===
+                                                            this.state
+                                                              .selectedSlot
+                                                          ) {
+                                                            selectSlot = true;
+                                                          }
 
-                                                      if (
-                                                        data.maxCapacity ==
-                                                        data.visitedCount
-                                                      ) {
-                                                        return (
-                                                          <Tooltip
-                                                            placement="left"
-                                                            title={
-                                                              data.remaining +
-                                                              " MORE PEOPLE LEFT"
-                                                            }
-                                                          >
-                                                            <button
-                                                              key={k}
-                                                              className="s-red-active"
-                                                              style={{
-                                                                cursor:
-                                                                  "no-drop",
-                                                              }}
-                                                            >
-                                                              {data.timeSlot}
-                                                            </button>
-                                                          </Tooltip>
-                                                        );
-                                                      }
-                                                      if (
-                                                        data.visitedCount >=
-                                                        (1 / 2) * data.maxCapacity
-                                                      ) {
-                                                        return (
-                                                          <Tooltip
-                                                            placement="left"
-                                                            title={
-                                                              data.remaining +
-                                                              " MORE PEOPLE LEFT"
-                                                            }
-                                                          >
-                                                            <button
-                                                              key={k}
-                                                              className={
-                                                                selectSlot
-                                                                  ? "s-yellow-active"
-                                                                  : "s-yellow-btn"
-                                                              }
-                                                              onClick={this.handleSelectSlot.bind(
-                                                                this,
-                                                                data,
-                                                                item.dates
-                                                              )}
-                                                            >
-                                                              {data.timeSlot}
-                                                              {selectSlot ? (
-                                                                <img
-                                                                  className="s-img-select"
-                                                                  src={
-                                                                    CircleRight
+                                                          if (
+                                                            data.maxCapacity ==
+                                                            data.visitedCount
+                                                          ) {
+                                                            return (
+                                                              <Tooltip
+                                                                placement="left"
+                                                                title={
+                                                                  data.remaining +
+                                                                  " MORE PEOPLE LEFT"
+                                                                }
+                                                              >
+                                                                <button
+                                                                  key={k}
+                                                                  className="s-red-active"
+                                                                  style={{
+                                                                    cursor:
+                                                                      "no-drop",
+                                                                  }}
+                                                                >
+                                                                  {
+                                                                    data.timeSlot
                                                                   }
-                                                                  alt="circle-right"
-                                                                />
-                                                              ) : null}
-                                                            </button>
-                                                          </Tooltip>
-                                                        );
-                                                      }
-                                                      if (
-                                                        data.visitedCount <
-                                                        (1 / 2) * data.maxCapacity
-                                                      ) {
-                                                        return (
-                                                          <Tooltip
-                                                            placement="left"
-                                                            title={
-                                                              data.remaining +
-                                                              " MORE PEOPLE LEFT"
-                                                            }
-                                                          >
-                                                            <button
-                                                              key={k}
-                                                              className={
-                                                                selectSlot
-                                                                  ? "s-green-active"
-                                                                  : "s-green-btn"
-                                                              }
-                                                              onClick={this.handleSelectSlot.bind(
-                                                                this,
-                                                                data,
-                                                                item.dates
-                                                              )}
-                                                            >
-                                                              {data.timeSlot}
-                                                              {selectSlot ? (
-                                                                <img
-                                                                  className="s-img-select"
-                                                                  src={
-                                                                    CircleRight
+                                                                </button>
+                                                              </Tooltip>
+                                                            );
+                                                          }
+                                                          if (
+                                                            data.visitedCount >=
+                                                            (1 / 2) *
+                                                              data.maxCapacity
+                                                          ) {
+                                                            return (
+                                                              <Tooltip
+                                                                placement="left"
+                                                                title={
+                                                                  data.remaining +
+                                                                  " MORE PEOPLE LEFT"
+                                                                }
+                                                              >
+                                                                <button
+                                                                  key={k}
+                                                                  className={
+                                                                    selectSlot
+                                                                      ? "s-yellow-active"
+                                                                      : "s-yellow-btn"
                                                                   }
-                                                                  alt="circle-right"
-                                                                />
-                                                              ) : null}
-                                                            </button>
-                                                          </Tooltip>
-                                                        );
-                                                      }
-                                                    }
-                                                  )}
+                                                                  onClick={this.handleSelectSlot.bind(
+                                                                    this,
+                                                                    data,
+                                                                    item.dates
+                                                                  )}
+                                                                >
+                                                                  {
+                                                                    data.timeSlot
+                                                                  }
+                                                                  {selectSlot ? (
+                                                                    <img
+                                                                      className="s-img-select"
+                                                                      src={
+                                                                        CircleRight
+                                                                      }
+                                                                      alt="circle-right"
+                                                                    />
+                                                                  ) : null}
+                                                                </button>
+                                                              </Tooltip>
+                                                            );
+                                                          }
+                                                          if (
+                                                            data.visitedCount <
+                                                            (1 / 2) *
+                                                              data.maxCapacity
+                                                          ) {
+                                                            return (
+                                                              <Tooltip
+                                                                placement="left"
+                                                                title={
+                                                                  data.remaining +
+                                                                  " MORE PEOPLE LEFT"
+                                                                }
+                                                              >
+                                                                <button
+                                                                  key={k}
+                                                                  className={
+                                                                    selectSlot
+                                                                      ? "s-green-active"
+                                                                      : "s-green-btn"
+                                                                  }
+                                                                  onClick={this.handleSelectSlot.bind(
+                                                                    this,
+                                                                    data,
+                                                                    item.dates
+                                                                  )}
+                                                                >
+                                                                  {
+                                                                    data.timeSlot
+                                                                  }
+                                                                  {selectSlot ? (
+                                                                    <img
+                                                                      className="s-img-select"
+                                                                      src={
+                                                                        CircleRight
+                                                                      }
+                                                                      alt="circle-right"
+                                                                    />
+                                                                  ) : null}
+                                                                </button>
+                                                              </Tooltip>
+                                                            );
+                                                          }
+                                                        }
+                                                      )}
+                                                  </div>
+                                                  <div className="selectdot-blue">
+                                                    <img
+                                                      src={SchRight}
+                                                      alt="right arrow"
+                                                    />
+                                                  </div>
+                                                </div>
                                               </div>
-                                              <div className="selectdot-blue">
-                                                <img
-                                                  src={SchRight}
-                                                  alt="right arrow"
-                                                />
-                                              </div>
-                                            </div>
-                                          </div>
-                                        ):null
-                                        );
-                                      })
-                                    : null}
+                                            ) : null;
+                                          }
+                                        )
+                                      : null}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="schedule-right-cntr">
-                                <div>
-                                  <label className="s-lable">
-                                    Selected Slot
-                                  </label>
-                                  {Object.keys(this.state.selectedSlot)
-                                    .length !== 0 ? (
-                                    <button
-                                      className={
-                                        this.state.selectedSlot.visitedCount <
-                                        (1 / 2) *
-                                          this.state.selectedSlot.maxCapacity
-                                          ? // this.state.selectedSlot.maxCapacity ==
-                                            //   this.state.selectedSlot.remaining
-                                            "s-green-btn s-green-active select-slot-cntr mx-0"
-                                          : this.state.selectedSlot
-                                              .visitedCount <
+                                <div className="schedule-right-cntr">
+                                  <div>
+                                    <label className="s-lable">
+                                      Selected Slot
+                                    </label>
+                                    {Object.keys(this.state.selectedSlot)
+                                      .length !== 0 ? (
+                                      <button
+                                        className={
+                                          this.state.selectedSlot.visitedCount <
+                                          (1 / 2) *
                                             this.state.selectedSlot.maxCapacity
-                                          ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                          : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                      }
-                                    >
-                                      {this.state.selectedSlot.timeSlot}
-                                      <img
-                                        className="s-img-select"
-                                        src={CircleRight}
-                                        alt="circle-right"
-                                      />
-                                    </button>
-                                  ) : null}
-                                  {this.state.isSelectSlot !== "" && (
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                      }}
-                                    >
-                                      {this.state.isSelectSlot}
-                                    </p>
-                                  )}
-                                </div>
-                                <div>
-                                  <label className="s-lable">
-                                    No of People
-                                  </label>
-                                  <input
-                                    type="text"
-                                    value={this.state.noOfPeople}
-                                    onChange={this.handleNoOfPeopleChange.bind(
-                                      this
+                                            ? // this.state.selectedSlot.maxCapacity ==
+                                              //   this.state.selectedSlot.remaining
+                                              "s-green-btn s-green-active select-slot-cntr mx-0"
+                                            : this.state.selectedSlot
+                                                .visitedCount <
+                                              this.state.selectedSlot
+                                                .maxCapacity
+                                            ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                            : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                        }
+                                      >
+                                        {this.state.selectedSlot.timeSlot}
+                                        <img
+                                          className="s-img-select"
+                                          src={CircleRight}
+                                          alt="circle-right"
+                                        />
+                                      </button>
+                                    ) : null}
+                                    {this.state.isSelectSlot !== "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.isSelectSlot}
+                                      </p>
                                     )}
-                                  />
-                                  {this.state.noOfPeopleMax !== "" && (
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                        width: "131px",
-                                      }}
-                                    >
-                                      {this.state.noOfPeopleMax}
-                                    </p>
-                                  )}
+                                  </div>
+                                  <div>
+                                    <label className="s-lable">
+                                      No of People
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={this.state.noOfPeople}
+                                      onChange={this.handleNoOfPeopleChange.bind(
+                                        this
+                                      )}
+                                    />
+                                    {this.state.noOfPeopleMax !== "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                          width: "131px",
+                                        }}
+                                      >
+                                        {this.state.noOfPeopleMax}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="chat-btn-cntr">
-                              <button
-                                className="butn-inv"
-                                onClick={this.onCloseScheduleModal}
-                              >
-                                Close
-                              </button>
-                              <button
-                                className="butn"
-                                onClick={this.handleScheduleVisit.bind(this)}
-                              >
-                                Send
-                                <img
-                                  src={SendUp}
-                                  alt="send"
-                                  className="send-up float-none"
-                                />
-                                {this.state.isSendRecomended ? (
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader ml-2"
-                                    spin
+                              <div className="chat-btn-cntr">
+                                <button
+                                  className="butn-inv"
+                                  onClick={this.onCloseScheduleModal}
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  className="butn"
+                                  onClick={this.handleScheduleVisit.bind(this)}
+                                >
+                                  Send
+                                  <img
+                                    src={SendUp}
+                                    alt="send"
+                                    className="send-up float-none"
                                   />
-                                ) : (
-                                  ""
-                                )}
-                              </button>
+                                  {this.state.isSendRecomended ? (
+                                    <FontAwesomeIcon
+                                      icon={faCircleNotch}
+                                      className="circular-loader ml-2"
+                                      spin
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                          ):(<div><span className="slot-span">No slot added for this store</span></div>)}
+                          ) : (
+                            <div>
+                              <span className="slot-span">
+                                No slot added for this store
+                              </span>
+                            </div>
+                          )}
                         </Modal>
                         {/* -------- Generate Payment Link Modal ----- */}
                         <Modal
