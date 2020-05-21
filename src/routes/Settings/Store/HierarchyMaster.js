@@ -281,7 +281,7 @@ class HierarchyMaster extends Component {
         StatusModel: false,
         hierarchyData: this.state.sortAllData,
         filterTxtValue: "",
-        sortHeader: this.state.isortA ? this.state.sortHeader : "",
+        // sortHeader: this.state.isortA ? this.state.sortHeader : "",
         hierarchyData: this.state.isortA
           ? this.state.itemData
           : this.state.sortAllData,
@@ -1659,14 +1659,6 @@ class HierarchyMaster extends Component {
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                          {/* <a
-                                            className="canblue"
-                                            onClick={() =>
-                                              this.hide(this, "samdel" + ids)
-                                            }
-                                          >
-                                            CANCEL
-                                          </a> */}
                                           <button
                                             className="butn"
                                             type="button"
