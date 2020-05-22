@@ -2151,7 +2151,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.brandName}
                             checked={this.state.sbrandNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.brandName)}
+                              .find((word) => word === item.brandName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -2178,7 +2178,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.categoryName}
                             checked={this.state.scategoryNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.categoryName)}
+                              .find((word) => word === item.categoryName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "categoryName",
@@ -2205,7 +2205,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.subCategoryName}
                             checked={this.state.ssubCategoryNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.subCategoryName)}
+                              .find((word) => word === item.subCategoryName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "subCategoryName",
@@ -2232,7 +2232,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.issueTypeName}
                             checked={this.state.sissueTypeNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.issueTypeName)}
+                              .find((word) => word === item.issueTypeName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "issueTypeName",
@@ -2259,7 +2259,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.statusName}
                             checked={this.state.sstatusNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.statusName)}
+                              .find((word) => word === item.statusName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "statusName",
