@@ -1039,19 +1039,21 @@ class CreatePriority extends Component {
   // }
 
   handleUpdateData() {
-    if (this.state.rowData.priortyName == "") {
-      this.setState({
-        editpriorityNameCompulsion: "Please enter priority name",
-      });
-    } else {
-      if (this.state.isprority == true) {
-        this.setState({
-          editpriorityNameCompulsion: "Priority already exist!",
-        });
-      } else {
-        this.setState({ editpriorityNameCompulsion: "" });
-      }
-    }
+    debugger;
+    // if (this.state.rowData.priortyName == "") {
+    //   this.setState({
+    //     editpriorityNameCompulsion: "Please enter priority name",
+    //   });
+    // } else {
+    //   // if (this.state.isprority == true) {
+    //   //   this.setState({
+    //   //     editpriorityNameCompulsion: "Priority already exist!",
+    //   //   });
+    //   // } else {
+    //   //   this.setState({ editpriorityNameCompulsion: "" });
+    //   // }
+    //   this.setState({ editpriorityNameCompulsion: "" });
+    // }
 
     if (this.state.rowData.isActive === "") {
       this.setState({ editstatusCompulsion: "Please select status" });
@@ -1062,7 +1064,7 @@ class CreatePriority extends Component {
       if (
         this.state.rowData.priortyName !== "" &&
         this.state.editpriorityNameCompulsion == "" &&
-        this.state.isprority == false &&
+        // this.state.isprority == false &&
         this.state.editstatusCompulsion === "" &&
         this.state.isEditBtn === true
       ) {
@@ -1082,7 +1084,7 @@ class CreatePriority extends Component {
           headers: authHeader(),
           params: {
             PriorityID: this.state.rowData.priorityID,
-            PriorityName: this.state.rowData.priortyName.trim(),
+            PriorityName: this.state.rowData.priortyName,
             status: activeStatus,
           },
         })
@@ -1118,7 +1120,7 @@ class CreatePriority extends Component {
         //   editstatusCompulsion: "Please select status",
         // });
       }
-    }, 100);
+    }, 10);
   }
 
   onMouseDown(e) {
