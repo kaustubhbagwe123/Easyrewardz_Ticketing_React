@@ -2561,7 +2561,7 @@ class StoreUsers extends Component {
                 personalReadOnly: true,
               });
             } else {
-              NotificationManager.error("Record Not Save.");
+              NotificationManager.error(res.data.message);
             }
           })
           .catch((response) => {
@@ -2616,7 +2616,7 @@ class StoreUsers extends Component {
                 personalReadOnly: true,
               });
             } else {
-              NotificationManager.error("Record Not Update.");
+              NotificationManager.error(res.data.message);
             }
           })
           .catch((response) => {
