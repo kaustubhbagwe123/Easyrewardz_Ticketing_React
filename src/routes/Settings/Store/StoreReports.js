@@ -77,8 +77,8 @@ class StoreReports extends Component {
       claimIssueTypeName: [],
       campaignName: [],
       campaignStatusName: [
-        { campaignNameID: 17, campaignName: "Campaign Status 1" },
-        { campaignNameID: 18, campaignName: "Campaign Status 2" },
+        { campaignNameID: 221, campaignName: "Closed" },
+        { campaignNameID: 223, campaignName: "Open" },
       ],
       userData: [],
       selectedTeamMember: [],
