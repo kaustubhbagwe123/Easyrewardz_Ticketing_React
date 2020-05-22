@@ -1874,7 +1874,7 @@ class DepartmentMaster extends Component {
                               value={item.brandName}
                               checked={this.state.sbrandNameFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.brandName)}
+                                .find((word) => word === item.brandName)||false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "brandName",
@@ -1901,7 +1901,7 @@ class DepartmentMaster extends Component {
                               value={item.storeCode}
                               checked={this.state.sStoreCodeFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.storeCode)}
+                                .find((word) => word === item.storeCode)||false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "storeCode",
@@ -1928,7 +1928,7 @@ class DepartmentMaster extends Component {
                               value={item.departmentName}
                               checked={this.state.sDepartNameFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.departmentName)}
+                                .find((word) => word === item.departmentName)||false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "departmentName",
@@ -1955,7 +1955,7 @@ class DepartmentMaster extends Component {
                               value={item.functionName}
                               checked={this.state.sFunctionFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.functionName)}
+                                .find((word) => word === item.functionName)||false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "functionName",
@@ -1982,7 +1982,7 @@ class DepartmentMaster extends Component {
                               value={item.createdBy}
                               checked={this.state.screatedByFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.createdBy)}
+                                .find((word) => word === item.createdBy)||false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "createdBy",
@@ -2009,7 +2009,7 @@ class DepartmentMaster extends Component {
                               value={item.status}
                               checked={this.state.sstatusFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.status)}
+                                .find((word) => word === item.status)||false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "status",

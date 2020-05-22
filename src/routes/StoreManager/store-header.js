@@ -637,19 +637,12 @@ class Header extends Component {
           });
 
           if (value == "") {
-            // const socket = io.connect(config.socketUrl, {
-            //   transports: ["polling", "flashsocket"],
-            // });
             for (let i = 0; i < ongoingChatsData.length; i++) {
               const socket = io.connect(config.socketUrl, {
                 transports: ["polling"],
               });
-              // const socket = io.connect(config.socketUrl, {
-              //   secure: true,
-              //   transports: ["polling"],
-              // });
+
               socket.on("connect", () => {
-                // alert("Message Recieved");
                 socket.send("hi");
                 socket.on(
                   "91" +

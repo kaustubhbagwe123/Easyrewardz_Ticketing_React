@@ -1335,9 +1335,12 @@ class SlaTemplateDepartment extends Component {
                             name="filter-type"
                             id={"fil-open" + item.functionName}
                             value={item.functionName}
-                            checked={this.state.sissueTpeNameFilterCheckbox.includes(
-                              item.functionName
-                            )}
+                            checked={
+                              this.state.sissueTpeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.functionName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "functionName",
@@ -1362,9 +1365,12 @@ class SlaTemplateDepartment extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
+                            checked={
+                              this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1389,9 +1395,12 @@ class SlaTemplateDepartment extends Component {
                             name="filter-type"
                             id={"fil-open" + item.isSLAActive}
                             value={item.isSLAActive}
-                            checked={this.state.sisSLAActiveFilterCheckbox.includes(
-                              item.isSLAActive
-                            )}
+                            checked={
+                              this.state.sisSLAActiveFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.isSLAActive) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isSLAActive",
@@ -1449,11 +1458,7 @@ class SlaTemplateDepartment extends Component {
                         accessor: "functionName",
                       },
                       {
-                        Header: (
-                          <span>
-                            Priority Type
-                          </span>
-                        ),
+                        Header: <span>Priority Type</span>,
                         sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
@@ -1502,7 +1507,10 @@ class SlaTemplateDepartment extends Component {
                                                 {item.slaBreachPercent}
                                               </label>
                                               <label className="slatemp-text-1">
-                                                {item.priorityResolution} {item.priorityResolutionDuration}
+                                                {item.priorityResolution}{" "}
+                                                {
+                                                  item.priorityResolutionDuration
+                                                }
                                               </label>
                                             </div>
                                           ))}
