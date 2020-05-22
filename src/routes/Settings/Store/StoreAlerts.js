@@ -1330,7 +1330,6 @@ class Alerts extends Component {
           // this.setState({
           //   subjectStoreCompulsion: "Please Enter Description.",
           // });
-
           // return false;
         } else {
           this.setState({ subjectStoreCompulsion: "" });
@@ -2191,9 +2190,12 @@ class Alerts extends Component {
                             name={item.alertTypeName}
                             id={"fil-open" + item.alertTypeName}
                             value={item.alertTypeName}
-                            checked={this.state.salertTypeNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.alertTypeName)}
+                            checked={
+                              this.state.salertTypeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.alertTypeName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "alertTypeName",
@@ -2218,9 +2220,12 @@ class Alerts extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.createdBy)}
+                            checked={
+                              this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -2245,9 +2250,12 @@ class Alerts extends Component {
                             name={item.isAlertActive}
                             id={"fil-open" + item.isAlertActive}
                             value={item.isAlertActive}
-                            checked={this.state.sisAlertActiveFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.isAlertActive)}
+                            checked={
+                              this.state.sisAlertActiveFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.isAlertActive) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isAlertActive",

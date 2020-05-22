@@ -2561,7 +2561,7 @@ class StoreUsers extends Component {
                 personalReadOnly: true,
               });
             } else {
-              NotificationManager.error("Record Not Save.");
+              NotificationManager.error(res.data.message);
             }
           })
           .catch((response) => {
@@ -2616,7 +2616,7 @@ class StoreUsers extends Component {
                 personalReadOnly: true,
               });
             } else {
-              NotificationManager.error("Record Not Update.");
+              NotificationManager.error(res.data.message);
             }
           })
           .catch((response) => {
@@ -2833,11 +2833,20 @@ class StoreUsers extends Component {
               self.setState({
                 brandData: [],
                 storeCodeData: [],
+                selectStore: 0,
                 userName: "",
                 mobile_no: "",
                 email_Id: "",
+                selectClaimApprover: "",
+                buttonStoreToggle: false,
+                StoreReadOnly: false,
+                personalReadOnly: false,
+                btnPersonalToggle: false,
+                profileReadOnly: false,
+                btnProfileToggle: false,
                 departmentData: [],
                 selectedFunction: [],
+                functionData: [],
                 userDesignationData: [],
                 reportDesignation: [],
                 reportToData: [],
@@ -2845,6 +2854,10 @@ class StoreUsers extends Component {
                 selectedClaimCategory: [],
                 selectedClaimSubCategory: [],
                 selectedClaimIssueType: [],
+                claimSubCategoryData: [],
+                claimCategoryData: [],
+                brandData: [],
+                claimIssueTypeData: [],
                 CrmRoleData: [],
                 activeData: [],
               });
@@ -2871,8 +2884,6 @@ class StoreUsers extends Component {
     }
   }
   handleSendMail(user_Id) {
-    debugger;
-
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/SendMailforchangepassword",
@@ -2888,7 +2899,7 @@ class StoreUsers extends Component {
         if (reportto === "Mail sent successfully") {
           NotificationManager.success("Please Check Email.");
         } else {
-          NotificationManager.error(reportto);
+          NotificationManager.error("Mail Sent Failed.");
         }
       })
       .catch((res) => {
@@ -3237,9 +3248,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.storeCode}
                             value={item.storeCode}
-                            checked={this.state.sitemCodeFilterCheckbox.includes(
-                              item.storeCode
-                            )}
+                            checked={
+                              this.state.sitemCodeFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.storeCode) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "storeCode",
@@ -3264,9 +3278,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.brandName)}
+                            checked={
+                              this.state.sbrandNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.brandName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -3291,9 +3308,11 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.userName}
                             value={item.userName}
-                            checked={this.state.suserNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.userName)}
+                            checked={
+                              this.state.suserNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.userName) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "userName",
@@ -3318,9 +3337,13 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.designationName}
                             value={item.designationName}
-                            checked={this.state.sdesignationNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.designationName)}
+                            checked={
+                              this.state.sdesignationNameFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.designationName
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "designationName",
@@ -3344,9 +3367,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.reporteeName}
                             value={item.reporteeName}
-                            checked={this.state.sreporteeNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.reporteeName)}
+                            checked={
+                              this.state.sreporteeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.reporteeName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reporteeName",
@@ -3370,9 +3396,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.departmentName}
                             value={item.departmentName}
-                            checked={this.state.sdepartmentNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.departmentName)}
+                            checked={
+                              this.state.sdepartmentNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.departmentName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "departmentName",
@@ -3396,9 +3425,13 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.mappedFunctions}
                             value={item.mappedFunctions}
-                            checked={this.state.smappedFunctionsFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.mappedFunctions)}
+                            checked={
+                              this.state.smappedFunctionsFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.mappedFunctions
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "mappedFunctions",

@@ -325,8 +325,16 @@ class StoreCRMRole extends Component {
       if (this.state.RoleName.length > 0 && this.state.RoleisActive != 0) {
         CRMRoleID = 0;
         RoleName = self.state.RoleName;
-        ModulesEnabled = self.state.ModulesEnabled;
-        ModulesDisabled = self.state.ModulesDisabled;
+        // ModulesEnabled = self.state.ModulesEnabled;
+        // if (self.state.ModulesEnabled === "") {
+        for (let i = 0; i < self.state.modulesList.length; i++) {
+          if (self.state.modulesList[i].isActive === true) {
+            ModulesEnabled += self.state.modulesList[i].moduleID + ",";
+          } else if (self.state.modulesList[i].isActive === false) {
+            ModulesDisabled += self.state.modulesList[i].moduleID + ",";
+          }
+        }
+        // }
       } else {
         this.setState({
           checkRoleName: "Required",
@@ -1109,7 +1117,7 @@ class StoreCRMRole extends Component {
                               // )}
                               checked={this.state.sroleNameFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.roleName)}
+                                .find((word) => word === item.roleName)|| false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "roleName",
@@ -1139,7 +1147,7 @@ class StoreCRMRole extends Component {
                               // )}
                               checked={this.state.screatedByFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.createdBy)}
+                                .find((word) => word === item.createdBy)|| false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "createdBy",
@@ -1169,7 +1177,7 @@ class StoreCRMRole extends Component {
                               // )}
                               checked={this.state.sisRoleActiveFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.isRoleActive)}
+                                .find((word) => word === item.isRoleActive)|| false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "isRoleActive",

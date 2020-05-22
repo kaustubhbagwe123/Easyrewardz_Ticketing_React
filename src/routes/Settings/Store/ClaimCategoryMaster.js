@@ -1336,11 +1336,11 @@ class ClaimCategoryMaster extends Component {
   handleSubmitData() {
     debugger;
     if (
-      this.state.selectBrandMulti !== null &&
+      this.state.selectBrandMulti.length > 0 &&
       (this.state.list1Value > 0 || this.state.list1Value !== "") &&
       (this.state.ListOfSubCate > 0 || this.state.ListOfSubCate !== "") &&
       (this.state.ListOfIssue > 0 || this.state.ListOfIssue !== "") &&
-      (this.state.selectStatus !== 0 && this.state.selectStatus !== "select")
+      (this.state.selectStatus !== "0" && this.state.selectStatus !== 0)
     ) {
       debugger;
       let self = this;
@@ -1394,6 +1394,9 @@ class ClaimCategoryMaster extends Component {
             NotificationManager.success("Category added successfully.");
             self.setState({
               selectBrandMulti: [],
+              categoryDropData: [],
+              SubCategoryDropData: [],
+              ListOfIssueData: [],
               list1Value: "",
               ListOfSubCate: "",
               ListOfIssue: "",
@@ -1403,6 +1406,9 @@ class ClaimCategoryMaster extends Component {
               subcategoryCompulsion: "",
               issueCompulsion: "",
               statusCompulsion: "",
+              showAddCategory: false,
+              showAddIssueType: false,
+              showAddSubCategory: false,
             });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.");
@@ -1429,13 +1435,13 @@ class ClaimCategoryMaster extends Component {
     debugger;
     let self = this;
     if (
-      (this.state.editCategory.brandID !== "0" &&
-        (this.state.editCategory.categoryID.length > 0 ||
-          this.state.editCategory.categoryID !== "") &&
-        (this.state.editCategory.subCategoryID.length > 0 ||
-          this.state.editCategory.subCategoryID !== "") &&
-        this.state.editCategory.issueTypeID.length > 0) ||
-      this.state.editCategory.issueTypeID !== ""
+      this.state.editCategory.brandID !== "0" &&
+      (this.state.editCategory.categoryID.length > 0 ||
+        this.state.editCategory.categoryID !== "") &&
+      (this.state.editCategory.subCategoryID.length > 0 ||
+        this.state.editCategory.subCategoryID !== "") &&
+      (this.state.editCategory.issueTypeID.length > 0 ||
+        this.state.editCategory.issueTypeID !== "")
     ) {
       var activeStatus = 0;
       var categorydata = 0;
@@ -1448,29 +1454,42 @@ class ClaimCategoryMaster extends Component {
         activeStatus = false;
       }
 
-      if (isNaN(this.state.editCategory.categoryName)) {
-        categorydata = this.state.categoryDropData.filter(
-          (x) => x.categoryName === this.state.editCategory.categoryName
-        )[0].categoryID;
+      if (this.state.categoryDropData.length > 0) {
+        if (isNaN(this.state.editCategory.categoryName)) {
+          categorydata = this.state.categoryDropData.filter(
+            (x) => x.categoryName === this.state.editCategory.categoryName
+          )[0].categoryID;
+        } else {
+          categorydata = this.state.editCategory.categoryID;
+        }
       } else {
         categorydata = this.state.editCategory.categoryID;
       }
 
-      if (isNaN(this.state.editCategory.subCategoryName)) {
-        subCategoryData = this.state.SubCategoryDropData.filter(
-          (x) => x.subCategoryName === this.state.editCategory.subCategoryName
-        )[0].subCategoryID;
+      if (this.state.SubCategoryDropData.length > 0) {
+        if (isNaN(this.state.editCategory.subCategoryName)) {
+          subCategoryData = this.state.SubCategoryDropData.filter(
+            (x) => x.subCategoryName === this.state.editCategory.subCategoryName
+          )[0].subCategoryID;
+        } else {
+          subCategoryData = this.state.editCategory.subCategoryID;
+        }
       } else {
         subCategoryData = this.state.editCategory.subCategoryID;
       }
 
-      if (isNaN(this.state.editCategory.issueTypeName)) {
-        IssueData = this.state.ListOfIssueData.filter(
-          (x) => x.issueTypeName === this.state.editCategory.issueTypeName
-        )[0].issueTypeID;
+      if (this.state.ListOfIssueData.length > 0) {
+        if (isNaN(this.state.editCategory.issueTypeName)) {
+          IssueData = this.state.ListOfIssueData.filter(
+            (x) => x.issueTypeName === this.state.editCategory.issueTypeName
+          )[0].issueTypeID;
+        } else {
+          IssueData = this.state.editCategory.issueTypeID;
+        }
       } else {
         IssueData = this.state.editCategory.issueTypeID;
       }
+
       this.setState({ editSaveLoading: true });
       axios({
         method: "post",
@@ -2132,7 +2151,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.brandName}
                             checked={this.state.sbrandNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.brandName)}
+                              .find((word) => word === item.brandName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -2159,7 +2178,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.categoryName}
                             checked={this.state.scategoryNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.categoryName)}
+                              .find((word) => word === item.categoryName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "categoryName",
@@ -2186,7 +2205,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.subCategoryName}
                             checked={this.state.ssubCategoryNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.subCategoryName)}
+                              .find((word) => word === item.subCategoryName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "subCategoryName",
@@ -2213,7 +2232,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.issueTypeName}
                             checked={this.state.sissueTypeNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.issueTypeName)}
+                              .find((word) => word === item.issueTypeName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "issueTypeName",
@@ -2240,7 +2259,7 @@ class ClaimCategoryMaster extends Component {
                             value={item.statusName}
                             checked={this.state.sstatusNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.statusName)}
+                              .find((word) => word === item.statusName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "statusName",
@@ -2515,7 +2534,7 @@ class ClaimCategoryMaster extends Component {
                         )}
                       </div>
                     </div>
-                    <div className="divSpace">
+                    <div className="divSpace ClaimPlaceHolder">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
                           Claim Category
@@ -2746,7 +2765,7 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.selectStatus}
                           onChange={this.handleStatusChange}
                         >
-                          <option>Select</option>
+                          <option value={0}>Select</option>
                           {this.state.activeData !== null &&
                             this.state.activeData.map((item, j) => (
                               <option key={j} value={item.ActiveID}>
@@ -2754,8 +2773,7 @@ class ClaimCategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
-                        {(this.state.selectStatus === 0 ||
-                          this.state.selectStatus === "select") && (
+                        {parseInt(this.state.selectStatus) === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
                             {this.state.statusCompulsion}
                           </p>
@@ -2922,7 +2940,7 @@ class ClaimCategoryMaster extends Component {
                   onChange={this.handleModalBrandChange}
                   name="brandID"
                 >
-                  <option value="0">Select</option>
+                  <option value={0}>Select</option>
                   {this.state.brandData !== null &&
                     this.state.brandData.map((item, i) => (
                       <option
@@ -2934,7 +2952,7 @@ class ClaimCategoryMaster extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.editCategory.brandID === "0" && (
+                {parseInt(this.state.editCategory.brandID) === 0 && (
                   <p style={{ color: "red", marginBottom: "21px" }}>
                     {this.state.editBrandCompulsory}
                   </p>

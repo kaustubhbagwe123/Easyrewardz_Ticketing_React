@@ -754,7 +754,7 @@ class StoreFileUploadLogs extends Component {
             Type
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Type"
+                this.state.isATOZ === false && this.state.sortHeader === "Type"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -773,7 +773,7 @@ class StoreFileUploadLogs extends Component {
             File Name
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Name"
+                this.state.isATOZ === false && this.state.sortHeader === "Name"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -792,7 +792,7 @@ class StoreFileUploadLogs extends Component {
             Date
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Date"
+                this.state.isATOZ === false && this.state.sortHeader === "Date"
                   ? faCaretUp
                   : faCaretDown
               }
@@ -964,6 +964,7 @@ class StoreFileUploadLogs extends Component {
                 </div>
               </div>
               <a
+              href="#!"
                 style={{
                   margin: "0 25px",
                   textDecoration: "underline",
@@ -1014,7 +1015,7 @@ class StoreFileUploadLogs extends Component {
                             value={item.fileType}
                             checked={this.state.sfileTypeFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.fileType)}
+                              .find((word) => word === item.fileType)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileType",
@@ -1041,7 +1042,7 @@ class StoreFileUploadLogs extends Component {
                             value={item.fileName}
                             checked={this.state.sfileNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.fileName)}
+                              .find((word) => word === item.fileName)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileName",
@@ -1068,7 +1069,7 @@ class StoreFileUploadLogs extends Component {
                             value={item.createdDate}
                             checked={this.state.screatedDateFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.createdDate)}
+                              .find((word) => word === item.createdDate)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -1095,7 +1096,7 @@ class StoreFileUploadLogs extends Component {
                             value={item.fileUploadStatus}
                             checked={this.state.sfileUploadStatusFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.fileUploadStatus)}
+                              .find((word) => word === item.fileUploadStatus)||false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "fileUploadStatus",

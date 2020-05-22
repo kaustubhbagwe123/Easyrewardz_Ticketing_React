@@ -188,7 +188,7 @@ class CreatePriority extends Component {
   ////handle check prority
   handleCheckPriorityExits() {
     let self = this;
-    debugger;
+
     var priority_name = "";
     if (this.state.editmodel) {
       if (
@@ -218,7 +218,6 @@ class CreatePriority extends Component {
       params: { PriorityName: priority_name },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message == "Success") {
@@ -249,7 +248,6 @@ class CreatePriority extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.priorityData;
 
@@ -289,7 +287,6 @@ class CreatePriority extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.priorityData;
 
@@ -330,8 +327,6 @@ class CreatePriority extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
     if (
       this.state.sortFilterName.length === 0 ||
       this.state.sortFilterCreatedBy.length === 0 ||
@@ -446,7 +441,6 @@ class CreatePriority extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFilterName: this.state.sortName,
       sortFilterCreatedBy: this.state.sortCreatedBy,
@@ -511,10 +505,8 @@ class CreatePriority extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
+    debugger;
     var spriortyNameFilterCheckbox = this.state.spriortyNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var screatedDateFilterCheckbox = this.state.screatedDateFilterCheckbox;
@@ -665,9 +657,9 @@ class CreatePriority extends Component {
           spriortyStatusFilterCheckbox = "";
         } else {
           if (this.state.sortColumn === "priortyStatus") {
-            for (let i = 0; i < this.state.sortState.length; i++) {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
               spriortyStatusFilterCheckbox +=
-                this.state.sortState[i].priortyStatus + ",";
+                this.state.sortStatus[i].priortyStatus + ",";
             }
             spriortyStatusFilterCheckbox += "all";
           }
@@ -787,8 +779,6 @@ class CreatePriority extends Component {
       params: paramData,
     })
       .then(function(res) {
-        debugger;
-
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
@@ -808,8 +798,6 @@ class CreatePriority extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
-
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data !== undefined) {
@@ -863,7 +851,7 @@ class CreatePriority extends Component {
               sortFilterCreatedDate.push({ createdDate: distinct[i] });
             }
           }
-          debugger;
+
           var unique = [];
           var distinct = [];
           var sortCreatedBy = [];
@@ -916,7 +904,6 @@ class CreatePriority extends Component {
       });
   }
   handleSubmitData() {
-    debugger;
     if (
       this.state.priority_name.length > 0 &&
       this.state.selectedActiveStatus != 0
@@ -999,7 +986,7 @@ class CreatePriority extends Component {
       });
   }
   // handleUpdateData() {
-  //   debugger;
+  //
   //   if (
   //     this.state.rowData.priortyName.length > 0 &&
   //     this.state.rowData.isActive.length > 0
@@ -1053,19 +1040,20 @@ class CreatePriority extends Component {
 
   handleUpdateData() {
     debugger;
-    if (this.state.rowData.priortyName == "") {
-      this.setState({
-        editpriorityNameCompulsion: "Please enter priority name",
-      });
-    } else {
-      if (this.state.isprority == true) {
-        this.setState({
-          editpriorityNameCompulsion: "Priority already exist!",
-        });
-      } else {
-        this.setState({ editpriorityNameCompulsion: "" });
-      }
-    }
+    // if (this.state.rowData.priortyName == "") {
+    //   this.setState({
+    //     editpriorityNameCompulsion: "Please enter priority name",
+    //   });
+    // } else {
+    //   // if (this.state.isprority == true) {
+    //   //   this.setState({
+    //   //     editpriorityNameCompulsion: "Priority already exist!",
+    //   //   });
+    //   // } else {
+    //   //   this.setState({ editpriorityNameCompulsion: "" });
+    //   // }
+    //   this.setState({ editpriorityNameCompulsion: "" });
+    // }
 
     if (this.state.rowData.isActive === "") {
       this.setState({ editstatusCompulsion: "Please select status" });
@@ -1076,7 +1064,7 @@ class CreatePriority extends Component {
       if (
         this.state.rowData.priortyName !== "" &&
         this.state.editpriorityNameCompulsion == "" &&
-        this.state.isprority == false &&
+        // this.state.isprority == false &&
         this.state.editstatusCompulsion === "" &&
         this.state.isEditBtn === true
       ) {
@@ -1096,7 +1084,7 @@ class CreatePriority extends Component {
           headers: authHeader(),
           params: {
             PriorityID: this.state.rowData.priorityID,
-            PriorityName: this.state.rowData.priortyName.trim(),
+            PriorityName: this.state.rowData.priortyName,
             status: activeStatus,
           },
         })
@@ -1132,7 +1120,7 @@ class CreatePriority extends Component {
         //   editstatusCompulsion: "Please select status",
         // });
       }
-    }, 100);
+    }, 10);
   }
 
   onMouseDown(e) {
@@ -1229,7 +1217,6 @@ class CreatePriority extends Component {
   }
 
   handleOpenEditModal(Data, e) {
-    debugger;
     var rowData = {};
     rowData.priorityID = Data.priorityID;
     rowData.priortyName = Data.priortyName;
@@ -1252,7 +1239,6 @@ class CreatePriority extends Component {
   }
 
   handelEditChange(e) {
-    debugger;
     const { name, value } = e.target;
 
     var rowData = this.state.rowData;
@@ -1273,7 +1259,6 @@ class CreatePriority extends Component {
     }
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "priortyName") {
       var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
@@ -1344,7 +1329,7 @@ class CreatePriority extends Component {
       sortColumn: "",
       StatusModel: false,
       priorityData: this.state.sortAllData,
-      temppriorityData:[]
+      temppriorityData: [],
     });
   }
 
@@ -1408,7 +1393,7 @@ class CreatePriority extends Component {
                   margin: "0 25px",
                   textDecoration: "underline",
                   color: "#2561A8",
-                  cursor:"pointer"
+                  cursor: "pointer",
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
@@ -1437,14 +1422,14 @@ class CreatePriority extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
-                    {this.state.sortFilterName.length > 0 &&
+                    {/* {this.state.sortFilterName.length > 0 &&
                     this.state.sortFilterCreatedBy.length > 0 &&
                     this.state.sortFilterCreatedDate.length > 0 &&
-                    this.state.sortFilterStatus.length > 0 ? (
-                      <label htmlFor={"fil-open"}>
-                        <span className="table-btn table-blue-btn">ALL</span>
-                      </label>
-                    ) : null}
+                    this.state.sortFilterStatus.length > 0 ? ( */}
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                    {/* ) : null} */}
                   </div>
                   {this.state.sortColumn === "priortyName"
                     ? this.state.sortFilterName !== null &&
@@ -1457,7 +1442,7 @@ class CreatePriority extends Component {
                             value={item.priortyName}
                             checked={this.state.spriortyNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.priortyName)}
+                              .find((word) => word === item.priortyName)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyName",
@@ -1484,7 +1469,7 @@ class CreatePriority extends Component {
                             value={item.createdBy}
                             checked={this.state.screatedByFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.createdBy)}
+                              .find((word) => word === item.createdBy)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1511,7 +1496,7 @@ class CreatePriority extends Component {
                             value={item.createdDate}
                             checked={this.state.screatedDateFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.createdDate)}
+                              .find((word) => word === item.createdDate)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -1538,7 +1523,7 @@ class CreatePriority extends Component {
                             value={item.priortyStatus}
                             checked={this.state.spriortyStatusFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.priortyStatus)}
+                              .find((word) => word === item.priortyStatus)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyStatus",
@@ -1767,8 +1752,6 @@ class CreatePriority extends Component {
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
-                                debugger;
-
                                 if (
                                   this.state.spriortyNameFilterCheckbox !==
                                     "" ||
@@ -1827,7 +1810,6 @@ class CreatePriority extends Component {
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
-                                debugger;
                                 this.setState({
                                   StatusModel: true,
                                 });
@@ -1910,7 +1892,15 @@ class CreatePriority extends Component {
                                           file?
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a
+                                            onClick={() => {
+                                              document
+                                                .getElementById(text)
+                                                .click();
+                                            }}
+                                          >
+                                            CANCEL
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteData.bind(
@@ -1931,6 +1921,7 @@ class CreatePriority extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
+                                    id={text}
                                   />
                                 </Popover>
 
@@ -1965,7 +1956,9 @@ class CreatePriority extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">CREATE PRIORITY</label>
+                    <label className="create-department" id="createId">
+                      CREATE PRIORITY
+                    </label>
                     <div className="div-padding-1">
                       <label className="designation-name">Priority Name</label>
                       <input
