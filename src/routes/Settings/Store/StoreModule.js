@@ -2,31 +2,31 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
-import { Popover } from "antd";
-import ReactTable from "react-table";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+// import { Popover } from "antd";
+// import ReactTable from "react-table";
+// import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DelBlack from "./../../../assets/Images/del-black.png";
-import DownExcel from "./../../../assets/Images/csv.png";
-import FileUpload from "./../../../assets/Images/file.png";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import DelBigIcon from "./../../../assets/Images/del-big.png";
+// import DelBlack from "./../../../assets/Images/del-black.png";
+// import DownExcel from "./../../../assets/Images/csv.png";
+// import FileUpload from "./../../../assets/Images/file.png";
+// import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+// import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+// import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-import Correct from "./../../../assets/Images/correct.png";
+// import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
-import { CSVLink } from "react-csv";
-import Dropzone from "react-dropzone";
+// import { CSVLink } from "react-csv";
+// import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import { ProgressBar } from "react-bootstrap";
-import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+// import { UncontrolledPopover, PopoverBody } from "reactstrap";
+// import { ProgressBar } from "react-bootstrap";
+// import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
 class StoreModule extends Component {
   constructor(props) {
@@ -82,6 +82,8 @@ class StoreModule extends Component {
       itemData: [],
       editCampChannelModal: false,
       campaignChannelData: {},
+      maxClickValidation: "",
+      enabledAfterValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1130,36 +1132,44 @@ class StoreModule extends Component {
   }
 
   handleUpdateCampChannelData() {
-    debugger;
-    let self = this;
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
-      headers: authHeader(),
-      data: {
-        ID: this.state.campaignChannelData.id,
-        MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
-        EnableClickAfterValue: this.state.campaignChannelData
-          .enableClickAfterValue,
-        EnableClickAfterDuration: this.state.campaignChannelData
-          .enableClickAfterDuration,
-        SmsFlag: this.state.campaignChannelData.smsFlag,
-        EmailFlag: this.state.campaignChannelData.emailFlag,
-        MessengerFlag: this.state.campaignChannelData.messengerFlag,
-        BotFlag: this.state.campaignChannelData.botFlag,
-      },
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Campaign Updated Successfully.");
-        }
+    // let self = this;
+    if (
+      this.state.campaignChannelData.maxClickAllowed !== "" &&
+      this.state.campaignChannelData.enableClickAfterValue !== ""
+    ) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
+        headers: authHeader(),
+        data: {
+          ID: this.state.campaignChannelData.id,
+          MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
+          EnableClickAfterValue: this.state.campaignChannelData
+            .enableClickAfterValue,
+          EnableClickAfterDuration: this.state.campaignChannelData
+            .enableClickAfterDuration,
+          SmsFlag: this.state.campaignChannelData.smsFlag,
+          EmailFlag: this.state.campaignChannelData.emailFlag,
+          MessengerFlag: this.state.campaignChannelData.messengerFlag,
+          BotFlag: this.state.campaignChannelData.botFlag,
+        },
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Campaign Updated Successfully.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        maxClickValidation: "Required",
+        enabledAfterValidation: "Required",
       });
+    }
   }
 
   render() {
@@ -2099,6 +2109,17 @@ class StoreModule extends Component {
                                           this
                                         )}
                                       />
+                                      {this.state.campaignChannelData
+                                        .maxClickAllowed === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.maxClickValidation}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>Click</td>
                                   </tr>
@@ -2118,6 +2139,17 @@ class StoreModule extends Component {
                                           this
                                         )}
                                       />
+                                      {this.state.campaignChannelData
+                                        .enableClickAfterValue === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       <select
