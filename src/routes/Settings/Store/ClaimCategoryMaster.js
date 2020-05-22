@@ -1394,6 +1394,9 @@ class ClaimCategoryMaster extends Component {
             NotificationManager.success("Category added successfully.");
             self.setState({
               selectBrandMulti: [],
+              categoryDropData: [],
+              SubCategoryDropData: [],
+              ListOfIssueData: [],
               list1Value: "",
               ListOfSubCate: "",
               ListOfIssue: "",
@@ -1403,6 +1406,9 @@ class ClaimCategoryMaster extends Component {
               subcategoryCompulsion: "",
               issueCompulsion: "",
               statusCompulsion: "",
+              showAddCategory: false,
+              showAddIssueType: false,
+              showAddSubCategory: false,
             });
           } else if (status === "Record Already Exists ") {
             NotificationManager.error("Record Already Exists.");
