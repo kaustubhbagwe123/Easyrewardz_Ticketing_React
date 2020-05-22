@@ -1452,20 +1452,11 @@ class SlaTemplateDepartment extends Component {
                         Header: (
                           <span>
                             Priority Type
-                            {/* <FontAwesomeIcon
-                              icon={
-                                this.state.isATOZ == false &&
-                                this.state.sortHeader === "Priority Type"
-                                  ? faCaretUp
-                                  : faCaretDown
-                              }
-                            /> */}
                           </span>
                         ),
                         sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
-                          var ids = row.original["id"];
                           let slaTarget = row.original.slaTarget,
                             priorityNameComma = "",
                             priorityName = "";
@@ -1511,7 +1502,7 @@ class SlaTemplateDepartment extends Component {
                                                 {item.slaBreachPercent}
                                               </label>
                                               <label className="slatemp-text-1">
-                                                {item.priorityResolution}
+                                                {item.priorityResolution} {item.priorityResolutionDuration}
                                               </label>
                                             </div>
                                           ))}
@@ -1523,7 +1514,6 @@ class SlaTemplateDepartment extends Component {
                                       className="info-icon"
                                       src={BlackInfoIcon}
                                       alt="info-icon"
-                                      // id={ids}
                                     />
                                   </Popover>
                                 ) : (
@@ -1641,7 +1631,6 @@ class SlaTemplateDepartment extends Component {
                         Header: <span>Actions</span>,
                         accessor: "actiondept",
                         Cell: (row) => {
-                          // var ids = row.original["slaid"];
                           return (
                             <>
                               <span className="d-flex align-items-center">

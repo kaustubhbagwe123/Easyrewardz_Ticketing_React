@@ -1492,11 +1492,11 @@ class DepartmentMaster extends Component {
   }
   //// handle update department
   handleUpdateDepartment() {
+    debugger;
     let self = this;
     if (
       this.state.editDepartment.brandID !== "0" &&
-      (this.state.editDepartment.storeID !== "0" ||
-        this.state.editDepartment.storeID !== 0) &&
+      this.state.editDepartment.storeID !== 0 &&
       this.state.editDepartment.departmentID !== "0" &&
       this.state.editDepartment.functionID !== "0"
     ) {
@@ -2713,7 +2713,7 @@ class DepartmentMaster extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.editDepartment.storeID === "0" && (
+                    {parseInt(this.state.editDepartment.storeID) === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editStoreCompulsory}
                       </p>
