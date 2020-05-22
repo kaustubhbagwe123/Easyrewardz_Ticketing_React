@@ -3,6 +3,7 @@ import { Table, Select } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { authHeader } from "./../../helpers/authHeader";
+import ProgressMenIcon from "./../../assets/Images/progress-men-icon.png";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
 
@@ -20,6 +21,7 @@ class Appointment extends Component {
       dayAfterTomorrowDay: "",
       status: [],
       tabFor: 1,
+      appointProgress: "90%",
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -231,6 +233,37 @@ class Appointment extends Component {
             >
               {this.state.dayAfterTomorrowCount}
             </span>
+          </div>
+        </div>
+        <div className="customer-count-block">
+          <div className="vacancy-info">
+            <div className="total-info">
+              <p className="tot-all">
+                <span className="total-dis">Total </span>Customer Allowed{" "}
+                <span className="tot-cnt">50</span>
+              </p>
+              <div className="cust-prog-outer">
+                <div
+                  className="cust-prog-fill"
+                  style={{ width: this.state.appointProgress }}
+                ></div>
+                <div
+                  className="cust-prog-circ"
+                  style={{ left: this.state.appointProgress }}
+                >
+                  <img src={ProgressMenIcon} alt="progress icon" />
+                </div>
+              </div>
+              <p className="cust-store">Customers Instore</p>
+            </div>
+            <div className="empty-filled-info">
+              <div className="empty-info">10</div>
+              <div className="filled-info">40</div>
+            </div>
+          </div>
+          <div className="slot-info">
+            <p>09-10 PM</p>
+            <p>Slot already booked for 5 more people</p>
           </div>
         </div>
         <div className="table-cntr store">
