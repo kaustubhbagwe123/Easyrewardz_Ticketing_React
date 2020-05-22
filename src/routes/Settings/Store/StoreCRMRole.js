@@ -1117,7 +1117,7 @@ class StoreCRMRole extends Component {
                               // )}
                               checked={this.state.sroleNameFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.roleName)}
+                                .find((word) => word === item.roleName)|| false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "roleName",
@@ -1147,7 +1147,7 @@ class StoreCRMRole extends Component {
                               // )}
                               checked={this.state.screatedByFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.createdBy)}
+                                .find((word) => word === item.createdBy)|| false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "createdBy",
@@ -1177,7 +1177,7 @@ class StoreCRMRole extends Component {
                               // )}
                               checked={this.state.sisRoleActiveFilterCheckbox
                                 .split(",")
-                                .find((word) => word === item.isRoleActive)}
+                                .find((word) => word === item.isRoleActive)|| false}
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "isRoleActive",

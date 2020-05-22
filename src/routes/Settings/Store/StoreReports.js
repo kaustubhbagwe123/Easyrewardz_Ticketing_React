@@ -77,8 +77,8 @@ class StoreReports extends Component {
       claimIssueTypeName: [],
       campaignName: [],
       campaignStatusName: [
-        { campaignNameID: 17, campaignName: "Campaign Status 1" },
-        { campaignNameID: 18, campaignName: "Campaign Status 2" },
+        { campaignNameID: 221, campaignName: "Closed" },
+        { campaignNameID: 223, campaignName: "Open" },
       ],
       userData: [],
       selectedTeamMember: [],
@@ -3379,7 +3379,7 @@ class StoreReports extends Component {
                             value={item.reportName}
                             checked={this.state.sreportNameFilterCheckbox.includes(
                               item.reportName
-                            )}
+                            )|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reportName",
@@ -3406,7 +3406,7 @@ class StoreReports extends Component {
                             value={item.scheduleStatus}
                             checked={this.state.sscheduleStatusFilterCheckbox.includes(
                               item.scheduleStatus
-                            )}
+                            )|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "scheduleStatus",
@@ -3433,7 +3433,7 @@ class StoreReports extends Component {
                             value={item.createdBy}
                             checked={this.state.screatedByFilterCheckbox.includes(
                               item.createdBy
-                            )}
+                            )|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -3460,7 +3460,7 @@ class StoreReports extends Component {
                             value={item.reportStatus}
                             checked={this.state.sreportStatusFilterCheckbox.includes(
                               item.reportStatus
-                            )}
+                            )|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reportStatus",

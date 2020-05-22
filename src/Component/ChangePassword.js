@@ -5,7 +5,7 @@ import config from "./../helpers/config";
 import { authHeader } from "./../helpers/authHeader";
 import {
   NotificationContainer,
-  NotificationManager
+  NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import SimpleReactValidator from "simple-react-validator";
@@ -18,27 +18,21 @@ class ChangePassword extends Component {
     this.state = {
       newPassword: "",
       confimPassword: "",
-      oldPassword:"",
+      oldPassword: "",
       ProfileData: [],
-      oldPasswordCompulsion:""
-     
-      
+      oldPasswordCompulsion: "",
     };
     this.handleCheckPassword = this.handleCheckPassword.bind(this);
     this.handlechange = this.handlechange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
+    this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
     this.validator = new SimpleReactValidator();
   }
   componentDidMount() {
     debugger;
     this.handleGetUserProfileData();
-
-    
-   
   }
 
-  
   handleGetUserProfileData() {
     debugger;
 
@@ -46,33 +40,30 @@ class ChangePassword extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
-           
-
           self.setState({
-            ProfileData: userdata
+            ProfileData: userdata,
           });
-         
         } else {
           self.setState({
-            ProfileData: ""
+            ProfileData: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   handlechange(e) {
     debugger;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -80,18 +71,18 @@ class ChangePassword extends Component {
     debugger;
     e.preventDefault();
 
-    if (this.validator.allValid()
-    ) {
+    if (this.validator.allValid()) {
       const { newPassword, confimPassword } = this.state;
       if (newPassword === confimPassword) {
         this.handleChangePassword(newPassword);
       } else {
         NotificationManager.error(
-          "The new password and confirm password do not match.", '', 1500
+          "The new password and confirm password do not match.",
+          "",
+          1500
         );
       }
     } else {
-      
       this.validator.showMessages();
       // rerender to show messages for the first time
       // you can use the autoForceUpdate option to do this automatically`
@@ -101,56 +92,51 @@ class ChangePassword extends Component {
   handleChangePassword(newPassword) {
     debugger;
     let self = this;
-   
+
     // let emaiId=encryption(EmailID, "enc");
     // let emaiId = window.location.href
     //   .slice(window.location.href.indexOf("?") + 1)
     //   .split(":")[1];
     let emaiId = window.location.href
-    .slice(window.location.href.indexOf("?") + 1)
-    .split(":")[1];
+      .slice(window.location.href.indexOf("?") + 1)
+      .split(":")[1];
 
     let encPassword = encryption(newPassword, "enc");
 
-    var field = 'Id';
-    var changePasswordType="system";
-    var emailIDsystem="";
-    let email=this.state.ProfileData[0].emailId;
+    var field = "Id";
+    var changePasswordType = "system";
+    var emailIDsystem = "";
+    let email = this.state.ProfileData[0].emailId;
     var url = window.location.href;
-    if(url.indexOf('?' + field + ':') !== -1){
-     
-        changePasswordType="mail";
-        emailIDsystem=emaiId;
-     
-    }else {
-     
-        changePasswordType="system";
-        emailIDsystem=email;
-     
+    if (url.indexOf("?" + field + ":") !== -1) {
+      changePasswordType = "mail";
+      emailIDsystem = emaiId;
+    } else {
+      changePasswordType = "system";
+      emailIDsystem = email;
     }
 
     axios({
       method: "post",
-      url: config.apiUrl+"/User/ChangePassword",
+      url: config.apiUrl + "/User/ChangePassword",
       data: {
-        EmailID:emailIDsystem,
-        Password:this.state.oldPassword,
+        EmailID: emailIDsystem,
+        Password: this.state.oldPassword,
         NewPassword: encPassword,
-        ChangePasswordType:changePasswordType
+        ChangePasswordType: changePasswordType,
       },
-      headers: authHeader()
+      headers: authHeader(),
     }).then(function(response) {
       // let data = response;
       debugger;
       let Msg = response.data.responseData;
       if (Msg === true) {
-        NotificationManager.success("Password Changed successfully.", '', 1500);
+        NotificationManager.success("Password Changed successfully.", "", 1500);
         setTimeout(function() {
           self.props.history.push("/SignIn");
         }, 1500);
-      }
-      else {
-        NotificationManager.error("Old password is wrong.", '', 1500);
+      } else {
+        NotificationManager.error("Old password is wrong.", "", 1500);
       }
     });
   }
@@ -177,7 +163,7 @@ class ChangePassword extends Component {
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
-              <div className="input-group sb-2">
+                <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                     Enter Old Password
                   </label>
@@ -192,12 +178,11 @@ class ChangePassword extends Component {
                     onChange={this.handlechange}
                     maxLength={25}
                   />
-                 {this.validator.message(
-"Old Password",
-this.state.oldPassword,
-"required"
-)}
-                  
+                  {this.validator.message(
+                    "Old Password",
+                    this.state.oldPassword,
+                    "required"
+                  )}
                 </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">

@@ -1356,17 +1356,17 @@ class ItemMaster extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
-                    {this.state.sortFilteritemCode.length > 0 &&
+                    {/* {this.state.sortFilteritemCode.length > 0 &&
                     this.state.sortFilterbrandName.length > 0 &&
                     this.state.sortFilteritemName.length > 0 &&
                     this.state.sortFilterdepartmentName.length > 0 &&
                     this.state.sortFilteritemCategory.length > 0 &&
                     this.state.sortFilteritemSubCategory.length > 0 &&
-                    this.state.sortFilteritemGroup.length > 0 ? (
-                      <label htmlFor={"fil-open"}>
-                        <span className="table-btn table-blue-btn">ALL</span>
-                      </label>
-                    ) : null}
+                    this.state.sortFilteritemGroup.length > 0 ? ( */}
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                    {/* ) : null} */}
                   </div>
                   {this.state.sortColumn === "itemCode"
                     ? this.state.sortFilteritemCode !== null &&
@@ -1377,9 +1377,11 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemCode}
                             value={item.itemCode}
-                            checked={this.state.sitemCodeFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.itemCode)}
+                            checked={
+                              this.state.sitemCodeFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemCode) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemCode",
@@ -1404,9 +1406,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.brandName)}
+                            checked={
+                              this.state.sbrandNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.brandName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -1431,12 +1436,11 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemName}
                             value={item.itemName}
-                            // checked={this.state.sitemNameFilterCheckbox.includes(
-                            //   item.itemName
-                            // )}
-                            checked={this.state.sitemNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.itemName)}
+                            checked={
+                              this.state.sitemNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemName) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemName",
@@ -1461,9 +1465,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.departmentName}
                             value={item.departmentName}
-                            checked={this.state.sdepartmentNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.departmentName)}
+                            checked={
+                              this.state.sdepartmentNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.departmentName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "departmentName",
@@ -1487,9 +1494,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemCategory}
                             value={item.itemCategory}
-                            checked={this.state.sitemCategoryFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.itemCategory)}
+                            checked={
+                              this.state.sitemCategoryFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemCategory) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemCategory",
@@ -1513,9 +1523,13 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemSubCategory}
                             value={item.itemSubCategory}
-                            checked={this.state.sitemSubCategoryFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.itemSubCategory)}
+                            checked={
+                              this.state.sitemSubCategoryFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.itemSubCategory
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemSubCategory",
@@ -1539,9 +1553,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemGroup}
                             value={item.itemGroup}
-                            checked={this.state.sitemGroupFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.itemGroup)}
+                            checked={
+                              this.state.sitemGroupFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemGroup) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemGroup",

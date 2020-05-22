@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import config from "../../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
-import { authHeader } from "../../helpers/authHeader";
+import { encryption } from "../../helpers/encryption";
 
 class StoreForgotPassword extends Component {
   constructor(props) {
@@ -26,17 +26,24 @@ class StoreForgotPassword extends Component {
 
     if (this.validator.allValid()) {
       let self = this;
-
+      const { programCode } = this.state;
+      var encProgramCode = encryption(programCode, "enc");
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // validate email
       axios({
         method: "post",
         url: config.apiUrl + "/StoreAccount/ForgetPassword",
-        headers: authHeader("no"),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "X-Authorized-Programcode": encProgramCode,
+          "X-Authorized-Domainname": X_Authorized_Domainname,
+        },
         params: {
           EmailId: this.state.emailId,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let SearchData = res.data.responseData;
           if (res.data.statusCode === 1001) {
