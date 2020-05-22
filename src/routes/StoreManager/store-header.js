@@ -604,7 +604,7 @@ class Header extends Component {
   }
 
   ////handleGet Ongoing Chat
-  handleGetOngoingChat(value, event) {
+  async handleGetOngoingChat(value, event) {
     let self = this;
     var search = "";
     if (event !== undefined) {
@@ -614,7 +614,7 @@ class Header extends Component {
       search = this.state.searchChat;
     }
 
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetOngoingChat",
       headers: authHeader(),
@@ -686,9 +686,9 @@ class Header extends Component {
   };
 
   ////handle Get New Chat
-  handleGetNewChat() {
+  async handleGetNewChat() {
     let self = this;
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetNewChat",
       headers: authHeader(),
@@ -850,9 +850,9 @@ class Header extends Component {
     }
   }
   ////handle get chat notification count
-  handleGetChatNotificationCount() {
+  async handleGetChatNotificationCount() {
     let self = this;
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetChatNotificationCount",
       headers: authHeader(),
