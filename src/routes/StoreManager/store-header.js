@@ -186,7 +186,11 @@ class Header extends Component {
         1
       );
       this.handleGetNotigfication();
-      this.handleGetChatNotificationCount();
+
+      setInterval(() => {
+        this.handleGetChatNotificationCount();
+      }, 6000);
+
       this.handleGetOngoingChat("");
     }
   }
