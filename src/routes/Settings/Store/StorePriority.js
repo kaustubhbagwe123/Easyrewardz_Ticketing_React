@@ -1442,7 +1442,7 @@ class CreatePriority extends Component {
                             value={item.priortyName}
                             checked={this.state.spriortyNameFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.priortyName)}
+                              .find((word) => word === item.priortyName)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyName",
@@ -1469,7 +1469,7 @@ class CreatePriority extends Component {
                             value={item.createdBy}
                             checked={this.state.screatedByFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.createdBy)}
+                              .find((word) => word === item.createdBy)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1496,7 +1496,7 @@ class CreatePriority extends Component {
                             value={item.createdDate}
                             checked={this.state.screatedDateFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.createdDate)}
+                              .find((word) => word === item.createdDate)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -1523,7 +1523,7 @@ class CreatePriority extends Component {
                             value={item.priortyStatus}
                             checked={this.state.spriortyStatusFilterCheckbox
                               .split(",")
-                              .find((word) => word === item.priortyStatus)}
+                              .find((word) => word === item.priortyStatus)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyStatus",
