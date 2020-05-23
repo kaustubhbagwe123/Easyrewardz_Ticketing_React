@@ -344,7 +344,7 @@ class StoreAddTask extends Component {
               <input
                 type="text"
                 className="store-edit-txt"
-                placeholder="Wifi is not working from 5hrs"
+                // placeholder="Wifi is not working from 5hrs"
                 name="tasktitle"
                 value={this.state.taskTitle}
                 onChange={this.handleOnchange}
@@ -532,7 +532,7 @@ class StoreAddTask extends Component {
                     name="taskdetails"
                     rows="8"
                     className="textarea-store"
-                    placeholder="Customer History/Security Check when.."
+                    // placeholder="Customer History/Security Check when.."
                   ></textarea>
                   {this.state.istaskDetails !== "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>

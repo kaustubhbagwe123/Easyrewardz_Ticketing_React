@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import StoreLayout from "./../StoreManager/storelayout";
 import StoreDashboard from "./StoreDashboard";
 import StoreTask from "./StoreTask";
-import StoreTaskView from "./StoreTaskView";
 import EditStoreTask from "./EditStoreTask";
 import StoreTaskByTicket from "./StoreTaskByTicket";
 import RaiseClaim from "./RaiseClaim";
@@ -25,6 +24,9 @@ import StoreAlerts from "./../Settings/Store/StoreAlerts";
 import { NotificationContainer } from "react-notifications";
 import StoreFileUploadLogs from "../Settings/Store/StoreFileUploadLogs";
 import UserProfile from "./UserProfile";
+import Appointment from "./Appointment"
+import StoreCampaign from "../Campaign/StoreCampaign";
+import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 
 export class StoreApp extends Component {
   render() {
@@ -37,11 +39,6 @@ export class StoreApp extends Component {
           component={StoreDashboard}
         />
         <Route exact path={`${match.url}/storetask`} component={StoreTask} />
-        <Route
-          exact
-          path={`${match.url}/storetaskview`}
-          component={StoreTaskView}
-        />
 
         <Route
           exact
@@ -123,6 +120,13 @@ export class StoreApp extends Component {
           path={`${match.url}/userProfile`}
           component={UserProfile}
         />
+        <Route exact path={`${match.url}/appointment`} component={Appointment} />
+        <Route
+          exact
+          path={`${match.url}/campaign`}
+          component={StoreCampaign}
+        />
+        <Route exact path={`${match.url}/homeshopsetting`} component={HomeShopSetting} />
         <NotificationContainer />
       </StoreLayout>
     );

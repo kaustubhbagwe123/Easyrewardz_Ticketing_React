@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { UncontrolledPopover, PopoverBody, Fade } from "reactstrap";
 import Demo from "../../../store/Hashtag.js";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
@@ -12,7 +12,7 @@ import Cancel from "./../../../assets/Images/cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { MyContext } from './../../../context'
 import { ProgressBar } from "react-bootstrap";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
@@ -27,6 +27,7 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import Dropzone from "react-dropzone";
 
 class SlaTemplateDepartment extends Component {
   constructor(props) {
@@ -85,6 +86,8 @@ class SlaTemplateDepartment extends Component {
       sissueTpeNameFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       sisSLAActiveFilterCheckbox: "",
+      regexp: /^[0-9\b]+$/,
+      isATOZ: true,
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -106,11 +109,31 @@ class SlaTemplateDepartment extends Component {
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
 
-    itemsArray.sort(function (a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
+    if (this.state.sortColumn === "functionName") {
+      itemsArray.sort((a, b) => {
+        if (a.functionName < b.functionName) return -1;
+        if (a.functionName > b.functionName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return -1;
+        if (a.isSLAActive > b.isSLAActive) return 1;
+        return 0;
+      });
+    }
 
     this.setState({
+      isATOZ: true,
+      isortA: true,
       slaTemplateGrid: itemsArray,
     });
     this.StatusCloseModel();
@@ -119,10 +142,31 @@ class SlaTemplateDepartment extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.slaTemplateGrid;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+
+    if (this.state.sortColumn === "functionName") {
+      itemsArray.sort((a, b) => {
+        if (a.functionName < b.functionName) return 1;
+        if (a.functionName > b.functionName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "isSLAActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isSLAActive < b.isSLAActive) return 1;
+        if (a.isSLAActive > b.isSLAActive) return -1;
+        return 0;
+      });
+    }
     this.setState({
+      isATOZ: false,
+      isortA: true,
       slaTemplateGrid: itemsArray,
     });
     this.StatusCloseModel();
@@ -237,8 +281,9 @@ class SlaTemplateDepartment extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
-        slaTemplateGrid: this.state.sortAllData,
-        sFilterCheckbox: "",
+        slaTemplateGrid: this.state.isortA
+          ? this.state.slaTemplateGrid
+          : this.state.sortAllData,
       });
     }
   }
@@ -266,7 +311,11 @@ class SlaTemplateDepartment extends Component {
         );
         if (sissueTpeNameFilterCheckbox.includes(e.currentTarget.value)) {
           sissueTpeNameFilterCheckbox = sissueTpeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -292,7 +341,11 @@ class SlaTemplateDepartment extends Component {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
         if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -324,7 +377,11 @@ class SlaTemplateDepartment extends Component {
         );
         if (sisSLAActiveFilterCheckbox.includes(e.currentTarget.value)) {
           sisSLAActiveFilterCheckbox = sisSLAActiveFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -557,12 +614,22 @@ class SlaTemplateDepartment extends Component {
   handleSlaTargets = (i, e) => {
     debugger;
     const { name, value } = e.target;
-    let finalData = [...this.state.finalData];
-    finalData[i] = {
-      ...finalData[i],
-      [name]: value,
-    };
-    this.setState({ finalData });
+    if (value === "" || this.state.regexp.test(value)) {
+      let finalData = [...this.state.finalData];
+      finalData[i] = {
+        ...finalData[i],
+        [name]: value,
+      };
+      this.setState({ finalData });
+    }
+    if (value !== "" && name === "ResolveType") {
+      let finalData = [...this.state.finalData];
+      finalData[i] = {
+        ...finalData[i],
+        [name]: value,
+      };
+      this.setState({ finalData });
+    }
   };
   handleSlaTargetsDropdowns(e) {
     debugger;
@@ -582,7 +649,7 @@ class SlaTemplateDepartment extends Component {
         SearchText: this.state.SearchText,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let slaFunctionName = res.data.responseData;
         if (slaFunctionName !== null && slaFunctionName !== undefined) {
@@ -623,7 +690,7 @@ class SlaTemplateDepartment extends Component {
       url: config.apiUrl + "/StoreSLA/GetStoreSLA",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -632,6 +699,9 @@ class SlaTemplateDepartment extends Component {
           self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
+          var sortFilterIssueType = [];
+          var sortIssueType = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].functionName]) {
               distinct.push(data[i].functionName);
@@ -639,12 +709,19 @@ class SlaTemplateDepartment extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortIssueType.push({ functionName: distinct[i] });
-            self.state.sortFilterIssueType.push({ functionName: distinct[i] });
+            if (distinct[i]) {
+              sortFilterIssueType.push({
+                functionName: distinct[i],
+              });
+              sortIssueType.push({ functionName: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreatedBy = [];
+          var sortFilterCreatedBy = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdBy]) {
               distinct.push(data[i].createdBy);
@@ -652,12 +729,17 @@ class SlaTemplateDepartment extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
-            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              sortCreatedBy.push({ createdBy: distinct[i] });
+              sortFilterCreatedBy.push({ createdBy: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].isSLAActive]) {
               distinct.push(data[i].isSLAActive);
@@ -665,9 +747,20 @@ class SlaTemplateDepartment extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ isSLAActive: distinct[i] });
-            self.state.sortFilterStatus.push({ isSLAActive: distinct[i] });
+            if (distinct[i]) {
+              sortStatus.push({ isSLAActive: distinct[i] });
+              sortFilterStatus.push({ isSLAActive: distinct[i] });
+            }
           }
+          self.setState({
+            sortStatus,
+            sortFilterCreatedBy,
+            sortFilterIssueType,
+            sortFilterStatus,
+            sortCreatedBy,
+            sortIssueType,
+            sortAllData: data,
+          });
         }
 
         if (status === "Success") {
@@ -688,7 +781,7 @@ class SlaTemplateDepartment extends Component {
       url: config.apiUrl + "/StorePriority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -748,7 +841,7 @@ class SlaTemplateDepartment extends Component {
         SLAId: SLAId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -841,7 +934,7 @@ class SlaTemplateDepartment extends Component {
           isSLAActive: SlaIsActive,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -882,7 +975,7 @@ class SlaTemplateDepartment extends Component {
         SLAID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
@@ -897,18 +990,30 @@ class SlaTemplateDepartment extends Component {
       });
   }
 
-  fileUpload = (e) => {
-    debugger;
-    var allFiles = [];
-    var selectedFiles = e.target.files;
-    if (selectedFiles) {
-      allFiles.push(selectedFiles[0]);
+  // fileUpload = (e) => {
+  //   debugger;
+  //   var allFiles = [];
+  //   var selectedFiles = e.target.files;
+  //   if (selectedFiles) {
+  //     allFiles.push(selectedFiles[0]);
 
-      var fileSize = formatSizeUnits(selectedFiles[0].size);
+  //     var fileSize = formatSizeUnits(selectedFiles[0].size);
+  //     this.setState({
+  //       fileSize,
+  //       fileN: allFiles,
+  //       fileName: allFiles[0].name,
+  //       bulkuploadCompulsion: "",
+  //     });
+  //   }
+  // };
+  fileUpload = (file) => {
+    if (file) {
+      var fileName = file[0].name;
+      var fileSize = formatSizeUnits(file[0].size);
       this.setState({
+        fileName,
         fileSize,
-        fileN: allFiles,
-        fileName: allFiles[0].name,
+        fileN: file[0],
         bulkuploadCompulsion: "",
       });
     }
@@ -985,7 +1090,7 @@ class SlaTemplateDepartment extends Component {
       headers: authHeader(),
       data: inputParamter,
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         var message = res.data.message;
         var statusCode = res.data.statusCode;
@@ -1019,7 +1124,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterIssueType });
       } else {
         this.setState({
-          sortFilterIssueType: this.state.sortIssueType,
+          sortFilterIssueType: [],
         });
       }
     }
@@ -1033,7 +1138,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -1047,7 +1152,7 @@ class SlaTemplateDepartment extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -1055,24 +1160,24 @@ class SlaTemplateDepartment extends Component {
 
   hanldeAddBulkUpload() {
     debugger;
-    if (this.state.fileN.length > 0 && this.state.fileN !== []) {
+    if (this.state.fileN) {
       let self = this;
 
       const formData = new FormData();
 
-      formData.append("file", this.state.fileN[0]);
-      this.setState({ showProgress: true });
+      formData.append("file", this.state.fileN);
+      // this.setState({ showProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreSLA/BulkUploadStoreSLA",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           // let data = res.data.responseData;
@@ -1082,8 +1187,8 @@ class SlaTemplateDepartment extends Component {
             self.handleGetSLATemplateGrid();
           } else {
             self.setState({
-              showProgress: false,
-              isFileUploadFail: true,
+              // showProgress: false,
+              // isFileUploadFail: true,
               progressValue: 0,
             });
             NotificationManager.error("File not uploaded.");
@@ -1115,10 +1220,42 @@ class SlaTemplateDepartment extends Component {
     NotificationManager.success("File deleted successfully.");
   };
 
+  handleClearSearch() {
+    this.setState({
+      sissueTpeNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sisSLAActiveFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      slaTemplateGrid: this.state.sortAllData,
+      tempsla: [],
+    });
+  }
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            SLA Template-Department
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -1175,9 +1312,13 @@ class SlaTemplateDepartment extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                   {
                       (() => {
@@ -1249,9 +1390,12 @@ class SlaTemplateDepartment extends Component {
                             name="filter-type"
                             id={"fil-open" + item.functionName}
                             value={item.functionName}
-                            checked={this.state.sissueTpeNameFilterCheckbox.includes(
-                              item.functionName
-                            )}
+                            checked={
+                              this.state.sissueTpeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.functionName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "functionName",
@@ -1276,9 +1420,12 @@ class SlaTemplateDepartment extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
+                            checked={
+                              this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1303,9 +1450,12 @@ class SlaTemplateDepartment extends Component {
                             name="filter-type"
                             id={"fil-open" + item.isSLAActive}
                             value={item.isSLAActive}
-                            checked={this.state.sisSLAActiveFilterCheckbox.includes(
-                              item.isSLAActive
-                            )}
+                            checked={
+                              this.state.sisSLAActiveFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.isSLAActive) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isSLAActive",
@@ -1372,10 +1522,10 @@ class SlaTemplateDepartment extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr settingtable">
+          <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketSlaReact">
+                <div className="table-cntr table-height TicketSlaReact setting-table-des">
                   <ReactTable
                     data={this.state.slaTemplateGrid}
                     minRows={2}
@@ -1383,7 +1533,11 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.issueColor}
+                            className={
+                              this.state.sortHeader === "Function Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "functionName",
@@ -1400,15 +1554,21 @@ class SlaTemplateDepartment extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Function Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "functionName",
                       },
                       {
-                        Header: (
-                          <span>
-                            {
+                        Header: <span>{
                               (() => {
                                 if (TranslationContext !== undefined) {
                                   return TranslationContext.span.prioritytype
@@ -1417,13 +1577,10 @@ class SlaTemplateDepartment extends Component {
                                   return "Priority Type"
                                 }
                               })()
-                            }
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
+                            }</span>,
+                        sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
-                          var ids = row.original["id"];
                           let slaTarget = row.original.slaTarget,
                             priorityNameComma = "",
                             priorityName = "";
@@ -1505,7 +1662,10 @@ class SlaTemplateDepartment extends Component {
                                                 {item.slaBreachPercent}
                                               </label>
                                               <label className="slatemp-text-1">
-                                                {item.priorityResolution}
+                                                {item.priorityResolution}{" "}
+                                                {
+                                                  item.priorityResolutionDuration
+                                                }
                                               </label>
                                             </div>
                                           ))}
@@ -1517,7 +1677,6 @@ class SlaTemplateDepartment extends Component {
                                       className="info-icon"
                                       src={BlackInfoIcon}
                                       alt="info-icon"
-                                      // id={ids}
                                     />
                                   </Popover>
                                 ) : (
@@ -1531,7 +1690,11 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.createdColor}
+                            className={
+                              this.state.sortHeader === "Created By"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
@@ -1548,9 +1711,17 @@ class SlaTemplateDepartment extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "createdBy",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1644,7 +1815,11 @@ class SlaTemplateDepartment extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.stattusColor}
+                            className={
+                              this.state.sortHeader === "Status"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isSLAActive",
@@ -1661,7 +1836,14 @@ class SlaTemplateDepartment extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         accessor: "isSLAActive",
@@ -1681,10 +1863,9 @@ class SlaTemplateDepartment extends Component {
                         </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
-                          // var ids = row.original["slaid"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">
@@ -1812,8 +1993,7 @@ class SlaTemplateDepartment extends Component {
                     </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">
-                        {
+                        <label className="reports-to">{
                             (() => {
                               if (TranslationContext !== undefined) {
                                 return TranslationContext.label.issuetype
@@ -1822,8 +2002,7 @@ class SlaTemplateDepartment extends Component {
                                 return "Issue Type"
                               }
                             })()
-                          }
-                        </label>
+                          }</label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"
@@ -1918,7 +2097,7 @@ class SlaTemplateDepartment extends Component {
                                         <li key={i}>
                                           <input
                                             type="checkbox"
-                                            id={"i" + item.functionID}
+                                            id={"i" + item.functionID + "_" + i}
                                             name="allSla"
                                             onChange={this.selectIndividualSLA.bind(
                                               this,
@@ -1926,7 +2105,9 @@ class SlaTemplateDepartment extends Component {
                                             )}
                                           />
                                           <label
-                                            htmlFor={"i" + item.functionID}
+                                            htmlFor={
+                                              "i" + item.functionID + "_" + i
+                                            }
                                           >
                                             {item.functionName}
                                             <div>
@@ -2138,7 +2319,7 @@ class SlaTemplateDepartment extends Component {
                   </div>
                 </div>
                 <br />
-                <div className="store-col-2">
+                <div className="">
                   <div className="right-sect-div">
                     <br />
                     <h3>
@@ -2170,7 +2351,7 @@ class SlaTemplateDepartment extends Component {
                         <img src={DownExcel} alt="download icon" />
                       </CSVLink>
                     </div>
-                    <input
+                    {/* <input
                       id="file-upload"
                       className="file-upload d-none"
                       type="file"
@@ -2181,8 +2362,20 @@ class SlaTemplateDepartment extends Component {
                       <div className="file-icon">
                         <img src={FileUpload} alt="file-upload" />
                       </div>
-                      <span>
-                          {
+                      <span>Add File</span> or Drop File here
+                    </label> */}
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>{
                             (() => {
                               if (TranslationContext !== undefined) {
                                 return TranslationContext.span.addfile
@@ -2191,9 +2384,8 @@ class SlaTemplateDepartment extends Component {
                                 return "Add File"
                               }
                             })()
-                          }  
-                      </span>
-                          {
+                          }</span>{" "}
+                            {
                             (() => {
                               if (TranslationContext !== undefined) {
                                 return TranslationContext.label.ordropfilehere
@@ -2203,7 +2395,10 @@ class SlaTemplateDepartment extends Component {
                               }
                             })()
                           }
-                    </label>
+                          </div>
+                        )}
+                      </Dropzone>
+                    </div>
                     {this.state.fileN.length === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.bulkuploadCompulsion}
@@ -2429,7 +2624,7 @@ class SlaTemplateDepartment extends Component {
                 }
                 </label>
                 <label className="createhead-text-1">
-                  {this.state.departmentName}
+                  {this.state.storeName}
                 </label>
               </div>
             </div>
@@ -2448,7 +2643,7 @@ class SlaTemplateDepartment extends Component {
                 }
                 </label>
                 <label className="createhead-text-1">
-                  {this.state.storeName}
+                  {this.state.departmentName}
                 </label>
               </div>
               <div className="col-md-6">

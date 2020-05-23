@@ -16,7 +16,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePickerComponenet from "./../Settings/Store/DatePickerComponenet";
 import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
@@ -28,6 +28,7 @@ import { authHeader } from "../../helpers/authHeader.js";
 import StoreStatus from "./StoreStatus.js";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import matchSorter from "match-sorter";
 
 class StoreDashboard extends Component {
   constructor(props) {
@@ -92,6 +93,49 @@ class StoreDashboard extends Component {
       userData: [],
       activeTab: 1,
       createdUser: [],
+      cliamCount: 0,
+      cliamSearchData: [],
+      isViewSerach: false,
+      TaskID: 0,
+      ClaimID: 0,
+      scategoryNameFilterCheckbox: "",
+      screatedByNameFilterCheckbox: "",
+      screationOnFilterCheckbox: "",
+      sassignToFilterCheckbox: "",
+      sclaimStatusFilterCheckbox: "",
+      sortFiltercategoryName: [],
+      sortFiltercreatedByName: [],
+      sortFiltercreationOn: [],
+      sortFilterassignTo: [],
+      sortFilterclaimStatus: [],
+      sortcategoryName: [],
+      sortcreatedByName: [],
+      sortcreationOn: [],
+      sortassignTo: [],
+      sortclaimStatus: [],
+      sortColumn: "",
+      sortHeader: "",
+      filterTxtValue: "",
+      isortA: false,
+      tempitemData: [],
+      sortAllData: [],
+      isATOZ: true,
+      itemData: [],
+      sdepartmentFilterCheckbox: "",
+      sstoreNameFilterCheckbox: "",
+      sassigntoIdFilterCheckbox: "",
+      staskstatusFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      sortFilterdepartment: [],
+      sortFilterstoreName: [],
+      sortFilterassigntoId: [],
+      sortFiltertaskstatus: [],
+      sortFiltercreatedOn: [],
+      sortdepartment: [],
+      sortstoreName: [],
+      sortassigntoId: [],
+      sorttaskstatus: [],
+      sortcreatedOn: [],
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -120,11 +164,607 @@ class StoreDashboard extends Component {
     this.handleGetCreatedByUserDropdown();
     this.handleGetPriorityList();
   }
-  StatusOpenModel() {
-    this.setState({ StatusModel: true });
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+
+    if (this.state.activeTab == 1) {
+      itemsArray = this.state.dashboardGridData;
+    } else {
+      itemsArray = this.state.cliamSearchData;
+    }
+
+    if (this.state.sortColumn === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return 1;
+        if (a.categoryName > b.categoryName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "claimStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.claimStatus < b.claimStatus) return 1;
+        if (a.claimStatus > b.claimStatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdByName") {
+      itemsArray.sort((a, b) => {
+        if (a.createdByName < b.createdByName) return 1;
+        if (a.createdByName > b.createdByName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "creationOn") {
+      itemsArray.sort((a, b) => {
+        if (a.creationOn < b.creationOn) return 1;
+        if (a.creationOn > b.creationOn) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assignTo") {
+      itemsArray.sort((a, b) => {
+        if (a.assignTo < b.assignTo) return 1;
+        if (a.assignTo > b.assignTo) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "department") {
+      itemsArray.sort((a, b) => {
+        if (a.department < b.department) return 1;
+        if (a.department > b.department) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "storeName") {
+      itemsArray.sort((a, b) => {
+        if (a.storeName < b.storeName) return 1;
+        if (a.storeName > b.storeName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assigntoId") {
+      itemsArray.sort((a, b) => {
+        if (a.assigntoId < b.assigntoId) return 1;
+        if (a.assigntoId > b.assigntoId) return -1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "taskstatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskstatus < b.taskstatus) return 1;
+        if (a.taskstatus > b.taskstatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdOn") {
+      itemsArray.sort((a, b) => {
+        if (a.createdOn < b.createdOn) return 1;
+        if (a.createdOn > b.createdOn) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      isATOZ: false,
+      itemData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+
+    if (this.state.activeTab == 1) {
+      itemsArray = this.state.dashboardGridData;
+    } else {
+      itemsArray = this.state.cliamSearchData;
+    }
+
+    if (this.state.sortColumn === "categoryName") {
+      itemsArray.sort((a, b) => {
+        if (a.categoryName < b.categoryName) return -1;
+        if (a.categoryName > b.categoryName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "claimStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.claimStatus < b.claimStatus) return -1;
+        if (a.claimStatus > b.claimStatus) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdByName") {
+      itemsArray.sort((a, b) => {
+        if (a.createdByName < b.createdByName) return -1;
+        if (a.createdByName > b.createdByName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "creationOn") {
+      itemsArray.sort((a, b) => {
+        if (a.creationOn < b.creationOn) return -1;
+        if (a.creationOn > b.creationOn) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assignTo") {
+      itemsArray.sort((a, b) => {
+        if (a.assignTo < b.assignTo) return -1;
+        if (a.assignTo > b.assignTo) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "department") {
+      itemsArray.sort((a, b) => {
+        if (a.department < b.department) return -1;
+        if (a.department > b.department) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "storeName") {
+      itemsArray.sort((a, b) => {
+        if (a.storeName < b.storeName) return -1;
+        if (a.storeName > b.storeName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "assigntoId") {
+      itemsArray.sort((a, b) => {
+        if (a.assigntoId < b.assigntoId) return -1;
+        if (a.assigntoId > b.assigntoId) return 1;
+        return 0;
+      });
+    }
+
+    if (this.state.sortColumn === "taskstatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskstatus < b.taskstatus) return -1;
+        if (a.taskstatus > b.taskstatus) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdOn") {
+      itemsArray.sort((a, b) => {
+        if (a.createdOn < b.createdOn) return -1;
+        if (a.createdOn > b.createdOn) return 1;
+        return 0;
+      });
+    }
+    this.setState({
+      isortA: true,
+      isATOZ: true,
+      itemData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+  StatusOpenModel(data, header) {
+    debugger;
+    this.setState({ isortA: false });
+    if (data === "categoryName") {
+      if (
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sclaimStatusFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "claimStatus") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdByName") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          sclaimStatusFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "creationOn") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.sassignToFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          sclaimStatusFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          sassignToFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "assignTo") {
+      if (
+        this.state.scategoryNameFilterCheckbox !== "" ||
+        this.state.sclaimStatusFilterCheckbox !== "" ||
+        this.state.screatedByNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          scategoryNameFilterCheckbox: "",
+          sclaimStatusFilterCheckbox: "",
+          screatedByNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+
+    if (data === "department") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+
+    if (data === "storeName") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "assigntoId") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "taskstatus") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.screatedOnFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          screatedOnFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdOn") {
+      if (
+        this.state.sdepartmentFilterCheckbox !== "" ||
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sassigntoIdFilterCheckbox !== "" ||
+        this.state.staskstatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdepartmentFilterCheckbox: "",
+          sstoreNameFilterCheckbox: "",
+          sassigntoIdFilterCheckbox: "",
+          staskstatusFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
   }
   StatusCloseModel() {
-    this.setState({ StatusModel: false });
+    debugger;
+    this.setState({
+      sortFilterclaimStatus: this.state.sortclaimStatus,
+      sortFiltercategoryName: this.state.sortcategoryName,
+      sortFiltercreatedByName: this.state.sortcreatedByName,
+      sortFiltercreationOn: this.state.sortcreationOn,
+      sortFilterassignTo: this.state.sortassignTo,
+      sortFilterdepartment: this.state.sortdepartment,
+      sortFilterstoreName: this.state.sortstoreName,
+      sortFilterassigntoId: this.state.sortassigntoId,
+      sortFiltertaskstatus: this.state.sorttaskstatus,
+      sortFiltercreatedOn: this.state.sortcreatedOn,
+    });
+    if (this.state.tempitemData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+      });
+      if (this.state.activeTab === 1) {
+        this.setState({ dashboardGridData: this.state.tempitemData });
+      } else {
+        this.setState({ cliamSearchData: this.state.tempitemData });
+      }
+
+      if (this.state.sortColumn === "categoryName") {
+        if (this.state.scategoryNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            screatedByNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdByName") {
+        if (this.state.screatedByNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "claimStatus") {
+        if (this.state.sclaimStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            screatedByNameFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "creationOn") {
+        if (this.state.screationOnFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            screatedByNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            sassignToFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "assignTo") {
+        if (this.state.sassignToFilterCheckbox === "") {
+        } else {
+          this.setState({
+            scategoryNameFilterCheckbox: "",
+            screatedByNameFilterCheckbox: "",
+            sclaimStatusFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "department") {
+        if (this.state.sdepartmentFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+            staskstatusFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "storeName") {
+        if (this.state.sstoreNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sdepartmentFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+            staskstatusFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "assigntoId") {
+        if (this.state.sassigntoIdFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentFilterCheckbox: "",
+
+            staskstatusFilterCheckbox: "",
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "taskstatus") {
+        if (this.state.staskstatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+
+            screatedOnFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdOn") {
+        if (this.state.screatedOnFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentFilterCheckbox: "",
+            sassigntoIdFilterCheckbox: "",
+
+            staskstatusFilterCheckbox: "",
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
+      });
+
+      if (this.state.activeTab == 1) {
+        this.setState({
+          dashboardGridData: this.state.isortA
+            ? this.state.itemData
+            : this.state.sortAllData,
+        });
+      } else {
+        this.setState({
+          cliamSearchData: this.state.isortA
+            ? this.state.itemData
+            : this.state.sortAllData,
+        });
+      }
+    }
   }
   hanldetoggleOnChange = (e) => {
     this.setState({
@@ -366,7 +1006,7 @@ class StoreDashboard extends Component {
   handleDropdownOnchange = (e) => {
     let value = e.target.value;
     let name = e.target.name;
-    if (name === "departmentName") {
+    if (name === "claimStatus") {
       this.setState({
         selectDepartment: value,
       });
@@ -683,6 +1323,9 @@ class StoreDashboard extends Component {
   handleViewSearchData(check) {
     debugger;
     let self = this;
+    var claimID = 0;
+    var taskID = 0;
+    var ticketID = 0;
     if (check === "grid") {
       var fromDate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
       var toDate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
@@ -699,17 +1342,33 @@ class StoreDashboard extends Component {
         var toDate = null;
       }
     }
+    if (this.state.Task_ClaimId !== "") {
+      claimID = parseInt(this.state.Task_ClaimId);
+    } else {
+      claimID = 0;
+    }
+    if (this.state.Task_ticketId !== "") {
+      ticketID = this.state.Task_ticketId;
+    } else {
+      ticketID = 0;
+    }
+
+    if (this.state.task_Id !== "") {
+      taskID = parseInt(this.state.task_Id);
+    } else {
+      taskID = 0;
+    }
 
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/getstoreDashboardList",
       headers: authHeader(),
       data: {
-        taskid: parseInt(this.state.task_Id),
+        taskid: taskID,
         Department: this.state.selectDepartment,
         tasktitle: this.state.task_Title,
         taskstatus: this.state.selectedStatus,
-        ticketID: this.state.Task_ticketId,
+        ticketID: ticketID,
         functionID: this.state.selectedFuncation,
         CreatedOnFrom: fromDate,
         CreatedOnTo: toDate,
@@ -717,7 +1376,7 @@ class StoreDashboard extends Component {
         Priority: this.state.selectedPriority,
         taskwithTicket: this.state.Task_Ticket,
         taskwithClaim: this.state.Task_Claim,
-        claimID: parseInt(this.state.Task_ClaimId),
+        claimID: claimID,
         createdID: this.state.SelectedCreatedBy,
       },
     })
@@ -725,8 +1384,127 @@ class StoreDashboard extends Component {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
+
         if (message === "Success") {
-          self.setState({ dashboardGridData: data, taskCount: data.length });
+          self.setState({
+            dashboardGridData: data,
+            taskCount: data.length,
+            sortAllData: data,
+          });
+          var sortFilterdepartment = [];
+          var sortFilterstoreName = [];
+          var sortFilterassigntoId = [];
+          var sortFiltertaskstatus = [];
+          var sortFiltercreatedOn = [];
+          var sortdepartment = [];
+          var sortstoreName = [];
+          var sortassigntoId = [];
+          var sorttaskstatus = [];
+          var sortcreatedOn = [];
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].department]) {
+              distinct.push(data[i].department);
+              unique[data[i].department] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortdepartment.push({ department: distinct[i] });
+              sortFilterdepartment.push({
+                department: distinct[i],
+              });
+            }
+          }
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].storeName]) {
+              distinct.push(data[i].storeName);
+              unique[data[i].storeName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortstoreName.push({ storeName: distinct[i] });
+              sortFilterstoreName.push({
+                storeName: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].assigntoId]) {
+              distinct.push(data[i].assigntoId);
+              unique[data[i].assigntoId] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortassigntoId.push({ assigntoId: distinct[i] });
+              sortFilterassigntoId.push({
+                assigntoId: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].taskstatus]) {
+              distinct.push(data[i].taskstatus);
+              unique[data[i].taskstatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sorttaskstatus.push({ taskstatus: distinct[i] });
+              sortFiltertaskstatus.push({
+                taskstatus: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].createdOn]) {
+              distinct.push(data[i].createdOn);
+              unique[data[i].createdOn] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortcreatedOn.push({
+                createdOn: distinct[i],
+              });
+              sortFiltercreatedOn.push({
+                createdOn: distinct[i],
+              });
+            }
+          }
+          self.setState({
+            sortFilterdepartment,
+            sortFilterstoreName,
+            sortFilterassigntoId,
+            sortFiltertaskstatus,
+            sortFiltercreatedOn,
+            sortdepartment,
+            sortstoreName,
+            sortassigntoId,
+            sorttaskstatus,
+            sortcreatedOn,
+            sortAllData: data,
+          });
         } else {
           self.setState({ dashboardGridData: [], taskCount: 0 });
         }
@@ -865,7 +1643,7 @@ class StoreDashboard extends Component {
         .format("YYYY-MM-DD")
         .toString() || null;
 
-    debugger;
+    this.setState({ isViewSerach: true });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDashboard/GetstoreDashboardListClaim",
@@ -873,7 +1651,142 @@ class StoreDashboard extends Component {
       data: inputParam,
     })
       .then(function(response) {
-        debugger;
+        var message = response.data.message;
+        var cliamSearchData = response.data.responseData;
+        if (message === "Success" && cliamSearchData) {
+          var data = response.data.responseData;
+
+          var sortcategoryName = [];
+          var sortcreatedByName = [];
+          var sortcreationOn = [];
+          var sortassignTo = [];
+          var sortclaimStatus = [];
+          var sortFiltercategoryName = [];
+          var sortFiltercreatedByName = [];
+          var sortFiltercreationOn = [];
+          var sortFilterassignTo = [];
+          var sortFilterclaimStatus = [];
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].categoryName] && data[i].categoryName !== "") {
+              distinct.push(data[i].categoryName);
+              unique[data[i].categoryName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortcategoryName.push({
+                categoryName: distinct[i],
+              });
+              sortFiltercategoryName.push({
+                categoryName: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (
+              !unique[data[i].createdByName] &&
+              data[i].createdByName !== ""
+            ) {
+              distinct.push(data[i].createdByName);
+              unique[data[i].createdByName] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortcreatedByName.push({
+                createdByName: distinct[i],
+              });
+              sortFiltercreatedByName.push({
+                createdByName: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
+              distinct.push(data[i].creationOn);
+              unique[data[i].creationOn] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortcreationOn.push({
+                creationOn: distinct[i],
+              });
+              sortFiltercreationOn.push({
+                creationOn: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].assignTo] && data[i].assignTo !== "") {
+              distinct.push(data[i].assignTo);
+              unique[data[i].assignTo] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortassignTo.push({
+                assignTo: distinct[i],
+              });
+              sortFilterassignTo.push({
+                assignTo: distinct[i],
+              });
+            }
+          }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].claimStatus] && data[i].claimStatus !== "") {
+              distinct.push(data[i].claimStatus);
+              unique[data[i].claimStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortclaimStatus.push({
+                claimStatus: distinct[i],
+              });
+              sortFilterclaimStatus.push({
+                claimStatus: distinct[i],
+              });
+            }
+          }
+          self.setState({
+            cliamSearchData,
+            cliamCount: cliamSearchData.length,
+            isViewSerach: false,
+            sortFiltercategoryName,
+            sortFiltercreatedByName,
+            sortFiltercreationOn,
+            sortFilterassignTo,
+            sortFilterclaimStatus,
+            sortcategoryName,
+            sortcreatedByName,
+            sortcreationOn,
+            sortassignTo,
+            sortclaimStatus,
+            sortAllData: data,
+          });
+        } else {
+          self.setState({
+            cliamSearchData,
+            cliamCount: cliamSearchData.length,
+            isViewSerach: false,
+          });
+        }
       })
       .catch((response) => {
         console.log(response, "---handleClaimViewSearch");
@@ -891,6 +1804,9 @@ class StoreDashboard extends Component {
   ////handle tab change
   handleTabChange = (tab, e) => {
     this.setState({ activeTab: tab });
+    if (tab == 2) {
+      this.handleClaimViewSearch();
+    }
   };
   ////handle on change in view search
   handleOnChange = (e) => {
@@ -953,12 +1869,830 @@ class StoreDashboard extends Component {
     }
   };
   handleCliamDateSearchChange = (e) => {
-    debugger;
-    this.state.searchData["claimraiseddate"] = null;
+    this.state.searchData["claimraiseddate"] = e;
+    this.setState({ searchData: this.state.searchData });
   };
+  ////handle row click to redirect with respective page
+  handleRowClickredirectPage = (rowInfo, column) => {
+    return {
+      onClick: (e) => {
+        var TaskID = column.original["taskid"];
+        var ClaimID = column.original["claimID"];
+        if (TaskID !== "") {
+          this.handleTaskPageRedirect(TaskID);
+        }
+      },
+    };
+  };
+  ////handle redirect task page
+  handleTaskPageRedirect(ID) {
+    this.props.history.push({
+      pathname: "editStoreTask",
+      state: { TaskID: ID },
+    });
+  }
+  ////handle cliam table row click
+  HandleRowClickPage = (rowInfo, column) => {
+    debugger;
+    return {
+      onClick: (e) => {
+        var claimID = column.original["claimID"];
+        this.handleRedirectToViewStoreClaim(claimID);
+      },
+    };
+  };
+  ////hadle redirect to view claim page.
+  handleRedirectToViewStoreClaim(claimID) {
+    debugger;
+    this.props.history.push({
+      pathname: "claimApproveReject",
+      state: { ClaimID: claimID },
+    });
+  }
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var scategoryNameFilterCheckbox = this.state.scategoryNameFilterCheckbox;
+    var sclaimStatusFilterCheckbox = this.state.sclaimStatusFilterCheckbox;
+    var screationOnFilterCheckbox = this.state.screationOnFilterCheckbox;
+    var sassignToFilterCheckbox = this.state.sassignToFilterCheckbox;
+    var screatedByNameFilterCheckbox = this.state.screatedByNameFilterCheckbox;
+
+    var sdepartmentFilterCheckbox = this.state.sdepartmentFilterCheckbox;
+    var sstoreNameFilterCheckbox = this.state.sstoreNameFilterCheckbox;
+    var sassigntoIdFilterCheckbox = this.state.sassigntoIdFilterCheckbox;
+    var staskstatusFilterCheckbox = this.state.staskstatusFilterCheckbox;
+    var screatedOnFilterCheckbox = this.state.screatedOnFilterCheckbox;
+
+    if (column === "categoryName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          scategoryNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          scategoryNameFilterCheckbox = scategoryNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          scategoryNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (scategoryNameFilterCheckbox.includes("all")) {
+          scategoryNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "categoryName") {
+            for (let i = 0; i < this.state.sortcategoryName.length; i++) {
+              scategoryNameFilterCheckbox +=
+                this.state.sortcategoryName[i].categoryName + ",";
+            }
+            scategoryNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "claimStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sclaimStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sclaimStatusFilterCheckbox = sclaimStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sclaimStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sclaimStatusFilterCheckbox.includes("all")) {
+          sclaimStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "claimStatus") {
+            for (let i = 0; i < this.state.sortclaimStatus.length; i++) {
+              sclaimStatusFilterCheckbox +=
+                this.state.sortclaimStatus[i].claimStatus + ",";
+            }
+            sclaimStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "creationOn" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          screationOnFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screationOnFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screationOnFilterCheckbox.includes("all")) {
+          screationOnFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "creationOn") {
+            for (let i = 0; i < this.state.sortcreationOn.length; i++) {
+              screationOnFilterCheckbox +=
+                this.state.sortcreationOn[i].creationOn + ",";
+            }
+            screationOnFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "assignTo" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sassignToFilterCheckbox = sassignToFilterCheckbox.replace("all", "");
+        sassignToFilterCheckbox = sassignToFilterCheckbox.replace("all,", "");
+        if (
+          sassignToFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sassignToFilterCheckbox = sassignToFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sassignToFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sassignToFilterCheckbox.includes("all")) {
+          sassignToFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "assignTo") {
+            for (let i = 0; i < this.state.sortassignTo.length; i++) {
+              sassignToFilterCheckbox +=
+                this.state.sortassignTo[i].assignTo + ",";
+            }
+            sassignToFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdByName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          screatedByNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screatedByNameFilterCheckbox = screatedByNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screatedByNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByNameFilterCheckbox.includes("all")) {
+          screatedByNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdByName") {
+            for (let i = 0; i < this.state.sortcreatedBy.length; i++) {
+              screatedByNameFilterCheckbox +=
+                this.state.sortcreatedBy[i].createdByName + ",";
+            }
+            screatedByNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "department" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sdepartmentFilterCheckbox = sdepartmentFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sdepartmentFilterCheckbox = sdepartmentFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sdepartmentFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sdepartmentFilterCheckbox = sdepartmentFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sdepartmentFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sdepartmentFilterCheckbox.includes("all")) {
+          sdepartmentFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "department") {
+            for (let i = 0; i < this.state.sortdepartment.length; i++) {
+              sdepartmentFilterCheckbox +=
+                this.state.sortdepartment[i].department + ",";
+            }
+            sdepartmentFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "storeName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all", "");
+        sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all,", "");
+        if (
+          sstoreNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sstoreNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sstoreNameFilterCheckbox.includes("all")) {
+          sstoreNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "storeName") {
+            for (let i = 0; i < this.state.sortstoreName.length; i++) {
+              sstoreNameFilterCheckbox +=
+                this.state.sortstoreName[i].storeName + ",";
+            }
+            sstoreNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "assigntoId" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sassigntoIdFilterCheckbox = sassigntoIdFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sassigntoIdFilterCheckbox = sassigntoIdFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sassigntoIdFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sassigntoIdFilterCheckbox = sassigntoIdFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sassigntoIdFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sassigntoIdFilterCheckbox.includes("all")) {
+          sassigntoIdFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "assigntoId") {
+            for (let i = 0; i < this.state.sortassigntoId.length; i++) {
+              sassigntoIdFilterCheckbox +=
+                this.state.sortassigntoId[i].assigntoId + ",";
+            }
+            sassigntoIdFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    if (column === "taskstatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        staskstatusFilterCheckbox = staskstatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        staskstatusFilterCheckbox = staskstatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          staskstatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          staskstatusFilterCheckbox = staskstatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          staskstatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (staskstatusFilterCheckbox.includes("all")) {
+          staskstatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "taskstatus") {
+            for (let i = 0; i < this.state.sorttaskstatus.length; i++) {
+              staskstatusFilterCheckbox +=
+                this.state.sorttaskstatus[i].taskstatus + ",";
+            }
+            staskstatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdOn" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all", "");
+        screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace("all,", "");
+        if (
+          screatedOnFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screatedOnFilterCheckbox = screatedOnFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screatedOnFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedOnFilterCheckbox.includes("all")) {
+          screatedOnFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdOn") {
+            for (let i = 0; i < this.state.sortcreatedOn.length; i++) {
+              screatedOnFilterCheckbox +=
+                this.state.sortcreatedOn[i].createdOn + ",";
+            }
+            screatedOnFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+    debugger;
+    this.setState({
+      scategoryNameFilterCheckbox,
+      sclaimStatusFilterCheckbox,
+      screationOnFilterCheckbox,
+      sassignToFilterCheckbox,
+      screatedByNameFilterCheckbox,
+      sdepartmentFilterCheckbox,
+      sstoreNameFilterCheckbox,
+      sassigntoIdFilterCheckbox,
+      staskstatusFilterCheckbox,
+      screatedOnFilterCheckbox,
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "categoryName") {
+      var sItems = scategoryNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.categoryName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "creationOn") {
+      var sItems = screationOnFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.creationOn === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      // this.setState({
+      //   statusColor: "sort-column",
+      // });
+    } else if (column === "assignTo") {
+      var sItems = sassignToFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.assignTo === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "createdByName") {
+      var sItems = screatedByNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdByName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "claimStatus") {
+      var sItems = sclaimStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.claimStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "department") {
+      var sItems = sdepartmentFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.department === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "storeName") {
+      var sItems = sstoreNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.storeName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "assigntoId") {
+      var sItems = sassigntoIdFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.assigntoId === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "taskstatus") {
+      var sItems = staskstatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.taskstatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    } else if (column === "createdOn") {
+      var sItems = screatedOnFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdOn === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    this.setState({
+      isATOZ: true,
+      tempitemData: itemsArray,
+    });
+  };
+  filteTextChange(e) {
+    debugger;
+    if (this.state.sortColumn === "categoryName") {
+      var sortFiltercategoryName = matchSorter(
+        this.state.sortcategoryName,
+        e.target.value,
+        { keys: ["categoryName"] }
+      );
+      if (sortFiltercategoryName.length > 0) {
+        this.setState({ sortFiltercategoryName });
+      } else {
+        this.setState({
+          sortFiltercategoryName: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "claimStatus") {
+      var sortFilterclaimStatus = matchSorter(
+        this.state.sortclaimStatus,
+        e.target.value,
+        { keys: ["claimStatus"] }
+      );
+      if (sortFilterclaimStatus.length > 0) {
+        this.setState({ sortFilterclaimStatus });
+      } else {
+        this.setState({
+          sortFilterclaimStatus: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdByName") {
+      var sortFiltercreatedByName = matchSorter(
+        this.state.sortcreatedByName,
+        e.target.value,
+        {
+          keys: ["createdByName"],
+        }
+      );
+      if (sortFiltercreatedByName.length > 0) {
+        this.setState({ sortFiltercreatedByName });
+      } else {
+        this.setState({
+          sortFiltercreatedByName: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "creationOn") {
+      var sortFiltercreationOn = matchSorter(
+        this.state.sortcreationOn,
+        e.target.value,
+        {
+          keys: ["creationOn"],
+        }
+      );
+      if (sortFiltercreationOn.length > 0) {
+        this.setState({ sortFiltercreationOn });
+      } else {
+        this.setState({
+          sortFiltercreationOn: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "assignTo") {
+      var sortFilterassignTo = matchSorter(
+        this.state.sortassignTo,
+        e.target.value,
+        {
+          keys: ["assignTo"],
+        }
+      );
+      if (sortFilterassignTo.length > 0) {
+        this.setState({ sortFilterassignTo });
+      } else {
+        this.setState({
+          sortFilterassignTo: [],
+        });
+      }
+    }
+
+    if (this.state.sortColumn === "department") {
+      var sortFilterdepartment = matchSorter(
+        this.state.sortdepartment,
+        e.target.value,
+        {
+          keys: ["department"],
+        }
+      );
+      if (sortFilterdepartment.length > 0) {
+        this.setState({ sortFilterdepartment });
+      } else {
+        this.setState({
+          sortFilterdepartment: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "storeName") {
+      var sortFilterstoreName = matchSorter(
+        this.state.sortstoreName,
+        e.target.value,
+        {
+          keys: ["storeName"],
+        }
+      );
+      if (sortFilterstoreName.length > 0) {
+        this.setState({ sortFilterstoreName });
+      } else {
+        this.setState({
+          sortFilterstoreName: [],
+        });
+      }
+    }
+
+    if (this.state.sortColumn === "assigntoId") {
+      var sortFilterassigntoId = matchSorter(
+        this.state.sortassigntoId,
+        e.target.value,
+        {
+          keys: ["assigntoId"],
+        }
+      );
+      if (sortFilterassigntoId.length > 0) {
+        this.setState({ sortFilterassigntoId });
+      } else {
+        this.setState({
+          sortFilterassigntoId: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "taskstatus") {
+      var sortFiltertaskstatus = matchSorter(
+        this.state.sorttaskstatus,
+        e.target.value,
+        {
+          keys: ["taskstatus"],
+        }
+      );
+      if (sortFiltertaskstatus.length > 0) {
+        this.setState({ sortFiltertaskstatus });
+      } else {
+        this.setState({
+          sortFiltertaskstatus: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdOn") {
+      var sortFiltercreatedOn = matchSorter(
+        this.state.sortcreatedOn,
+        e.target.value,
+        {
+          keys: ["createdOn"],
+        }
+      );
+      if (sortFiltercreatedOn.length > 0) {
+        this.setState({ sortFiltercreatedOn });
+      } else {
+        this.setState({
+          sortFiltercreatedOn: [],
+        });
+      }
+    }
+    this.setState({ filterTxtValue: e.target.value });
+  }
+
+  handleClearSearch() {
+    this.setState({
+      scategoryNameFilterCheckbox: "",
+      screatedByNameFilterCheckbox: "",
+      screationOnFilterCheckbox: "",
+      sassignToFilterCheckbox: "",
+      sclaimStatusFilterCheckbox: "",
+      sdepartmentFilterCheckbox: "",
+      sstoreNameFilterCheckbox: "",
+      sassigntoIdFilterCheckbox: "",
+      staskstatusFilterCheckbox: "",
+      screatedOnFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      itemData: [],
+    });
+    if (this.state.activeTab === 1) {
+      this.setState({
+        dashboardGridData: this.state.sortAllData,
+      });
+    } else {
+      this.setState({
+        cliamSearchData: this.state.sortAllData,
+      });
+    }
+  }
 
   render() {
-    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -1564,7 +3298,11 @@ class StoreDashboard extends Component {
                                   }
                                 })()
                               }
-                              <span className="myTciket-tab-span">05</span>
+                              <span className="myTciket-tab-span">
+                                {this.state.cliamCount < 9
+                                  ? "0" + this.state.cliamCount
+                                  : this.state.cliamCount}
+                              </span>
                             </a>
                           </li>
                           <div className="save-view-search">
@@ -1608,7 +3346,7 @@ class StoreDashboard extends Component {
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
+                                    name="claimStatus"
                                     value={this.state.selectDepartment}
                                     onChange={this.handleDropdownOnchange}
                                   >
@@ -1810,21 +3548,7 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["claimID"]}
                                   />
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="ticketMapped"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={
-                                      this.state.searchData["ticketMapped"]
-                                    }
-                                  >
-                                    <option value={""} disabled selected>
-                                      Ticket Mapped
-                                    </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     name="claimcat"
@@ -1833,7 +3557,7 @@ class StoreDashboard extends Component {
                                       this.state.searchData["claimcat"] || ""
                                     }
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Claim Category
                                     </option>
                                     {this.state.categoryData !== null &&
@@ -1848,46 +3572,14 @@ class StoreDashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="claimstatus"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={this.state.searchData["claimstatus"]}
-                                  >
-                                    <option value={""} disabled selected>
-                                      Claim Status
-                                    </option>
-                                    {this.state.storeStatus !== null &&
-                                      this.state.storeStatus.map((item, i) => {
-                                        return (
-                                          <option
-                                            key={i}
-                                            value={item.storeStatusID}
-                                          >
-                                            {item.storeStatusName}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
-                                </div>
-                                {this.state.searchData["ticketMapped"] == 1 ? (
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder="Ticket ID"
-                                      name="ticketID"
-                                      onChange={this.handleOnChange.bind(this)}
-                                      value={this.state.searchData["ticketID"]}
-                                    />
-                                  </div>
-                                ) : null}
+
                                 <div className="col-md-3">
                                   <select
                                     name="claimsubcat"
                                     onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["claimsubcat"]}
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Claim Sub Category
                                     </option>
                                     {this.state.subCategoryData !== null &&
@@ -1899,6 +3591,30 @@ class StoreDashboard extends Component {
                                               value={item.subCategoryID}
                                             >
                                               {item.subCategoryName}
+                                            </option>
+                                          );
+                                        }
+                                      )}
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    name="claimissueType"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={
+                                      this.state.searchData["claimissueType"]
+                                    }
+                                  >
+                                    <option value={""} selected>
+                                      Claim Issue Type
+                                    </option>
+                                    {this.state.issueTypeData !== null &&
+                                      this.state.issueTypeData.map(
+                                        (item, i) => {
+                                          return (
+                                            <option value={item.issueTypeID}>
+                                              {item.issueTypeName}
                                             </option>
                                           );
                                         }
@@ -1924,49 +3640,14 @@ class StoreDashboard extends Component {
                                     }
                                   />
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="taskmapped"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={this.state.searchData["taskmapped"]}
-                                  >
-                                    <option value={""} disabled selected>
-                                      Task Mapped
-                                    </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    name="claimissueType"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={
-                                      this.state.searchData["claimissueType"]
-                                    }
-                                  >
-                                    <option value={""} disabled selected>
-                                      Claim Issue Type
-                                    </option>
-                                    {this.state.issueTypeData !== null &&
-                                      this.state.issueTypeData.map(
-                                        (item, i) => {
-                                          return (
-                                            <option value={item.issueTypeID}>
-                                              {item.issueTypeName}
-                                            </option>
-                                          );
-                                        }
-                                      )}
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     name="assignTo"
                                     onChange={this.handleOnChange.bind(this)}
                                     value={this.state.searchData["assignTo"]}
                                   >
-                                    <option value={""} disabled selected>
+                                    <option value={""} selected>
                                       Assign To
                                     </option>
                                     {this.state.userData !== null &&
@@ -1981,17 +3662,6 @@ class StoreDashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                {this.state.searchData["taskmapped"] == 1 ? (
-                                  <div className="col-md-3">
-                                    <input
-                                      type="text"
-                                      placeholder="Task ID"
-                                      name="taskID"
-                                      value={this.state.searchData["taskID"]}
-                                      onChange={this.handleOnChange.bind(this)}
-                                    />
-                                  </div>
-                                ) : null}
                                 <div className="col-md-3">
                                   <select
                                     name="raisedby"
@@ -2001,8 +3671,94 @@ class StoreDashboard extends Component {
                                     <option value={""} disabled selected>
                                       Raised By
                                     </option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
+                                <div className="col-md-3">
+                                  <select
+                                    name="claimstatus"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={this.state.searchData["claimstatus"]}
+                                  >
+                                    <option value={""} selected>
+                                      Claim Status
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => {
+                                        return (
+                                          <option
+                                            key={i}
+                                            value={item.storeStatusID}
+                                          >
+                                            {item.storeStatusName}
+                                          </option>
+                                        );
+                                      })}
+                                  </select>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    name="taskmapped"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={this.state.searchData["taskmapped"]}
+                                  >
+                                    <option value={""} selected>
+                                      Task Mapped
+                                    </option>
+                                    <option value={1}>Yes</option>
+                                    <option value={0}>No</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select
+                                    name="ticketMapped"
+                                    onChange={this.handleOnChange.bind(this)}
+                                    value={
+                                      this.state.searchData["ticketMapped"]
+                                    }
+                                  >
+                                    <option value={""} selected>
+                                      Ticket Mapped
+                                    </option>
+                                    <option value={1}>Yes</option>
+                                    <option value={0}>No</option>
+                                  </select>
+                                </div>
+
+                                {this.state.searchData["taskmapped"] == 1 ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Task ID"
+                                      name="taskID"
+                                      value={this.state.searchData["taskID"]}
+                                      onChange={this.handleOnChange.bind(this)}
+                                      autoComplete="off"
+                                    />
+                                  </div>
+                                ) : null}
+                                {this.state.searchData["ticketMapped"] == 1 ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                      name="ticketID"
+                                      onChange={this.handleOnChange.bind(this)}
+                                      value={this.state.searchData["ticketID"]}
+                                      autoComplete="off"
+                                    />
+                                  </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>
@@ -2012,28 +3768,38 @@ class StoreDashboard extends Component {
                   </Card>
                 </Collapse>
                 <div className="table-responsive tickhierpad">
-                  <ReactTable
-                    data={this.state.dashboardGridData}
-                    columns={[
-                      {
-                        Header: <span>
-                          {
-                            (() => {
-                              if (TranslationContext !== undefined) {
-                                return TranslationContext.span.id
+                  {this.state.activeTab === 1 ? (
+                    <ReactTable
+                      data={this.state.dashboardGridData}
+                      columns={[
+                        {
+                          Header: <span> {
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.id
+                                }
+                                else {
+                                  return "ID"
+                                }
+                              })()
+                            }</span>,
+                          accessor: "taskid",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
                               }
-                              else {
-                                return "ID"
-                              }
-                            })()
-                          }
-                        </span>,
-                        accessor: "taskid",
-                      },
-                      {
-                        Header: (
-                          <span onClick={this.StatusOpenModel}> 
-                            {
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "taskstatus",
+                                "Status"
+                              )}
+                            >
+                               {
                               (() => {
                                 if (TranslationContext !== undefined) {
                                   return TranslationContext.span.status
@@ -2042,17 +3808,40 @@ class StoreDashboard extends Component {
                                   return "Status"
                                 }
                               })()
-                            }
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "taskstatus",
-                        Cell: (row) => {
-                          return (
-                            <span className="table-btn table-blue-btn">
-                              <label>{row.original.taskstatus}</label>
+                            }{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
                             </span>
-                          );
+                          ),
+                          accessor: "taskstatus",
+                          sortable: false,
+                          Cell: (row) => {
+                            if (row.original.taskstatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskstatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskstatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskstatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskstatus}</label>
+                                </span>
+                              );
+                            }
+                          },
                         },
                       },
                       {
@@ -2203,12 +3992,20 @@ class StoreDashboard extends Component {
                                   </ul>
                                 </div>
                               }
-                              placement="left"
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "department",
+                                "Department"
+                              )}
                             >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
+                              Department{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Department"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
                               />
                             </Popover>
                           </span>
@@ -2284,8 +4081,15 @@ class StoreDashboard extends Component {
                   >
                     <div className="status-drop-down">
                       <div className="sort-sctn">
+                        <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                          {this.state.sortHeader}
+                        </label>
                         <div className="d-flex">
-                          <a href={Demo.BLANK_LINK} className="sorting-icon">
+                          <a
+                            href="#!"
+                            onClick={this.sortStatusAtoZ.bind(this)}
+                            className="sorting-icon"
+                          >
                             <img src={Sorting} alt="sorting-icon" />
                           </a>
                           <p>
@@ -2302,7 +4106,11 @@ class StoreDashboard extends Component {
                           </p>
                         </div>
                         <div className="d-flex">
-                          <a href={Demo.BLANK_LINK} className="sorting-icon">
+                          <a
+                            href="#!"
+                            onClick={this.sortStatusZtoA.bind(this)}
+                            className="sorting-icon"
+                          >
                             <img src={Sorting} alt="sorting-icon" />
                           </a>
                           <p>
@@ -2319,6 +4127,17 @@ class StoreDashboard extends Component {
                           </p>
                         </div>
                       </div>
+                      <a
+                        style={{
+                          margin: "0 25px",
+                          textDecoration: "underline",
+                          color: "#2561A8",
+                          cursor: "pointer",
+                        }}
+                        onClick={this.handleClearSearch.bind(this)}
+                      >
+                        clear search
+                      </a>
                       <div className="filter-type">
                         <p>
                           {

@@ -2,32 +2,32 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
-import { Popover } from "antd";
-import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+// import { Popover } from "antd";
+// import ReactTable from "react-table";
+// import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DelBlack from "./../../../assets/Images/del-black.png";
-import DownExcel from "./../../../assets/Images/csv.png";
-import FileUpload from "./../../../assets/Images/file.png";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import DelBigIcon from "./../../../assets/Images/del-big.png";
+// import DelBlack from "./../../../assets/Images/del-black.png";
+// import DownExcel from "./../../../assets/Images/csv.png";
+// import FileUpload from "./../../../assets/Images/file.png";
+// import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+// import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+// import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { MyContext } from './../../../context'
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-import Correct from "./../../../assets/Images/correct.png";
+// import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
-import { CSVLink } from "react-csv";
-import Dropzone from "react-dropzone";
+// import { CSVLink } from "react-csv";
+// import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import { ProgressBar } from "react-bootstrap";
-import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+// import { UncontrolledPopover, PopoverBody } from "reactstrap";
+// import { ProgressBar } from "react-bootstrap";
+// import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
 class StoreModule extends Component {
   constructor(props) {
@@ -79,6 +79,12 @@ class StoreModule extends Component {
       fileValidation: "",
       isErrorBulkUpload: false,
       isShowProgress: false,
+      isATOZ: true,
+      itemData: [],
+      editCampChannelModal: false,
+      campaignChannelData: {},
+      maxClickValidation: "",
+      enabledAfterValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -173,8 +179,11 @@ class StoreModule extends Component {
   };
 
   handleEditModal() {
-    debugger;
     this.setState({ editModal: false });
+  }
+
+  handleEditCampSettingModal() {
+    this.setState({ editCampChannelModal: false });
   }
 
   handleCampaignButton() {
@@ -307,6 +316,7 @@ class StoreModule extends Component {
     this.handleClaimTabData();
     this.handleCampaignNameList();
     this.handleCampaignScriptGridData();
+    this.handleCampaignChannelGridData();
   }
 
   setClaimTabData = (e) => {
@@ -370,6 +380,16 @@ class StoreModule extends Component {
     });
   }
 
+  EditCampaignChannel(individualData) {
+    debugger;
+    this.setState({
+      editCampChannelModal: true,
+      // updateIndiCampaignId: individualData.campaignNameID,
+      // updateScriptDetails: individualData.campaignScript,
+      // updateCampaignId: individualData.campaignID,
+    });
+  }
+
   handleCampaignNameList() {
     debugger;
     let self = this;
@@ -385,6 +405,31 @@ class StoreModule extends Component {
         if (status === "Success" && data) {
           self.setState({
             campaignName: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  handleCampaignChannelGridData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            campaignChannelData: data.campaignSettingTimer,
+          });
+        } else {
+          self.setState({
+            campaignChannelData: {},
           });
         }
       })
@@ -420,10 +465,12 @@ class StoreModule extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcampaignName.push({ campaignName: distinct[i] });
-            self.state.sortFiltercampaignName.push({
-              campaignName: distinct[i],
-            });
+            if (distinct[i]) {
+              self.state.sortcampaignName.push({ campaignName: distinct[i] });
+              self.state.sortFiltercampaignName.push({
+                campaignName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
@@ -435,21 +482,25 @@ class StoreModule extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreatedBy.push({ createdBy: distinct[i] });
-            self.state.sortFiltercreatedBy.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortcreatedBy.push({ createdBy: distinct[i] });
+              self.state.sortFiltercreatedBy.push({ createdBy: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].status]) {
-              distinct.push(data[i].status);
-              unique[data[i].status] = 1;
+            if (!unique[data[i].statusName]) {
+              distinct.push(data[i].statusName);
+              unique[data[i].statusName] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortstatus.push({ status: distinct[i] });
-            self.state.sortFilteristatus.push({ status: distinct[i] });
+            if (distinct[i]) {
+              self.state.sortstatus.push({ status: distinct[i] });
+              self.state.sortFilteristatus.push({ status: distinct[i] });
+            }
           }
         }
       })
@@ -629,6 +680,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: false,
       campaignScriptData: itemsArray,
     });
     setTimeout(() => {
@@ -665,6 +717,7 @@ class StoreModule extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       campaignScriptData: itemsArray,
     });
     setTimeout(() => {
@@ -684,6 +737,7 @@ class StoreModule extends Component {
     ) {
       return false;
     }
+    this.setState({ isortA: false });
     if (data === "campaignName") {
       if (
         this.state.screatedByFilterCheckbox !== "" ||
@@ -789,6 +843,7 @@ class StoreModule extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
         campaignScriptData: this.state.isortA
           ? this.state.campaignScriptData
           : this.state.sortAllData,
@@ -1013,11 +1068,134 @@ class StoreModule extends Component {
       }
     }
   }
+  /// handle toggle change data
+  CampChannelSmsFlageOnchange = (id) => {
+    debugger;
+    var CampId = id.target.id;
+    if (CampId === "ckSmsCamp1") {
+      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
+        .smsFlag;
+    } else if (CampId === "ckWhatCamp2") {
+      this.state.campaignChannelData.messengerFlag = !this.state
+        .campaignChannelData.messengerFlag;
+    } else if (CampId === "ckChatCamp3") {
+      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
+        .botFlag;
+    } else if (CampId === "ckEmailCamp4") {
+      this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
+        .emailFlag;
+    }
+
+    this.setState({ campaignChannelData: this.state.campaignChannelData });
+  };
+
+  /// update campaign change data
+  CampCannelOnChange(e) {
+    debugger;
+    const { name, value } = e.target;
+    if (name === "enableClickAfterValue") {
+      var campaignChannelData = this.state.campaignChannelData;
+      if (campaignChannelData["enableClickAfterDuration"] == "M") {
+        if (parseInt(value) <= 60) {
+          campaignChannelData[name] = value;
+          this.setState({ campaignChannelData });
+        } else {
+          campaignChannelData[name] = "";
+          this.setState({ campaignChannelData });
+        }
+      } else {
+        if (parseInt(value) <= 99) {
+          campaignChannelData[name] = value;
+          this.setState({ campaignChannelData });
+        } else {
+          campaignChannelData[name] = "";
+          this.setState({ campaignChannelData });
+        }
+      }
+    } else {
+      var campaignChannelData = this.state.campaignChannelData;
+      if (name === "enableClickAfterDuration") {
+        if (value === "M") {
+          if (campaignChannelData["enableClickAfterValue"] > 60)
+            campaignChannelData["enableClickAfterValue"] = "";
+        }
+
+        if (value === "H") {
+          if (campaignChannelData["enableClickAfterValue"] > 99)
+            campaignChannelData["enableClickAfterValue"] = "";
+        }
+      }
+      // const { name, value } = e.target;
+
+      campaignChannelData[name] = value;
+      this.setState({ campaignChannelData });
+    }
+  }
+
+  handleUpdateCampChannelData() {
+    // let self = this;
+    if (
+      this.state.campaignChannelData.maxClickAllowed !== "" &&
+      this.state.campaignChannelData.enableClickAfterValue !== ""
+    ) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
+        headers: authHeader(),
+        data: {
+          ID: this.state.campaignChannelData.id,
+          MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
+          EnableClickAfterValue: this.state.campaignChannelData
+            .enableClickAfterValue,
+          EnableClickAfterDuration: this.state.campaignChannelData
+            .enableClickAfterDuration,
+          SmsFlag: this.state.campaignChannelData.smsFlag,
+          EmailFlag: this.state.campaignChannelData.emailFlag,
+          MessengerFlag: this.state.campaignChannelData.messengerFlag,
+          BotFlag: this.state.campaignChannelData.botFlag,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Campaign Updated Successfully.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        maxClickValidation: "Required",
+        enabledAfterValidation: "Required",
+      });
+    }
+  }
 
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            Modules
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             show={this.state.StatusModel}
@@ -1380,19 +1558,22 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label="Campaign Script">
-                  {/* <div className="container-fluid"> */}
+                {/* <Tab label="Campaign Script" style={{ display: "none" }}>
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-8">
-                        <div className="table-cntr table-height alertsTable">
+                        <div className="table-cntr table-height alertsTable align-table">
                           <ReactTable
                             data={this.state.campaignScriptData}
                             columns={[
                               {
                                 Header: (
                                   <span
-                                    className="table-column"
+                                    className={
+                                      this.state.sortHeader === "Campaign Name"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "campaignName",
@@ -1427,6 +1608,7 @@ class StoreModule extends Component {
                                       <span className="d-flex align-items-end">
                                         <span className="campaign-script-less">
                                           {row.original.campaignScriptLess}
+                                          {row.original.campaignScript}
                                         </span>
                                         <Popover
                                           content={
@@ -1455,7 +1637,11 @@ class StoreModule extends Component {
                                 sortable: false,
                                 Header: (
                                   <span
-                                    className="table-column"
+                                    className={
+                                      this.state.sortHeader === "Department"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "createdBy",
@@ -1568,7 +1754,11 @@ class StoreModule extends Component {
                               {
                                 Header: (
                                   <span
-                                    className="table-column"
+                                    className={
+                                      this.state.sortHeader === "Status"
+                                        ? "table-column sort-column"
+                                        : "table-column"
+                                    }
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "status",
@@ -1590,6 +1780,7 @@ class StoreModule extends Component {
                                 ),
                                 sortable: false,
                                 accessor: "status",
+                                width: 110,
                                 Cell: (row) => {
                                   return row.original.status
                                     ? "Active"
@@ -1684,51 +1875,7 @@ class StoreModule extends Component {
                                             id={ids}
                                           />
                                         </Popover>
-                                        {/* <Popover
-                                          content={
-                                            <div className="edtpadding">
-                                              <div className="">
-                                                <label className="popover-header-text">
-                                                  EDIT CAMPAIGN SCRIPT
-                                                </label>
-                                              </div>
-                                              <div className=" pop-over-div">
-                                                <label className="pop-over-lbl-text">
-                                                  {" "}
-                                                  Campaign Name
-                                                </label>
-                                                <select className="pop-over-select">
-                                                  <option>Birthday</option>
-                                                  <option>Anniversary</option>
-                                                </select>
-                                              </div>
-                                              <div className="div-cntr">
-                                                <label className="pop-over-lbl-text">
-                                                  Script Details
-                                                </label>
-                                                <textarea
-                                                  className="stort-textArea"
-                                                  rows="4"
-                                                ></textarea>
-                                              </div>
 
-                                              <br />
-                                              <div>
-                                                <a
-                                                  className="pop-over-cancle"
-                                                  href={Demo.BLANK_LINK}
-                                                >
-                                                  CANCEL
-                                                </a>
-                                                <button className="pop-over-button">
-                                                  SAVE
-                                                </button>
-                                              </div>
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                          trigger="click"
-                                        > */}
                                         <button
                                           className="react-tabel-button editre"
                                           id="p-edit-pop-2"
@@ -1748,14 +1895,14 @@ class StoreModule extends Component {
                                             })()
                                           }
                                         </button>
-                                        {/* </Popover> */}
                                       </span>
                                     </>
                                   );
                                 },
                               },
                             ]}
-                            // resizable={false}
+                            resizable={false}
+                            minRows={2}
                             defaultPageSize={5}
                             showPagination={true}
                           />
@@ -1821,34 +1968,11 @@ class StoreModule extends Component {
                               <div
                                 className={
                                   this.state.campaignShow
-                                    ? "dropdown-menu dropdown-menu-campaignScriptData show"
-                                    : "dropdown-menu dropdown-menu-campaignScriptData"
+                                    ? "dropdown-menu dropdown-menu-sla show"
+                                    : "dropdown-menu dropdown-menu-sla"
                                 }
                               >
                                 <div className="cat-mainbox">
-                                  {/* <div className="campaignScriptData-cancel-search">
-                                                        <input
-                                                          type="text"
-                                                          className="searchf"
-                                                          placeholder="Search"
-                                                          maxLength={25}
-                                                          name="store_code"
-                                                          onChange={
-                                                            this.handleSearchSla
-                                                          }
-                                                          id="SlaInput"
-                                                        />
-
-                                                        <img
-                                                          src={Cancel}
-                                                          alt="cancelimg"
-                                                          onClick={
-                                                            this
-                                                              .handleClearSearchSla
-                                                          }
-                                                        />
-                                                      </div> */}
-
                                   <div className="category-button">
                                     <ul>
                                       <li>
@@ -2269,7 +2393,208 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                  {/* </div> */}
+                  <div
+                    id="overlaySla"
+                    className={this.state.campaignOvrlayShow ? "show" : ""}
+                    onClick={this.handleCampaignButton}
+                  />
+                </Tab> */}
+                <Tab label="Campaign Channel">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>CAMPAIGN CHANNEL</h3>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        SMS
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckSmsCamp1"
+                                        name="allModules"
+                                        attrIds="ckSmsCamp1"
+                                        checked={
+                                          this.state.campaignChannelData.smsFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckSmsCamp1"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Whatsapp
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckWhatCamp2"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .messengerFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckWhatCamp2"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Chatbot
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckChatCamp3"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.botFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckChatCamp3"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Email
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckEmailCamp4"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .emailFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckEmailCamp4"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <table className="cmpaign-channel-table">
+                                  <tr>
+                                    <td>
+                                      Max. click allowed on any channel CTA
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="maxClickAllowed"
+                                        value={
+                                          this.state.campaignChannelData
+                                            .maxClickAllowed
+                                        }
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .maxClickAllowed === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.maxClickValidation}
+                                        </p>
+                                      )}
+                                    </td>
+                                    <td>Click</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Click will be enabled after</td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterValue
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .enableClickAfterValue === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )}
+                                    </td>
+                                    <td>
+                                      <select
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterDuration
+                                        }
+                                        name="enableClickAfterDuration"
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="M">Min</option>
+                                        <option value="H">Hr</option>
+                                      </select>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleUpdateCampChannelData.bind(
+                                    this
+                                  )}
+                                >
+                                  UPDATE
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </Tab>
               </Tabs>
             </section>
@@ -2391,6 +2716,61 @@ class StoreModule extends Component {
                       })()
                     }
                   </button>
+                </div>
+              </div>
+            </Modal>
+            <Modal
+              className="EditModa"
+              show={this.state.editCampChannelModal}
+              onHide={this.handleEditCampSettingModal.bind(this)}
+            >
+              <div className="edtpadding">
+                <label className="popover-header-text">
+                  EDIT CAMPAIGN SETTING
+                </label>
+                <div className="module-switch-cntr">
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">SMS</label>
+                      <input type="checkbox" id="new1" name="allModules" />
+                      <label
+                        htmlFor="new1"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">
+                        Whatsapp
+                      </label>
+                      <input type="checkbox" id="new2" name="allModules" />
+                      <label
+                        htmlFor="new2"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">Chatbot</label>
+                      <input type="checkbox" id="new3" name="allModules" />
+                      <label
+                        htmlFor="new3"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
+                  <div className="module-switch">
+                    <div className="switch switch-primary">
+                      <label className="storeRole-name-text m-0">Email</label>
+                      <input type="checkbox" id="new4" name="allModules" />
+                      <label
+                        htmlFor="new4"
+                        className="cr cr-float-auto"
+                      ></label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Modal>

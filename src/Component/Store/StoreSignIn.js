@@ -109,11 +109,27 @@ class StoreSignIn extends Component {
                 }, 400);
                 return;
               } else if (
+                data[i].moduleName === "Campaign" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/campaign");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Appointment" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/appointment");
+                }, 400);
+                return;
+              } else if (
                 data[i].moduleName === "Settings" &&
                 data[i].modulestatus === true
               ) {
                 setTimeout(function() {
-                  self.props.history.push("/admin/settings");
+                  self.props.history.push("/store/campaign");
                 }, 400);
                 return;
               }
@@ -142,7 +158,7 @@ class StoreSignIn extends Component {
         "enc"
       );
       // let X_Authorized_Domainname = encryption(
-      //   "http://erbelltktstore.dcdev.brainvire.net",
+      //   "https://erbelltkthomeshop.dcdev.brainvire.net",
       //   "enc"
       // );
 
@@ -202,7 +218,12 @@ class StoreSignIn extends Component {
           <div className="card">
             <div className="card-body text-center">
               <div className="mb-4">
-                <img src={Logo} alt="logo" style={{ width: "210px" }} />
+                <img
+                  src={Logo}
+                  alt="logo"
+                  className="main-logo"
+                  style={{ width: "210px" }}
+                />
               </div>
               <form name="form" onSubmit={this.handleSubmit}>
                 <label className="sign-in"> {

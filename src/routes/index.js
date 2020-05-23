@@ -19,7 +19,6 @@ import SLATemplate from "./SLATemplate";
 import Store_CRMRoles from "./Store_CRMRoles";
 import CreatePriority from "./CreatePriority";
 import Alerts from "./Settings/Alerts";
-import TestingDemo from "./TestingDemo";
 import Templates from "./Settings/Ticketing/Templates";
 import AddSearchMyTicket from "./AddSearchMyTicket";
 import TicketCRMRole from "./Settings/Ticketing/TicketCRMRole";
@@ -116,11 +115,7 @@ export class App extends Component {
           component={CreatePriority}
         />
         <Route exact path={`${match.url}/alerts`} component={Alerts} />
-        <Route
-          exact
-          path={`${match.url}/TestingDemo`}
-          component={TestingDemo}
-        />
+       
         <Route exact path={`${match.url}/templates`} component={Templates} />
         <Route
           exact

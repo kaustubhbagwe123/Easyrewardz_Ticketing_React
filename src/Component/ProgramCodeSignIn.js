@@ -31,7 +31,7 @@ class ProgramCodeSignIn extends Component {
       // let X_Authorized_Domainname = encryption('http://stage-bellui.ercx.co', "enc");
       let X_Authorized_Domainname = encryption('http://erbelltktstore.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
+     let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
       let X_Authorized_Programcode = encProgramCode;
       // setTimeout(function() {
       //   self.props.history.push({
@@ -106,7 +106,7 @@ class ProgramCodeSignIn extends Component {
                     placeholder="Program Code*"
                     style={{ border: 0 }}
                     name="programCode"
-                    maxLength={10}
+                    maxLength={100}
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
                   />

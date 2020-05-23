@@ -62,13 +62,18 @@ class EditStoreTask extends Component {
       canAssignTo: false,
       taskStatusId: 0,
       taskStatusName: "",
+      assignComment: "",
+      isAssignComment: "",
+      assginToModal: false,
+      oldassignToID: 0,
+      isCommentMax: "",
+      isSubmit: false,
     };
     this.handleUserModelOpen = this.handleUserModelOpen.bind(this);
     this.handleUserModelClose = this.handleUserModelClose.bind(this);
   }
 
   componentDidMount() {
-    debugger;
     if (this.props.location.state) {
       var taskId = this.props.location.state.TaskID;
       this.setState({ taskId });
@@ -76,7 +81,7 @@ class EditStoreTask extends Component {
       this.handleGetPriority();
       this.handleStoreTaskDetialsById(taskId);
       this.handleGetCommentOnTask(taskId);
-      
+
       this.handleGetStoreTaskProcressBar(taskId);
     } else {
       this.props.history.push("/store/StoreTask");
@@ -84,7 +89,6 @@ class EditStoreTask extends Component {
   }
 
   componentDidUpdate() {
-    debugger;
     if (this.props.location.state) {
       if (this.state.taskId !== this.props.location.state.TaskID) {
         var taskId = this.props.location.state.TaskID;
@@ -93,7 +97,7 @@ class EditStoreTask extends Component {
         this.handleGetPriority();
         this.handleStoreTaskDetialsById(taskId);
         this.handleGetCommentOnTask(taskId);
-        
+
         this.handleGetStoreTaskProcressBar(taskId);
       }
     }
@@ -112,10 +116,9 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/GetCommentOnTask",
       headers: authHeader(),
-      params: { TaskID: taskId },
+      params: { TaskID: taskId, taskFor: 1 },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var commentData = response.data.responseData;
         var commentCount = commentData.length;
@@ -140,9 +143,9 @@ class EditStoreTask extends Component {
       params: { TaskID: taskId },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
-
         var departmentID = 0;
         var funcationID = 0;
         var priorityID = 0;
@@ -159,25 +162,26 @@ class EditStoreTask extends Component {
         var taskStatusName = "";
         var taskStatusId = 0;
 
-        debugger;
         if (message == "Success" && data) {
           departmentID = data.departmentId;
           funcationID = data.functionID;
           priorityID = data.priorityID;
           assignToID = data.assignToID;
+          var oldassignToID = data.assignToID;
           taskTitle = data.taskTitle;
           taskDetails = data.taskDescription;
           issueRaisedBy = data.createdByName;
           storeName = data.storeName;
           storeAddress = data.address;
           assignToName = data.assignToName;
-          canEdit = data.canEdit == 1 ? true : false;
-          canSubmit = data.canSubmit == 1 ? true : false;
-          canAssignTo = data.isAssignTo == 1 ? true : false;
+          canEdit = data.canEdit === 1 ? true : false;
+          canSubmit = data.canSubmit === 1 ? true : false;
+          canAssignTo = data.isAssignTo === 1 ? true : false;
           taskStatusId = data.taskStatusId;
           taskStatusName = data.taskStatusName;
 
           self.setState({
+            oldassignToID,
             canAssignTo,
             taskStatusId,
             taskStatusName,
@@ -209,7 +213,6 @@ class EditStoreTask extends Component {
 
   ////handle get department list
   handleGetDepartement() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -290,24 +293,18 @@ class EditStoreTask extends Component {
   }
 
   ////handle add comment by task id
-  handleAddCommentByTaskId() {
-    debugger;
+  handleAddCommentByTaskId(type) {
     let self = this;
-    if (this.state.comment == "") {
-      this.setState({ iscomment: "Please Enter Comment." });
-    } else {
-      this.setState({ iscomment: "" });
-    }
 
-    if (this.state.comment !== "") {
-      this.setState({ iscmtLoading: true });
+    if (type == true) {
       axios({
         method: "post",
         url: config.apiUrl + "/StoreTask/AddStoreTaskComment",
         headers: authHeader(),
         data: {
           TaskID: this.state.taskId,
-          Comment: this.state.comment,
+          Comment: this.state.assignComment.trim(),
+          TaskFor: 1,
         },
       })
         .then(function(response) {
@@ -315,17 +312,53 @@ class EditStoreTask extends Component {
           var responseData = response.data.responseData;
           if (message == "Success" && responseData > 0) {
             NotificationManager.success("Comment Added successfully.");
-            self.setState({ iscmtLoading: false });
+            self.setState({ assginToModal: false, assignComment: "" });
             self.handleGetCommentOnTask(self.state.taskId);
           } else {
             NotificationManager.error("Comment Not Added successfully.");
-            self.setState({ iscmtLoading: false });
+            self.setState({ assginToModal: false });
           }
         })
         .catch((response) => {
           self.setState({ iscmtLoading: false });
           console.log(response, "---handleAddCommentByTaskId");
         });
+    } else {
+      if (this.state.comment == "") {
+        this.setState({ iscomment: "Please Enter Comment." });
+      } else {
+        this.setState({ iscomment: "" });
+      }
+
+      if (this.state.comment !== "") {
+        this.setState({ iscmtLoading: true });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreTask/AddStoreTaskComment",
+          headers: authHeader(),
+          data: {
+            TaskID: this.state.taskId,
+            Comment: this.state.comment,
+            TaskFor: 1,
+          },
+        })
+          .then(function(response) {
+            var message = response.data.message;
+            var responseData = response.data.responseData;
+            if (message == "Success" && responseData > 0) {
+              NotificationManager.success("Comment Added successfully.");
+              self.setState({ iscmtLoading: false, comment: "" });
+              self.handleGetCommentOnTask(self.state.taskId);
+            } else {
+              NotificationManager.error("Comment Not Added successfully.");
+              self.setState({ iscmtLoading: false });
+            }
+          })
+          .catch((response) => {
+            self.setState({ iscmtLoading: false });
+            console.log(response, "---handleAddCommentByTaskId");
+          });
+      }
     }
   }
 
@@ -388,18 +421,25 @@ class EditStoreTask extends Component {
       method: "post",
       url: config.apiUrl + "/StoreTask/AssignTask",
       headers: authHeader(),
-      params: {
+      data: {
         TaskID: this.state.taskId,
         AgentID: this.state.agentId,
+        CommentOnAssign: this.state.assignComment.trim(),
+        IsCommentOnAssign: 1,
+        OldAgentID: this.state.oldassignToID,
       },
     })
       .then(function(response) {
-        debugger;
         var responseData = response.data.responseData;
         var message = response.data.message;
         if (message === "Success" && responseData) {
-          self.setState({ userModel: false });
+          self.setState({
+            userModel: false,
+            assignComment: "",
+            assginToModal: false,
+          });
           NotificationManager.success("Task Assign Successfully.");
+          NotificationManager.success("Comment Added successfully.");
           self.componentDidMount();
         } else {
           NotificationManager.error("Task Assign Fail.");
@@ -413,6 +453,7 @@ class EditStoreTask extends Component {
 
   ////handle Update Task
   handleUpdateTask(statusId) {
+    debugger;
     let self = this;
 
     if (this.state.departmentID == 0) {
@@ -449,6 +490,7 @@ class EditStoreTask extends Component {
         this.state.istaskDetails == "" &&
         this.state.istaskTitle == ""
       ) {
+        this.setState({ isSubmit: true });
         var inputParam = {};
 
         inputParam.DepartmentId = this.state.departmentID;
@@ -458,6 +500,8 @@ class EditStoreTask extends Component {
         inputParam.TaskStatusId = statusId;
         inputParam.TaskTitle = this.state.taskTitle;
         inputParam.TaskDescription = this.state.taskDetails;
+
+        debugger;
         axios({
           method: "post",
           url: config.apiUrl + "/StoreTask/UpdateTaskStatus",
@@ -465,14 +509,16 @@ class EditStoreTask extends Component {
           data: inputParam,
         })
           .then(function(response) {
+            debugger;
             var message = response.data.message;
             if (message === "Success") {
-              setTimeout(() => {
-                NotificationManager.success("Task Submited Successfully.");
-                self.props.history.push("/store/StoreTask");
-              }, 2000);
+              self.setState({ isSubmit: false });
+
+              NotificationManager.success("Task Submited Successfully.");
+              self.props.history.push("/store/StoreTask");
             } else {
               NotificationManager.error("Task Submited Failed.");
+              self.setState({ isSubmit: false });
             }
           })
           .catch((response) => {
@@ -508,7 +554,6 @@ class EditStoreTask extends Component {
 
   ////handle input filed change
   handleOnchange = (e) => {
-    debugger;
     const { name, value } = e.target;
     if (name == "tasktitle") {
       if (value !== "") {
@@ -592,10 +637,18 @@ class EditStoreTask extends Component {
     }
     if (name == "comment") {
       if (value !== "") {
+        // if (value.length < 50) {
         this.setState({
           comment: value,
           iscomment: "",
+          isCommentMax: "",
         });
+        // } else {
+        //   this.setState({
+        //     isCommentMax: "Comment Has Certain Limit",
+        //     iscomment: "",
+        //   });
+        // }
       } else {
         this.setState({
           iscomment: "Please Enter Comment.",
@@ -617,8 +670,39 @@ class EditStoreTask extends Component {
   handleUserModelClose() {
     this.setState({ userModel: false });
   }
+  ////handel comment change
+  handleAssignCommentChange(e) {
+    if (e.target.value !== "") {
+      this.setState({ assignComment: e.target.value, isAssignComment: "" });
+    } else {
+      this.setState({
+        assignComment: e.target.value,
+        // isAssignComment: "Please enter comment.",
+      });
+    }
+  }
+  ////handle assign to with comment
+  handleAssigntoWithComment() {
+    if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
+      this.handleAssignTask();
+    } else {
+      this.setState({ isAssignComment: "Please enter comment." });
+    }
+  }
+  ///handle re assign modal skip button on click
+  handleSkipButtonClick() {
+    this.handleAssignTask();
+  }
+  ////handle assgin to modal open
+  handleAssginToModalOpen() {
+    this.setState({ assginToModal: true });
+  }
+  ///handle assgin to modal close
+  handleAssginToModalClose() {
+    this.setState({ assginToModal: false });
+  }
   render() {
-    const TranslationContext = this.context.state.translateLanguage.default
+    console.log(this.state.isSubmit, "----isSubmit");
     return (
       <Fragment>
         <div className="edit-storeTask-header">
@@ -632,8 +716,7 @@ class EditStoreTask extends Component {
                   return "Store ticket id :"
                 }
               })()
-            }
-            <span>{this.state.taskId}</span>
+            } <span>{this.state.taskId}</span>
           </label>
           <a
             className="loading-rectangle-cntr"
@@ -658,27 +741,10 @@ class EditStoreTask extends Component {
               <label className="naman-r">{this.state.assignToName}</label>
               <img src={DownImg} alt="down" className="down-header" />
             </a>
-
-            {/* <button
-              type="button"
-              className={
-                this.state.canSubmit
-                  ? "submitAs-reopen"
-                  : "submitAs-reopen disabled-link"
-              }
-              onClick={this.handleUpdateTask.bind(this)}
-            >
-              <label
-                className="myticket-submit-solve-button-text"
-                style={{ marginLeft: "0" }}
-              >
-                SUBMIT
-              </label>
-            </button> */}
             <button
               type="button"
               className={
-                this.state.canSubmit
+                this.state.canSubmit || this.state.canEdit
                   ? "btn-store-resolved"
                   : "btn-store-resolved disabled-link"
               }
@@ -710,7 +776,11 @@ class EditStoreTask extends Component {
               {this.state.taskStatusId === 222 ? (
                 <div className="row">
                   <label
-                    className="modal-lbl"
+                    className={
+                      this.state.isSubmit
+                        ? "modal-lbl disabled-link"
+                        : "modal-lbl"
+                    }
                     onClick={this.handleUpdateTask.bind(this, 224)}
                   > 
                     {
@@ -738,12 +808,19 @@ class EditStoreTask extends Component {
                   </label>
                 </div>
               ) : (
-                <div className="row">
-                  <label
-                    className="modal-lbl"
-                    onClick={this.handleUpdateTask.bind(this, 222)}
-                  > 
-                    {
+                <div>
+                  {this.state.canSubmit || this.state.canAssignTo ? (
+                    <div className="row">
+                      <label
+                        disabled={this.state.isSubmit}
+                        className={
+                          this.state.isSubmit
+                            ? "modal-lbl disabled-link"
+                            : "modal-lbl"
+                        }
+                        onClick={this.handleUpdateTask.bind(this, 222)}
+                      >
+                        {
                       (() => {
                         if (TranslationContext !== undefined) {
                           return TranslationContext.label.submitas
@@ -752,25 +829,31 @@ class EditStoreTask extends Component {
                           return "Submit as"
                         }
                       })()
-                    }
-                    <span className="modal-lbl-1">
-                      {
-                        (() => {
-                          if (TranslationContext !== undefined) {
-                            return TranslationContext.span.solved
-                          }
-                          else {
-                            return "Solved"
-                          }
-                        })()
-                      }
-                    </span>
-                  </label>
+                    }<span className="modal-lbl-1">{
+                      (() => {
+                        if (TranslationContext !== undefined) {
+                          return TranslationContext.span.solved
+                        }
+                        else {
+                          return "Solved"
+                        }
+                      })()
+                    }</span>
+                      </label>
+                    </div>
+                  ) : null}
                 </div>
               )}
-              {this.state.taskStatusId !== 222 ? (
+
+              {this.state.taskStatusId !== 222 || this.state.canEdit ? (
                 <div className="row" style={{ marginTop: "8px" }}>
                   <label
+                    disabled={this.state.isSubmit}
+                    className={
+                      this.state.isSubmit
+                        ? "modal-lbl disabled-link"
+                        : "modal-lbl"
+                    }
                     className="modal-lbl"
                     onClick={this.handleUpdateTask.bind(this, 223)}
                   > 
@@ -1021,6 +1104,11 @@ class EditStoreTask extends Component {
                       {this.state.iscomment}
                     </p>
                   )}
+                  {/* {this.state.isCommentMax !== "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isCommentMax}
+                    </p>
+                  )} */}
                 </div>
               </div>
               <div className="row">
@@ -1032,7 +1120,7 @@ class EditStoreTask extends Component {
                       : this.state.commentCount}
                   </label>
                   <button
-                    disabled={this.iscmtLoading}
+                    disabled={this.state.iscmtLoading}
                     className="butn-store"
                     onClick={this.handleAddCommentByTaskId.bind(this)}
                   >
@@ -1074,6 +1162,13 @@ class EditStoreTask extends Component {
                             <label className="naman-r-store">
                               {item.commentByName}
                             </label>
+                            {item.isCommentOnAssign === 1 ? (
+                              <div className="row" style={{ margin: "0" }}>
+                                <label className="naman-R allign-reassign">
+                                  Reassign to {item.newAgentName}
+                                </label>
+                              </div>
+                            ) : null}
                             <label className="store-hrLbl">
                               {item.commentedDiff}
                             </label>
@@ -1406,7 +1501,7 @@ class EditStoreTask extends Component {
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={this.handleAssignTask.bind(this)}
+                onClick={this.handleAssginToModalOpen.bind(this)}
               >
                 {
                   (() => {
@@ -1425,6 +1520,64 @@ class EditStoreTask extends Component {
               onClick={this.handleUserModelClose.bind(this)}
             >
               <img src={CancelImg} alt="cancel" />
+            </div>
+          </div>
+        </Modal>
+        {/* -------------------------assign to modal------------------------ */}
+        <Modal
+          open={this.state.assginToModal}
+          onClose={this.handleAssginToModalClose.bind(this)}
+          closeIconId="sdsg"
+          modalId="Historical-popup"
+          overlayId="logout-ovrly"
+          classNames={{
+            modal: "rejectmodal-popup",
+          }}
+        >
+          <div className="commenttextborder">
+            <div className="comment-disp">
+              <div className="Commentlabel">
+                <label className="Commentlabel1">Add Comment</label>
+              </div>
+              <div>
+                <img
+                  src={CancelImg}
+                  alt="Minus"
+                  className="pro-cross-icn m-0"
+                  onClick={this.handleAssginToModalClose.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="commenttextmessage">
+              <textarea
+                cols="31"
+                rows="3"
+                className="ticketMSGCmt-textarea"
+                maxLength={300}
+                value={this.state.assignComment}
+                onChange={this.handleAssignCommentChange.bind(this)}
+              ></textarea>
+            </div>
+            {this.state.isAssignComment !== "" && (
+              <p style={{ color: "red", marginTop: "0px" }}>
+                {this.state.isAssignComment}
+              </p>
+            )}
+            <div className="SendCommentBtn" style={{ float: "left" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleSkipButtonClick.bind(this)}
+              >
+                SKIP
+              </button>
+            </div>
+            <div className="SendCommentBtn" style={{ margin: "0" }}>
+              <button
+                className="SendCommentBtn1"
+                onClick={this.handleAssigntoWithComment.bind(this)}
+              >
+                ADD
+              </button>
             </div>
           </div>
         </Modal>

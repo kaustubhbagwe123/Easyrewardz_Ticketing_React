@@ -2657,7 +2657,13 @@ class Reports extends Component {
     let self = this;
     var SearchParams = {};
 
-    var month, day, year, hours, minutes, seconds;
+    SearchParams = JSON.stringify(this.state.ReportParams);
+    
+    if (SearchParams != "" && this.state.selectedReportName !== "" &&
+    this.state.selectScheduleDate !== "" && this.state.selectedScheduleTime !== ""
+    
+    ) {
+      var month, day, year, hours, minutes, seconds;
     var date = new Date(this.state.selectedScheduleTime),
       month = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
@@ -2668,26 +2674,6 @@ class Reports extends Component {
     var mySQLDate = [date.getFullYear(), month, day].join("-");
     var mySQLTime = [hours, minutes, seconds].join(":");
     this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-
-    SearchParams = JSON.stringify(this.state.ReportParams);
-    if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please add report name.");
-      return;
-    }
-    debugger;
-    if (this.state.selectedTeamMemberCommaSeperated == undefined) {
-      NotificationManager.error("Please add team name for schedule.");
-      return;
-    }
-    if (this.state.selectScheduleDate == "") {
-      NotificationManager.error("Please select schedule type.");
-      return;
-    }
-    if (this.state.selectedScheduleTime == "") {
-      NotificationManager.error("Please select schedule time.");
-      return;
-    }
-    if (SearchParams != "") {
       debugger;
       self = this;
       axios({
@@ -2763,7 +2749,23 @@ class Reports extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please add report for create scheduler.");
+      if (this.state.selectedReportName == "") {
+        NotificationManager.error("Please add report name.");
+        return false;
+      }
+      if (this.state.selectedTeamMemberCommaSeperated == undefined && 
+        this.state.selectedTeamMemberCommaSeperated != "") {
+        NotificationManager.error("Please add team name for schedule.");
+      }
+      if (this.state.selectScheduleDate == "") {
+        NotificationManager.error("Please select schedule type.");
+      }
+      if (this.state.selectedScheduleTime == "") {
+        NotificationManager.error("Please select schedule time.");
+      }
+      if(SearchParams === ""){
+       NotificationManager.error("Please add report for create scheduler.");
+      }
     }
   }
   filteTextChange(e) {

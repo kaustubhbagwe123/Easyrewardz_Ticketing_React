@@ -2506,7 +2506,8 @@
 /* StoreModule css Start by Shlok */
 .Store-paddmodule {
   background-color: #f5f8f9;
-  padding: 30px 35px;
+  /* padding: 30px 35px; */
+  padding: 5px 25px;
 }
 .claimtab-lbl {
   display: flex;
@@ -2586,8 +2587,45 @@
   background-color: #f3f3f3;
   font-family: lato;
   /* width: 180px; */
-  width: 190px;
+  /* width: 190px; */
+  width: 200px;
   text-align: center;
+}
+.cmpaign-channel-table {
+  margin-top: 20px;
+}
+.cmpaign-channel-table select {
+  background-color: #fff;
+  border: 1px solid #9b9b9b;
+  padding: 5px 7px;
+  font-size: 12px;
+  background-position: center right 5px;
+  background-size: 10px;
+  margin: 0;
+  padding-right: 18px;
+}
+.cmpaign-channel-table input {
+  background-color: #fff;
+  border: 1px solid #9b9b9b;
+  padding: 5px 7px;
+  margin: 0;
+  width: 50px;
+}
+.cmpaign-channel-table td {
+  padding: 5px 0;
+  color: #4a4a4a;
+  vertical-align: top;
+  padding-right: 15px;
+}
+.cmpaign-channel-table tr {
+  border: 0;
+}
+.cmpaign-channel-table tr td:last-child {
+  min-width: 65px;
+  padding-right: 0;
+}
+.module-switch-cntr .module-switch {
+  margin-top: 10px;
 }
 .module-tabs .nav-tabs {
   border: none;
@@ -2983,15 +3021,21 @@
 .ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 10px !important;
 }
-.TicketCategoyMasReact .ReactTable .rt-tbody .rt-td {
+/* .TicketCategoyMasReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 10px !important;
-}
+} */
 .StoreItemMasterReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
 .ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 5px !important;
 }
-.StoreItemMasterReact .ReactTable .rt-tbody .rt-td {
+/* .StoreItemMasterReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 5px !important;
+} */
+.StoreItemMasterReact .ReactTable .rt-thead .rt-th {
+  text-align: left;
+}
+.align-table .ReactTable .rt-thead .rt-th {
+  text-align: left;
 }
 .StoreUserReact .ReactTable .rt-thead .rt-th.-cursor-pointer,
 .ReactTable .rt-thead .rt-td.-cursor-pointer {
@@ -3371,7 +3415,35 @@
   margin: 0 auto;
   width: 100%;
 }
-.progress-sect
-{
-  display:inherit;
+.progress-sect {
+  display: inherit;
+}
+
+.depatselect .ant-select-search--inline .ant-select-search__field {
+  padding: 0;
+  margin: 0;
+}
+
+#departmenteditmodal {
+  width: 25%;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+}
+
+.setting-table-des .ReactTable .rt-tbody .rt-td {
+  font-weight: 700;
+  font-size: 13px;
+}
+.setting-table-des .ReactTable .rt-thead .rt-resizable-header-content,
+.setting-table-des .ReactTable .rt-thead .rt-th {
+  font-weight: 700;
+  font-size: 12px;
+}
+.setting-table-des-antd th span {
+  font-size: 12px !important;
+  font-weight: 700;
+  color: #4a4a4a;
 }

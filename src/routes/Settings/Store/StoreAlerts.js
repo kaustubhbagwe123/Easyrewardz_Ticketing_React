@@ -14,7 +14,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { MyContext } from './../../../context'
 import Demo from "./../../../store/Hashtag";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import LetterBox from "./../../../assets/Images/SecuredLetter2.png";
 import SmsImg from "./../../../assets/Images/Sms.png";
 import NotificationImg from "./../../../assets/Images/Notification.png";
@@ -28,13 +28,9 @@ import Modal from "react-bootstrap/Modal";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import {
-  // NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
-// import { formatSizeUnits } from "./../../helpers/CommanFuncation";
 
 class Alerts extends Component {
   constructor(props) {
@@ -408,26 +404,73 @@ class Alerts extends Component {
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
+    itemsArray = this.state.alert;
 
-    itemsArray.sort(function(a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
+    if (this.state.sortColumn === "alertTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.alertTypeName < b.alertTypeName) return -1;
+        if (a.alertTypeName > b.alertTypeName) return 1;
+        return 0;
+      });
+      this.setState({ alertColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+      this.setState({ createdColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isAlertActive < b.isAlertActive) return -1;
+        if (a.isAlertActive > b.isAlertActive) return 1;
+        return 0;
+      });
+      this.setState({ statusColor: "sort-column" });
+    }
     this.setState({
-      hierarchyData: itemsArray,
+      isortA: true,
+      isATOZ: true,
+      alert: itemsArray,
     });
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
     debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.alert;
+
+    if (this.state.sortColumn === "alertTypeName") {
+      itemsArray.sort((a, b) => {
+        if (a.alertTypeName < b.alertTypeName) return 1;
+        if (a.alertTypeName > b.alertTypeName) return -1;
+        return 0;
+      });
+      this.setState({ alertColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+      this.setState({ createdColor: "sort-column" });
+    }
+    if (this.state.sortColumn === "isAlertActive") {
+      itemsArray.sort((a, b) => {
+        if (a.isAlertActive < b.isAlertActive) return 1;
+        if (a.isAlertActive > b.isAlertActive) return -1;
+        return 0;
+      });
+      this.setState({ statusColor: "sort-column" });
+    }
+
     this.setState({
-      hierarchyData: itemsArray,
+      isortA: true,
+      isATOZ: false,
+      alert: itemsArray,
     });
     this.StatusCloseModel();
   }
@@ -582,7 +625,6 @@ class Alerts extends Component {
       this.setState({
         StatusModel: false,
         alert: this.state.sortAllData,
-
         filterTxtValue: "",
       });
     }
@@ -607,9 +649,17 @@ class Alerts extends Component {
           "all,",
           ""
         );
-        if (salertTypeNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          salertTypeNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           salertTypeNameFilterCheckbox = salertTypeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -633,9 +683,17 @@ class Alerts extends Component {
       if (type === "value" && type !== "All") {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
-        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -665,9 +723,17 @@ class Alerts extends Component {
           "all,",
           ""
         );
-        if (sisAlertActiveFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sisAlertActiveFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sisAlertActiveFilterCheckbox = sisAlertActiveFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1247,25 +1313,13 @@ class Alerts extends Component {
         } else {
           this.setState({ ckCustomerCompulsion: "" });
         }
-        if (this.state.selectedSubjectCustomer === "") {
-          this.setState({ subjectCustomerCompulsion: "Please Enter Subject." });
-          // return false;
-        } else {
-          this.setState({ subjectCustomerCompulsion: "" });
-        }
       }
 
       if (this.state.emailInt == true) {
-        if (this.state.selectedCKInternal === "") {
-          this.setState({ ckInternalCompulsion: "Please Enter Subject." });
-          // return false;
-        } else {
-          this.setState({ ckInternalCompulsion: "" });
-        }
         if (this.state.selectedSubjectInternal === "") {
-          this.setState({
-            subjectInternalCompulsion: "Please Enter Description.",
-          });
+          // this.setState({
+          //   subjectInternalCompulsion: "Please Enter Description.",
+          // });
           // return false;
         } else {
           this.setState({ subjectInternalCompulsion: "" });
@@ -1273,18 +1327,10 @@ class Alerts extends Component {
       }
 
       if (this.state.emailTicketing == true) {
-        if (this.state.selectedCKStore === "") {
-          this.setState({ ckStoreCompulsion: "Please Enter Subject." });
-
-          // return false;
-        } else {
-          this.setState({ ckStoreCompulsion: "" });
-        }
         if (this.state.selectedSubjectStore === "") {
-          this.setState({
-            subjectStoreCompulsion: "Please Enter Description.",
-          });
-
+          // this.setState({
+          //   subjectStoreCompulsion: "Please Enter Description.",
+          // });
           // return false;
         } else {
           this.setState({ subjectStoreCompulsion: "" });
@@ -1404,6 +1450,21 @@ class Alerts extends Component {
                 self.setState({
                   AddAlertTabsPopup: false,
                   editSaveLoading: false,
+                  selectedAlertType: 0,
+                  viewEmailCustomer: false,
+                  viewEmailInternal: false,
+                  viewEmailStore: false,
+                  viewSMSCustomer: false,
+                  viewNotifInternal: false,
+                  viewNotifTicketing: false,
+                  selectedCKCustomer: "",
+                  selectedSubjectCustomer: "",
+                  selectedSubjectInternal: "",
+                  selectedCKInternal: "",
+                  selectedSubjectStore: "",
+                  selectedCKStore: "",
+                  selectedNotifContent: "",
+                  selectedNotifTicketingContent: "",
                 });
               } else {
                 self.setState({
@@ -1461,14 +1522,14 @@ class Alerts extends Component {
   handleAddAlertTabsOpen() {
     debugger;
     if (
-      (this.state.selectedAlertType > 0 &&
-        this.state.selectedStatus !== "" &&
-        this.state.selectedEmailCustomer === true) ||
-      this.state.selectedEmailInternal === true ||
-      this.state.selectedEmailStore === true ||
-      this.state.selectedSMSCustomer === true ||
-      this.state.selectedNotifInternal === true ||
-      this.state.selectedNotifTicketing === true
+      this.state.selectedAlertType > 0 &&
+      this.state.selectedStatus !== "" &&
+      (this.state.selectedEmailCustomer === true ||
+        this.state.selectedEmailInternal === true ||
+        this.state.selectedEmailStore === true ||
+        this.state.selectedSMSCustomer === true ||
+        this.state.selectedNotifInternal === true ||
+        this.state.selectedNotifTicketing === true)
     ) {
       this.setState({ AddAlertTabsPopup: true });
       // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
@@ -1516,7 +1577,7 @@ class Alerts extends Component {
       // viewSMSCustomer: false,
       // viewNotifInternal: false,
       // viewNotifTicketing: false,
-      // isEdit: false
+      isEdit: false,
     });
   }
   updateContent(newContent) {
@@ -1543,7 +1604,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailCustomer === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectCustomer.length > 0 &&
+        // this.state.selectedSubjectCustomer.length > 0 &&
         this.state.selectedCKCustomer.length > 0
       ) {
         validation.push("1");
@@ -1553,7 +1614,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailInternal === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectInternal.length > 0 &&
+        // this.state.selectedSubjectInternal.length > 0 &&
         this.state.selectedCKInternal.length > 0
       ) {
         validation.push("1");
@@ -1563,7 +1624,7 @@ class Alerts extends Component {
     if (this.state.selectedEmailStore === true) {
       checkboxvalue.push("1");
       if (
-        this.state.selectedSubjectStore.length > 0 &&
+        // this.state.selectedSubjectStore.length > 0 &&
         this.state.selectedCKStore.length > 0
       ) {
         validation.push("1");
@@ -1731,12 +1792,21 @@ class Alerts extends Component {
             SMSContentCompulsion: "",
             NotifContentCompulsion: "",
             NotifTicketingContentCompulsion: "",
+            selectedAlertType: 0,
             viewEmailCustomer: false,
             viewEmailInternal: false,
             viewEmailStore: false,
             viewSMSCustomer: false,
             viewNotifInternal: false,
             viewNotifTicketing: false,
+            selectedCKCustomer: "",
+            selectedSubjectCustomer: "",
+            selectedSubjectInternal: "",
+            selectedCKInternal: "",
+            selectedSubjectStore: "",
+            selectedCKStore: "",
+            selectedNotifContent: "",
+            selectedNotifTicketingContent: "",
           });
         } else if (status === "Record Already Exists ") {
           NotificationManager.error("Record Already Exists.");
@@ -1908,7 +1978,7 @@ class Alerts extends Component {
         this.setState({ sortFilterAlertType });
       } else {
         this.setState({
-          sortFilterAlertType: this.state.sortAlertType,
+          sortFilterAlertType: [],
         });
       }
     }
@@ -1922,7 +1992,7 @@ class Alerts extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -1936,7 +2006,7 @@ class Alerts extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
@@ -2001,10 +2071,45 @@ class Alerts extends Component {
     });
     NotificationManager.success("File deleted successfully.");
   };
+  handleClearSearch() {
+    this.setState({
+      salertTypeNameFilterCheckbox: "",
+      sisAlertActiveFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      alert: this.state.sortAllData,
+      tempalert: [],
+      statusColor: "",
+      createdColor: "",
+      alertColor: "",
+    });
+  }
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            Alerts
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             show={this.state.StatusModel}
@@ -2061,9 +2166,13 @@ class Alerts extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 {
                   (() => {
@@ -2125,9 +2234,12 @@ class Alerts extends Component {
                             name={item.alertTypeName}
                             id={"fil-open" + item.alertTypeName}
                             value={item.alertTypeName}
-                            checked={this.state.salertTypeNameFilterCheckbox.includes(
-                              item.alertTypeName
-                            )}
+                            checked={
+                              this.state.salertTypeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.alertTypeName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "alertTypeName",
@@ -2152,9 +2264,12 @@ class Alerts extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
+                            checked={
+                              this.state.screatedByFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.createdBy) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -2179,9 +2294,12 @@ class Alerts extends Component {
                             name={item.isAlertActive}
                             id={"fil-open" + item.isAlertActive}
                             value={item.isAlertActive}
-                            checked={this.state.sisAlertActiveFilterCheckbox.includes(
-                              item.isAlertActive
-                            )}
+                            checked={
+                              this.state.sisAlertActiveFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.isAlertActive) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "isAlertActive",
@@ -2248,10 +2366,10 @@ class Alerts extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr settingtable">
+          <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height alertsTable">
+                <div className="table-cntr table-height alertsTable setting-table-des">
                   <ReactTable
                     data={this.state.alert}
                     columns={[
@@ -2275,9 +2393,17 @@ class Alerts extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "AlertType"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "alertTypeName",
                       },
                       {
@@ -2334,7 +2460,14 @@ class Alerts extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Created By"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         Cell: (row) => {
@@ -2424,6 +2557,7 @@ class Alerts extends Component {
                             </div>
                           );
                         },
+                        sortable: false,
                         accessor: "createdBy",
                       },
                       {
@@ -2446,9 +2580,17 @@ class Alerts extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Status"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
+                        sortable: false,
                         accessor: "isAlertActive",
                       },
                       {
@@ -2459,7 +2601,7 @@ class Alerts extends Component {
                           var ids = row.original["id"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div className="d-flex general-popover popover-body">
@@ -2885,6 +3027,12 @@ class Alerts extends Component {
                   >
                     <Modal.Header>
                       <div className="setting-tabs alert-tabs">
+                        <h5 className="alert-desc">
+                          Alert Type :{" "}
+                          {this.state.isEdit
+                            ? this.state.alertEdit.AlertTypeName
+                            : this.state.selectedAlertTypeName}
+                        </h5>
                         <ul
                           className="nav nav-tabs margin-Alerttab"
                           role="tablist"
@@ -2970,7 +3118,7 @@ class Alerts extends Component {
                         <img
                           src={CancelImg}
                           alt="CancelImg"
-                          className="cancelImg-alert"
+                          className="cancelImg-alert cancelImg-alert-top"
                           onClick={this.handleAddAlertTabsClose.bind(this)}
                         />
                       </div>
@@ -3086,7 +3234,10 @@ class Alerts extends Component {
                                     })()
                                   }
                                 </label>
-                                <div className="div-padding-alert">
+                                <div
+                                  style={{ display: "none" }}
+                                  className="div-padding-alert"
+                                >
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                     {
@@ -3124,49 +3275,7 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Customer"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
-                                {/* {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Customer"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                )} */}
+
                                 <CKEditor
                                   content={this.state.content}
                                   name="selectedCKCustomer"
@@ -3207,7 +3316,10 @@ class Alerts extends Component {
                                     })()
                                   }
                                 </label>
-                                <div className="div-padding-alert">
+                                <div
+                                  style={{ display: "none" }}
+                                  className="div-padding-alert"
+                                >
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
                                     {
@@ -3245,50 +3357,6 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Internal"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
-                                {/* {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Internal"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                )} */}
-
                                 <CKEditor
                                   content={this.state.content}
                                   events={{
@@ -3330,7 +3398,10 @@ class Alerts extends Component {
                                   }
                                 </label>
                                 <div className="div-padding-alert">
-                                  <div className="form-group row">
+                                  <div
+                                    style={{ display: "none" }}
+                                    className="form-group row"
+                                  >
                                     <label className="label-color-alert col-sm-auto">
                                       {
                                         (() => {
@@ -3365,49 +3436,6 @@ class Alerts extends Component {
                                     </div>
                                   </div>
                                 </div>
-                                {/* <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuserinter">
-                                  <select
-                                    className="add-select-category"
-                                    value="0"
-                                    onChange={this.setAssignedToValue.bind(
-                                      this,
-                                      "Ticketing"
-                                    )}
-                                  >
-                                    <option value="0">Users</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div> */}
-                                {/* {this.state.placeholderShown && (
-                                  <div className="tic-det-ck-user template-user myticlist-expand-sect alertckuser placeholder-alert placeholder-alert-2">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Ticketing"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div>
-                                )} */}
 
                                 <CKEditor
                                   content={this.state.content}
@@ -3430,17 +3458,6 @@ class Alerts extends Component {
                                     {this.state.ckStoreCompulsion}
                                   </p>
                                 )}
-                                {/*<div className="div-button1">
-                                <button
-                                  className="butn-2"
-                                  type="submit"
-                                  id="sms-tab"
-                                  onClick={this.handleTabChange.bind(this,1)}
-                                  
-                                >
-                                  SAVE & NEXT
-                                </button>
-                              </div>*/}
                               </div>
                             </div>
                           </div>
@@ -3475,14 +3492,6 @@ class Alerts extends Component {
                                 {this.state.SMSContentCompulsion}
                               </p>
                             )}
-                            {/*<div className="div-button1">
-                              <button className="butn-2" type="submit" 
-                              onClick={this.handleTabChange.bind(this,2)}
-                              
-                              >
-                                SAVE & NEXT
-                              </button>
-                            </div>*/}
                           </div>
                         </div>
                         {(this.state.notiInt || this.state.notiTicketing) && (
@@ -3568,29 +3577,6 @@ class Alerts extends Component {
                                         })()
                                       }
                                     </label>
-                                    {/* <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Notification"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div> */}
                                   </div>
                                   <textarea
                                     rows="10"
@@ -3612,13 +3598,6 @@ class Alerts extends Component {
                                       {this.state.NotifContentCompulsion}
                                     </p>
                                   )}
-                                  {/* <div className="div-button1">
-                                <button className="butn-2" type="submit"
-                              
-                                >
-                                  SAVE & NEXT
-                                </button>
-                                </div>*/}
                                 </div>
                               </div>
                               <div
@@ -3642,29 +3621,6 @@ class Alerts extends Component {
                                         })()
                                       }
                                     </label>
-                                    {/* <div className="tic-det-ck-user myticlist-expand-sect notification-placeholder">
-                                    <select
-                                      className="add-select-category"
-                                      value="0"
-                                      onChange={this.setPlaceholderValue.bind(
-                                        this,
-                                        "Notification"
-                                      )}
-                                    >
-                                      <option value="0">Placeholders</option>
-                                      {this.state.placeholderData !== null &&
-                                        this.state.placeholderData.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.mailParameterID}
-                                            >
-                                              {item.description}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                  </div> */}
                                   </div>
                                   <textarea
                                     rows="10"
@@ -3691,13 +3647,6 @@ class Alerts extends Component {
                                       }
                                     </p>
                                   )}
-                                  {/* <div className="div-button1">
-                                <button className="butn-2" type="submit"
-                              
-                                >
-                                  SAVE & NEXT
-                                </button>
-                                </div>*/}
                                 </div>
                               </div>
                             </div>
@@ -3739,10 +3688,12 @@ class Alerts extends Component {
                     </Modal.Body>
                   </Modal>
                 </div>
-                <div className="right-sect-div">
-                  <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">
-                      {
+                <div style={{ display: "none" }} className="right-sect-div">
+                  <div
+                    style={{ display: "none" }}
+                    className="d-flex justify-content-between align-items-center pb-2"
+                  >
+                    <h3 className="pb-0">{
                         (() => {
                           if (TranslationContext !== undefined) {
                             return TranslationContext.h3.bulkupload
@@ -3751,8 +3702,7 @@ class Alerts extends Component {
                             return "Bulk Upload"
                           }
                         })()
-                      }
-                    </h3>
+                      }</h3>
                     <div className="down-excel">
                       <p>
                         {

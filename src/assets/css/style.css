@@ -2805,6 +2805,23 @@ body.layout-1 .pcoded-navbar.hide-sidemenu .toggle-sidemenu i {
   #task-container li {
     width: 100%;
   }
+  
+  .auth-wrapper .auth-content {
+    width: 100%;
+  }
+  .programcode-card-new {
+    width: 90%;
+    height: auto;
+    margin: auto;
+}
+.auth-content .card .card-block, .auth-content .card .card-body {
+  padding: 25px !important;
+}
+.auth-wrapper .card {
+  margin-bottom: 0;
+  width: 90%;
+  margin: auto;
+}
 }
 
 .new-task .to-do-list .cr {

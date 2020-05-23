@@ -9,7 +9,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
@@ -160,6 +160,7 @@ class StoreUsers extends Component {
       EditmappedisClaimApprover: "",
       EditmappedcrmRoleID: "",
       EditmappedisActive: "",
+      isATOZ: true,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -185,6 +186,7 @@ class StoreUsers extends Component {
     );
     this.closeEditModals = this.closeEditModals.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleSendMail = this.handleSendMail.bind(this);
   }
 
   opneUserEditModal = () => {
@@ -271,16 +273,16 @@ class StoreUsers extends Component {
     if (this.state.fileName) {
       const formData = new FormData();
       formData.append("file", this.state.file);
-      this.setState({ isShowProgress: true });
+      // this.setState({ isShowProgress: true });
       axios({
         method: "post",
         url: config.apiUrl + "/StoreUser/BulkUploadStoreUser",
         headers: authHeader(),
         data: formData,
-        onUploadProgress: (ev = ProgressEvent) => {
-          const progress = (ev.loaded / ev.total) * 100;
-          this.updateUploadProgress(Math.round(progress));
-        },
+        // onUploadProgress: (ev = ProgressEvent) => {
+        //   const progress = (ev.loaded / ev.total) * 100;
+        //   this.updateUploadProgress(Math.round(progress));
+        // },
       })
         .then((response) => {
           var status = response.data.message;
@@ -291,7 +293,7 @@ class StoreUsers extends Component {
             self.handleGetStoreUserGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
-            self.setState({ isErrorBulkUpload: true, isShowProgress: false });
+            // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             NotificationManager.error("File not uploaded.");
           }
         })
@@ -453,7 +455,12 @@ class StoreUsers extends Component {
         selectedClaimIssueType: [],
       });
     } else {
-      this.setState({ selectedClaimBrand: e });
+      this.setState({
+        selectedClaimBrand: e,
+        selectedClaimCategory: [],
+        selectedClaimSubCategory: [],
+        selectedClaimIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.selectedClaimBrand) {
           this.handleGetClaimCategoryData();
@@ -471,7 +478,11 @@ class StoreUsers extends Component {
         selectedClaimIssueType: [],
       });
     } else {
-      this.setState({ selectedClaimCategory: e });
+      this.setState({
+        selectedClaimCategory: e,
+        selectedClaimSubCategory: [],
+        selectedClaimIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.selectedClaimCategory) {
           this.handleGetClaimSubCategoryData();
@@ -488,7 +499,10 @@ class StoreUsers extends Component {
         selectedClaimIssueType: [],
       });
     } else {
-      this.setState({ selectedClaimSubCategory: e });
+      this.setState({
+        selectedClaimSubCategory: e,
+        selectedClaimIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.selectedClaimSubCategory) {
           this.handleGetClaimIssueType();
@@ -660,7 +674,16 @@ class StoreUsers extends Component {
         EditmappedBrandCompulsory: "Please Select Brand",
       });
     } else {
-      this.setState({ editBrand: e, EditmappedBrandCompulsory: "" });
+      this.setState({
+        editBrand: e,
+        EditmappedBrandCompulsory: "",
+        editCategory: [],
+        claimCategoryData: [],
+        editSubCategory: [],
+        claimSubCategoryData: [],
+        editIssueType: [],
+        claimIssueTypeData: [],
+      });
       setTimeout(() => {
         if (this.state.editBrand) {
           this.handleGetClaimCategoryData("edit");
@@ -682,7 +705,14 @@ class StoreUsers extends Component {
         EditmappedCategoryCompulsory: "Please Select Category.",
       });
     } else {
-      this.setState({ editCategory: e, EditmappedCategoryCompulsory: "" });
+      this.setState({
+        editCategory: e,
+        EditmappedCategoryCompulsory: "",
+        editSubCategory: [],
+        claimSubCategoryData: [],
+        claimIssueTypeData: [],
+        editIssueType: [],
+      });
       setTimeout(() => {
         if (this.state.editCategory) {
           this.handleGetClaimSubCategoryData("edit");
@@ -704,6 +734,7 @@ class StoreUsers extends Component {
     } else {
       this.setState({
         editSubCategory: e,
+        editIssueType: [],
         EditmappedSubCategoryCompulsory: "",
       });
       setTimeout(() => {
@@ -795,6 +826,7 @@ class StoreUsers extends Component {
     }
     this.setState({
       isortA: true,
+      isATOZ: false,
       StoreUserData: itemsArray,
     });
     setTimeout(() => {
@@ -859,6 +891,7 @@ class StoreUsers extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       StoreUserData: itemsArray,
     });
     setTimeout(() => {
@@ -1209,7 +1242,11 @@ class StoreUsers extends Component {
         sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all,", "");
         if (sitemCodeFilterCheckbox.includes(e.currentTarget.value)) {
           sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1235,7 +1272,11 @@ class StoreUsers extends Component {
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
         if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
           sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1261,7 +1302,11 @@ class StoreUsers extends Component {
         suserNameFilterCheckbox = suserNameFilterCheckbox.replace("all,", "");
         if (suserNameFilterCheckbox.includes(e.currentTarget.value)) {
           suserNameFilterCheckbox = suserNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1293,7 +1338,11 @@ class StoreUsers extends Component {
         );
         if (sdesignationNameFilterCheckbox.includes(e.currentTarget.value)) {
           sdesignationNameFilterCheckbox = sdesignationNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1325,7 +1374,11 @@ class StoreUsers extends Component {
         );
         if (sreporteeNameFilterCheckbox.includes(e.currentTarget.value)) {
           sreporteeNameFilterCheckbox = sreporteeNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1357,7 +1410,11 @@ class StoreUsers extends Component {
         );
         if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1389,7 +1446,11 @@ class StoreUsers extends Component {
         );
         if (smappedFunctionsFilterCheckbox.includes(e.currentTarget.value)) {
           smappedFunctionsFilterCheckbox = smappedFunctionsFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1714,9 +1775,10 @@ class StoreUsers extends Component {
     userEdit.mappedIssuetype = data.mappedIssuetype;
     userEdit.designationID = data.designationID;
     userEdit.designationName = data.designationName;
-    userEdit.reporteeID = data.reporteeID;
+    userEdit.reporteeID = data.reporteeID === 0 ? "-1" : data.reporteeID;
     userEdit.reporteeName = data.reporteeName;
-    userEdit.reporteeDesignationID = data.reporteeDesignationID;
+    userEdit.reporteeDesignationID =
+      data.reporteeDesignationID === 0 ? "-1" : data.reporteeDesignationID;
     userEdit.reporteeDesignation = data.reporteeDesignation;
     userEdit.departmentID = data.departmentID;
     userEdit.departmentName = data.departmentName;
@@ -1745,27 +1807,36 @@ class StoreUsers extends Component {
     ////for Multi category binding drop down
     var cName = userEdit.mappedCategory.split(",");
     var cId = userEdit.categoryIDs.split(",").map(Number);
-    if (userEdit.categoryIDs !== null) {
-      for (let k = 0; k < bId.length; k++) {
-        category.push({ categoryID: cId[k], categoryName: cName[k] });
+    if (userEdit.categoryIDs !== null || userEdit.categoryIDs !== "") {
+      for (let k = 0; k < cId.length; k++) {
+        if (cId[k] !== 0) {
+          category.push({ categoryID: cId[k], categoryName: cName[k] });
+        }
       }
     }
 
     ////for Multi sub-category binding drop down
     var sName = userEdit.mappedSubCategory.split(",");
     var sId = userEdit.subCategoryIDs.split(",").map(Number);
-    if (userEdit.subCategoryIDs !== null) {
+    if (userEdit.subCategoryIDs !== null || userEdit.subCategoryIDs !== "") {
       for (let k = 0; k < sId.length; k++) {
-        subCategory.push({ subCategoryID: sId[k], subCategoryName: sName[k] });
+        if (sId[k] !== 0) {
+          subCategory.push({
+            subCategoryID: sId[k],
+            subCategoryName: sName[k],
+          });
+        }
       }
     }
 
     ////for Multi issuetype binding drop down
     var iName = userEdit.mappedIssuetype.split(",");
     var iId = userEdit.issueTypeIDs.split(",").map(Number);
-    if (userEdit.issueTypeIDs !== null) {
+    if (userEdit.issueTypeIDs !== null || userEdit.issueTypeIDs !== "") {
       for (let k = 0; k < iId.length; k++) {
-        issueType.push({ issueTypeID: iId[k], issueTypeName: iName[k] });
+        if (iId[k] !== 0) {
+          issueType.push({ issueTypeID: iId[k], issueTypeName: iName[k] });
+        }
       }
     }
 
@@ -1805,9 +1876,12 @@ class StoreUsers extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({ StoreUserData: data });
-          self.state.sortAllData = data;
+
           var unique = [];
           var distinct = [];
+          var sortbrandName = [];
+          var sortFilterbrandName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].brandName] && data[i].brandName !== "") {
               distinct.push(data[i].brandName);
@@ -1815,12 +1889,21 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortbrandName.push({ brandName: distinct[i] });
-            self.state.sortFilterbrandName.push({ brandName: distinct[i] });
+            if (distinct[i]) {
+              sortbrandName.push({
+                brandName: distinct[i],
+              });
+              sortFilterbrandName.push({
+                brandName: distinct[i],
+              });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortitemCode = [];
+          var sortFilteritemCode = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].storeCode] && data[i].storeCode !== "") {
               distinct.push(data[i].storeCode);
@@ -1828,11 +1911,20 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortitemCode.push({ storeCode: distinct[i] });
-            self.state.sortFilteritemCode.push({ storeCode: distinct[i] });
+            if (distinct[i]) {
+              sortitemCode.push({
+                storeCode: distinct[i],
+              });
+              sortFilteritemCode.push({
+                storeCode: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
+          var sortuserName = [];
+          var sortFilteruserName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].userName] && data[i].userName !== "") {
               distinct.push(data[i].userName);
@@ -1840,11 +1932,19 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortuserName.push({ userName: distinct[i] });
-            self.state.sortFilteruserName.push({ userName: distinct[i] });
+            if (distinct[i]) {
+              sortuserName.push({
+                userName: distinct[i],
+              });
+              sortFilteruserName.push({
+                userName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
+          var sortdesignationName = [];
+          var sortFilterdesignationName = [];
           for (let i = 0; i < data.length; i++) {
             if (
               !unique[data[i].designationName] &&
@@ -1855,15 +1955,19 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortdesignationName.push({
-              designationName: distinct[i],
-            });
-            self.state.sortFilterdesignationName.push({
-              designationName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortdesignationName.push({
+                designationName: distinct[i],
+              });
+              sortFilterdesignationName.push({
+                designationName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
+          var sortreporteeName = [];
+          var sortFilterreporteeName = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].reporteeName] && data[i].reporteeName !== "") {
               distinct.push(data[i].reporteeName);
@@ -1871,13 +1975,20 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortreporteeName.push({ reporteeName: distinct[i] });
-            self.state.sortFilterreporteeName.push({
-              reporteeName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortreporteeName.push({
+                reporteeName: distinct[i],
+              });
+              sortFilterreporteeName.push({
+                reporteeName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
+          var sortdepartmentName = [];
+          var sortFilterdepartmentName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (
               !unique[data[i].departmentName] &&
@@ -1888,15 +1999,19 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortdepartmentName.push({
-              departmentName: distinct[i],
-            });
-            self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortdepartmentName.push({
+                departmentName: distinct[i],
+              });
+              sortFilterdepartmentName.push({
+                departmentName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
+          var sortmappedFunctions = [];
+          var sortFiltermappedFunctions = [];
           for (let i = 0; i < data.length; i++) {
             if (
               !unique[data[i].mappedFunctions] &&
@@ -1907,13 +2022,32 @@ class StoreUsers extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortmappedFunctions.push({
-              mappedFunctions: distinct[i],
-            });
-            self.state.sortFiltermappedFunctions.push({
-              mappedFunctions: distinct[i],
-            });
+            if (distinct[i]) {
+              sortmappedFunctions.push({
+                mappedFunctions: distinct[i],
+              });
+              sortFiltermappedFunctions.push({
+                mappedFunctions: distinct[i],
+              });
+            }
           }
+          self.setState({
+            sortAllData: data,
+            sortFilterbrandName,
+            sortFilteritemCode,
+            sortFilteruserName,
+            sortFilterdesignationName,
+            sortFilterreporteeName,
+            sortFilterdepartmentName,
+            sortFiltermappedFunctions,
+            sortbrandName,
+            sortitemCode,
+            sortuserName,
+            sortdesignationName,
+            sortreporteeName,
+            sortdepartmentName,
+            sortmappedFunctions,
+          });
         } else {
           self.setState({ StoreUserData: [] });
         }
@@ -2428,7 +2562,7 @@ class StoreUsers extends Component {
                 personalReadOnly: true,
               });
             } else {
-              NotificationManager.error("Record Not Save.");
+              NotificationManager.error(res.data.message);
             }
           })
           .catch((response) => {
@@ -2483,7 +2617,7 @@ class StoreUsers extends Component {
                 personalReadOnly: true,
               });
             } else {
-              NotificationManager.error("Record Not Update.");
+              NotificationManager.error(res.data.message);
             }
           })
           .catch((response) => {
@@ -2508,8 +2642,8 @@ class StoreUsers extends Component {
       this.state.selectDepartment > 0 &&
       this.state.selectedFunction.length > 0 &&
       this.state.selectDesignation > 0 &&
-      this.state.selectReportDesignation > 0 &&
-      this.state.selectReportTo > 0
+      this.state.selectReportDesignation !== 0 &&
+      this.state.selectReportTo !== 0
     ) {
       var function_ids = "";
       if (this.state.selectedFunction !== null) {
@@ -2527,8 +2661,12 @@ class StoreUsers extends Component {
           storeID: this.state.selectStore,
           departmentId: this.state.selectDepartment,
           functionIDs: function_ids.substring(",", function_ids.length - 1),
-          designationID: this.state.selectDesignation,
-          reporteeID: this.state.selectReportTo,
+          designationID:
+            this.state.selectDesignation === "-1"
+              ? 0
+              : this.state.selectDesignation,
+          reporteeID:
+            this.state.selectReportTo === "-1" ? 0 : this.state.selectReportTo,
         },
       })
         .then(function(res) {
@@ -2691,14 +2829,25 @@ class StoreUsers extends Component {
             if (status === "Success") {
               NotificationManager.success("Record Saved Successfully.");
               self.handleGetStoreUserGridData();
+              self.handleSendMail(self.state.user_ID);
+              self.handleGetstoreCodeData();
               self.setState({
                 brandData: [],
                 storeCodeData: [],
+                selectStore: 0,
                 userName: "",
                 mobile_no: "",
                 email_Id: "",
+                selectClaimApprover: "",
+                buttonStoreToggle: false,
+                StoreReadOnly: false,
+                personalReadOnly: false,
+                btnPersonalToggle: false,
+                profileReadOnly: false,
+                btnProfileToggle: false,
                 departmentData: [],
                 selectedFunction: [],
+                functionData: [],
                 userDesignationData: [],
                 reportDesignation: [],
                 reportToData: [],
@@ -2706,6 +2855,10 @@ class StoreUsers extends Component {
                 selectedClaimCategory: [],
                 selectedClaimSubCategory: [],
                 selectedClaimIssueType: [],
+                claimSubCategoryData: [],
+                claimCategoryData: [],
+                brandData: [],
+                claimIssueTypeData: [],
                 CrmRoleData: [],
                 activeData: [],
               });
@@ -2731,7 +2884,29 @@ class StoreUsers extends Component {
       });
     }
   }
-
+  handleSendMail(user_Id) {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/SendMailforchangepassword",
+      headers: authHeader(),
+      params: {
+        userID: user_Id,
+        IsStoreUser: 1,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let reportto = res.data.responseData;
+        if (reportto === "Mail sent successfully") {
+          NotificationManager.success("Please Check Email.");
+        } else {
+          NotificationManager.error("Mail Sent Failed.");
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }
   //// hanlde check Edit Store details
   HandlecheckStoreDetails() {
     debugger;
@@ -2782,8 +2957,8 @@ class StoreUsers extends Component {
       this.state.userEdit.departmentID > 0 &&
       this.state.editFuncation.length > 0 &&
       this.state.userEdit.designationID > 0 &&
-      this.state.userEdit.reporteeDesignationID > 0 &&
-      this.state.userEdit.reporteeID > 0 &&
+      this.state.userEdit.reporteeDesignationID !== 0 &&
+      this.state.userEdit.reporteeID !== 0 &&
       /// --------Mapped Claim Category validation------------
       this.state.editBrand.length > 0 &&
       this.state.editCategory.length > 0 &&
@@ -2918,7 +3093,7 @@ class StoreUsers extends Component {
       });
     }
 
-    if (this.state.userEdit.reporteeID > 0) {
+    if (this.state.userEdit.reporteeID !== 0) {
       this.setState({ EditReportDesignationCompulsory: "" });
     } else {
       this.setState({
@@ -2926,7 +3101,7 @@ class StoreUsers extends Component {
       });
     }
 
-    if (this.state.userEdit.reporteeDesignationID > 0) {
+    if (this.state.userEdit.reporteeDesignationID !== 0) {
       this.setState({ EditReporteeDesignationCompulsory: "" });
     } else {
       this.setState({
@@ -2963,6 +3138,23 @@ class StoreUsers extends Component {
     this.setState({ userEdit });
   }
 
+  handleClearSearch() {
+    this.setState({
+      sbrandNameFilterCheckbox: "",
+      sitemCodeFilterCheckbox: "",
+      suserNameFilterCheckbox: "",
+      sdesignationNameFilterCheckbox: "",
+      sreporteeNameFilterCheckbox: "",
+      sdepartmentNameFilterCheckbox: "",
+      smappedFunctionsFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      StoreUserData: this.state.sortAllData,
+      tempitemData: [],
+    });
+  }
   render() {
     const TranslationContext = this.context.state.translateLanguage.default;
     return (
@@ -3017,9 +3209,13 @@ class StoreUsers extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                 {(() => {
                   if (TranslationContext !== undefined) {
@@ -3084,9 +3280,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.storeCode}
                             value={item.storeCode}
-                            checked={this.state.sitemCodeFilterCheckbox.includes(
-                              item.storeCode
-                            )}
+                            checked={
+                              this.state.sitemCodeFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.storeCode) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "storeCode",
@@ -3111,9 +3310,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox.includes(
-                              item.brandName
-                            )}
+                            checked={
+                              this.state.sbrandNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.brandName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -3138,9 +3340,11 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.userName}
                             value={item.userName}
-                            checked={this.state.suserNameFilterCheckbox.includes(
-                              item.userName
-                            )}
+                            checked={
+                              this.state.suserNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.userName) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "userName",
@@ -3165,9 +3369,13 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.designationName}
                             value={item.designationName}
-                            checked={this.state.sdesignationNameFilterCheckbox.includes(
-                              item.designationName
-                            )}
+                            checked={
+                              this.state.sdesignationNameFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.designationName
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "designationName",
@@ -3191,9 +3399,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.reporteeName}
                             value={item.reporteeName}
-                            checked={this.state.sreporteeNameFilterCheckbox.includes(
-                              item.reporteeName
-                            )}
+                            checked={
+                              this.state.sreporteeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.reporteeName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "reporteeName",
@@ -3217,9 +3428,12 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.departmentName}
                             value={item.departmentName}
-                            checked={this.state.sdepartmentNameFilterCheckbox.includes(
-                              item.departmentName
-                            )}
+                            checked={
+                              this.state.sdepartmentNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.departmentName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "departmentName",
@@ -3243,9 +3457,13 @@ class StoreUsers extends Component {
                             name="filter-type"
                             id={"fil-open" + item.mappedFunctions}
                             value={item.mappedFunctions}
-                            checked={this.state.smappedFunctionsFilterCheckbox.includes(
-                              item.mappedFunctions
-                            )}
+                            checked={
+                              this.state.smappedFunctionsFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.mappedFunctions
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "mappedFunctions",
@@ -3304,14 +3522,19 @@ class StoreUsers extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreUserReact">
+                <div className="table-cntr table-height StoreUserReact setting-table-des">
                   <ReactTable
                     data={this.state.StoreUserData}
                     columns={[
                       {
                         Header: (
                           <span
-                            className={this.state.brandNameColor}
+                            // className={this.state.brandNameColor}
+                            className={
+                              this.state.sortHeader === "Brand Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
@@ -3325,7 +3548,14 @@ class StoreUsers extends Component {
                                 return "Brand Name";
                               }
                             })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Brand Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3334,7 +3564,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.storeCodeColor}
+                            // className={this.state.storeCodeColor}
+                            className={
+                              this.state.sortHeader === "Store Code"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "storeCode",
@@ -3348,7 +3583,14 @@ class StoreUsers extends Component {
                                 return "Store Code";
                               }
                             })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Store Code"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3357,21 +3599,33 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.userNameColor}
+                            // className={this.state.userNameColor}
+                            className={
+                              this.state.sortHeader === "User Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "userName",
                               "User Name"
                             )}
                           >
-                            {(() => {
+                           {(() => {
                               if (TranslationContext !== undefined) {
                                 return TranslationContext.span.username;
                               } else {
                                 return "User Name";
                               }
                             })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "User Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3590,7 +3844,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.userdesignationColor}
+                            // className={this.state.userdesignationColor}
+                            className={
+                              this.state.sortHeader === "User Designation"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
@@ -3604,7 +3863,14 @@ class StoreUsers extends Component {
                                 return "User Designation";
                               }
                             })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "User Designation"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3613,11 +3879,16 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.reporteeNameColor}
+                            // className={this.state.reporteeNameColor}
+                            className={
+                              this.state.sortHeader === "Reportee Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reporteeName",
-                              " Reportee Name"
+                              "Reportee Name"
                             )}
                           >
                             {(() => {
@@ -3627,7 +3898,14 @@ class StoreUsers extends Component {
                                 return "Reportee Name";
                               }
                             })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Reportee Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3674,7 +3952,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.departmentColor}
+                            // className={this.state.departmentColor}
+                            className={
+                              this.state.sortHeader === "Department"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
@@ -3688,7 +3971,14 @@ class StoreUsers extends Component {
                                               return "Department";
                                             }
                                           })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Department"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3697,7 +3987,12 @@ class StoreUsers extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.functionColor}
+                            // className={this.state.functionColor}
+                            className={
+                              this.state.sortHeader === "Function"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "mappedFunctions",
@@ -3711,7 +4006,14 @@ class StoreUsers extends Component {
                                               return "Function";
                                             }
                                           })()}
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Function"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -3726,11 +4028,13 @@ class StoreUsers extends Component {
                                             }
                                           })()}</span>,
                         accessor: "userID",
+                        minWidth: 120,
+                        sortable: false,
                         Cell: (row) => {
                           var ids = row.original["userID"];
                           return (
                             <>
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div
@@ -4378,6 +4682,11 @@ class StoreUsers extends Component {
                                 {item.designationName}
                               </option>
                             ))}
+
+                          {this.state.reportDesignation.length === 0 && (
+                            // this.state.selectReportDesignation &&
+                            <option value="-1">Root</option>
+                          )}
                         </select>
                         {this.state.selectReportDesignation === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4417,6 +4726,10 @@ class StoreUsers extends Component {
                                 {item.agentName}
                               </option>
                             ))}
+                          {this.state.reportToData.length === 0 && (
+                            // this.state.selectReportTo &&
+                            <option value="-1">Root</option>
+                          )}
                         </select>
                         {this.state.selectReportTo === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -5318,6 +5631,10 @@ class StoreUsers extends Component {
                                   {item.designationName}
                                 </option>
                               ))}
+                            {this.state.reportDesignation.length === 0 && (
+                              // this.state.selectedDesignation &&
+                              <option value="-1">Root</option>
+                            )}
                           </select>
                           {this.state.userEdit.reporteeDesignationID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
@@ -5352,6 +5669,10 @@ class StoreUsers extends Component {
                                   {item.agentName}
                                 </option>
                               ))}
+                            {this.state.reportToData.length === 0 && (
+                              // this.state.selectedDesignation &&
+                              <option value="-1">Root</option>
+                            )}
                           </select>
                           {this.state.userEdit.reporteeID == 0 && (
                             <p style={{ color: "red", marginBottom: "0px" }}>

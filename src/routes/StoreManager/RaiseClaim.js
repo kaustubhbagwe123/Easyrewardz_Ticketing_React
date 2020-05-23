@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Collapse, CardBody, Card } from "reactstrap";
+import { Collapse, CardBody, Card, Input } from "reactstrap";
 // import TableDemo from "../TableDemo";
 import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
@@ -367,7 +367,18 @@ class RaiseClaim extends Component {
       });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    debugger;
+    const input = e.target.value;
+    let IsNumber = false;
+    let RE = /^-?\d*(\.\d+)?$/;
+    //IsNumber= RE.test(value);
+    if (!isNaN(input)) {
+      this.setState({ claimPercentage: input });
+    } else {
+      this.setState({ claimPercentage: "" });
+    }
+  };
   handleGetBrandList() {
     let self = this;
     axios({
@@ -532,7 +543,7 @@ class RaiseClaim extends Component {
     debugger;
     if (CustID > 0) {
       if (this.state.ticketId == 0) {
-        if (typeof e.preventDefault!== "undefined") {
+        if (typeof e.preventDefault !== "undefined") {
           e.preventDefault();
         }
       }
@@ -913,9 +924,33 @@ class RaiseClaim extends Component {
       if (e.currentTarget.name === "claimPercentage") {
         this.state.errors["ClaimPercent"] = "";
         this.setState({
-          [e.currentTarget.name]: e.currentTarget.value,
           errors: this.state.errors,
         });
+
+        if (isNaN(e.currentTarget.value)) {
+          return false;
+        }
+        var splitText = e.currentTarget.value.split(".");
+        var index = e.currentTarget.value.indexOf(".");
+        if (parseFloat(e.currentTarget.value) <= 100) {
+          if (index != -1) {
+            if (splitText) {
+              if (splitText[1].length <= 2) {
+                if (index != -1 && splitText.length === 2) {
+                  this.setState({ claimPercentage: e.currentTarget.value });
+                }
+              } else {
+                return false;
+              }
+            } else {
+              this.setState({ claimPercentage: e.currentTarget.value });
+            }
+          } else {
+            this.setState({ claimPercentage: e.currentTarget.value });
+          }
+        } else {
+          this.setState({ claimPercentage: "" });
+        }
       } else {
         this.setState({
           [e.currentTarget.name]: e.currentTarget.value,
@@ -1018,6 +1053,22 @@ class RaiseClaim extends Component {
     debugger;
     if (this.handleValidation()) {
       const formData = new FormData();
+      var selectedRow = "";
+      if (this.state.SelectedItemData.length === 0) {
+        for (let j = 0; j < this.state.selectedOrderData.length; j++) {
+          selectedRow +=
+            this.state.selectedOrderData[j]["orderMasterID"] + "|0|1,";
+        }
+      } else {
+        for (let i = 0; i < this.state.SelectedItemData.length; i++) {
+          selectedRow +=
+            this.state.SelectedItemData[i]["orderItemID"] +
+            "|" +
+            this.state.SelectedItemData[i]["requireSize"] +
+            "|0,";
+        }
+      }
+
       var paramData = {
         BrandID: this.state.selectBrand,
         CategoryID: this.state.list1Value,
@@ -1025,6 +1076,7 @@ class RaiseClaim extends Component {
         IssueTypeID: this.state.ListOfIssue,
         ClaimPercent: this.state.claimPercentage,
         CustomerID: this.state.customerId,
+        OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
         OrderIDs: "",
         TicketID: this.state.ticketId,
         TaskID: this.state.taskId,
@@ -1276,7 +1328,7 @@ class RaiseClaim extends Component {
     return (
       <Fragment>
         <div className="raiseclaim">
-          <div className="row" style={{ background: "#ecf2f4" }}>
+          <div className="row" style={{ background: "#ecf2f4", margin: 0 }}>
             <div className="col-md-8">
               {/* <label className="claim-ticket">Claim Ticket ID :</label>
               <label className="claim-A22345">
@@ -1323,7 +1375,7 @@ class RaiseClaim extends Component {
             </div>
           </div>
           <div className="back-color">
-            <div className="row">
+            <div className="row m-0">
               <div className="col-md-9" style={{ padding: "0" }}>
                 <div className="card card-radius">
                   <div className="search-customer-padding">
@@ -1432,10 +1484,10 @@ class RaiseClaim extends Component {
                           borderRadius: "5px",
                         }}
                       >
-                        <Card>
+                        <Card className="w-100">
                           <CardBody style={{ padding: "15px 0 0" }}>
                             {this.state.showManual ? null : (
-                              <div className="row">
+                              <div className="row m-0">
                                 <div className="col-md-6">
                                   <label className="orderdetailtext">
                                     
@@ -1865,7 +1917,10 @@ class RaiseClaim extends Component {
                                   </div>
                                   <div className="col-md-6">
                                     <ReactAutocomplete
-                                      wrapperStyle={{ display: "block" }}
+                                      wrapperStyle={{
+                                        display: "block",
+                                        position: "relative",
+                                      }}
                                       getItemValue={(item) => item.storeName}
                                       items={this.state.SearchItem}
                                       renderItem={(item, isHighlighted) => (
@@ -1884,7 +1939,7 @@ class RaiseClaim extends Component {
                                         return (
                                           <input
                                             placeholder="Purchase from Store name"
-                                            className="addmanuallytext1"
+                                            className="addmanuallytext1 dropdown-next-div"
                                             type="text"
                                             {...props}
                                           />
@@ -1977,7 +2032,7 @@ class RaiseClaim extends Component {
                                 </div>
                               </div>
                             ) : (
-                              <div className="uploadsearch">
+                              <div className="uploadsearch uploadsearch-space">
                                 <div className="row">
                                   <div className="col-md-12 uploadsechmargin">
                                     <label className="uploadsearch-text">
@@ -2025,7 +2080,7 @@ class RaiseClaim extends Component {
                         </Card>
                       </Collapse>
                     </div>
-                    <div className="row">
+                    <div className="row m-0 w-100">
                       <div className="form-group col-md-4">
                         <label className="label-6"> {
                         (() => {
@@ -2163,7 +2218,7 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row m-0">
                       <div className="form-group col-md-4">
                         <label className="label-6"> 
                         {
@@ -2182,6 +2237,7 @@ class RaiseClaim extends Component {
                           className="form-control textBox"
                           placeholder="Claim Percentage"
                           name="claimPercentage"
+                          onKeyUp={this.handlePercentageOnChange}
                           value={this.state.claimPercentage}
                           onChange={this.handleOnChange}
                         />
@@ -2218,7 +2274,7 @@ class RaiseClaim extends Component {
                         </p>
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row m-0">
                       <div className="form-group col-md-4">
                         <label className="label-6">
                          {

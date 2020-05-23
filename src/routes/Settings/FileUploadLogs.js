@@ -38,7 +38,7 @@ class FileUploadLogs extends Component {
       sfileNameFilterCheckbox: "",
       screatedDateFilterCheckbox: "",
       sfileUploadStatusFilterCheckbox: "",
-      isortA: false
+      isortA: false,
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -50,13 +50,21 @@ class FileUploadLogs extends Component {
     this.handleGetFileUploadLog();
   }
 
+  downloadDefaultReport = (csvFile) => {
+    debugger;
+    // window.open(
+    //   "https://ertktapi.dcdev.brainvire.net/ReportDownload/DefaultReport_202004061846089363.csv"
+    // );
+    window.open(csvFile);
+  };
+
   handleGetFileUploadLog() {
     debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/File/GetFileUploadLogs",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -119,7 +127,7 @@ class FileUploadLogs extends Component {
           self.setState({ fileUploadLog });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -143,7 +151,7 @@ class FileUploadLogs extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -153,7 +161,7 @@ class FileUploadLogs extends Component {
 
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -166,7 +174,7 @@ class FileUploadLogs extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -175,7 +183,7 @@ class FileUploadLogs extends Component {
           sfileUploadStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -188,7 +196,7 @@ class FileUploadLogs extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -197,7 +205,7 @@ class FileUploadLogs extends Component {
           sfileUploadStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -210,7 +218,7 @@ class FileUploadLogs extends Component {
         this.setState({
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       } else {
         this.setState({
@@ -219,7 +227,7 @@ class FileUploadLogs extends Component {
           screatedDateFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
-          sortHeader: header
+          sortHeader: header,
         });
       }
     }
@@ -234,7 +242,7 @@ class FileUploadLogs extends Component {
         sortFilterFileType: this.state.sortFileType,
         sortFilterFileName: this.state.sortFileName,
         sortFilterCreatedDate: this.state.sortCreatedDate,
-        sortFilterStatus: this.state.sortStatus
+        sortFilterStatus: this.state.sortStatus,
       });
       if (this.state.sortColumn === "fileType") {
         if (this.state.sfileTypeFilterCheckbox === "") {
@@ -242,7 +250,7 @@ class FileUploadLogs extends Component {
           this.setState({
             sfileNameFilterCheckbox: "",
             screatedDateFilterCheckbox: "",
-            sfileUploadStatusFilterCheckbox: ""
+            sfileUploadStatusFilterCheckbox: "",
           });
         }
       }
@@ -252,7 +260,7 @@ class FileUploadLogs extends Component {
           this.setState({
             sfileTypeFilterCheckbox: "",
             screatedDateFilterCheckbox: "",
-            sfileUploadStatusFilterCheckbox: ""
+            sfileUploadStatusFilterCheckbox: "",
           });
         }
       }
@@ -262,7 +270,7 @@ class FileUploadLogs extends Component {
           this.setState({
             sfileTypeFilterCheckbox: "",
             sfileNameFilterCheckbox: "",
-            sfileUploadStatusFilterCheckbox: ""
+            sfileUploadStatusFilterCheckbox: "",
           });
         }
       }
@@ -272,7 +280,7 @@ class FileUploadLogs extends Component {
           this.setState({
             sfileTypeFilterCheckbox: "",
             sfileNameFilterCheckbox: "",
-            screatedDateFilterCheckbox: ""
+            screatedDateFilterCheckbox: "",
           });
         }
       }
@@ -286,7 +294,7 @@ class FileUploadLogs extends Component {
         sortFilterFileType: this.state.sortFileType,
         sortFilterFileName: this.state.sortFileName,
         sortFilterCreatedDate: this.state.sortCreatedDate,
-        sortFilterStatus: this.state.sortStatus
+        sortFilterStatus: this.state.sortStatus,
       });
     }
   }
@@ -299,14 +307,14 @@ class FileUploadLogs extends Component {
         this.state.sortFileType,
         e.target.value,
         {
-          keys: ["fileType"]
+          keys: ["fileType"],
         }
       );
       if (sortFilterFileType.length > 0) {
         this.setState({ sortFilterFileType });
       } else {
         this.setState({
-          sortFilterFileType: this.state.sortFileType
+          sortFilterFileType: this.state.sortFileType,
         });
       }
     }
@@ -315,14 +323,14 @@ class FileUploadLogs extends Component {
         this.state.sortFileName,
         e.target.value,
         {
-          keys: ["fileName"]
+          keys: ["fileName"],
         }
       );
       if (sortFilterFileName.length > 0) {
         this.setState({ sortFilterFileName });
       } else {
         this.setState({
-          sortFilterFileName: this.state.sortFileName
+          sortFilterFileName: this.state.sortFileName,
         });
       }
     }
@@ -336,7 +344,7 @@ class FileUploadLogs extends Component {
         this.setState({ sortFilterCreatedDate });
       } else {
         this.setState({
-          sortFilterCreatedDate: this.state.sortCreatedDate
+          sortFilterCreatedDate: this.state.sortCreatedDate,
         });
       }
     }
@@ -350,7 +358,7 @@ class FileUploadLogs extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus
+          sortFilterStatus: this.state.sortStatus,
         });
       }
     }
@@ -391,7 +399,7 @@ class FileUploadLogs extends Component {
 
     this.setState({
       isortA: true,
-      fileUploadLog: itemsArray
+      fileUploadLog: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -435,7 +443,7 @@ class FileUploadLogs extends Component {
 
     this.setState({
       isortA: true,
-      fileUploadLog: itemsArray
+      fileUploadLog: itemsArray,
     });
     setTimeout(() => {
       this.StatusCloseModel();
@@ -579,7 +587,7 @@ class FileUploadLogs extends Component {
       issueColor: "",
       nameColor: "",
       createdColor: "",
-      statusColor: ""
+      statusColor: "",
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -588,59 +596,8 @@ class FileUploadLogs extends Component {
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.fileType === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        issueColor: "sort-column"
-      });
-    } else if (column === "fileName") {
-      var sItems = sfileNameFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.fileName === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        nameColor: "sort-column"
-      });
-    } else if (column === "createdDate") {
-      var sItems = screatedDateFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
-            var tempFilterData = allData.filter(a => a.Date === sItems[i]);
-            if (tempFilterData.length > 0) {
-              for (let j = 0; j < tempFilterData.length; j++) {
-                itemsArray.push(tempFilterData[j]);
-              }
-            }
-          }
-        }
-      }
-      this.setState({
-        createdColor: "sort-column"
-      });
-    } else if (column === "fileUploadStatus") {
-      var sItems = sfileUploadStatusFilterCheckbox.split(",");
-      if (sItems.length > 0) {
-        for (let i = 0; i < sItems.length; i++) {
-          if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              a => a.fileUploadStatus === sItems[i]
+              (a) => a.fileType === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -651,12 +608,67 @@ class FileUploadLogs extends Component {
         }
       }
       this.setState({
-        statusColor: "sort-column"
+        issueColor: "sort-column",
+      });
+    } else if (column === "fileName") {
+      var sItems = sfileNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.fileName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        nameColor: "sort-column",
+      });
+    } else if (column === "createdDate") {
+      var sItems = screatedDateFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter((a) => a.Date === sItems[i]);
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column",
+      });
+    } else if (column === "fileUploadStatus") {
+      var sItems = sfileUploadStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.fileUploadStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
       });
     }
 
     this.setState({
-      tempfileUploadLog: itemsArray
+      tempfileUploadLog: itemsArray,
     });
     // this.StatusCloseModel();
   };
@@ -682,7 +694,7 @@ class FileUploadLogs extends Component {
           </span>
         ),
         sortable: false,
-        accessor: "fileType"
+        accessor: "fileType",
       },
       {
         Header: (
@@ -702,7 +714,7 @@ class FileUploadLogs extends Component {
           </span>
         ),
         sortable: false,
-        accessor: "fileName"
+        accessor: "fileName",
       },
       {
         Header: (
@@ -723,7 +735,7 @@ class FileUploadLogs extends Component {
         ),
         sortable: false,
         accessor: "date",
-        Cell: row => {
+        Cell: (row) => {
           var ids = row.original["id"];
           return (
             <div>
@@ -806,7 +818,7 @@ class FileUploadLogs extends Component {
               </span>
             </div>
           );
-        }
+        },
       },
       {
         Header: (
@@ -831,7 +843,7 @@ class FileUploadLogs extends Component {
           </span>
         ),
         sortable: false,
-        accessor: "fileUploadStatus"
+        accessor: "fileUploadStatus",
       },
       {
         Header: <span>
@@ -848,10 +860,18 @@ class FileUploadLogs extends Component {
         </span>,
         accessor: "Erroor",
         sortable: false,
-        Cell: row => (
-          <div>
-            <button className="downloadBtn">
-            {
+        Cell: (row) =>
+          row.original.fileUploadStatus === "Completed" &&
+          row.original.errorFilePath && (
+            <div>
+              <button
+                className="downloadBtn"
+                onClick={this.downloadDefaultReport.bind(
+                  this,
+                  row.original.errorFilePath
+                )}
+              >
+                {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.button.download
@@ -861,10 +881,9 @@ class FileUploadLogs extends Component {
                 }
               })()
             }
-              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
-            </button>
-          </div>
-        )
+              </button>
+            </div>
+          ),
       },
       {
         Header: <span>
@@ -880,10 +899,18 @@ class FileUploadLogs extends Component {
             }
         </span>,
         accessor: "success",
-        Cell: row => (
-          <div>
-            <button className="downloadBtn">
-            {
+        Cell: (row) =>
+          row.original.fileUploadStatus === "Completed" &&
+          row.original.successFilePath && (
+            <div>
+              <button
+                className="downloadBtn"
+                onClick={this.downloadDefaultReport.bind(
+                  this,
+                  row.original.successFilePath
+                )}
+              >
+                {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.button.download
@@ -893,11 +920,10 @@ class FileUploadLogs extends Component {
                 }
               })()
             }
-              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
-            </button>
-          </div>
-        )
-      }
+              </button>
+            </div>
+          ),
+      },
     ];
 
     return (
@@ -958,7 +984,7 @@ class FileUploadLogs extends Component {
                 </div>
               </div>
               <a
-                href=""
+                href="#!"
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >

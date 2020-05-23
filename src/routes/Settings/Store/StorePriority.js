@@ -24,6 +24,7 @@ import update from "immutability-helper";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import matchSorter from "match-sorter";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
 let dragingIndex = -1;
 
@@ -95,7 +96,7 @@ const DragableBodyRow = DropTarget("row", rowTarget, (connect, monitor) => ({
   }))(BodyRow)
 );
 
-const closest = function (el, selector, rootNode) {
+const closest = function(el, selector, rootNode) {
   rootNode = rootNode || document.body;
   const matchesSelector =
     el.matches ||
@@ -136,7 +137,7 @@ class CreatePriority extends Component {
       loading: false,
       priorityNameCompulsion: "",
       statusCompulsion: "",
-      editpriorityNameCompulsion: "Please enter priority name.",
+      editpriorityNameCompulsion: "Please enter priority name",
       editstatusCompulsion: "Please select status.",
       updatedPriorityName: "",
       updatedStatus: "",
@@ -166,6 +167,12 @@ class CreatePriority extends Component {
       screatedDateFilterCheckbox: "",
       screatedByFilterCheckbox: "",
       spriortyStatusFilterCheckbox: "",
+      isNewName: "",
+      isprority: false,
+      AddPriority: false,
+      isexist: "",
+      editIsExist: "",
+      isEditBtn: true,
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -179,42 +186,268 @@ class CreatePriority extends Component {
     this.handleGetPriorityList();
   }
 
+  ////handle check prority
+  handleCheckPriorityExits() {
+    let self = this;
+
+    var priority_name = "";
+    if (this.state.editmodel) {
+      if (
+        this.state.isNewName !== this.state.rowData.priortyName &&
+        this.state.rowData.priortyName !== ""
+      ) {
+        priority_name = this.state.rowData.priortyName;
+        this.setState({ isprority: false });
+      } else {
+        this.setState({
+          editpriorityNameCompulsion: "Please enter priority name",
+        });
+        return false;
+      }
+    } else {
+      if (this.state.priority_name !== "") {
+        priority_name = this.state.priority_name;
+      } else {
+        return false;
+      }
+    }
+    this.setState({ isEditBtn: false });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StorePriority/ValidateStorePriorityNameExist",
+      headers: authHeader(),
+      params: { PriorityName: priority_name },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message == "Success") {
+          if (responseData === "Priority already exist!") {
+            if (self.state.editmodel) {
+              self.setState({
+                isprority: true,
+                editIsExist: "Priority already exist!",
+              });
+            } else {
+              self.setState({
+                isexist: "Priority already exist!",
+              });
+            }
+          } else {
+            self.setState({
+              isEditBtn: true,
+              isprority: false,
+              isexist: "",
+              editIsExist: "",
+            });
+          }
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleCheckPriorityExits");
+      });
+  }
+
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
+    itemsArray = this.state.priorityData;
 
-    itemsArray.sort(function (a, b) {
-      return a.ticketStatus > b.ticketStatus ? 1 : -1;
-    });
-
+    if (this.state.sortColumn === "priortyName") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyName < b.priortyName) return -1;
+        if (a.priortyName > b.priortyName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdByName < b.createdByName) return -1;
+        if (a.createdByName > b.createdByName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort((a, b) => {
+        if (a.createdDateFormated < b.createdDateFormated) return -1;
+        if (a.createdDateFormated > b.createdDateFormated) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "priortyStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyStatus < b.priortyStatus) return -1;
+        if (a.priortyStatus > b.priortyStatus) return 1;
+        return 0;
+      });
+    }
     this.setState({
-      hierarchyData: itemsArray,
+      isortA: true,
+      isATOZ: true,
+      priorityData: itemsArray,
     });
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
-    itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b) => {
-      return a.ticketStatus < b.ticketStatus;
-    });
+    itemsArray = this.state.priorityData;
+
+    if (this.state.sortColumn === "priortyName") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyName < b.priortyName) return 1;
+        if (a.priortyName > b.priortyName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdByName < b.createdByName) return 1;
+        if (a.createdByName > b.createdByName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdDate") {
+      itemsArray.sort((a, b) => {
+        if (a.createdDateFormated < b.createdDateFormated) return 1;
+        if (a.createdDateFormated > b.createdDateFormated) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "priortyStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.priortyStatus < b.priortyStatus) return 1;
+        if (a.priortyStatus > b.priortyStatus) return -1;
+        return 0;
+      });
+    }
     this.setState({
-      hierarchyData: itemsArray,
+      isortA: true,
+      isATOZ: false,
+      priorityData: itemsArray,
     });
     this.StatusCloseModel();
   }
 
   StatusOpenModel(data, header) {
-    debugger;
+    if (
+      this.state.sortFilterName.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterCreatedDate.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+
     this.setState({
-      StatusModel: true,
-      sortColumn: data,
-      sortHeader: header,
+      sortFilterName: this.state.sortName,
+      sortFilterCreatedBy: this.state.sortCreatedBy,
+      sortFilterCreatedDate: this.state.sortCreatedDate,
+      sortFilterStatus: this.state.sortStatus,
     });
+    if (data === "priortyName ") {
+      if (
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.screatedDateFilterCheckbox !== "" ||
+        this.state.spriortyStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          screatedByFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          spriortyStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.spriortyNameFilterCheckbox !== "" ||
+        this.state.screatedDateFilterCheckbox !== "" ||
+        this.state.spriortyStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          spriortyNameFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          spriortyStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          spriortyNameFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          spriortyStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdDate") {
+      if (
+        this.state.spriortyNameFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.spriortyStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          spriortyNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          spriortyStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          spriortyNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          spriortyStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "priortyStatus") {
+      if (
+        this.state.spriortyNameFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.screatedDateFilterCheckbox !== ""
+      ) {
+        this.setState({
+          spriortyNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          screatedDateFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sdesignationNameFilterCheckbox: "",
+          sreportToFilterCheckbox: "",
+          screatedbypersonFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
   }
   StatusCloseModel() {
+    this.setState({
+      sortFilterName: this.state.sortName,
+      sortFilterCreatedBy: this.state.sortCreatedBy,
+      sortFilterCreatedDate: this.state.sortCreatedDate,
+      sortFilterStatus: this.state.sortStatus,
+    });
     if (this.state.temppriorityData.length > 0) {
       this.setState({
         StatusModel: false,
@@ -273,10 +506,8 @@ class CreatePriority extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
-
+    debugger;
     var spriortyNameFilterCheckbox = this.state.spriortyNameFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
     var screatedDateFilterCheckbox = this.state.screatedDateFilterCheckbox;
@@ -292,9 +523,17 @@ class CreatePriority extends Component {
           "all,",
           ""
         );
-        if (spriortyNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          spriortyNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           spriortyNameFilterCheckbox = spriortyNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -318,9 +557,17 @@ class CreatePriority extends Component {
       if (type === "value" && type !== "All") {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
-        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -350,9 +597,17 @@ class CreatePriority extends Component {
           "all,",
           ""
         );
-        if (screatedDateFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedDateFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedDateFilterCheckbox = screatedDateFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -382,9 +637,17 @@ class CreatePriority extends Component {
           "all,",
           ""
         );
-        if (spriortyStatusFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          spriortyStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           spriortyStatusFilterCheckbox = spriortyStatusFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -395,9 +658,9 @@ class CreatePriority extends Component {
           spriortyStatusFilterCheckbox = "";
         } else {
           if (this.state.sortColumn === "priortyStatus") {
-            for (let i = 0; i < this.state.sortState.length; i++) {
+            for (let i = 0; i < this.state.sortStatus.length; i++) {
               spriortyStatusFilterCheckbox +=
-                this.state.sortState[i].priortyStatus + ",";
+                this.state.sortStatus[i].priortyStatus + ",";
             }
             spriortyStatusFilterCheckbox += "all";
           }
@@ -435,9 +698,6 @@ class CreatePriority extends Component {
           }
         }
       }
-      this.setState({
-        nameColor: "sort-column",
-      });
     } else if (column === "createdBy") {
       var sItems = screatedByFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -454,16 +714,13 @@ class CreatePriority extends Component {
           }
         }
       }
-      this.setState({
-        createdByColor: "sort-column",
-      });
     } else if (column === "createdDate") {
       var sItems = screatedDateFilterCheckbox.split(",");
       if (sItems.length > 0) {
         for (let i = 0; i < sItems.length; i++) {
           if (sItems[i] !== "") {
             var tempFilterData = allData.filter(
-              (a) => a.createdDate === sItems[i]
+              (a) => a.createdDateFormated === sItems[i]
             );
             if (tempFilterData.length > 0) {
               for (let j = 0; j < tempFilterData.length; j++) {
@@ -473,9 +730,6 @@ class CreatePriority extends Component {
           }
         }
       }
-      this.setState({
-        createdDateColor: "sort-column",
-      });
     } else if (column === "priortyStatus") {
       var sItems = spriortyStatusFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -492,12 +746,10 @@ class CreatePriority extends Component {
           }
         }
       }
-      this.setState({
-        statusColor: "sort-column",
-      });
     }
 
     this.setState({
+      isATOZ: true,
       temppriorityData: itemsArray,
     });
     // this.StatusCloseModel();
@@ -527,9 +779,7 @@ class CreatePriority extends Component {
       headers: authHeader(),
       params: paramData,
     })
-      .then(function (res) {
-        debugger;
-
+      .then(function(res) {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
@@ -548,9 +798,7 @@ class CreatePriority extends Component {
       url: config.apiUrl + "/StorePriority/PriorityList",
       headers: authHeader(),
     })
-      .then(function (res) {
-        debugger;
-
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data !== undefined) {
@@ -569,9 +817,11 @@ class CreatePriority extends Component {
         }
 
         if (data !== null) {
-          self.state.sortAllData = data;
           var unique = [];
           var distinct = [];
+          var sortName = [];
+          var sortFilterName = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].priortyName]) {
               distinct.push(data[i].priortyName);
@@ -579,25 +829,35 @@ class CreatePriority extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortName.push({ priortyName: distinct[i] });
-            self.state.sortFilterName.push({ priortyName: distinct[i] });
+            if (distinct[i]) {
+              sortName.push({ priortyName: distinct[i] });
+              sortFilterName.push({ priortyName: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortCreatedDate = [];
+          var sortFilterCreatedDate = [];
+
           for (let i = 0; i < data.length; i++) {
-            if (!unique[data[i].createdDate]) {
-              distinct.push(data[i].createdDate);
-              unique[data[i].createdDate] = 1;
+            if (!unique[data[i].createdDateFormated]) {
+              distinct.push(data[i].createdDateFormated);
+              unique[data[i].createdDateFormated] = 1;
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreatedDate.push({ createdDate: distinct[i] });
-            self.state.sortFilterCreatedDate.push({ createdDate: distinct[i] });
+            if (distinct[i]) {
+              sortCreatedDate.push({ createdDate: distinct[i] });
+              sortFilterCreatedDate.push({ createdDate: distinct[i] });
+            }
           }
-          debugger;
+
           var unique = [];
           var distinct = [];
+          var sortCreatedBy = [];
+          var sortFilterCreatedBy = [];
+
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].createdByName]) {
               distinct.push(data[i].createdByName);
@@ -605,12 +865,16 @@ class CreatePriority extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortCreatedBy.push({ createdBy: distinct[i] });
-            self.state.sortFilterCreatedBy.push({ createdBy: distinct[i] });
+            if (distinct[i]) {
+              sortCreatedBy.push({ createdBy: distinct[i] });
+              sortFilterCreatedBy.push({ createdBy: distinct[i] });
+            }
           }
 
           var unique = [];
           var distinct = [];
+          var sortStatus = [];
+          var sortFilterStatus = [];
           for (let i = 0; i < data.length; i++) {
             if (!unique[data[i].priortyStatus]) {
               distinct.push(data[i].priortyStatus);
@@ -618,9 +882,22 @@ class CreatePriority extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortStatus.push({ priortyStatus: distinct[i] });
-            self.state.sortFilterStatus.push({ priortyStatus: distinct[i] });
+            if (distinct[i]) {
+              sortStatus.push({ priortyStatus: distinct[i] });
+              sortFilterStatus.push({ priortyStatus: distinct[i] });
+            }
           }
+          self.setState({
+            sortFilterName,
+            sortFilterCreatedDate,
+            sortFilterCreatedBy,
+            sortFilterStatus,
+            sortName,
+            sortCreatedBy,
+            sortCreatedDate,
+            sortStatus,
+            sortAllData: data,
+          });
         }
       })
       .catch((data) => {
@@ -628,7 +905,6 @@ class CreatePriority extends Component {
       });
   }
   handleSubmitData() {
-    debugger;
     if (
       this.state.priority_name.length > 0 &&
       this.state.selectedActiveStatus != 0
@@ -641,33 +917,45 @@ class CreatePriority extends Component {
       } else {
         activeStatus = 0;
       }
-
       // create priority
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StorePriority/AddPriority",
-        headers: authHeader(),
-        params: {
-          PriorityName: this.state.priority_name.trim(),
-          status: activeStatus,
-        },
-      })
-        .then(function (res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            self.handleGetPriorityList();
-            NotificationManager.success("Priority Added successfully.");
-            self.setState({
-              priority_name: "",
-              selectedActiveStatus: 0,
-              priorityNameCompulsion: "",
-              statusCompulsion: "",
-            });
-          }
-        })
-        .catch((data) => {
-          console.log(data);
+      if (this.state.isexist === "") {
+        this.setState({
+          AddPriority: true,
         });
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StorePriority/AddPriority",
+          headers: authHeader(),
+          params: {
+            PriorityName: this.state.priority_name.trim(),
+            status: activeStatus,
+          },
+        })
+          .then(function(res) {
+            let status = res.data.message;
+            if (status === "Success") {
+              self.handleGetPriorityList();
+              NotificationManager.success("Priority Added successfully.");
+              self.setState({
+                priority_name: "",
+                selectedActiveStatus: 0,
+                priorityNameCompulsion: "",
+                statusCompulsion: "",
+                AddPriority: false,
+              });
+            } else {
+              self.setState({
+                AddPriority: false,
+              });
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+            this.setState({
+              AddPriority: false,
+            });
+          });
+      }
     } else {
       this.setState({
         priorityNameCompulsion: "Please Enter Priority Name",
@@ -685,7 +973,7 @@ class CreatePriority extends Component {
         PriorityID: priority_ID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetPriorityList();
@@ -698,57 +986,142 @@ class CreatePriority extends Component {
         console.log(data);
       });
   }
+  // handleUpdateData() {
+  //
+  //   if (
+  //     this.state.rowData.priortyName.length > 0 &&
+  //     this.state.rowData.isActive.length > 0
+  //   ) {
+  //     let self = this;
+  //     var activeStatus = 0;
+
+  //     if (this.state.rowData.isActive === "Active") {
+  //       activeStatus = 1;
+  //     } else {
+  //       activeStatus = 0;
+  //     }
+  //     this.setState({ editSaveLoading: true });
+
+  //     // update priority
+  //     axios({
+  //       method: "post",
+  //       url: config.apiUrl + "/StorePriority/UpdatePriority",
+  //       headers: authHeader(),
+  //       params: {
+  //         PriorityID: this.state.rowData.priorityID,
+  //         PriorityName: this.state.rowData.priortyName.trim(),
+  //         status: activeStatus,
+  //       },
+  //     })
+  //       .then(function(res) {
+  //         let status = res.data.message;
+  //         if (status === "Success") {
+  //           self.setState({ editSaveLoading: false, editmodel: false });
+  //           self.handleGetPriorityList();
+  //           NotificationManager.success("Priority updated successfully.");
+  //           self.setState({
+  //             rowData: {},
+  //             priority_name: "",
+  //             selectedActiveStatus: 0,
+  //           });
+  //         }
+  //       })
+  //       .catch((data) => {
+  //         self.setState({ editSaveLoading: false, editmodel: false });
+  //         console.log(data);
+  //       });
+  //   } else {
+  //     NotificationManager.error("Priority not updated.");
+  //     this.setState({
+  //       editpriorityNameCompulsion: "Please enter priority name",
+  //       editstatusCompulsion: "Please select status",
+  //     });
+  //   }
+  // }
+
   handleUpdateData() {
     debugger;
-    if (
-      this.state.rowData.priortyName.length > 0 &&
-      this.state.rowData.isActive.length > 0
-    ) {
-      let self = this;
-      var activeStatus = 0;
+    // if (this.state.rowData.priortyName == "") {
+    //   this.setState({
+    //     editpriorityNameCompulsion: "Please enter priority name",
+    //   });
+    // } else {
+    //   // if (this.state.isprority == true) {
+    //   //   this.setState({
+    //   //     editpriorityNameCompulsion: "Priority already exist!",
+    //   //   });
+    //   // } else {
+    //   //   this.setState({ editpriorityNameCompulsion: "" });
+    //   // }
+    //   this.setState({ editpriorityNameCompulsion: "" });
+    // }
 
-      if (this.state.rowData.isActive === "Active") {
-        activeStatus = 1;
-      } else {
-        activeStatus = 0;
-      }
-      this.setState({ editSaveLoading: true });
-
-      // update priority
-      axios({
-        method: "post",
-        url: config.apiUrl + "/StorePriority/UpdatePriority",
-        headers: authHeader(),
-        params: {
-          PriorityID: this.state.rowData.priorityID,
-          PriorityName: this.state.rowData.priortyName.trim(),
-          status: activeStatus,
-        },
-      })
-        .then(function (res) {
-          let status = res.data.message;
-          if (status === "Success") {
-            self.setState({ editSaveLoading: false, editmodel: false });
-            self.handleGetPriorityList();
-            NotificationManager.success("Priority updated successfully.");
-            self.setState({
-              rowData: {},
-              priority_name: "",
-              selectedActiveStatus: 0,
-            });
-          }
-        })
-        .catch((data) => {
-          self.setState({ editSaveLoading: false, editmodel: false });
-          console.log(data);
-        });
+    if (this.state.rowData.isActive === "") {
+      this.setState({ editstatusCompulsion: "Please select status" });
     } else {
-      NotificationManager.error("Priority not updated.");
-      this.setState({
-        editpriorityNameCompulsion: "Please enter priority name",
-        editstatusCompulsion: "Please select status",
-      });
+      this.setState({ editstatusCompulsion: "" });
     }
+    setTimeout(() => {
+      if (
+        this.state.rowData.priortyName !== "" &&
+        this.state.editpriorityNameCompulsion == "" &&
+        // this.state.isprority == false &&
+        this.state.editstatusCompulsion === "" &&
+        this.state.isEditBtn === true
+      ) {
+        let self = this;
+        var activeStatus = 0;
+
+        if (this.state.rowData.isActive === "Active") {
+          activeStatus = 1;
+        } else {
+          activeStatus = 0;
+        }
+        this.setState({ editSaveLoading: true });
+
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StorePriority/UpdatePriority",
+          headers: authHeader(),
+          params: {
+            PriorityID: this.state.rowData.priorityID,
+            PriorityName: this.state.rowData.priortyName,
+            status: activeStatus,
+          },
+        })
+          .then(function(res) {
+            let status = res.data.message;
+            if (status === "Success") {
+              self.setState({
+                editSaveLoading: false,
+                editmodel: false,
+                sortCreatedBy: [],
+                sortFilterCreatedBy: [],
+                sortFilterName: [],
+                sortName: [],
+                sortStatus: [],
+                sortFilterStatus: [],
+              });
+              self.handleGetPriorityList();
+              NotificationManager.success("Priority updated successfully.");
+              self.setState({
+                rowData: {},
+                priority_name: "",
+                selectedActiveStatus: 0,
+              });
+            }
+          })
+          .catch((data) => {
+            self.setState({ editSaveLoading: false, editmodel: false });
+            console.log(data);
+          });
+      } else {
+        // this.setState({
+        //   editpriorityNameCompulsion: "Please enter priority name",
+        //   editstatusCompulsion: "Please select status",
+        // });
+      }
+    }, 10);
   }
 
   onMouseDown(e) {
@@ -764,7 +1137,7 @@ class CreatePriority extends Component {
     if (target) {
       e.dataTransfer.effectAllowed = "move";
       target.parentElement.ondragenter = this.onDragEnter;
-      target.parentElement.ondragover = function (ev) {
+      target.parentElement.ondragover = function(ev) {
         ev.preventDefault();
         return true;
       };
@@ -817,6 +1190,9 @@ class CreatePriority extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.value == "") {
+      this.setState({ isexist: "" });
+    }
   };
   handleOnChangeData = (e) => {
     var name = e.target.name;
@@ -842,31 +1218,48 @@ class CreatePriority extends Component {
   }
 
   handleOpenEditModal(Data, e) {
-    debugger;
     var rowData = {};
     rowData.priorityID = Data.priorityID;
     rowData.priortyName = Data.priortyName;
+    var isNewName = Data.priortyName;
     rowData.isActive =
       Data.isActive === true
         ? "Active"
         : Data.isActive === false
         ? "Inactive"
         : "";
-    this.setState({ editmodel: true, rowData });
+    this.setState({
+      editmodel: true,
+      rowData,
+      isNewName,
+      editpriorityNameCompulsion: "",
+    });
   }
   toggleEditModal() {
-    this.setState({ editmodel: false });
+    this.setState({ editmodel: false, editpriorityNameCompulsion: "" });
   }
 
   handelEditChange(e) {
-    debugger;
     const { name, value } = e.target;
+
     var rowData = this.state.rowData;
+
     rowData[name] = value;
+
     this.setState({ rowData });
+    if (name === "priortyName" && value == "") {
+      this.setState({
+        editIsExist: "",
+        editpriorityNameCompulsion: "Please enter priority name",
+      });
+    } else {
+      this.setState({
+        editIsExist: "",
+        editpriorityNameCompulsion: "",
+      });
+    }
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     if (this.state.sortColumn === "priortyName") {
       var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
@@ -876,7 +1269,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterName });
       } else {
         this.setState({
-          sortFilterName: this.state.sortName,
+          sortFilterName: [],
         });
       }
     }
@@ -892,7 +1285,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterCreatedBy });
       } else {
         this.setState({
-          sortFilterCreatedBy: this.state.sortCreatedBy,
+          sortFilterCreatedBy: [],
         });
       }
     }
@@ -906,7 +1299,7 @@ class CreatePriority extends Component {
         this.setState({ sortFilterCreatedDate });
       } else {
         this.setState({
-          sortFilterCreatedDate: this.state.sortCreatedDate,
+          sortFilterCreatedDate: [],
         });
       }
     }
@@ -920,17 +1313,50 @@ class CreatePriority extends Component {
         this.setState({ sortFilterStatus });
       } else {
         this.setState({
-          sortFilterStatus: this.state.sortStatus,
+          sortFilterStatus: [],
         });
       }
     }
+  }
+
+  handleClearSearch() {
+    this.setState({
+      spriortyNameFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      screatedDateFilterCheckbox: "",
+      spriortyStatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      priorityData: this.state.sortAllData,
+      temppriorityData: [],
+    });
   }
 
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="/store/settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link
+            to={{
+              pathname: "/store/settings",
+              tabName: "store-tab",
+            }}
+            className="header-path"
+          >
+            Store
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="header-path active">
+            Priority
+          </Link>
+        </div>
         <div className="position-relative d-inline-block">
           <Modal
             show={this.state.StatusModel}
@@ -987,9 +1413,13 @@ class CreatePriority extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                   {
                       (() => {
@@ -1036,9 +1466,14 @@ class CreatePriority extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
+                    {/* {this.state.sortFilterName.length > 0 &&
+                    this.state.sortFilterCreatedBy.length > 0 &&
+                    this.state.sortFilterCreatedDate.length > 0 &&
+                    this.state.sortFilterStatus.length > 0 ? ( */}
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">ALL</span>
                     </label>
+                    {/* ) : null} */}
                   </div>
                   {this.state.sortColumn === "priortyName"
                     ? this.state.sortFilterName !== null &&
@@ -1049,9 +1484,9 @@ class CreatePriority extends Component {
                             name={item.priortyName}
                             id={"fil-open" + item.priortyName}
                             value={item.priortyName}
-                            checked={this.state.spriortyNameFilterCheckbox.includes(
-                              item.priortyName
-                            )}
+                            checked={this.state.spriortyNameFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.priortyName)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyName",
@@ -1076,9 +1511,9 @@ class CreatePriority extends Component {
                             name={item.createdBy}
                             id={"fil-open" + item.createdBy}
                             value={item.createdBy}
-                            checked={this.state.screatedByFilterCheckbox.includes(
-                              item.createdBy
-                            )}
+                            checked={this.state.screatedByFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.createdBy)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdBy",
@@ -1103,9 +1538,9 @@ class CreatePriority extends Component {
                             name={item.createdDate}
                             id={"fil-open" + item.createdDate}
                             value={item.createdDate}
-                            checked={this.state.screatedDateFilterCheckbox.includes(
-                              item.createdDate
-                            )}
+                            checked={this.state.screatedDateFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.createdDate)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdDate",
@@ -1130,9 +1565,9 @@ class CreatePriority extends Component {
                             name={item.priortyStatus}
                             id={"fil-open" + item.priortyStatus}
                             value={item.priortyStatus}
-                            checked={this.state.spriortyStatusFilterCheckbox.includes(
-                              item.priortyStatus
-                            )}
+                            checked={this.state.spriortyStatusFilterCheckbox
+                              .split(",")
+                              .find((word) => word === item.priortyStatus)|| false}
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "priortyStatus",
@@ -1199,13 +1634,13 @@ class CreatePriority extends Component {
           </Link>
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr">
+          <div className="settingtable">
             <div className="row">
               <div className="col-md-8">
                 {/* {this.state.loading === true ? (
                   <div className="loader-icon"></div>
                 ) : ( */}
-                <div className="table-cntr table-height table-priority">
+                <div className="table-cntr table-height table-priority setting-table-des-antd">
                   <DndProvider backend={HTML5Backend}>
                     <Table
                       className={
@@ -1244,15 +1679,32 @@ class CreatePriority extends Component {
                           ),
                         },
                         {
-                          title: "Priority Name",
+                          title: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Priorty Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priortyName",
+                                "Priorty Name"
+                              )}
+                            >
+                              Priorty Name
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Priorty Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                           dataIndex: "priortyName",
                           key: "priortyName",
-                          filterMultiple: false,
-                          onFilter: (value, record) =>
-                            record.priortyName.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.priortyName.length - b.priortyName.length,
-                          sortDirections: ["descend", "ascend"],
 
                           onHeaderCell: (column) => {
                             return {
@@ -1284,15 +1736,32 @@ class CreatePriority extends Component {
                           },
                         },
                         {
-                          title: "Created By",
+                          title: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Created By Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdBy",
+                                "Created By Name"
+                              )}
+                            >
+                              Created By
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created By Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                           dataIndex: "createdByName",
                           key: "createdByName",
-                          filterMultiple: false,
-                          onFilter: (value, record) =>
-                            record.createdByName.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.createdByName.length - b.createdByName.length,
-                          sortDirections: ["descend", "ascend"],
 
                           onHeaderCell: (column) => {
                             return {
@@ -1409,11 +1878,10 @@ class CreatePriority extends Component {
                           },
                         },
                         {
+                          headerSort: false,
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
-                                debugger;
-
                                 if (
                                   this.state.spriortyNameFilterCheckbox !==
                                     "" ||
@@ -1440,23 +1908,38 @@ class CreatePriority extends Component {
                             };
                           },
 
-                          title: "Created Date",
                           dataIndex: "createdDateFormated",
                           key: "createdDateFormated",
-                          onFilter: (value, record) =>
-                            record.createdDateFormated.indexOf(value) === 0,
-                          // defaultSortOrder: "descend",
-                          filterMultiple: false,
-                          sorter: (a, b) =>
-                            a.createdDateFormated.length -
-                            b.createdDateFormated.length,
-                          sortDirections: ["descend", "ascend"],
+                          title: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Created Date"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdDate",
+                                "Created Date"
+                              )}
+                            >
+                              Created Date
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created Date"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                         },
                         {
+                          headerSort: false,
                           onHeaderCell: (column) => {
                             return {
                               onClick: () => {
-                                debugger;
                                 this.setState({
                                   StatusModel: true,
                                 });
@@ -1469,7 +1952,7 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: "Status",
+                                    sortHeader: "Priorty Status",
                                   });
                                 } else {
                                   this.setState({
@@ -1479,30 +1962,48 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: "Status",
+                                    sortHeader: "Priorty Status",
                                   });
                                 }
                               },
                             };
                           },
 
-                          title: "Status",
                           dataIndex: "priortyStatus",
                           key: "priortyStatus",
-                          filterMultiple: false,
-                          onFilter: (value, record) =>
-                            record.priortyStatus.indexOf(value) === 0,
-                          sorter: (a, b) =>
-                            a.priortyStatus.length - b.priortyStatus.length,
-                          sortDirections: ["descend", "ascend"],
+                          title: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Priorty Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "priortyStatus",
+                                "Priorty Status"
+                              )}
+                            >
+                              Priorty Status
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Priorty Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
                         },
                         {
                           title: "Action",
                           dataIndex: "priorityID",
                           key: "priorityID",
+                          headerSort: false,
                           render: (text, record) => {
                             return (
-                              <span>
+                              <span className="d-flex align-items-center">
                                 <Popover
                                   content={
                                     <div>
@@ -1538,7 +2039,13 @@ class CreatePriority extends Component {
                                           }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>
+                                          <a
+                                            onClick={() => {
+                                              document
+                                                .getElementById(text)
+                                                .click();
+                                            }}
+                                          >
                                             {
                                               (() => {
                                                 if (TranslationContext !== undefined) {
@@ -1579,6 +2086,7 @@ class CreatePriority extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
+                                    id={text}
                                   />
                                 </Popover>
 
@@ -1622,7 +2130,7 @@ class CreatePriority extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">
+                    <label className="create-department" id="createId">
                       {
                         (() => {
                           if (TranslationContext !== undefined) {
@@ -1654,11 +2162,17 @@ class CreatePriority extends Component {
                         maxLength={25}
                         name="priority_name"
                         value={this.state.priority_name}
+                        onBlur={this.handleCheckPriorityExits.bind(this)}
                         onChange={this.handleCreateOnChange}
                       />
                       {this.state.priority_name.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.priorityNameCompulsion}
+                        </p>
+                      )}
+                      {this.state.isexist !== "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.isexist}
                         </p>
                       )}
                     </div>
@@ -1697,12 +2211,11 @@ class CreatePriority extends Component {
                     <div className="btnSpace">
                       <button
                         className="CreateADDBtn addLable"
-                        disabled={this.state.editSaveLoading}
-                        className="CreateADDBtn addLable"
+                        disabled={this.state.AddPriority}
                         onClick={this.handleSubmitData.bind(this)}
                         type="submit"
                       >
-                        {this.state.editSaveLoading ? (
+                        {this.state.AddPriority ? (
                           <FontAwesomeIcon
                             className="circular-loader"
                             icon={faCircleNotch}
@@ -1769,6 +2282,7 @@ class CreatePriority extends Component {
                 name="priortyName"
                 value={this.state.rowData.priortyName}
                 onChange={this.handelEditChange.bind(this)}
+                onBlur={this.handleCheckPriorityExits.bind(this)}
               />
               {this.state.rowData.priortyName === "" && (
                 <p
@@ -1778,6 +2292,16 @@ class CreatePriority extends Component {
                   }}
                 >
                   {this.state.editpriorityNameCompulsion}
+                </p>
+              )}
+              {this.state.editIsExist !== "" && (
+                <p
+                  style={{
+                    color: "red",
+                    marginBottom: "0px",
+                  }}
+                >
+                  {this.state.editIsExist}
                 </p>
               )}
             </div>

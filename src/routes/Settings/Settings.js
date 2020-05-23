@@ -29,11 +29,18 @@ class Settings extends Component {
     this.state = {
       ticketShow: false,
       storeShow: false,
+      showReport: true,
     };
   }
 
   componentDidMount() {
-    debugger;
+    var isReport = document.getElementById("isReport").value;
+
+    if (isReport === "block") {
+      this.setState({ showReport: true });
+    } else if (isReport === "none") {
+      this.setState({ showReport: false });
+    }
     if (this.props.location.tabName) {
       let lowerTabsPane = document.querySelectorAll(".tab-pane");
       for (let i = 0; i < lowerTabsPane.length; i++) {
@@ -90,17 +97,17 @@ class Settings extends Component {
         <div className="container-fluid">
           <div className="setting-tabs">
             <ul className="nav nav-tabs" role="tablist">
-              <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  data-toggle="tab"
-                  href="#ticketing-tab"
-                  role="tab"
-                  aria-controls="ticketing-tab"
-                  aria-selected="true"
-                >
-                  
-                  {
+              {this.state.ticketShow === "true" ? (
+                <li className="nav-item">
+                  <a
+                    className="nav-link active"
+                    data-toggle="tab"
+                    href="#ticketing-tab"
+                    role="tab"
+                    aria-controls="ticketing-tab"
+                    aria-selected="true"
+                  >
+                    {
                     (() => {
                       if (TranslationContext!==undefined) {
                       return TranslationContext.a.ticketing
@@ -110,20 +117,33 @@ class Settings extends Component {
                     }
                     })()
                   }
-                </a>
-              </li>
-              {/* <li className="nav-item">
-                <a
-                  className="nav-link"
-                  data-toggle="tab"
-                  href="#store-tab"
-                  role="tab"
-                  aria-controls="store-tab"
-                  aria-selected="false"
-                >
-                  Store
-                </a>
-              </li> */}
+                  </a>
+                </li>
+              ) : null}
+              {this.state.storeShow === "true" ? (
+                <li className="nav-item">
+                  <a
+                    className="nav-link active"
+                    data-toggle="tab"
+                    href="#store-tab"
+                    role="tab"
+                    aria-controls="store-tab"
+                    aria-selected="false"
+                  >
+                    {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.a.store
+                      }
+                    else{
+                      return "Store"
+                    }
+                    })()
+                  }
+                  </a>
+                </li>
+              ) : null}
+
               {/* <li className="nav-item">
                 <a
                   className="nav-link"
@@ -152,7 +172,11 @@ class Settings extends Component {
             <div className="tab-content">
               <div
                 // className={this.state.ticketing_Setting}
-                className={this.state.ticketShow === "true" ? "tab-pane fade show active": "tab-pane fade"}
+                className={
+                  this.state.ticketShow === "true"
+                    ? "tab-pane fade show active"
+                    : "tab-pane fade"
+                }
                 id="ticketing-tab"
                 role="tabpanel"
                 aria-labelledby="ticketing-tab"
@@ -666,7 +690,11 @@ class Settings extends Component {
                 </div>
               </div>
               <div
-                className={this.state.storeShow === "true" ? "tab-pane fade show active":"tab-pane fade"}
+                className={
+                  this.state.storeShow === "true"
+                    ? "tab-pane fade show active"
+                    : "tab-pane fade"
+                }
                 id="store-tab"
                 role="tabpanel"
                 aria-labelledby="store-tab"
@@ -770,6 +798,19 @@ class Settings extends Component {
                     }
                     })()
                   }
+                          </p>
+                        </div>
+                      </Link>
+                      <Link to="/store/homeshopsetting" className="setting-box">
+                        <div className="setting-icons">
+                          <img src={modules} alt="modules" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Home Shop Settings</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
                           </p>
                         </div>
                       </Link>
@@ -984,13 +1025,13 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <Link to="/store/storereports" className="setting-box">
-                        <div className="setting-icons icon-small">
-                          <img src={reports} alt="reports" />
-                        </div>
-                        <div className="setting-desc">
-                          <strong>
-                          {
+                      {this.state.showReport && (
+                        <Link to="/store/storereports" className="setting-box">
+                          <div className="setting-icons icon-small">
+                            <img src={reports} alt="reports" />
+                          </div>
+                          <div className="setting-desc">
+                            <strong>{
                     (() => {
                       if (TranslationContext!==undefined) {
                       return TranslationContext.strong.reports
@@ -999,11 +1040,9 @@ class Settings extends Component {
                       return "Reports"
                     }
                     })()
-                  }
-                          </strong>
-                          <p>
-                            
-                            {
+                  }</strong>
+                            <p>
+                              {
                     (() => {
                       if (TranslationContext!==undefined) {
                       return TranslationContext.p.setdesc
@@ -1013,9 +1052,10 @@ class Settings extends Component {
                     }
                     })()
                   }
-                          </p>
-                        </div>
-                      </Link>
+                            </p>
+                          </div>
+                        </Link>
+                      )}
                       <Link to="/store/storeModule" className="setting-box">
                         <div className="setting-icons">
                           <img src={modules} alt="modules" />
@@ -1048,7 +1088,10 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="fileuploadlogs" className="setting-box">
+                      <Link
+                        to="/store/storeFileUploadLogs"
+                        className="setting-box"
+                      >
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>

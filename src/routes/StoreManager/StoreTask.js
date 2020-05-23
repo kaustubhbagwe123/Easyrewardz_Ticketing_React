@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Campaign from "./Campaign";
 import InfoIcon from "../../assets/Images/info-icon.png";
-import Demo from "../../store/Hashtag";
+// import Demo from "../../store/Hashtag";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
@@ -15,6 +16,9 @@ import Sorting from "./../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
 import { Collapse, CardBody, Card } from "reactstrap";
 import SearchIcon from "../../assets/Images/search-icon.png";
+import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
+import StoreStatus from "./StoreStatus.js";
+import moment from "moment";
 class StoreTask extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +64,14 @@ class StoreTask extends Component {
       assignToData: [],
       funcationData: [],
       departmentData: [],
+      assignSearchData: {},
+      raiseSearchData: {},
+      ticketSearchData: {},
+      storeStatus: StoreStatus(),
+      userData: [],
+      isViewSerach: false,
+      isATOZ: true,
+      itemData: [],
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -70,6 +82,7 @@ class StoreTask extends Component {
     this.handleGetTaskData(1);
     this.handleGetDepartment();
     this.handleGetPriorityList();
+    this.handleGetStoreUser();
   }
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
@@ -124,237 +137,362 @@ class StoreTask extends Component {
       });
     } else {
       this.setState({
+        sortColumn: "",
+        sortHeader: "",
+        isATOZ: true,
+        isortA: false,
+        filterTxtValue: "",
         showAddTask: true,
       });
     }
-    this.setState({
-      isloading: true,
-      sdepartmentNameFilterCheckbox: "",
-      sstoreNameFilterCheckbox: "",
-      spriorityNameFilterCheckbox: "",
-      screationOnFilterCheckbox: "",
-      sassigntoFilterCheckbox: "",
-      screatedByFilterCheckbox: "",
+    if (tabFor !== 4) {
+      this.setState({
+        FilterCollapse: false,
+        isloading: true,
+        raiseSearchData: {},
+        assignSearchData: {},
+        ticketSearchData: {},
+        sdepartmentNameFilterCheckbox: "",
+        sstoreNameFilterCheckbox: "",
+        spriorityNameFilterCheckbox: "",
+        screationOnFilterCheckbox: "",
+        sassigntoFilterCheckbox: "",
+        screatedByFilterCheckbox: "",
+        staskStatusFilterCheckbox: "",
 
-      sortFilterdepartmentName: [],
-      sortFilterstoreName: [],
-      sortFilterpriorityName: [],
-      sortFiltercreationOn: [],
-      sortFilterassignto: [],
-      sortFiltercreatedBy: [],
+        sortFilterdepartmentName: [],
+        sortFilterstoreName: [],
+        sortFilterpriorityName: [],
+        sortFiltercreationOn: [],
+        sortFilterassignto: [],
+        sortFiltercreatedBy: [],
+        sortFiltertaskStatus: [],
 
-      sortdepartmentName: [],
-      sortstoreName: [],
-      sortpriorityName: [],
-      sortcreationOn: [],
-      sortassignto: [],
-      sortcreatedBy: [],
-    });
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreTask/GetStoreTaskList",
-      headers: authHeader(),
-      params: { tabFor: tabFor },
-    })
-      .then(function(response) {
-        debugger;
-        var message = response.data.message;
-        var data = response.data.responseData;
-        if (message === "Success" && data.length > 0) {
-          if (tabFor === 1) {
-            self.setState({
-              raisedByMeData: data,
-              isloading: false,
-              tabIndex: tabFor,
-            });
-            self.state.sortAllData = data;
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].departmentName] &&
-                data[i].departmentName !== ""
-              ) {
-                distinct.push(data[i].departmentName);
-                unique[data[i].departmentName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortdepartmentName.push({
-                departmentName: distinct[i],
-              });
-              self.state.sortFilterdepartmentName.push({
-                departmentName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].storeName] && data[i].storeName !== "") {
-                distinct.push(data[i].storeName);
-                unique[data[i].storeName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortstoreName.push({ storeName: distinct[i] });
-              self.state.sortFilterstoreName.push({ storeName: distinct[i] });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].priorityName] &&
-                data[i].priorityName !== ""
-              ) {
-                distinct.push(data[i].priorityName);
-                unique[data[i].priorityName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortpriorityName.push({ priorityName: distinct[i] });
-              self.state.sortFilterpriorityName.push({
-                priorityName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
-                distinct.push(data[i].creationOn);
-                unique[data[i].creationOn] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortcreationOn.push({
-                creationOn: distinct[i],
-              });
-              self.state.sortFiltercreationOn.push({
-                creationOn: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].assignto] && data[i].assignto !== "") {
-                distinct.push(data[i].assignto);
-                unique[data[i].assignto] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortassignto.push({ assignto: distinct[i] });
-              self.state.sortFilterassignto.push({
-                assignto: distinct[i],
-              });
-            }
-          }
-          if (tabFor === 2) {
-            self.setState({
-              assignToMeData: data,
-              isloading: false,
-              tabIndex: tabFor,
-            });
-            self.state.sortAllData = data;
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].departmentName] &&
-                data[i].departmentName !== ""
-              ) {
-                distinct.push(data[i].departmentName);
-                unique[data[i].departmentName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortdepartmentName.push({
-                departmentName: distinct[i],
-              });
-              self.state.sortFilterdepartmentName.push({
-                departmentName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].storeName] && data[i].storeName !== "") {
-                distinct.push(data[i].storeName);
-                unique[data[i].storeName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortstoreName.push({ storeName: distinct[i] });
-              self.state.sortFilterstoreName.push({ storeName: distinct[i] });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (
-                !unique[data[i].priorityName] &&
-                data[i].priorityName !== ""
-              ) {
-                distinct.push(data[i].priorityName);
-                unique[data[i].priorityName] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortpriorityName.push({ priorityName: distinct[i] });
-              self.state.sortFilterpriorityName.push({
-                priorityName: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
-                distinct.push(data[i].creationOn);
-                unique[data[i].creationOn] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortcreationOn.push({
-                creationOn: distinct[i],
-              });
-              self.state.sortFiltercreationOn.push({
-                creationOn: distinct[i],
-              });
-            }
-            var unique = [];
-            var distinct = [];
-            for (let i = 0; i < data.length; i++) {
-              if (!unique[data[i].createdBy] && data[i].createdBy !== "") {
-                distinct.push(data[i].createdBy);
-                unique[data[i].createdBy] = 1;
-              }
-            }
-            for (let i = 0; i < distinct.length; i++) {
-              self.state.sortcreatedBy.push({ createdBy: distinct[i] });
-              self.state.sortFiltercreatedBy.push({
-                createdBy: distinct[i],
-              });
-            }
-          }
-        } else {
-          if (tabFor === 1) {
-            self.setState({ raisedByMeData: data, isloading: false });
-          }
-          if (tabFor === 2) {
-            self.setState({ assignToMeData: data, isloading: false });
-          }
-        }
-      })
-      .catch((response) => {
-        self.setState({ isloading: false });
-        console.log(response, "---handleGetTaskData");
+        sortdepartmentName: [],
+        sortstoreName: [],
+        sortpriorityName: [],
+        sortcreationOn: [],
+        sortassignto: [],
+        sortcreatedBy: [],
+        sorttaskStatus: [],
       });
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreTask/GetStoreTaskList",
+        headers: authHeader(),
+        params: { tabFor: tabFor },
+      })
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          var data = response.data.responseData;
+          if (message === "Success" && data.length > 0) {
+            self.setState({ sortAllData: data });
+            var unique = [];
+            var distinct = [];
+            var sortFilterdepartmentName = [];
+            var sortFilterstoreName = [];
+            var sortFilterpriorityName = [];
+            var sortFiltercreationOn = [];
+            var sortFilterassignto = [];
+            var sortFiltercreatedBy = [];
+            var sortFiltertaskStatus = [];
+            var sortdepartmentName = [];
+            var sortstoreName = [];
+            var sortpriorityName = [];
+            var sortcreationOn = [];
+            var sortassignto = [];
+            var sortcreatedBy = [];
+            var sorttaskStatus = [];
+            if (tabFor === 1) {
+              self.setState({
+                raisedByMeData: data,
+                isloading: false,
+                tabIndex: tabFor,
+              });
+
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].departmentName] &&
+                  data[i].departmentName !== ""
+                ) {
+                  distinct.push(data[i].departmentName);
+                  unique[data[i].departmentName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                  sortFilterdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].storeName] && data[i].storeName !== "") {
+                  distinct.push(data[i].storeName);
+                  unique[data[i].storeName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortFilterstoreName.push({
+                    storeName: distinct[i],
+                  });
+                  sortstoreName.push({
+                    storeName: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].priorityName] &&
+                  data[i].priorityName !== ""
+                ) {
+                  distinct.push(data[i].priorityName);
+                  unique[data[i].priorityName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortpriorityName.push({
+                    priorityName: distinct[i],
+                  });
+                  sortFilterpriorityName.push({
+                    priorityName: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
+                  distinct.push(data[i].creationOn);
+                  unique[data[i].creationOn] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortcreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                  sortFiltercreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].assignto] && data[i].assignto !== "") {
+                  distinct.push(data[i].assignto);
+                  unique[data[i].assignto] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortassignto.push({
+                    assignto: distinct[i],
+                  });
+                  sortFilterassignto.push({
+                    assignto: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].taskStatus] && data[i].taskStatus !== "") {
+                  distinct.push(data[i].taskStatus);
+                  unique[data[i].taskStatus] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sorttaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                  sortFiltertaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                }
+              }
+            }
+            if (tabFor === 2) {
+              self.setState({
+                assignToMeData: data,
+                isloading: false,
+                tabIndex: tabFor,
+              });
+              self.state.sortAllData = data;
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].departmentName] &&
+                  data[i].departmentName !== ""
+                ) {
+                  distinct.push(data[i].departmentName);
+                  unique[data[i].departmentName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                  sortFilterdepartmentName.push({
+                    departmentName: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].storeName] && data[i].storeName !== "") {
+                  distinct.push(data[i].storeName);
+                  unique[data[i].storeName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortstoreName.push({ storeName: distinct[i] });
+                  sortFilterstoreName.push({ storeName: distinct[i] });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (
+                  !unique[data[i].priorityName] &&
+                  data[i].priorityName !== ""
+                ) {
+                  distinct.push(data[i].priorityName);
+                  unique[data[i].priorityName] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortpriorityName.push({ priorityName: distinct[i] });
+                  sortFilterpriorityName.push({
+                    priorityName: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].creationOn] && data[i].creationOn !== "") {
+                  distinct.push(data[i].creationOn);
+                  unique[data[i].creationOn] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortcreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                  sortFiltercreationOn.push({
+                    creationOn: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].createdBy] && data[i].createdBy !== "") {
+                  distinct.push(data[i].createdBy);
+                  unique[data[i].createdBy] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sortcreatedBy.push({ createdBy: distinct[i] });
+                  sortFiltercreatedBy.push({
+                    createdBy: distinct[i],
+                  });
+                }
+              }
+              var unique = [];
+              var distinct = [];
+              for (let i = 0; i < data.length; i++) {
+                if (!unique[data[i].taskStatus] && data[i].taskStatus !== "") {
+                  distinct.push(data[i].taskStatus);
+                  unique[data[i].taskStatus] = 1;
+                }
+              }
+              for (let i = 0; i < distinct.length; i++) {
+                if (distinct[i]) {
+                  sorttaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                  sortFiltertaskStatus.push({
+                    taskStatus: distinct[i],
+                  });
+                }
+              }
+            }
+            self.setState({
+              sortdepartmentName,
+              sortstoreName,
+              sortpriorityName,
+              sortcreationOn,
+              sortassignto,
+              sortcreatedBy,
+              sorttaskStatus,
+              sortFilterdepartmentName,
+              sortFilterstoreName,
+              sortFilterpriorityName,
+              sortFiltercreationOn,
+              sortFilterassignto,
+              sortFiltercreatedBy,
+              sortFiltertaskStatus,
+            });
+          } else {
+            if (tabFor === 1) {
+              self.setState({
+                raisedByMeData: data,
+                isloading: false,
+                sortAllData: data,
+              });
+            }
+            if (tabFor === 2) {
+              self.setState({
+                assignToMeData: data,
+                isloading: false,
+                sortAllData: data,
+              });
+            }
+          }
+        })
+        .catch((response) => {
+          self.setState({ isloading: false });
+          console.log(response, "---handleGetTaskData");
+        });
+    }
   }
 
   handleGetTaskbyTicket() {
     this.setState({
+      sortColumn: "",
+      sortHeader: "",
+      isATOZ: true,
+      isortA: false,
+      filterTxtValue: "",
       showAddTask: true,
       tabIndex: 3,
       isloading: true,
       FilterCollapse: false,
+      raiseSearchData: {},
+      assignSearchData: {},
+      ticketSearchData: {},
       sdepartmentNameFilterCheckbox: "",
       sstoreNameFilterCheckbox: "",
       spriorityNameFilterCheckbox: "",
@@ -390,8 +528,23 @@ class StoreTask extends Component {
           self.setState({
             isloading: false,
             taskByTicketData: data,
+            sortAllData: data,
           });
-          self.state.sortAllData = data;
+          var sortFilterdepartmentName = [];
+          var sortFilterstoreName = [];
+          var sortFilterpriorityName = [];
+          var sortFiltercreationOn = [];
+          var sortFilterassignto = [];
+          var sortFiltercreatedBy = [];
+          var sortFiltertaskStatus = [];
+          var sortdepartmentName = [];
+          var sortstoreName = [];
+          var sortpriorityName = [];
+          var sortcreationOn = [];
+          var sortassignto = [];
+          var sortcreatedBy = [];
+          var sorttaskStatus = [];
+
           var unique = [];
           var distinct = [];
           for (let i = 0; i < data.length; i++) {
@@ -404,12 +557,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortdepartmentName.push({
-              departmentName: distinct[i],
-            });
-            self.state.sortFilterdepartmentName.push({
-              departmentName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortdepartmentName.push({
+                departmentName: distinct[i],
+              });
+              sortFilterdepartmentName.push({
+                departmentName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -420,12 +575,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortstoreName.push({
-              storeName: distinct[i],
-            });
-            self.state.sortFilterstoreName.push({
-              storeName: distinct[i],
-            });
+            if (distinct[i]) {
+              sortstoreName.push({
+                storeName: distinct[i],
+              });
+              sortFilterstoreName.push({
+                storeName: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -436,12 +593,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreatedBy.push({
-              createdBy: distinct[i],
-            });
-            self.state.sortFiltercreatedBy.push({
-              createdBy: distinct[i],
-            });
+            if (distinct[i]) {
+              sortcreatedBy.push({
+                createdBy: distinct[i],
+              });
+              sortFiltercreatedBy.push({
+                createdBy: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -452,12 +611,14 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortcreationOn.push({
-              creationOn: distinct[i],
-            });
-            self.state.sortFiltercreationOn.push({
-              creationOn: distinct[i],
-            });
+            if (distinct[i]) {
+              sortcreationOn.push({
+                creationOn: distinct[i],
+              });
+              sortFiltercreationOn.push({
+                creationOn: distinct[i],
+              });
+            }
           }
           var unique = [];
           var distinct = [];
@@ -468,13 +629,50 @@ class StoreTask extends Component {
             }
           }
           for (let i = 0; i < distinct.length; i++) {
-            self.state.sortassignto.push({
-              assignto: distinct[i],
-            });
-            self.state.sortFilterassignto.push({
-              assignto: distinct[i],
-            });
+            if (distinct[i]) {
+              sortassignto.push({
+                assignto: distinct[i],
+              });
+              sortFilterassignto.push({
+                assignto: distinct[i],
+              });
+            }
           }
+
+          var unique = [];
+          var distinct = [];
+          for (let i = 0; i < data.length; i++) {
+            if (!unique[data[i].taskStatus] && data[i].taskStatus !== "") {
+              distinct.push(data[i].taskStatus);
+              unique[data[i].taskStatus] = 1;
+            }
+          }
+          for (let i = 0; i < distinct.length; i++) {
+            if (distinct[i]) {
+              sortFiltertaskStatus.push({
+                taskStatus: distinct[i],
+              });
+              sorttaskStatus.push({
+                taskStatus: distinct[i],
+              });
+            }
+          }
+          self.setState({
+            sortdepartmentName,
+            sortstoreName,
+            sortpriorityName,
+            sortcreationOn,
+            sortassignto,
+            sortcreatedBy,
+            sorttaskStatus,
+            sortFilterdepartmentName,
+            sortFilterstoreName,
+            sortFilterpriorityName,
+            sortFiltercreationOn,
+            sortFilterassignto,
+            sortFiltercreatedBy,
+            sortFiltertaskStatus,
+          });
         } else {
           self.setState({ isloading: false, data });
         }
@@ -493,10 +691,10 @@ class StoreTask extends Component {
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function(response) {
         debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
+        let status = response.data.message;
+        let data = response.data.responseData;
         if (status === "Success") {
           self.setState({
             departmentData: data,
@@ -507,18 +705,29 @@ class StoreTask extends Component {
           });
         }
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((response) => {
+        console.log(response, "---handleGetDepartment");
       });
   }
   /// Get Funcation list by Department Id for dropdown
   handleGetFuncationByDepartmentId() {
+    var departmentId = 0;
+    if (this.state.tabIndex === 1) {
+      departmentId = this.state.raiseSearchData["Department"];
+    }
+    if (this.state.tabIndex === 2) {
+      departmentId = this.state.assignSearchData["Department"];
+    }
+    if (this.state.tabIndex === 3) {
+      departmentId = this.state.ticketSearchData["Department"];
+    }
+
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getFunctionNameByDepartmentId",
       headers: authHeader(),
-      params: { DepartmentId: this.state.selectDepartment },
+      params: { DepartmentId: departmentId },
     })
       .then(function(response) {
         debugger;
@@ -536,13 +745,23 @@ class StoreTask extends Component {
   }
   //// Get Assign to list by funcation id
   handleGetAssignTobyFuncationId() {
+    var funcationID = 0;
+    if (this.state.tabIndex === 1) {
+      funcationID = this.state.raiseSearchData["functionID"];
+    }
+    if (this.state.tabIndex === 2) {
+      funcationID = this.state.assignSearchData["functionID"];
+    }
+    if (this.state.tabIndex === 3) {
+      funcationID = this.state.ticketSearchData["functionID"];
+    }
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetAssignedTo",
       headers: authHeader(),
       params: {
-        Function_ID: this.state.selectedFuncation,
+        Function_ID: funcationID,
       },
     })
       .then(function(response) {
@@ -578,6 +797,193 @@ class StoreTask extends Component {
       })
       .catch((response) => {
         console.log(response, "---handleGetPriorityList");
+      });
+  }
+  handleGetStoreUser() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreUser/GetStoreUsers",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var userData = response.data.responseData;
+        if (message == "Success" && userData) {
+          self.setState({ userData });
+        } else {
+          self.setState({ userData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetStoreUser");
+      });
+  }
+  ////handle get assign by me search filter
+  handleGetAssigenBymefilterData() {
+    debugger;
+    let self = this;
+
+    var inputParam = {};
+
+    inputParam.taskid = this.state.assignSearchData["taskid"] || 0;
+    inputParam.Department = this.state.assignSearchData["Department"] || 0;
+    inputParam.tasktitle = this.state.assignSearchData["tasktitle"] || "";
+    inputParam.taskstatus = this.state.assignSearchData["taskstatus"] || 0;
+    inputParam.functionID = this.state.assignSearchData["functionID"] || 0;
+    if (this.state.assignSearchData["CreatedOnFrom"]) {
+      var start = new Date(this.state.assignSearchData["CreatedOnFrom"]);
+      inputParam.CreatedOnFrom =
+        moment(start)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnFrom = null;
+    }
+    if (this.state.assignSearchData["CreatedOnTo"]) {
+      var end = new Date(this.state.assignSearchData["CreatedOnTo"]);
+      inputParam.CreatedOnTo =
+        moment(end)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnTo = null;
+    }
+
+    inputParam.AssigntoId = 0; //this.state.raiseSearchData["AssigntoId"] || 0;
+    inputParam.createdID = this.state.assignSearchData["createdID"] || 0;
+    inputParam.Priority = this.state.assignSearchData["Priority"] || 0;
+    this.setState({ isViewSerach: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetAssigenBymefilterData",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var assignToMeData = response.data.responseData;
+        if (message === "Success" && assignToMeData) {
+          self.setState({ assignToMeData, isViewSerach: false });
+        } else {
+          self.setState({ assignToMeData, isViewSerach: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetAssigenBymefilterData");
+      });
+  }
+  ////handle get raise by me search filter
+  handleGetRaisedbymefilterData() {
+    let self = this;
+    debugger;
+    var inputParam = {};
+
+    inputParam.taskid = this.state.raiseSearchData["taskid"] || 0;
+    inputParam.Department = this.state.raiseSearchData["Department"] || 0;
+    inputParam.tasktitle = this.state.raiseSearchData["tasktitle"] || "";
+    inputParam.taskstatus = this.state.raiseSearchData["taskstatus"] || 0;
+    inputParam.functionID = this.state.raiseSearchData["functionID"] || 0;
+    if (this.state.raiseSearchData["CreatedOnFrom"]) {
+      var start = new Date(this.state.raiseSearchData["CreatedOnFrom"]);
+      inputParam.CreatedOnFrom =
+        moment(start)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnFrom = null;
+    }
+    if (this.state.raiseSearchData["CreatedOnTo"]) {
+      var end = new Date(this.state.raiseSearchData["CreatedOnTo"]);
+      inputParam.CreatedOnTo =
+        moment(end)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnTo = null;
+    }
+
+    inputParam.AssigntoId = this.state.raiseSearchData["AssigntoId"] || 0;
+    inputParam.createdID = 0; //this.state.raiseSearchData["createdID"] || 0;
+    inputParam.Priority = this.state.raiseSearchData["Priority"] || 0;
+    this.setState({ isViewSerach: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetRaisedbymefilterData",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var raisedByMeData = response.data.responseData;
+        if (message === "Success" && raisedByMeData) {
+          self.setState({ raisedByMeData, isViewSerach: false });
+        } else {
+          self.setState({ raisedByMeData, isViewSerach: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetRaisedbymefilterData");
+      });
+  }
+  handleGetTaskbyTicketData() {
+    let self = this;
+    debugger;
+    var inputParam = {};
+
+    inputParam.taskid = this.state.ticketSearchData["taskid"] || 0;
+    inputParam.Department = this.state.ticketSearchData["Department"] || 0;
+    inputParam.tasktitle = this.state.ticketSearchData["tasktitle"] || "";
+    inputParam.taskstatus = this.state.ticketSearchData["taskstatus"] || 0;
+    inputParam.functionID = this.state.ticketSearchData["functionID"] || 0;
+    inputParam.AssigntoId = this.state.ticketSearchData["AssigntoId"] || 0;
+    if (this.state.ticketSearchData["CreatedOnFrom"]) {
+      var start = new Date(this.state.ticketSearchData["CreatedOnFrom"]);
+      inputParam.CreatedOnFrom =
+        moment(start)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnFrom = null;
+    }
+    if (this.state.ticketSearchData["CreatedOnTo"]) {
+      var end = new Date(this.state.ticketSearchData["CreatedOnTo"]);
+      inputParam.CreatedOnTo =
+        moment(end)
+          .format("YYYY-MM-DD")
+          .toString() || "";
+    } else {
+      inputParam.CreatedOnTo = null;
+    }
+
+    inputParam.Priority = this.state.ticketSearchData["Priority"] || 0;
+    inputParam.createdID = 0;
+    inputParam.claimID = this.state.ticketSearchData["claimID"] || 0;
+    inputParam.ticketID = this.state.ticketSearchData["ticketID"] || 0;
+    inputParam.taskwithClaim =
+      this.state.ticketSearchData["taskwithClaim"] || "";
+    inputParam.taskwithTicket =
+      this.state.ticketSearchData["taskwithTicket"] || "";
+    this.setState({ isViewSerach: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetTaskbyTicketData",
+      headers: authHeader(),
+      data: inputParam,
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var taskByTicketData = response.data.responseData;
+        if (message === "Success" && taskByTicketData) {
+          self.setState({ taskByTicketData, isViewSerach: false });
+        } else {
+          self.setState({ taskByTicketData, isViewSerach: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetTaskbyTicketData");
       });
   }
   sortStatusZtoA() {
@@ -635,8 +1041,16 @@ class StoreTask extends Component {
         return 0;
       });
     }
+    if (this.state.sortColumn === "taskStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskStatus < b.taskStatus) return 1;
+        if (a.taskStatus > b.taskStatus) return -1;
+        return 0;
+      });
+    }
     this.setState({
       isortA: true,
+      isATOZ: false,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -702,8 +1116,16 @@ class StoreTask extends Component {
       });
     }
 
+    if (this.state.sortColumn === "taskStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.taskStatus < b.taskStatus) return -1;
+        if (a.taskStatus > b.taskStatus) return 1;
+        return 0;
+      });
+    }
     this.setState({
       isortA: true,
+      isATOZ: true,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -721,14 +1143,15 @@ class StoreTask extends Component {
     ) {
       return false;
     }
-
+    this.setState({ isortA: false });
     if (data === "storeName") {
       if (
         this.state.sdepartmentNameFilterCheckbox !== "" ||
         this.state.spriorityNameFilterCheckbox !== "" ||
         this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
       ) {
         this.setState({
           StatusModel: true,
@@ -742,6 +1165,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
           screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -754,7 +1178,8 @@ class StoreTask extends Component {
         this.state.spriorityNameFilterCheckbox !== "" ||
         this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
       ) {
         this.setState({
           StatusModel: true,
@@ -768,6 +1193,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
           screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -780,7 +1206,9 @@ class StoreTask extends Component {
         this.state.sdepartmentNameFilterCheckbox !== "" ||
         this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
       ) {
         this.setState({
           StatusModel: true,
@@ -794,6 +1222,7 @@ class StoreTask extends Component {
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
           screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -805,6 +1234,92 @@ class StoreTask extends Component {
         this.state.sstoreNameFilterCheckbox !== "" ||
         this.state.sdepartmentNameFilterCheckbox !== "" ||
         this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.sassigntoFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          spriorityNameFilterCheckbox: "",
+          sassigntoFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "assignto") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          spriorityNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
+        this.state.sassigntoFilterCheckbox !== "" ||
+        this.state.staskStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sstoreNameFilterCheckbox: "",
+          sdepartmentNameFilterCheckbox: "",
+          spriorityNameFilterCheckbox: "",
+          screationOnFilterCheckbox: "",
+          sassigntoFilterCheckbox: "",
+          staskStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+
+    if (data === "taskStatus") {
+      if (
+        this.state.sstoreNameFilterCheckbox !== "" ||
+        this.state.sdepartmentNameFilterCheckbox !== "" ||
+        this.state.spriorityNameFilterCheckbox !== "" ||
+        this.state.screationOnFilterCheckbox !== "" ||
         this.state.sassigntoFilterCheckbox !== "" ||
         this.state.screatedByFilterCheckbox !== ""
       ) {
@@ -818,60 +1333,9 @@ class StoreTask extends Component {
           sstoreNameFilterCheckbox: "",
           sdepartmentNameFilterCheckbox: "",
           spriorityNameFilterCheckbox: "",
-          sassigntoFilterCheckbox: "",
-          screatedByFilterCheckbox: "",
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      }
-    }
-    if (data === "assignto") {
-      if (
-        this.state.sstoreNameFilterCheckbox !== "" ||
-        this.state.sdepartmentNameFilterCheckbox !== "" ||
-        this.state.spriorityNameFilterCheckbox !== "" ||
-        this.state.screationOnFilterCheckbox !== "" ||
-        this.state.screatedByFilterCheckbox !== ""
-      ) {
-        this.setState({
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      } else {
-        this.setState({
-          sstoreNameFilterCheckbox: "",
-          sdepartmentNameFilterCheckbox: "",
-          spriorityNameFilterCheckbox: "",
-          screationOnFilterCheckbox: "",
-          screatedByFilterCheckbox: "",
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      }
-    }
-    if (data === "createdBy") {
-      if (
-        this.state.sstoreNameFilterCheckbox !== "" ||
-        this.state.sdepartmentNameFilterCheckbox !== "" ||
-        this.state.spriorityNameFilterCheckbox !== "" ||
-        this.state.screationOnFilterCheckbox !== "" ||
-        this.state.sassigntoFilterCheckbox !== ""
-      ) {
-        this.setState({
-          StatusModel: true,
-          sortColumn: data,
-          sortHeader: header,
-        });
-      } else {
-        this.setState({
-          sstoreNameFilterCheckbox: "",
-          sdepartmentNameFilterCheckbox: "",
-          spriorityNameFilterCheckbox: "",
           screationOnFilterCheckbox: "",
           sassigntoFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
           StatusModel: true,
           sortColumn: data,
           sortHeader: header,
@@ -888,6 +1352,7 @@ class StoreTask extends Component {
       sortFiltercreationOn: this.state.sortcreationOn,
       sortFilterassignto: this.state.sortassignto,
       sortFiltercreatedBy: this.state.sortcreatedBy,
+      sortFiltertaskStatus: this.state.sorttaskStatus,
     });
     if (this.state.tempitemData.length > 0) {
       this.setState({
@@ -913,6 +1378,7 @@ class StoreTask extends Component {
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -925,6 +1391,7 @@ class StoreTask extends Component {
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -937,6 +1404,7 @@ class StoreTask extends Component {
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -949,6 +1417,7 @@ class StoreTask extends Component {
             spriorityNameFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -961,6 +1430,7 @@ class StoreTask extends Component {
             spriorityNameFilterCheckbox: "",
             screationOnFilterCheckbox: "",
             screatedByFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
           });
         }
       }
@@ -973,6 +1443,20 @@ class StoreTask extends Component {
             spriorityNameFilterCheckbox: "",
             screationOnFilterCheckbox: "",
             sassigntoFilterCheckbox: "",
+            staskStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "taskStatus") {
+        if (this.state.staskStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sstoreNameFilterCheckbox: "",
+            sdepartmentNameFilterCheckbox: "",
+            spriorityNameFilterCheckbox: "",
+            screationOnFilterCheckbox: "",
+            sassigntoFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
           });
         }
       }
@@ -980,6 +1464,7 @@ class StoreTask extends Component {
       this.setState({
         StatusModel: false,
         filterTxtValue: "",
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
 
       if (this.state.tabIndex === 1) {
@@ -1017,14 +1502,23 @@ class StoreTask extends Component {
     var screationOnFilterCheckbox = this.state.screationOnFilterCheckbox;
     var sassigntoFilterCheckbox = this.state.sassigntoFilterCheckbox;
     var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var staskStatusFilterCheckbox = this.state.staskStatusFilterCheckbox;
 
     if (column === "storeName" || column === "all") {
       if (type === "value" && type !== "All") {
         sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all", "");
         sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace("all,", "");
-        if (sstoreNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sstoreNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sstoreNameFilterCheckbox = sstoreNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1054,9 +1548,17 @@ class StoreTask extends Component {
           "all,",
           ""
         );
-        if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sdepartmentNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1086,9 +1588,17 @@ class StoreTask extends Component {
           "all,",
           ""
         );
-        if (spriorityNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          spriorityNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           spriorityNameFilterCheckbox = spriorityNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1118,9 +1628,17 @@ class StoreTask extends Component {
           "all,",
           ""
         );
-        if (screationOnFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screationOnFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screationOnFilterCheckbox = screationOnFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1144,9 +1662,17 @@ class StoreTask extends Component {
       if (type === "value" && type !== "All") {
         sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace("all", "");
         sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace("all,", "");
-        if (sassigntoFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sassigntoFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sassigntoFilterCheckbox = sassigntoFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1170,9 +1696,17 @@ class StoreTask extends Component {
       if (type === "value" && type !== "All") {
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
         screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
-        if (screatedByFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -1193,6 +1727,46 @@ class StoreTask extends Component {
       }
     }
 
+    if (column === "taskStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          staskStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          staskStatusFilterCheckbox = staskStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          staskStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (staskStatusFilterCheckbox.includes("all")) {
+          staskStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "taskStatus") {
+            for (let i = 0; i < this.state.sorttaskStatus.length; i++) {
+              staskStatusFilterCheckbox +=
+                this.state.sorttaskStatus[i].taskStatus + ",";
+            }
+            staskStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
     var allData = this.state.sortAllData;
 
     this.setState({
@@ -1202,6 +1776,7 @@ class StoreTask extends Component {
       screationOnFilterCheckbox,
       sassigntoFilterCheckbox,
       screatedByFilterCheckbox,
+      staskStatusFilterCheckbox,
     });
     if (column === "all") {
       itemsArray = this.state.sortAllData;
@@ -1313,9 +1888,26 @@ class StoreTask extends Component {
           }
         }
       }
+    } else if (column === "taskStatus") {
+      var sItems = staskStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.taskStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
     }
 
     this.setState({
+      isATOZ: true,
       tempitemData: itemsArray,
     });
   };
@@ -1333,7 +1925,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterstoreName });
       } else {
         this.setState({
-          sortFilterstoreName: this.state.sortstoreName,
+          sortFilterstoreName: [],
         });
       }
     }
@@ -1347,7 +1939,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName,
+          sortFilterdepartmentName: [],
         });
       }
     }
@@ -1363,7 +1955,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterpriorityName });
       } else {
         this.setState({
-          sortFilterpriorityName: this.state.sortpriorityName,
+          sortFilterpriorityName: [],
         });
       }
     }
@@ -1379,7 +1971,7 @@ class StoreTask extends Component {
         this.setState({ sortFiltercreationOn });
       } else {
         this.setState({
-          sortFiltercreationOn: this.state.sortcreationOn,
+          sortFiltercreationOn: [],
         });
       }
     }
@@ -1395,7 +1987,7 @@ class StoreTask extends Component {
         this.setState({ sortFilterassignto });
       } else {
         this.setState({
-          sortFilterassignto: this.state.sortassignto,
+          sortFilterassignto: [],
         });
       }
     }
@@ -1413,14 +2005,139 @@ class StoreTask extends Component {
         });
       } else {
         this.setState({
-          sortFiltercreatedBy: this.state.sortcreatedBy,
+          sortFiltercreatedBy: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "taskStatus") {
+      var sortFiltertaskStatus = matchSorter(
+        this.state.sorttaskStatus,
+        e.target.value,
+        {
+          keys: ["taskStatus"],
+        }
+      );
+      if (sortFiltertaskStatus.length > 0) {
+        this.setState({
+          sortFiltertaskStatus,
+        });
+      } else {
+        this.setState({
+          sortFiltertaskStatus: [],
         });
       }
     }
   }
+  ////handle collapse search
   handleFilterCollapse() {
     this.setState((state) => ({ FilterCollapse: !state.FilterCollapse }));
   }
+  handleOnChange(e) {
+    debugger;
+    const { name, value } = e.target;
+    if (this.state.tabIndex == 1) {
+      this.state.raiseSearchData[name] = value;
+      this.setState({ raiseSearchData: this.state.raiseSearchData });
+      if (name === "functionID") {
+        this.state.raiseSearchData["AssigntoId"] = "";
+        this.setState({
+          raiseSearchData: this.state.raiseSearchData,
+          assignToData: [],
+        });
+        this.handleGetAssignTobyFuncationId();
+      }
+      if (name === "Department") {
+        this.state.raiseSearchData["functionID"] = "";
+        this.state.raiseSearchData["AssigntoId"] = "";
+        this.setState({
+          raiseSearchData: this.state.raiseSearchData,
+          funcationData: [],
+          assignToData: [],
+        });
+        this.handleGetFuncationByDepartmentId();
+      }
+    }
+    if (this.state.tabIndex == 2) {
+      this.state.assignSearchData[name] = value;
+      this.setState({ assignSearchData: this.state.assignSearchData });
+      if (name === "Department") {
+        this.handleGetFuncationByDepartmentId();
+      }
+    }
+    if (this.state.tabIndex == 3) {
+      this.state.ticketSearchData[name] = value;
+      this.setState({ ticketSearchData: this.state.ticketSearchData });
+      if (name === "functionID") {
+        this.state.ticketSearchData["AssigntoId"] = "";
+        this.setState({
+          ticketSearchData: this.state.ticketSearchData,
+          assignToData: [],
+        });
+        this.handleGetAssignTobyFuncationId();
+      }
+      if (name === "Department") {
+        this.state.ticketSearchData["functionID"] = "";
+        this.state.ticketSearchData["AssigntoId"] = "";
+        this.setState({
+          ticketSearchData: this.state.ticketSearchData,
+          funcationData: [],
+          assignToData: [],
+        });
+        this.handleGetFuncationByDepartmentId();
+      }
+    }
+  }
+  SearchCreationOn = async (startDate) => {
+    debugger;
+    if (this.state.tabIndex == 1) {
+      this.state.raiseSearchData["CreatedOnFrom"] = startDate[0];
+      this.state.raiseSearchData["CreatedOnTo"] = startDate[1];
+      this.setState({ raiseSearchData: this.state.raiseSearchData });
+    }
+    if (this.state.tabIndex == 2) {
+      this.state.assignSearchData["CreatedOnFrom"] = startDate[0];
+      this.state.assignSearchData["CreatedOnTo"] = startDate[1];
+      this.setState({ assignSearchData: this.state.assignSearchData });
+    }
+    if (this.state.tabIndex == 3) {
+      this.state.ticketSearchData["CreatedOnFrom"] = startDate[0];
+      this.state.ticketSearchData["CreatedOnTo"] = startDate[1];
+      this.setState({ ticketSearchData: this.state.ticketSearchData });
+    }
+  };
+
+  handleClearSearch() {
+    this.setState({
+      sdepartmentNameFilterCheckbox: "",
+      sstoreNameFilterCheckbox: "",
+      spriorityNameFilterCheckbox: "",
+      screationOnFilterCheckbox: "",
+      sassigntoFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      staskStatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      tempitemData: [],
+    });
+    if (this.state.tabIndex === 1) {
+      this.setState({
+        raisedByMeData: this.state.sortAllData,
+      });
+    }
+    if (this.state.tabIndex === 2) {
+      this.setState({
+        assignToMeData: this.state.sortAllData,
+      });
+    }
+    if (this.state.tabIndex === 3) {
+      this.setState({
+        taskByTicketData: this.state.sortAllData,
+      });
+    }
+  }
+
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
@@ -1493,7 +2210,7 @@ class StoreTask extends Component {
                 }
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -1514,7 +2231,7 @@ class StoreTask extends Component {
                   })()
                 }
               </a>
-            </li>
+            </li> */}
           </ul>
           {this.state.showAddTask && (
             <button
@@ -1560,7 +2277,9 @@ class StoreTask extends Component {
                               className="btn-inv"
                               type="button"
                               style={{ margin: "10px", width: "180px" }}
-                              // onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleGetRaisedbymefilterData.bind(
+                                this
+                              )}
                             >
                               {
                                 (() => {
@@ -1588,20 +2307,24 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
-                                    name="task_Id"
-                                    value={this.state.task_Id}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="taskid"
+                                    value={this.state.raiseSearchData["taskid"]}
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
-                                    // value={this.state.selectDepartment}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="Department"
+                                    value={
+                                      this.state.raiseSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Department</option>
+                                    <option value="" selected>
+                                      Department
+                                    </option>
+
                                     {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
@@ -1619,52 +2342,16 @@ class StoreTask extends Component {
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectAssignTo"
-                                    // value={this.state.selectAssignTo}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="functionID"
+                                    value={
+                                      this.state.raiseSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Assign To</option>
-                                    {this.state.assignToData !== null &&
-                                      this.state.assignToData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    value={this.state.Task_Claim}
-                                    name="Task_Claim"
-                                    onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    type="text"
-                                    placeholder="Task Title"
-                                    name="task_Title"
-                                    // value={this.state.task_Title}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
-                                    // value={this.state.selectedFuncation}
-                                    name="selectedFuncation"
-                                    // onChange={this.handleDropdownOnchange}
-                                  >
-                                    <option>Funcation</option>
+                                    <option value={""} selected>
+                                      Funcation
+                                    </option>
+
                                     {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
@@ -1680,50 +2367,83 @@ class StoreTask extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <select>
-                                    <option>Task Created By</option>
+                                  <select
+                                    className="store-create-select"
+                                    name="AssigntoId"
+                                    value={
+                                      this.state.raiseSearchData["AssigntoId"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      Assign To
+                                    </option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <input
-                                    className="no-bg"
                                     type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    // value={this.state.task_status}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    placeholder="Task Title"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.raiseSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Creation On</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <select
-                                    // value={this.state.Task_Ticket}
-                                    name="Task_Ticket"
-                                    // onChange={this.hanldetoggleOnChange}
+                                    name="taskstatus"
+                                    value={
+                                      this.state.raiseSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value={0} selected>
+                                      Task Status
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
+
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectedPriority"
-                                    // onChange={this.handleDropdownOnchange}
-                                    // value={this.state.selectedPriority}
+                                    name="Priority"
+                                    value={
+                                      this.state.raiseSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value={0}>Task Priority</option>
+                                    <option value={""} selected>
+                                      Task Priority
+                                    </option>
                                     {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
@@ -1736,13 +2456,13 @@ class StoreTask extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
+                                {/* <div className="col-md-3">
                                   <input
                                     className="no-bg"
                                     type="text"
                                     placeholder="Ticket ID"
                                   />
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>
@@ -1757,7 +2477,7 @@ class StoreTask extends Component {
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
-                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                    {this.state.FilterCollapse ? "Search" : "Search"}
                   </small>
                   <img
                     className="search-icon"
@@ -1807,17 +2527,84 @@ class StoreTask extends Component {
                             );
                           } else if (row.original.taskStatus === "Open") {
                             return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
+                              <>
+                                {row.original.departmentName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
                             );
-                          } else {
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                          Cell: (row) => {
                             return (
-                              <span className="table-btn table-green-btn">
-                                <label>{row.original.taskStatus}</label>
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
                               </span>
                             );
-                          }
+                          },
                         },
                       },
                       {
@@ -1865,27 +2652,52 @@ class StoreTask extends Component {
                               {row.original.departmentName}
                               <Popover
                                 content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
                                       <li>
                                         <p>
-                                          {
-                                            (() => {
-                                              if (TranslationContext !== undefined) {
-                                                return TranslationContext.p.function
-                                              }
-                                              else {
-                                                return "Function"
-                                              }
-                                            })()
-                                          }
+                                          {"Created by " +
+                                            row.original.createdBy}
                                         </p>
-                                        <p>{row.original.functionName}</p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Updated by " +
+                                            row.original.updatedBy}
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
+                                placement="left"
                               >
                                 <img
                                   className="info-icon"
@@ -2052,12 +2864,20 @@ class StoreTask extends Component {
                                   </ul>
                                 </div>
                               }
-                              placement="left"
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignto",
+                                "Assign to"
+                              )}
                             >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
+                              Assign to
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
                               />
                             </Popover>
                           </span>
@@ -2126,7 +2946,9 @@ class StoreTask extends Component {
                               className="btn-inv"
                               type="button"
                               style={{ margin: "10px", width: "180px" }}
-                              // onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleGetAssigenBymefilterData.bind(
+                                this
+                              )}
                             >
                               {
                                 (() => {
@@ -2154,21 +2976,25 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
-                                    name="task_Id"
-                                    value={this.state.task_Id}
-                                    // onChange={this.hanldetoggleOnChange}
+                                    name="taskid"
                                     autoComplete="off"
+                                    value={
+                                      this.state.assignSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
-                                    // value={this.state.selectDepartment}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="Department"
+                                    value={
+                                      this.state.assignSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Department</option>
-                                    {/* {this.state.departmentData !== null &&
+                                    {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
                                           <option
@@ -2179,59 +3005,32 @@ class StoreTask extends Component {
                                             {item.departmentName}
                                           </option>
                                         )
-                                      )} */}
+                                      )}
                                   </select>
                                 </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
-                                    name="selectAssignTo"
-                                    value={this.state.selectAssignTo}
-                                    onChange={this.handleDropdownOnchange}
-                                  >
-                                    <option>Assign To</option>
-                                    {/* {this.state.assignToData !== null &&
-                                      this.state.assignToData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))} */}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    value={this.state.Task_Claim}
-                                    name="Task_Claim"
-                                    onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                  </select>
-                                </div>
+
                                 <div className="col-md-3">
                                   <input
                                     type="text"
                                     placeholder="Task Title"
-                                    name="task_Title"
-                                    // value={this.state.task_Title}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.assignSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    // value={this.state.selectedFuncation}
-                                    name="selectedFuncation"
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="functionID"
+                                    value={
+                                      this.state.assignSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Funcation</option>
-                                    {/* {this.state.funcationData !== null &&
+                                    {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
                                           <option
@@ -2242,55 +3041,70 @@ class StoreTask extends Component {
                                             {item.funcationName}
                                           </option>
                                         )
-                                      )} */}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Task Created By</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    // value={this.state.task_status}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Creation On</option>
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
-                                    // value={this.state.Task_Ticket}
-                                    name="Task_Ticket"
-                                    // onChange={this.hanldetoggleOnChange}
+                                    name="createdID"
+                                    value={
+                                      this.state.assignSearchData["createdID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option>Task Created By</option>
+                                    {this.state.userData !== null &&
+                                      this.state.userData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectedPriority"
-                                    // onChange={this.handleDropdownOnchange}
-                                    // value={this.state.selectedPriority}
+                                    name="taskstatus"
+                                    value={
+                                      this.state.assignSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option>Task Status</option>
+
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Priority"
+                                    value={
+                                      this.state.assignSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option>Task Priority</option>
-                                    {/* {this.state.priorityData !== null &&
+                                    {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
                                           key={i}
@@ -2299,15 +3113,8 @@ class StoreTask extends Component {
                                         >
                                           {item.priortyName}
                                         </option>
-                                      ))} */}
+                                      ))}
                                   </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Ticket ID"
-                                  />
                                 </div>
                               </div>
                             </div>
@@ -2323,7 +3130,7 @@ class StoreTask extends Component {
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
-                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                    {this.state.FilterCollapse ? "Search" : "Search"}
                   </small>
                   <img
                     className="search-icon"
@@ -2451,16 +3258,32 @@ class StoreTask extends Component {
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
+                              />
                             </span>
-                          );
+                          ),
+                          sortable: false,
+                          accessor: "taskStatus",
+                          Cell: (row) => {
+                            if (row.original.taskStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.taskStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.taskStatus}</label>
+                                </span>
+                              );
+                            }
+                          },
                         },
                       },
                       {
@@ -2532,16 +3355,37 @@ class StoreTask extends Component {
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
+                              />
                             </span>
-                          );
+                          ),
+                          sortable: false,
+                          accessor: "departmentName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.departmentName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
                         },
                       },
                       {
@@ -2650,25 +3494,168 @@ class StoreTask extends Component {
                                     </ul>
                                   </div>
                                 }
-                                placement="left"
-                              >
-                                <img
-                                  className="info-icon"
-                                  src={InfoIcon}
-                                  alt="info-icon"
-                                />
-                              </Popover>
+                              />
                             </span>
-                          );
+                          ),
+                          sortable: false,
+                          accessor: "priorityName",
                         },
-                      },
-                    ]}
-                    // resizable={false}
-                    minRows={2}
-                    defaultPageSize={10}
-                    showPagination={true}
-                    getTrProps={this.handleRowClickRaisedTable}
-                  />
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          accessor: "storeName",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                "Creation On"
+                              )}
+                            >
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "creationOn",
+                          Cell: (row) => {
+                            return (
+                              <span>
+                                <label>{row.original.creationOn}</label>
+
+                                <Popover
+                                  content={
+                                    <div className="insertpop1">
+                                      <ul className="dash-creation-popup">
+                                        <li className="title">
+                                          Creation details
+                                        </li>
+                                        <li>
+                                          <p>
+                                            {"Created by " +
+                                              row.original.createdBy}
+                                          </p>
+                                          <p>{row.original.createdago}</p>
+                                        </li>
+                                        <li>
+                                          <p>
+                                            Assigned to{" "}
+                                            {" " + row.original.assignto}
+                                          </p>
+                                          <p>{row.original.assignedago}</p>
+                                        </li>
+                                        <li>
+                                          <p>
+                                            {"Updated by " +
+                                              row.original.updatedBy}
+                                          </p>
+                                          <p>{row.original.updatedago}</p>
+                                        </li>
+
+                                        <li>
+                                          <p>Response time remaining by</p>
+                                          <p>
+                                            {
+                                              row.original
+                                                .resolutionTimeRemaining
+                                            }
+                                          </p>
+                                        </li>
+                                        <li>
+                                          <p>Response overdue by</p>
+                                          <p>1 Hr</p>
+                                        </li>
+                                        <li>
+                                          <p>Resolution overdue by</p>
+                                          <p>
+                                            {row.original.resolutionOverdueBy}
+                                          </p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="left"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            );
+                          },
+                        },
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      getTrProps={this.handleRowClickRaisedTable}
+                    />
+                  )}
                 </div>
               </div>
             )}
@@ -2695,7 +3682,9 @@ class StoreTask extends Component {
                               className="btn-inv"
                               type="button"
                               style={{ margin: "10px", width: "180px" }}
-                              // onClick={this.handleViewSearchData.bind(this)}
+                              onClick={this.handleGetTaskbyTicketData.bind(
+                                this
+                              )}
                             >
                               {
                                 (() => {
@@ -2723,21 +3712,27 @@ class StoreTask extends Component {
                                   <input
                                     type="text"
                                     placeholder="Task ID"
-                                    name="task_Id"
-                                    value={this.state.task_Id}
-                                    // onChange={this.hanldetoggleOnChange}
                                     autoComplete="off"
+                                    name="taskid"
+                                    value={
+                                      this.state.ticketSearchData["taskid"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   />
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="departmentName"
-                                    // value={this.state.selectDepartment}
-                                    // onChange={this.handleDropdownOnchange}
+                                    name="Department"
+                                    value={
+                                      this.state.ticketSearchData["Department"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Department</option>
-                                    {/* {this.state.departmentData !== null &&
+                                    <option value="" selected>
+                                      Department
+                                    </option>
+                                    {this.state.departmentData !== null &&
                                       this.state.departmentData.map(
                                         (item, i) => (
                                           <option
@@ -2748,59 +3743,22 @@ class StoreTask extends Component {
                                             {item.departmentName}
                                           </option>
                                         )
-                                      )} */}
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectAssignTo"
-                                    value={this.state.selectAssignTo}
-                                    onChange={this.handleDropdownOnchange}
+                                    name="functionID"
+                                    value={
+                                      this.state.ticketSearchData["functionID"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Assign To</option>
-                                    {/* {this.state.assignToData !== null &&
-                                      this.state.assignToData.map((item, i) => (
-                                        <option
-                                          key={i}
-                                          value={item.userID}
-                                          className="select-category-placeholder"
-                                        >
-                                          {item.userName}
-                                        </option>
-                                      ))} */}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    value={this.state.Task_Claim}
-                                    name="Task_Claim"
-                                    onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    type="text"
-                                    placeholder="Task Title"
-                                    name="task_Title"
-                                    // value={this.state.task_Title}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    className="store-create-select"
-                                    // value={this.state.selectedFuncation}
-                                    name="selectedFuncation"
-                                    // onChange={this.handleDropdownOnchange}
-                                  >
-                                    <option>Funcation</option>
-                                    {/* {this.state.funcationData !== null &&
+                                    <option value="" selected>
+                                      Funcation
+                                    </option>
+                                    {this.state.funcationData !== null &&
                                       this.state.funcationData.map(
                                         (item, i) => (
                                           <option
@@ -2811,55 +3769,58 @@ class StoreTask extends Component {
                                             {item.funcationName}
                                           </option>
                                         )
-                                      )} */}
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Task Created By</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Claim ID</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Task Status"
-                                    name="task_status"
-                                    // value={this.state.task_status}
-                                    // onChange={this.hanldetoggleOnChange}
-                                    autoComplete="off"
-                                  />
-                                </div>
-                                <div className="col-md-3">
-                                  <select>
-                                    <option>Creation On</option>
-                                  </select>
-                                </div>
-                                <div className="col-md-3">
-                                  <select
-                                    // value={this.state.Task_Ticket}
-                                    name="Task_Ticket"
-                                    // onChange={this.hanldetoggleOnChange}
-                                  >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                      )}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
                                   <select
                                     className="store-create-select"
-                                    name="selectedPriority"
-                                    // onChange={this.handleDropdownOnchange}
-                                    // value={this.state.selectedPriority}
+                                    name="AssigntoId"
+                                    value={
+                                      this.state.ticketSearchData["AssigntoId"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
                                   >
-                                    <option>Task Priority</option>
-                                    {/* {this.state.priorityData !== null &&
+                                    <option value="" selected>
+                                      Assign To
+                                    </option>
+                                    {this.state.assignToData !== null &&
+                                      this.state.assignToData.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.userID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.userName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    placeholder="Task Title"
+                                    name="tasktitle"
+                                    value={
+                                      this.state.ticketSearchData["tasktitle"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  />
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="Priority"
+                                    value={
+                                      this.state.ticketSearchData["Priority"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      Task Priority
+                                    </option>
+                                    {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
                                           key={i}
@@ -2868,16 +3829,106 @@ class StoreTask extends Component {
                                         >
                                           {item.priortyName}
                                         </option>
-                                      ))} */}
+                                      ))}
+                                  </select>
+                                </div>
+                                <div className="col-md-3 campaign-end-date creation-date-range">
+                                  <CreationOnDatePickerCompo
+                                    applyCallback={this.SearchCreationOn}
+                                  />
+                                </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskstatus"
+                                    value={
+                                      this.state.ticketSearchData["taskstatus"]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="" selected>
+                                      Task Status
+                                    </option>
+                                    {this.state.storeStatus !== null &&
+                                      this.state.storeStatus.map((item, i) => (
+                                        <option
+                                          key={i}
+                                          value={item.storeStatusID}
+                                          className="select-category-placeholder"
+                                        >
+                                          {item.storeStatusName}
+                                        </option>
+                                      ))}
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input
-                                    className="no-bg"
-                                    type="text"
-                                    placeholder="Ticket ID"
-                                  />
+                                  <select
+                                    className="store-create-select"
+                                    name="taskwithClaim"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithClaim"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="">Task With Claim</option>
+                                    <option value={"Yes"}>Yes</option>
+                                    <option value={"No"}>No</option>
+                                  </select>
                                 </div>
+
+                                <div className="col-md-3">
+                                  <select
+                                    className="store-create-select"
+                                    name="taskwithTicket"
+                                    value={
+                                      this.state.ticketSearchData[
+                                        "taskwithTicket"
+                                      ]
+                                    }
+                                    onChange={this.handleOnChange.bind(this)}
+                                  >
+                                    <option value="">Task With Ticket</option>
+                                    <option value={"Yes"}>Yes</option>
+                                    <option value={"No"}>No</option>
+                                  </select>
+                                </div>
+
+                                {this.state.ticketSearchData["taskwithClaim"] ==
+                                "Yes" ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      className="no-bg"
+                                      type="text"
+                                      placeholder="Claim ID"
+                                      autoComplete="off"
+                                      name="claimID"
+                                      value={
+                                        this.state.ticketSearchData["claimID"]
+                                      }
+                                      onChange={this.handleOnChange.bind(this)}
+                                    />
+                                  </div>
+                                ) : null}
+                                {this.state.ticketSearchData[
+                                  "taskwithTicket"
+                                ] == "Yes" ? (
+                                  <div className="col-md-3">
+                                    <input
+                                      className="no-bg"
+                                      type="text"
+                                      placeholder="Ticket ID"
+                                      name="ticketID"
+                                      autoComplete="off"
+                                      value={
+                                        this.state.ticketSearchData["ticketID"]
+                                      }
+                                      onChange={this.handleOnChange.bind(this)}
+                                    />
+                                  </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>
@@ -2892,7 +3943,7 @@ class StoreTask extends Component {
                   onClick={this.handleFilterCollapse.bind(this)}
                 >
                   <small>
-                    {this.state.FilterCollapse ? "Close Search" : "Search"}
+                    {this.state.FilterCollapse ? "Search" : "Search"}
                   </small>
                   <img
                     className="search-icon"
@@ -2957,17 +4008,112 @@ class StoreTask extends Component {
                             );
                           } else if (row.original.taskStatus === "Open") {
                             return (
-                              <span className="table-btn table-blue-btn">
-                                <label>{row.original.taskStatus}</label>
-                              </span>
+                              <>
+                                {row.original.departmentName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Function</p>
+                                          <p>{row.original.functionName}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
                             );
-                          } else {
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Created by"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdBy",
+                                "Created by"
+                              )}
+                            >
+                              Created by{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created by"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "createdBy",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                          Cell: (row) => {
                             return (
-                              <span className="table-btn table-green-btn">
-                                <label>{row.original.taskStatus}</label>
+                              <span>
+                                <label>{row.original.storeName}</label>
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <ul className="dash-category-popup dashnewpopup">
+                                        <li>
+                                          <p>Store Address</p>
+                                          <p>{row.original.storeAddress}</p>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
                               </span>
                             );
-                          }
+                          },
                         },
                       },
                       {
@@ -3099,30 +4245,56 @@ class StoreTask extends Component {
                         Cell: (row) => {
                           return (
                             <span>
-                              <label>{row.original.storeName}</label>
+                              <label>{row.original.creationOn}</label>
+
                               <Popover
                                 content={
-                                  <div className="dash-creation-popup-cntr">
-                                    <ul className="dash-category-popup dashnewpopup">
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
                                       <li>
                                         <p>
-                                        {
-                                            (() => {
-                                              if (TranslationContext !== undefined) {
-                                                return TranslationContext.p.storeaddress
-                                              }
-                                              else {
-                                                return "Store Address"
-                                              }
-                                            })()
-                                          }
+                                          {"Created by " +
+                                            row.original.createdBy}
                                         </p>
-                                        <p>{row.original.storeAddress}</p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to{" "}
+                                          {" " + row.original.assignto}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Updated by " +
+                                            row.original.updatedBy}
+                                        </p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution time remaining by</p>
+                                        <p>
+                                          {row.original.resolutionTimeRemaining}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p></p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>
+                                          {row.original.resolutionOverdueBy}
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
+                                placement="left"
                               >
                                 <img
                                   className="info-icon"
@@ -3131,7 +4303,7 @@ class StoreTask extends Component {
                                 />
                               </Popover>
                             </span>
-                          );
+                          ),
                         },
                       },
                       {
@@ -3236,12 +4408,20 @@ class StoreTask extends Component {
                                   </ul>
                                 </div>
                               }
-                              placement="left"
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignto",
+                                "Assign to"
+                              )}
                             >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
+                              Assign to
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
                               />
                             </Popover>
                           </span>
@@ -3347,9 +4527,13 @@ class StoreTask extends Component {
               </div>
             </div>
             <a
-              href=""
-              style={{ margin: "0 25px", textDecoration: "underline" }}
-              onClick={this.setSortCheckStatus.bind(this, "all")}
+              style={{
+                margin: "0 25px",
+                textDecoration: "underline",
+                color: "#2561A8",
+                cursor: "pointer",
+              }}
+              onClick={this.handleClearSearch.bind(this)}
             >
               {
                 (() => {
@@ -3413,9 +4597,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.storeName}
                           value={item.storeName}
-                          checked={this.state.sstoreNameFilterCheckbox.includes(
-                            item.storeName
-                          )}
+                          checked={this.state.sstoreNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.storeName)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "storeName",
@@ -3440,9 +4624,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.departmentName}
                           value={item.departmentName}
-                          checked={this.state.sdepartmentNameFilterCheckbox.includes(
-                            item.departmentName
-                          )}
+                          checked={this.state.sdepartmentNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.departmentName)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "departmentName",
@@ -3467,9 +4651,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.priorityName}
                           value={item.priorityName}
-                          checked={this.state.spriorityNameFilterCheckbox.includes(
-                            item.priorityName
-                          )}
+                          checked={this.state.spriorityNameFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.priorityName)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "priorityName",
@@ -3494,9 +4678,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.creationOn}
                           value={item.creationOn}
-                          checked={this.state.screationOnFilterCheckbox.includes(
-                            item.creationOn
-                          )}
+                          checked={this.state.screationOnFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.creationOn)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "creationOn",
@@ -3520,9 +4704,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.assignto}
                           value={item.assignto}
-                          checked={this.state.sassigntoFilterCheckbox.includes(
-                            item.assignto
-                          )}
+                          checked={this.state.sassigntoFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.assignto)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "assignto",
@@ -3546,9 +4730,9 @@ class StoreTask extends Component {
                           name="filter-type"
                           id={"fil-open" + item.createdBy}
                           value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
+                          checked={this.state.screatedByFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.createdBy)}
                           onChange={this.setSortCheckStatus.bind(
                             this,
                             "createdBy",
@@ -3558,6 +4742,32 @@ class StoreTask extends Component {
                         <label htmlFor={"fil-open" + item.createdBy}>
                           <span className="table-btn table-blue-btn">
                             {item.createdBy}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
+                {this.state.sortColumn === "taskStatus"
+                  ? this.state.sortFiltertaskStatus !== null &&
+                    this.state.sortFiltertaskStatus.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.taskStatus}
+                          value={item.taskStatus}
+                          checked={this.state.staskStatusFilterCheckbox
+                            .split(",")
+                            .find((word) => word === item.taskStatus)}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "taskStatus",
+                            "value"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.taskStatus}>
+                          <span className="table-btn table-blue-btn">
+                            {item.taskStatus}
                           </span>
                         </label>
                       </div>

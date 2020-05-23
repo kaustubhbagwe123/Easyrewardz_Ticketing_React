@@ -3,7 +3,7 @@ import Demo from "../../../store/Hashtag";
 import { Link } from "react-router-dom";
 import ReactTable from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import DownExcel from "./../../../assets/Images/black-Dld.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
@@ -27,8 +27,9 @@ import {
   NotificationManager,
 } from "react-notifications";
 import moment from "moment";
-import ClaimStatus from "../../../routes/ClaimStatus"
-
+import ClaimStatus from "../../../routes/ClaimStatus";
+import matchSorter from "match-sorter";
+import Sorting from "./../../../assets/Images/sorting.png";
 class StoreReports extends Component {
   constructor(props) {
     super(props);
@@ -50,11 +51,11 @@ class StoreReports extends Component {
       claimWithTickets: "no",
       taskWithClaim: "no",
       claimWithTask: "no",
-      taskCreatedBy: "1",
-      campaignAssignedTo: "1",
-      claimCreatedBy: "1",
-      taskAssignedTo: "1",
-      claimAssignedTo: "1",
+      taskCreatedBy: "0",
+      campaignAssignedTo: "0",
+      claimCreatedBy: "0",
+      taskAssignedTo: "0",
+      claimAssignedTo: "0",
       departmentShow: false,
       functionShow: false,
       priorityShow: false,
@@ -77,10 +78,10 @@ class StoreReports extends Component {
       claimIssueTypeName: [],
       campaignName: [],
       campaignStatusName: [
-        { campaignNameID: 17, campaignName: "Campaign Status 1" },
-        { campaignNameID: 18, campaignName: "Campaign Status 2" },
+        { campaignNameID: 221, campaignName: "Closed" },
+        { campaignNameID: 223, campaignName: "Open" },
       ],
-      userData:[],
+      userData: [],
       selectedTeamMember: [],
       departmentOvrlayShow: false,
       functionOvrlayShow: false,
@@ -131,10 +132,13 @@ class StoreReports extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
-      selectedReportName:"",
+      selectedReportName: "",
+      selectedReportNameHolder: "",
       ReportParams: {},
       Schedule_ID: 0,
       selectedNoOfDay: 0,
+      selectedNameOfDayForYear: [],
+      selectedScheduleTime: "",
       NameOfDayForWeek: [
         {
           days: "Sunday",
@@ -168,7 +172,27 @@ class StoreReports extends Component {
         },
       ],
       reportID: 0,
-      selectedTaskStatus: ""
+      reportIDHolder: 0,
+      selectedTaskStatus: "",
+      edit: false,
+      sortAllData: [],
+      sortName: [],
+      sortSchedule: [],
+      sortCreatedBy: [],
+      sortStatus: [],
+      sortColumn: "",
+      sortHeader: "",
+      StatusModel: false,
+      tempReportData: [],
+      sortFilterName: [],
+      sortFilterSchedule: [],
+      sortFilterCreatedBy: [],
+      sortFilterStatus: [],
+      sreportNameFilterCheckbox: "",
+      sscheduleStatusFilterCheckbox: "",
+      screatedByFilterCheckbox: "",
+      sreportStatusFilterCheckbox: "",
+      isortA: false,
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -193,7 +217,8 @@ class StoreReports extends Component {
       this
     );
     this.handleSave = this.handleSave.bind(this);
-
+    this.handleClearTabData = this.handleClearTabData.bind(this);
+    this.handleClearScheduleData = this.handleClearScheduleData.bind(this);
   }
 
   componentDidMount() {
@@ -235,6 +260,74 @@ class StoreReports extends Component {
     });
   }
 
+  handleClearTabData() {
+    debugger;
+    setTimeout(() => {
+      this.selectNoDepartment();
+      this.selectNoFunction();
+      this.selectNoPriority();
+      this.selectNoClaimStatus();
+      this.selectNoClaimCategory();
+      this.selectNoClaimSubCategory();
+      this.selectNoClaimIssueType();
+      this.selectNoCampaignName();
+      this.selectNoCampaignStatus();
+    }, 1);
+
+    this.setState({
+      tabIndex: 1,
+      taskIdTitle: "",
+      taskStatus: [],
+      taskLinkedTicketId: "",
+      taskWithTickets: "no",
+      taskWithClaim: "no",
+      taskCreateDate: "",
+      taskCreatedBy: "0",
+      taskAssignedTo: "0",
+      taskClaimId: "",
+      claimClaimId: "",
+      claimLinkedTicketId: "",
+      claimWithTickets: "no",
+      claimWithTask: "no",
+      claimCreateDate: "",
+      claimCreatedBy: "0",
+      claimAssignedTo: "0",
+      linkedTaskId: "",
+      campaignAssignedTo: "0",
+      campaignEndDateFrom: "",
+      campaignEndDateTo: "",
+    });
+  }
+
+  handleClearScheduleData() {
+    debugger;
+    this.setState({
+      selectedTeamMember: [],
+      selectScheduleDate: "",
+      selectedNoOfDay: 0,
+      selectedNoOfWeek: 0,
+      Mon: "",
+      Tue: "",
+      Wed: "",
+      Thu: "",
+      Fri: "",
+      Sat: "",
+      Sun: "",
+      selectedNoOfDaysForMonth: 0,
+      selectedNoOfMonthForMonth: 0,
+      selectedNoOfMonthForWeek: 0,
+      selectedNoOfWeekForWeek: 0,
+      selectedNameOfDayForWeek: [],
+      selectedNameOfMonthForYear: [],
+      selectedNoOfDayForDailyYear: 0,
+      selectedNoOfWeekForYear: 0,
+      selectedNameOfMonthForDailyYear: "",
+      selectedNameOfDayForYear: [],
+      selectedScheduleTime: "",
+      selectedTeamMemberCommaSeperated: "",
+    });
+  }
+
   handleDepartmentButton() {
     debugger;
     let slaShowOriginal = this.state.departmentShow;
@@ -259,7 +352,7 @@ class StoreReports extends Component {
     if (this.state.departmentName !== null) {
       this.state.departmentName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiDepartment += item.campaignNameID + ",";
+        indiDepartment += item.departmentID + ",";
       }
     }
     await this.setState({
@@ -341,7 +434,7 @@ class StoreReports extends Component {
     if (this.state.claimIssueTypeName !== null) {
       this.state.claimIssueTypeName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimIssueType += item.campaignNameID + ",";
+        indiClaimIssueType += item.issueTypeID + ",";
       }
     }
     await this.setState({
@@ -422,7 +515,7 @@ class StoreReports extends Component {
     if (this.state.claimSubCategoryName !== null) {
       this.state.claimSubCategoryName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimSubCategory += item.campaignNameID + ",";
+        indiClaimSubCategory += item.subCategoryID + ",";
       }
     }
     await this.setState({
@@ -507,7 +600,7 @@ class StoreReports extends Component {
     if (this.state.claimCategoryName !== null) {
       this.state.claimCategoryName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimCategory += item.campaignNameID + ",";
+        indiClaimCategory += item.categoryID + ",";
       }
     }
     await this.setState({
@@ -589,7 +682,7 @@ class StoreReports extends Component {
     if (this.state.claimStatusName !== null) {
       this.state.claimStatusName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiClaimStatus += item.campaignNameID + ",";
+        indiClaimStatus += item.claimStatusID + ",";
       }
     }
     await this.setState({
@@ -668,7 +761,7 @@ class StoreReports extends Component {
     if (this.state.priorityName !== null) {
       this.state.priorityName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiPriority += item.campaignNameID + ",";
+        indiPriority += item.priorityID + ",";
       }
     }
     await this.setState({
@@ -826,7 +919,7 @@ class StoreReports extends Component {
     if (this.state.functionName !== null) {
       this.state.functionName.forEach(allCampaignId);
       function allCampaignId(item) {
-        indiFunction += item.campaignNameID + ",";
+        indiFunction += item.functionID + ",";
       }
     }
     await this.setState({
@@ -964,17 +1057,30 @@ class StoreReports extends Component {
 
   handleAddReportOpen() {
     this.setState({ AddReportPopup: true });
+    this.handleClearTabData();
+    this.handleClearScheduleData();
   }
   handleAddReportClose() {
-    this.setState({ AddReportPopup: false });
+    this.setState({ AddReportPopup: false, edit: false });
+    // this.handleClearTabData();
   }
   handleNextPopupOpen(activeTabId) {
+    debugger;
     //this.handleAddReportClose();
     this.handleGetStoreReportSearch(activeTabId);
     this.setState({ NextPopup: true });
+    if (this.state.edit) {
+      let selectedReportName = this.state.selectedReportNameHolder;
+      let reportID = this.state.reportIDHolder;
+      this.setState({
+        selectedReportName,
+        reportID,
+      });
+    }
   }
   handleNextPopupClose() {
-    this.setState({ NextPopup: false });
+    this.setState({ NextPopup: false, selectedReportName: "" });
+    this.handleGetStoreReports();
   }
   handleReportCreateDate(name, date) {
     debugger;
@@ -987,281 +1093,407 @@ class StoreReports extends Component {
   }
 
   handleGetDepartment() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreDepartment/getDepartmentList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({departmentName: responseData});
+          self.setState({ departmentName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetFunction() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreDepartment/getFunctionNameByMultipleDepartmentIds",
+      url:
+        config.apiUrl +
+        "/StoreDepartment/getFunctionNameByMultipleDepartmentIds",
       params: { DepartmentIds: this.state.indiDepartment },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({functionName: responseData});
+          self.setState({ functionName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         self.setState({ isloading: false });
         console.log(response, "---handleGetTaskData");
       });
   }
 
   handleGetPriority() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "get",
       url: config.apiUrl + "/StorePriority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({priorityName: responseData});
+          self.setState({ priorityName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimCategory() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimCategory",
       params: { BrandIds: "" },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimCategoryName: responseData});
+          self.setState({ claimCategoryName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimSubCategory() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimSubCategory",
       params: { CategoryIDs: this.state.indiClaimCategory },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimSubCategoryName: responseData});
+          self.setState({ claimSubCategoryName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetClaimIssueType() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/BindStoreClaimIssueType",
       params: { subCategoryIDs: this.state.indiClaimSubCategory },
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({claimIssueTypeName: responseData});
+          self.setState({ claimIssueTypeName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetUser() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/GetStoreUsers",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({userData: responseData});
+          self.setState({ userData: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
- 
+
   handleGetStoreReportSearch(activeTabId) {
-    debugger; 
+    debugger;
     let self = this;
     var taskStatus = "";
-    var paramData ={};
-    for(var a=0; a<this.state.taskStatus.length; a++){
-      this.state.selectedTaskStatus+=this.state.taskStatus[a].taskStatusID+","
+    this.setState({ selectedTaskStatus: "" });
+    var paramData = {};
+    for (var a = 0; a < this.state.taskStatus.length; a++) {
+      this.state.selectedTaskStatus +=
+        this.state.taskStatus[a].taskStatusID + ",";
     }
-   if(activeTabId === 1)
-   {
-    paramData ={
-      ActiveTabId: activeTabId,
-      TaskTitle: this.state.taskIdTitle,
-      TaskStatus: this.state.selectedTaskStatus,
-      IsTaskWithTicket: this.state.taskWithTickets==="no"?false:true,
-      TaskTicketID: this.state.taskLinkedTicketId,
-      DepartmentIds: this.state.indiDepartment,
-      FunctionIds: this.state.indiFunction,
-      PriorityIds: this.state.indiPriority,
-      IsTaskWithClaim: this.state.taskWithClaim==="no"?false:true,
-      TaskClaimID: this.state.taskClaimId,
-      TaskCreatedDate: this.state.taskCreateDate,
-      TaskCreatedBy: this.state.taskCreatedBy,
-      TaskAssignedId: this.state.taskAssignedTo
+    if (activeTabId === 1) {
+      paramData = {
+        ActiveTabId: activeTabId,
+        TaskTitle: this.state.taskIdTitle,
+        TaskStatus: this.state.selectedTaskStatus,
+        IsTaskWithTicket: this.state.taskWithTickets === "no" ? false : true,
+        TaskTicketID: this.state.taskLinkedTicketId,
+        DepartmentIds: this.state.indiDepartment,
+        FunctionIds: this.state.indiFunction,
+        PriorityIds: this.state.indiPriority,
+        IsTaskWithClaim: this.state.taskWithClaim === "no" ? false : true,
+        TaskClaimID: this.state.taskClaimId,
+        TaskCreatedDate:
+          this.state.taskCreateDate === ""
+            ? null
+            : moment(this.state.taskCreateDate).format("YYYY-MM-DD"),
+        TaskCreatedBy: this.state.taskCreatedBy,
+        TaskAssignedId: this.state.taskAssignedTo,
+      };
     }
-   }
-   if (activeTabId === 2) {
-    paramData ={
-      ActiveTabId: activeTabId,
-      ClaimID: this.state.claimClaimId===""?0:parseInt(this.state.claimClaimId),
-      ClaimStatus: this.state.indiClaimStatus,
-      IsClaimWithTicket: false,
-      ClaimTicketID: this.state.claimLinkedTicketId===""?0:parseInt(this.state.claimLinkedTicketId),
-      ClaimCategoryIds: this.state.indiClaimCategory,
-      ClaimSubCategoryIds: this.state.indiClaimSubCategory,
-      ClaimIssuetypeIds: this.state.indiClaimIssueType,
-      IsClaimWithTask: this.state.claimWithTask === "no"?false:true,
-      ClaimTaskID: this.state.linkedTaskId===""?0:parseInt(this.state.linkedTaskId),
-      ClaimCreatedDate: this.state.claimCreateDate,
-      ClaimCreatedBy: this.state.claimCreatedBy,
-      ClaimAssignedId: this.state.claimAssignedTo
+    if (activeTabId === 2) {
+      paramData = {
+        ActiveTabId: activeTabId,
+        ClaimID:
+          this.state.claimClaimId === ""
+            ? 0
+            : parseInt(this.state.claimClaimId),
+        ClaimStatus: this.state.indiClaimStatus,
+        IsClaimWithTicket: this.state.claimWithTickets === "no" ? false : true,
+        ClaimTicketID:
+          this.state.claimLinkedTicketId === ""
+            ? 0
+            : parseInt(this.state.claimLinkedTicketId),
+        ClaimCategoryIds: this.state.indiClaimCategory,
+        ClaimSubCategoryIds: this.state.indiClaimSubCategory,
+        ClaimIssuetypeIds: this.state.indiClaimIssueType,
+        IsClaimWithTask: this.state.claimWithTask === "no" ? false : true,
+        ClaimTaskID:
+          this.state.linkedTaskId === ""
+            ? 0
+            : parseInt(this.state.linkedTaskId),
+        ClaimCreatedDate:
+          this.state.claimCreateDate === ""
+            ? null
+            : moment(this.state.claimCreateDate).format("YYYY-MM-DD"),
+        ClaimCreatedBy: this.state.claimCreatedBy,
+        ClaimAssignedId: this.state.claimAssignedTo,
+      };
     }
-   }
-   if (activeTabId === 3) {
-    paramData ={
-      ActiveTabId: activeTabId,
-      CampaignName: this.state.indiCampaignName,
-      CampaignAssignedIds: this.state.campaignAssignedTo,
-      CampaignStartDate: this.state.campaignEndDateFrom,
-      CampaignEndDate: this.state.campaignEndDateTo,
-      CampaignStatusids: this.state.indiCampaignStatus
+    if (activeTabId === 3) {
+      paramData = {
+        ActiveTabId: activeTabId,
+        CampaignName: this.state.indiCampaignName,
+        CampaignAssignedIds: this.state.campaignAssignedTo,
+        CampaignStartDate:
+          this.state.campaignEndDateFrom === ""
+            ? null
+            : moment(this.state.campaignEndDateFrom).format("YYYY-MM-DD"),
+        CampaignEndDate:
+          this.state.campaignEndDateTo === ""
+            ? null
+            : moment(this.state.campaignEndDateTo).format("YYYY-MM-DD"),
+        CampaignStatusids: this.state.indiCampaignStatus,
+      };
     }
-   }
-   this.setState({ ReportParams: paramData });
+    this.setState({ ReportParams: paramData });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/StoreReportSearch",
       data: paramData,
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
-        if (message === "Success") {
-          self.setState({totalResult: response.data.responseData});
+        if (message === "Success" || message === "Record Not Found") {
+          self.setState({ totalResult: response.data.responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetStoreReports() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/GetStoreReports",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
-        var responseData = response.data.responseData;
-        if (message === "Success" && responseData.length > 0) {
-          self.setState({storeReportData: responseData});
+        var data = response.data.responseData;
+        if (message === "Success" && data.length > 0) {
+          self.setState({ storeReportData: data });
+          if (data !== null) {
+            var unique = [];
+            var distinct = [];
+            var sortName = [];
+            var sortFilterName = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].reportName]) {
+                distinct.push(data[i].reportName);
+                unique[data[i].reportName] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortName.push({ reportName: distinct[i] });
+                sortFilterName.push({
+                  reportName: distinct[i],
+                });
+              }
+            }
+
+            var unique = [];
+            var distinct = [];
+            var sortSchedule = [];
+            var sortFilterSchedule = [];
+
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].scheduleStatus]) {
+                distinct.push(data[i].scheduleStatus);
+                unique[data[i].scheduleStatus] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortSchedule.push({ scheduleStatus: distinct[i] });
+                sortFilterSchedule.push({
+                  scheduleStatus: distinct[i],
+                });
+              }
+            }
+
+            var unique = [];
+            var distinct = [];
+            var sortCreatedBy = [];
+            var sortFilterCreatedBy = [];
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].createdBy]) {
+                distinct.push(data[i].createdBy);
+                unique[data[i].createdBy] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortCreatedBy.push({ createdBy: distinct[i] });
+                sortFilterCreatedBy.push({ createdBy: distinct[i] });
+              }
+            }
+
+            var unique = [];
+            var distinct = [];
+            var sortStatus = [];
+            var sortFilterStatus = [];
+
+            for (let i = 0; i < data.length; i++) {
+              if (!unique[data[i].reportStatus]) {
+                distinct.push(data[i].reportStatus);
+                unique[data[i].reportStatus] = 1;
+              }
+            }
+            for (let i = 0; i < distinct.length; i++) {
+              if (distinct[i]) {
+                sortStatus.push({ reportStatus: distinct[i] });
+                sortFilterStatus.push({ reportStatus: distinct[i] });
+              }
+            }
+            self.setState({
+              sortAllData: data,
+              sortFilterName,
+              sortFilterCreatedBy,
+              sortFilterSchedule,
+              sortFilterStatus,
+              sortName,
+              sortCreatedBy,
+              sortSchedule,
+              sortStatus,
+            });
+          }
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
-  
   ScheduleOpenModel = () => {
     debugger;
     if (this.state.selectedReportName == "") {
       NotificationManager.error("Please enter report name");
     } else {
-      if (this.state.selectedTeamMemberCommaSeperated) {
-        var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
-        var selectedTeamMember = this.state.selectedTeamMember;
-        for (let j = 0; j < tData.length; j++) {
-          var data = this.state.userData.filter(
-            (x) => x.userID == tData[j]
-          );
-          selectedTeamMember.push(data[0]);
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreReport/CheckIfReportNameExists",
+        headers: authHeader(),
+        params: {
+          ReportID: this.state.reportID,
+          ReportName: self.state.selectedReportName,
+        },
+      }).then(function(res) {
+        debugger;
+        if (res.data.message === "Record Already Exists ") {
+          NotificationManager.error("Report name aleady exists.");
+          return;
         }
-        this.setState({ Schedule: true, selectedTeamMember });
-        setTimeout(() => {
-          for (let j = 0; j < this.state.dayIdsArray.length - 1; j++) {
-            document.getElementById(this.state.dayIdsArray[j]).click();
+        if (self.state.selectedTeamMemberCommaSeperated) {
+          var tData = self.state.selectedTeamMemberCommaSeperated.split(",");
+          var selectedTeamMember = self.state.selectedTeamMember;
+          for (let j = 0; j < tData.length; j++) {
+            var data = self.state.userData.filter((x) => x.userID == tData[j]);
+            selectedTeamMember.push(data[0]);
           }
-        }, 100);
-      } else {
-        this.setState({ Schedule: true, selectedTeamMember: [] });
-      }
+          self.setState({ Schedule: true, selectedTeamMember });
+          setTimeout(() => {
+            for (let j = 0; j < self.state.dayIdsArray.length - 1; j++) {
+              document.getElementById(self.state.dayIdsArray[j]).click();
+            }
+          }, 100);
+        } else {
+          self.setState({ Schedule: true, selectedTeamMember: [] });
+        }
+      });
     }
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false, selectedTeamMember: [] });
+    if (!this.state.edit) {
+      this.handleClearScheduleData();
+    }
   };
 
-  handleScheduleDateChange = (e) => {
+  handleScheduleDateChange(e){
     debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
@@ -1381,9 +1613,9 @@ class StoreReports extends Component {
         selectedNameOfDayForWeekCommaSeperated: "",
       });
     }
-    this.setState({
-      selectScheduleDate: SelectData,
-    });
+    // this.setState({
+      this.state.selectScheduleDate = SelectData
+    // });
   };
 
   handleWeekly = (e) => {
@@ -1532,7 +1764,7 @@ class StoreReports extends Component {
       selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   };
-  
+
   handleWeekForYear = (e) => {
     debugger;
     this.setState({
@@ -1595,42 +1827,28 @@ class StoreReports extends Component {
       selectedNameOfMonthForDailyYearCommaSeperated,
     });
   };
-  
+
   handleInsertReport() {
     let self = this;
     var SearchParams = {};
 
-    var month, day, year, hours, minutes, seconds;
-    var date = new Date(this.state.selectedScheduleTime),
-      month = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2);
-    hours = ("0" + date.getHours()).slice(-2);
-    minutes = ("0" + date.getMinutes()).slice(-2);
-    seconds = ("0" + date.getSeconds()).slice(-2);
-
-    var mySQLDate = [date.getFullYear(), month, day].join("-");
-    var mySQLTime = [hours, minutes, seconds].join(":");
-    this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
-
     SearchParams = JSON.stringify(this.state.ReportParams);
-    if (this.state.selectedReportName == "") {
-      NotificationManager.error("Please add report name.");
-      return;
-    }
     debugger;
-    if (this.state.selectedTeamMemberCommaSeperated == undefined) {
-      NotificationManager.error("Please add team name for schedule.");
-      return;
-    }
-    if (this.state.selectScheduleDate == "") {
-      NotificationManager.error("Please select schedule type.");
-      return;
-    }
-    if (this.state.selectedScheduleTime == "") {
-      NotificationManager.error("Please select schedule time.");
-      return;
-    }
-    if (SearchParams != "") {
+    if (SearchParams != "" && this.state.selectedReportName !== "" &&
+    this.state.selectScheduleDate !== "" && this.state.selectedScheduleTime !== ""
+    
+    ) {
+      var month, day, year, hours, minutes, seconds;
+      var date = new Date(this.state.selectedScheduleTime),
+        month = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      hours = ("0" + date.getHours()).slice(-2);
+      minutes = ("0" + date.getMinutes()).slice(-2);
+      seconds = ("0" + date.getSeconds()).slice(-2);
+
+      var mySQLDate = [date.getFullYear(), month, day].join("-");
+      var mySQLTime = [hours, minutes, seconds].join(":");
+      this.state.selectedScheduleTime = [mySQLDate, mySQLTime].join(" ");
       debugger;
       self = this;
       axios({
@@ -1705,7 +1923,23 @@ class StoreReports extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please add report for create scheduler.");
+      if (this.state.selectedReportName == "") {
+        NotificationManager.error("Please add report name.");
+        return false;
+      }
+      if (this.state.selectedTeamMemberCommaSeperated == undefined && 
+        this.state.selectedTeamMemberCommaSeperated != "") {
+        NotificationManager.error("Please add team name for schedule.");
+      }
+      if (this.state.selectScheduleDate == "") {
+        NotificationManager.error("Please select schedule type.");
+      }
+      if (this.state.selectedScheduleTime == "") {
+        NotificationManager.error("Please select schedule time.");
+      }
+      if(SearchParams === ""){
+       NotificationManager.error("Please add report for create scheduler.");
+      }
     }
   }
 
@@ -1736,109 +1970,136 @@ class StoreReports extends Component {
     if (this.state.selectScheduleDate == "") {
       self.setState({ selectScheduleDate: 0 });
     }
-    setTimeout(() => {
-      debugger;
-      if (this.state.Schedule_ID > 0) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreReport/SaveStoreReport",
-          headers: authHeader(),
-          data: {
-            ReportID: this.state.reportID,
-            ReportName: self.state.selectedReportName,
-            ScheduleID: this.state.Schedule_ID,
-            StoreReportSearchParams: SearchParams
-          },
-        })
-          .then(function(res) {
-            // this.handleReportList();
-            self.setState({ Schedule_ID: 0 });
-            self.handleGetStoreReports();
-            self.handleNextPopupClose();
-            NotificationManager.success(
-              "Report saved successfully for download."
-            );
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/CheckIfReportNameExists",
+      headers: authHeader(),
+      params: {
+        ReportID: this.state.reportID,
+        ReportName: self.state.selectedReportName,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        if (res.data.message === "Record Already Exists ") {
+          NotificationManager.error("Report name aleady exists.");
+          return;
+        }
+        setTimeout(() => {
+          debugger;
+          // if (this.state.Schedule_ID > 0) {
+          debugger;
+          axios({
+            method: "post",
+            url: config.apiUrl + "/StoreReport/SaveStoreReport",
+            headers: authHeader(),
+            data: {
+              ReportID: self.state.reportID,
+              ReportName: self.state.selectedReportName,
+              ScheduleID: self.state.Schedule_ID,
+              StoreReportSearchParams: SearchParams,
+            },
           })
-          .catch((data) => {
-            console.log(data);
-          });
-      } else {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
-          headers: authHeader(),
-          data: {
-            PrimaryScheduleID: this.state.Schedule_ID,
-            ReportName: this.state.selectedReportName,
-            SearchInputParams: SearchParams,
-            ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
-            ScheduleType: this.state.selectScheduleDate,
-            NoOfDay: this.state.selectedNoOfDay,
-            ScheduleTime: this.state.selectedScheduleTime,
-            IsDaily: this.state.IsDaily,
-            IsWeekly: this.state.IsWeekly,
-            NoOfWeek: this.state.selectedNoOfWeek,
-            DayIds: this.state.selectedWeeklyDays,
-            IsDailyForMonth: this.state.IsDailyForMonth,
-            NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
-            NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
-            IsWeeklyForMonth: this.state.IsWeeklyForMonth,
-            NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
-            NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-            ScheduleFrom: 4,
-            NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
-            IsDailyForYear: this.state.IsDailyForYear,
-            NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-            NameOfMonthForDailyYear: this.state
-              .selectedNameOfMonthForYearCommaSeperated,
-            IsWeeklyForYear: this.state.IsWeeklyForYear,
-            NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
-            NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-            NameOfMonthForYear: this.state
-              .selectedNameOfMonthForDailyYearCommaSeperated,
-          },
-        })
-          .then(function(res) {
-            debugger;
-
-            let status = res.data.message;
-            let scheduleId = res.data.responseData;
-            if (status === "Success") {
-              self.state.selectedTeamMember = "";
-              self.state.selectedTeamMemberCommaSeperated = undefined;
-              self.state.selectScheduleDate = "";
-              self.state.selectedScheduleTime = "";
-
-              self.ScheduleCloseModel();
+            .then(function(res) {
+              debugger;
               // this.handleReportList();
-              self.handleGetStoreReports();
-              self.setState({ Schedule_ID: scheduleId });
-              self.setState({ AddReportPopup: false });
-              NotificationManager.success("Report saved successfully.");
-              self.setState({
-                ReportParams: {},
-                selectedScheduleTime: "",
-                // selectedTeamMemberCommaSeperated="",
-                // selectScheduleDate="",
-                // selectedScheduleTime="",
-                IsDaily: false,
-                IsDailyForMonth: false,
-                IsWeekly: false,
-                IsWeeklyForMonth: false,
-                IsDailyForYear: false,
-                IsWeeklyForYear: false,
-                NextPopup: false,
-              });
-            } else if (status == "duplicate") {
-              self.setState({ Schedule_ID: 0 });
-              NotificationManager.error("Report name already exist.");
-            }
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-      }
-    }, 10);
+              if (res.data.message === "Success") {
+                self.setState({ AddReportPopup: false });
+                self.setState({ Schedule_ID: 0 });
+                // self.handleGetStoreReports();
+                self.handleNextPopupClose();
+                NotificationManager.success(
+                  "Report saved successfully for download."
+                );
+              } else {
+                NotificationManager.error("Report not saved.");
+              }
+            })
+            .catch((data) => {
+              console.log(data);
+            });
+          // } else {
+          //   axios({
+          //     method: "post",
+          //     url: config.apiUrl + "/StoreReport/ScheduleStoreReport",
+          //     headers: authHeader(),
+          //     data: {
+          //       PrimaryScheduleID: this.state.Schedule_ID,
+          //       ReportName: this.state.selectedReportName,
+          //       SearchInputParams: SearchParams,
+          //       ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+          //       ScheduleType: this.state.selectScheduleDate,
+          //       NoOfDay: this.state.selectedNoOfDay,
+          //       ScheduleTime: this.state.selectedScheduleTime,
+          //       IsDaily: this.state.IsDaily,
+          //       IsWeekly: this.state.IsWeekly,
+          //       NoOfWeek: this.state.selectedNoOfWeek,
+          //       DayIds: this.state.selectedWeeklyDays,
+          //       IsDailyForMonth: this.state.IsDailyForMonth,
+          //       NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+          //       NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+          //       IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+          //       NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+          //       NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+          //       ScheduleFrom: 4,
+          //       NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+          //       IsDailyForYear: this.state.IsDailyForYear,
+          //       NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+          //       NameOfMonthForDailyYear: this.state
+          //         .selectedNameOfMonthForYearCommaSeperated,
+          //       IsWeeklyForYear: this.state.IsWeeklyForYear,
+          //       NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+          //       NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+          //       NameOfMonthForYear: this.state
+          //         .selectedNameOfMonthForDailyYearCommaSeperated,
+          //     },
+          //   })
+          //     .then(function(res) {
+          //       debugger;
+
+          //       let status = res.data.message;
+          //       let scheduleId = res.data.responseData;
+          //       if (status === "Success") {
+          //         self.state.selectedTeamMember = "";
+          //         self.state.selectedTeamMemberCommaSeperated = undefined;
+          //         self.state.selectScheduleDate = "";
+          //         self.state.selectedScheduleTime = "";
+
+          //         self.ScheduleCloseModel();
+          //         // this.handleReportList();
+          //         self.handleGetStoreReports();
+          //         self.setState({ Schedule_ID: scheduleId });
+          //         self.setState({ AddReportPopup: false });
+          //         NotificationManager.success("Report saved successfully.");
+          //         self.setState({
+          //           ReportParams: {},
+          //           selectedScheduleTime: "",
+          //           // selectedTeamMemberCommaSeperated="",
+          //           // selectScheduleDate="",
+          //           // selectedScheduleTime="",
+          //           IsDaily: false,
+          //           IsDailyForMonth: false,
+          //           IsWeekly: false,
+          //           IsWeeklyForMonth: false,
+          //           IsDailyForYear: false,
+          //           IsWeeklyForYear: false,
+          //           NextPopup: false,
+          //         });
+          //       } else if (status == "duplicate") {
+          //         self.setState({ Schedule_ID: 0 });
+          //         NotificationManager.error("Report name already exist.");
+          //       }
+          //     })
+          //     .catch((data) => {
+          //       console.log(data);
+          //     });
+          // }
+        }, 10);
+      })
+      .catch((data) => {
+        console.log(data);
+      });
 
     // else{
     //   NotificationManager.error("Please create scheduler");
@@ -1847,187 +2108,303 @@ class StoreReports extends Component {
 
   handleEditReport = (rowData) => {
     debugger;
-    let allTab = JSON.parse(rowData.reportSearchParams);
-    this.setState({ Schedule_ID: rowData.scheduleID });
-    let withClaim = 0;
-    let withTask = 0;
-    // allTab=objEdit;
-    this.state.Schedule_ID = rowData.scheduleID;
-    this.state.tabIndex = allTab["ActiveTabId"];
-    this.state.taskIdTitle = allTab["TaskTitle"];
-    this.state.taskLinkedTicketId = allTab["TaskTicketID"];
-    this.state.taskAssignedTo = allTab["TaskAssignedId"];
-    this.state.taskCreatedBy = allTab["TaskCreatedBy"];
-    this.state.taskWithTickets = allTab["IsTaskWithTicket"] === true?"yes":"no";
-    this.state.taskWithClaim = allTab["IsTaskWithClaim"] === true?"yes":"no";
-    this.state.taskClaimId = allTab["TaskClaimID"];
-    this.state.indiDepartment = allTab["DepartmentIds"];
-    this.state.indiFunction = allTab["FunctionIds"];
-    this.state.indiPriority = allTab["PriorityIds"];
-    if (allTab["TaskStatus"]) {
-      var tData = allTab["TaskStatus"].split(",");
-      var taskStatusCommaSeperated = [];
-      for (let j = 0; j < tData.length - 1; j++) {
-        var data = this.state.taskStatusList.filter(
-          (x) => x.taskStatusID == tData[j]
-        );
-        taskStatusCommaSeperated.push(data[0]);
-      }
-      this.setState({taskStatus: taskStatusCommaSeperated});
-    }
-
-    this.state.claimClaimId = allTab["ClaimTaskID"];
-    this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
-    this.state.claimAssignedTo = allTab["ClaimAssignedId"];
-    this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
-    this.state.claimWithTickets = allTab["IsClaimWithTicket"] === true?"yes":"no";
-    this.state.claimWithTask = allTab["IsClaimWithTask"] === true?"yes":"no";
-    this.state.indiClaimCategory = allTab["ClaimCategoryIds"];
-    this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
-    this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
-    this.state.indiClaimStatus = allTab["ClaimStatus"];
-
-    this.state.indiCampaignName = allTab["CampaignName"];
-    this.state.indiCampaignStatus = allTab["CampaignStatusids"];
-    this.state.campaignAssignedTo = allTab["CampaignAssignedIds"];
-    this.state.campaignEndDateFrom = allTab["CampaignStartDate"];
-    this.state.campaignEndDateTo = allTab["CampaignEndDate"];
-
-    this.state.selectedReportName = rowData.reportName;
-    this.state.reportID = rowData.reportID;
-
-    // //////////////////Scheduler/////////////////////////
-    this.state.IsDaily = rowData.isDaily;
-    this.state.IsWeekly = rowData.isWeekly;
-    this.state.IsDailyForMonth = rowData.isDailyForMonth;
-    this.state.IsWeeklyForMonth = rowData.isWeeklyForMonth;
-    this.state.IsDailyForYear = rowData.isDailyForYear;
-    this.state.IsWeeklyForYear = rowData.isWeeklyForYear;
-    this.state.selectScheduleDate = rowData.scheduleType;
-    this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
-    this.state.selectedNoOfDay = rowData.noOfDay;
-    var responseTime = rowData.scheduleTime;
-    var splittedResponseTime = responseTime.split("T");
-    var date = splittedResponseTime[0];
-    var splittedDate = date.split("-");
-    var time = splittedResponseTime[1];
-    var splittedTime = time.split(":");
-    var finalTime = new Date(
-      splittedDate[0],
-      splittedDate[1] - 1,
-      splittedDate[2],
-      splittedTime[0],
-      splittedTime[1],
-      splittedTime[2]
-    );
-
-    this.state.selectedScheduleTime = finalTime;
-    // this.state.selectedScheduleTime=rowData.scheduleTime;
-    this.state.selectedNoOfWeek = rowData.noOfWeek;
-    this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
-    var dayIds = rowData.dayIds;
-    var splittedDayIds = dayIds.split(",");
-    this.setState({
-      dayIdsArray: splittedDayIds,
-    });
-    for (let i = 0; i < splittedDayIds.length; i++) {
-      var ele = splittedDayIds[i];
-      if (ele === "Mon") {
-        this.setState({
-          Mon: ele,
-        });
-      } else if (ele === "Tue") {
-        this.setState({
-          Tue: ele,
-        });
-      } else if (ele === "Wed") {
-        this.setState({
-          Wed: ele,
-        });
-      } else if (ele === "Thu") {
-        this.setState({
-          Thu: ele,
-        });
-      } else if (ele === "Fri") {
-        this.setState({
-          Fri: ele,
-        });
-      } else if (ele === "Sat") {
-        this.setState({
-          Sat: ele,
-        });
-      } else if (ele === "Sun") {
-        this.setState({
-          Sun: ele,
-        });
-      }
-    }
-    this.setState({
-      selectedNoOfDaysForMonth: rowData.noOfDaysForMonth,
-      selectedNoOfMonthForMonth: rowData.noOfMonthForMonth,
-      selectedNoOfMonthForWeek: rowData.noOfMonthForWeek,
-      selectedNoOfWeekForWeek: rowData.noOfWeekForWeek,
-    });
-    var dayForWeek = rowData.nameOfDayForWeek.split(",");
-    var selectedNameOfDayForWeek = [];
-    for (let j = 0; j < dayForWeek.length; j++) {
-      var data = this.state.NameOfDayForWeek.filter(
-        (x) => x.days == dayForWeek[j]
-      );
-      selectedNameOfDayForWeek.push(data[0]);
-    }
-    this.setState({
-      selectedNameOfDayForWeek: selectedNameOfDayForWeek,
-    });
-    var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
-    var selectedNameOfMonthForYear = [];
-    for (let j = 0; j < dayForYear.length; j++) {
-      var data = this.state.NameOfMonthForYear.filter(
-        (x) => x.month == dayForYear[j]
-      );
-      selectedNameOfMonthForYear.push(data[0]);
-    }
-    this.setState({
-      selectedNameOfMonthForYear: selectedNameOfMonthForYear,
-      selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear,
-    });
-    var dayForYear = rowData.nameOfDayForYear.split(",");
-    var selectedNameOfDayForYear = [];
-    for (let j = 0; j < dayForYear.length; j++) {
-      var data = this.state.NameOfDayForYear.filter(
-        (x) => x.days == dayForYear[j]
-      );
-      selectedNameOfDayForYear.push(data[0]);
-    }
-    var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
-    var selectedNameOfMonthForDailyYear = [];
-    for (let j = 0; j < monthForDailyYear.length; j++) {
-      var data = this.state.NameOfMonthForDailyYear.filter(
-        (x) => x.month == monthForDailyYear[j]
-      );
-      selectedNameOfMonthForDailyYear.push(data[0]);
-    }
-    this.setState({
-      selectedNameOfDayForYear: selectedNameOfDayForYear,
-      selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear,
-      selectedNoOfWeekForYear: rowData.noOfWeekForYear,
-    });
-
-    ///////////////////////////////////////////////////
-    this.handleGetFunction();
-    this.handleGetClaimSubCategory();
-    this.handleGetClaimIssueType();
+    this.setState({ edit: true });
     this.handleAddReportOpen();
+    debugger;
+    setTimeout(() => {
+      let allTab = JSON.parse(rowData.reportSearchParams);
+      this.setState({ Schedule_ID: rowData.scheduleID });
+      this.setState({
+        tabIndex: allTab["ActiveTabId"],
+        taskIdTitle: allTab["TaskTitle"],
+        taskLinkedTicketId: allTab["TaskTicketID"],
+        taskAssignedTo: allTab["TaskAssignedId"],
+        taskCreatedBy: allTab["TaskCreatedBy"],
+        taskCreateDate: allTab["TaskCreatedDate"]
+          ? new Date(allTab["TaskCreatedDate"])
+          : "",
+        taskWithTickets: allTab["IsTaskWithTicket"] === true ? "yes" : "no",
+        taskWithClaim: allTab["IsTaskWithClaim"] === true ? "yes" : "no",
+        taskClaimId: allTab["TaskClaimID"],
+        indiDepartment: allTab["DepartmentIds"],
+        indiFunction: allTab["FunctionIds"],
+        indiPriority: allTab["PriorityIds"],
+        claimClaimId: allTab["ClaimID"],
+        linkedTaskId: allTab["ClaimTaskID"],
+        claimLinkedTicketId: allTab["ClaimTicketID"],
+        claimCreateDate: allTab["ClaimCreatedDate"]
+          ? new Date(allTab["ClaimCreatedDate"])
+          : "",
+        claimAssignedTo: allTab["ClaimAssignedId"],
+        claimCreatedBy: allTab["ClaimCreatedBy"],
+        claimWithTickets: allTab["IsClaimWithTicket"] === true ? "yes" : "no",
+        claimWithTask: allTab["IsClaimWithTask"] === true ? "yes" : "no",
+        indiClaimCategory: allTab["ClaimCategoryIds"],
+        indiClaimSubCategory: allTab["ClaimSubCategoryIds"],
+        indiClaimIssueType: allTab["ClaimIssuetypeIds"],
+        indiClaimStatus: allTab["ClaimStatus"],
+        indiCampaignName: allTab["CampaignName"],
+        indiCampaignStatus: allTab["CampaignStatusids"],
+        campaignAssignedTo: allTab["CampaignAssignedIds"],
+        campaignEndDateFrom: allTab["CampaignStartDate"]
+          ? new Date(allTab["CampaignStartDate"])
+          : "",
+        campaignEndDateTo: allTab["CampaignEndDate"]
+          ? new Date(allTab["CampaignEndDate"])
+          : "",
+      });
+      // this.state.Schedule_ID = rowData.scheduleID;
+      // this.state.tabIndex = allTab["ActiveTabId"];
+      // this.state.taskIdTitle = allTab["TaskTitle"];
+      // this.state.taskLinkedTicketId = allTab["TaskTicketID"];
+      // this.state.taskAssignedTo = allTab["TaskAssignedId"];
+      // this.state.taskCreatedBy = allTab["TaskCreatedBy"];
+      // this.state.taskWithTickets =
+      //   allTab["IsTaskWithTicket"] === true ? "yes" : "no";
+      // this.state.taskWithClaim =
+      //   allTab["IsTaskWithClaim"] === true ? "yes" : "no";
+      // this.state.taskClaimId = allTab["TaskClaimID"];
+      // this.state.indiDepartment = allTab["DepartmentIds"];
+      // this.state.indiFunction = allTab["FunctionIds"];
+      // this.state.indiPriority = allTab["PriorityIds"];
+      if (allTab["TaskStatus"]) {
+        var tData = allTab["TaskStatus"].split(",");
+        var taskStatusCommaSeperated = [];
+        for (let j = 0; j < tData.length - 1; j++) {
+          var data = this.state.taskStatusList.filter(
+            (x) => x.taskStatusID == tData[j]
+          );
+          taskStatusCommaSeperated.push(data[0]);
+        }
+        this.setState({ taskStatus: taskStatusCommaSeperated });
+      }
+
+      // this.state.claimClaimId = allTab["ClaimID"];
+      // this.state.linkedTaskId = allTab["ClaimTaskID"];
+      // this.state.claimLinkedTicketId = allTab["ClaimTicketID"];
+      // this.state.claimAssignedTo = allTab["ClaimAssignedId"];
+      // this.state.claimCreatedBy = allTab["ClaimCreatedBy"];
+      // this.state.claimWithTickets =
+      //   allTab["IsClaimWithTicket"] === true ? "yes" : "no";
+      // this.state.claimWithTask =
+      //   allTab["IsClaimWithTask"] === true ? "yes" : "no";
+      // this.state.indiClaimCategory = allTab["ClaimCategoryIds"];
+      // this.state.indiClaimSubCategory = allTab["ClaimSubCategoryIds"];
+      // this.state.indiClaimIssueType = allTab["ClaimIssuetypeIds"];
+      // this.state.indiClaimStatus = allTab["ClaimStatus"];
+      // this.setState({ claimCreateDate: allTab["ClaimCreatedDate"] });
+
+      // this.state.indiCampaignName = allTab["CampaignName"];
+      // this.state.indiCampaignStatus = allTab["CampaignStatusids"];
+      // this.state.campaignAssignedTo = allTab["CampaignAssignedIds"];
+      // this.state.campaignEndDateFrom = allTab["CampaignStartDate"];
+      // this.state.campaignEndDateTo = allTab["CampaignEndDate"];
+
+      this.setState({
+        selectedReportNameHolder: rowData.reportName,
+        reportIDHolder: rowData.reportID,
+      });
+
+      // //////////////////Scheduler/////////////////////////
+      this.state.IsDaily = rowData.isDaily;
+      this.state.IsWeekly = rowData.isWeekly;
+      this.state.IsDailyForMonth = rowData.isDailyForMonth;
+      this.state.IsWeeklyForMonth = rowData.isWeeklyForMonth;
+      this.state.IsDailyForYear = rowData.isDailyForYear;
+      this.state.IsWeeklyForYear = rowData.isWeeklyForYear;
+      this.state.selectScheduleDate = rowData.scheduleType;
+      this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
+      this.state.selectedNoOfDay = rowData.noOfDay;
+      var responseTime = rowData.scheduleTime;
+      var splittedResponseTime = responseTime.split("T");
+      var date = splittedResponseTime[0];
+      var splittedDate = date.split("-");
+      var time = splittedResponseTime[1];
+      var splittedTime = time.split(":");
+      var finalTime = new Date(
+        splittedDate[0],
+        splittedDate[1] - 1,
+        splittedDate[2],
+        splittedTime[0],
+        splittedTime[1],
+        splittedTime[2]
+      );
+
+      this.state.selectedScheduleTime = finalTime;
+      // this.state.selectedScheduleTime=rowData.scheduleTime;
+      this.state.selectedNoOfWeek = rowData.noOfWeek;
+      this.state.selectedWeeklyDays = rowData.selectedWeeklyDays;
+      var dayIds = rowData.dayIds;
+      var splittedDayIds = dayIds.split(",");
+      this.setState({
+        dayIdsArray: splittedDayIds,
+      });
+      for (let i = 0; i < splittedDayIds.length; i++) {
+        var ele = splittedDayIds[i];
+        if (ele === "Mon") {
+          this.setState({
+            Mon: ele,
+          });
+        } else if (ele === "Tue") {
+          this.setState({
+            Tue: ele,
+          });
+        } else if (ele === "Wed") {
+          this.setState({
+            Wed: ele,
+          });
+        } else if (ele === "Thu") {
+          this.setState({
+            Thu: ele,
+          });
+        } else if (ele === "Fri") {
+          this.setState({
+            Fri: ele,
+          });
+        } else if (ele === "Sat") {
+          this.setState({
+            Sat: ele,
+          });
+        } else if (ele === "Sun") {
+          this.setState({
+            Sun: ele,
+          });
+        }
+      }
+      this.setState({
+        selectedNoOfDaysForMonth: rowData.noOfDaysForMonth,
+        selectedNoOfMonthForMonth: rowData.noOfMonthForMonth,
+        selectedNoOfMonthForWeek: rowData.noOfMonthForWeek,
+        selectedNoOfWeekForWeek: rowData.noOfWeekForWeek,
+      });
+      var dayForWeek = rowData.nameOfDayForWeek.split(",");
+      var selectedNameOfDayForWeek = [];
+      for (let j = 0; j < dayForWeek.length; j++) {
+        var data = this.state.NameOfDayForWeek.filter(
+          (x) => x.days == dayForWeek[j]
+        );
+        selectedNameOfDayForWeek.push(data[0]);
+      }
+      this.setState({
+        selectedNameOfDayForWeek: selectedNameOfDayForWeek,
+      });
+      var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
+      var selectedNameOfMonthForYear = [];
+      for (let j = 0; j < dayForYear.length; j++) {
+        var data = this.state.NameOfMonthForYear.filter(
+          (x) => x.month == dayForYear[j]
+        );
+        selectedNameOfMonthForYear.push(data[0]);
+      }
+      this.setState({
+        selectedNameOfMonthForYear: selectedNameOfMonthForYear,
+        selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear,
+      });
+      var dayForYear = rowData.nameOfDayForYear.split(",");
+      var selectedNameOfDayForYear = [];
+      for (let j = 0; j < dayForYear.length; j++) {
+        var data = this.state.NameOfDayForYear.filter(
+          (x) => x.days == dayForYear[j]
+        );
+        selectedNameOfDayForYear.push(data[0]);
+      }
+      var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
+      var selectedNameOfMonthForDailyYear = [];
+      for (let j = 0; j < monthForDailyYear.length; j++) {
+        var data = this.state.NameOfMonthForDailyYear.filter(
+          (x) => x.month == monthForDailyYear[j]
+        );
+        selectedNameOfMonthForDailyYear.push(data[0]);
+      }
+      this.setState({
+        selectedNameOfDayForYear: selectedNameOfDayForYear,
+        selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear,
+        selectedNoOfWeekForYear: rowData.noOfWeekForYear,
+      });
+
+      ///////////////////////////////////////////////////
+      this.handleGetFunction();
+      this.handleGetClaimSubCategory();
+      this.handleGetClaimIssueType();
+      // this.handleAddReportOpen();
+      if (this.state.tabIndex === 1) {
+        // setTimeout(() => {
+        if (this.state.indiDepartment.split(",").length - 1 !== 0) {
+          document.getElementById("departmentNameValue").textContent =
+            this.state.indiDepartment.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("departmentNameValue").textContent = "Select";
+        }
+        if (this.state.indiFunction.split(",").length - 1 !== 0) {
+          document.getElementById("functionNameValue").textContent =
+            this.state.indiFunction.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("functionNameValue").textContent = "Select";
+        }
+        if (this.state.indiPriority.split(",").length - 1 !== 0) {
+          document.getElementById("priorityNameValue").textContent =
+            this.state.indiPriority.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("priorityNameValue").textContent = "Select";
+        }
+        // }, 100);
+      } else if (this.state.tabIndex === 2) {
+        // setTimeout(() => {
+        if (this.state.indiClaimCategory.split(",").length - 1 !== 0) {
+          document.getElementById("claimCategoryNameValue").textContent =
+            this.state.indiClaimCategory.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimCategoryNameValue").textContent =
+            "Select";
+        }
+        if (this.state.indiClaimSubCategory.split(",").length - 1 !== 0) {
+          document.getElementById("claimSubCategoryNameValue").textContent =
+            this.state.indiClaimSubCategory.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimSubCategoryNameValue").textContent =
+            "Select";
+        }
+        if (this.state.indiClaimIssueType.split(",").length - 1 !== 0) {
+          document.getElementById("claimIssueTypeNameValue").textContent =
+            this.state.indiClaimIssueType.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimIssueTypeNameValue").textContent =
+            "Select";
+        }
+        if (this.state.indiClaimStatus.split(",").length - 1 !== 0) {
+          document.getElementById("claimStatusNameValue").textContent =
+            this.state.indiClaimStatus.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("claimStatusNameValue").textContent =
+            "Select";
+        }
+        // }, 100);
+      } else if (this.state.tabIndex === 3) {
+        if (this.state.indiCampaignName.split(",").length - 1 !== 0) {
+          document.getElementById("campaignNameValue").textContent =
+            this.state.indiCampaignName.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("campaignNameValue").textContent = "Select";
+        }
+        if (this.state.indiCampaignStatus.split(",").length - 1 !== 0) {
+          document.getElementById("campaignStatusNameValue").textContent =
+            this.state.indiCampaignStatus.split(",").length - 1 + " selected";
+        } else {
+          document.getElementById("campaignStatusNameValue").textContent =
+            "Select";
+        }
+      }
+    }, 1);
   };
 
   handleDeleteStoreReports(reportID) {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/DeleteStoreReport",
-       params: { ReportID: reportID },
-      headers: authHeader()
+      params: { ReportID: reportID },
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
@@ -2038,62 +2415,721 @@ class StoreReports extends Component {
           NotificationManager.success("Report deleted successfully.");
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
   handleGetCampaignName() {
-    debugger; 
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreReport/GetCampaignNames",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData.length > 0) {
-          self.setState({campaignName: responseData});
+          self.setState({ campaignName: responseData });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
 
+  handleDownload = (id) => {
+    debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreReport/DownloadStoreReport",
+      headers: authHeader(),
+      params: {
+        ReportID: id,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        if (res.data.responseData === "") {
+          NotificationManager.error("No data in report");
+        } else {
+          window.open(res.data.responseData);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  };
+
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.storeReportData;
+
+    if (this.state.sortColumn === "reportName") {
+      itemsArray.sort((a, b) => {
+        if (a.reportName < b.reportName) return 1;
+        if (a.reportName > b.reportName) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.scheduleStatus < b.scheduleStatus) return 1;
+        if (a.scheduleStatus > b.scheduleStatus) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return 1;
+        if (a.createdBy > b.createdBy) return -1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.reportStatus < b.reportStatus) return 1;
+        if (a.reportStatus > b.reportStatus) return -1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      ReportData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+
+  sortStatusAtoZ() {
+    debugger;
+
+    var itemsArray = [];
+    itemsArray = this.state.storeReportData;
+
+    if (this.state.sortColumn === "reportName") {
+      itemsArray.sort((a, b) => {
+        if (a.reportName < b.reportName) return -1;
+        if (a.reportName > b.reportName) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.scheduleStatus < b.scheduleStatus) return -1;
+        if (a.scheduleStatus > b.scheduleStatus) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "createdBy") {
+      itemsArray.sort((a, b) => {
+        if (a.createdBy < b.createdBy) return -1;
+        if (a.createdBy > b.createdBy) return 1;
+        return 0;
+      });
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      itemsArray.sort((a, b) => {
+        if (a.reportStatus < b.reportStatus) return -1;
+        if (a.reportStatus > b.reportStatus) return 1;
+        return 0;
+      });
+    }
+
+    this.setState({
+      isortA: true,
+      ReportData: itemsArray,
+    });
+    setTimeout(() => {
+      this.StatusCloseModel();
+    }, 10);
+  }
+  StatusOpenModel(data, header) {
+    debugger;
+
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (
+      this.state.sortFilterName.length === 0 ||
+      this.state.sortFilterSchedule.length === 0 ||
+      this.state.sortFilterCreatedBy.length === 0 ||
+      this.state.sortFilterStatus.length === 0
+    ) {
+      return false;
+    }
+    // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
+    if (data === "reportName") {
+      if (
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sscheduleStatusFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "scheduleStatus") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "createdBy") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.sreportStatusFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          sscheduleStatusFilterCheckbox: "",
+          sreportStatusFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+    if (data === "reportStatus") {
+      if (
+        this.state.sreportNameFilterCheckbox !== "" ||
+        this.state.sscheduleStatusFilterCheckbox !== "" ||
+        this.state.screatedByFilterCheckbox !== ""
+      ) {
+        this.setState({
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      } else {
+        this.setState({
+          sreportNameFilterCheckbox: "",
+          sscheduleStatusFilterCheckbox: "",
+          screatedByFilterCheckbox: "",
+          StatusModel: true,
+          sortColumn: data,
+          sortHeader: header,
+        });
+      }
+    }
+  }
+  StatusCloseModel = (e) => {
+    if (this.state.tempReportData.length > 0) {
+      this.setState({
+        StatusModel: false,
+        storeReportData: this.state.tempReportData,
+        filterTxtValue: "",
+        sortFilterName: this.state.sortFilterName,
+        sortFilterSchedule: this.state.sortSchedule,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
+      });
+      if (this.state.sortColumn === "reportName") {
+        if (this.state.sreportNameFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sscheduleStatusFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sreportStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "scheduleStatus") {
+        if (this.state.sscheduleStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+            sreportStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "createdBy") {
+        if (this.state.screatedByFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            sscheduleStatusFilterCheckbox: "",
+            sreportStatusFilterCheckbox: "",
+          });
+        }
+      }
+      if (this.state.sortColumn === "reportStatus") {
+        if (this.state.sreportStatusFilterCheckbox === "") {
+        } else {
+          this.setState({
+            sreportNameFilterCheckbox: "",
+            sscheduleStatusFilterCheckbox: "",
+            screatedByFilterCheckbox: "",
+          });
+        }
+      }
+    } else {
+      this.setState({
+        StatusModel: false,
+        storeReportData: this.state.isortA
+          ? this.state.storeReportData
+          : this.state.sortAllData,
+        filterTxtValue: "",
+        sortFilterName: this.state.sortFilterName,
+        sortFilterSchedule: this.state.sortSchedule,
+        sortFilterCreatedBy: this.state.sortCreatedBy,
+        sortFilterStatus: this.state.sortStatus,
+      });
+    }
+  };
+  setSortCheckStatus = (column, type, e) => {
+    debugger;
+
+    var itemsArray = [];
+
+    var sreportNameFilterCheckbox = this.state.sreportNameFilterCheckbox;
+    var sscheduleStatusFilterCheckbox = this.state
+      .sscheduleStatusFilterCheckbox;
+    var screatedByFilterCheckbox = this.state.screatedByFilterCheckbox;
+    var sreportStatusFilterCheckbox = this.state.sreportStatusFilterCheckbox;
+
+    if (column === "reportName" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sreportNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sreportNameFilterCheckbox = sreportNameFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sreportNameFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportNameFilterCheckbox.includes("all")) {
+          sreportNameFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportName") {
+            for (let i = 0; i < this.state.sortName.length; i++) {
+              sreportNameFilterCheckbox +=
+                this.state.sortName[i].reportName + ",";
+            }
+            sreportNameFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "scheduleStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sscheduleStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sscheduleStatusFilterCheckbox = sscheduleStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sscheduleStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sscheduleStatusFilterCheckbox.includes("all")) {
+          sscheduleStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "scheduleStatus") {
+            for (let i = 0; i < this.state.sortSchedule.length; i++) {
+              sscheduleStatusFilterCheckbox +=
+                this.state.sortSchedule[i].scheduleStatus + ",";
+            }
+            sscheduleStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "createdBy" || column === "all") {
+      if (type === "value" && type !== "All") {
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all", "");
+        screatedByFilterCheckbox = screatedByFilterCheckbox.replace("all,", "");
+        if (
+          screatedByFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          screatedByFilterCheckbox = screatedByFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          screatedByFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (screatedByFilterCheckbox.includes("all")) {
+          screatedByFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "createdBy") {
+            for (let i = 0; i < this.state.sortCreatedBy.length; i++) {
+              screatedByFilterCheckbox +=
+                this.state.sortCreatedBy[i].createdBy + ",";
+            }
+            screatedByFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+    if (column === "reportStatus" || column === "all") {
+      if (type === "value" && type !== "All") {
+        sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+          "all",
+          ""
+        );
+        sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+          "all,",
+          ""
+        );
+        if (
+          sreportStatusFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
+          sreportStatusFilterCheckbox = sreportStatusFilterCheckbox.replace(
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
+            ""
+          );
+        } else {
+          sreportStatusFilterCheckbox += e.currentTarget.value + ",";
+        }
+      } else {
+        if (sreportStatusFilterCheckbox.includes("all")) {
+          sreportStatusFilterCheckbox = "";
+        } else {
+          if (this.state.sortColumn === "reportStatus") {
+            for (let i = 0; i < this.state.sortState.length; i++) {
+              sreportStatusFilterCheckbox +=
+                this.state.sortState[i].reportStatus + ",";
+            }
+            sreportStatusFilterCheckbox += "all";
+          }
+        }
+      }
+    }
+
+    var allData = this.state.sortAllData;
+
+    this.setState({
+      sreportNameFilterCheckbox,
+      sscheduleStatusFilterCheckbox,
+      screatedByFilterCheckbox,
+      sreportStatusFilterCheckbox,
+      nameColor: "",
+      scheduleColor: "",
+      createdColor: "",
+      statusColor: "",
+    });
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "reportName") {
+      var sItems = sreportNameFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.reportName === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        nameColor: "sort-column",
+      });
+    } else if (column === "scheduleStatus") {
+      var sItems = sscheduleStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.scheduleStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        scheduleColor: "sort-column",
+      });
+    } else if (column === "createdBy") {
+      var sItems = screatedByFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.createdBy === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        createdColor: "sort-column",
+      });
+    } else if (column === "reportStatus") {
+      var sItems = sreportStatusFilterCheckbox.split(",");
+      if (sItems.length > 0) {
+        for (let i = 0; i < sItems.length; i++) {
+          if (sItems[i] !== "") {
+            var tempFilterData = allData.filter(
+              (a) => a.reportStatus === sItems[i]
+            );
+            if (tempFilterData.length > 0) {
+              for (let j = 0; j < tempFilterData.length; j++) {
+                itemsArray.push(tempFilterData[j]);
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        statusColor: "sort-column",
+      });
+    }
+
+    this.setState({
+      tempReportData: itemsArray,
+    });
+    // this.StatusCloseModel();
+  };
+
+  filteTextChange(e) {
+    debugger;
+    this.setState({ filterTxtValue: e.target.value });
+    if (this.state.sortColumn === "reportName") {
+      var sortFilterName = matchSorter(this.state.sortName, e.target.value, {
+        keys: ["reportName"],
+      });
+      if (sortFilterName.length > 0) {
+        this.setState({ sortFilterName });
+      } else {
+        this.setState({
+          sortFilterName: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "scheduleStatus") {
+      var sortFilterSchedule = matchSorter(
+        this.state.sortSchedule,
+        e.target.value,
+        { keys: ["scheduleStatus"] }
+      );
+      if (sortFilterSchedule.length > 0) {
+        this.setState({ sortFilterSchedule });
+      } else {
+        this.setState({
+          sortFilterSchedule: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "createdBy") {
+      var sortFilterCreatedBy = matchSorter(
+        this.state.sortCreatedBy,
+        e.target.value,
+        { keys: ["createdBy"] }
+      );
+      if (sortFilterCreatedBy.length > 0) {
+        this.setState({ sortFilterCreatedBy });
+      } else {
+        this.setState({
+          sortFilterCreatedBy: [],
+        });
+      }
+    }
+    if (this.state.sortColumn === "reportStatus") {
+      var sortFilterStatus = matchSorter(
+        this.state.sortStatus,
+        e.target.value,
+        { keys: ["reportStatus"] }
+      );
+      if (sortFilterStatus.length > 0) {
+        this.setState({ sortFilterStatus });
+      } else {
+        this.setState({
+          sortFilterStatus: [],
+        });
+      }
+    }
+  }
+  handleClearSearch() {
+    this.setState({
+      screatedByFilterCheckbox: "",
+      sreportNameFilterCheckbox: "",
+      sscheduleStatusFilterCheckbox: "",
+      sreportStatusFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      storeReportData: this.state.sortAllData,
+      tempReportData: [],
+    });
+  }
+
   render() {
-    const TranslationContext = this.context.state.translateLanguage.default
     const datareport = this.state.storeReportData;
 
     const columnsreport = [
       {
         Header: (
-          <span>
-            Name
-            <FontAwesomeIcon icon={faCaretDown} />
+          <span
+            className={this.state.sortHeader === "Name" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(this, "reportName", "Name")}
+          >
+            {(() => {
+                                            if (TranslationContext !== undefined) {
+                                              return TranslationContext.span.name;
+                                            } else {
+                                              return "Name";
+                                            }
+                                          })()}
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false && this.state.sortHeader === "Name"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "reportName",
       },
       {
         Header: (
-          <span>
+          <span
+            className={
+              this.state.sortHeader === "Schedule Status" ? "sort-column" : ""
+            }
+            onClick={this.StatusOpenModel.bind(
+              this,
+              "scheduleStatus",
+              "Schedule Status"
+            )}
+          >
             Schedule Status
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Schedule Status"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "scheduleStatus",
       },
       {
         Header: (
-          <span>
+          <span
+            className={
+              this.state.sortHeader === "Created by" ? "sort-column" : ""
+            }
+            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created by")}
+          >
             Created by
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false &&
+                this.state.sortHeader === "Created by"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "createdBy",
         Cell: (row) => {
           var ids = row.original["id"];
@@ -2101,22 +3137,33 @@ class StoreReports extends Component {
             <div>
               <span>
                 {row.original["createdBy"]}
-                <Popover content={
-                <>
-                <div>
-                  <b>
-                    <p className="title">Created By: {row.original["createdBy"]}</p>
-                  </b>
-                  <p className="sub-title">Created Date: {row.original["createdDate"]}</p>
-                </div>
-                <div>
-                  <b>
-                    <p className="title">Updated By: {row.original["modifiedBy"]}</p>
-                  </b>
-                  <p className="sub-title">Updated Date: {row.original["modifiedDate"]}</p>
-                </div>
-                </>
-                } placement="bottom">
+                <Popover
+                  content={
+                    <>
+                      <div>
+                        <b>
+                          <p className="title">
+                            Created By: {row.original["createdBy"]}
+                          </p>
+                        </b>
+                        <p className="sub-title">
+                          Created Date: {row.original["createdDate"]}
+                        </p>
+                      </div>
+                      <div>
+                        <b>
+                          <p className="title">
+                            Updated By: {row.original["modifiedBy"]}
+                          </p>
+                        </b>
+                        <p className="sub-title">
+                          Updated Date: {row.original["modifiedDate"]}
+                        </p>
+                      </div>
+                    </>
+                  }
+                  placement="bottom"
+                >
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -2131,52 +3178,85 @@ class StoreReports extends Component {
       },
       {
         Header: (
-          <span>
+          <span
+            className={this.state.sortHeader === "Status" ? "sort-column" : ""}
+            onClick={this.StatusOpenModel.bind(this, "reportStatus", "Status")}
+          >
             Status
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon
+              icon={
+                this.state.isATOZ == false && this.state.sortHeader === "Status"
+                  ? faCaretUp
+                  : faCaretDown
+              }
+            />
           </span>
         ),
+        sortable: false,
         accessor: "reportStatus",
       },
       {
         Header: <span>Actions</span>,
+        sortable: false,
         accessor: "actionReport",
         Cell: (row) => (
-          <span>
-            <img
-              src={DownExcel}
-              alt="download icon"
-              className="downloadaction"
-            />
-            <Popover content={
-              <div className="d-flex general-popover popover-body">
-                <div className="del-big-icon">
-                  <img src={DelBigIcon} alt="del-icon" />
-                </div>
-                <div>
-                  <p className="font-weight-bold blak-clr">Delete file?</p>
-                  <p className="mt-1 fs-12">
-                    Are you sure you want to delete this file?
-                  </p>
-                  <div className="del-can">
-                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                    <button className="butn" 
-                    onClick={this.handleDeleteStoreReports.bind(this,row.original["reportID"])}>Delete</button>
+          <div className="report-action">
+            <div>
+              {row.original.isDownloaded === 1 && (
+                <img
+                  src={DownExcel}
+                  alt="download icon"
+                  className="downloadaction"
+                  onClick={this.handleDownload.bind(
+                    this,
+                    row.original.reportID
+                  )}
+                />
+              )}
+            </div>
+            <div>
+              <Popover
+                content={
+                  <div className="d-flex general-popover popover-body">
+                    <div className="del-big-icon">
+                      <img src={DelBigIcon} alt="del-icon" />
+                    </div>
+                    <div>
+                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                      <p className="mt-1 fs-12">
+                        Are you sure you want to delete this file?
+                      </p>
+                      <div className="del-can">
+                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                        <button
+                          className="butn"
+                          onClick={this.handleDeleteStoreReports.bind(
+                            this,
+                            row.original["reportID"]
+                          )}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            } placement="bottom" trigger="click">
-              <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
-            </Popover>
-            <button className="react-tabel-button editre" id="p-edit-pop-2"
-            onClick={this.handleEditReport.bind(
-              this,
-              row.original
-            )}
-            >
-              EDIT
-            </button>
-          </span>
+                }
+                placement="bottom"
+                trigger="click"
+              >
+                <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
+              </Popover>
+            </div>
+            <div>
+              <button
+                className="react-tabel-button editre"
+                id="p-edit-pop-2"
+                onClick={this.handleEditReport.bind(this, row.original)}
+              >
+                EDIT
+              </button>
+            </div>
+          </div>
         ),
       },
     ];
@@ -2192,7 +3272,12 @@ class StoreReports extends Component {
           </p>
           <div className="del-can">
             <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn" onClick={this.handleDeleteStoreReports.bind(this,)}>Delete</button>
+            <button
+              className="butn"
+              onClick={this.handleDeleteStoreReports.bind(this)}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
@@ -2216,6 +3301,192 @@ class StoreReports extends Component {
 
     return (
       <Fragment>
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn text-center">
+                <label style={{ color: "#0066cc", fontWeight: "bold" }}>
+                  {this.state.sortHeader}
+                </label>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a
+                    href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <a
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
+              >
+                clear search
+              </a>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <input
+                  type="text"
+                  style={{ display: "block" }}
+                  value={this.state.filterTxtValue}
+                  onChange={this.filteTextChange.bind(this)}
+                />
+
+                <div className="FTypeScroll">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      name="filter-type"
+                      id={"fil-open"}
+                      value="all"
+                      checked={
+                        this.state.sreportNameFilterCheckbox.includes("all") ||
+                        this.state.sscheduleStatusFilterCheckbox.includes(
+                          "all"
+                        ) ||
+                        this.state.screatedByFilterCheckbox.includes("all") ||
+                        this.state.sreportStatusFilterCheckbox.includes("all")
+                      }
+                      onChange={this.setSortCheckStatus.bind(this, "all")}
+                    />
+                    <label htmlFor={"fil-open"}>
+                      <span className="table-btn table-blue-btn">ALL</span>
+                    </label>
+                  </div>
+                  {this.state.sortColumn === "reportName"
+                    ? this.state.sortFilterName !== null &&
+                      this.state.sortFilterName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportName}
+                            id={"fil-open" + item.reportName}
+                            value={item.reportName}
+                            checked={this.state.sreportNameFilterCheckbox.includes(
+                              item.reportName
+                            )|| false}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "scheduleStatus"
+                    ? this.state.sortFilterSchedule !== null &&
+                      this.state.sortFilterSchedule.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.scheduleStatus}
+                            id={"fil-open" + item.scheduleStatus}
+                            value={item.scheduleStatus}
+                            checked={this.state.sscheduleStatusFilterCheckbox.includes(
+                              item.scheduleStatus
+                            )|| false}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "scheduleStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.scheduleStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.scheduleStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "createdBy"
+                    ? this.state.sortFilterCreatedBy !== null &&
+                      this.state.sortFilterCreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.createdBy}
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )|| false}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+
+                  {this.state.sortColumn === "reportStatus"
+                    ? this.state.sortFilterStatus !== null &&
+                      this.state.sortFilterStatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name={item.reportStatus}
+                            id={"fil-open" + item.reportStatus}
+                            value={item.reportStatus}
+                            checked={this.state.sreportStatusFilterCheckbox.includes(
+                              item.reportStatus
+                            )|| false}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "reportStatus",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.reportStatus}>
+                            <span className="table-btn table-blue-btn">
+                              {item.reportStatus}
+                            </span>
+                          </label>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
             Settings
@@ -2299,7 +3570,10 @@ class StoreReports extends Component {
             />
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
-                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 1)}>
+                <li
+                  className="nav-item"
+                  onClick={this.handleChangeTab.bind(this, 1)}
+                >
                   <a
                     className={`nav-link ${this.state.tabIndex === 1 &&
                       "active"} `}
@@ -2313,7 +3587,10 @@ class StoreReports extends Component {
                     Task
                   </a>
                 </li>
-                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 2)}>
+                <li
+                  className="nav-item"
+                  onClick={this.handleChangeTab.bind(this, 2)}
+                >
                   <a
                     className={`nav-link ${this.state.tabIndex === 2 &&
                       "active"} `}
@@ -2327,7 +3604,10 @@ class StoreReports extends Component {
                     Claim
                   </a>
                 </li>
-                <li className="nav-item" onClick={this.handleChangeTab.bind(this, 3)}>
+                <li
+                  className="nav-item"
+                  onClick={this.handleChangeTab.bind(this, 3)}
+                >
                   <a
                     className={`nav-link ${this.state.tabIndex === 3 &&
                       "active"} `}
@@ -2428,20 +3708,34 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.departmentID}
+                                        id={"d" + item.departmentID}
                                         name="allDepartment"
                                         onChange={this.selectIndividualDepartment.bind(
                                           this,
                                           item.departmentID
                                         )}
-                                        checked={this.state.indiDepartment !== undefined?
-                                          this.state.indiDepartment.includes(
-                                          item.departmentID):false
+                                        // checked={
+                                        //   this.state.indiDepartment !==
+                                        //   undefined
+                                        //     ? this.state.indiDepartment.includes(
+                                        //         item.departmentID
+                                        //       )
+                                        //     : false
+                                        // }
+                                        checked={
+                                          this.state.indiDepartment !==
+                                          undefined
+                                            ? this.state.indiDepartment
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.departmentID.toString()
+                                                )
+                                            : false
                                         }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.departmentID}
-                                      >
+                                      <label htmlFor={"d" + item.departmentID}>
                                         {item.departmentName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2478,9 +3772,7 @@ class StoreReports extends Component {
                       <label>Task Status</label>
                       <div className="normal-dropdown">
                         <Select
-                          getOptionLabel={(option) =>
-                            option.taskStatusName
-                          }
+                          getOptionLabel={(option) => option.taskStatusName}
                           getOptionValue={(option) => option.taskStatusID}
                           options={this.state.taskStatusList}
                           closeMenuOnSelect={false}
@@ -2547,20 +3839,32 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.functionID}
+                                        id={"f" + item.functionID}
                                         name="allFunction"
                                         onChange={this.selectIndividualFunction.bind(
                                           this,
                                           item.functionID
                                         )}
-                                        checked={this.state.indiFunction !== undefined?
-                                          this.state.indiFunction.includes(
-                                          item.functionID):false
+                                        // checked={
+                                        //   this.state.indiFunction !== undefined
+                                        //     ? this.state.indiFunction.includes(
+                                        //         item.functionID
+                                        //       )
+                                        //     : false
+                                        // }
+                                        checked={
+                                          this.state.indiFunction !== undefined
+                                            ? this.state.indiFunction
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.functionID.toString()
+                                                )
+                                            : false
                                         }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.functionID}
-                                      >
+                                      <label htmlFor={"f" + item.functionID}>
                                         {item.funcationName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2581,10 +3885,13 @@ class StoreReports extends Component {
                         value={this.state.taskCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                         {/* <option value="1">Aman</option>
                         <option value="2">Arjun</option> */}
                       </select>
@@ -2658,19 +3965,32 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.priorityID}
+                                        id={"p" + item.priorityID}
                                         name="allPriority"
                                         onChange={this.selectIndividualPriority.bind(
                                           this,
                                           item.priorityID
                                         )}
-                                        checked={this.state.indiPriority !== undefined?
-                                          this.state.indiPriority.includes(
-                                          item.priorityID):false}
+                                        // checked={
+                                        //   this.state.indiPriority !== undefined
+                                        //     ? this.state.indiPriority.includes(
+                                        //         item.priorityID
+                                        //       )
+                                        //     : false
+                                        // }
+                                        checked={
+                                          this.state.indiPriority !== undefined
+                                            ? this.state.indiPriority
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.priorityID.toString()
+                                                )
+                                            : false
+                                        }
                                       />
-                                      <label
-                                        htmlFor={"i" + item.priorityID}
-                                      >
+                                      <label htmlFor={"p" + item.priorityID}>
                                         {item.priortyName}
                                         <div>
                                           <img src={Correct} alt="Checked" />
@@ -2691,10 +4011,13 @@ class StoreReports extends Component {
                         value={this.state.taskAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                         {/* <option value="1">Aman</option>
                         <option value="2">Arjun</option> */}
                       </select>
@@ -2741,7 +4064,7 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        onClick={this.handleNextPopupOpen.bind(this,1)}
+                        onClick={this.handleNextPopupOpen.bind(this, 1)}
                       >
                         NEXT
                       </button>
@@ -2830,19 +4153,34 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.categoryID}
+                                          id={"cc" + item.categoryID}
                                           name="allClaimCategory"
                                           onChange={this.selectIndividualClaimCategory.bind(
                                             this,
                                             item.categoryID
                                           )}
-                                          checked={this.state.indiClaimCategory !== undefined?
-                                            this.state.indiClaimCategory.includes(
-                                            item.categoryID):false}
+                                          // checked={
+                                          //   this.state.indiClaimCategory !==
+                                          //   undefined
+                                          //     ? this.state.indiClaimCategory.includes(
+                                          //         item.categoryID
+                                          //       )
+                                          //     : false
+                                          // }
+                                          checked={
+                                            this.state.indiClaimCategory !==
+                                            undefined
+                                              ? this.state.indiClaimCategory
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.categoryID.toString()
+                                                  )
+                                              : false
+                                          }
                                         />
-                                        <label
-                                          htmlFor={"i" + item.categoryID}
-                                        >
+                                        <label htmlFor={"cc" + item.categoryID}>
                                           {item.categoryName}
                                           <div>
                                             <img src={Correct} alt="Checked" />
@@ -2934,18 +4272,35 @@ class StoreReports extends Component {
                                     <li key={i}>
                                       <input
                                         type="checkbox"
-                                        id={"i" + item.claimStatusID}
+                                        id={"cs" + item.claimStatusID}
                                         name="allClaimStatus"
                                         onChange={this.selectIndividualClaimStatus.bind(
                                           this,
                                           item.claimStatusID
                                         )}
-                                        checked={this.state.indiClaimStatus !== undefined?
-                                          this.state.indiClaimStatus.includes(
-                                          item.claimStatusID):false}
+                                        // checked={
+                                        //   this.state.indiClaimStatus !==
+                                        //   undefined
+                                        //     ? this.state.indiClaimStatus.includes(
+                                        //         item.claimStatusID
+                                        //       )
+                                        //     : false
+                                        // }
+                                        checked={
+                                          this.state.indiClaimStatus !==
+                                          undefined
+                                            ? this.state.indiClaimStatus
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.claimStatusID.toString()
+                                                )
+                                            : false
+                                        }
                                       />
                                       <label
-                                        htmlFor={"i" + item.claimStatusID}
+                                        htmlFor={"cs" + item.claimStatusID}
                                       >
                                         {item.claimStatusName}
                                         <div>
@@ -3020,18 +4375,35 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"s" + item.subCategoryID}
+                                          id={"csc" + item.subCategoryID}
                                           name="allClaimSubCategory"
                                           onChange={this.selectIndividualClaimSubCategory.bind(
                                             this,
                                             item.subCategoryID
                                           )}
-                                          checked={this.state.indiClaimSubCategory !== undefined?
-                                            this.state.indiClaimSubCategory.includes(
-                                            item.subCategoryID):false}
+                                          // checked={
+                                          //   this.state.indiClaimSubCategory !==
+                                          //   undefined
+                                          //     ? this.state.indiClaimSubCategory.includes(
+                                          //         item.subCategoryID
+                                          //       )
+                                          //     : false
+                                          // }
+                                          checked={
+                                            this.state.indiClaimSubCategory !==
+                                            undefined
+                                              ? this.state.indiClaimSubCategory
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.subCategoryID.toString()
+                                                  )
+                                              : false
+                                          }
                                         />
                                         <label
-                                          htmlFor={"s" + item.subCategoryID}
+                                          htmlFor={"csc" + item.subCategoryID}
                                         >
                                           {item.subCategoryName}
                                           <div>
@@ -3054,10 +4426,13 @@ class StoreReports extends Component {
                         value={this.state.claimCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                       </select>
                     </div>
                   </div>
@@ -3135,18 +4510,35 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"t" + item.issueTypeID}
+                                          id={"cit" + item.issueTypeID}
                                           name="allClaimIssueType"
                                           onChange={this.selectIndividualClaimIssueType.bind(
                                             this,
                                             item.issueTypeID
                                           )}
-                                          checked={this.state.indiClaimIssueType !== undefined?
-                                            this.state.indiClaimIssueType.includes(
-                                            item.issueTypeID):false}
+                                          // checked={
+                                          //   this.state.indiClaimIssueType !==
+                                          //   undefined
+                                          //     ? this.state.indiClaimIssueType.includes(
+                                          //         item.issueTypeID
+                                          //       )
+                                          //     : false
+                                          // }
+                                          checked={
+                                            this.state.indiClaimIssueType !==
+                                            undefined
+                                              ? this.state.indiClaimIssueType
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.issueTypeID.toString()
+                                                  )
+                                              : false
+                                          }
                                         />
                                         <label
-                                          htmlFor={"t" + item.issueTypeID}
+                                          htmlFor={"cit" + item.issueTypeID}
                                         >
                                           {item.issueTypeName}
                                           <div>
@@ -3169,10 +4561,13 @@ class StoreReports extends Component {
                         value={this.state.claimAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                         {/* <option value="1">Aman</option>
                         <option value="2">Arjun</option> */}
                       </select>
@@ -3220,7 +4615,7 @@ class StoreReports extends Component {
                         className="nextbutton-text"
                         type="submit"
                         // onClick={this.handleNextPopupOpen}
-                        onClick={this.handleNextPopupOpen.bind(this,2)}
+                        onClick={this.handleNextPopupOpen.bind(this, 2)}
                       >
                         NEXT
                       </button>
@@ -3302,9 +4697,26 @@ class StoreReports extends Component {
                                           this,
                                           item.campaignNameID
                                         )}
-                                        checked={this.state.indiCampaignName !== undefined?
-                                          this.state.indiCampaignName.includes(
-                                          item.campaignNameID):false}
+                                        // checked={
+                                        //   this.state.indiCampaignName !==
+                                        //   undefined
+                                        //     ? this.state.indiCampaignName.includes(
+                                        //         item.campaignNameID
+                                        //       )
+                                        //     : false
+                                        // }
+                                        checked={
+                                          this.state.indiCampaignName !==
+                                          undefined
+                                            ? this.state.indiCampaignName
+                                                .split(",")
+                                                .find(
+                                                  (num) =>
+                                                    num ==
+                                                    item.campaignNameID.toString()
+                                                )
+                                            : false
+                                        }
                                       />
                                       <label
                                         htmlFor={"camp" + item.campaignNameID}
@@ -3329,10 +4741,13 @@ class StoreReports extends Component {
                         value={this.state.campaignAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
+                        {this.state.userData.length > 0 && (
+                          <option value="0">All</option>
+                        )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
                             <option value={item.userID}>{item.userName}</option>
-                        ))}
+                          ))}
                       </select>
                     </div>
                     <div className="col-md-4">
@@ -3408,18 +4823,37 @@ class StoreReports extends Component {
                                       <li key={i}>
                                         <input
                                           type="checkbox"
-                                          id={"i" + item.campaignNameID}
+                                          id={"cmpsta" + item.campaignNameID}
                                           name="allCampaignStatus"
                                           onChange={this.selectIndividualCampaignStatus.bind(
                                             this,
                                             item.campaignNameID
                                           )}
-                                          checked={this.state.indiCampaignStatus !== undefined?
-                                            this.state.indiCampaignStatus.includes(
-                                            item.campaignNameID):false}
+                                          // checked={
+                                          //   this.state.indiCampaignStatus !==
+                                          //   undefined
+                                          //     ? this.state.indiCampaignStatus.includes(
+                                          //         item.campaignNameID
+                                          //       )
+                                          //     : false
+                                          // }
+                                          checked={
+                                            this.state.indiCampaignStatus !==
+                                            undefined
+                                              ? this.state.indiCampaignStatus
+                                                  .split(",")
+                                                  .find(
+                                                    (num) =>
+                                                      num ==
+                                                      item.campaignNameID.toString()
+                                                  )
+                                              : false
+                                          }
                                         />
                                         <label
-                                          htmlFor={"i" + item.campaignNameID}
+                                          htmlFor={
+                                            "cmpsta" + item.campaignNameID
+                                          }
                                         >
                                           {item.campaignName}
                                           <div>
@@ -3441,7 +4875,7 @@ class StoreReports extends Component {
                       <button
                         className="nextbutton-text"
                         type="submit"
-                        onClick={this.handleNextPopupOpen.bind(this,3)}
+                        onClick={this.handleNextPopupOpen.bind(this, 3)}
                         // onClick={this.handleChangeTab.bind(this,2)}
                       >
                         NEXT
@@ -3473,7 +4907,9 @@ class StoreReports extends Component {
                 <div className="col-md-6">
                   <div className="store-totalresultcircle">
                     <label className="totalresult">Total Result</label>
-                      <span className="totalresultnumber">{this.state.totalResult}</span>
+                    <span className="totalresultnumber">
+                      {this.state.totalResult}
+                    </span>
                   </div>
                 </div>
                 <div className="col-md-6 rname">
@@ -3490,15 +4926,15 @@ class StoreReports extends Component {
                     />
                   </div>
                   <div className="buttonschdulesave">
-                    <button className="Schedulenext"
-                    onClick={this.ScheduleOpenModel}
-                    >SCHEDULE</button>
+                    <button
+                      className="Schedulenext"
+                      onClick={this.ScheduleOpenModel}
+                    >
+                      SCHEDULE
+                    </button>
                   </div>
                   <div className="buttonschdulesave1">
-                    <button
-                      className="Schedulenext1"
-                      onClick={this.handleSave}
-                    >
+                    <button className="Schedulenext1" onClick={this.handleSave}>
                       SAVE
                     </button>
                   </div>
@@ -3507,379 +4943,369 @@ class StoreReports extends Component {
             </div>
           </Modal>
           <Modal
-                    onClose={this.ScheduleCloseModel}
-                    open={this.state.Schedule}
-                    modalId="ScheduleModel"
-                    classNames={{
-                      modal: "schedule-width",
-                    }}
-                    overlayId="logout-ovrly"
-                  >
-                    <div>
-                      <label>
-                        <b>Schedule date to</b>
-                      </label>
-                      <div>
-                        <div className="normal-dropdown dropdown-setting1 schedule-multi">
+            onClose={this.ScheduleCloseModel}
+            open={this.state.Schedule}
+            modalId="ScheduleModel"
+            classNames={{
+              modal: "schedule-width",
+            }}
+            overlayId="logout-ovrly"
+          >
+            <div>
+              <label>
+                <b>Schedule date to</b>
+              </label>
+              <div>
+                <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                  <Select
+                    getOptionLabel={(option) => option.userName}
+                    getOptionValue={
+                      (option) => option.userID //id
+                    }
+                    options={this.state.userData}
+                    placeholder="Team Member"
+                    // menuIsOpen={true}
+                    closeMenuOnSelect={false}
+                    onChange={this.setTeamMember.bind(this)}
+                    value={this.state.selectedTeamMember}
+                    // showNewOptionAtTop={false}
+                    isMulti
+                  />
+                </div>
+                <select
+                  id="inputState"
+                  className="form-control dropdown-setting1 ScheduleDate-to"
+                  value={this.state.selectScheduleDate}
+                  onChange={this.handleScheduleDateChange.bind(this)}
+                >
+                  {this.state.ScheduleOption !== null &&
+                    this.state.ScheduleOption.map((item, i) => (
+                      <option key={i} value={item.scheduleID}>
+                        {item.scheduleName}
+                      </option>
+                    ))}
+                </select>
+                {this.state.selectScheduleDate === "230" ||
+                this.state.selectScheduleDate === 230 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        name="selectedNoOfDay"
+                        value={this.state.selectedNoOfDay}
+                        onChange={this.handleOnChangeData}
+                      />
+                      <label className="every1">Day</label>
+                    </span>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "231" ||
+                this.state.selectScheduleDate === 231 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfWeek}
+                        onChange={this.handleWeekly}
+                      />
+                      <label className="every1">Week on</label>
+                    </span>
+                    <div
+                      style={{
+                        marginTop: "10px",
+                      }}
+                    >
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Mon"
+                        id="Mon"
+                      >
+                        Mon
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Tue"
+                        id="Tue"
+                      >
+                        Tue
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Wed"
+                        id="Wed"
+                      >
+                        Wed
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Thu"
+                        id="Thu"
+                      >
+                        Thu
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Fri"
+                        id="Fri"
+                      >
+                        Fri
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Sat"
+                        id="Sat"
+                      >
+                        Sat
+                      </Checkbox>
+                      <Checkbox
+                        onChange={this.handleWeeklyDays}
+                        value="Sun"
+                        id="Sun"
+                      >
+                        Sun
+                      </Checkbox>
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "232" ||
+                this.state.selectScheduleDate === 232 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Day</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="9"
+                        value={this.state.selectedNoOfDaysForMonth}
+                        onChange={this.handleDaysForMonth}
+                      />
+                      <label className="every1">of every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfMonthForMonth}
+                        onChange={this.handleMonthForMonth}
+                      />
+                      <label className="every1">months</label>
+                    </span>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "233" ||
+                this.state.selectScheduleDate === 233 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <label className="every1">Every</label>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        onChange={this.handleMonthForWeek}
+                        value={this.state.selectedNoOfMonthForWeek}
+                      />
+                      <label className="every1">month on the</label>
+                    </span>
+                    <div className="row mt-3">
+                      <div className="col-md-6">
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-setting1"
+                          onChange={this.handleWeekForWeek}
+                          value={this.state.selectedNoOfWeekForWeek}
+                        >
+                          <option value="0">Select</option>
+                          <option value="2">Second</option>
+                          <option value="4">Four</option>
+                        </select>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                           <Select
-                            getOptionLabel={(option) => option.userName}
+                            getOptionLabel={(option) => option.days}
                             getOptionValue={
-                              (option) => option.userID //id
+                              (option) => option.days //id
                             }
-                            options={this.state.userData}
-                            placeholder="Team Member"
+                            options={this.state.NameOfDayForWeek}
+                            placeholder="Select"
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
-                            onChange={this.setTeamMember.bind(this)}
-                            value={this.state.selectedTeamMember}
+                            onChange={this.setNameOfDayForWeek.bind(this)}
+                            value={this.state.selectedNameOfDayForWeek}
                             // showNewOptionAtTop={false}
                             isMulti
                           />
                         </div>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting1 ScheduleDate-to"
-                          value={this.state.selectScheduleDate}
-                          onChange={this.handleScheduleDateChange}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "234" ||
+                this.state.selectScheduleDate === 234 ? (
+                  <div className="ScheduleDate-to">
+                    <div className="row m-0">
+                      <label
+                        className="every1"
+                        style={{
+                          lineHeight: "40px",
+                        }}
+                      >
+                        on
+                      </label>
+                      <div className="col-md-7">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.month}
+                            getOptionValue={
+                              (option) => option.month //id
+                            }
+                            options={this.state.NameOfMonthForYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfMonthForYear.bind(this)}
+                            value={this.state.selectedNameOfMonthForYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        className="Every"
+                        placeholder="1"
+                        value={this.state.selectedNoOfDayForDailyYear}
+                        onChange={this.handleDayForYear}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+                {this.state.selectScheduleDate === "235" ||
+                this.state.selectScheduleDate === 235 ? (
+                  <div className="ScheduleDate-to">
+                    <span>
+                      <div className="row m-0">
+                        <label
+                          className="every1"
+                          style={{
+                            lineHeight: "40px",
+                          }}
                         >
-                          {this.state.ScheduleOption !== null &&
-                            this.state.ScheduleOption.map((item, i) => (
-                              <option key={i} value={item.scheduleID}>
-                                {item.scheduleName}
-                              </option>
-                            ))}
-                        </select>
-                        {this.state.selectScheduleDate === "230" ||
-                        this.state.selectScheduleDate === 230 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                name="selectedNoOfDay"
-                                value={this.state.selectedNoOfDay}
-                                onChange={this.handleOnChangeData}
-                              />
-                              <label className="every1">Day</label>
-                            </span>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "231" ||
-                        this.state.selectScheduleDate === 231 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                value={this.state.selectedNoOfWeek}
-                                onChange={this.handleWeekly}
-                              />
-                              <label className="every1">Week on</label>
-                            </span>
-                            <div
-                              style={{
-                                marginTop: "10px",
-                              }}
-                            >
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Mon"
-                                id="Mon"
-                              >
-                                Mon
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Tue"
-                                id="Tue"
-                              >
-                                Tue
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Wed"
-                                id="Wed"
-                              >
-                                Wed
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Thu"
-                                id="Thu"
-                              >
-                                Thu
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Fri"
-                                id="Fri"
-                              >
-                                Fri
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Sat"
-                                id="Sat"
-                              >
-                                Sat
-                              </Checkbox>
-                              <Checkbox
-                                onChange={this.handleWeeklyDays}
-                                value="Sun"
-                                id="Sun"
-                              >
-                                Sun
-                              </Checkbox>
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "232" ||
-                        this.state.selectScheduleDate === 232 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Day</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="9"
-                                value={this.state.selectedNoOfDaysForMonth}
-                                onChange={this.handleDaysForMonth}
-                              />
-                              <label className="every1">of every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                value={this.state.selectedNoOfMonthForMonth}
-                                onChange={this.handleMonthForMonth}
-                              />
-                              <label className="every1">months</label>
-                            </span>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "233" ||
-                        this.state.selectScheduleDate === 233 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <label className="every1">Every</label>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                onChange={this.handleMonthForWeek}
-                                value={this.state.selectedNoOfMonthForWeek}
-                              />
-                              <label className="every1">month on the</label>
-                            </span>
-                            <div className="row mt-3">
-                              <div className="col-md-6">
-                                <select
-                                  id="inputState"
-                                  className="form-control dropdown-setting1"
-                                  onChange={this.handleWeekForWeek}
-                                  value={this.state.selectedNoOfWeekForWeek}
-                                >
-                                  <option value="0">Select</option>
-                                  <option value="2">Second</option>
-                                  <option value="4">Four</option>
-                                </select>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.days}
-                                    getOptionValue={
-                                      (option) => option.days //id
-                                    }
-                                    options={this.state.NameOfDayForWeek}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfDayForWeek.bind(
-                                      this
-                                    )}
-                                    value={this.state.selectedNameOfDayForWeek}
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "234" ||
-                        this.state.selectScheduleDate === 234 ? (
-                          <div className="ScheduleDate-to">
-                            <div className="row m-0">
-                              <label
-                                className="every1"
-                                style={{
-                                  lineHeight: "40px",
-                                }}
-                              >
-                                on
-                              </label>
-                              <div className="col-md-7">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.month}
-                                    getOptionValue={
-                                      (option) => option.month //id
-                                    }
-                                    options={this.state.NameOfMonthForYear}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfMonthForYear.bind(
-                                      this
-                                    )}
-                                    value={
-                                      this.state.selectedNameOfMonthForYear
-                                    }
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                              <input
-                                type="text"
-                                className="Every"
-                                placeholder="1"
-                                value={this.state.selectedNoOfDayForDailyYear}
-                                onChange={this.handleDayForYear}
-                              />
-                            </div>
-                          </div>
-                        ) : null}
-                        {this.state.selectScheduleDate === "235" ||
-                        this.state.selectScheduleDate === 235 ? (
-                          <div className="ScheduleDate-to">
-                            <span>
-                              <div className="row m-0">
-                                <label
-                                  className="every1"
-                                  style={{
-                                    lineHeight: "40px",
-                                  }}
-                                >
-                                  on the
-                                </label>
-                                <div className="col-md-7">
-                                  <select
-                                    id="inputState"
-                                    className="form-control dropdown-setting1"
-                                    onChange={this.handleWeekForYear}
-                                    value={this.state.selectedNoOfWeekForYear}
-                                  >
-                                    <option value="0">Select</option>
-                                    <option value="2">Second</option>
-                                    <option value="4">Four</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </span>
-                            <div className="row mt-3">
-                              <div className="col-md-5">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.days}
-                                    getOptionValue={
-                                      (option) => option.days //id
-                                    }
-                                    options={this.state.NameOfDayForYear}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfDayForYear.bind(
-                                      this
-                                    )}
-                                    value={this.state.selectedNameOfDayForYear}
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                              <label
-                                className="every1"
-                                style={{
-                                  lineHeight: "40px",
-                                  marginLeft: "14px",
-                                }}
-                              >
-                                to
-                              </label>
-                              <div className="col-md-5">
-                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                  <Select
-                                    getOptionLabel={(option) => option.month}
-                                    getOptionValue={
-                                      (option) => option.month //id
-                                    }
-                                    options={this.state.NameOfMonthForDailyYear}
-                                    placeholder="Select"
-                                    // menuIsOpen={true}
-                                    closeMenuOnSelect={false}
-                                    onChange={this.setNameOfMonthForDailyYear.bind(
-                                      this
-                                    )}
-                                    value={
-                                      this.state.selectedNameOfMonthForDailyYear
-                                    }
-                                    // showNewOptionAtTop={false}
-                                    isMulti
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
+                          on the
+                        </label>
+                        <div className="col-md-7">
+                          <select
+                            id="inputState"
+                            className="form-control dropdown-setting1"
+                            onChange={this.handleWeekForYear}
+                            value={this.state.selectedNoOfWeekForYear}
+                          >
+                            <option value="0">Select</option>
+                            <option value="2">Second</option>
+                            <option value="4">Four</option>
+                          </select>
+                        </div>
+                      </div>
+                    </span>
+                    <div className="row mt-3">
+                      <div className="col-md-5">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.days}
+                            getOptionValue={
+                              (option) => option.days //id
+                            }
+                            options={this.state.NameOfDayForYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfDayForYear.bind(this)}
+                            value={this.state.selectedNameOfDayForYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                      <label
+                        className="every1"
+                        style={{
+                          lineHeight: "40px",
+                          marginLeft: "14px",
+                        }}
+                      >
+                        to
+                      </label>
+                      <div className="col-md-5">
+                        <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={(option) => option.month}
+                            getOptionValue={
+                              (option) => option.month //id
+                            }
+                            options={this.state.NameOfMonthForDailyYear}
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setNameOfMonthForDailyYear.bind(
+                              this
+                            )}
+                            value={this.state.selectedNameOfMonthForDailyYear}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
 
-                        {/* <input
+                {/* <input
                                       type="text"
                                       className="txt-1 txt1Place txt1Time"
                                       placeholder="11AM"
                                       onChange={this.handleScheduleTime}
                                     /> */}
-                        <div className="dash-timepicker">
-                          <DatePicker
-                            selected={this.state.selectedScheduleTime}
-                            onChange={this.handleScheduleTime.bind(this)}
-                            placeholderText="11 AM"
-                            showTimeSelect
-                            showTimeSelectOnly
-                            timeIntervals={60}
-                            timeCaption="Select Time"
-                            dateFormat="h:mm aa"
-                            className="txt-1 txt1Place txt1Time"
-                            value={this.state.selectedScheduleTime}
-                          />
-                        </div>
+                <div className="dash-timepicker">
+                  <DatePicker
+                    selected={this.state.selectedScheduleTime}
+                    onChange={this.handleScheduleTime.bind(this)}
+                    placeholderText="11 AM"
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={60}
+                    timeCaption="Select Time"
+                    dateFormat="h:mm aa"
+                    className="txt-1 txt1Place txt1Time"
+                    value={this.state.selectedScheduleTime}
+                  />
+                </div>
 
-                        <div>
-                          <button
-                            className="scheduleBtn"
-                            onClick={this.handleInsertReport.bind(this)}
-                          >
-                            <label className="addLable">SCHEDULE</label>
-                          </button>
-                        </div>
-                        <div onClick={this.ScheduleCloseModel}>
-                          <button type="button" className="scheduleBtncancel">
-                            CANCEL
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </Modal>
+                <div>
+                  <button
+                    className="scheduleBtn"
+                    onClick={this.handleInsertReport.bind(this)}
+                  >
+                    <label className="addLable">SCHEDULE</label>
+                  </button>
+                </div>
+                <div onClick={this.ScheduleCloseModel}>
+                  <button type="button" className="scheduleBtncancel">
+                    CANCEL
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal>
 
           {/* </div> */}
         </div>
         <div className="container-fluid">
-          <div className="store-settings-cntr reactreport">
+          <div className="store-settings-cntr reactreport setting-table-des">
             <div style={{ backgroundColor: "#fff" }}>
               <ReactTable
                 data={datareport}

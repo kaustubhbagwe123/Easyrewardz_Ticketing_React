@@ -10,7 +10,7 @@ import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Link } from "react-router-dom";
 import ReactTable from "react-table";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
@@ -65,6 +65,7 @@ class ItemMaster extends Component {
       StatusModel: false,
       tempitemData: [],
       isortA: false,
+      isATOZ: true,
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -331,6 +332,7 @@ class ItemMaster extends Component {
     }
     this.setState({
       isortA: true,
+      isATOZ: false,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -395,6 +397,7 @@ class ItemMaster extends Component {
 
     this.setState({
       isortA: true,
+      isATOZ: true,
       itemData: itemsArray,
     });
     setTimeout(() => {
@@ -416,7 +419,7 @@ class ItemMaster extends Component {
     ) {
       return false;
     }
-
+    this.setState({ isortA: false });
     if (data === "itemCode") {
       if (
         this.state.sbrandNameFilterCheckbox !== "" ||
@@ -724,10 +727,18 @@ class ItemMaster extends Component {
     } else {
       this.setState({
         StatusModel: false,
+        sortHeader: this.state.isortA ? this.state.sortHeader : "",
         itemData: this.state.isortA
           ? this.state.itemData
           : this.state.sortAllData,
         filterTxtValue: "",
+        sortFilteritemCode: this.state.sortitemCode,
+        sortFilterbrandName: this.state.sortbrandName,
+        sortFilteritemName: this.state.sortitemName,
+        sortFilterdepartmentName: this.state.sortdepartmentName,
+        sortFilteritemCategory: this.state.sortitemCategory,
+        sortFilteritemSubCategory: this.state.sortitemSubCategory,
+        sortFilteritemGroup: this.state.sortitemGroup,
       });
     }
   }
@@ -750,9 +761,17 @@ class ItemMaster extends Component {
       if (type === "value" && type !== "All") {
         sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all", "");
         sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace("all,", "");
-        if (sitemCodeFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sitemCodeFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sitemCodeFilterCheckbox = sitemCodeFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -776,9 +795,17 @@ class ItemMaster extends Component {
       if (type === "value" && type !== "All") {
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all", "");
         sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace("all,", "");
-        if (sbrandNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sbrandNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sbrandNameFilterCheckbox = sbrandNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -802,9 +829,17 @@ class ItemMaster extends Component {
       if (type === "value" && type !== "All") {
         sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace("all", "");
         sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace("all,", "");
-        if (sitemNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sitemNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sitemNameFilterCheckbox = sitemNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -834,9 +869,17 @@ class ItemMaster extends Component {
           "all,",
           ""
         );
-        if (sdepartmentNameFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sdepartmentNameFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sdepartmentNameFilterCheckbox = sdepartmentNameFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -866,9 +909,17 @@ class ItemMaster extends Component {
           "all,",
           ""
         );
-        if (sitemCategoryFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sitemCategoryFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sitemCategoryFilterCheckbox = sitemCategoryFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -898,9 +949,17 @@ class ItemMaster extends Component {
           "all,",
           ""
         );
-        if (sitemSubCategoryFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sitemSubCategoryFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sitemSubCategoryFilterCheckbox = sitemSubCategoryFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -924,9 +983,17 @@ class ItemMaster extends Component {
       if (type === "value" && type !== "All") {
         sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace("all", "");
         sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace("all,", "");
-        if (sitemGroupFilterCheckbox.includes(e.currentTarget.value)) {
+        if (
+          sitemGroupFilterCheckbox
+            .split(",")
+            .find((word) => word === e.currentTarget.value)
+        ) {
           sitemGroupFilterCheckbox = sitemGroupFilterCheckbox.replace(
-            e.currentTarget.value + ",",
+            new RegExp(
+              e.currentTarget.value +
+                ",".replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+              "g"
+            ),
             ""
           );
         } else {
@@ -976,9 +1043,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   brandcodeColor: "sort-column",
-      // });
     } else if (column === "brandName") {
       var sItems = sbrandNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -995,9 +1059,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   brandnameColor: "sort-column",
-      // });
     } else if (column === "itemName") {
       var sItems = sitemNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1014,9 +1075,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   addedColor: "sort-column",
-      // });
     } else if (column === "departmentName") {
       var sItems = sdepartmentNameFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1033,9 +1091,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   statusColor: "sort-column",
-      // });
     } else if (column === "itemCategory") {
       var sItems = sitemCategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1052,9 +1107,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   statusColor: "sort-column",
-      // });
     } else if (column === "itemSubCategory") {
       var sItems = sitemSubCategoryFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1071,9 +1123,6 @@ class ItemMaster extends Component {
           }
         }
       }
-      // this.setState({
-      //   statusColor: "sort-column",
-      // });
     } else if (column === "itemGroup") {
       var sItems = sitemGroupFilterCheckbox.split(",");
       if (sItems.length > 0) {
@@ -1090,12 +1139,10 @@ class ItemMaster extends Component {
           }
         }
       }
-      this.setState({
-        statusColor: "sort-column",
-      });
     }
 
     this.setState({
+      isATOZ: true,
       tempitemData: itemsArray,
     });
   };
@@ -1113,7 +1160,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemCode });
       } else {
         this.setState({
-          sortFilteritemCode: this.state.sortitemCode,
+          sortFilteritemCode: [],
         });
       }
     }
@@ -1127,7 +1174,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilterbrandName });
       } else {
         this.setState({
-          sortFilterbrandName: this.state.sortbrandName,
+          sortFilterbrandName: [],
         });
       }
     }
@@ -1143,7 +1190,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemName });
       } else {
         this.setState({
-          sortFilteritemName: this.state.sortitemName,
+          sortFilteritemName: [],
         });
       }
     }
@@ -1159,7 +1206,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilterdepartmentName });
       } else {
         this.setState({
-          sortFilterdepartmentName: this.state.sortdepartmentName,
+          sortFilterdepartmentName: [],
         });
       }
     }
@@ -1175,7 +1222,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemCategory });
       } else {
         this.setState({
-          sortFilteritemCategory: this.state.sortitemCategory,
+          sortFilteritemCategory: [],
         });
       }
     }
@@ -1191,7 +1238,7 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemSubCategory });
       } else {
         this.setState({
-          sortFilteritemSubCategory: this.state.sortitemSubCategory,
+          sortFilteritemSubCategory: [],
         });
       }
     }
@@ -1207,11 +1254,29 @@ class ItemMaster extends Component {
         this.setState({ sortFilteritemGroup });
       } else {
         this.setState({
-          sortFilteritemGroup: this.state.sortitemGroup,
+          sortFilteritemGroup: [],
         });
       }
     }
   }
+  handleClearSearch() {
+    this.setState({
+      sbrandNameFilterCheckbox: "",
+      sitemCodeFilterCheckbox: "",
+      sitemNameFilterCheckbox: "",
+      sdepartmentNameFilterCheckbox: "",
+      sitemCategoryFilterCheckbox: "",
+      sitemSubCategoryFilterCheckbox: "",
+      sitemGroupFilterCheckbox: "",
+      filterTxtValue: "",
+      sortHeader: "",
+      sortColumn: "",
+      StatusModel: false,
+      itemData: this.state.sortAllData,
+      tempitemData: [],
+    });
+  }
+
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
     return (
@@ -1273,9 +1338,13 @@ class ItemMaster extends Component {
                 </div>
               </div>
               <a
-                href=""
-                style={{ margin: "0 25px", textDecoration: "underline" }}
-                onClick={this.setSortCheckStatus.bind(this, "all")}
+                style={{
+                  margin: "0 25px",
+                  textDecoration: "underline",
+                  color: "#2561A8",
+                  cursor: "pointer",
+                }}
+                onClick={this.handleClearSearch.bind(this)}
               >
                   {
                       (() => {
@@ -1331,6 +1400,13 @@ class ItemMaster extends Component {
                       }
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
+                    {/* {this.state.sortFilteritemCode.length > 0 &&
+                    this.state.sortFilterbrandName.length > 0 &&
+                    this.state.sortFilteritemName.length > 0 &&
+                    this.state.sortFilterdepartmentName.length > 0 &&
+                    this.state.sortFilteritemCategory.length > 0 &&
+                    this.state.sortFilteritemSubCategory.length > 0 &&
+                    this.state.sortFilteritemGroup.length > 0 ? ( */}
                     <label htmlFor={"fil-open"}>
                       <span className="table-btn table-blue-btn">
                         {
@@ -1345,6 +1421,7 @@ class ItemMaster extends Component {
                         }
                       </span>
                     </label>
+                    {/* ) : null} */}
                   </div>
                   {this.state.sortColumn === "itemCode"
                     ? this.state.sortFilteritemCode !== null &&
@@ -1355,9 +1432,11 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemCode}
                             value={item.itemCode}
-                            checked={this.state.sitemCodeFilterCheckbox.includes(
-                              item.itemCode
-                            )}
+                            checked={
+                              this.state.sitemCodeFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemCode) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemCode",
@@ -1382,9 +1461,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox.includes(
-                              item.brandName
-                            )}
+                            checked={
+                              this.state.sbrandNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.brandName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -1409,9 +1491,11 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemName}
                             value={item.itemName}
-                            checked={this.state.sitemNameFilterCheckbox.includes(
-                              item.itemName
-                            )}
+                            checked={
+                              this.state.sitemNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemName) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemName",
@@ -1436,9 +1520,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.departmentName}
                             value={item.departmentName}
-                            checked={this.state.sdepartmentNameFilterCheckbox.includes(
-                              item.departmentName
-                            )}
+                            checked={
+                              this.state.sdepartmentNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.departmentName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "departmentName",
@@ -1462,9 +1549,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemCategory}
                             value={item.itemCategory}
-                            checked={this.state.sitemCategoryFilterCheckbox.includes(
-                              item.itemCategory
-                            )}
+                            checked={
+                              this.state.sitemCategoryFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemCategory) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemCategory",
@@ -1488,9 +1578,13 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemSubCategory}
                             value={item.itemSubCategory}
-                            checked={this.state.sitemSubCategoryFilterCheckbox.includes(
-                              item.itemSubCategory
-                            )}
+                            checked={
+                              this.state.sitemSubCategoryFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.itemSubCategory
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemSubCategory",
@@ -1514,9 +1608,12 @@ class ItemMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.itemGroup}
                             value={item.itemGroup}
-                            checked={this.state.sitemGroupFilterCheckbox.includes(
-                              item.itemGroup
-                            )}
+                            checked={
+                              this.state.sitemGroupFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.itemGroup) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "itemGroup",
@@ -1585,14 +1682,18 @@ class ItemMaster extends Component {
           <div className="store-settings-cntr item-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height StoreItemMasterReact">
+                <div className="table-cntr table-height StoreItemMasterReact setting-table-des">
                   <ReactTable
                     data={this.state.itemData}
                     columns={[
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Brand Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
@@ -1609,7 +1710,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ === false &&
+                                this.state.sortHeader === "Brand Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1618,7 +1726,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Code"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCode",
@@ -1635,7 +1747,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ === false &&
+                                this.state.sortHeader === "Item Code"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1644,14 +1763,18 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemName",
                               "Item Name"
                             )}
                           >
-                            {
+                             {
                               (() => {
                                 if (TranslationContext !== undefined) {
                                   return TranslationContext.span.itemname
@@ -1661,7 +1784,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ == false &&
+                                this.state.sortHeader === "Item Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1670,7 +1800,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Department Name"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
@@ -1687,7 +1821,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ === false &&
+                                this.state.sortHeader === "Department Name"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1696,7 +1837,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Cat"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCategory",
@@ -1713,7 +1858,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ === false &&
+                                this.state.sortHeader === "Item Cat"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1722,7 +1874,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Sub Cat"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemSubCategory",
@@ -1739,7 +1895,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ === false &&
+                                this.state.sortHeader === "Item Sub Cat"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,
@@ -1748,7 +1911,11 @@ class ItemMaster extends Component {
                       {
                         Header: (
                           <span
-                            className={this.state.brandcodeColor}
+                            className={
+                              this.state.sortHeader === "Item Group"
+                                ? "sort-column"
+                                : ""
+                            }
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemGroup",
@@ -1765,7 +1932,14 @@ class ItemMaster extends Component {
                                 }
                               })()
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
+                            <FontAwesomeIcon
+                              icon={
+                                this.state.isATOZ === false &&
+                                this.state.sortHeader === "Item Group"
+                                  ? faCaretUp
+                                  : faCaretDown
+                              }
+                            />
                           </span>
                         ),
                         sortable: false,

@@ -94,7 +94,7 @@ class Header extends Component {
         //   imgClass: "knowledgeNav",
         //   activeClass: "single-menu"
         // }
-      ]
+      ],
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
@@ -104,18 +104,17 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.subscription = transferData.getProfilePic().subscribe(pic => {
+    this.subscription = transferData.getProfilePic().subscribe((pic) => {
       if (pic.profilePic) {
-        if (pic.profilePic === '') {
-          this.setState({ selectedUserProfilePicture: '' });
+        if (pic.profilePic === "") {
+          this.setState({ selectedUserProfilePicture: "" });
+        } else if (pic.profilePic.length > 0) {
+          this.setState({ selectedUserProfilePicture: pic.profilePic });
         }
-        else if (pic.profilePic.length > 0) {
-            this.setState({ selectedUserProfilePicture: pic.profilePic });
-        }
-      } else if (pic.profilePic === '') {
-        this.setState({ selectedUserProfilePicture: '' });
+      } else if (pic.profilePic === "") {
+        this.setState({ selectedUserProfilePicture: "" });
       }
-  });
+    });
     var _token = window.localStorage.getItem("token");
     if (_token === null) {
       window.location.href = "/";
@@ -130,7 +129,7 @@ class Header extends Component {
           pageName = window.location.pathname;
           lastOne = pageName.split("/");
           lastValue = lastOne[lastOne.length - 1];
-          arr.forEach(i => {
+          arr.forEach((i) => {
             i.activeClass = "single-menu";
             if (i.urls === lastValue) i.activeClass = "active single-menu";
           });
@@ -145,7 +144,7 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
-}
+  }
 
   handleNextButtonShow() {
     this.setState({ NextButton: !this.state.NextButton });
@@ -196,18 +195,17 @@ class Header extends Component {
     this.setState({ modalIsOpen: false });
   };
   handleViewTicketModalOpen(data) {
-    
     var Ticket_Ids = data.ticketIDs;
     var Ids = Ticket_Ids.split(",");
 
     this.setState({
       // ViewTicketModal: true,
-      NotifiTicketIds: Ids
+      NotifiTicketIds: Ids,
     });
   }
   handleViewTicketModalClose = () => {
     this.setState({
-      ViewTicketModal: false
+      ViewTicketModal: false,
     });
   };
 
@@ -222,71 +220,71 @@ class Header extends Component {
         headers: authHeader(),
         params: {
           TicketID: notiIds,
-          IsFollowUp: isFollowUp
-        }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetNotificationList();
-        }
-      }).catch(data => {
-        console.log(data);
-      });
+          IsFollowUp: isFollowUp,
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            self.handleGetNotificationList();
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
     }
   };
 
   handleGetUserProfileData() {
-    
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
-      headers: authHeader()
-    }).then(function(res) {
-      
-      var status = res.data.message;
-      if (status === "Success") {
-        var id = res.data.responseData[0].userId;
-        var userdata = res.data.responseData[0].profilePicture;
-        var image=userdata.split("/");
-        if (image[image.length-1] == "") {
-          self.setState({
-            selectedUserProfilePicture: ''
-          });
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        var status = res.data.message;
+        if (status === "Success") {
+          var id = res.data.responseData[0].userId;
+          var userdata = res.data.responseData[0].profilePicture;
+          var image = userdata.split("/");
+          if (image[image.length - 1] == "") {
+            self.setState({
+              selectedUserProfilePicture: "",
+            });
+          } else {
+            self.setState({
+              selectedUserProfilePicture: userdata,
+            });
+          }
+          self.handleCRMRole(id);
         } else {
           self.setState({
-            selectedUserProfilePicture: userdata
+            selectedUserProfilePicture: "",
           });
         }
-        self.handleCRMRole(id);
-      } else {
-        self.setState({
-          selectedUserProfilePicture: ""
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   handleCRMRole(id) {
-    
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/CRMRole/GetRolesByUserID",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
-        
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
           self.setAccessUser(data);
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -303,7 +301,7 @@ class Header extends Component {
       logoBlue: DashboardLogoBlue,
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
-      activeClass: page === "dashboard" ? "active single-menu" : "single-menu"
+      activeClass: page === "dashboard" ? "active single-menu" : "single-menu",
     };
     var myticket = {
       data: "My Tickets",
@@ -312,7 +310,8 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page === "myTicketlist" ? "active single-menu" : "single-menu"
+      activeClass:
+        page === "myTicketlist" ? "active single-menu" : "single-menu",
     };
     var knowledgebase = {
       data: "Knowledge Base",
@@ -322,7 +321,7 @@ class Header extends Component {
       imgAlt: "knowledge icon",
       imgClass: "knowledgeNav",
       activeClass:
-        page === "knowledgebase" ? "active single-menu" : "single-menu"
+        page === "knowledgebase" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -346,20 +345,20 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           this.setState({
-            settingAccess: "block"
+            settingAccess: "block",
           });
         } else if (
           data[i].moduleName === "Notification" &&
           data[i].modulestatus === true
         ) {
           this.setState({
-            notificationAccess: "block"
+            notificationAccess: "block",
           });
         }
       }
     }
     this.setState({
-      cont: accessdata
+      cont: accessdata,
     });
   }
 
@@ -368,19 +367,21 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Account/Logout",
-      headers: authHeader()
-    }).then(function(res) {
-      //
-      var status = res.data.status;
-      // var Msg=res.data.message
-      if (status === true) {
-        //NotificationManager.success(Msg);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        //
+        var status = res.data.status;
+        // var Msg=res.data.message
+        if (status === true) {
+          //NotificationManager.success(Msg);
+          localStorage.clear();
+          window.location.href = "/";
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   handleLoggedInUserDetails = () => {
@@ -389,51 +390,52 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
-      headers: authHeader()
-    }).then(function(res) {
-      
-      var data = res.data.responseData;
-      var status = res.data.message;
-      if (status === "Success") {
-        var strTag = data.agentName.split(" ");
-        var nameTag = strTag[0].charAt(0).toUpperCase();
-        if (strTag.length > 0) {
-          nameTag += strTag[1].charAt(0).toUpperCase();
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        var data = res.data.responseData;
+        var status = res.data.message;
+        if (status === "Success") {
+          var strTag = data.agentName.split(" ");
+          var nameTag = strTag[0].charAt(0).toUpperCase();
+          if (strTag.length > 0) {
+            nameTag += strTag[1].charAt(0).toUpperCase();
+          }
+          let nume =
+            data.loggedInDurationInHours * 60 + data.loggedInDurationInMinutes;
+          let deno =
+            data.shiftDurationInHour * 60 + data.shiftDurationInMinutes;
+          let percentLog = ((nume / deno) * 100).toFixed(2);
+          var profile = data.profilePicture;
+          var finalPath = profile.substring(
+            profile.lastIndexOf("\\") + 1,
+            profile.length
+          );
+          self.setState({
+            Email: data.agentEmailId,
+            UserName: data.agentName,
+            LoginTime: data.loginTime,
+            LoggedInDuration: data.loggedInDuration,
+            SLAScore: data.slaScore,
+            CSatScore: data.csatScore,
+            AvgResponse: data.avgResponseTime,
+            LogoutTime: data.logoutTime,
+            NameTag: nameTag,
+            userProfile: finalPath,
+            percentLog,
+            workTime: data.workTimeInPercentage,
+            workTimeHours: data.totalWorkingTime,
+          });
         }
-        let nume =
-          data.loggedInDurationInHours * 60 + data.loggedInDurationInMinutes;
-        let deno = data.shiftDurationInHour * 60 + data.shiftDurationInMinutes;
-        let percentLog = ((nume / deno) * 100).toFixed(2);
-        var profile = data.profilePicture;
-        var finalPath = profile.substring(
-          profile.lastIndexOf("\\") + 1,
-          profile.length
-        );
-        self.setState({
-          Email: data.agentEmailId,
-          UserName: data.agentName,
-          LoginTime: data.loginTime,
-          LoggedInDuration: data.loggedInDuration,
-          SLAScore: data.slaScore,
-          CSatScore: data.csatScore,
-          AvgResponse: data.avgResponseTime,
-          LogoutTime: data.logoutTime,
-          NameTag: nameTag,
-          userProfile: finalPath,
-          percentLog,
-          workTime: data.workTimeInPercentage,
-          workTimeHours: data.totalWorkingTime
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   };
 
-  actives = e => {
-    
+  actives = (e) => {
     const contDummy = [...this.state.cont];
-    contDummy.forEach(i => {
+    contDummy.forEach((i) => {
       i.activeClass = "single-menu";
       if (i.data === e.target.textContent) i.activeClass = "active single-menu";
     });
@@ -446,34 +448,33 @@ class Header extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Notification/GetNotifications",
-      headers: authHeader()
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-     
-      if (status === "Success") {
-        let data = res.data.responseData.ticketNotification;
-        let count = res.data.responseData.notiCount;
-        
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
 
-        self.setState({
-          notifiMessages: data,
-          notiCount: count
-        });
-      } else {
-        
-        self.setState({
-          notifiMessages: [],
-          notiCount: 0
-        });
-      }
-    }).catch(data => {
-      console.log(data);
-    });
+        if (status === "Success") {
+          let data = res.data.responseData.ticketNotification;
+          let count = res.data.responseData.notiCount;
+
+          self.setState({
+            notifiMessages: data,
+            notiCount: count,
+          });
+        } else {
+          self.setState({
+            notifiMessages: [],
+            notiCount: 0,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   handleShowTicket(Ids, isFollowUp) {
-    
     this.closeModal();
     this.onViewTicket(Ids, isFollowUp);
   }
@@ -591,7 +592,7 @@ class Header extends Component {
               </div>
             </div>
             <div className="headers-menu">
-              {this.state.cont.map(item => (
+              {this.state.cont.map((item) => (
                 <Link
                   onClick={this.actives}
                   key={item.data}
@@ -1566,7 +1567,7 @@ class Header extends Component {
           )}
             {this.state.notifiMessages.map((item, i) => {
               return (
-                  <div className="row rowpadding" key={i}>
+                <div className="row rowpadding" key={i}>
                   <div className="md-2 rectangle-2 lable05 noti-count">
                     <label className="labledata">{item.ticketCount}</label>
                   </div>
@@ -1597,9 +1598,13 @@ class Header extends Component {
                                 <Link
                                   to={{
                                     pathname: "myticket",
-                                    ticketDetailID: data
+                                    ticketDetailID: data,
                                   }}
-                                  onClick={this.handleShowTicket.bind(this, data, item.isFollowUp)}
+                                  onClick={this.handleShowTicket.bind(
+                                    this,
+                                    data,
+                                    item.isFollowUp
+                                  )}
                                 >
                                   {data}
                                 </Link>
@@ -1617,7 +1622,10 @@ class Header extends Component {
                             ? "md-4 view-tickets"
                             : "text-disabled"
                         }
-                        onClick={this.handleViewTicketModalOpen.bind(this, item)}
+                        onClick={this.handleViewTicketModalOpen.bind(
+                          this,
+                          item
+                        )}
                       >
                         {
                     (() => {
@@ -1846,7 +1854,7 @@ class Header extends Component {
                   className="logout-label font-weight-bold prog-indi"
                   style={{
                     width: this.state.workTime + "%",
-                    textTransform: "uppercase"
+                    textTransform: "uppercase",
                   }}
                 >
                   {this.state.workTimeHours}

@@ -1,60 +1,6 @@
 let config = {
   apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api",
-  // hierarchyTemplate: [["Designation", "ReportTo", "Status"]],
-  // priorityTemplate: [["PriorityName", "Status"]],
-  // userTemplate: [
-  //   [
-  //     "UserName",
-  //     "FirstName",
-  //     "LastName",
-  //     "Mobile Number",
-  //     "User Email ID",
-  //     "User Designation",
-  //     "Reportee Designation",
-  //     "Reports To",
-  //     "CRM Role",
-  //     "Copy Escalation",
-  //     "Assign Escalation",
-  //     "Escalation Agent Name",
-  //     "Status",
-  //   ],
-  // ],
-  // alertTemplate: [["AlertType", "Communication Mode", "Status"]],
-  // categoryTemplate: [
-  //   ["BrandName", "Category", "SubCategory", "IssueType", "Status"],
-  // ],
-  // // slaTemplate: [
-  // //   [
-  // //     "IssueType",
-  // //     "Priority",
-  // //     "SLABreachPercent",
-  // //     "RespondValue",
-  // //     "RespondDuration",
-  // //     "ResolutionValue",
-  // //     "ResolutionDuration",
-  // //     "Status",
-  // //   ],
-  // // ],
-  // crmRoleTemplate: [
-  //   ["RoleName", "Status", "EnabledModules", "DisabledModules"],
-  // ],
-  // storeTemplate: [
-  //   [
-  //     "Brand",
-  //     "City",
-  //     "State",
-  //     "PinCode",
-  //     "StoreName",
-  //     "Address",
-  //     "StoreCode",
-  //     "Region",
-  //     "Zone",
-  //     "StoreType",
-  //     "StoreEmailID",
-  //     "StorePhoneNo",
-  //     "Status",
-  //   ],
-  // ],
+
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
     ["Designation", "ReportTo", "Status"],
@@ -124,22 +70,7 @@ let config = {
     ["Tata", "Category-1", "SubCat-1", "IssueType-1", "Active"],
     ["Bata", "Category-2", "SubCat-2", "IssueType-2", "In-Active"],
   ],
-  // slaTemplate: [
-  //   [
-  //     "IssueType",
-  //     "Priority",
-  //     "SLABreachPercent",
-  //     "RespondValue",
-  //     ,
-  //     "RespondDuration",
-  //     "ResolutionValue",
-  //     "ResolutionDuration",
-  //     "Status",
-  //   ],
-  //   ["Issue1", "High", "30", "1", "Day", "2", "Day", "Active"],
-  //   ["Issue1", "Medium", "30", "1", "Day", "2", "Day", "Active"],
-  //   ["Issue1", "Low", "30", "1", "Day", "2", "Day", "Active"],
-  // ],
+
   crmRoleTemplate: [
     ["RoleName", "Status", "EnabledModules", "DisabledModules"],
     [
@@ -312,13 +243,16 @@ let config = {
     ["Issue1", "Medium", "30", "2", "Day", "Active"],
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
-  //apiUrl: 'http://easyrewardz.brainvire.net:44357/api'
-  // apiUrl: 'http://easyrewardertz.demo.brainvire.net'
-  //apiUrl: "https://ertktapi.dcdev.brainvire.net/Api",
-  // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
+  //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
+   //apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
+  // apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
+  //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
+  // socketUrl: "http://api-socketserverqa.ercx.co",      /// ------Client Socket--------
+  // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
+   socketUrl:"https://bvsocketservermts.dcdev.brainvire.net" /// -------Socket MultiTenant URL---------
 };
 
 export default config;

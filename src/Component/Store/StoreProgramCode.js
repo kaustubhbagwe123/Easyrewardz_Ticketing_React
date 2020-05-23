@@ -34,7 +34,7 @@ class StoreProgramCode extends Component {
         "enc"
       );
       // let X_Authorized_Domainname = encryption(
-      //   "http://erbelltktstore.dcdev.brainvire.net",
+      //   "https://erbelltkthomeshop.dcdev.brainvire.net",
       //   "enc"
       // );
       // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
@@ -116,9 +116,10 @@ class StoreProgramCode extends Component {
                     placeholder="Store Program Code*"
                     style={{ border: 0 }}
                     name="programCode"
-                    maxLength={10}
+                    maxLength={100}
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "Program Code",

@@ -15,6 +15,7 @@ import { NotificationManager } from "react-notifications";
 import CancelImg from "./../../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
 import { withRouter } from "react-router-dom";
+import Headphone2Img from "./../../assets/Images/headphone2.png";
 class ClaimApproveReject extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +49,7 @@ class ClaimApproveReject extends Component {
       ticketID: 0,
       ticketingTaskID: 0,
       assignToName: "",
+      targetClouserDate: "",
       userModel: false,
       userData: [],
       assigneeID: 0,
@@ -60,6 +62,10 @@ class ClaimApproveReject extends Component {
       assignComment: "",
       isAssignComment: "",
       claimComments: "",
+      oldAssignID: 0,
+      storeCommetData: [],
+      approveCommentData: [],
+      rejectCommentData: [],
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -75,7 +81,7 @@ class ClaimApproveReject extends Component {
         claimID: claimId,
       });
       this.handleGetClaimByID(claimId);
-
+      this.handleGetClaimCommentByClaimID(claimId);
       this.handleGetStoreClaimComments(claimId);
       this.handleGetBrandList();
     }
@@ -122,10 +128,10 @@ class ClaimApproveReject extends Component {
         console.log(response, "---handleGetUserDropdown");
       });
   }
+
   ////handle assign task
   handleAssignClaim() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -212,29 +218,36 @@ class ClaimApproveReject extends Component {
         var responseData = response.data.responseData;
         if (message == "Success" && responseData) {
           var orderDetails = [];
-          if(responseData.customOrderMaster)
-          {
+          var imageURL = "";
+          if (responseData.customOrderMaster) {
             orderDetails.push(responseData.customOrderMaster);
           }
-          
-          var imageURL = responseData.attachments[0].attachmentName;
+          if (responseData.attachments.length > 0) {
+            imageURL = responseData.attachments[0].attachmentName;
+          } else {
+            imageURL = "";
+          }
+
           var ticketingTaskID = responseData.ticketingTaskID;
           var ticketID = responseData.ticketID;
           var assignToName = responseData.assignTo;
+          var targetClouserDate = responseData.targetClouserDate;
           var assigneeID = responseData.assigneeID;
+          var oldAssignID = responseData.assigneeID;
           var status = responseData.status;
           var orderItems;
           if (responseData.customOrderMaster) {
-            
             orderItems = responseData.customOrderMaster.orderItems;
           } else {
             orderItems = [];
           }
 
           self.setState({
+            oldAssignID,
             status,
             assigneeID,
             assignToName,
+            targetClouserDate,
             ticketingTaskID,
             ticketID,
             imageURL,
@@ -267,42 +280,80 @@ class ClaimApproveReject extends Component {
       });
   }
   ////handle add comment on claim
-  handleAddStoreClaimComments() {
+  handleAddStoreClaimCommentsApproveReject(isRejectComment) {
     debugger;
-    var comment = "";
-    if (this.state.claimComments !== "") {
-      comment = this.state.claimComments;
-    } else {
-      comment = this.state.assignComment;
-    }
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
-      params: {
-        ClaimID: this.state.claimID,
-        Comment: comment,
-      },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          NotificationManager.success("Record saved successfully");
-          self.setState({claimComments:"",assignComment:""})
-          self.handleGetStoreClaimComments(self.state.claimID);
-        } else {
-          NotificationManager.error(res.data.message);
-        }
+    if (this.state.claimComments !== "" || this.state.rejectComment !== "") {
+      var comment = "";
+      if (this.state.claimComments !== "") {
+        comment = this.state.claimComments;
+      } else {
+        comment = this.state.rejectComment;
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreClaim/StoreClaimCommentByApprovel",
+        params: {
+          ClaimID: this.state.claimID,
+          Comment: comment,
+          iSRejectComment: isRejectComment,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(res) {
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success") {
+            if (!isRejectComment)
+              NotificationManager.success("Record saved successfully");
+            self.setState({
+              claimComments: "",
+              rejectComment: "",
+              rejectModal: false,
+            });
+            self.handleGetStoreClaimComments(self.state.claimID);
+          } else {
+            NotificationManager.error(res.data.message);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      NotificationManager.error("Please Enter Comment.");
+    }
   }
 
   handleOnChange(e) {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    debugger;
+    if (e.currentTarget.name === "finalClaimPercentage") {
+      if (isNaN(e.currentTarget.value)) {
+        return false;
+      }
+      var splitText = e.currentTarget.value.split(".");
+      var index = e.currentTarget.value.indexOf(".");
+      if (parseFloat(e.currentTarget.value) <= 100) {
+        if (index != -1) {
+          if (splitText) {
+            if (splitText[1].length <= 2) {
+              if (index != -1 && splitText.length === 2) {
+                this.setState({ finalClaimPercentage: e.currentTarget.value });
+              }
+            } else {
+              return false;
+            }
+          } else {
+            this.setState({ finalClaimPercentage: e.currentTarget.value });
+          }
+        } else {
+          this.setState({ finalClaimPercentage: e.currentTarget.value });
+        }
+      } else {
+        this.setState({ finalClaimPercentage: "" });
+      }
+    } else {
+      this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    }
   }
   ////handle get store claim comment by id
   handleGetStoreClaimComments(claimId) {
@@ -316,10 +367,27 @@ class ClaimApproveReject extends Component {
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
+        var approveCommentData = [];
+        var rejectCommentData = [];
         if (status === "Success") {
-          self.setState({ commentData: data });
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].isRejectComment === true) {
+              rejectCommentData.push(data[i]);
+            } else {
+              approveCommentData.push(data[i]);
+            }
+          }
+          self.setState({
+            commentData: data,
+            approveCommentData,
+            rejectCommentData,
+          });
         } else {
-          self.setState({ commentData: [] });
+          self.setState({
+            commentData: [],
+            approveCommentData,
+            rejectCommentData,
+          });
         }
       })
       .catch((data) => {
@@ -345,8 +413,10 @@ class ClaimApproveReject extends Component {
           if (status === "Success") {
             if (IsApprove == true) {
               NotificationManager.success("Record approved successfully");
+              self.props.history.push("/store/claim");
             } else {
               NotificationManager.success("Record rejected successfully");
+              self.props.history.push("/store/claim");
             }
           } else {
             NotificationManager.error(res.data.message);
@@ -522,7 +592,16 @@ class ClaimApproveReject extends Component {
       this.setState({ errors: this.state.errors });
     }
   };
-
+  handlePercentageOnChange = (e) => {
+    alert();
+    const value = e.target.value;
+    let IsNumber = false;
+    let RE = /^-{0,1}\d*\.{0,1}\d+$/;
+    IsNumber = RE.test(value);
+    if (IsNumber) {
+      console.log(IsNumber);
+    }
+  };
   handleOrderChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
@@ -530,7 +609,13 @@ class ClaimApproveReject extends Component {
   }
   ////handle reject comment modal open
   handleRejectModalOpen() {
-    this.setState({ rejectModal: true });
+    if (this.state.finalClaimPercentage !== "") {
+      this.setState({ rejectModal: true, errFinalClaimPercent: "" });
+    } else {
+      this.setState({
+        errFinalClaimPercent: "Please enter final claim percentage",
+      });
+    }
   }
   ////handle reject comment modal close
   handleRejectModalClose() {
@@ -543,7 +628,7 @@ class ClaimApproveReject extends Component {
     } else {
       this.setState({
         rejectComment: e.target.value,
-        isrejectComment: "Please enter valid remarks in comment.",
+        isrejectComment: "Please enter valid reason.",
       });
     }
   }
@@ -559,12 +644,12 @@ class ClaimApproveReject extends Component {
   handleAssigntoWithComment() {
     if (this.state.assignComment !== "" && this.state.isAssignComment == "") {
       this.handleAssignClaim();
-      this.handleAddStoreClaimComments();
+      this.handleAddStoreComment();
     } else {
       this.setState({ isAssignComment: "Please enter comment." });
     }
   }
-  ////handel commenr change
+  ////handel comment change
   handleAssignCommentChange(e) {
     if (e.target.value !== "") {
       this.setState({ assignComment: e.target.value, isAssignComment: "" });
@@ -575,9 +660,76 @@ class ClaimApproveReject extends Component {
       });
     }
   }
+  ////handle add store comment
+  handleAddStoreComment() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/AddStoreClaimComment",
+      headers: authHeader(),
+      params: {
+        claimID: this.state.claimID,
+        newAssignID: this.state.agentId,
+        oldAssignID: this.state.oldAssignID,
+        comment: this.state.assignComment,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message == "Success" && responseData) {
+          NotificationManager.success("Store comment add successfully");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleAddStoreComment");
+      });
+  }
 
-  
-
+  ////handle get cliam comment by claim id
+  handleGetClaimCommentByClaimID(ClaimID) {
+    var claimID = 0;
+    if (ClaimID > 0) {
+      claimID = ClaimID;
+    } else {
+      claimID = this.state.claimID;
+    }
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreClaim/GetClaimCommentByClaimID",
+      headers: authHeader(),
+      params: {
+        claimID: claimID,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var storeCommetData = response.data.responseData;
+        if (message === "Success" && storeCommetData) {
+          self.setState({ storeCommetData });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleAddStoreComment");
+      });
+  }
+  ///handle re assign modal skip button on click
+  handleSkipButtonClick() {
+    this.handleAddStoreComment();
+    this.handleAssignClaim();
+  }
+  ////handle reject modal submit button on click
+  handleRejectModalSubmit() {
+    if (this.state.rejectComment !== "") {
+      this.handleAddStoreClaimCommentsApproveReject(true);
+      this.handleApproveRejectClaim(false);
+    } else {
+      this.setState({ isrejectComment: "Please enter valid reason." });
+    }
+  }
 
   render() {
     const TranslationContext = this.context.state.translateLanguage.default
@@ -640,17 +792,26 @@ class ClaimApproveReject extends Component {
             ) : null}
           </div>
           <div className="col-md-5">
-            <a
-              style={{ marginTop: "10px" }}
-              className="d-inline-block"
-              onClick={this.handleGetUserDropdown.bind(this)}
-            >
-              <div className="oval-5-1-new-store">
-                <img src={storeImg} alt="headphone" className="storeImg-11" />
-              </div>
-              <label className="naman-r">{this.state.assignToName}</label>
-              <img src={DownImg} alt="down" className="down-header" />
-            </a>
+            <div className="d-inline-block">
+              <a
+                style={{
+                  marginTop: this.state.targetClouserDate ? "5px" : "11px",
+                }}
+                className="d-inline-block"
+                onClick={this.handleGetUserDropdown.bind(this)}
+              >
+                <div className="oval-5-1-new-store">
+                  <img src={storeImg} alt="headphone" className="storeImg-11" />
+                </div>
+                <label className="naman-r">{this.state.assignToName}</label>
+                <img src={DownImg} alt="down" className="down-header" />
+              </a>
+              {this.state.targetClouserDate && (
+                <p className="closure-date">
+                  Closure Date: {this.state.targetClouserDate}
+                </p>
+              )}
+            </div>
 
             <div className="btn-approrej">
               <button
@@ -694,14 +855,15 @@ class ClaimApproveReject extends Component {
             <div className="col-md-9" style={{ padding: "0" }}>
               <div className="card card-radius" style={{ margin: "0 0 20px" }}>
                 <div
-                  className="search-customer-padding"
-                  style={{ padding: "30px 45px 30px" }}
+                  className="search-customer-padding cusrow"
+                  style={{ padding: "30px" }}
                 >
                   <div
                     className=""
                     style={{
                       border: "1px solid #EEE",
                       borderRadius: "5px",
+                      margin: "0 15px",
                     }}
                   >
                     <div className="claim-status-card">
@@ -740,7 +902,7 @@ class ClaimApproveReject extends Component {
                       isOpen={this.state.collapse}
                       style={{ width: "100%" }}
                     >
-                      <Card>
+                      <Card className="w-100">
                         <CardBody style={{ padding: "15px 0 0 0" }}>
                           <div className="row mx-0">
                             <div className="col-md-6">
@@ -913,7 +1075,7 @@ class ClaimApproveReject extends Component {
                       </Card>
                     </Collapse>
                   </div>
-                  <div className="row">
+                  <div className="row w-100">
                     <div className="form-group col-md-4">
                       <label className="label-6">
                         {
@@ -1096,8 +1258,8 @@ class ClaimApproveReject extends Component {
                   </div>
                   <div className="row">
                     <div className="form-group col-md-4">
-                      <label className="label-6">
-                      {
+                      <label className="label-6" style={{ display: "block" }}>
+                        {
                         (() => {
                           if (TranslationContext !== undefined) {
                             return TranslationContext.label.attachedimage
@@ -1108,15 +1270,69 @@ class ClaimApproveReject extends Component {
                         })()
                       }
                       </label>
+                      {this.state.imageURL !== "" ? (
+                        <img
+                          src={this.state.imageURL}
+                          alt="Bata"
+                          className="claim-bataShoes"
+                        />
+                      ) : null}
                     </div>
                   </div>
-                  {this.state.imageUR !== "" ? (
-                    <img
-                      src={this.state.imageURL}
-                      alt="Bata"
-                      className="claim-bataShoes"
-                    />
-                  ) : null}
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="col-md-4">
+                      <label className="label-6">
+                      {
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.label.commentsbystore
+                          }
+                          else {
+                            return "Comments By Store"
+                          }
+                        })()
+                      }
+                      </label>
+                    </div>
+                  </div>
+                  {this.state.storeCommetData !== null &&
+                    this.state.storeCommetData.map((item, i) => {
+                      return (
+                        <div key={i}>
+                          <div className="row" style={{ margin: "0" }}>
+                            <div className="col-xs-3">
+                              <img
+                                src={Headphone2Img}
+                                alt="headphone"
+                                className="oval-55 naman"
+                              />
+                            </div>
+                            <div className="col-md-9">
+                              <label className="naman-R">{item.name}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="hr-ago">{item.datetime}</label>
+                            </div>
+                          </div>
+                          <div className="row" style={{ margin: "0" }}>
+                            <label className="naman-R allign-reassign">
+                              Reassign to {item.newAgentName}
+                            </label>
+                          </div>
+                          <div className="row" style={{ margin: "0" }}>
+                            <label className="label-6">Comments:</label>
+                          </div>
+                          <div className="row" style={{ margin: "0" }}>
+                            <div style={{ width: "100%" }}>
+                              <label className="claim-comment">
+                                {item.comment}
+                              </label>
+                              <hr />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
 
@@ -1124,7 +1340,7 @@ class ClaimApproveReject extends Component {
                 className="card card-radius"
                 style={{ padding: "30px 45px 30px" }}
               >
-                <div className="search-customer-padding">
+                <div className="search-customer-padding p-0">
                   <div className="row" style={{ margin: "0" }}>
                     <div
                       className="form-group col-md-4"
@@ -1160,8 +1376,7 @@ class ClaimApproveReject extends Component {
 
                   <div className="row" style={{ margin: "0" }}>
                     <div style={{ width: "100%" }}>
-                      <label className="label-6">
-                      {
+                      <label className="label-6">{
                         (() => {
                           if (TranslationContext !== undefined) {
                             return TranslationContext.label.commentbyapproval
@@ -1170,13 +1385,12 @@ class ClaimApproveReject extends Component {
                             return "Comments By Approval"
                           }
                         })()
-                      }
-                      </label>
-                      <hr></hr>
+                      }</label>
+                      <hr className="mt-0 mb-2" />
                     </div>
                     <div className="" style={{ display: "contents" }}>
                       <textarea
-                        className="ticket-comments-textarea"
+                        className="ticket-comments-textarea mt-1"
                         placeholder="Add your Comment here"
                         name="claimComments"
                         value={this.state.claimComments}
@@ -1188,7 +1402,10 @@ class ClaimApproveReject extends Component {
                     <button
                       type="button"
                       className="commentbtn"
-                      onClick={this.handleAddStoreClaimComments.bind(this)}
+                      onClick={this.handleAddStoreClaimCommentsApproveReject.bind(
+                        this,
+                        false
+                      )}
                     >
                       <label className="txt">
                       {
@@ -1204,19 +1421,61 @@ class ClaimApproveReject extends Component {
                       </label>
                     </button>
                   </div>
-                  <div className="row" style={{ margin: "0" }}>
+                  <div className="row mt-4" style={{ margin: "0" }}>
                     <div className="">
                       <label className="label-6">
                         Comments By Approval:{" "}
-                        {this.state.commentData.length < 9
-                          ? "0" + this.state.commentData.length
+                        {this.state.approveCommentData.length < 9
+                          ? "0" + this.state.approveCommentData.length
                           : this.state.commentData.length}
                       </label>
                     </div>
                   </div>
-                  {this.state.commentData.map((value, i) => (
+                  {this.state.approveCommentData.map((value, i) => (
                     <div key={i}>
+                      <div className="row mb-3" style={{ margin: "0" }}>
+                        <div className="col-xs-3">
+                          <img
+                            src={storeImg}
+                            alt="headphone"
+                            className="oval-55 naman"
+                          />
+                        </div>
+                        <div className="col-md-9">
+                          <label className="naman-R">{value.name}</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="hr-ago">{value.commentDate}</label>
+                        </div>
+                      </div>
                       <div className="row" style={{ margin: "0" }}>
+                        <label className="label-6" style={{ paddingTop: "0" }}>
+                          Comments:
+                        </label>
+                      </div>
+                      <div className="row" style={{ margin: "0" }}>
+                        <div style={{ width: "100%" }}>
+                          <label className="claim-comment">
+                            {value.comment}
+                          </label>
+                          <hr />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="">
+                      <label className="label-6">
+                        Comments By Reject:{" "}
+                        {this.state.rejectCommentData.length < 9
+                          ? "0" + this.state.rejectCommentData.length
+                          : this.state.rejectCommentData.length}
+                      </label>
+                    </div>
+                  </div>
+                  {this.state.rejectCommentData.map((value, i) => (
+                    <div key={i}>
+                      <div className="row mb-3" style={{ margin: "0" }}>
                         <div className="col-xs-3">
                           <img
                             src={storeImg}
@@ -1485,8 +1744,7 @@ class ClaimApproveReject extends Component {
           <div className="commenttextborder">
             <div className="comment-disp">
               <div className="Commentlabel">
-                <label className="Commentlabel1">
-                {
+                <label className="Commentlabel1">{
                   (() => {
                     if (TranslationContext !== undefined) {
                       return TranslationContext.label.commentforrejection
@@ -1495,8 +1753,7 @@ class ClaimApproveReject extends Component {
                       return "Comment for Rejection"
                     }
                   })()
-                }
-                </label>
+                }</label>
               </div>
               <div>
                 <img
@@ -1522,18 +1779,11 @@ class ClaimApproveReject extends Component {
                 {this.state.isrejectComment}
               </p>
             )}
-            {/* <div className="SendCommentBtn" style={{ float: "left" }}>
-              <button
-                className="SendCommentBtn1"
-                onClick={this.handleSkipComment.bind(this)}
-              >
-                SKIP
-              </button>
-            </div> */}
+
             <div className="SendCommentBtn" style={{ margin: "0" }}>
               <button
                 className="SendCommentBtn1"
-                // onClick={this..bind(this, 4)}
+                onClick={this.handleRejectModalSubmit.bind(this)}
               >
                 {
                   (() => {
@@ -1603,7 +1853,7 @@ class ClaimApproveReject extends Component {
             <div className="SendCommentBtn" style={{ float: "left" }}>
               <button
                 className="SendCommentBtn1"
-                onClick={this.handleAssignClaim.bind(this)}
+                onClick={this.handleSkipButtonClick.bind(this)}
               >
                 {
                   (() => {

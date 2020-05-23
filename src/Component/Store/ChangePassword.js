@@ -116,7 +116,7 @@ class StoreChangePassword extends Component {
       changePasswordType = "system";
       emailIDsystem = email;
     }
-
+    let X_Authorized_Domainname = encryption(window.location.origin, "enc");
     // change password
     axios({
       method: "post",
@@ -127,7 +127,11 @@ class StoreChangePassword extends Component {
         NewPassword: encPassword,
         ChangePasswordType: changePasswordType,
       },
-      headers: authHeader(),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "X-Authorized-Domainname": X_Authorized_Domainname,
+      },
     })
       .then(function(response) {
         // let data = response;

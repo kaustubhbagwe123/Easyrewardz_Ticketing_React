@@ -800,7 +800,7 @@ class Users extends Component {
       }
     }
     debugger;
-    
+
     self.setState({
       userEditData,
       editBrand: brand,
@@ -3046,7 +3046,6 @@ class Users extends Component {
                         this.state.userEditData.designation_ID && (
                           <option value="-1">Root</option>
                         )}
-                         <option value={0}>Root</option>
                       {this.state.ReportToData !== null &&
                         this.state.ReportToData.map((item, i) => (
                           <option key={i} value={item.user_ID}>
