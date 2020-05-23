@@ -2693,6 +2693,7 @@ class StoreDashboard extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -2708,7 +2709,7 @@ class StoreDashboard extends Component {
                       return " Brand :"
                     }
                   })()
-                }
+                } :
                 <div className="dropdown">
                   <button
                     style={{ width: "90px" }}
@@ -2740,18 +2741,16 @@ class StoreDashboard extends Component {
                           checked={this.state.CheckBoxAllBrand}
                           name="allBrand"
                         />
-                        <span className="ch1-text">
-                          {
-                            (() => {
-                              if (TranslationContext !== undefined) {
-                                return TranslationContext.span.all
-                              }
-                              else {
-                                return "All"
-                              }
-                            })()
+                        <span className="ch1-text">{
+                        (() => {
+                          if (TranslationContext !== undefined) {
+                            return TranslationContext.span.all
                           }
-                        </span>
+                          else {
+                            return "All"
+                          }
+                        })()
+                      }</span>
                       </label>
                     </li>
                     {this.state.BrandData !== null &&
@@ -3773,16 +3772,7 @@ class StoreDashboard extends Component {
                       data={this.state.dashboardGridData}
                       columns={[
                         {
-                          Header: <span> {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.id
-                                }
-                                else {
-                                  return "ID"
-                                }
-                              })()
-                            }</span>,
+                          Header: <span>ID</span>,
                           accessor: "taskid",
                         },
                         {
@@ -3799,16 +3789,7 @@ class StoreDashboard extends Component {
                                 "Status"
                               )}
                             >
-                               {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.status
-                                }
-                                else {
-                                  return "Status"
-                                }
-                              })()
-                            }{" "}
+                              Status{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3843,154 +3824,18 @@ class StoreDashboard extends Component {
                             }
                           },
                         },
-                      },
-                      {
-                        Header: <span>
-                            {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.tasktitle
-                                }
-                                else {
-                                  return "Task Title"
-                                }
-                              })()
-                            }
-                        </span>,
-                        accessor: "tasktitle",
-                      },
-                      {
-                        Header: (
-                          <span> 
-                            {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.department
-                                }
-                                else {
-                                  return "Department"
-                                }
-                              })()
-                            }
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "department",
-                      },
-                      {
-                        Header: (
-                          <span> 
-                            {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.storename
-                                }
-                                else {
-                                  return "Store Name"
-                                }
-                              })()
-                            }
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "storeName",
-                      },
-                      {
-                        Header: (
-                          <span> 
-                            {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.creationon
-                                }
-                                else {
-                                  return "Creation On"
-                                }
-                              })()
-                            }
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "createdOn",
-                        Cell: (row) => (
-                          <span>
-                            <label>{row.original.createdOn}</label>
-
-                            <Popover
-                              content={
-                                <div className="insertpop1">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">
-                                    {
-                                        (() => {
-                                          if (TranslationContext !== undefined) {
-                                            return TranslationContext.li.creationdetails
-                                          }
-                                          else {
-                                            return "Creation details"
-                                          }
-                                        })()
-                                      }
-                                    </li>
-                                    <li>
-                                      <p>Naman Created</p>
-                                      <p>2 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Assigned to Vikas</p>
-                                      <p>1.5 Hrs ago</p>
-                                    </li>
-                                    <li>
-                                      <p>Vikas updated</p>
-                                      <p>1 Hr ago</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                      {
-                                          (() => {
-                                            if (TranslationContext !== undefined) {
-                                              return TranslationContext.p.responsetimerem
-                                            }
-                                            else {
-                                              return "Response time remaining by"
-                                            }
-                                          })()
-                                        }
-                                      </p>
-                                      <p>30 mins</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                      {
-                                          (() => {
-                                            if (TranslationContext !== undefined) {
-                                              return TranslationContext.p.responseoverdueby
-                                            }
-                                            else {
-                                              return "Response overdue by"
-                                            }
-                                          })()
-                                        }
-                                      </p>
-                                      <p>1 Hr</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                      {
-                                          (() => {
-                                            if (TranslationContext !== undefined) {
-                                              return TranslationContext.p.resolutionoverdueby
-                                            }
-                                            else {
-                                              return "Resolution overdue by"
-                                            }
-                                          })()
-                                        }
-                                      </p>
-                                      <p>2 Hrs</p>
-                                    </li>
-                                  </ul>
-                                </div>
+                        {
+                          Header: <span>Task Title</span>,
+                          accessor: "tasktitle",
+                          sortable: false,
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Department"
+                                  ? "sort-column"
+                                  : ""
                               }
                               onClick={this.StatusOpenModel.bind(
                                 this,
@@ -4007,72 +3852,433 @@ class StoreDashboard extends Component {
                                     : faCaretDown
                                 }
                               />
-                            </Popover>
-                          </span>
-                        ),
-                      },
-                      {
-                        Header: (
-                          <span>
-                            {
-                              (() => {
-                                if (TranslationContext !== undefined) {
-                                  return TranslationContext.span.assignto
+                            </span>
+                          ),
+                          accessor: "department",
+                          sortable: false,
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Store Name"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName",
+                                "Store Name"
+                              )}
+                            >
+                              Store Name{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Store Name"
+                                    ? faCaretUp
+                                    : faCaretDown
                                 }
-                                else {
-                                  return "Assign to"
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "storeName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdOn",
+                                "Creation On"
+                              )}
+                            >
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
                                 }
-                              })()
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "createdOn",
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.createdOn}</label>
+
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>Created by Naman</p>
+                                        <p>2 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Assigned to Vikas</p>
+                                        <p>1.5 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Updated by Vikas</p>
+                                        <p>1 Hr ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>30 mins</p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>2 Hrs</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          ),
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assigntoId",
+                                "Assign to"
+                              )}
+                            >
+                              Assign to
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "assigntoId",
+                        },
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      getTrProps={this.handleRowClickredirectPage}
+                    />
+                  ) : this.state.isViewSerach ? (
+                    <div className="loader-icon-cntr">
+                      <div className="loader-icon"></div>
+                    </div>
+                  ) : (
+                    <ReactTable
+                      data={this.state.cliamSearchData}
+                      columns={[
+                        {
+                          Header: <span>ID</span>,
+                          accessor: "claimID",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Status"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "claimStatus",
+                                "Status"
+                              )}
+                            >
+                              Status{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Status"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "claimStatus",
+                          Cell: (row) => {
+                            if (row.original.claimStatus === "New") {
+                              return (
+                                <span className="table-btn table-yellow-btn">
+                                  <label>{row.original.claimStatus}</label>
+                                </span>
+                              );
+                            } else if (row.original.claimStatus === "Open") {
+                              return (
+                                <span className="table-btn table-blue-btn">
+                                  <label>{row.original.claimStatus}</label>
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="table-btn table-green-btn">
+                                  <label>{row.original.claimStatus}</label>
+                                </span>
+                              );
                             }
-                            <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "assigntoId",
-                      },
-                    ]}
-                    // resizable={false}
-                    minRows={2}
-                    defaultPageSize={10}
-                    showPagination={true}
-                  />
-                  {/* <div className="position-relative">
-                        <div className="pagi">
-                          <ul>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&lt;</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>1</a>
-                            </li>
-                            <li className="active">
-                              <a href={Demo.BLANK_LINK}>2</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>3</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>4</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>5</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>6</a>
-                            </li>
-                            <li>
-                              <a href={Demo.BLANK_LINK}>&gt;</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="item-selection">
-                          <select>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                          </select>
-                          <p>Items per page</p>
-                        </div>
-                      </div> */}
+                          },
+                        },
+                        {
+                          Header: <span>Claim Issue Type</span>,
+                          accessor: "issueTypeName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Category"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "categoryName",
+                                "Category"
+                              )}
+                            >
+                              Category{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Category"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          accessor: "categoryName",
+                          sortable: false,
+                          Cell: (row) => {
+                            return (
+                              <>
+                                {row.original.categoryName}
+                                <Popover
+                                  content={
+                                    <div className="dash-creation-popup-cntr">
+                                      <div>
+                                        <b>
+                                          <p className="title">Category</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.categoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">Sub Category</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.subCategoryName}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">Type</p>
+                                        </b>
+                                        <p className="sub-title">
+                                          {row.original.issueTypeName}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon"
+                                    src={InfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </>
+                            );
+                          },
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Created By"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "createdByName",
+                                "Created By"
+                              )}
+                            >
+                              Created By{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Created By"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "createdByName",
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Creation On"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "creationOn",
+                                "Creation On"
+                              )}
+                            >
+                              Creation On{" "}
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Creation On"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          accessor: "creationOn",
+                          sortable: false,
+                          Cell: (row) => (
+                            <span>
+                              <label>{row.original.creationOn}</label>
+
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">
+                                        Creation details
+                                      </li>
+                                      <li>
+                                        <p>
+                                          {"Created by " +
+                                            row.original.createdByName}
+                                        </p>
+                                        <p>2 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to {row.original.assignTo}
+                                        </p>
+                                        <p>1.5 Hrs ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Updated by Vikas</p>
+                                        <p>1 Hr ago</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>30 mins</p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>1 Hr</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>2 Hrs</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="left"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          ),
+                        },
+                        {
+                          Header: (
+                            <span
+                              className={
+                                this.state.sortHeader === "Assign to"
+                                  ? "sort-column"
+                                  : ""
+                              }
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "assignTo",
+                                "Assign to"
+                              )}
+                            >
+                              Assign to
+                              <FontAwesomeIcon
+                                icon={
+                                  this.state.isATOZ == false &&
+                                  this.state.sortHeader === "Assign to"
+                                    ? faCaretUp
+                                    : faCaretDown
+                                }
+                              />
+                            </span>
+                          ),
+                          sortable: false,
+                          accessor: "assignTo",
+                        },
+                      ]}
+                      // resizable={false}
+                      minRows={2}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      getTrProps={this.HandleRowClickPage}
+                    />
+                  )}
+
                   <Modal
                     onClose={this.StatusCloseModel}
                     open={this.state.StatusModel}
@@ -4139,134 +4345,330 @@ class StoreDashboard extends Component {
                         clear search
                       </a>
                       <div className="filter-type">
-                        <p>
-                          {
-                            (() => {
-                              if (TranslationContext !== undefined) {
-                                return TranslationContext.p.filterbytype
+                        <p>FILTER BY TYPE</p>
+                        <input
+                          type="text"
+                          style={{ display: "block" }}
+                          value={this.state.filterTxtValue}
+                          onChange={this.filteTextChange.bind(this)}
+                        />
+                        <div className="FTypeScroll">
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              name="filter-type"
+                              id={"fil-open"}
+                              value="all"
+                              checked={
+                                this.state.scategoryNameFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.sclaimStatusFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.screatedByNameFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.screationOnFilterCheckbox.includes(
+                                  "all"
+                                ) ||
+                                this.state.sassignToFilterCheckbox.includes(
+                                  "all"
+                                )
                               }
-                              else {
-                                return "FILTER BY TYPE"
-                              }
-                            })()
-                          }
-                        </p>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-open"
-                            name="filter-type"
-                          />
-                          <label htmlFor="fil-open">
-                            <span className="table-btn table-blue-btn">
-                              {
-                                (() => {
-                                  if (TranslationContext !== undefined) {
-                                    return TranslationContext.span.open
-                                  }
-                                  else {
-                                    return "Open"
-                                  }
-                                })()
-                              }
-                            </span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-new"
-                            name="filter-type"
-                          />
-                          <label htmlFor="fil-new">
-                            <span className="table-btn table-yellow-btn">
-                              {
-                                (() => {
-                                  if (TranslationContext !== undefined) {
-                                    return TranslationContext.span.new
-                                  }
-                                  else {
-                                    return "New"
-                                  }
-                                })()
-                              }
-                            </span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-solved"
-                            name="filter-type"
-                          />
-                          <label htmlFor="fil-solved">
-                            <span className="table-btn table-green-btn">
-                              {
-                                (() => {
-                                  if (TranslationContext !== undefined) {
-                                    return TranslationContext.span.solved
-                                  }
-                                  else {
-                                    return "Solved"
-                                  }
-                                })()
-                              }
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="filter-type filter-color">
-                        <p>
-                          {
-                            (() => {
-                              if (TranslationContext !== undefined) {
-                                return TranslationContext.p.filterbycolor
-                              }
-                              else {
-                                return "FILTER BY COLOR"
-                              }
-                            })()
-                          }
-                        </p>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-red"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-red">
-                            <span className="fil-color-red fil-color-bg"></span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-orange"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-orange">
-                            <span className="fil-color-orange fil-color-bg"></span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-white"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-white">
-                            <span className="fil-color-white fil-color-bg"></span>
-                          </label>
-                        </div>
-                        <div className="filter-checkbox">
-                          <input
-                            type="checkbox"
-                            id="fil-green"
-                            name="filter-color"
-                          />
-                          <label htmlFor="fil-green">
-                            <span className="fil-color-green fil-color-bg"></span>
-                          </label>
+                              onChange={this.setSortCheckStatus.bind(
+                                this,
+                                "all"
+                              )}
+                            />
+                            <label htmlFor={"fil-open"}>
+                              <span className="table-btn table-blue-btn">
+                                ALL
+                              </span>
+                            </label>
+                          </div>
+                          {this.state.sortColumn === "categoryName"
+                            ? this.state.sortFiltercategoryName !== null &&
+                              this.state.sortFiltercategoryName.map(
+                                (item, i) => (
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name="filter-type"
+                                      id={"fil-open" + item.categoryName}
+                                      value={item.categoryName}
+                                      checked={this.state.scategoryNameFilterCheckbox
+                                        .split(",")
+                                        .find(
+                                          (word) => word === item.categoryName
+                                        )}
+                                      onChange={this.setSortCheckStatus.bind(
+                                        this,
+                                        "categoryName",
+                                        "value"
+                                      )}
+                                    />
+                                    <label
+                                      htmlFor={"fil-open" + item.categoryName}
+                                    >
+                                      <span className="table-btn table-blue-btn">
+                                        {item.categoryName}
+                                      </span>
+                                    </label>
+                                  </div>
+                                )
+                              )
+                            : null}
+
+                          {this.state.sortColumn === "claimStatus"
+                            ? this.state.sortFilterclaimStatus !== null &&
+                              this.state.sortFilterclaimStatus.map(
+                                (item, i) => (
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name="filter-type"
+                                      id={"fil-open" + item.claimStatus}
+                                      value={item.claimStatus}
+                                      checked={this.state.sclaimStatusFilterCheckbox
+                                        .split(",")
+                                        .find(
+                                          (word) => word === item.claimStatus
+                                        )}
+                                      onChange={this.setSortCheckStatus.bind(
+                                        this,
+                                        "claimStatus",
+                                        "value"
+                                      )}
+                                    />
+                                    <label
+                                      htmlFor={"fil-open" + item.claimStatus}
+                                    >
+                                      <span className="table-btn table-blue-btn">
+                                        {item.claimStatus}
+                                      </span>
+                                    </label>
+                                  </div>
+                                )
+                              )
+                            : null}
+
+                          {this.state.sortColumn === "createdByName"
+                            ? this.state.sortFiltercreatedByName !== null &&
+                              this.state.sortFiltercreatedByName.map(
+                                (item, i) => (
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name="filter-type"
+                                      id={"fil-open" + item.createdByName}
+                                      value={item.createdByName}
+                                      checked={this.state.screatedByNameFilterCheckbox
+                                        .split(",")
+                                        .find(
+                                          (word) => word === item.createdByName
+                                        )}
+                                      onChange={this.setSortCheckStatus.bind(
+                                        this,
+                                        "createdByName",
+                                        "value"
+                                      )}
+                                    />
+                                    <label
+                                      htmlFor={"fil-open" + item.createdByName}
+                                    >
+                                      <span className="table-btn table-blue-btn">
+                                        {item.createdByName}
+                                      </span>
+                                    </label>
+                                  </div>
+                                )
+                              )
+                            : null}
+
+                          {this.state.sortColumn === "creationOn"
+                            ? this.state.sortFiltercreationOn !== null &&
+                              this.state.sortFiltercreationOn.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.creationOn}
+                                    value={item.creationOn}
+                                    checked={this.state.screationOnFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.creationOn)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "creationOn",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.creationOn}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.creationOn}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "assignTo"
+                            ? this.state.sortFilterassignTo !== null &&
+                              this.state.sortFilterassignTo.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.assignTo}
+                                    value={item.assignTo}
+                                    checked={this.state.sassignToFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.assignTo)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "assignTo",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.assignTo}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.assignTo}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+
+                          {this.state.sortColumn === "department"
+                            ? this.state.sortFilterdepartment !== null &&
+                              this.state.sortFilterdepartment.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.department}
+                                    value={item.department}
+                                    checked={this.state.sdepartmentFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.department)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "department",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.department}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.department}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "storeName"
+                            ? this.state.sortFilterstoreName !== null &&
+                              this.state.sortFilterstoreName.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.storeName}
+                                    value={item.storeName}
+                                    checked={this.state.sstoreNameFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.storeName)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "storeName",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.storeName}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.storeName}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "assigntoId"
+                            ? this.state.sortFilterassigntoId !== null &&
+                              this.state.sortFilterassigntoId.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.assigntoId}
+                                    value={item.assigntoId}
+                                    checked={this.state.sassigntoIdFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.assigntoId)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "assigntoId",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.assigntoId}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.assigntoId}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "taskstatus"
+                            ? this.state.sortFiltertaskstatus !== null &&
+                              this.state.sortFiltertaskstatus.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.taskstatus}
+                                    value={item.taskstatus}
+                                    checked={this.state.staskstatusFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.taskstatus)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "taskstatus",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.taskstatus}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.taskstatus}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
+                          {this.state.sortColumn === "createdOn"
+                            ? this.state.sortFiltercreatedOn !== null &&
+                              this.state.sortFiltercreatedOn.map((item, i) => (
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    name="filter-type"
+                                    id={"fil-open" + item.createdOn}
+                                    value={item.createdOn}
+                                    checked={this.state.screatedOnFilterCheckbox
+                                      .split(",")
+                                      .find((word) => word === item.createdOn)}
+                                    onChange={this.setSortCheckStatus.bind(
+                                      this,
+                                      "createdOn",
+                                      "value"
+                                    )}
+                                  />
+                                  <label htmlFor={"fil-open" + item.createdOn}>
+                                    <span className="table-btn table-blue-btn">
+                                      {item.createdOn}
+                                    </span>
+                                  </label>
+                                </div>
+                              ))
+                            : null}
                         </div>
                       </div>
                     </div>

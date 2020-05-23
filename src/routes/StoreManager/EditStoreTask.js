@@ -702,6 +702,7 @@ class EditStoreTask extends Component {
     this.setState({ assginToModal: false });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     console.log(this.state.isSubmit, "----isSubmit");
     return (
       <Fragment>

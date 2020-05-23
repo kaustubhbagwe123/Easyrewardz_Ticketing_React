@@ -1,5 +1,5 @@
 let config = {
-  apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api",
+  apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api",
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [

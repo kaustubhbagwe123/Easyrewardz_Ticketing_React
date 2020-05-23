@@ -2389,7 +2389,7 @@ class ClaimCategoryMaster extends Component {
                                 "Brand"
                               )}
                             >
-                              {
+                               {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.span.brandname
@@ -2500,7 +2500,7 @@ class ClaimCategoryMaster extends Component {
                                 "IssueType"
                               )}
                             >
-                              {
+                               {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.span.claimissuetype
@@ -3058,8 +3058,8 @@ class ClaimCategoryMaster extends Component {
                 <div className="store-col-2">
                   <div className="right-sect-div">
                     <br />
-                    <div className="d-flex justify-content-between align-items-center pb-2">
-                      <h3 className="pb-0">{
+                    <h3>
+                    {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.h3.bulkupload
@@ -3068,9 +3068,10 @@ class ClaimCategoryMaster extends Component {
                   return "Bulk Upload"
                 }
               })()
-            }</h3>
-                      <div className="down-excel">
-                        <p>{
+            }
+                    </h3>
+                    <div className="down-excel">
+                      <p>{
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.p.template
@@ -3080,13 +3081,12 @@ class ClaimCategoryMaster extends Component {
                 }
               })()
             }</p>
-                        <CSVLink
-                          filename={"ClaimCategory.csv"}
-                          data={config.claimCategoryTemplate}
-                        >
-                          <img src={DownExcel} alt="download icon" />
-                        </CSVLink>
-                      </div>
+                      <CSVLink
+                        filename={"ClaimCategory.csv"}
+                        data={config.claimCategoryTemplate}
+                      >
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                     <div className="mainfileUpload">
                       <Dropzone onDrop={this.fileUpload.bind(this)}>
@@ -3356,7 +3356,7 @@ class ClaimCategoryMaster extends Component {
                 }
               })()
             }</label>
-                    <Select
+                    <Aselect
                       showSearch={true}
                       value={this.state.editCategory.categoryName}
                       style={{ width: "100%" }}
@@ -3364,10 +3364,20 @@ class ClaimCategoryMaster extends Component {
                       onSearch={this.handleGetEditCategoryList.bind(this)}
                       notFoundContent="No Data Found"
                     >
-                      {list1SelectOptions}
-                      <Option value={NEW_ITEM}>
-                        <span className="sweetAlert-inCategory">+ 
-                        {
+                      {this.state.categoryDropData !== null &&
+                        this.state.categoryDropData.map((item, o) => (
+                          <Option key={o} value={item.categoryName}>
+                            {item.categoryName}
+                          </Option>
+                        ))}
+                    </Aselect>
+                    {this.state.showEditAddCategory ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-68px" }}
+                        onClick={this.handleToggleEditCategoryAdd.bind(this)}
+                      >
+                        + {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.span.addnew
@@ -3377,10 +3387,9 @@ class ClaimCategoryMaster extends Component {
                 }
               })()
             }
-                        </span>
-                      </Option>
-                    </Select>
-                    {this.state.editCategory.categoryID !== null && (
+                      </span>
+                    ) : null}
+                    {this.state.editCategory.categoryName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editCategoryCompulsory}
                       </p>
@@ -3441,7 +3450,19 @@ class ClaimCategoryMaster extends Component {
               })()
             }
                     </label>
-                    <Select
+                    <Select>
+                          <span className="edit-label-1">{
+                    (() => {
+                      if (TranslationContext !== undefined) {
+                        return TranslationContext.span.claimsubcategory
+                      }
+                      else {
+                        return "Claim Sub Category"
+                      }
+                    })()
+                  }</span>
+                    </Select>
+                    <Aselect
                       showSearch={true}
                       value={this.state.editCategory.subCategoryName}
                       style={{ width: "100%" }}
@@ -3529,19 +3550,17 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">
-                    {
+                    <label className="edit-label-1">{
               (() => {
                 if (TranslationContext !== undefined) {
-                  return TranslationContext.label.issuetype
+                  return TranslationContext.label.claimissuetype
                 }
                 else {
-                  return "Issue Type"
+                  return "Claim Issue Type"
                 }
               })()
-            }
-                    </label>
-                    <Select
+            }</label>
+                    <Aselect
                       showSearch={true}
                       value={this.state.editCategory.issueTypeName}
                       style={{ width: "100%" }}
@@ -3549,9 +3568,20 @@ class ClaimCategoryMaster extends Component {
                       onSearch={this.handleSearchEditissueType.bind(this)}
                       notFoundContent="No Data Found"
                     >
-                      {listOfIssueType}
-                      <Option value={NEW_ITEM}>
-                        <span className="sweetAlert-inCategory">+ {
+                      {this.state.ListOfIssueData !== null &&
+                        this.state.ListOfIssueData.map((item, i) => (
+                          <Option key={i} value={item.issueTypeName}>
+                            {item.issueTypeName}
+                          </Option>
+                        ))}
+                    </Aselect>
+                    {this.state.showEditAddIssue ? (
+                      <span
+                        className="sweetAlert-inCategory"
+                        style={{ marginTop: "-68px" }}
+                        onClick={this.handleToggleEditIssueAdd.bind(this)}
+                      >
+                        + {
               (() => {
                 if (TranslationContext !== undefined) {
                   return TranslationContext.span.addnew
@@ -3560,10 +3590,10 @@ class ClaimCategoryMaster extends Component {
                   return "Add New"
                 }
               })()
-            }</span>
-                      </Option>
-                    </Select>
-                    {this.state.editCategory.issueTypeID !== null && (
+            }
+                      </span>
+                    ) : null}
+                    {this.state.editCategory.issueTypeName === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editIssueCompulsory}
                       </p>

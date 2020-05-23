@@ -9,6 +9,7 @@ import axios from "axios";
 import config from "../../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../../helpers/authHeader";
+import { encryption } from "../../helpers/encryption";
 import { MyContext } from '../../context'
 
 class StoreForgotPassword extends Component {

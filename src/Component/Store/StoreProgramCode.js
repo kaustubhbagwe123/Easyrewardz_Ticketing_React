@@ -30,7 +30,7 @@ class StoreProgramCode extends Component {
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
       let X_Authorized_Domainname = encryption(
-        "http://erbelltktstore.dcdev.brainvire.net",
+        "https://multitenancyshopster.dcdev.brainvire.net",
         "enc"
       );
       // let X_Authorized_Domainname = encryption(

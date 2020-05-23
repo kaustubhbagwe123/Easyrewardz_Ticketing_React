@@ -3056,6 +3056,7 @@ class StoreReports extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const datareport = this.state.storeReportData;
 
     const columnsreport = [

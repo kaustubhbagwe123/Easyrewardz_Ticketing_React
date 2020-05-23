@@ -1754,6 +1754,7 @@ class DepartmentMaster extends Component {
   }
 
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     // const departmentList = this.state.departmentData.map((item, i) => (
     //   <Option key={i} value={item.departmentID}>
     //     {item.departmentName}
@@ -2928,6 +2929,7 @@ class DepartmentMaster extends Component {
                         </div>
                       </div>
                       {this.state.isErrorBulkUpload ? (
+                        <div>
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
@@ -2936,15 +2938,15 @@ class DepartmentMaster extends Component {
                               onClick={this.handleBulkUpload.bind(this)}
                             >
                               {
-              (() => {
-                if (TranslationContext !== undefined) {
-                  return TranslationContext.span.retry
-                }
-                else {
-                  return "Retry"
-                }
-              })()
-            }
+                                (() => {
+                                  if (TranslationContext !== undefined) {
+                                    return TranslationContext.span.retry
+                                  }
+                                  else {
+                                    return "Retry"
+                                  }
+                                })()
+                              }
                             </span>
                           </div>
                           <div>
@@ -2953,15 +2955,15 @@ class DepartmentMaster extends Component {
                         </div>
                         <div>
                           <span className="file-failed">{
-              (() => {
-                if (TranslationContext !== undefined) {
-                  return TranslationContext.span.failed
-                }
-                else {
-                  return "Failed"
-                }
-              })()
-            }</span>
+                              (() => {
+                                if (TranslationContext !== undefined) {
+                                  return TranslationContext.span.failed
+                                }
+                                else {
+                                  return "Failed"
+                                }
+                              })()
+                            }</span>
                         </div>
                       </div>
                       ) : null}
