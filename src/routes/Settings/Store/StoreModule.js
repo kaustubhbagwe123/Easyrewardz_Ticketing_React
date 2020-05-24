@@ -82,8 +82,12 @@ class StoreModule extends Component {
       itemData: [],
       editCampChannelModal: false,
       campaignChannelData: {},
+      AppointConfigData: {},
+      BroadCastConfigData: {},
       maxClickValidation: "",
       enabledAfterValidation: "",
+      braodCastMaxClickValid: "",
+      broadCastEnabledAfterValid: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -110,7 +114,6 @@ class StoreModule extends Component {
   // };
 
   fileUpload = (file) => {
-    debugger;
     if (file) {
       var fileName = file[0].name;
       var fileSize = formatSizeUnits(file[0].size);
@@ -166,7 +169,6 @@ class StoreModule extends Component {
   }
 
   DeleteBulkUploadFile = () => {
-    debugger;
     this.setState({
       file: {},
       fileName: "",
@@ -197,7 +199,6 @@ class StoreModule extends Component {
   }
 
   deleteCampaign(deleteId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -208,7 +209,6 @@ class StoreModule extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign deleted successfully.");
@@ -223,7 +223,7 @@ class StoreModule extends Component {
   }
 
   // handleSearchSla = async (e) => {
-  //   debugger;
+  //
   //   if (e.target.value.length > 3) {
   //     await this.setState({
   //       SearchText: e.target.value,
@@ -238,7 +238,6 @@ class StoreModule extends Component {
   // };
 
   selectIndividualCampaign = async (issueId, event) => {
-    debugger;
     var indiCampaign = this.state.indiCampaign;
     var separator = ",";
     var values = indiCampaign.split(separator);
@@ -277,7 +276,6 @@ class StoreModule extends Component {
   };
 
   selectAllCampaign = async (event) => {
-    debugger;
     var indiCampaign = "";
     var checkboxes = document.getElementsByName("allCampaign");
     document.getElementById("campaignNameValue").textContent = "All Selected";
@@ -298,7 +296,6 @@ class StoreModule extends Component {
   };
 
   selectNoCampaign = async (event) => {
-    debugger;
     var checkboxes = document.getElementsByName("allCampaign");
     document.getElementById("campaignNameValue").textContent = "Select";
     for (var i in checkboxes) {
@@ -316,10 +313,11 @@ class StoreModule extends Component {
     this.handleCampaignNameList();
     this.handleCampaignScriptGridData();
     this.handleCampaignChannelGridData();
+    this.handleGetAppointmentConfigData();
+    this.handleGetBroadCastConfigData();
   }
 
   setClaimTabData = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
@@ -328,7 +326,6 @@ class StoreModule extends Component {
   };
 
   setScriptDetails = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
@@ -337,7 +334,6 @@ class StoreModule extends Component {
   };
 
   setUpdateCampaign = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
@@ -346,7 +342,6 @@ class StoreModule extends Component {
   };
 
   handleClaimTabData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -354,7 +349,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -370,7 +364,6 @@ class StoreModule extends Component {
   }
 
   updateCampaign(individualData) {
-    debugger;
     this.setState({
       editModal: true,
       updateIndiCampaignId: individualData.campaignNameID,
@@ -380,7 +373,6 @@ class StoreModule extends Component {
   }
 
   EditCampaignChannel(individualData) {
-    debugger;
     this.setState({
       editCampChannelModal: true,
       // updateIndiCampaignId: individualData.campaignNameID,
@@ -390,7 +382,6 @@ class StoreModule extends Component {
   }
 
   handleCampaignNameList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -398,7 +389,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -411,6 +401,8 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
+
+  //// handle Get Campaign channel data
   handleCampaignChannelGridData() {
     let self = this;
     axios({
@@ -436,9 +428,61 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
+  //// handle Get Appointment configuration data
+  handleGetAppointmentConfigData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetAppointmentConfiguration",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AppointConfigData: data,
+          });
+        } else {
+          self.setState({
+            AppointConfigData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  //// handle Get Broad cast configuration data
+  handleGetBroadCastConfigData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetBroadcastConfiguration",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            BroadCastConfigData: data,
+          });
+        } else {
+          self.setState({
+            BroadCastConfigData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
 
   handleCampaignScriptGridData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -446,7 +490,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -509,7 +552,6 @@ class StoreModule extends Component {
   }
 
   handleAttachmentSave() {
-    debugger;
     if (
       parseInt(this.state.selectedMaxAttachSize) != 0 &&
       parseInt(this.state.selectedFileFormat) != 0
@@ -530,7 +572,6 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Attachment saved successfully.");
@@ -555,7 +596,6 @@ class StoreModule extends Component {
   }
 
   handleCreateCampaignScript() {
-    debugger;
     if (
       this.state.indiCampaign.length != 0 &&
       this.state.scriptDetails.length != 0
@@ -580,7 +620,6 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -608,7 +647,6 @@ class StoreModule extends Component {
   }
 
   handleUpdateCampaignScript() {
-    debugger;
     if (this.state.updateScriptDetails.length != 0) {
       let self = this;
       this.setState({
@@ -627,7 +665,6 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -651,7 +688,6 @@ class StoreModule extends Component {
     }
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.campaignScriptData;
 
@@ -688,7 +724,6 @@ class StoreModule extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.campaignScriptData;
 
@@ -725,8 +760,6 @@ class StoreModule extends Component {
   }
 
   StatusOpenModel(data, header) {
-    debugger;
-
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
 
     if (
@@ -799,7 +832,6 @@ class StoreModule extends Component {
     }
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFiltercampaignName: this.state.sortcampaignName,
       sortFiltercreatedBy: this.state.sortcreatedBy,
@@ -852,8 +884,6 @@ class StoreModule extends Component {
   }
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var scampaignNameFilterCheckbox = this.state.scampaignNameFilterCheckbox;
@@ -1021,7 +1051,6 @@ class StoreModule extends Component {
   };
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "campaignName") {
@@ -1069,7 +1098,6 @@ class StoreModule extends Component {
   }
   /// handle toggle change data
   CampChannelSmsFlageOnchange = (id) => {
-    debugger;
     var CampId = id.target.id;
     if (CampId === "ckSmsCamp1") {
       this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
@@ -1090,48 +1118,45 @@ class StoreModule extends Component {
 
   /// handle Appointment configuration toggle change
   AppoinmentConfigFlageChange = (id) => {
-    debugger;
     var AppointConfig = id.target.id;
     if (AppointConfig === "ckAppconfigOTP") {
-      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
-        .smsFlag;
+      this.state.AppointConfigData.generateOTP = !this.state.AppointConfigData
+        .generateOTP;
     } else if (AppointConfig === "ckAppconfigCardQR") {
-      this.state.campaignChannelData.messengerFlag = !this.state
-        .campaignChannelData.messengerFlag;
+      this.state.AppointConfigData.cardQRcode = !this.state.AppointConfigData
+        .cardQRcode;
     } else if (AppointConfig === "ckAppconfigCardBar") {
-      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
-        .botFlag;
+      this.state.AppointConfigData.cardBarcode = !this.state.AppointConfigData
+        .cardBarcode;
     } else if (AppointConfig === "ckAppconfigCard") {
-      this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
-        .emailFlag;
+      this.state.AppointConfigData.onlyCard = !this.state.AppointConfigData
+        .onlyCard;
     }
 
-    this.setState({ campaignChannelData: this.state.campaignChannelData });
+    this.setState({ AppointConfigData: this.state.AppointConfigData });
   };
   /// handle Broadcast configuration toggle change
   handleBroadCongiFlageOnchange = (id) => {
-    debugger;
     var BroadConfig = id.target.id;
     if (BroadConfig === "ckbroadSMS") {
-      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
+      this.state.BroadCastConfigData.smsFlag = !this.state.BroadCastConfigData
         .smsFlag;
     } else if (BroadConfig === "ckbroadwhatsapp") {
-      this.state.campaignChannelData.messengerFlag = !this.state
-        .campaignChannelData.messengerFlag;
+      this.state.BroadCastConfigData.whatsappFlag = !this.state
+        .BroadCastConfigData.whatsappFlag;
     } else if (BroadConfig === "ckbroadEmail") {
-      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
-        .botFlag;
+      this.state.BroadCastConfigData.emailFlag = !this.state.BroadCastConfigData
+        .emailFlag;
     }
 
-    this.setState({ campaignChannelData: this.state.campaignChannelData });
+    this.setState({ BroadCastConfigData: this.state.BroadCastConfigData });
   };
 
   /// update campaign change data
   CampCannelOnChange(e) {
-    debugger;
     const { name, value } = e.target;
+    var campaignChannelData = this.state.campaignChannelData;
     if (name === "enableClickAfterValue") {
-      var campaignChannelData = this.state.campaignChannelData;
       if (campaignChannelData["enableClickAfterDuration"] == "M") {
         if (parseInt(value) <= 60) {
           campaignChannelData[name] = value;
@@ -1150,7 +1175,6 @@ class StoreModule extends Component {
         }
       }
     } else {
-      var campaignChannelData = this.state.campaignChannelData;
       if (name === "enableClickAfterDuration") {
         if (value === "M") {
           if (campaignChannelData["enableClickAfterValue"] > 60)
@@ -1162,10 +1186,46 @@ class StoreModule extends Component {
             campaignChannelData["enableClickAfterValue"] = "";
         }
       }
-      // const { name, value } = e.target;
-
       campaignChannelData[name] = value;
       this.setState({ campaignChannelData });
+    }
+  }
+  /// Handle Braod cast onchange
+  BroadCastOnChange(e) {
+    const { name, value } = e.target;
+    var BroadCastConfigData = this.state.BroadCastConfigData;
+    if (name === "enableClickAfterValue") {
+      if (BroadCastConfigData["enableClickAfterDuration"] == "M") {
+        if (parseInt(value) <= 60) {
+          BroadCastConfigData[name] = value;
+          this.setState({ BroadCastConfigData });
+        } else {
+          BroadCastConfigData[name] = "";
+          this.setState({ BroadCastConfigData });
+        }
+      } else {
+        if (parseInt(value) <= 99) {
+          BroadCastConfigData[name] = value;
+          this.setState({ BroadCastConfigData });
+        } else {
+          BroadCastConfigData[name] = "";
+          this.setState({ BroadCastConfigData });
+        }
+      }
+    } else {
+      if (name === "enableClickAfterDuration") {
+        if (value === "M") {
+          if (BroadCastConfigData["enableClickAfterValue"] > 60)
+            BroadCastConfigData["enableClickAfterValue"] = "";
+        }
+
+        if (value === "H") {
+          if (BroadCastConfigData["enableClickAfterValue"] > 99)
+            BroadCastConfigData["enableClickAfterValue"] = "";
+        }
+      }
+      BroadCastConfigData[name] = value;
+      this.setState({ BroadCastConfigData });
     }
   }
   /// handle Campaign Channerl update data
@@ -1192,7 +1252,6 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Campaign Updated Successfully.");
@@ -1208,78 +1267,68 @@ class StoreModule extends Component {
       });
     }
   }
-    /// handle Appointment Configuration update data
-    handleUpdateAppointmentConfigData() {
-     
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
-          headers: authHeader(),
-          data: {
-            ID: this.state.campaignChannelData.id,
-            MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
-            EnableClickAfterValue: this.state.campaignChannelData
-              .enableClickAfterValue,
-            EnableClickAfterDuration: this.state.campaignChannelData
-              .enableClickAfterDuration,
-            SmsFlag: this.state.campaignChannelData.smsFlag,
-            EmailFlag: this.state.campaignChannelData.emailFlag,
-            MessengerFlag: this.state.campaignChannelData.messengerFlag,
-            BotFlag: this.state.campaignChannelData.botFlag,
-          },
+  /// handle Appointment Configuration update data
+  handleUpdateAppointmentConfigData() {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/UpdateAppointmentConfiguration",
+      headers: authHeader(),
+      data: {
+        ID: this.state.AppointConfigData.id,
+        GenerateOTP: this.state.AppointConfigData.generateOTP,
+        CardQRcode: this.state.AppointConfigData.cardQRcode,
+        CardBarcode: this.state.AppointConfigData.cardBarcode,
+        OnlyCard: this.state.AppointConfigData.onlyCard,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Appointment Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Broad cast Configuration update data
+  handleUpdateBroadCastConfigData() {
+    if (
+      this.state.BroadCastConfigData.maxClickAllowed !== "" &&
+      this.state.BroadCastConfigData.enableClickAfterValue !== ""
+    ) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/UpdateBroadcastConfiguration",
+        headers: authHeader(),
+        data: {
+          ID: this.state.BroadCastConfigData.id,
+          MaxClickAllowed: this.state.BroadCastConfigData.maxClickAllowed,
+          EnableClickAfterValue: this.state.BroadCastConfigData
+            .enableClickAfterValue,
+          EnableClickAfterDuration: this.state.BroadCastConfigData
+            .enableClickAfterDuration,
+          SmsFlag: this.state.BroadCastConfigData.smsFlag,
+          EmailFlag: this.state.BroadCastConfigData.emailFlag,
+          MessengerFlag: this.state.BroadCastConfigData.whatsappFlag,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Broadcast Updated Successfully.");
+          }
         })
-          .then(function(res) {
-            debugger;
-            let status = res.data.message;
-            if (status === "Success") {
-              NotificationManager.success("Campaign Updated Successfully.");
-            }
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-      
-    }
-/// handle Broad cast Configuration update data
-    handleUpdateBroadCastConfigData(){
-      if (
-        this.state.campaignChannelData.maxClickAllowed !== "" &&
-        this.state.campaignChannelData.enableClickAfterValue !== ""
-      ) {
-        axios({
-          method: "post",
-          url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
-          headers: authHeader(),
-          data: {
-            ID: this.state.campaignChannelData.id,
-            MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
-            EnableClickAfterValue: this.state.campaignChannelData
-              .enableClickAfterValue,
-            EnableClickAfterDuration: this.state.campaignChannelData
-              .enableClickAfterDuration,
-            SmsFlag: this.state.campaignChannelData.smsFlag,
-            EmailFlag: this.state.campaignChannelData.emailFlag,
-            MessengerFlag: this.state.campaignChannelData.messengerFlag,
-            BotFlag: this.state.campaignChannelData.botFlag,
-          },
-        })
-          .then(function(res) {
-            debugger;
-            let status = res.data.message;
-            if (status === "Success") {
-              NotificationManager.success("Campaign Updated Successfully.");
-            }
-          })
-          .catch((data) => {
-            console.log(data);
-          });
-      } else {
-        this.setState({
-          maxClickValidation: "Required",
-          enabledAfterValidation: "Required",
+        .catch((data) => {
+          console.log(data);
         });
-      }
+    } else {
+      this.setState({
+        braodCastMaxClickValid: "Required",
+        broadCastEnabledAfterValid: "Required",
+      });
     }
+  }
 
   render() {
     return (
@@ -2313,7 +2362,8 @@ class StoreModule extends Component {
                                         id="ckAppconfigOTP"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData.botFlag
+                                          this.state.AppointConfigData
+                                            .generateOTP
                                         }
                                         onChange={this.AppoinmentConfigFlageChange.bind(
                                           this
@@ -2335,7 +2385,8 @@ class StoreModule extends Component {
                                         id="ckAppconfigCardQR"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData.smsFlag
+                                          this.state.AppointConfigData
+                                            .cardQRcode
                                         }
                                         onChange={this.AppoinmentConfigFlageChange.bind(
                                           this
@@ -2357,8 +2408,8 @@ class StoreModule extends Component {
                                         id="ckAppconfigCardBar"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData
-                                            .messengerFlag
+                                          this.state.AppointConfigData
+                                            .cardBarcode
                                         }
                                         onChange={this.AppoinmentConfigFlageChange.bind(
                                           this
@@ -2381,8 +2432,7 @@ class StoreModule extends Component {
                                         id="ckAppconfigCard"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData
-                                            .emailFlag
+                                          this.state.AppointConfigData.onlyCard
                                         }
                                         onChange={this.AppoinmentConfigFlageChange.bind(
                                           this
@@ -2433,7 +2483,7 @@ class StoreModule extends Component {
                                         id="ckbroadSMS"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData.smsFlag
+                                          this.state.BroadCastConfigData.smsFlag
                                         }
                                         onChange={this.handleBroadCongiFlageOnchange.bind(
                                           this
@@ -2455,8 +2505,8 @@ class StoreModule extends Component {
                                         id="ckbroadwhatsapp"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData
-                                            .messengerFlag
+                                          this.state.BroadCastConfigData
+                                            .whatsappFlag
                                         }
                                         onChange={this.handleBroadCongiFlageOnchange.bind(
                                           this
@@ -2478,7 +2528,7 @@ class StoreModule extends Component {
                                         id="ckbroadEmail"
                                         name="allModules"
                                         checked={
-                                          this.state.campaignChannelData
+                                          this.state.BroadCastConfigData
                                             .emailFlag
                                         }
                                         onChange={this.handleBroadCongiFlageOnchange.bind(
@@ -2502,16 +2552,16 @@ class StoreModule extends Component {
                                         type="text"
                                         name="maxClickAllowed"
                                         value={
-                                          this.state.campaignChannelData
+                                          this.state.BroadCastConfigData
                                             .maxClickAllowed
                                         }
                                         autoComplete="off"
                                         maxLength={2}
-                                        onChange={this.CampCannelOnChange.bind(
+                                        onChange={this.BroadCastOnChange.bind(
                                           this
                                         )}
                                       />
-                                      {this.state.campaignChannelData
+                                      {this.state.BroadCastConfigData
                                         .maxClickAllowed === "" && (
                                         <p
                                           style={{
@@ -2519,7 +2569,7 @@ class StoreModule extends Component {
                                             marginBottom: "0px",
                                           }}
                                         >
-                                          {this.state.maxClickValidation}
+                                          {this.state.braodCastMaxClickValid}
                                         </p>
                                       )}
                                     </td>
@@ -2534,14 +2584,14 @@ class StoreModule extends Component {
                                         autoComplete="off"
                                         maxLength={2}
                                         value={
-                                          this.state.campaignChannelData
+                                          this.state.BroadCastConfigData
                                             .enableClickAfterValue
                                         }
-                                        onChange={this.CampCannelOnChange.bind(
+                                        onChange={this.BroadCastOnChange.bind(
                                           this
                                         )}
                                       />
-                                      {this.state.campaignChannelData
+                                      {this.state.BroadCastConfigData
                                         .enableClickAfterValue === "" && (
                                         <p
                                           style={{
@@ -2549,18 +2599,21 @@ class StoreModule extends Component {
                                             marginBottom: "0px",
                                           }}
                                         >
-                                          {this.state.enabledAfterValidation}
+                                          {
+                                            this.state
+                                              .broadCastEnabledAfterValid
+                                          }
                                         </p>
                                       )}
                                     </td>
                                     <td>
                                       <select
                                         value={
-                                          this.state.campaignChannelData
+                                          this.state.BroadCastConfigData
                                             .enableClickAfterDuration
                                         }
                                         name="enableClickAfterDuration"
-                                        onChange={this.CampCannelOnChange.bind(
+                                        onChange={this.BroadCastOnChange.bind(
                                           this
                                         )}
                                       >

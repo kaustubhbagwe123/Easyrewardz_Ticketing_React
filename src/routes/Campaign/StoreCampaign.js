@@ -1620,7 +1620,7 @@ class StoreCampaign extends Component {
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                            Broadcast to Campaign Customers
+                            Broadcast Campaign to Customers
                           </label>
                           <label className="broadcastsubtitle">
                             Choose Channel
@@ -2911,7 +2911,7 @@ class StoreCampaign extends Component {
           />
           <div className="general-popover popover-body broadcastpop">
             <label className="broadcasttitle">
-              Broadcast to Campaign Customers
+              Broadcast Campaign to Customers
             </label>
             <label className="broadcastsubtitle">Choose Channel</label>
             <div>
