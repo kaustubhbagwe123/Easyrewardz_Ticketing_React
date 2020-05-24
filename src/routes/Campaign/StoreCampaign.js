@@ -9,6 +9,7 @@ import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import Email from "./../../assets/Images/camp-Email.svg";
+import PlusIcon from "./../../assets/Images/pluscircle.png";
 import Smsicon from "./../../assets/Images/sms2.svg";
 import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
@@ -957,8 +958,8 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
-              Respo_ChannelBot:false,
-              responsiveShareVia:false
+              Respo_ChannelBot: false,
+              responsiveShareVia: false,
             });
             self.handleGetCampaignCustomerData(
               true,
@@ -1023,8 +1024,8 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
-              Respo_ChannelMessanger:false,
-              responsiveShareVia:false
+              Respo_ChannelMessanger: false,
+              responsiveShareVia: false,
             });
           } else {
             NotificationManager.error("Server temporarily not available.");
@@ -1084,8 +1085,8 @@ class StoreCampaign extends Component {
             self.setState({
               ResponsiveShareNow: true,
               custNameModal: false,
-              Respo_ChannelMessanger:false,
-              responsiveShareVia:false
+              Respo_ChannelMessanger: false,
+              responsiveShareVia: false,
             });
           }
         } else {
@@ -1381,7 +1382,7 @@ class StoreCampaign extends Component {
   };
 
   handleSelectChannelsOnchange(check) {
-    debugger
+    debugger;
     if (check === "Messenger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1619,6 +1620,20 @@ class StoreCampaign extends Component {
                       overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
+                          <label className="broadcasttitle">
+                            Recent Campaigns
+                          </label>
+                          <div className="broembox clearfix">
+                            <p>
+                              <label>Email</label>
+                              <span>Executed Date: 24 Aug 2019</span>
+                            </p>
+                            <img
+                              src={PlusIcon}
+                              alt="plus-icone"
+                              className="plusico"
+                            />
+                          </div>
                           <label className="broadcasttitle">
                             Broadcast Campaign to Customers
                           </label>
@@ -2910,6 +2925,14 @@ class StoreCampaign extends Component {
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
           <div className="general-popover popover-body broadcastpop">
+            <label className="broadcasttitle">Recent Campaigns</label>
+            <div className="broembox clearfix">
+              <p>
+                <label>Email</label>
+                <span>Executed Date: 24 Aug 2019</span>
+              </p>
+              <img src={PlusIcon} alt="plus-icone" className="plusico" />
+            </div>
             <label className="broadcasttitle">
               Broadcast Campaign to Customers
             </label>
