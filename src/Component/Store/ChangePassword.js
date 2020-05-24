@@ -116,6 +116,7 @@ class StoreChangePassword extends Component {
       emailIDsystem = email;
     }
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+    var _token = window.localStorage.getItem("token");
     // change password
     axios({
       method: "post",
@@ -129,6 +130,7 @@ class StoreChangePassword extends Component {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "X-Authorized-Token": _token,
         "X-Authorized-Domainname": X_Authorized_Domainname,
       },
     })

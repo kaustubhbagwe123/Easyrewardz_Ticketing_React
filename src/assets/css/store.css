@@ -2207,10 +2207,7 @@ table tr th:last-child {
 .full-data-insight {
   white-space: initial !important;
 }
-.ClaimPlaceHolder .ant-select-selection__placeholder{
-  display: contents !important;
-  font-weight: bolder;
-}
+
 /* ------------------Campain Media Queries ------------------------- */
 
 @media (min-width: 768px) and (max-width: 850px) {

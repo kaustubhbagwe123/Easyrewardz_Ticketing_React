@@ -27,6 +27,7 @@ import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 import { CSVLink } from "react-csv";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
+import { encryption } from "../../../helpers/encryption.js";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -2884,10 +2885,18 @@ class StoreUsers extends Component {
     }
   }
   handleSendMail(user_Id) {
+    debugger
+    let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+    var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
       url: config.apiUrl + "/StoreUser/SendMailforchangepassword",
-      headers: authHeader(),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "X-Authorized-Token": _token,
+        "X-Authorized-Domainname": X_Authorized_Domainname,
+      },
       params: {
         userID: user_Id,
         IsStoreUser: 1,

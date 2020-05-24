@@ -60,6 +60,7 @@ class StoreProgramCode extends Component {
                 encProgramCode: encProgramCode,
               });
             }, 500);
+            
             self.setState({
               encProgramCode: { programCode: encProgramCode },
             });
