@@ -1088,6 +1088,44 @@ class StoreModule extends Component {
     this.setState({ campaignChannelData: this.state.campaignChannelData });
   };
 
+  /// handle Appointment configuration toggle change
+  AppoinmentConfigFlageChange = (id) => {
+    debugger;
+    var AppointConfig = id.target.id;
+    if (AppointConfig === "ckAppconfigOTP") {
+      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
+        .smsFlag;
+    } else if (AppointConfig === "ckAppconfigCardQR") {
+      this.state.campaignChannelData.messengerFlag = !this.state
+        .campaignChannelData.messengerFlag;
+    } else if (AppointConfig === "ckAppconfigCardBar") {
+      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
+        .botFlag;
+    } else if (AppointConfig === "ckAppconfigCard") {
+      this.state.campaignChannelData.emailFlag = !this.state.campaignChannelData
+        .emailFlag;
+    }
+
+    this.setState({ campaignChannelData: this.state.campaignChannelData });
+  };
+  /// handle Broadcast configuration toggle change
+  handleBroadCongiFlageOnchange = (id) => {
+    debugger;
+    var BroadConfig = id.target.id;
+    if (BroadConfig === "ckbroadSMS") {
+      this.state.campaignChannelData.smsFlag = !this.state.campaignChannelData
+        .smsFlag;
+    } else if (BroadConfig === "ckbroadwhatsapp") {
+      this.state.campaignChannelData.messengerFlag = !this.state
+        .campaignChannelData.messengerFlag;
+    } else if (BroadConfig === "ckbroadEmail") {
+      this.state.campaignChannelData.botFlag = !this.state.campaignChannelData
+        .botFlag;
+    }
+
+    this.setState({ campaignChannelData: this.state.campaignChannelData });
+  };
+
   /// update campaign change data
   CampCannelOnChange(e) {
     debugger;
@@ -1130,9 +1168,8 @@ class StoreModule extends Component {
       this.setState({ campaignChannelData });
     }
   }
-
+  /// handle Campaign Channerl update data
   handleUpdateCampChannelData() {
-    // let self = this;
     if (
       this.state.campaignChannelData.maxClickAllowed !== "" &&
       this.state.campaignChannelData.enableClickAfterValue !== ""
@@ -1171,6 +1208,78 @@ class StoreModule extends Component {
       });
     }
   }
+    /// handle Appointment Configuration update data
+    handleUpdateAppointmentConfigData() {
+     
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
+          headers: authHeader(),
+          data: {
+            ID: this.state.campaignChannelData.id,
+            MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
+            EnableClickAfterValue: this.state.campaignChannelData
+              .enableClickAfterValue,
+            EnableClickAfterDuration: this.state.campaignChannelData
+              .enableClickAfterDuration,
+            SmsFlag: this.state.campaignChannelData.smsFlag,
+            EmailFlag: this.state.campaignChannelData.emailFlag,
+            MessengerFlag: this.state.campaignChannelData.messengerFlag,
+            BotFlag: this.state.campaignChannelData.botFlag,
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success("Campaign Updated Successfully.");
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      
+    }
+/// handle Broad cast Configuration update data
+    handleUpdateBroadCastConfigData(){
+      if (
+        this.state.campaignChannelData.maxClickAllowed !== "" &&
+        this.state.campaignChannelData.enableClickAfterValue !== ""
+      ) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/StoreCampaign/UpdateCampaignMaxClickTimer",
+          headers: authHeader(),
+          data: {
+            ID: this.state.campaignChannelData.id,
+            MaxClickAllowed: this.state.campaignChannelData.maxClickAllowed,
+            EnableClickAfterValue: this.state.campaignChannelData
+              .enableClickAfterValue,
+            EnableClickAfterDuration: this.state.campaignChannelData
+              .enableClickAfterDuration,
+            SmsFlag: this.state.campaignChannelData.smsFlag,
+            EmailFlag: this.state.campaignChannelData.emailFlag,
+            MessengerFlag: this.state.campaignChannelData.messengerFlag,
+            BotFlag: this.state.campaignChannelData.botFlag,
+          },
+        })
+          .then(function(res) {
+            debugger;
+            let status = res.data.message;
+            if (status === "Success") {
+              NotificationManager.success("Campaign Updated Successfully.");
+            }
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      } else {
+        this.setState({
+          maxClickValidation: "Required",
+          enabledAfterValidation: "Required",
+        });
+      }
+    }
 
   render() {
     return (
@@ -2007,7 +2116,6 @@ class StoreModule extends Component {
                                         type="checkbox"
                                         id="ckSmsCamp1"
                                         name="allModules"
-                                        attrIds="ckSmsCamp1"
                                         checked={
                                           this.state.campaignChannelData.smsFlag
                                         }
@@ -2172,6 +2280,300 @@ class StoreModule extends Component {
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
                                   onClick={this.handleUpdateCampChannelData.bind(
+                                    this
+                                  )}
+                                >
+                                  UPDATE
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label="Appointment Configuration">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>APPOINTMENT CONFIGURATION</h3>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Generate OTP
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckAppconfigOTP"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.botFlag
+                                        }
+                                        onChange={this.AppoinmentConfigFlageChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckAppconfigOTP"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Card + QR Code
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckAppconfigCardQR"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.smsFlag
+                                        }
+                                        onChange={this.AppoinmentConfigFlageChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckAppconfigCardQR"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Card + Barcode
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckAppconfigCardBar"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .messengerFlag
+                                        }
+                                        onChange={this.AppoinmentConfigFlageChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckAppconfigCardBar"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Only Card
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckAppconfigCard"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .emailFlag
+                                        }
+                                        onChange={this.AppoinmentConfigFlageChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckAppconfigCard"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleUpdateAppointmentConfigData.bind(
+                                    this
+                                  )}
+                                >
+                                  UPDATE
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label="Broadcast Configuration">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>BROADCAST CONFIGURATION</h3>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        SMS
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckbroadSMS"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.smsFlag
+                                        }
+                                        onChange={this.handleBroadCongiFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckbroadSMS"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Whatsapp
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckbroadwhatsapp"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .messengerFlag
+                                        }
+                                        onChange={this.handleBroadCongiFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckbroadwhatsapp"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Email
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckbroadEmail"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .emailFlag
+                                        }
+                                        onChange={this.handleBroadCongiFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckbroadEmail"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <table className="cmpaign-channel-table">
+                                  <tr>
+                                    <td>
+                                      Max. click allowed on any channel CTA
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="maxClickAllowed"
+                                        value={
+                                          this.state.campaignChannelData
+                                            .maxClickAllowed
+                                        }
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .maxClickAllowed === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.maxClickValidation}
+                                        </p>
+                                      )}
+                                    </td>
+                                    <td>Click</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Click will be enabled after</td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterValue
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .enableClickAfterValue === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )}
+                                    </td>
+                                    <td>
+                                      <select
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterDuration
+                                        }
+                                        name="enableClickAfterDuration"
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="M">Min</option>
+                                        <option value="H">Hr</option>
+                                      </select>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleUpdateBroadCastConfigData.bind(
                                     this
                                   )}
                                 >
