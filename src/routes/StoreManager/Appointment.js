@@ -3,6 +3,7 @@ import { Table, Select } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
 import { authHeader } from "./../../helpers/authHeader";
+import CancelIcon from "./../../assets/Images/cancel.png";
 import ProgressMenIcon from "./../../assets/Images/progress-men-icon.png";
 import SearchBlue from "./../../assets/Images/appoint-search.png";
 import Location from "./../../assets/Images/location.png";
@@ -28,6 +29,7 @@ class Appointment extends Component {
       appointProgress: "90%",
       searchExpand: false,
       createAppointModal: false,
+      showPeople:false
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -36,6 +38,18 @@ class Appointment extends Component {
   componentDidMount() {
     this.handleAppointmentGridData(1);
     this.handleAppointmentCount();
+  }
+
+  ShowPeopleModalOpen (){
+    this.setState({
+      showPeople: true,
+    });
+  }
+
+  ShowPeopleModalClose(){
+    this.setState({
+      showPeople: false,
+    });
   }
 
   handleSearchExpand() {
@@ -360,7 +374,7 @@ class Appointment extends Component {
               </div>
               <div className="empty-filled-info">
                 <div className="empty-info">10</div>
-                <div className="filled-info">40</div>
+                <div className="filled-info" onClick={this.ShowPeopleModalOpen.bind(this)}>40</div>
               </div>
             </div>
             <div className="slot-info">
@@ -368,6 +382,61 @@ class Appointment extends Component {
               <p>Slot already booked for 5 more people</p>
             </div>
           </div>
+          <Modal
+                open={this.state.showPeople}
+                onClose={this.ShowPeopleModalClose.bind(this)}
+                center
+                modalId="totalconcount-popup"
+                overlayId="logout-ovrly"
+                >
+                <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cust-icon"
+            style={{height: "12px"}}
+            onClick={this.ShowPeopleModalClose.bind(this)}
+          />
+          <div className="counttab">
+            <table>
+              <tr>
+                <td>
+                  <label>02</label>
+                  <span>09AM-10AM</span>
+                </td>
+                <td>
+                  <label>03</label>
+                  <span>10AM-12AM</span></td>
+                <td>
+                  <label>01</label>
+                  <span>11AM-12AM</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <label>02</label>
+                  <span>09AM-10AM</span>
+                </td>
+                <td>
+                  <label>03</label>
+                  <span>10AM-12AM</span></td>
+                <td>
+                  <label>01</label>
+                  <span>11AM-12AM</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <label>02</label>
+                  <span>09AM-10AM</span>
+                </td>
+                <td>
+                  <label>03</label>
+                  <span>10AM-12AM</span></td>
+                <td>
+                  <label>01</label>
+                  <span>11AM-12AM</span></td>
+              </tr>
+            </table>
+          </div>
+            </Modal>
           <div className="table-cntr store">
             <Table
               className="components-table-demo-nested antd-table-campaign custom-antd-table"

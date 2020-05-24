@@ -9,6 +9,7 @@ import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import Email from "./../../assets/Images/camp-Email.svg";
+import PlusIcon from "./../../assets/Images/pluscircle.png";
 import Smsicon from "./../../assets/Images/sms2.svg";
 import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
@@ -1620,6 +1621,20 @@ class StoreCampaign extends Component {
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
+                            Recent Campaigns
+                          </label>
+                          <div className="broembox clearfix">
+                              <p>
+                                <label>Email</label>
+                                <span>Executed Date: 24 Aug 2019</span>
+                              </p>
+                              <img
+                                  src={PlusIcon}
+                                  alt="plus-icone"
+                                  className="plusico"
+                                />
+                          </div>
+                          <label className="broadcasttitle">
                             Broadcast to Campaign Customers
                           </label>
                           <label className="broadcastsubtitle">
@@ -2910,6 +2925,20 @@ class StoreCampaign extends Component {
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
           <div className="general-popover popover-body broadcastpop">
+          <label className="broadcasttitle">
+                            Recent Campaigns
+                          </label>
+                          <div className="broembox clearfix">
+                              <p>
+                                <label>Email</label>
+                                <span>Executed Date: 24 Aug 2019</span>
+                              </p>
+                              <img
+                                  src={PlusIcon}
+                                  alt="plus-icone"
+                                  className="plusico"
+                                />
+                          </div>
             <label className="broadcasttitle">
               Broadcast to Campaign Customers
             </label>
