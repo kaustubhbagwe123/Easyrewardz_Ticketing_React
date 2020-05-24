@@ -1455,7 +1455,8 @@ table tr th:last-child {
 }
 .antbroadcast {
   left: 950px !important;
-  width: 330px;
+  /* width: 330px; */
+  width: 290px;
 }
 #customername-popup {
   border-radius: 25px;
@@ -1922,7 +1923,7 @@ table tr th:last-child {
   display: block;
 } */
 .broadcastpop .broadcasttitle {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bolder;
   margin-bottom: 10px;
 }
@@ -2675,7 +2676,7 @@ table tr th:last-child {
   display: none;
 } */
   .broadcastpop .broadcasttitle {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: bolder;
     margin-bottom: 10px;
   }
