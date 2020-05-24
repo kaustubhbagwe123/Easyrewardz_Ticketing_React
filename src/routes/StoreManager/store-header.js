@@ -138,12 +138,44 @@ class Header extends Component {
       suggestionModalMob: false,
       availableSlot: 0,
       isHistoricalChat: false,
-      historicalChatData: [{ chatID: 1, customerName: "Kaustubh", time: "12 Jan, 03:30 PM", message: "Lorem ipsum, or lipsum as it is sometimes." },
-      { chatID: 2, customerName: "Kaustubh", time: "12 Jan, 03:30 PM", message: "Lorem ipsum, or lipsum as it is sometimes." },
-      { chatID: 3, customerName: "Kaustubh", time: "12 Jan, 03:30 PM", message: "Lorem ipsum, or lipsum as it is sometimes." },
-      { chatID: 4, customerName: "Kaustubh", time: "12 Jan, 03:30 PM", message: "Lorem ipsum, or lipsum as it is sometimes." },
-      { chatID: 5, customerName: "Kaustubh", time: "12 Jan, 03:30 PM", message: "Lorem ipsum, or lipsum as it is sometimes." },
-      { chatID: 6, customerName: "Kaustubh", time: "12 Jan, 03:30 PM", message: "Lorem ipsum, or lipsum as it is sometimes." }]
+      historicalChatData: [
+        {
+          chatID: 1,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 2,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 3,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 4,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 5,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 6,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+      ],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -181,7 +213,7 @@ class Header extends Component {
       let pageName, lastOne, lastValue, arr;
       arr = [...this.state.cont];
       setTimeout(
-        function () {
+        function() {
           pageName = window.location.pathname;
           lastOne = pageName.split("/");
           lastValue = lastOne[lastOne.length - 1];
@@ -356,7 +388,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -375,7 +407,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUserProfileDetail",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;
@@ -436,7 +468,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreDashboard/StoreLoggedInAccountDetails",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -514,7 +546,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreAccount/Logout",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         var status = res.data.status;
         // var Msg=res.data.message
         if (status === true) {
@@ -536,7 +568,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         var Noticount = responseData.notiCount;
@@ -567,7 +599,7 @@ class Header extends Component {
         NotificatonType: type,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -632,7 +664,7 @@ class Header extends Component {
       headers: authHeader(),
       params: { Search: search },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
@@ -654,9 +686,9 @@ class Header extends Component {
                 socket.send("hi");
                 socket.on(
                   "91" +
-                  ongoingChatsData[i].mobileNo +
-                  ongoingChatsData[i].programCode.toLowerCase(),
-                  function (data) {
+                    ongoingChatsData[i].mobileNo +
+                    ongoingChatsData[i].programCode.toLowerCase(),
+                  function(data) {
                     console.log("Message Received");
                     if ("91" + self.state.mobileNo === data[3]) {
                       self.handleGetChatNotificationCount();
@@ -668,7 +700,7 @@ class Header extends Component {
                     }
                   }
                 );
-                window.onbeforeunload = function () {
+                window.onbeforeunload = function() {
                   console.log("unloading resources");
                   socket.disconnect();
                   socket.close();
@@ -698,7 +730,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetNewChat",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
@@ -728,7 +760,7 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -752,7 +784,7 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -777,7 +809,7 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var messageData = response.data.responseData;
         if (message === "Success" && messageData) {
@@ -823,7 +855,7 @@ class Header extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
@@ -862,7 +894,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetChatNotificationCount",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var chatMessageCount = response.data.responseData;
         self.setState({ chatMessageCount });
@@ -887,7 +919,7 @@ class Header extends Component {
         ProgramCode: this.state.programCode,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var searchCardData = response.data.responseData;
 
@@ -923,7 +955,7 @@ class Header extends Component {
         // storeID: this.state.storeID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         debugger;
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
@@ -989,7 +1021,7 @@ class Header extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           var timeSlotData = response.data.responseData;
           if (message == "Success" && timeSlotData) {
@@ -1075,7 +1107,7 @@ class Header extends Component {
           headers: authHeader(),
           params: inputParam,
         })
-          .then(function (response) {
+          .then(function(response) {
             var message = response.data.message;
             if (message == "Success") {
               self.setState({
@@ -1145,7 +1177,7 @@ class Header extends Component {
         SearchText: this.state.message,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1226,7 +1258,7 @@ class Header extends Component {
           messageData: [],
           isSendClick: false,
           isHistoricalChat: false,
-          isDownbtn: true
+          isDownbtn: true,
         });
         this.handleGetChatMessagesList(id);
       } else {
@@ -1260,7 +1292,7 @@ class Header extends Component {
           messageData: [],
           isSendClick: false,
           isHistoricalChat: false,
-          isDownbtn: true
+          isDownbtn: true,
         });
         if (count === 0) {
           this.handleGetChatMessagesList(id);
@@ -1396,11 +1428,11 @@ class Header extends Component {
           ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
           : "") +
         (messagewhatsAppData[0].discount !== "" &&
-          parseFloat(messagewhatsAppData[0].discount) !== 0
+        parseFloat(messagewhatsAppData[0].discount) !== 0
           ? ", Discount: " + messagewhatsAppData[0].discount.trim()
           : "") +
         (messagewhatsAppData[0].price !== "" &&
-          parseFloat(messagewhatsAppData[0].price) !== 0
+        parseFloat(messagewhatsAppData[0].price) !== 0
           ? ", Price: " + messagewhatsAppData[0].price.trim()
           : "") +
         "\n" +
@@ -1459,7 +1491,7 @@ class Header extends Component {
         MobileNumber: this.state.mobileNo,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1548,9 +1580,10 @@ class Header extends Component {
   handleHistTabClick = (e) => {
     this.setState({
       isHistoricalChat: true,
-      isDownbtn: false
-    })
-  }
+      isDownbtn: false,
+    });
+    this.handleGetChatSession();
+  };
 
   render() {
     return (
@@ -1843,95 +1876,95 @@ class Header extends Component {
             {this.state.notificationCount === 0 ? (
               <span>No Notification Found</span>
             ) : (
-                this.state.notificationData !== null &&
-                this.state.notificationData.map((item, i) => {
-                  return (
-                    <div className="row rowpadding" key={i}>
-                      <div className="md-2 rectangle-2 lable05 noti-count">
-                        <label className="labledata">
-                          {item.notificationCount}
-                        </label>
-                      </div>
-                      <div className="md-6 new-tickets-assigned tic-noti">
-                        <label>
-                          <span>{item.notificationName}</span>
-                        </label>
-                      </div>
-                      <div className="viewticketspeadding">
-                        <Popover
-                          content={
-                            <div className="notification-popover">
-                              {item.customTaskNotificationModels.map(
-                                (data, j) => {
-                                  //
-                                  return (
-                                    <p key={j}>
-                                      {data.notificatonType == 1 ? (
-                                        <>
-                                          {data.notificatonTypeName + " No:"}
-                                          <Link
-                                            to={{
-                                              pathname: "/store/editStoreTask",
-                                              state: {
-                                                TaskID: data.notificatonTypeID,
-                                              },
-                                            }}
-                                            style={{ color: "#2561A8" }}
-                                            onClick={this.handleNotificationModalClose.bind(
-                                              this,
-                                              data.notificatonTypeID,
-                                              data.notificatonType
-                                            )}
-                                          >
-                                            {" " + data.notificatonTypeID}
-                                          </Link>
-                                        </>
-                                      ) : (
-                                          <>
-                                            {data.notificatonTypeName + " No:"}
-                                            <Link
-                                              to={{
-                                                pathname:
-                                                  "/store/claimApproveReject",
-                                                state: {
-                                                  ClaimID: data.notificatonTypeID,
-                                                },
-                                              }}
-                                              style={{ color: "#2561A8" }}
-                                              onClick={this.handleNotificationModalClose.bind(
-                                                this,
-                                                data.notificatonTypeID,
-                                                data.notificatonType
-                                              )}
-                                            >
-                                              {" " + data.notificatonTypeID}
-                                            </Link>
-                                          </>
-                                        )}
-                                    </p>
-                                  );
-                                }
-                              )}
-                            </div>
-                          }
-                          placement="bottom"
-                          trigger="click"
-                        >
-                          <div
-                            className={
-                              item.alertID !== ""
-                                ? "md-4 view-tickets"
-                                : "text-disabled"
-                            }
-                          >
-                            VIEW
-                        </div>
-                        </Popover>
-                      </div>
+              this.state.notificationData !== null &&
+              this.state.notificationData.map((item, i) => {
+                return (
+                  <div className="row rowpadding" key={i}>
+                    <div className="md-2 rectangle-2 lable05 noti-count">
+                      <label className="labledata">
+                        {item.notificationCount}
+                      </label>
                     </div>
-                  );
-                })
-              )}
+                    <div className="md-6 new-tickets-assigned tic-noti">
+                      <label>
+                        <span>{item.notificationName}</span>
+                      </label>
+                    </div>
+                    <div className="viewticketspeadding">
+                      <Popover
+                        content={
+                          <div className="notification-popover">
+                            {item.customTaskNotificationModels.map(
+                              (data, j) => {
+                                //
+                                return (
+                                  <p key={j}>
+                                    {data.notificatonType == 1 ? (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          to={{
+                                            pathname: "/store/editStoreTask",
+                                            state: {
+                                              TaskID: data.notificatonTypeID,
+                                            },
+                                          }}
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handleNotificationModalClose.bind(
+                                            this,
+                                            data.notificatonTypeID,
+                                            data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    ) : (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          to={{
+                                            pathname:
+                                              "/store/claimApproveReject",
+                                            state: {
+                                              ClaimID: data.notificatonTypeID,
+                                            },
+                                          }}
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handleNotificationModalClose.bind(
+                                            this,
+                                            data.notificatonTypeID,
+                                            data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    )}
+                                  </p>
+                                );
+                              }
+                            )}
+                          </div>
+                        }
+                        placement="bottom"
+                        trigger="click"
+                      >
+                        <div
+                          className={
+                            item.alertID !== ""
+                              ? "md-4 view-tickets"
+                              : "text-disabled"
+                          }
+                        >
+                          VIEW
+                        </div>
+                      </Popover>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </Modal>
 
@@ -1984,17 +2017,17 @@ class Header extends Component {
                           src={SearchBlueImg}
                           alt="SearchBlueImg"
                           className="srch-imge"
-                        // onClick={this.handleSearchCustomer}
+                          // onClick={this.handleSearchCustomer}
                         />
                       ) : (
-                          <img
-                            src={CancelBlueImg}
-                            alt="SearchBlueImg"
-                            className="srch-imge"
-                            style={{ width: "35%" }}
-                            onClick={this.handleClearChatSearch.bind(this)}
-                          />
-                        )}
+                        <img
+                          src={CancelBlueImg}
+                          alt="SearchBlueImg"
+                          className="srch-imge"
+                          style={{ width: "35%" }}
+                          onClick={this.handleClearChatSearch.bind(this)}
+                        />
+                      )}
                     </span>
                   </div>
                   <div className="chat-cntr">
@@ -2038,6 +2071,12 @@ class Header extends Component {
                             </div>
                             <div>
                               <div className="mess-time">
+                                <p
+                                  className={"chat-storemng "}
+                                  title="Store Manager"
+                                >
+                                  {chat.storeManagerName}
+                                </p>
                                 <p
                                   style={{
                                     fontWeight:
@@ -2120,7 +2159,7 @@ class Header extends Component {
                         onClick={this.handleHistTabClick.bind(this)}
                       >
                         MY HISTORICAL CHAT
-                            </a>
+                      </a>
                     </li>
                   </div>
                 </div>
@@ -2359,58 +2398,58 @@ class Header extends Component {
                           >
                             {this.state.messageData !== null
                               ? this.state.messageData.map((item, i) => {
-                                return (
-                                  <div
-                                    key={i}
-                                    className={
-                                      item.byCustomer
-                                        ? "chat-trail-cntr"
-                                        : "chat-trail-cntr chat-trail-cntr-right"
-                                    }
-                                  >
-                                    <div className="chat-trail-img">
-                                      <span
-                                        className="chat-initial"
-                                        alt="face image"
-                                        title={
-                                          item.byCustomer
+                                  return (
+                                    <div
+                                      key={i}
+                                      className={
+                                        item.byCustomer
+                                          ? "chat-trail-cntr"
+                                          : "chat-trail-cntr chat-trail-cntr-right"
+                                      }
+                                    >
+                                      <div className="chat-trail-img">
+                                        <span
+                                          className="chat-initial"
+                                          alt="face image"
+                                          title={
+                                            item.byCustomer
+                                              ? item.customerName
+                                              : this.state.UserName
+                                          }
+                                        >
+                                          {item.byCustomer
                                             ? item.customerName
-                                            : this.state.UserName
-                                        }
-                                      >
-                                        {item.byCustomer
-                                          ? item.customerName
-                                            .split(" ")
-                                            .map((n) => n[0])
-                                            .join("")
-                                            .toUpperCase()
-                                          : this.state.UserName.split(" ")
-                                            .map((n) => n[0])
-                                            .join("")
-                                            .toUpperCase()}
-                                      </span>
-                                      {/* <img
+                                                .split(" ")
+                                                .map((n) => n[0])
+                                                .join("")
+                                                .toUpperCase()
+                                            : this.state.UserName.split(" ")
+                                                .map((n) => n[0])
+                                                .join("")
+                                                .toUpperCase()}
+                                        </span>
+                                        {/* <img
                                       src={DummyFace2}
                                       alt="face image"
                                       title={item.customerName}
                                     /> */}
+                                      </div>
+                                      <div className="chat-trail-chat-cntr">
+                                        <p className="chat-trail-chat pd-0">
+                                          {ReactHtmlParser(
+                                            item.message
+                                              .replace("col-md-2", "col-md-4")
+                                              .replace("col-md-10", "col-md-8")
+                                          )}
+                                        </p>
+                                        <span className="chat-trail-time">
+                                          {item.chatDate + " "}
+                                          {item.chatTime}
+                                        </span>
+                                      </div>
                                     </div>
-                                    <div className="chat-trail-chat-cntr">
-                                      <p className="chat-trail-chat pd-0">
-                                        {ReactHtmlParser(
-                                          item.message
-                                            .replace("col-md-2", "col-md-4")
-                                            .replace("col-md-10", "col-md-8")
-                                        )}
-                                      </p>
-                                      <span className="chat-trail-time">
-                                        {item.chatDate + " "}
-                                        {item.chatTime}
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              })
+                                  );
+                                })
                               : null}
                             {/* <div className="chat-trail-cntr">
                             <div className="chat-trail-img">
@@ -2448,7 +2487,7 @@ class Header extends Component {
                                 id="one"
                               >
                                 MESSAGE
-                            </a>
+                              </a>
                             </li>
                             <li className="nav-item">
                               <a
@@ -2466,7 +2505,7 @@ class Header extends Component {
                                 id="two"
                               >
                                 CARD
-                            </a>
+                              </a>
                             </li>
                             <li className="nav-item">
                               <a
@@ -2484,7 +2523,7 @@ class Header extends Component {
                                 id="three"
                               >
                                 RECOMMENDED LIST
-                            </a>
+                              </a>
                             </li>
                             <li className="nav-item">
                               <a
@@ -2503,7 +2542,7 @@ class Header extends Component {
                                 id="four"
                               >
                                 SCHEDULE VISIT
-                            </a>
+                              </a>
                             </li>
                             <li className="nav-item">
                               <a
@@ -2521,7 +2560,7 @@ class Header extends Component {
                                 id="five"
                               >
                                 GENERATE PAYMENT LINK
-                            </a>
+                              </a>
                             </li>
                           </ul>
                         ) : null}
@@ -2530,7 +2569,7 @@ class Header extends Component {
                           <div
                             className={
                               this.state.customerName !== "" &&
-                                this.state.toggle.one
+                              this.state.toggle.one
                                 ? "tab-pane fade active show"
                                 : "tab-pane fade"
                             }
@@ -2545,7 +2584,9 @@ class Header extends Component {
                               <textarea
                                 placeholder="Search to get suggestions..."
                                 value={this.state.message}
-                                onChange={this.handleOnChangeCKEditor.bind(this)}
+                                onChange={this.handleOnChangeCKEditor.bind(
+                                  this
+                                )}
                               ></textarea>
                               <p className="cls-charcount">
                                 {this.state.remainingCount}
@@ -2596,13 +2637,15 @@ class Header extends Component {
                                 this.state.messageSuggestionData.length > 0 &&
                                 this.state.messageSuggestionData.length > 0 && (
                                   <div className="suggestions-cntr">
-                                    {this.state.messageSuggestionData !== null &&
+                                    {this.state.messageSuggestionData !==
+                                      null &&
                                       this.state.messageSuggestionData.map(
                                         (item, i) => (
                                           <div
                                             className={
-                                              this.state.chkSuggestion[i + 1] ===
-                                                1
+                                              this.state.chkSuggestion[
+                                                i + 1
+                                              ] === 1
                                                 ? "suggestions-tick"
                                                 : ""
                                             }
@@ -2619,11 +2662,11 @@ class Header extends Component {
                                               item.suggestionText,
                                               i + 1
                                             )}
-                                          // onClick={this.handleSaveChatMessages.bind(
-                                          //   this,
-                                          //   item.suggestionText,
-                                          //   i
-                                          // )}
+                                            // onClick={this.handleSaveChatMessages.bind(
+                                            //   this,
+                                            //   item.suggestionText,
+                                            //   i
+                                            // )}
                                           >
                                             <Tooltip
                                               placement="left"
@@ -2657,34 +2700,35 @@ class Header extends Component {
                                 </div>
                               )} */}
                               {this.state.storeAgentDetail.length !== 0 &&
-                                this.state.storeAgentDetail[0].suggestion === 1 ? (
-                                  <div
-                                    className="mobile-ck-send"
-                                    onClick={this.handleMessageSuggestion.bind(
-                                      this
-                                    )}
-                                    title={"Search"}
-                                  >
-                                    {/* <img src={Assign} alt="send img" /> */}
-                                    <img src={SuggSearch} alt="send img" />
-                                  </div>
-                                ) : null}
+                              this.state.storeAgentDetail[0].suggestion ===
+                                1 ? (
+                                <div
+                                  className="mobile-ck-send"
+                                  onClick={this.handleMessageSuggestion.bind(
+                                    this
+                                  )}
+                                  title={"Search"}
+                                >
+                                  {/* <img src={Assign} alt="send img" /> */}
+                                  <img src={SuggSearch} alt="send img" />
+                                </div>
+                              ) : null}
                               {this.state.storeAgentDetail.length !== 0 &&
-                                this.state.storeAgentDetail[0].freeText === 1 ? (
-                                  <div
-                                    className="mobile-ck-send-btn"
-                                    onClick={this.handleSaveChatMessages.bind(
-                                      this,
-                                      this.state.message,
-                                      0,
-                                      "",
-                                      ""
-                                    )}
-                                    title={"Send"}
-                                  >
-                                    <img src={Assign} alt="send img" />
-                                  </div>
-                                ) : null}
+                              this.state.storeAgentDetail[0].freeText === 1 ? (
+                                <div
+                                  className="mobile-ck-send-btn"
+                                  onClick={this.handleSaveChatMessages.bind(
+                                    this,
+                                    this.state.message,
+                                    0,
+                                    "",
+                                    ""
+                                  )}
+                                  title={"Send"}
+                                >
+                                  <img src={Assign} alt="send img" />
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                           {/* --------Card Tab----- */}
@@ -2726,7 +2770,7 @@ class Header extends Component {
                                     src={SearchBlueImg}
                                     alt="SearchBlueImg"
                                     className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
+                                    // onClick={this.handleSearchCustomer}
                                   />
                                 </span>
                                 {this.state.searchCardData.length === 0 && (
@@ -2746,7 +2790,9 @@ class Header extends Component {
                                 className="row product-card"
                                 style={{
                                   height: !this.state.isDownbtn ? "100%" : "",
-                                  maxHeight: !this.state.isDownbtn ? "600px" : "",
+                                  maxHeight: !this.state.isDownbtn
+                                    ? "600px"
+                                    : "",
                                 }}
                               >
                                 {this.state.searchCardData !== null &&
@@ -2761,14 +2807,14 @@ class Header extends Component {
                                         )}
                                       >
                                         {item.itemID ===
-                                          this.state.selectedCard ? (
-                                            <div className="selectdot">
-                                              <img
-                                                src={CardTick}
-                                                alt={"select-card"}
-                                              />
-                                            </div>
-                                          ) : null}
+                                        this.state.selectedCard ? (
+                                          <div className="selectdot">
+                                            <img
+                                              src={CardTick}
+                                              alt={"select-card"}
+                                            />
+                                          </div>
+                                        ) : null}
                                         <div
                                           className="card"
                                           id={"card" + item.itemID}
@@ -2817,10 +2863,12 @@ class Header extends Component {
                                                   ) : null}
                                                 </div>
                                                 <div>
-                                                  {item.subCategoryName !== "" ? (
+                                                  {item.subCategoryName !==
+                                                  "" ? (
                                                     <label className="chat-product-code">
                                                       SubCategory :
-                                                      {" " + item.subCategoryName}
+                                                      {" " +
+                                                        item.subCategoryName}
                                                       {/* {item.alternativeText} */}
                                                     </label>
                                                   ) : null}
@@ -2842,32 +2890,35 @@ class Header extends Component {
                                                   ) : null}
                                                 </div>
                                                 <div>
-                                                  {item.uniqueItemCode !== "" ? (
+                                                  {item.uniqueItemCode !==
+                                                  "" ? (
                                                     <label className="chat-product-code">
                                                       Item Code :
-                                                      {" " + item.uniqueItemCode}
+                                                      {" " +
+                                                        item.uniqueItemCode}
                                                       {/* {item.alternativeText} */}
                                                     </label>
                                                   ) : null}
                                                 </div>
                                                 <div>
                                                   {item.discount !== "" &&
-                                                    parseFloat(item.discount) !==
+                                                  parseFloat(item.discount) !==
                                                     0 ? (
-                                                      <label className="chat-product-code">
-                                                        Discount :
-                                                        {" " + item.discount}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
+                                                    <label className="chat-product-code">
+                                                      Discount :
+                                                      {" " + item.discount}
+                                                      {/* {item.alternativeText} */}
+                                                    </label>
+                                                  ) : null}
                                                 </div>
                                                 <div>
                                                   {item.price !== "" &&
-                                                    parseFloat(item.price) !== 0 ? (
-                                                      <label className="chat-product-prize">
-                                                        Price :{" " + item.price}
-                                                      </label>
-                                                    ) : null}
+                                                  parseFloat(item.price) !==
+                                                    0 ? (
+                                                    <label className="chat-product-prize">
+                                                      Price :{" " + item.price}
+                                                    </label>
+                                                  ) : null}
                                                 </div>
                                                 <div>
                                                   <a
@@ -2897,15 +2948,15 @@ class Header extends Component {
                                     {this.state.isDownbtn ? (
                                       <img src={DownBlue} alt="down-arrow" />
                                     ) : (
-                                        <img src={UpBlue} alt="up-arrow" />
-                                      )}
+                                      <img src={UpBlue} alt="up-arrow" />
+                                    )}
                                   </button>
                                   <button
                                     className="butn"
                                     onClick={this.handleSendCard.bind(this)}
                                   >
                                     Send
-                                  <img
+                                    <img
                                       src={SendUp}
                                       alt="send"
                                       className="send-up float-none"
@@ -2917,8 +2968,8 @@ class Header extends Component {
                                         spin
                                       />
                                     ) : (
-                                        ""
-                                      )}
+                                      ""
+                                    )}
                                   </button>
                                 </div>
                               ) : null}
@@ -2944,7 +2995,7 @@ class Header extends Component {
                                 )}
                               >
                                 Send Recommended List
-                              <img
+                                <img
                                   src={SendUp}
                                   alt="send"
                                   className="send-up float-none"
@@ -2956,8 +3007,8 @@ class Header extends Component {
                                     spin
                                   />
                                 ) : (
-                                    ""
-                                  )}
+                                  ""
+                                )}
                               </button>
 
                               <p
@@ -2986,8 +3037,8 @@ class Header extends Component {
                                 <div className="col-md-7 schedule-left-cntr">
                                   {this.state.timeSlotData !== null
                                     ? this.state.timeSlotData.map((item, i) => {
-                                      return item.alreadyScheduleDetails
-                                        .length > 0 ? (
+                                        return item.alreadyScheduleDetails
+                                          .length > 0 ? (
                                           <div key={i}>
                                             <label className="s-lable">
                                               {item.day}:{item.dates}
@@ -3015,9 +3066,11 @@ class Header extends Component {
                                                     (data, k) => {
                                                       var selectSlot = false;
                                                       if (
-                                                        this.state.timeSlotData[i]
+                                                        this.state.timeSlotData[
+                                                          i
+                                                        ]
                                                           .alreadyScheduleDetails[
-                                                        k
+                                                          k
                                                         ] ===
                                                         this.state.selectedSlot
                                                       ) {
@@ -3040,7 +3093,8 @@ class Header extends Component {
                                                               key={k}
                                                               className="s-red-active"
                                                               style={{
-                                                                cursor: "no-drop",
+                                                                cursor:
+                                                                  "no-drop",
                                                               }}
                                                             >
                                                               {data.timeSlot}
@@ -3052,7 +3106,8 @@ class Header extends Component {
                                                         // data.remaining <
                                                         // data.maxCapacity
                                                         data.visitedCount >=
-                                                        (1 / 2) * data.maxCapacity
+                                                        (1 / 2) *
+                                                          data.maxCapacity
                                                       ) {
                                                         return (
                                                           <Tooltip
@@ -3093,7 +3148,8 @@ class Header extends Component {
                                                         // data.maxCapacity ===
                                                         // data.remaining
                                                         data.visitedCount <
-                                                        (1 / 2) * data.maxCapacity
+                                                        (1 / 2) *
+                                                          data.maxCapacity
                                                       ) {
                                                         return (
                                                           <Tooltip
@@ -3148,7 +3204,7 @@ class Header extends Component {
                                             </div>
                                           </div>
                                         ) : null;
-                                    })
+                                      })
                                     : null}
                                 </div>
                                 <div className="col-md-5">
@@ -3157,35 +3213,35 @@ class Header extends Component {
                                       <div>
                                         <label className="s-lable">
                                           Selected Slot
-                                      </label>
+                                        </label>
                                         {Object.keys(this.state.selectedSlot)
                                           .length !== 0 ? (
-                                            <button
-                                              className={
+                                          <button
+                                            className={
+                                              this.state.selectedSlot
+                                                .visitedCount <
+                                              (1 / 2) *
                                                 this.state.selectedSlot
-                                                  .visitedCount <
-                                                  (1 / 2) *
-                                                  this.state.selectedSlot
-                                                    .maxCapacity
-                                                  ? // this.state.selectedSlot.maxCapacity ==
+                                                  .maxCapacity
+                                                ? // this.state.selectedSlot.maxCapacity ==
                                                   //   this.state.selectedSlot.remaining
                                                   "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                  : this.state.selectedSlot
+                                                : this.state.selectedSlot
                                                     .visitedCount <
-                                                    this.state.selectedSlot
-                                                      .maxCapacity
-                                                    ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                    : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                              }
-                                            >
-                                              {this.state.selectedSlot.timeSlot}
-                                              <img
-                                                className="s-img-select"
-                                                src={CircleRight}
-                                                alt="circle-right"
-                                              />
-                                            </button>
-                                          ) : null}
+                                                  this.state.selectedSlot
+                                                    .maxCapacity
+                                                ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                            }
+                                          >
+                                            {this.state.selectedSlot.timeSlot}
+                                            <img
+                                              className="s-img-select"
+                                              src={CircleRight}
+                                              alt="circle-right"
+                                            />
+                                          </button>
+                                        ) : null}
                                         {this.state.isSelectSlot !== "" && (
                                           <p
                                             style={{
@@ -3200,7 +3256,7 @@ class Header extends Component {
                                       <div>
                                         <label className="s-lable">
                                           No of People
-                                      </label>
+                                        </label>
                                         <input
                                           type="text"
                                           value={this.state.noOfPeople}
@@ -3232,7 +3288,7 @@ class Header extends Component {
                                       )}
                                     >
                                       Send
-                                    <img
+                                      <img
                                         src={SendUp}
                                         alt="send"
                                         className="send-up float-none"
@@ -3244,19 +3300,19 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                          ""
-                                        )}
+                                        ""
+                                      )}
                                     </button>
                                   </div>
                                 </div>
                               </div>
                             ) : (
-                                <div>
-                                  <span className="slot-span">
-                                    No slot added for this store
-                              </span>
-                                </div>
-                              )}
+                              <div>
+                                <span className="slot-span">
+                                  No slot added for this store
+                                </span>
+                              </div>
+                            )}
                           </div>
                           {/* --------Generate Payment Link Tab----- */}
                           <div
@@ -3275,9 +3331,9 @@ class Header extends Component {
                             >
                               <form
                                 style={{ width: "100%" }}
-                              // onSubmit={this.handleSearchChatItemDetails.bind(
-                              //   this
-                              // )}
+                                // onSubmit={this.handleSearchChatItemDetails.bind(
+                                //   this
+                                // )}
                               >
                                 <input
                                   type="text"
@@ -3286,10 +3342,10 @@ class Header extends Component {
                                   name="Search"
                                   maxLength="100"
                                   autoComplete="off"
-                                // value={this.state.searchItem}
-                                // onChange={this.handleSearchItemChange.bind(
-                                //   this
-                                // )}
+                                  // value={this.state.searchItem}
+                                  // onChange={this.handleSearchItemChange.bind(
+                                  //   this
+                                  // )}
                                 />
                                 <span
                                   // onClick={this.handleSearchChatItemDetails.bind(
@@ -3301,7 +3357,7 @@ class Header extends Component {
                                     src={SearchBlueImg}
                                     alt="SearchBlueImg"
                                     className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
+                                    // onClick={this.handleSearchCustomer}
                                   />
                                 </span>
                               </form>
@@ -3313,7 +3369,7 @@ class Header extends Component {
                             <div className="payment-link-butn">
                               <button className="butn">
                                 Send Payment Link
-                              <img
+                                <img
                                   src={SendUp}
                                   alt="send"
                                   className="send-up"
@@ -3346,7 +3402,7 @@ class Header extends Component {
                               id="one"
                             >
                               MESSAGE
-                          </a>
+                            </a>
                           </li>
                           <li className="nav-item">
                             <a
@@ -3364,7 +3420,7 @@ class Header extends Component {
                               id="two"
                             >
                               CARD
-                          </a>
+                            </a>
                           </li>
                           <li className="nav-item">
                             <a
@@ -3382,7 +3438,7 @@ class Header extends Component {
                               id="three"
                             >
                               RECOMMENDED LIST
-                          </a>
+                            </a>
                           </li>
                           <li className="nav-item">
                             <a
@@ -3400,7 +3456,7 @@ class Header extends Component {
                               id="four"
                             >
                               SCHEDULE VISIT
-                          </a>
+                            </a>
                           </li>
                           <li className="nav-item">
                             <a
@@ -3418,7 +3474,7 @@ class Header extends Component {
                               id="five"
                             >
                               GENERATE PAYMENT LINK
-                          </a>
+                            </a>
                           </li>
                         </ul>
                         <div className="tab-content">
@@ -3436,7 +3492,9 @@ class Header extends Component {
                               <textarea
                                 placeholder="Search to get suggestions..."
                                 value={this.state.message}
-                                onChange={this.handleOnChangeCKEditor.bind(this)}
+                                onChange={this.handleOnChangeCKEditor.bind(
+                                  this
+                                )}
                               ></textarea>
                               <p
                                 className="cls-charcount"
@@ -3449,13 +3507,15 @@ class Header extends Component {
                                 this.state.messageSuggestionData.length > 0 &&
                                 this.state.messageSuggestionData.length > 0 && (
                                   <div className="suggestions-cntr">
-                                    {this.state.messageSuggestionData !== null &&
+                                    {this.state.messageSuggestionData !==
+                                      null &&
                                       this.state.messageSuggestionData.map(
                                         (item, i) => (
                                           <div
                                             className={
-                                              this.state.chkSuggestion[i + 1] ===
-                                                1
+                                              this.state.chkSuggestion[
+                                                i + 1
+                                              ] === 1
                                                 ? "suggestions-tick"
                                                 : ""
                                             }
@@ -3492,34 +3552,35 @@ class Header extends Component {
                                 )}
 
                               {this.state.storeAgentDetail.length !== 0 &&
-                                this.state.storeAgentDetail[0].suggestion === 1 ? (
-                                  <div
-                                    className="mobile-ck-send"
-                                    onClick={this.handleMessageSuggestion.bind(
-                                      this
-                                    )}
-                                    title={"Search"}
-                                  >
-                                    {/* <img src={Assign} alt="send img" /> */}
-                                    <img src={SuggSearch} alt="send img" />
-                                  </div>
-                                ) : null}
+                              this.state.storeAgentDetail[0].suggestion ===
+                                1 ? (
+                                <div
+                                  className="mobile-ck-send"
+                                  onClick={this.handleMessageSuggestion.bind(
+                                    this
+                                  )}
+                                  title={"Search"}
+                                >
+                                  {/* <img src={Assign} alt="send img" /> */}
+                                  <img src={SuggSearch} alt="send img" />
+                                </div>
+                              ) : null}
                               {this.state.storeAgentDetail.length !== 0 &&
-                                this.state.storeAgentDetail[0].freeText === 1 ? (
-                                  <div
-                                    className="mobile-ck-send-btn"
-                                    onClick={this.handleSaveChatMessages.bind(
-                                      this,
-                                      this.state.message,
-                                      0,
-                                      "",
-                                      ""
-                                    )}
-                                    title={"Send"}
-                                  >
-                                    <img src={Assign} alt="send img" />
-                                  </div>
-                                ) : null}
+                              this.state.storeAgentDetail[0].freeText === 1 ? (
+                                <div
+                                  className="mobile-ck-send-btn"
+                                  onClick={this.handleSaveChatMessages.bind(
+                                    this,
+                                    this.state.message,
+                                    0,
+                                    "",
+                                    ""
+                                  )}
+                                  title={"Send"}
+                                >
+                                  <img src={Assign} alt="send img" />
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                           {/* -------- Card Modal ----- */}
@@ -3557,7 +3618,7 @@ class Header extends Component {
                                     src={SearchBlueImg}
                                     alt="SearchBlueImg"
                                     className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
+                                    // onClick={this.handleSearchCustomer}
                                   />
                                 </span>
                                 {this.state.searchCardData.length === 0 && (
@@ -3585,14 +3646,14 @@ class Header extends Component {
                                       >
                                         <div className="card-body position-relative">
                                           {item.itemID ===
-                                            this.state.selectedCard ? (
-                                              <div className="selectdot">
-                                                <img
-                                                  src={CardTick}
-                                                  alt={"select-card"}
-                                                />
-                                              </div>
-                                            ) : null}
+                                          this.state.selectedCard ? (
+                                            <div className="selectdot">
+                                              <img
+                                                src={CardTick}
+                                                alt={"select-card"}
+                                              />
+                                            </div>
+                                          ) : null}
                                           <div className="mobile-card-cntr">
                                             <div className="mobile-card-img">
                                               <img
@@ -3653,7 +3714,8 @@ class Header extends Component {
 
                                               {item.discount !== "" ? (
                                                 <label className="chat-product-code">
-                                                  Discount :{" " + item.discount}
+                                                  Discount :
+                                                  {" " + item.discount}
                                                   {/* {item.alternativeText} */}
                                                 </label>
                                               ) : null}
@@ -3697,19 +3759,21 @@ class Header extends Component {
                                               ) : null}
 
                                               {item.discount !== "" &&
-                                                parseFloat(item.discount) !== 0 ? (
-                                                  <label className="chat-product-code">
-                                                    Discount :{" " + item.discount}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
+                                              parseFloat(item.discount) !==
+                                                0 ? (
+                                                <label className="chat-product-code">
+                                                  Discount :
+                                                  {" " + item.discount}
+                                                  {/* {item.alternativeText} */}
+                                                </label>
+                                              ) : null}
 
                                               {item.price !== "" &&
-                                                parseFloat(item.price) !== 0 ? (
-                                                  <label className="chat-product-prize">
-                                                    Price :{" " + item.price}
-                                                  </label>
-                                                ) : null}
+                                              parseFloat(item.price) !== 0 ? (
+                                                <label className="chat-product-prize">
+                                                  Price :{" " + item.price}
+                                                </label>
+                                              ) : null}
 
                                               <label className="chat-product-url">
                                                 {item.url}
@@ -3727,13 +3791,13 @@ class Header extends Component {
                                   onClick={this.onCloseCardModal}
                                 >
                                   Close
-                              </button>
+                                </button>
                                 <button
                                   className="butn"
                                   onClick={this.handleSendCard.bind(this)}
                                 >
                                   Send
-                                <img
+                                  <img
                                     src={SendUp}
                                     alt="send"
                                     className="send-up float-none"
@@ -3745,8 +3809,8 @@ class Header extends Component {
                                       spin
                                     />
                                   ) : (
-                                      ""
-                                    )}
+                                    ""
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -3771,7 +3835,7 @@ class Header extends Component {
                                   )}
                                 >
                                   Send Recommended List
-                                <img
+                                  <img
                                     src={SendUp}
                                     alt="send"
                                     className="send-up"
@@ -3783,8 +3847,8 @@ class Header extends Component {
                                       spin
                                     />
                                   ) : (
-                                      ""
-                                    )}
+                                    ""
+                                  )}
                                 </button>
                                 <p
                                   style={{
@@ -3799,7 +3863,7 @@ class Header extends Component {
                                   onClick={this.onCloseRecommendedModal}
                                 >
                                   Close
-                              </button>
+                                </button>
                               </div>
                             </div>
                           </Modal>
@@ -3821,16 +3885,17 @@ class Header extends Component {
                                     <div className="schedule-left-cntr">
                                       {this.state.timeSlotData !== null
                                         ? this.state.timeSlotData.map(
-                                          (item, i) => {
-                                            return item.alreadyScheduleDetails
-                                              .length > 0 ? (
+                                            (item, i) => {
+                                              return item.alreadyScheduleDetails
+                                                .length > 0 ? (
                                                 <div key={i}>
                                                   <label className="s-lable">
                                                     {item.day}:{item.dates}
                                                   </label>
                                                   <div className="schedule-btn-outer-cntr">
                                                     <div className="schedule-btn-cntr">
-                                                      {item.alreadyScheduleDetails
+                                                      {item
+                                                        .alreadyScheduleDetails
                                                         .length > 0 &&
                                                         item.alreadyScheduleDetails.map(
                                                           (data, k) => {
@@ -3839,7 +3904,7 @@ class Header extends Component {
                                                               this.state
                                                                 .timeSlotData[i]
                                                                 .alreadyScheduleDetails[
-                                                              k
+                                                                k
                                                               ] ===
                                                               this.state
                                                                 .selectedSlot
@@ -3877,7 +3942,7 @@ class Header extends Component {
                                                             if (
                                                               data.visitedCount >=
                                                               (1 / 2) *
-                                                              data.maxCapacity
+                                                                data.maxCapacity
                                                             ) {
                                                               return (
                                                                 <Tooltip
@@ -3919,7 +3984,7 @@ class Header extends Component {
                                                             if (
                                                               data.visitedCount <
                                                               (1 / 2) *
-                                                              data.maxCapacity
+                                                                data.maxCapacity
                                                             ) {
                                                               return (
                                                                 <Tooltip
@@ -3970,8 +4035,8 @@ class Header extends Component {
                                                   </div>
                                                 </div>
                                               ) : null;
-                                          }
-                                        )
+                                            }
+                                          )
                                         : null}
                                     </div>
                                   </div>
@@ -3979,33 +4044,35 @@ class Header extends Component {
                                     <div>
                                       <label className="s-lable">
                                         Selected Slot
-                                    </label>
+                                      </label>
                                       {Object.keys(this.state.selectedSlot)
                                         .length !== 0 ? (
-                                          <button
-                                            className={
-                                              this.state.selectedSlot.visitedCount <
-                                                (1 / 2) *
-                                                this.state.selectedSlot.maxCapacity
-                                                ? // this.state.selectedSlot.maxCapacity ==
+                                        <button
+                                          className={
+                                            this.state.selectedSlot
+                                              .visitedCount <
+                                            (1 / 2) *
+                                              this.state.selectedSlot
+                                                .maxCapacity
+                                              ? // this.state.selectedSlot.maxCapacity ==
                                                 //   this.state.selectedSlot.remaining
                                                 "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                : this.state.selectedSlot
+                                              : this.state.selectedSlot
                                                   .visitedCount <
-                                                  this.state.selectedSlot
-                                                    .maxCapacity
-                                                  ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                  : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                            }
-                                          >
-                                            {this.state.selectedSlot.timeSlot}
-                                            <img
-                                              className="s-img-select"
-                                              src={CircleRight}
-                                              alt="circle-right"
-                                            />
-                                          </button>
-                                        ) : null}
+                                                this.state.selectedSlot
+                                                  .maxCapacity
+                                              ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                              : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                          }
+                                        >
+                                          {this.state.selectedSlot.timeSlot}
+                                          <img
+                                            className="s-img-select"
+                                            src={CircleRight}
+                                            alt="circle-right"
+                                          />
+                                        </button>
+                                      ) : null}
                                       {this.state.isSelectSlot !== "" && (
                                         <p
                                           style={{
@@ -4020,7 +4087,7 @@ class Header extends Component {
                                     <div>
                                       <label className="s-lable">
                                         No of People
-                                    </label>
+                                      </label>
                                       <input
                                         type="text"
                                         value={this.state.noOfPeople}
@@ -4048,13 +4115,15 @@ class Header extends Component {
                                     onClick={this.onCloseScheduleModal}
                                   >
                                     Close
-                                </button>
+                                  </button>
                                   <button
                                     className="butn"
-                                    onClick={this.handleScheduleVisit.bind(this)}
+                                    onClick={this.handleScheduleVisit.bind(
+                                      this
+                                    )}
                                   >
                                     Send
-                                  <img
+                                    <img
                                       src={SendUp}
                                       alt="send"
                                       className="send-up float-none"
@@ -4066,18 +4135,18 @@ class Header extends Component {
                                         spin
                                       />
                                     ) : (
-                                        ""
-                                      )}
+                                      ""
+                                    )}
                                   </button>
                                 </div>
                               </div>
                             ) : (
-                                <div>
-                                  <span className="slot-span">
-                                    No slot added for this store
-                              </span>
-                                </div>
-                              )}
+                              <div>
+                                <span className="slot-span">
+                                  No slot added for this store
+                                </span>
+                              </div>
+                            )}
                           </Modal>
                           {/* -------- Generate Payment Link Modal ----- */}
                           <Modal
@@ -4104,10 +4173,10 @@ class Header extends Component {
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
-                                    // value={this.state.searchItem}
-                                    // onChange={this.handleSearchItemChange.bind(
-                                    //   this
-                                    // )}
+                                      // value={this.state.searchItem}
+                                      // onChange={this.handleSearchItemChange.bind(
+                                      //   this
+                                      // )}
                                     />
                                     <span
                                       // onClick={this.handleSearchChatItemDetails.bind(
@@ -4119,7 +4188,7 @@ class Header extends Component {
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                      // onClick={this.handleSearchCustomer}
+                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                   </div>
@@ -4135,13 +4204,13 @@ class Header extends Component {
                                   onClick={this.onClosePaymentModal}
                                 >
                                   Close
-                              </button>
+                                </button>
                                 <button
                                   className="butn"
                                   onClick={this.onClosePaymentModal}
                                 >
                                   Send
-                                <img
+                                  <img
                                     src={SendUp}
                                     alt="send"
                                     className="send-up"
@@ -4153,8 +4222,8 @@ class Header extends Component {
                                       spin
                                     />
                                   ) : (
-                                      ""
-                                    )}
+                                    ""
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -4174,7 +4243,7 @@ class Header extends Component {
                               >
                                 <p className="cls-p-conf">
                                   Are you sure & want to send?
-                              </p>
+                                </p>
                               </div>
                               <hr style={{ borderTop: "1px solid #bbb" }}></hr>
                               <p className="cls-p-sugg">
@@ -4186,7 +4255,7 @@ class Header extends Component {
                                   onClick={this.onCloseSuggestionModal}
                                 >
                                   No
-                              </button>
+                                </button>
                                 <button
                                   className="butn"
                                   onClick={this.handleSaveChatMessages.bind(
@@ -4197,7 +4266,7 @@ class Header extends Component {
                                   )}
                                 >
                                   Yes
-                                <img
+                                  <img
                                     src={SendUp}
                                     alt="send"
                                     className="send-up float-none"
@@ -4209,8 +4278,8 @@ class Header extends Component {
                                       spin
                                     />
                                   ) : (
-                                      ""
-                                    )}
+                                    ""
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -4230,7 +4299,7 @@ class Header extends Component {
                               >
                                 <p className="cls-p-conf-mob">
                                   Are you sure & want to send?
-                              </p>
+                                </p>
                               </div>
                               <hr style={{ borderTop: "1px solid #bbb" }}></hr>
                               <p className="cls-p-sugg">
@@ -4242,7 +4311,7 @@ class Header extends Component {
                                   onClick={this.onCloseMobSuggestionModal}
                                 >
                                   No
-                              </button>
+                                </button>
                                 <button
                                   className="butn"
                                   onClick={this.handleSaveChatMessages.bind(
@@ -4253,7 +4322,7 @@ class Header extends Component {
                                   )}
                                 >
                                   Yes
-                                <img
+                                  <img
                                     src={SendUp}
                                     alt="send"
                                     className="send-up float-none"
@@ -4265,8 +4334,8 @@ class Header extends Component {
                                       spin
                                     />
                                   ) : (
-                                      ""
-                                    )}
+                                    ""
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -4275,13 +4344,16 @@ class Header extends Component {
                       </div>
                     </div>
                   ) : (
-                      <div className="row" style={{ margin: "0" }}>
-                        <div className="chatdivtitle">
-                          <label className="chattitlelbl" style={{ color: "Black" }}>
-                            My Historical Chat
-                          </label>
-                          <div className="table-cntr store chat-history">
-                            <Table
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="chatdivtitle">
+                        <label
+                          className="chattitlelbl"
+                          style={{ color: "Black" }}
+                        >
+                          My Historical Chat
+                        </label>
+                        <div className="table-cntr store chat-history">
+                          <Table
                             className="components-table-demo-nested antd-table-campaign custom-antd-table"
                             columns={[
                               {
@@ -4304,17 +4376,14 @@ class Header extends Component {
                                 dataIndex: "message",
                                 width: "30%",
                               },
-
                             ]}
                             pagination={{ defaultPageSize: 5 }}
                             dataSource={this.state.historicalChatData}
-                          >
-
-                          </Table>
-                          </div>
+                          ></Table>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

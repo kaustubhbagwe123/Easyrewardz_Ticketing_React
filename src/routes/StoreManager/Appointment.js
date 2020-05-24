@@ -11,6 +11,7 @@ import Calling from "./../../assets/Images/calling.png";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
+import DatePicker from "react-datepicker";
 
 class Appointment extends Component {
   constructor(props) {
@@ -29,7 +30,9 @@ class Appointment extends Component {
       appointProgress: "90%",
       searchExpand: false,
       createAppointModal: false,
-      showPeople:false
+      showPeople: false,
+      appointDate: "",
+      appointTime: false,
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -40,13 +43,13 @@ class Appointment extends Component {
     this.handleAppointmentCount();
   }
 
-  ShowPeopleModalOpen (){
+  ShowPeopleModalOpen() {
     this.setState({
       showPeople: true,
     });
   }
 
-  ShowPeopleModalClose(){
+  ShowPeopleModalClose() {
     this.setState({
       showPeople: false,
     });
@@ -55,6 +58,19 @@ class Appointment extends Component {
   handleSearchExpand() {
     this.setState({
       searchExpand: !this.state.searchExpand,
+    });
+  }
+
+  handleAppointDate(date) {
+    debugger;
+    this.setState({
+      appointDate: date,
+    });
+  }
+
+  handleAppointTime() {
+    this.setState({
+      appointTime: true,
     });
   }
 
@@ -313,6 +329,7 @@ class Appointment extends Component {
               center
               modalId="create-appoint-popup"
               overlayId="chat-popup-overlay"
+              classNames={{ modal: "ticket-cut" }}
             >
               <div className="appnt-top-blue">
                 <div className="position-relative">
@@ -346,6 +363,53 @@ class Appointment extends Component {
                   <label>Name</label>
                   <input type="text" placeholder="Your name" />
                 </div>
+                <div className="appnt-input-group">
+                  <label>Phone no.</label>
+                  <input type="tel" placeholder="0123456789" />
+                </div>
+                <div className="appnt-input-group">
+                  <label>Date &amp; Time</label>
+                  <div className="row time-date-sep">
+                    <div className="col-md-6">
+                      <DatePicker
+                        selected={this.state.appointDate}
+                        onChange={(date) => this.handleAppointDate(date)}
+                        placeholderText="00 - 00 - 0000"
+                        value={this.state.appointDate}
+                        // maxDate={new Date()}
+                        showMonthDropdown
+                        showYearDropdown
+                        className="appoint-date"
+                        dateFormat="dd - MM - yyyy"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <select
+                        className={this.state.appointTime ? "" : "appoint-time"}
+                        onChange={this.handleAppointTime.bind(this)}
+                      >
+                        <option hidden>00pm - 00pm</option>
+                        <option>2pm - 3pm</option>
+                        <option>3pm - 4pm</option>
+                        <option>4pm - 5pm</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="appnt-input-group">
+                  <label>No. of members</label>
+                  <input type="number" placeholder="00" min="1" />
+                </div>
+                <div className="text-center">
+                  <button className="appoint-butn">book appointment</button>
+                  <a
+                    href="#!"
+                    className="appoint-cancel"
+                    onClick={this.handleCreateAppointmentClose.bind(this)}
+                  >
+                    Cancel
+                  </a>
+                </div>
               </div>
             </Modal>
           </div>
@@ -374,7 +438,12 @@ class Appointment extends Component {
               </div>
               <div className="empty-filled-info">
                 <div className="empty-info">10</div>
-                <div className="filled-info" onClick={this.ShowPeopleModalOpen.bind(this)}>40</div>
+                <div
+                  className="filled-info"
+                  onClick={this.ShowPeopleModalOpen.bind(this)}
+                >
+                  40
+                </div>
               </div>
             </div>
             <div className="slot-info">
@@ -383,60 +452,66 @@ class Appointment extends Component {
             </div>
           </div>
           <Modal
-                open={this.state.showPeople}
-                onClose={this.ShowPeopleModalClose.bind(this)}
-                center
-                modalId="totalconcount-popup"
-                overlayId="logout-ovrly"
-                >
-                <img
-            src={CancelIcon}
-            alt="cancel-icone"
-            className="cust-icon"
-            style={{height: "12px"}}
-            onClick={this.ShowPeopleModalClose.bind(this)}
-          />
-          <div className="counttab">
-            <table>
-              <tr>
-                <td>
-                  <label>02</label>
-                  <span>09AM-10AM</span>
-                </td>
-                <td>
-                  <label>03</label>
-                  <span>10AM-12AM</span></td>
-                <td>
-                  <label>01</label>
-                  <span>11AM-12AM</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <label>02</label>
-                  <span>09AM-10AM</span>
-                </td>
-                <td>
-                  <label>03</label>
-                  <span>10AM-12AM</span></td>
-                <td>
-                  <label>01</label>
-                  <span>11AM-12AM</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <label>02</label>
-                  <span>09AM-10AM</span>
-                </td>
-                <td>
-                  <label>03</label>
-                  <span>10AM-12AM</span></td>
-                <td>
-                  <label>01</label>
-                  <span>11AM-12AM</span></td>
-              </tr>
-            </table>
-          </div>
-            </Modal>
+            open={this.state.showPeople}
+            onClose={this.ShowPeopleModalClose.bind(this)}
+            center
+            modalId="totalconcount-popup"
+            overlayId="logout-ovrly"
+          >
+            <img
+              src={CancelIcon}
+              alt="cancel-icone"
+              className="cust-icon"
+              style={{ height: "12px" }}
+              onClick={this.ShowPeopleModalClose.bind(this)}
+            />
+            <div className="counttab">
+              <table>
+                <tr>
+                  <td>
+                    <label>02</label>
+                    <span>09AM-10AM</span>
+                  </td>
+                  <td>
+                    <label>03</label>
+                    <span>10AM-12AM</span>
+                  </td>
+                  <td>
+                    <label>01</label>
+                    <span>11AM-12AM</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>02</label>
+                    <span>09AM-10AM</span>
+                  </td>
+                  <td>
+                    <label>03</label>
+                    <span>10AM-12AM</span>
+                  </td>
+                  <td>
+                    <label>01</label>
+                    <span>11AM-12AM</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>02</label>
+                    <span>09AM-10AM</span>
+                  </td>
+                  <td>
+                    <label>03</label>
+                    <span>10AM-12AM</span>
+                  </td>
+                  <td>
+                    <label>01</label>
+                    <span>11AM-12AM</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </Modal>
           <div className="table-cntr store">
             <Table
               className="components-table-demo-nested antd-table-campaign custom-antd-table"

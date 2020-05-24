@@ -3128,6 +3128,7 @@ table tr th:last-child {
   max-width: 340px !important;
   border-radius: 20px;
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 .appnt-top-blue {
   background: #2561a8;
@@ -3173,13 +3174,17 @@ table tr th:last-child {
 .appnt-bottom-white {
   padding: 20px 25px;
 }
+.appnt-input-group {
+  margin-bottom: 15px;
+}
 .appnt-input-group label {
   font-size: 12px;
   font-weight: 700;
   color: #000;
   display: block;
 }
-.appnt-input-group input {
+.appnt-input-group input,
+.appnt-input-group select {
   font-size: 12px;
   color: #2561a8;
   border: 0;
@@ -3193,6 +3198,86 @@ table tr th:last-child {
   padding: 0;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.4);
+}
+.appnt-input-group .react-datepicker-wrapper {
+  width: 100%;
+}
+.appnt-input-group .react-datepicker-wrapper + div button {
+  min-width: auto;
+}
+.appoint-date {
+  background: url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 5px
+    center;
+  background-size: 12px;
+  padding-right: 22px !important;
+}
+.appoint-time {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+.appnt-input-group select option {
+  color: #000;
+}
+.appnt-input-group select {
+  background: url("./../Images/dropDown.png") no-repeat right 5px center;
+  background-size: 10px;
+  padding-right: 20px;
+}
+.time-date-sep {
+  position: relative;
+}
+.time-date-sep::before {
+  content: "/";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.appnt-input-group input::-webkit-outer-spin-button,
+.appnt-input-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.appnt-input-group input[type="number"] {
+  -moz-appearance: textfield;
+}
+.appoint-butn {
+  background: #07a287;
+  color: #fff;
+  text-transform: uppercase;
+  border: 0;
+  padding: 15px 24px;
+  margin: 30px auto 0;
+  display: block;
+}
+.appoint-cancel {
+  font-size: 12px;
+  color: #000;
+  margin-top: 8px;
+  display: inline-block;
+}
+.appoint-cancel:hover {
+  color: #000;
+}
+.ticket-cut {
+  position: relative;
+}
+.ticket-cut::before,
+.ticket-cut::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  left: -10px;
+  /* box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.8); */
+  background: #909aa9;
+  /* background: url("./../Images/half-circ.png") no-repeat center center; */
+}
+.ticket-cut::after {
+  left: initial;
+  right: -10px;
 }
 
 @media screen and (max-width: 600px) {
