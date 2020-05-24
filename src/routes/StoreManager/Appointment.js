@@ -330,7 +330,7 @@ class Appointment extends Component {
               <div className="appnt-bottom-white">
                 <div className="appnt-input-group">
                   <label>Name</label>
-                  <input type="text" />
+                  <input type="text" placeholder="Your name" />
                 </div>
               </div>
             </Modal>

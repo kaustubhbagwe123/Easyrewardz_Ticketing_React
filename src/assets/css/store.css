@@ -3172,6 +3172,27 @@ table tr th:last-child {
 .appnt-bottom-white {
   padding: 20px 25px;
 }
+.appnt-input-group label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #000;
+  display: block;
+}
+.appnt-input-group input {
+  font-size: 12px;
+  color: #2561a8;
+  border: 0;
+  border-bottom: 0.5px solid #000000;
+  width: 100%;
+  padding: 2px 0;
+  margin-top: 3px;
+}
+.appnt-input-group input::placeholder {
+  font-weight: 400;
+  padding: 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+}
 
 @media screen and (max-width: 600px) {
   .customer-count-block {
