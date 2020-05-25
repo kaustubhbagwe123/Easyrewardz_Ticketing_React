@@ -8,6 +8,10 @@ import ProgressMenIcon from "./../../assets/Images/progress-men-icon.png";
 import SearchBlue from "./../../assets/Images/appoint-search.png";
 import Location from "./../../assets/Images/location.png";
 import Calling from "./../../assets/Images/calling.png";
+import People from "./../../assets/Images/people.png";
+import WhiteCalendar from "./../../assets/Images/white-calendar.png";
+import WhiteClock from "./../../assets/Images/white-clock.png";
+import WhitePeople from "./../../assets/Images/white-people.png";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
@@ -33,6 +37,7 @@ class Appointment extends Component {
       showPeople: false,
       appointDate: "",
       appointTime: false,
+      updateAppointModal: false,
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -83,6 +88,12 @@ class Appointment extends Component {
   handleCreateAppointmentClose() {
     this.setState({
       createAppointModal: false,
+    });
+  }
+
+  handleUpdateAppointmentClose() {
+    this.setState({
+      updateAppointModal: false,
     });
   }
 
@@ -179,6 +190,9 @@ class Appointment extends Component {
   handleUpdateAppointment(appointmentID) {
     debugger;
     let self = this;
+    this.setState({
+      updateAppointModal: true,
+    });
     if (
       this.state.status[appointmentID] !== "" &&
       this.state.status[appointmentID] !== undefined
@@ -772,6 +786,90 @@ class Appointment extends Component {
             />
           </div>
         </div>
+        {/* Update Appointment Modal */}
+        <Modal
+          open={this.state.updateAppointModal}
+          onClose={this.handleUpdateAppointmentClose.bind(this)}
+          center
+          modalId="create-appoint-popup"
+          overlayId="chat-popup-overlay"
+        >
+          <div className="appnt-top-blue">
+            <div className="position-relative">
+              <i
+                class="arrow-left"
+                onClick={this.handleUpdateAppointmentClose.bind(this)}
+              ></i>
+              <h5>Appointment Details</h5>
+              <div className="people-img">
+                <img src={People} alt="people icon" />
+              </div>
+            </div>
+            <div className="create-appnt-details">
+              <h4>Naman Rampal</h4>
+              <div className="row appoint-update-det">
+                <div className="col-md-7">
+                  <div className="appnt-info-cntr">
+                    <div className="appnt-img-cntr">
+                      <img src={WhiteCalendar} alt="calendar icon" />
+                    </div>
+                    <p>Date: 11 th May 2020</p>
+                  </div>
+                </div>
+                <div className="col-md-5">
+                  <div className="appnt-info-cntr">
+                    <div className="appnt-img-cntr">
+                      <img src={WhiteClock} alt="clock icon" />
+                    </div>
+                    <p>Time: 2pm to 3pm</p>
+                  </div>
+                </div>
+                <div className="col-md-7">
+                  <div className="appnt-info-cntr">
+                    <div className="appnt-img-cntr">
+                      <img src={Calling} alt="phone icon" />
+                    </div>
+                    <p>Phone: +91 9873470074</p>
+                  </div>
+                </div>
+                <div className="col-md-5">
+                  <div className="appnt-info-cntr">
+                    <div className="appnt-img-cntr">
+                      <img src={WhitePeople} alt="people icon" />
+                    </div>
+                    <p>People: 02</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="appnt-bottom-white appnt-bottom-white-update">
+            <div className="appnt-input-group">
+              <label>No. of people entering</label>
+              <div className="people-selection">
+                <span>1</span>
+                <span className="active">2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+              </div>
+            </div>
+            <div className="ticket-cut">
+              <span></span>
+            </div>
+            <div className="text-center">
+              <button className="appoint-butn">book appointment</button>
+              <a
+                href="#!"
+                className="appoint-cancel"
+                onClick={this.handleUpdateAppointmentClose.bind(this)}
+              >
+                Cancel
+              </a>
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   }
