@@ -416,6 +416,7 @@ class Appointment extends Component {
                 </div>
                 <div className="text-center">
                   <button className="appoint-butn">book appointment</button>
+                  <br />
                   <a
                     href="#!"
                     className="appoint-cancel"
@@ -858,8 +859,15 @@ class Appointment extends Component {
             <div className="ticket-cut">
               <span></span>
             </div>
+            <div className="appoint-code">
+              <p>Appointment Code</p>
+              <span>L88392</span>
+            </div>
             <div className="text-center">
-              <button className="appoint-butn">book appointment</button>
+              <button className="appoint-butn appoint-butn-blue">
+                Start Visit Time
+              </button>
+              <br />
               <a
                 href="#!"
                 className="appoint-cancel"
