@@ -11935,3 +11935,20 @@ font-size: 12px !important;
     right: -135px;
     top: 50px;
 }
+.chatabcus table td {
+  color: #333;
+}
+.chatabcus .custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.chatabcus table tbody tr {
+  border-bottom: none;
+}
+.chatabcus .ant-table-tbody > tr > td {
+  border-bottom: none;
+}
+.chattxtdivcus {
+  display: flex;
+  width: 100%;
+}
