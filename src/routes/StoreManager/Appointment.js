@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import OTPInput, { ResendOTP } from "otp-input-react";
 import { Table, Select } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
@@ -16,6 +17,7 @@ import moment from "moment";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
 import DatePicker from "react-datepicker";
+
 
 class Appointment extends Component {
   constructor(props) {
@@ -38,6 +40,7 @@ class Appointment extends Component {
       appointDate: "",
       appointTime: false,
       updateAppointModal: false,
+      date: ""
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
