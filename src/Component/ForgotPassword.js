@@ -9,28 +9,45 @@ import axios from "axios";
 import config from "../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
+import { encryption } from "../helpers/encryption";
 
 class ForgotPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      emailId: ""
+      emailId: "",
+      programCode: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validator = new SimpleReactValidator();
   }
+
+  componentDidMount() {
+    var finalEncProgramCode = this.props.location.state.programCode;
+    if (finalEncProgramCode) {
+      this.setState({
+        programCode: finalEncProgramCode,
+      });
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     debugger;
-  
     if (this.validator.allValid()) {
-     
+      var encProgramCode = this.state.programCode;
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc"); 
       let self = this;
       axios({
         method: "post",
         url: config.apiUrl + "/Account/ForgetPassword",
-        headers: authHeader("no"),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "X-Authorized-Programcode": encProgramCode,
+          "X-Authorized-Domainname": X_Authorized_Domainname,
+        },
         params: {
           EmailId: this.state.emailId
         }

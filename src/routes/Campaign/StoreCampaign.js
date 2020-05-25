@@ -1799,7 +1799,11 @@ class StoreCampaign extends Component {
                                 <label className="table-btnlabel followUpBtnYellow">
                                   {item.statusName}
                                 </label>
-                              ) : null}
+                              ) : item.statusID === 104 ? (
+                                <label className="table-btnlabel followUpBtnBlue">
+                                {item.statusName}
+                              </label>
+                              ):null}
                             </div>
                           );
                         },
