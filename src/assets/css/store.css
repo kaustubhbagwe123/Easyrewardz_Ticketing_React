@@ -3316,6 +3316,57 @@ table tr th:last-child {
   left: initial;
   right: -10px;
 }
+.promotional-sms input {
+  display: none;
+}
+.promotional-sms label {
+  font-size: 12px;
+  color: #2561a8;
+  padding: 2px 0;
+  margin-top: 3px;
+  font-weight: 400;
+  position: relative;
+  padding-left: 25px;
+}
+.promotional-sms label::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #2561a8;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.promotional-sms input:checked + label::after {
+  content: "";
+  width: 4px;
+  height: 8px;
+  border: solid #2561a8;
+  border-width: 0 1px 1px 0;
+  transform: rotate(45deg) translateY(-50%);
+  position: absolute;
+  left: 3px;
+  top: 42%;
+}
+.verify-img {
+  width: 18px;
+  line-height: 1;
+}
+.verify-img img {
+  width: 100%;
+}
+.number-verified {
+  display: flex;
+  align-items: center;
+  margin-left: 2px;
+}
+.number-verified span {
+  color: #9c9c9c;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
 .people-img {
   position: absolute;
   top: 50%;
@@ -3412,6 +3463,35 @@ table tr th:last-child {
   font-size: 20px;
   color: #2561a8;
   font-weight: 700;
+}
+.otp-appoint input {
+  font-size: 16px;
+}
+.otp-appoint-input {
+  width: 36px !important;
+  margin-right: 10px !important;
+}
+.resend-otp p {
+  color: #9c9c9c;
+  font-size: 12px;
+}
+.resend-otp a {
+  color: #2561a8;
+  font-size: 12px;
+  display: block;
+}
+.resend-otp a:hover {
+  color: #2561a8;
+}
+.resend-otp {
+  margin: 10px 0 15px;
+}
+.edit-num,
+.edit-num:hover {
+  color: #2561a8;
+}
+.otp-appoint-height {
+  min-height: 219px;
 }
 
 @media screen and (max-width: 600px) {
