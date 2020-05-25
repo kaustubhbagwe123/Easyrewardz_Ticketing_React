@@ -205,6 +205,16 @@ class ChatSettings extends Component {
                           <Option value="H">H</Option>
                           <Option value="D">D</Option>
                         </Select>
+                        <Popover
+                        content={<> How many days to show chat history.</>}
+                        placement="bottom"
+                      >
+                        <img
+                          className="info-icon-cp"style={{visibility: "hidden"}}
+                          src={BlackInfoIcon}
+                          alt="info-icon"
+                        />
+                      </Popover>
                       </div>
                     </div>
                     <div className="chattxtdivcus">
