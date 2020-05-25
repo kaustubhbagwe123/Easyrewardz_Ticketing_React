@@ -88,6 +88,8 @@ class StoreModule extends Component {
       enabledAfterValidation: "",
       braodCastMaxClickValid: "",
       broadCastEnabledAfterValid: "",
+      campProviderValidation: "",
+      broadProviderValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -1228,6 +1230,20 @@ class StoreModule extends Component {
       this.setState({ BroadCastConfigData });
     }
   }
+  /// handle camapign validation
+  handleCheckCampaignValidation() {
+    if (this.state.campaignChannelData.smsFlag) {
+      if (this.state.campaignChannelData.providerName !== "") {
+        this.handleUpdateCampChannelData();
+      } else {
+        this.setState({
+          campProviderValidation: "Required",
+        });
+      }
+    } else {
+      this.handleUpdateCampChannelData();
+    }
+  }
   /// handle Campaign Channerl update data
   handleUpdateCampChannelData() {
     if (
@@ -1249,6 +1265,10 @@ class StoreModule extends Component {
           EmailFlag: this.state.campaignChannelData.emailFlag,
           MessengerFlag: this.state.campaignChannelData.messengerFlag,
           BotFlag: this.state.campaignChannelData.botFlag,
+          ProviderName:
+            this.state.campaignChannelData.providerName !== ""
+              ? this.state.campaignChannelData.providerName
+              : "",
         },
       })
         .then(function(res) {
@@ -1291,6 +1311,19 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
+  CheckBroadCastValidation() {
+    if (this.state.BroadCastConfigData.smsFlag) {
+      if (this.state.BroadCastConfigData.providerName !== "") {
+        this.handleUpdateBroadCastConfigData();
+      } else {
+        this.setState({
+          broadProviderValidation: "Required",
+        });
+      }
+    } else {
+      this.handleUpdateBroadCastConfigData();
+    }
+  }
   /// handle Broad cast Configuration update data
   handleUpdateBroadCastConfigData() {
     if (
@@ -1311,6 +1344,7 @@ class StoreModule extends Component {
           SmsFlag: this.state.BroadCastConfigData.smsFlag,
           EmailFlag: this.state.BroadCastConfigData.emailFlag,
           MessengerFlag: this.state.BroadCastConfigData.whatsappFlag,
+          ProviderName: this.state.BroadCastConfigData.providerName,
         },
       })
         .then(function(res) {
@@ -2180,11 +2214,29 @@ class StoreModule extends Component {
                                   </div>
                                   <input
                                     type="text"
-                                    name="maxClickAllowed"
+                                    name="providerName"
                                     autoComplete="off"
                                     placeholder="Provider name"
                                     maxLength={15}
+                                    value={
+                                      this.state.campaignChannelData
+                                        .providerName
+                                    }
+                                    onChange={this.CampCannelOnChange.bind(
+                                      this
+                                    )}
                                   />
+                                  {this.state.campaignChannelData
+                                    .providerName === "" && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.campProviderValidation}
+                                    </p>
+                                  )}
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
@@ -2335,7 +2387,7 @@ class StoreModule extends Component {
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
-                                  onClick={this.handleUpdateCampChannelData.bind(
+                                  onClick={this.handleCheckCampaignValidation.bind(
                                     this
                                   )}
                                 >
@@ -2503,11 +2555,29 @@ class StoreModule extends Component {
                                     </div>
                                     <input
                                       type="text"
-                                      name="maxClickAllowed"
+                                      name="providerName"
                                       autoComplete="off"
                                       placeholder="Provider name"
                                       maxLength={15}
+                                      value={
+                                        this.state.BroadCastConfigData
+                                          .providerName
+                                      }
+                                      onChange={this.BroadCastOnChange.bind(
+                                        this
+                                      )}
                                     />
+                                    {this.state.BroadCastConfigData
+                                      .providerName === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.broadProviderValidation}
+                                      </p>
+                                    )}
                                   </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
@@ -2640,7 +2710,7 @@ class StoreModule extends Component {
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
-                                  onClick={this.handleUpdateBroadCastConfigData.bind(
+                                  onClick={this.CheckBroadCastValidation.bind(
                                     this
                                   )}
                                 >
