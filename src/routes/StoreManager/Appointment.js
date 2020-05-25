@@ -62,7 +62,7 @@ class Appointment extends Component {
 
   handleSearchExpand() {
     this.setState({
-      searchExpand: !this.state.searchExpand,
+      searchExpand: true,
     });
   }
 
@@ -257,6 +257,10 @@ class Appointment extends Component {
     return (
       <div className="custom-tableak custom-table-ck custom-table-bg p-0">
         <div className="custom-tabs">
+          <a href="#!" className="back-butn" style={{ display: "none" }}>
+            <i class="arrow-left"></i>
+            Back
+          </a>
           <div className="d-flex">
             <div
               className={
@@ -313,7 +317,7 @@ class Appointment extends Component {
           <div className="appointment-top-right">
             <div className="butn d-flex align-items-center">
               <input
-                placeholder="Search by Appointment ID or Mobile No"
+                placeholder="Search by Mobile No or Appointment ID"
                 type="text"
                 className={
                   this.state.searchExpand
@@ -430,6 +434,9 @@ class Appointment extends Component {
           </div>
         </div>
         <div className="appoint-outer-pad">
+          <span className="appoint-search-res" style={{ display: "none" }}>
+            2 search result
+          </span>
           <div className="customer-count-block">
             <div className="vacancy-info">
               <div className="total-info">
@@ -846,7 +853,24 @@ class Appointment extends Component {
           </div>
           <div className="appnt-bottom-white appnt-bottom-white-update">
             <div className="appnt-input-group">
-              <label>No. of people entering</label>
+              <div className="row">
+                <div className="col-md-6">
+                  <label>
+                    People entered :{" "}
+                    <span className="font-weight-bold">03</span>
+                  </label>
+                </div>
+                <div className="col-md-6">
+                  <label>
+                    People Checkout :{" "}
+                    <span className="font-weight-bold">02</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="appnt-input-group">
+              <label>No. of people entering</label>{" "}
+              {/* here, entering or existing will come conditionally */}
               <div className="people-selection">
                 <span>1</span>
                 <span className="active">2</span>
@@ -864,8 +888,14 @@ class Appointment extends Component {
               <span>L88392</span>
             </div>
             <div className="text-center">
-              <button className="appoint-butn appoint-butn-blue">
+              {/* <button className="appoint-butn appoint-butn-blue">
                 Start Visit Time
+              </button> */}
+              {/* <button className="appoint-butn appoint-butn-red">
+                End Visit Time
+              </button> */}
+              <button className="appoint-butn appoint-butn-orange">
+                Partial Check Out
               </button>
               <br />
               <a

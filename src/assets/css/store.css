@@ -3113,8 +3113,8 @@ table tr th:last-child {
   margin-left: 0;
 }
 .appoint-search {
-  flex: 0 0 20px;
-  width: 20px;
+  flex: 0 0 16px;
+  width: 16px;
   display: inline-block;
   line-height: 1;
 }
@@ -3127,9 +3127,37 @@ table tr th:last-child {
   width: 0;
   margin-right: 0;
 }
+.appoint-input::placeholder {
+  color: #2561a8;
+  padding: 0;
+  font-weight: 400;
+}
 .appoint-input-full {
-  width: 100%;
-  margin-right: 10px;
+  width: 245px;
+  margin-right: 16px;
+  margin-left: 6px;
+}
+.back-butn {
+  background-color: #2561a8;
+  border-radius: 3px;
+  position: relative;
+  padding: 7px 15px;
+  width: 100px;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+}
+.back-butn:hover {
+  color: #fff;
+}
+.back-butn .arrow-left {
+  left: 15px;
+}
+.appoint-search-res {
+  font-weight: 700;
+  font-size: 12px;
+  display: block;
+  margin: 10px 0;
 }
 
 #create-appoint-popup {
@@ -3260,6 +3288,12 @@ table tr th:last-child {
 .appoint-butn-blue {
   background: #2561a8;
 }
+.appoint-butn-red {
+  background: #e02020;
+}
+.appoint-butn-orange {
+  background: #f37b2b;
+}
 .appoint-cancel {
   font-size: 12px;
   color: #000;
@@ -3312,6 +3346,7 @@ table tr th:last-child {
 }
 .appnt-bottom-white-update .appnt-input-group label {
   font-size: 14px;
+  font-weight: 400;
 }
 .people-selection span {
   background-color: #daddec;
@@ -3351,6 +3386,7 @@ table tr th:last-child {
 }
 .appnt-bottom-white-update .ticket-cut {
   height: 1px;
+  margin-top: 30px;
 }
 .appnt-bottom-white-update .ticket-cut::before {
   left: -35px;
@@ -3364,9 +3400,6 @@ table tr th:last-child {
   position: absolute;
   left: -15px;
   width: calc(100% + 30px);
-}
-.appnt-bottom-white-update .appnt-input-group {
-  margin-bottom: 39px;
 }
 .appoint-code {
   background-color: #f4f6f9;
