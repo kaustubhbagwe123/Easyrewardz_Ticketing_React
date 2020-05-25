@@ -2177,14 +2177,14 @@ class StoreModule extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
-                                    <input
-                                        type="text"
-                                        name="maxClickAllowed"
-                                        autoComplete="off"
-                                        placeholder="Provider name"
-                                        maxLength={15}
-                                      />
                                   </div>
+                                  <input
+                                    type="text"
+                                    name="maxClickAllowed"
+                                    autoComplete="off"
+                                    placeholder="Provider name"
+                                    maxLength={15}
+                                  />
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
@@ -2501,6 +2501,13 @@ class StoreModule extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
+                                    <input
+                                      type="text"
+                                      name="maxClickAllowed"
+                                      autoComplete="off"
+                                      placeholder="Provider name"
+                                      maxLength={15}
+                                    />
                                   </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
