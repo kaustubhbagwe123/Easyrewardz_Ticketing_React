@@ -41,6 +41,7 @@ class Appointment extends Component {
       appointTime: false,
       updateAppointModal: false,
       otp: "",
+      date: "",
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
