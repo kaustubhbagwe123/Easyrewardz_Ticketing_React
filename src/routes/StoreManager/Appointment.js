@@ -40,7 +40,8 @@ class Appointment extends Component {
       appointDate: "",
       appointTime: false,
       updateAppointModal: false,
-      date: ""
+      date: "",
+      searchItem: ""
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -67,6 +68,38 @@ class Appointment extends Component {
     this.setState({
       searchExpand: true,
     });
+    let self = this;
+    if(this.state.searchExpand === true){
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/SearchAppointment",
+      params: { 
+                searchText: this.state.searchItem, 
+                appointmentDate: this.state.date
+              },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            appointmentGridData: data,
+          });
+        } else {
+          self.setState({
+            appointmentGridData: [],
+          });
+        }
+        self.setState({
+          loading: false,
+        });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+    }
   }
 
   handleAppointDate(date) {
@@ -124,6 +157,10 @@ class Appointment extends Component {
         "YYYY-MM-DD"
       );
     }
+
+    this.setState({
+      date
+    });
 
     axios({
       method: "post",
@@ -255,6 +292,11 @@ class Appointment extends Component {
     });
   }
 
+  handleOnChangeSearch(e){
+    debugger;
+    this.setState({ searchItem: e.target.value});
+  }
+
   render() {
     const { Option } = Select;
     return (
@@ -327,6 +369,7 @@ class Appointment extends Component {
                     ? "appoint-input appoint-input-full"
                     : "appoint-input"
                 }
+                onChange={this.handleOnChangeSearch.bind(this)}
               />
               <a
                 href="#!"
