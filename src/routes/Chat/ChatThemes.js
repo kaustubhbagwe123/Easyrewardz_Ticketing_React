@@ -5,6 +5,7 @@ import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
+import { MyContext } from "./../../context";
 
 class ChatThemes extends Component {
   hide(e, id) {
@@ -19,6 +20,7 @@ class ChatThemes extends Component {
       document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const dataChatRules = [
       {
         id: "D1",
@@ -218,7 +220,18 @@ class ChatThemes extends Component {
       {
         Header: (
           <span>
-            Theme Code
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.themecode
+                                      }
+                                      else {
+                                        return "Theme Code"
+                                      }
+                                    })()
+                                  }
+                              
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
@@ -227,7 +240,17 @@ class ChatThemes extends Component {
       {
         Header: (
           <span>
-            Theme Name
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.themename
+                                      }
+                                      else {
+                                        return "Theme Name"
+                                      }
+                                    })()
+                                  }
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
@@ -236,14 +259,36 @@ class ChatThemes extends Component {
       {
         Header: (
           <span>
-            Activate/Deactivate
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.activateslashdeactivate
+                                      }
+                                      else {
+                                        return "Activate/Deactivate"
+                                      }
+                                    })()
+                                  }
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "deactive"
       },
       {
-        Header: <span>Actions</span>,
+        Header: <span>
+          
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.action
+                                      }
+                                      else {
+                                        return "Actions"
+                                      }
+                                    })()
+                                  }
+          </span>,
         accessor: "actiondept",
         Cell: row => {
           var ids = row.original["id"];
@@ -254,10 +299,34 @@ class ChatThemes extends Component {
                 <div className="d-flex">
                   <div>
                     <div className="">
-                      <label className="popover-header-text">EDIT THEME</label>
+                      <label className="popover-header-text">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themeedit
+                                      }
+                                      else {
+                                        return "EDIT THEME"
+                                      }
+                                    })()
+                                  }
+                        </label>
                     </div>
                     <div className="pop-over-div">
-                      <label className="edit-label-1">Theme Code</label>
+                      <label className="edit-label-1">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themecode
+                                      }
+                                      else {
+                                        return "Theme Code"
+                                      }
+                                    })()
+                                  }
+                        </label>
                       <input
                         type="text"
                         className="txt-edit-popover"
@@ -266,7 +335,20 @@ class ChatThemes extends Component {
                       />
                     </div>
                     <div className="pop-over-div">
-                      <label className="edit-label-1">Theme Name</label>
+                      <label className="edit-label-1">
+                        
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themecode
+                                      }
+                                      else {
+                                        return "Theme Name"
+                                      }
+                                    })()
+                                  }
+                        </label>
                       <input
                         type="text"
                         className="txt-edit-popover"
@@ -275,7 +357,19 @@ class ChatThemes extends Component {
                       />
                     </div>
                     <div className="pop-over-div" style={{ width: "170px" }}>
-                      <label className="edit-label-1">Theme Icon</label>
+                      <label className="edit-label-1">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themeicon
+                                      }
+                                      else {
+                                        return "Theme Icon"
+                                      }
+                                    })()
+                                  }
+                        </label>
                       <div className="custom-file txt-edit-popover">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">Theme.png</label>
@@ -285,14 +379,34 @@ class ChatThemes extends Component {
                     <div>
                       <a href="#!" className="pop-over-cancle canblue" onClick={() => this.hide(this, "edtpadding" + ids)}>CANCEL</a>
                       <button className="pop-over-button">
-                        SAVE
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.save
+                                      }
+                                      else {
+                                        return "SAVE"
+                                      }
+                                    })()
+                                  }
             </button>
                     </div>
                   </div>
                 </div>
               </div>} placement="bottom" trigger="click" >
                 <button className="react-tabel-button editre" id={ids} onClick={() => this.show(this, "edtpadding" + ids)}>
-                  EDIT
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.edit
+                                      }
+                                      else {
+                                        return "EDIT"
+                                      }
+                                    })()
+                                  }
                 </button>
               </Popover>
             </div>
@@ -305,15 +419,43 @@ class ChatThemes extends Component {
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path">
-            Chat
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.chat
+                                      }
+                                      else {
+                                        return "Chat"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Themes
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.themes
+                                      }
+                                      else {
+                                        return "Themes"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
 
@@ -331,27 +473,97 @@ class ChatThemes extends Component {
                   />
                   <div className="position-relative1">
                     <div className="pagi">
-                      <ul>
+                    <ul>
                         <li>
                           <a href={Demo.BLANK_LINK}>&lt;</a>
                         </li>
                         <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
+                          <a href={Demo.BLANK_LINK}>
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
+                            </a>
                         </li>
                         <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
+                          <a href={Demo.BLANK_LINK}>
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.two
+                                      }
+                                      else {
+                                        return "2"
+                                      }
+                                    })()
+                                  }
+                            </a>
                         </li>
                         <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
+                          <a href={Demo.BLANK_LINK}>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.three
+                                      }
+                                      else {
+                                        return "3"
+                                      }
+                                    })()
+                                  }
+                          </a>
                         </li>
                         <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
+                          <a href={Demo.BLANK_LINK}>
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.four
+                                      }
+                                      else {
+                                        return "4"
+                                      }
+                                    })()
+                                  }
+                            </a>
                         </li>
                         <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
+                          <a href={Demo.BLANK_LINK}>
+
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.five
+                                      }
+                                      else {
+                                        return "5"
+                                      }
+                                    })()
+                                  }
+                            </a>
                         </li>
                         <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
+                          <a href={Demo.BLANK_LINK}>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.six
+                                      }
+                                      else {
+                                        return "6"
+                                      }
+                                    })()
+                                  }
+                          </a>
                         </li>
                         <li>
                           <a href={Demo.BLANK_LINK}>&gt;</a>
@@ -359,12 +571,60 @@ class ChatThemes extends Component {
                       </ul>
                     </div>
                     <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
+                    <select>
+                        <option>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.thirty
+                                      }
+                                      else {
+                                        return "30"
+                                      }
+                                    })()
+                                  }
+
+                        </option>
+                        <option>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.fifty
+                                      }
+                                      else {
+                                        return "50"
+                                      }
+                                    })()
+                                  }
+
+                        </option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.hundred
+                                      }
+                                      else {
+                                        return "100"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
-                      <p>Items per page</p>
+                      <p>
+
+{
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.p.itemperpage
+                }
+                else {
+                  return "Items per page"
+                }
+              })()
+            }
+</p>
                     </div>
                   </div>
                 </div>
@@ -372,9 +632,35 @@ class ChatThemes extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">CREATE THEME</label>
+                    <label className="create-department">
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.createtheme
+                                      }
+                                      else {
+                                        return "CREATE THEME"
+                                      }
+                                    })()
+                                  }
+                              
+                      </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Theme Code</label>
+                      <label className="designation-name">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themecode
+                                      }
+                                      else {
+                                        return "Theme Code"
+                                      }
+                                    })()
+                                  }
+                        
+                        </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -384,7 +670,19 @@ class ChatThemes extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Theme Name</label>
+                        <label className="reports-to">
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themename
+                                      }
+                                      else {
+                                        return "Theme Name"
+                                      }
+                                    })()
+                                  }
+                          </label>
                         <input
                           type="text"
                           className="txt-1"
@@ -394,7 +692,30 @@ class ChatThemes extends Component {
                       </div>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Theme Style <span className="chat-file-upl">(CSS File Only)</span></label>
+                      <label className="reports-to">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themestyles
+                                      }
+                                      else {
+                                        return "Theme Style"
+                                      }
+                                    })()
+                                  }
+                      <span className="chat-file-upl">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.themecss
+                                      }
+                                      else {
+                                        return "(CSS File Only)"
+                                      }
+                                    })()
+                                  }
+                        </span></label>
                       <div className="custom-file">
                         <input type="file" className="custom-file-input" />
                         <label className="custom-file-label">
@@ -404,7 +725,16 @@ class ChatThemes extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="CreateADDBtn">
-                        ADD
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.add
+                                      }
+                                      else {
+                                        return "ADD"
+                                      }
+                                    })()
+                                  }
                       </button>
                     </div>
                   </div>
@@ -418,4 +748,5 @@ class ChatThemes extends Component {
   }
 }
 
+ChatThemes.contextType = MyContext;
 export default ChatThemes;

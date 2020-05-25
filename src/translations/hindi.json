@@ -278,7 +278,46 @@
       "composeyouremail":"अपना ईमेल लिखें",
       "claimapprover":"दावे को मंजूरी",
       "validemail":"कृपया मान्य ईमेल आईडी दर्ज करें",
-      "commentsbystore":"स्टोर द्वारा टिप्पणी"
+      "commentsbystore":"स्टोर द्वारा टिप्पणी",
+      "brandlogo":"ब्रांड लोगो",
+      "language": "भाषा",
+      "theme": "विषय",
+      "theme1": "विषय १",
+      "theme2": "विषय २",
+      "theme3": "विषय ३",
+      "addtheme":"उन्हें जोड़ें",
+      "themecode":"थीम कोड",
+      "themename":"थीम का नाम",
+      "themestyle":"थीम शैली (सीएसएस फ़ाइल केवल)",
+      "themestyles":"थीम शैली",
+      "themeedit":"संपादित करें",
+      "themeicon":"थीम आइकन",
+      "totalcolon":"संपूर्ण :",
+      "inqueuecolon":"कतार मे :",
+      "ongoingcolon":"चल रही है :",
+      "good":"अच्छा",
+      "bad":"खराब",
+      "editelement":"संपादित करें",
+      "elementcode":"तत्व कोड",
+      "elementname":"तत्व नाम",
+      "elementicon":"तत्व चिह्न",
+      "createelement":"तत्व बनाएँ",
+      "editlanguage":"भाषा संपादित करें",
+      "languagecode":"भाषा कोड",
+      "languagename":"भाषा का नाम",
+      "languageicon":"भाषा चिह्न",
+      "createlanguage":"भाषा बनाएं",
+      "rulecode":"नियम कोड",
+      "rulename":"नियम का नाम",
+      "descriptionslashcontent":"विवरण / सामग्री",
+      "options":"विकल्प",
+      "createrule":"नियम बनाएं",
+      "createtheme":"उन्हें बनाएँ",
+      "myhistricalchat":"मेरी ऐतिहासिक चैट"
+     
+   
+      
+      
     },
     "text":{
       "brand": "ब्रांड :",
@@ -385,7 +424,31 @@
       "crmrole":"सी आर एम भूमिका",
       "claimcategory":"दावा श्रेणी",
       "claimsubcategory":"उप श्रेणी का दावा करें",
-      "claimissuetype":"दावा जारी करने का प्रकार"
+      "claimissuetype":"दावा जारी करने का प्रकार",
+      "teammember":"टीम के सदस्य",
+      "responsespeed":"प्रतिक्रिया की गति",
+      "chatsatisfactionscore":"चैट संतुष्टि स्कोर",
+      "totalchatcoloneveryhours":"कुल चैट - हर घंटे",
+      "missedchat":"चैट छूट गई",
+      "thirty":"३०",
+      "eighteencolonnewvisitor":"१८: नया आगंतुक",
+      "twelvecolonreturningvisitor":"१२: रिटर्निंग विजिटर",
+      "itemperpage":"आइटम प्रति पेज",
+      "ongoingchat":"चल रही चैट",
+      "newmesaage":"नए संदेश",
+      "nonewmessage":"कोई नया संदेश नहीं",
+      "newchats":"नई चैट",
+      "claimsvsinvoiceandarticles":"दावा बनाम चालान और लेख",
+      "createdbynaman":"नमन द्वारा बनाया गया",
+      "twohrsago":"२ घंटे पहले",
+      "assignedtovikas":"विकास को सौंपा",
+      "onepointfivehrsago":"१.५ घंटे पहले",
+      "updatedbyvikas":"विकास द्वारा अद्यतन",
+      "onehrsago":"१ घंटे पहले",
+      "thirtymins":"३० मिनट",
+      "onehrs":"१ घंटे",
+      "twohrs":"२ घंटे"
+      
     },
     "small":{
       "moreinsights": "अधिक जानकारी देखें",
@@ -394,7 +457,23 @@
       "closed": "बन्द है",
       "search":"खोज",
       "duetoday": "आज के लिए",
-      "overdue": "ओवर के कारण"
+      "overdue": "ओवर के कारण",
+      "backtomaindashboard":"मुख्य डैशबोर्ड पर वापस जाएँ",
+      "totalagent":"कुल एजेंट",
+      "loggedin":"में लॉग इन",
+      "offline":"ऑफ़लाइन",
+      "sec":"सेकंड",
+      "firstresponse":"पहला परिणाम",
+      "overallresponse":"कभी-कभी परिणाम",
+      "min":"मिन",
+      "waitinqueue":"कतार में प्रतीक्षा करे",
+      "assignedandnotreplied":"मान्यता प्राप्त और लागू नहीं",
+      "ocr":"ओसीआर",
+      "chattoticket":"टिकेट पर क्लिक करें",
+      "fivecolongold":"०५: सोना",
+      "sixcolonplatinum":"0६: प्लैटिनम",
+      "onecolonsilver":"0१: स्लिवर"
+     
     },
     "a":{
       "billgraph": "टिकट का बिल ग्राफ",
@@ -454,7 +533,18 @@
       "email":"ईमेल",
       "storedetails":"विवरण स्टोर करें",
       "profiledetails":"प्रोफ़ाइल विवरण",
-      "mappedclaimcategory":"मैप किए गए दावे श्रेणी"
+      "mappedclaimcategory":"मैप किए गए दावे श्रेणी",
+      "one":"१",
+      "two":"२",
+      "three":"३",
+      "four":"४",
+      "five":"५",
+      "six":"६",
+      "seven":"७",
+      "eight":"८",
+      "nine":"९",
+      "ten":"१०"
+      
     },
     "span":{
       "status": "स्थिति",
@@ -586,7 +676,41 @@
       "campignname":"अभियान का नाम",
       "alerttype":"अलर्ट प्रकार",
       "userdesignation":"उपयोगकर्ता पदनाम",
-      "reporteename":"रिपोर्ट का नाम"
+      "reporteename":"रिपोर्ट का नाम",
+      "bata1":"बाटा १",
+      "bata2":"बाटा २",
+      "bata3":"बाटा ३",
+      "bata4":"बाटा ४",
+      "agentcolon":"एजेंट :",
+      "datarangecolon":"तिथि सीमा :",
+      "zeroone":"०१",
+      "zerotwo":"०२",
+      "zerothree":"०३",
+      "zerofour":"०४",
+      "zerofive":"०५",
+      "zerosix":"०६",
+      "zeroseven":"०७",
+      "zeroeight":"०८",
+      "zeronine":"०९",
+      "ten":"१०",
+      "seventysix":"७६",
+      "fortyfive":"४५",
+      "elementicon":"तत्व चिह्न",
+      "elementcode":"तत्व कोड",
+      "elementname":"तत्व नाम",
+      "activateslashdeactivate":"सक्रिय / निष्क्रिय करें",
+      "languageicon":"भाषा चिह्न",
+      "languagecode":"भाषा कोड",
+      "languagename":"भाषा का नाम",
+      "rulecode":"नियम कोड",
+      "rulename":"नियम का नाम",
+      "editrule":"नियम संपादित करें",
+      "themecode":"थीम कोड",
+      "themename":"थीम का नाम",
+      "themeedit":"संपादित करें",
+      "themecss":"(सीएसएस फ़ाइल केवल)",
+      "assignedto":"को सौंपना"
+
     },
     "div": {
       "viewtickets": "टिकट देखें",
@@ -660,7 +784,10 @@
       "submitclaim":"दावा प्रस्तुत करें",
       "setpassword":"पासवर्ड सेट करें",
       "recoverpassword":"गोपनीय शब्द पुन प्राप्त करे",
-      "addrole":"भूमिका जोड़ें"
+      "addrole":"भूमिका जोड़ें",
+      "myhistricalchat":"मेरी ऐतिहासिक चैट"
+     
+     
     },
     "strong": {
       "hierarchy": "अनुक्रम",
@@ -754,7 +881,13 @@
       "itemmaster":"आइटम मास्टर",
       "slatemplatedepart":"SLA टेम्पलेट-विभाग",
       "fileuploadlog":"फ़ाइल अपलोड लॉग",
-      "usermaster":"उपयोगकर्ता मास्टर"
+      "usermaster":"उपयोगकर्ता मास्टर",
+      "chat":"चैट",
+      "ConfigureBrand":"ब्रांड को कॉन्फ़िगर करें",
+      "element":"तत्त्व",
+      "language":"भाषा",
+      "rules":"नियम",
+      "themes":"विषय-वस्तु"
     },
     "mybutton": {
       "edit":"संपादित करें"
@@ -767,6 +900,33 @@
       "customername":"ग्राहक का नाम",
       "phonenumber":"फ़ोन नंबर",
       "alternatenumber":"वैकल्पिक नंबर",
-      "claimstatus":"दावा की स्थिति"
+      "claimstatus":"दावा की स्थिति",
+      "twohundred":"२००",
+      "ninetyfive":"९५",
+      "onehundredfive":"१०५"
+    },
+    "option":{
+      "active":"सक्रिय",
+      "inactive":"निष्क्रिय",
+      "last15mint":"पिछले १५ मिनट",
+      "last10mint":"पिछले १० मिनट",
+      "last5mint":"पिछले ५ मिनट",
+      "all":"सब",
+      "thirty":"३०",
+      "fifty":"५०",
+      "hundred":"१००",
+      "taskwithclaim":"दावा के साथ कार्य",
+      "yes":"हाँ",
+      "no":"नहीं",
+      "assignto":"को आवंटित",
+      "taskstatus":"कार्य की स्थिति",
+      "claimcategory":"दावा श्रेणी",
+      "claimsubcategory":"दावा उप श्रेणी",
+      "claimissuetype":"दावा जारी करने का प्रकार",
+      "claimstatus":"दावा की स्थिति",
+      "taskpriority":"कार्य प्राथमिकता",
+      "taskwithticket":"कार्य टिकट के साथ",
+      "taskmapped":"टास्क मैप किया गया"
+     
     }
   }

@@ -3162,7 +3162,20 @@ class StoreDashboard extends Component {
               </div>
               <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards grapwid">
-                  <p className="card-head">Claim Vs Invoice &amp; Article</p>
+                  <p className="card-head">
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.claimsvsinvoiceandarticles
+                                      }
+                                      else {
+                                        return "Claim Vs Invoice & Article"
+                                      }
+                                    })()
+                                  }
+                  
+                  </p>
                   {this.state.DashboardClaimVsInvoiceArticle.length > 0 ? (
                     <ClaimVsInvoice
                       data={this.state.DashboardClaimVsInvoiceArticle}
@@ -3392,9 +3405,44 @@ class StoreDashboard extends Component {
                                     name="Task_Claim"
                                     onChange={this.hanldetoggleOnChange}
                                   >
-                                    <option value="">Task With Claim</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value="">
+                                    
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskwithclaim
+                                      }
+                                      else {
+                                        return "Task With Claim"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="true">
+                                    
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="false">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -3414,7 +3462,19 @@ class StoreDashboard extends Component {
                                     value={this.state.selectAssignTo}
                                     onChange={this.handleDropdownOnchange}
                                   >
-                                    <option>Assign To</option>
+                                    <option>
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.assignto
+                                      }
+                                      else {
+                                        return "Assign To"
+                                      }
+                                    })()
+                                  }
+
+                                    </option>
                                     {this.state.assignToData !== null &&
                                       this.state.assignToData.map((item, i) => (
                                         <option
@@ -3434,7 +3494,10 @@ class StoreDashboard extends Component {
                                     name="SelectedCreatedBy"
                                     onChange={this.handleDropdownOnchange}
                                   >
-                                    <option>Task Created By</option>
+                                    <option>Task Created By
+
+
+                                    </option>
                                     {this.state.createdUser !== null &&
                                       this.state.createdUser.map((item, j) => (
                                         <option
@@ -3466,7 +3529,18 @@ class StoreDashboard extends Component {
                                     name="selectedStatus"
                                     onChange={this.hanldetoggleOnChange}
                                   >
-                                    <option value="0">Task Status</option>
+                                    <option value="0">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskstatus
+                                      }
+                                      else {
+                                        return "Task Status"
+                                      }
+                                    })()
+                                  }
+                                    </option>
                                     {this.state.storeStatus !== null &&
                                       this.state.storeStatus.map((item, i) => (
                                         <option
@@ -3489,9 +3563,42 @@ class StoreDashboard extends Component {
                                     name="Task_Ticket"
                                     onChange={this.hanldetoggleOnChange}
                                   >
-                                    <option value="">Task With Ticket</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
+                                    <option value="">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskwithticket
+                                      }
+                                      else {
+                                        return "Task With Ticket"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="true">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="false">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -3501,7 +3608,19 @@ class StoreDashboard extends Component {
                                     onChange={this.handleDropdownOnchange}
                                     value={this.state.selectedPriority}
                                   >
-                                    <option>Task Priority</option>
+                                    <option>
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskpriority
+                                      }
+                                      else {
+                                        return "Task Priority"
+                                      }
+                                    })()
+                                  }
+
+                                    </option>
                                     {this.state.priorityData !== null &&
                                       this.state.priorityData.map((item, i) => (
                                         <option
@@ -3557,7 +3676,17 @@ class StoreDashboard extends Component {
                                     }
                                   >
                                     <option value={""} selected>
-                                      Claim Category
+                                     
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.claimcategory
+                                      }
+                                      else {
+                                        return "Claim Category"
+                                      }
+                                    })()
+                                  }
                                     </option>
                                     {this.state.categoryData !== null &&
                                       this.state.categoryData.map((item, i) => (
@@ -3579,7 +3708,17 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["claimsubcat"]}
                                   >
                                     <option value={""} selected>
-                                      Claim Sub Category
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.claimsubcategory
+                                      }
+                                      else {
+                                        return "Claim Sub Category"
+                                      }
+                                    })()
+                                  }
                                     </option>
                                     {this.state.subCategoryData !== null &&
                                       this.state.subCategoryData.map(
@@ -3606,7 +3745,17 @@ class StoreDashboard extends Component {
                                     }
                                   >
                                     <option value={""} selected>
-                                      Claim Issue Type
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.claimissuetype
+                                      }
+                                      else {
+                                        return "Claim Issue Type"
+                                      }
+                                    })()
+                                  }
                                     </option>
                                     {this.state.issueTypeData !== null &&
                                       this.state.issueTypeData.map(
@@ -3647,7 +3796,16 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["assignTo"]}
                                   >
                                     <option value={""} selected>
-                                      Assign To
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.assignto
+                                      }
+                                      else {
+                                        return "Assign To"
+                                      }
+                                    })()
+                                  }
                                     </option>
                                     {this.state.userData !== null &&
                                       this.state.userData.map((item, i) => (
@@ -3689,7 +3847,17 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["claimstatus"]}
                                   >
                                     <option value={""} selected>
-                                      Claim Status
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.claimstatus
+                                      }
+                                      else {
+                                        return "Claim Status"
+                                      }
+                                    })()
+                                  }
                                     </option>
                                     {this.state.storeStatus !== null &&
                                       this.state.storeStatus.map((item, i) => {
@@ -3712,10 +3880,42 @@ class StoreDashboard extends Component {
                                     value={this.state.searchData["taskmapped"]}
                                   >
                                     <option value={""} selected>
-                                      Task Mapped
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskmapped
+                                      }
+                                      else {
+                                        return "Task Mapped"
+                                      }
+                                    })()
+                                  }
                                     </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
+                                    <option value="true">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="false">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                                    </option>
                                   </select>
                                 </div>
                                 <div className="col-md-3">
@@ -3727,10 +3927,42 @@ class StoreDashboard extends Component {
                                     }
                                   >
                                     <option value={""} selected>
-                                      Ticket Mapped
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskmapped
+                                      }
+                                      else {
+                                        return "Ticket Mapped"
+                                      }
+                                    })()
+                                  }
                                     </option>
-                                    <option value={1}>Yes</option>
-                                    <option value={0}>No</option>
+                                    <option value="true">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="false">
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                                    </option>
                                   </select>
                                 </div>
 
@@ -3825,7 +4057,19 @@ class StoreDashboard extends Component {
                           },
                         },
                         {
-                          Header: <span>Task Title</span>,
+                          Header: <span>
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.tasktitle
+                                      }
+                                      else {
+                                        return "Task Title"
+                                      }
+                                    })()
+                                  }
+                            </span>,
                           accessor: "tasktitle",
                           sortable: false,
                         },
@@ -3843,7 +4087,19 @@ class StoreDashboard extends Component {
                                 "Department"
                               )}
                             >
-                              Department{" "}
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.department
+                                      }
+                                      else {
+                                        return "Department"
+                                      }
+                                    })()
+                                  }
+                              
+                              {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3871,7 +4127,19 @@ class StoreDashboard extends Component {
                                 "Store Name"
                               )}
                             >
-                              Store Name{" "}
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.storename
+                                      }
+                                      else {
+                                        return "Store Name"
+                                      }
+                                    })()
+                                  }
+                              
+                              {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3899,7 +4167,20 @@ class StoreDashboard extends Component {
                                 "Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.creationon
+                                      }
+                                      else {
+                                        return "Creation On"
+                                      }
+                                    })()
+                                  }
+
+
+                              {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3921,31 +4202,181 @@ class StoreDashboard extends Component {
                                   <div className="insertpop1">
                                     <ul className="dash-creation-popup">
                                       <li className="title">
-                                        Creation details
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.li.creationdetails
+                                      }
+                                      else {
+                                        return "Creation details"
+                                      }
+                                    })()
+                                  }
                                       </li>
                                       <li>
-                                        <p>Created by Naman</p>
-                                        <p>2 Hrs ago</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createdbynaman
+                                      }
+                                      else {
+                                        return "Created by Naman"
+                                      }
+                                    })()
+                                  }
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.twohrsago
+                                      }
+                                      else {
+                                        return "2 Hrs ago"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Assigned to Vikas</p>
-                                        <p>1.5 Hrs ago</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.assignedtovikas
+                                      }
+                                      else {
+                                        return "Assigned to Vikas"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                          
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.onepointfivehrsago
+                                      }
+                                      else {
+                                        return "1.5 Hrs ago"
+                                      }
+                                    })()
+                                  }
+                                          </p>
                                       </li>
                                       <li>
-                                        <p>Updated by Vikas</p>
-                                        <p>1 Hr ago</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updatedbyvikas
+                                      }
+                                      else {
+                                        return "Updated by Vikas"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.onehrsago
+                                      }
+                                      else {
+                                        return "1 Hr ago"
+                                      }
+                                    })()
+                                  }
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Response time remaining by</p>
-                                        <p>30 mins</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.responsetimeremainingby
+                                      }
+                                      else {
+                                        return "SaResponse time remaining bye"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.thirtymins
+                                      }
+                                      else {
+                                        return "30 mins"
+                                      }
+                                    })()
+                                  }
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.responseoverdueby
+                                      }
+                                      else {
+                                        return "Response overdue by"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.onehrs
+                                      }
+                                      else {
+                                        return "1 Hr"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.resolutionoverdueby
+                                      }
+                                      else {
+                                        return "Resolution overdue by"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.twohrs
+                                      }
+                                      else {
+                                        return "2 Hrs"
+                                      }
+                                    })()
+                                  }
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
@@ -3975,7 +4406,18 @@ class StoreDashboard extends Component {
                                 "Assign to"
                               )}
                             >
-                              Assign to
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.assignedto
+                                      }
+                                      else {
+                                        return "Assign to"
+                                      }
+                                    })()
+                                  }
+                                  
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -4005,7 +4447,18 @@ class StoreDashboard extends Component {
                       data={this.state.cliamSearchData}
                       columns={[
                         {
-                          Header: <span>ID</span>,
+                          Header: <span>
+                             {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.id
+                                      }
+                                      else {
+                                        return "ID"
+                                      }
+                                    })()
+                                  }
+                          </span>,
                           accessor: "claimID",
                         },
                         {
@@ -4022,7 +4475,18 @@ class StoreDashboard extends Component {
                                 "Status"
                               )}
                             >
-                              Status{" "}
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.status
+                                      }
+                                      else {
+                                        return "Status"
+                                      }
+                                    })()
+                                  }
+                              {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -4058,7 +4522,19 @@ class StoreDashboard extends Component {
                           },
                         },
                         {
-                          Header: <span>Claim Issue Type</span>,
+                          Header: <span>
+                                   {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.claimissuetype
+                                      }
+                                      else {
+                                        return "Claim Issue Type"
+                                      }
+                                    })()
+                                  }
+
+                          </span>,
                           accessor: "issueTypeName",
                         },
                         {
@@ -4075,7 +4551,19 @@ class StoreDashboard extends Component {
                                 "Category"
                               )}
                             >
-                              Category{" "}
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.category
+                                      }
+                                      else {
+                                        return "Category"
+                                      }
+                                    })()
+                                  }
+                              
+                              {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -4097,7 +4585,19 @@ class StoreDashboard extends Component {
                                     <div className="dash-creation-popup-cntr">
                                       <div>
                                         <b>
-                                          <p className="title">Category</p>
+                                          <p className="title">
+                                            
+                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.category
+                                      }
+                                      else {
+                                        return "Category"
+                                      }
+                                    })()
+                                  }
+                                            </p>
                                         </b>
                                         <p className="sub-title">
                                           {row.original.categoryName}
@@ -4105,7 +4605,19 @@ class StoreDashboard extends Component {
                                       </div>
                                       <div>
                                         <b>
-                                          <p className="title">Sub Category</p>
+                                          <p className="title">
+                                            
+                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.subcategory
+                                      }
+                                      else {
+                                        return "Sub Category"
+                                      }
+                                    })()
+                                  }
+                                            </p>
                                         </b>
                                         <p className="sub-title">
                                           {row.original.subCategoryName}
@@ -4113,7 +4625,19 @@ class StoreDashboard extends Component {
                                       </div>
                                       <div>
                                         <b>
-                                          <p className="title">Type</p>
+                                          <p className="title">
+                                            
+                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.type
+                                      }
+                                      else {
+                                        return "Type"
+                                      }
+                                    })()
+                                  }
+                                            </p>
                                         </b>
                                         <p className="sub-title">
                                           {row.original.issueTypeName}
@@ -4175,7 +4699,18 @@ class StoreDashboard extends Component {
                                 "Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.creationon
+                                      }
+                                      else {
+                                        return "Creation On"
+                                      }
+                                    })()
+                                  }
+                              {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -4204,29 +4739,160 @@ class StoreDashboard extends Component {
                                           {"Created by " +
                                             row.original.createdByName}
                                         </p>
-                                        <p>2 Hrs ago</p>
+                                        <p>
+                                         
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.twohrsago
+                                      }
+                                      else {
+                                        return "2 Hrs ago"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                       <li>
                                         <p>
-                                          Assigned to {row.original.assignTo}
+                                           
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.assignedto
+                                      }
+                                      else {
+                                        return "Assigned to"
+                                      }
+                                    })()
+                                  }
+                                          {row.original.assignTo}
                                         </p>
-                                        <p>1.5 Hrs ago</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.onepointfivehrsago
+                                      }
+                                      else {
+                                        return "1.5 Hrs ago"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Updated by Vikas</p>
-                                        <p>1 Hr ago</p>
+                                        <p>
+                                          
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updatedbyvikas
+                                      }
+                                      else {
+                                        return "Updated by Vikas"
+                                      }
+                                    })()
+                                  }
+                                          </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.onehrsago
+                                      }
+                                      else {
+                                        return "1 Hr ago"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Response time remaining by</p>
-                                        <p>30 mins</p>
+                                        <p>
+
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.responsetimeremainingby
+                                      }
+                                      else {
+                                        return "Response time remaining by"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.thirtymins
+                                      }
+                                      else {
+                                        return "30 mins"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Response overdue by</p>
-                                        <p>1 Hr</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.responseoverdueby
+                                      }
+                                      else {
+                                        return "Response overdue by"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.onehrs
+                                      }
+                                      else {
+                                        return "1 Hr"
+                                      }
+                                    })()
+                                  }
+                                        </p>
                                       </li>
                                       <li>
-                                        <p>Resolution overdue by</p>
-                                        <p>2 Hrs</p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.resolutionoverdueby
+                                      }
+                                      else {
+                                        return "Resolution overdue by"
+                                      }
+                                    })()
+                                  }
+                                        </p>
+                                        <p>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.twohrs
+                                      }
+                                      else {
+                                        return "2 Hrs"
+                                      }
+                                    })()
+                                  }
+
+                                        </p>
                                       </li>
                                     </ul>
                                   </div>
@@ -4342,10 +5008,32 @@ class StoreDashboard extends Component {
                         }}
                         onClick={this.handleClearSearch.bind(this)}
                       >
-                        clear search
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.clearsearch
+                                      }
+                                      else {
+                                        return "clear search"
+                                      }
+                                    })()
+                                  }
                       </a>
                       <div className="filter-type">
-                        <p>FILTER BY TYPE</p>
+                        <p>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.filterbytype
+                                      }
+                                      else {
+                                        return "FILTER BY TYPE"
+                                      }
+                                    })()
+                                  }
+
+                        </p>
                         <input
                           type="text"
                           style={{ display: "block" }}
@@ -4383,7 +5071,19 @@ class StoreDashboard extends Component {
                             />
                             <label htmlFor={"fil-open"}>
                               <span className="table-btn table-blue-btn">
-                                ALL
+                                
+
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.all
+                                      }
+                                      else {
+                                        return "ALL"
+                                      }
+                                    })()
+                                  }
+
                               </span>
                             </label>
                           </div>

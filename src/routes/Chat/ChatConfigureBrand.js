@@ -6,6 +6,7 @@ import ChatTheme1 from "./../../assets/Images/chattheme1.png";
 import ChatBataLogo from "./../../assets/Images/chatbatalogo.png";
 import PlusPopUp from "./../../assets/Images/Pluspopup.png";
 import Modal from "react-responsive-modal";
+import { MyContext } from "./../../context";
 
 class ChatConfigureBrand extends Component {
   constructor(props) {
@@ -23,19 +24,50 @@ class ChatConfigureBrand extends Component {
     this.setState({ PlusButtonModal: false });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
-            Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path">
-            Chat
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.chat
+                                      }
+                                      else {
+                                        return "Chat"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Configure Brand
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.ConfigureBrand
+                                      }
+                                      else {
+                                        return "Configure Brand"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
 
@@ -46,10 +78,34 @@ class ChatConfigureBrand extends Component {
                 <div className="table-cntr table-height">
                   <div className="createHierarchyMask">
                     <div className="chatconfigpadding">
-                      <label className="create-department">CREATE BRAND</label>
+                      <label className="create-department">
+                       
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.createbrand
+                                      }
+                                      else {
+                                        return "CREATE BRAND"
+                                      }
+                                    })()
+                                  }
+                        </label>
                       <div className="divSpace">
                         <div className="">
-                          <label className="designation-name">Brand Code</label>
+                          <label className="designation-name">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.brandcode
+                                      }
+                                      else {
+                                        return "Brand Code"
+                                      }
+                                    })()
+                                  }
+                            </label>
                           <input
                             type="text"
                             className="txt-1"
@@ -60,7 +116,19 @@ class ChatConfigureBrand extends Component {
                       </div>
                       <div className="divSpace">
                         <div className="">
-                          <label className="reports-to">Brand Name</label>
+                          <label className="reports-to">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.brandname
+                                      }
+                                      else {
+                                        return "Brand Name"
+                                      }
+                                    })()
+                                  }
+                            </label>
                           <input
                             type="text"
                             className="txt-1"
@@ -72,7 +140,19 @@ class ChatConfigureBrand extends Component {
 
                       <div className="divSpace">
                         <div className="">
-                          <label className="reports-to">Brand Logo</label>
+                          <label className="reports-to">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.brandlogo
+                                      }
+                                      else {
+                                        return "Brand Logo"
+                                      }
+                                    })()
+                                  }
+                            </label>
                           <input
                             type="file"
                             className="txt-1"
@@ -93,17 +173,65 @@ class ChatConfigureBrand extends Component {
 
                       <div className="divSpace">
                         <div className="">
-                          <label className="reports-to">Language</label>
+                          <label className="reports-to">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.language
+                                      }
+                                      else {
+                                        return "Language"
+                                      }
+                                    })()
+                                  }
+                            </label>
                           <select className="txt-1 edit-dropDwon dropdown-setting">
-                            <option>Active</option>
-                            <option>Inactive</option>
+                            <option>
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                              </option>
+                            <option>
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                              </option>
                           </select>
                         </div>
                       </div>
 
                       <div className="divSpace">
                         <div className="">
-                          <label className="reports-to">Theme</label>
+                          <label className="reports-to">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.theme
+                                      }
+                                      else {
+                                        return "Theme"
+                                      }
+                                    })()
+                                  }
+                            </label>
                           <div className="ChatThemeflex">
                             <div>
                               <img
@@ -111,7 +239,19 @@ class ChatConfigureBrand extends Component {
                                 alt="store-settings"
                                 className="ChatConfigtheme"
                               />
-                              <label>Theme1</label>
+                              <label>
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.theme1
+                                      }
+                                      else {
+                                        return "Theme1"
+                                      }
+                                    })()
+                                  }
+                                </label>
                             </div>
                             <div>
                               <img
@@ -119,7 +259,19 @@ class ChatConfigureBrand extends Component {
                                 alt="store-settings"
                                 className="ChatConfigtheme"
                               />
-                              <label>Theme2</label>
+                              <label>
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.theme2
+                                      }
+                                      else {
+                                        return "Theme2"
+                                      }
+                                    })()
+                                  }
+                                </label>
                             </div>
                             <div>
                               <img
@@ -140,12 +292,33 @@ class ChatConfigureBrand extends Component {
                               >
                                 <div className="chatconfigpadding chatconfigpadd">
                                   <label className="create-department">
-                                    ADD THEME
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.addtheme
+                                      }
+                                      else {
+                                        return "ADD THEME"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                   <div className="divSpace">
                                     <div className="">
                                       <label className="designation-name">
-                                        Theme Code
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themecode
+                                      }
+                                      else {
+                                        return "Theme Code"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="text"
@@ -158,7 +331,19 @@ class ChatConfigureBrand extends Component {
                                   <div className="divSpace">
                                     <div className="">
                                       <label className="reports-to">
-                                        Theme Name
+                                        
+
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themename
+                                      }
+                                      else {
+                                        return "Theme Name"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="text"
@@ -171,7 +356,17 @@ class ChatConfigureBrand extends Component {
                                   <div className="divSpace">
                                     <div className="">
                                       <label className="reports-to">
-                                        Theme Style(CSS File Only)
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.themestyle
+                                      }
+                                      else {
+                                        return "Theme Style(CSS File Only)"
+                                      }
+                                    })()
+                                  }
                                       </label>
                                       <input
                                         type="file"
@@ -182,12 +377,34 @@ class ChatConfigureBrand extends Component {
                                   </div>
                                   <div className="chatconfigbtn">
                                     <button className="CreateADDBtn" onClick={this.HandlePlusButtonModalClose.bind(this)}>
-                                     ADD
+                                     
+                                     {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.add
+                                      }
+                                      else {
+                                        return "ADD"
+                                      }
+                                    })()
+                                  }
                                     </button>
                                   </div>
                                 </div>
                               </Modal>
-                              <label>Theme3</label>
+                              <label>
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.theme3
+                                      }
+                                      else {
+                                        return "Theme3"
+                                      }
+                                    })()
+                                  }
+                                </label>
                             </div>
                           </div>
                         </div>
@@ -195,7 +412,16 @@ class ChatConfigureBrand extends Component {
 
                       <div className="chatconfigbtn">
                         <button className="CreateADDBtn">
-                          ADD
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.add
+                                      }
+                                      else {
+                                        return "ADD"
+                                      }
+                                    })()
+                                  }
                         </button>
                       </div>
                     </div>
@@ -209,5 +435,5 @@ class ChatConfigureBrand extends Component {
     );
   }
 }
-
+ChatConfigureBrand.contextType = MyContext;
 export default ChatConfigureBrand;

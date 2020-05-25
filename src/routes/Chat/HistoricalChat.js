@@ -3,6 +3,7 @@ import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 import ChatThumbImg from "./../../assets/Images/chatthumb.png";
 import { Drawer } from "antd";
 import ReactTable from "react-table";
+import { MyContext } from "./../../context";
 
 class HistoricalChat extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class HistoricalChat extends Component {
     };
   };
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     const datachat = [
       {
         Chatname: <label className="chatnamereact">Abhishek Verma</label>,
@@ -158,7 +160,19 @@ class HistoricalChat extends Component {
           <div className="col-lg-3 p-0">
             <div className="chatbot-left">
               <div className="chat-cntr">
-                <p>Ongoing Chats (03)</p>
+                <p> 
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.ongoingchat
+                                      }
+                                      else {
+                                        return "Ongoing Chats"
+                                      }
+                                    })()
+                                  }
+                              (03)
+                </p>
                 <div className="chat-left-height">
                   <div className="chat-info">
                     <div className="d-flex align-items-center">
@@ -170,7 +184,20 @@ class HistoricalChat extends Component {
                     </div>
                     <div>
                       <div className="mess-time">
-                        <p>2 New Messages</p>
+                        <p>2 
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.newmesaage
+                                      }
+                                      else {
+                                        return "New Messages"
+                                      }
+                                    })()
+                                  }
+                              
+                        </p>
                         <p>56s</p>
                       </div>
                     </div>
@@ -185,7 +212,18 @@ class HistoricalChat extends Component {
                     </div>
                     <div>
                       <div className="mess-time">
-                        <p>1 New Messages</p>
+                        <p>1 
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.newmesaage
+                                      }
+                                      else {
+                                        return "New Messages"
+                                      }
+                                    })()
+                                  }
+                          </p>
                         <p>1m:36s</p>
                       </div>
                     </div>
@@ -200,7 +238,19 @@ class HistoricalChat extends Component {
                     </div>
                     <div>
                       <div className="mess-time">
-                        <p>No New Messages</p>
+                        <p>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.nonewmessage
+                                      }
+                                      else {
+                                        return "No New Messages"
+                                      }
+                                    })()
+                                  }
+
+                        </p>
                         <p>1m:36s</p>
                       </div>
                     </div>
@@ -208,7 +258,18 @@ class HistoricalChat extends Component {
                 </div>
               </div>
               <div className="chat-cntr">
-                <p>New Chats (02)</p>
+                <p>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.newchats
+                                      }
+                                      else {
+                                        return "New Chats"
+                                      }
+                                    })()
+                                  }
+                   (02)</p>
                 <div className="chat-left-height">
                   <div className="chat-info">
                     <div className="d-flex align-items-center">
@@ -220,7 +281,20 @@ class HistoricalChat extends Component {
                     </div>
                     <div>
                       <div className="mess-time">
-                        <p>Waiting for reply</p>
+                        <p>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.waitingforreply
+                                      }
+                                      else {
+                                        return "Waiting for reply"
+                                      }
+                                    })()
+                                  }
+                              
+
+                        </p>
                         <p>56s</p>
                       </div>
                     </div>
@@ -235,7 +309,20 @@ class HistoricalChat extends Component {
                     </div>
                     <div>
                       <div className="mess-time">
-                        <p>Waiting for reply</p>
+                        <p>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.waitingforreply
+                                      }
+                                      else {
+                                        return "Waiting for reply"
+                                      }
+                                    })()
+                                  }
+                              
+
+                        </p>
                         <p>1m:36s</p>
                       </div>
                     </div>
@@ -243,11 +330,34 @@ class HistoricalChat extends Component {
                 </div>
               </div>
             </div>
-            <button className="butn-inv hist-btn">My historical chat</button>
+            <button className="butn-inv hist-btn">
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.myhistricalchat
+                                      }
+                                      else {
+                                        return "My historical chat"
+                                      }
+                                    })()
+                                  }
+            </button>
           </div>
           <div className="col-lg-9 p-0">
             <div className="chat-historicalHdr">
-              <label className="mychatHistoriLbl">My Historical Chat</label>
+              <label className="mychatHistoriLbl">
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.myhistricalchat
+                                      }
+                                      else {
+                                        return "My Historical Chat"
+                                      }
+                                    })()
+                                  }
+                </label>
               <div className="action-part d-flex align-items-center chatSrchHder">
                 <input
                   type="text"
@@ -315,4 +425,6 @@ class HistoricalChat extends Component {
   }
 }
 
+
+HistoricalChat.contextType = MyContext;
 export default HistoricalChat;
