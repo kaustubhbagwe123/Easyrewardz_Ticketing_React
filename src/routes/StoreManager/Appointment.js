@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import OTPInput, { ResendOTP } from "otp-input-react";
 import { Table, Select } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
@@ -11,6 +12,7 @@ import Calling from "./../../assets/Images/calling.png";
 import People from "./../../assets/Images/people.png";
 import WhiteCalendar from "./../../assets/Images/white-calendar.png";
 import WhiteClock from "./../../assets/Images/white-clock.png";
+import NumberVerified from "./../../assets/Images/number-verified.png";
 import WhitePeople from "./../../assets/Images/white-people.png";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
@@ -38,6 +40,7 @@ class Appointment extends Component {
       appointDate: "",
       appointTime: false,
       updateAppointModal: false,
+      otp: "",
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -94,6 +97,13 @@ class Appointment extends Component {
   handleUpdateAppointmentClose() {
     this.setState({
       updateAppointModal: false,
+    });
+  }
+
+  setOTP(e) {
+    debugger;
+    this.setState({
+      otp: e,
     });
   }
 
@@ -254,6 +264,22 @@ class Appointment extends Component {
 
   render() {
     const { Option } = Select;
+    const renderButton = (buttonProps) => {
+      return (
+        <div className="resend-otp">
+          <p {...buttonProps}>
+            {buttonProps.remainingTime !== 0 &&
+              `Resend in ${buttonProps.remainingTime} sec`}
+          </p>
+          <a href="#!" {...buttonProps}>
+            {buttonProps.remainingTime === 0 && "Resend"}
+          </a>
+        </div>
+      );
+    };
+    const renderTime = () => {
+      return null;
+    };
     return (
       <div className="custom-tableak custom-table-ck custom-table-bg p-0">
         <div className="custom-tabs">
@@ -377,57 +403,118 @@ class Appointment extends Component {
                 </div>
               </div>
               <div className="appnt-bottom-white">
-                <div className="appnt-input-group">
-                  <label>Name</label>
-                  <input type="text" placeholder="Your name" />
-                </div>
-                <div className="appnt-input-group">
-                  <label>Phone no.</label>
-                  <input type="tel" placeholder="0123456789" />
-                </div>
-                <div className="appnt-input-group">
-                  <label>Date &amp; Time</label>
-                  <div className="row time-date-sep">
-                    <div className="col-md-6">
-                      <DatePicker
-                        selected={this.state.appointDate}
-                        onChange={(date) => this.handleAppointDate(date)}
-                        placeholderText="00 - 00 - 0000"
-                        value={this.state.appointDate}
-                        // maxDate={new Date()}
-                        showMonthDropdown
-                        showYearDropdown
-                        className="appoint-date"
-                        dateFormat="dd - MM - yyyy"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <select
-                        className={this.state.appointTime ? "" : "appoint-time"}
-                        onChange={this.handleAppointTime.bind(this)}
+                <div className="d-none">
+                  <div className="appnt-input-group">
+                    <label>Name</label>
+                    <input type="text" placeholder="Your name" />
+                  </div>
+                  <div className="appnt-input-group">
+                    <div className="d-flex">
+                      <label>Phone no.</label>
+                      <div
+                        className="number-verified"
+                        style={{ display: "none" }}
                       >
-                        <option hidden>00pm - 00pm</option>
-                        <option>2pm - 3pm</option>
-                        <option>3pm - 4pm</option>
-                        <option>4pm - 5pm</option>
-                      </select>
+                        <div className="verify-img">
+                          <img src={NumberVerified} alt="number verified" />
+                        </div>
+                        <span>verified</span>
+                      </div>
+                    </div>
+                    <input type="tel" placeholder="0123456789" />
+                  </div>
+                  <div className="appnt-input-group">
+                    <label>Date &amp; Time</label>
+                    <div className="row time-date-sep">
+                      <div className="col-md-6">
+                        <DatePicker
+                          selected={this.state.appointDate}
+                          onChange={(date) => this.handleAppointDate(date)}
+                          placeholderText="00 - 00 - 0000"
+                          value={this.state.appointDate}
+                          // maxDate={new Date()}
+                          showMonthDropdown
+                          showYearDropdown
+                          className="appoint-date"
+                          dateFormat="dd - MM - yyyy"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <select
+                          className={
+                            this.state.appointTime ? "" : "appoint-time"
+                          }
+                          onChange={this.handleAppointTime.bind(this)}
+                        >
+                          <option hidden>00pm - 00pm</option>
+                          <option>2pm - 3pm</option>
+                          <option>3pm - 4pm</option>
+                          <option>4pm - 5pm</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                  <div className="appnt-input-group">
+                    <div className="row">
+                      <div className="col-md">
+                        <label>No. of members</label>
+                        <input type="number" placeholder="00" min="1" />
+                      </div>
+                      <div className="col-md">
+                        <label>Loyalty Member</label>
+                        <div className="promotional-sms">
+                          <input type="checkbox" id="promo-sms" />
+                          <label htmlFor="promo-sms">Promotional SMS</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <button className="appoint-butn">book appointment</button>{" "}
+                    {/* book appointment OR generate otp */}
+                    <br />
+                    <a
+                      href="#!"
+                      className="appoint-cancel"
+                      onClick={this.handleCreateAppointmentClose.bind(this)}
+                    >
+                      Cancel
+                    </a>
+                  </div>
                 </div>
-                <div className="appnt-input-group">
-                  <label>No. of members</label>
-                  <input type="number" placeholder="00" min="1" />
-                </div>
-                <div className="text-center">
-                  <button className="appoint-butn">book appointment</button>
-                  <br />
-                  <a
-                    href="#!"
-                    className="appoint-cancel"
-                    onClick={this.handleCreateAppointmentClose.bind(this)}
-                  >
-                    Cancel
-                  </a>
+                <div className="otp-appoint">
+                  <div className="otp-appoint-height">
+                    <div className="appnt-input-group">
+                      <label>Enter 4 digit OTP send to 9717419325</label>
+                      <OTPInput
+                        value={this.state.otp}
+                        onChange={this.setOTP.bind(this)}
+                        OTPLength={4}
+                        otpType="number"
+                        inputClassName="otp-appoint-input"
+                      />
+                      <ResendOTP
+                        maxTime={180}
+                        renderButton={renderButton}
+                        renderTime={renderTime}
+                        handelResendClick={() => console.log("Resend clicked")}
+                      />
+                      <a href="#!" className="edit-num">
+                        Edit Number
+                      </a>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <button className="appoint-butn">Submit OTP</button>
+                    <br />
+                    <a
+                      href="#!"
+                      className="appoint-cancel"
+                      onClick={this.handleCreateAppointmentClose.bind(this)}
+                    >
+                      Cancel
+                    </a>
+                  </div>
                 </div>
               </div>
             </Modal>
