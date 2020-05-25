@@ -2212,7 +2212,8 @@ class StoreModule extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <input
+                                  <div className="cusinput">
+                                    <input
                                     type="text"
                                     name="providerName"
                                     autoComplete="off"
@@ -2237,6 +2238,7 @@ class StoreModule extends Component {
                                       {this.state.campProviderValidation}
                                     </p>
                                   )}
+                                  </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
@@ -2553,7 +2555,8 @@ class StoreModule extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
-                                    <input
+                                    <div className="cusinput">
+                                      <input
                                       type="text"
                                       name="providerName"
                                       autoComplete="off"
@@ -2578,6 +2581,7 @@ class StoreModule extends Component {
                                         {this.state.broadProviderValidation}
                                       </p>
                                     )}
+                                    </div>
                                   </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">

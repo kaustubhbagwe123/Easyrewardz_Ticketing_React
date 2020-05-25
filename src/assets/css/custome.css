@@ -11929,3 +11929,9 @@ font-size: 12px !important;
   margin-right: auto !important;
   min-width: 40%;
 }
+.cusinput {
+  position: absolute;
+    width: 135px;
+    right: -135px;
+    top: 50px;
+}
