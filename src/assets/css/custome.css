@@ -9727,6 +9727,56 @@ table tr th:last-child {
   border: 0;
 }
 
+
+.broembox {
+  background-color: #F3F3F3;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+}
+.broembox p {
+float: left;
+}
+.broembox img {
+float: right;
+height: 20px;
+margin-top: 13px;
+cursor: pointer;
+}
+.broembox label {
+font-size: 16px;
+font-weight: bolder;
+}
+.broembox span {
+font-size: 12px;
+font-style: italic;
+color: #666;
+}
+#totalconcount-popup {
+border-radius: 5px;
+position: relative;
+padding: 30px;
+padding-bottom: 5px;
+width: 400px;
+}
+.counttab td {
+padding: 0 0 20px 0;
+text-align: center;
+font-size: 12px;
+}
+.counttab label {
+font-size: 17px;
+  color: #2561a8;
+}
+.counttab label {
+font-size: 17px;
+  color: #2561a8;
+}
+.counttab span {
+font-size: 12px !important;
+  color: #333;
+}
+
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
     flex: 0 0 33.333333%;
@@ -11363,6 +11413,10 @@ table tr th:last-child {
   .main-logo {
     width: 160px !important;
   }
+  #totalconcount-popup {
+    padding: 30px 15px;
+    width: 90%;
+}
   /* program code ends */
 }
 
@@ -11881,4 +11935,27 @@ table tr th:last-child {
 .rejectmodal-popup {
   margin-right: auto !important;
   min-width: 40%;
+}
+.cusinput {
+  position: absolute;
+    width: 135px;
+    right: -135px;
+    top: 50px;
+}
+.chatabcus table td {
+  color: #333;
+}
+.chatabcus .custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.chatabcus table tbody tr {
+  border-bottom: none;
+}
+.chatabcus .ant-table-tbody > tr > td {
+  border-bottom: none;
+}
+.chattxtdivcus {
+  display: flex;
+  width: 100%;
 }

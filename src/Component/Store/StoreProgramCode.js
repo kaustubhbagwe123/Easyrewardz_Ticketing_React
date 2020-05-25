@@ -48,7 +48,7 @@ class StoreProgramCode extends Component {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "X-Authorized-Programcode": X_Authorized_Programcode,
-          "X-Authorized-Domainname": X_Authorized_Domainname,
+          "X-Authorized-Domainname": X_Authorized_Domainname, 
         },
       })
         .then(function(res) {
@@ -61,6 +61,7 @@ class StoreProgramCode extends Component {
                 encProgramCode: encProgramCode,
               });
             }, 500);
+            
             self.setState({
               encProgramCode: { programCode: encProgramCode },
             });

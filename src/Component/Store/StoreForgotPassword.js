@@ -18,9 +18,20 @@ class StoreForgotPassword extends Component {
 
     this.state = {
       emailId: "",
+      programCode: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validator = new SimpleReactValidator();
+  }
+  componentDidMount() {
+    debugger;
+
+    var finalEncProgramCode = this.props.location.state.programCode;
+    if (finalEncProgramCode) {
+      this.setState({
+        programCode: finalEncProgramCode,
+      });
+    }
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -28,8 +39,8 @@ class StoreForgotPassword extends Component {
 
     if (this.validator.allValid()) {
       let self = this;
-      const { programCode } = this.state;
-      var encProgramCode = encryption(programCode, "enc");
+      
+      var encProgramCode = this.state.programCode;
       let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // validate email
       axios({

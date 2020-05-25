@@ -2588,7 +2588,7 @@
   font-family: lato;
   /* width: 180px; */
   /* width: 190px; */
-  width: 200px;
+  width: 260px;
   text-align: center;
 }
 .cmpaign-channel-table {
@@ -3446,4 +3446,30 @@
   font-size: 12px !important;
   font-weight: 700;
   color: #4a4a4a;
+}
+.chat-drop-down {
+  display: inline-flex;
+}
+.chat-drop-down .ant-select-arrow {
+  display: block !important;
+}
+.chatsetngtxt {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  color: #000;
+  display: block;
+  border: 0;
+  padding: 11px 15px;
+  margin-bottom: 10px;
+}
+.chattxtdiv {
+  display: inline-block;
+  /* margin: 0px 30px 0px 30px; */
+  width: 100%;
+}
+
+.chat-storemng {
+  color: #EB4D4B;
+  font-weight: bold !important;
 }

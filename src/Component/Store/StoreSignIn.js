@@ -48,6 +48,7 @@ class StoreSignIn extends Component {
     debugger;
     if (this.props.location.encProgramCode) {
       var finalEncProgramCode = this.props.location.encProgramCode;
+
       if (finalEncProgramCode) {
         this.setState({
           programCode: finalEncProgramCode,
@@ -289,7 +290,13 @@ class StoreSignIn extends Component {
                 <br />
                 <p className="mb-0 text-muted">
                   <Link
-                    to="storeForgotpassword"
+                    // to="storeForgotpassword"
+                    to={{
+                      pathname: "storeForgotpassword",
+                      state: {
+                        programCode: this.state.programCode,
+                      },
+                    }}
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                      {

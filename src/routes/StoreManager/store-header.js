@@ -57,6 +57,7 @@ import moment from "moment";
 import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { Table } from "antd";
 
 // const socket = io.connect("http://localhost:4000");
 // var isSocketReady=1;
@@ -137,6 +138,45 @@ class Header extends Component {
       suggestionText: "",
       suggestionModalMob: false,
       availableSlot: 0,
+      isHistoricalChat: false,
+      historicalChatData: [
+        {
+          chatID: 1,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 2,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 3,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 4,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 5,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+        {
+          chatID: 6,
+          customerName: "Kaustubh",
+          time: "12 Jan, 03:30 PM",
+          message: "Lorem ipsum, or lipsum as it is sometimes.",
+        },
+      ],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -1218,6 +1258,8 @@ class Header extends Component {
           searchCardData: [],
           messageData: [],
           isSendClick: false,
+          isHistoricalChat: false,
+          isDownbtn: true,
         });
         this.handleGetChatMessagesList(id);
       } else {
@@ -1250,6 +1292,8 @@ class Header extends Component {
           searchCardData: [],
           messageData: [],
           isSendClick: false,
+          isHistoricalChat: false,
+          isDownbtn: true,
         });
         if (count === 0) {
           this.handleGetChatMessagesList(id);
@@ -1532,6 +1576,14 @@ class Header extends Component {
 
   onCloseMobSuggestionModal = () => {
     this.setState({ suggestionModalMob: false });
+  };
+
+  handleHistTabClick = (e) => {
+    this.setState({
+      isHistoricalChat: true,
+      isDownbtn: false,
+    });
+    
   };
 
   render() {
@@ -2160,6 +2212,12 @@ class Header extends Component {
                             <div>
                               <div className="mess-time">
                                 <p
+                                  className={"chat-storemng "}
+                                  title="Store Manager"
+                                >
+                                  {chat.storeManagerName}
+                                </p>
+                                <p
                                   style={{
                                     fontWeight:
                                       chat.messageCount > 0 ? "bold" : "400",
@@ -2228,6 +2286,21 @@ class Header extends Component {
                           </div>
                         ))}
                     </div>
+                  </div>
+                  <div className="chat-hist">
+                    <li className="nav-item">
+                      <a
+                        className="nav-link"
+                        data-toggle="tab"
+                        href="#my-historical-chat"
+                        role="tab"
+                        aria-controls="my-historical-chat"
+                        aria-selected="false"
+                        onClick={this.handleHistTabClick.bind(this)}
+                      >
+                        MY HISTORICAL CHAT
+                      </a>
+                    </li>
                   </div>
                 </div>
                 {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
@@ -2448,76 +2521,113 @@ class Header extends Component {
               </div>
               <div className="col-lg-8 p-0">
                 <div className="chatbot-right">
-                  <div className="row" style={{ margin: "0" }}>
-                    <div className="chatdivtitle">
-                      <label className="chattitlelbl">
-                        {this.state.customerName}
-                      </label>
-                    </div>
-                    {this.state.isDownbtn ? (
-                      <div className="chatcontentRow">
+                  {this.state.isHistoricalChat !== true ? (
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="chatdivtitle">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <li className="nav-item">
+                            <a
+                              className={"nav-link active chattitletab"}
+                              data-toggle="tab"
+                              href="#current-chat"
+                              role="tab"
+                              aria-controls="current-chat"
+                              aria-selected="true"
+                            >
+                              Current Chat
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link chattitletab"
+                              data-toggle="tab"
+                              href="#recent-chat"
+                              role="tab"
+                              aria-controls="recent-chat"
+                              aria-selected="true"
+                            >
+                              Recent Chat
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="tab-content chattabtitle">
                         <div
-                          className="chatcontentDiv"
-                          ref={(div) => {
-                            this.messageList = div;
-                          }}
+                          className="tab-pane fade show active"
+                          id="current-chat"
+                          role="tabpanel"
+                          aria-labelledby="current-chat"
                         >
-                          {this.state.messageData !== null
-                            ? this.state.messageData.map((item, i) => {
-                                return (
-                                  <div
-                                    key={i}
-                                    className={
-                                      item.byCustomer
-                                        ? "chat-trail-cntr"
-                                        : "chat-trail-cntr chat-trail-cntr-right"
-                                    }
-                                  >
-                                    <div className="chat-trail-img">
-                                      <span
-                                        className="chat-initial"
-                                        alt="face image"
-                                        title={
-                                          item.byCustomer
-                                            ? item.customerName
-                                            : this.state.UserName
-                                        }
-                                      >
-                                        {item.byCustomer
-                                          ? item.customerName
-                                              .split(" ")
-                                              .map((n) => n[0])
-                                              .join("")
-                                              .toUpperCase()
-                                          : this.state.UserName.split(" ")
-                                              .map((n) => n[0])
-                                              .join("")
-                                              .toUpperCase()}
-                                      </span>
-                                      {/* <img
+                          {this.state.isDownbtn ? (
+                            <div className="chatcontentRow">
+                              <div
+                                className="chatcontentDiv"
+                                ref={(div) => {
+                                  this.messageList = div;
+                                }}
+                              >
+                                {this.state.messageData !== null
+                                  ? this.state.messageData.map((item, i) => {
+                                      return (
+                                        <div
+                                          key={i}
+                                          className={
+                                            item.byCustomer
+                                              ? "chat-trail-cntr"
+                                              : "chat-trail-cntr chat-trail-cntr-right"
+                                          }
+                                        >
+                                          <div className="chat-trail-img">
+                                            <span
+                                              className="chat-initial"
+                                              alt="face image"
+                                              title={
+                                                item.byCustomer
+                                                  ? item.customerName
+                                                  : this.state.UserName
+                                              }
+                                            >
+                                              {item.byCustomer
+                                                ? item.customerName
+                                                    .split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()
+                                                : this.state.UserName.split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()}
+                                            </span>
+                                            {/* <img
                                       src={DummyFace2}
                                       alt="face image"
                                       title={item.customerName}
                                     /> */}
-                                    </div>
-                                    <div className="chat-trail-chat-cntr">
-                                      <p className="chat-trail-chat pd-0">
-                                        {ReactHtmlParser(
-                                          item.message
-                                            .replace("col-md-2", "col-md-4")
-                                            .replace("col-md-10", "col-md-8")
-                                        )}
-                                      </p>
-                                      <span className="chat-trail-time">
-                                        {item.chatDate + " "}
-                                        {item.chatTime}
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              })
-                            : null}
-                          {/* <div className="chat-trail-cntr">
+                                          </div>
+                                          <div className="chat-trail-chat-cntr">
+                                            <p className="chat-trail-chat pd-0">
+                                              {ReactHtmlParser(
+                                                item.message
+                                                  .replace(
+                                                    "col-md-2",
+                                                    "col-md-4"
+                                                  )
+                                                  .replace(
+                                                    "col-md-10",
+                                                    "col-md-8"
+                                                  )
+                                              )}
+                                            </p>
+                                            <span className="chat-trail-time">
+                                              {item.chatDate + " "}
+                                              {item.chatTime}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      );
+                                    })
+                                  : null}
+                                {/* <div className="chat-trail-cntr">
                             <div className="chat-trail-img">
                               <img src={DummyFace1} alt="face image" />
                             </div>
@@ -2526,136 +2636,140 @@ class Header extends Component {
                               <span className="chat-trail-time">56s</span>
                             </div>
                           </div> */}
-                        </div>
-                      </div>
-                    ) : null}
-                    <div
-                      className="chatcontentdivtab chat-tabs-desktop"
-                      style={{
-                        height: !this.state.isDownbtn ? "80%" : "",
-                      }}
-                    >
-                      {this.state.customerName !== "" ? (
-                        <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.toggle.one
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#message-tab"
-                              role="tab"
-                              aria-controls="message-tab"
-                              aria-selected="true"
-                              onClick={this.handleTabClick.bind(this, 1)}
-                              id="one"
-                            >
-                              MESSAGE
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.toggle.two
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#card-tab"
-                              role="tab"
-                              aria-controls="card-tab"
-                              aria-selected="false"
-                              onClick={this.handleTabClick.bind(this, 2)}
-                              id="two"
-                            >
-                              CARD
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.toggle.three
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#recommended-list-tab"
-                              role="tab"
-                              aria-controls="recommended-list-tab"
-                              aria-selected="false"
-                              onClick={this.handleTabClick.bind(this, 3)}
-                              id="three"
-                            >
-                              RECOMMENDED LIST
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.toggle.four
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#schedule-visit-tab"
-                              role="tab"
-                              aria-controls="schedule-visit-tab"
-                              aria-selected="false"
-                              // onClick={this.handleGetTimeSlot.bind(this)}
-                              onClick={this.handleTabClick.bind(this, 4)}
-                              id="four"
-                            >
-                              SCHEDULE VISIT
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.toggle.five
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              data-toggle="tab"
-                              href="#generate-payment-link-tab"
-                              role="tab"
-                              aria-controls="generate-payment-link-tab"
-                              aria-selected="false"
-                              onClick={this.handleTabClick.bind(this, 5)}
-                              id="five"
-                            >
-                              GENERATE PAYMENT LINK
-                            </a>
-                          </li>
-                        </ul>
-                      ) : null}
-                      <div className="tab-content">
-                        {/* --------Message Tab----- */}
-                        <div
-                          className={
-                            this.state.customerName !== "" &&
-                            this.state.toggle.one
-                              ? "tab-pane fade active show"
-                              : "tab-pane fade"
-                          }
-                          id="message-tab"
-                          role="tabpanel"
-                          aria-labelledby="message-tab"
-                        >
-                          <div className="message-div">
-                            <span className="message-initial">
-                              {this.state.UserName.charAt(0).toUpperCase()}
-                            </span>
-                            <textarea
-                              placeholder="Search to get suggestions..."
-                              value={this.state.message}
-                              onChange={this.handleOnChangeCKEditor.bind(this)}
-                            ></textarea>
-                            <p className="cls-charcount">
-                              {this.state.remainingCount}
-                            </p>
-                            {/* <CKEditor
+                              </div>
+                            </div>
+                          ) : null}
+                          <div
+                            className="chatcontentdivtab chat-tabs-desktop"
+                            style={{
+                              height: !this.state.isDownbtn ? "80%" : "",
+                            }}
+                          >
+                            {this.state.customerName !== "" ? (
+                              <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.one
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#message-tab"
+                                    role="tab"
+                                    aria-controls="message-tab"
+                                    aria-selected="true"
+                                    onClick={this.handleTabClick.bind(this, 1)}
+                                    id="one"
+                                  >
+                                    MESSAGE
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.two
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#card-tab"
+                                    role="tab"
+                                    aria-controls="card-tab"
+                                    aria-selected="false"
+                                    onClick={this.handleTabClick.bind(this, 2)}
+                                    id="two"
+                                  >
+                                    CARD
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.three
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#recommended-list-tab"
+                                    role="tab"
+                                    aria-controls="recommended-list-tab"
+                                    aria-selected="false"
+                                    onClick={this.handleTabClick.bind(this, 3)}
+                                    id="three"
+                                  >
+                                    RECOMMENDED LIST
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.four
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#schedule-visit-tab"
+                                    role="tab"
+                                    aria-controls="schedule-visit-tab"
+                                    aria-selected="false"
+                                    // onClick={this.handleGetTimeSlot.bind(this)}
+                                    onClick={this.handleTabClick.bind(this, 4)}
+                                    id="four"
+                                  >
+                                    SCHEDULE VISIT
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className={
+                                      this.state.toggle.five
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    data-toggle="tab"
+                                    href="#generate-payment-link-tab"
+                                    role="tab"
+                                    aria-controls="generate-payment-link-tab"
+                                    aria-selected="false"
+                                    onClick={this.handleTabClick.bind(this, 5)}
+                                    id="five"
+                                  >
+                                    GENERATE PAYMENT LINK
+                                  </a>
+                                </li>
+                              </ul>
+                            ) : null}
+                            <div className="tab-content">
+                              {/* --------Message Tab----- */}
+                              <div
+                                className={
+                                  this.state.customerName !== "" &&
+                                  this.state.toggle.one
+                                    ? "tab-pane fade active show"
+                                    : "tab-pane fade"
+                                }
+                                id="message-tab"
+                                role="tabpanel"
+                                aria-labelledby="message-tab"
+                              >
+                                <div className="message-div">
+                                  <span className="message-initial">
+                                    {this.state.UserName.charAt(
+                                      0
+                                    ).toUpperCase()}
+                                  </span>
+                                  <textarea
+                                    placeholder="Search to get suggestions..."
+                                    value={this.state.message}
+                                    onChange={this.handleOnChangeCKEditor.bind(
+                                      this
+                                    )}
+                                  ></textarea>
+                                  <p className="cls-charcount">
+                                    {this.state.remainingCount}
+                                  </p>
+                                  {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
                                 (CKEDITOR.disableAutoInline = true)
                               }
@@ -2687,61 +2801,67 @@ class Header extends Component {
                                 ],
                               }}
                             /> */}
-                            {this.state.isMessage !== "" && (
-                              <p
-                                style={{
-                                  color: "red",
-                                  marginBottom: "0px",
-                                }}
-                              >
-                                {this.state.isMessage}
-                              </p>
-                            )}
-                            {this.state.messageSuggestionData !== null &&
-                              this.state.messageSuggestionData.length > 0 &&
-                              this.state.messageSuggestionData.length > 0 && (
-                                <div className="suggestions-cntr">
+                                  {this.state.isMessage !== "" && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.isMessage}
+                                    </p>
+                                  )}
                                   {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.map(
-                                      (item, i) => (
-                                        <div
-                                          className={
-                                            this.state.chkSuggestion[i + 1] ===
-                                            1
-                                              ? "suggestions-tick"
-                                              : ""
-                                          }
-                                          key={i}
-                                          // onClick={this.handleSaveChatMessages.bind(
-                                          //   this,
-                                          //   item.suggestionText,
-                                          //   i + 1,
-                                          //   "",
-                                          //   ""
-                                          // )}
-                                          onClick={this.onOpenSuggestionModal.bind(
-                                            this,
-                                            item.suggestionText,
-                                            i + 1
+                                    this.state.messageSuggestionData.length >
+                                      0 &&
+                                    this.state.messageSuggestionData.length >
+                                      0 && (
+                                      <div className="suggestions-cntr">
+                                        {this.state.messageSuggestionData !==
+                                          null &&
+                                          this.state.messageSuggestionData.map(
+                                            (item, i) => (
+                                              <div
+                                                className={
+                                                  this.state.chkSuggestion[
+                                                    i + 1
+                                                  ] === 1
+                                                    ? "suggestions-tick"
+                                                    : ""
+                                                }
+                                                key={i}
+                                                // onClick={this.handleSaveChatMessages.bind(
+                                                //   this,
+                                                //   item.suggestionText,
+                                                //   i + 1,
+                                                //   "",
+                                                //   ""
+                                                // )}
+                                                onClick={this.onOpenSuggestionModal.bind(
+                                                  this,
+                                                  item.suggestionText,
+                                                  i + 1
+                                                )}
+                                                // onClick={this.handleSaveChatMessages.bind(
+                                                //   this,
+                                                //   item.suggestionText,
+                                                //   i
+                                                // )}
+                                              >
+                                                <Tooltip
+                                                  placement="left"
+                                                  title={item.suggestionText}
+                                                >
+                                                  <span>
+                                                    {item.suggestionText}
+                                                  </span>
+                                                </Tooltip>
+                                              </div>
+                                            )
                                           )}
-                                          // onClick={this.handleSaveChatMessages.bind(
-                                          //   this,
-                                          //   item.suggestionText,
-                                          //   i
-                                          // )}
-                                        >
-                                          <Tooltip
-                                            placement="left"
-                                            title={item.suggestionText}
-                                          >
-                                            <span>{item.suggestionText}</span>
-                                          </Tooltip>
-                                        </div>
-                                      )
+                                      </div>
                                     )}
-                                </div>
-                              )}
-                            {/* {this.state.messageSuggestionData !== null &&
+                                  {/* {this.state.messageSuggestionData !== null &&
                               this.state.messageSuggestionData.length > 0 &&
                               this.state.messageSuggestionData.length > 0 && (
                                 <div className="custom-ticket-title-suggestions">
@@ -2761,582 +2881,322 @@ class Header extends Component {
                                     )}
                                 </div>
                               )} */}
-                            {this.state.storeAgentDetail.length !== 0 &&
-                            this.state.storeAgentDetail[0].suggestion === 1 ? (
-                              <div
-                                className="mobile-ck-send"
-                                onClick={this.handleMessageSuggestion.bind(
-                                  this
-                                )}
-                                title={"Search"}
-                              >
-                                {/* <img src={Assign} alt="send img" /> */}
-                                <img src={SuggSearch} alt="send img" />
-                              </div>
-                            ) : null}
-                            {this.state.storeAgentDetail.length !== 0 &&
-                            this.state.storeAgentDetail[0].freeText === 1 ? (
-                              <div
-                                className="mobile-ck-send-btn"
-                                onClick={this.handleSaveChatMessages.bind(
-                                  this,
-                                  this.state.message,
-                                  0,
-                                  "",
-                                  ""
-                                )}
-                                title={"Send"}
-                              >
-                                <img src={Assign} alt="send img" />
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                        {/* --------Card Tab----- */}
-                        <div
-                          className={
-                            this.state.toggle.two
-                              ? "tab-pane fade active show"
-                              : "tab-pane fade"
-                          }
-                          id="card-tab"
-                          role="tabpanel"
-                          aria-labelledby="card-tab"
-                        >
-                          <div>
-                            <div
-                              className="input-group searchtxt-new"
-                              style={{ background: "none" }}
-                            >
-                              <input
-                                type="text"
-                                className="search-customerAddSrch searchtxt"
-                                placeholder="Search ItemId/artcile/SKU ID"
-                                name="Search"
-                                maxLength="100"
-                                autoComplete="off"
-                                value={this.state.searchItem}
-                                onChange={this.handleSearchItemChange.bind(
-                                  this
-                                )}
-                                onKeyPress={this.enterPressed.bind(this)}
-                              />
-                              <span
-                                onClick={this.handleSearchChatItemDetails.bind(
-                                  this
-                                )}
-                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                              >
-                                <img
-                                  src={SearchBlueImg}
-                                  alt="SearchBlueImg"
-                                  className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
-                                />
-                              </span>
-                              {this.state.searchCardData.length === 0 && (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    marginBottom: "0px",
-                                  }}
-                                >
-                                  {this.state.noProductFound}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="container p-0">
-                            <div
-                              className="row product-card"
-                              style={{
-                                height: !this.state.isDownbtn ? "100%" : "",
-                                maxHeight: !this.state.isDownbtn ? "600px" : "",
-                              }}
-                            >
-                              {this.state.searchCardData !== null &&
-                                this.state.searchCardData.map((item, i) => {
-                                  return (
+                                  {this.state.storeAgentDetail.length !== 0 &&
+                                  this.state.storeAgentDetail[0].suggestion ===
+                                    1 ? (
                                     <div
-                                      className="col-md-6"
-                                      key={i}
-                                      onClick={this.handleSelectCard.bind(
-                                        this,
-                                        item.itemID
+                                      className="mobile-ck-send"
+                                      onClick={this.handleMessageSuggestion.bind(
+                                        this
                                       )}
+                                      title={"Search"}
                                     >
-                                      {item.itemID ===
-                                      this.state.selectedCard ? (
-                                        <div className="selectdot">
-                                          <img
-                                            src={CardTick}
-                                            alt={"select-card"}
-                                          />
-                                        </div>
-                                      ) : null}
-                                      <div
-                                        className="card"
-                                        id={"card" + item.itemID}
-                                      >
-                                        <div className="card-body position-relative">
-                                          {/* <div className="container"> */}
-                                          <div
-                                            className="row"
-                                            style={{
-                                              margin: "0",
-                                            }}
-                                          >
-                                            <div
-                                              className="col-md-4 mb-md-0 mb-2"
-                                              style={{ alignSelf: "center" }}
-                                            >
-                                              <img
-                                                className="chat-product-img"
-                                                src={item.imageURL}
-                                                alt="Product Image"
-                                                title={item.productName}
-                                              />
-                                            </div>
-                                            <div className="col-md-8 bkcprdt">
-                                              <div>
-                                                <label className="chat-product-name">
-                                                  {item.productName}
-                                                </label>
-                                              </div>
-                                              <div>
-                                                {item.brandName !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    Brand :
-                                                    {" " + item.brandName}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.categoryName !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    Category :
-                                                    {" " + item.categoryName}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.subCategoryName !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    SubCategory :
-                                                    {" " + item.subCategoryName}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.color !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    Color :{" " + item.color}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.size !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    Size :{" " + item.size}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.uniqueItemCode !== "" ? (
-                                                  <label className="chat-product-code">
-                                                    Item Code :
-                                                    {" " + item.uniqueItemCode}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.discount !== "" &&
-                                                parseFloat(item.discount) !==
-                                                  0 ? (
-                                                  <label className="chat-product-code">
-                                                    Discount :
-                                                    {" " + item.discount}
-                                                    {/* {item.alternativeText} */}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                {item.price !== "" &&
-                                                parseFloat(item.price) !== 0 ? (
-                                                  <label className="chat-product-prize">
-                                                    Price :{" " + item.price}
-                                                  </label>
-                                                ) : null}
-                                              </div>
-                                              <div>
-                                                <a
-                                                  href={item.url}
-                                                  target="_blank"
-                                                  className="chat-product-url"
-                                                >
-                                                  {item.url}
-                                                </a>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
+                                      {/* <img src={Assign} alt="send img" /> */}
+                                      <img src={SuggSearch} alt="send img" />
                                     </div>
-                                  );
-                                })}
-                            </div>
-                            {this.state.searchCardData.length > 0 ? (
-                              <div className="row m-0">
-                                <button
-                                  className="storeUpbtn"
-                                  onClick={this.handleDownButtonClick.bind(
-                                    this
-                                  )}
-                                >
-                                  {this.state.isDownbtn ? (
-                                    <img src={DownBlue} alt="down-arrow" />
-                                  ) : (
-                                    <img src={UpBlue} alt="up-arrow" />
-                                  )}
-                                </button>
-                                <button
-                                  className="butn"
-                                  onClick={this.handleSendCard.bind(this)}
-                                >
-                                  Send
-                                  <img
-                                    src={SendUp}
-                                    alt="send"
-                                    className="send-up float-none"
-                                  />
-                                  {this.state.isSendRecomended ? (
-                                    <FontAwesomeIcon
-                                      icon={faCircleNotch}
-                                      className="circular-loader ml-2"
-                                      spin
-                                    />
-                                  ) : (
-                                    ""
-                                  )}
-                                </button>
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                        {/* --------Recommended List Tab----- */}
-                        <div
-                          className={
-                            this.state.toggle.three
-                              ? "tab-pane fade active show"
-                              : "tab-pane fade"
-                          }
-                          id="recommended-list-tab"
-                          role="tabpanel"
-                          aria-labelledby="recommended-list-tab"
-                        >
-                          <div className="recommended-cntr">
-                            <button
-                              disabled={this.state.isSendRecomended}
-                              className="butn"
-                              onClick={this.handleSendRecommendedList.bind(
-                                this
-                              )}
-                            >
-                              Send Recommended List
-                              <img
-                                src={SendUp}
-                                alt="send"
-                                className="send-up float-none"
-                              />
-                              {this.state.isSendRecomended ? (
-                                <FontAwesomeIcon
-                                  icon={faCircleNotch}
-                                  className="circular-loader ml-2"
-                                  spin
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </button>
-
-                            <p
-                              style={{
-                                color: "red",
-                                marginBottom: "0px",
-                              }}
-                            >
-                              {this.state.noRecommendedFound}
-                            </p>
-                          </div>
-                        </div>
-                        {/* --------Schedule Visit Tab----- */}
-                        <div
-                          className={
-                            this.state.toggle.four
-                              ? "tab-pane fade active show"
-                              : "tab-pane fade"
-                          }
-                          id="schedule-visit-tab"
-                          role="tabpanel"
-                          aria-labelledby="schedule-visit-tab"
-                        >
-                          {this.state.availableSlot > 0 ? (
-                            <div className="row">
-                              <div className="col-md-7 schedule-left-cntr">
-                                {this.state.timeSlotData !== null
-                                  ? this.state.timeSlotData.map((item, i) => {
-                                      return item.alreadyScheduleDetails
-                                        .length > 0 ? (
-                                        <div key={i}>
-                                          <label className="s-lable">
-                                            {item.day}:{item.dates}
-                                          </label>
-                                          <div className="schedule-btn-outer-cntr">
-                                            <div
-                                              className="selectdot-blue selectdot-blue-left"
-                                              onClick={this.handleScrollLeft.bind(
-                                                this,
-                                                i
-                                              )}
-                                            >
-                                              <img
-                                                src={SchRight}
-                                                alt="right arrow"
-                                              />
-                                            </div>
-                                            <div
-                                              className="schedule-btn-cntr"
-                                              id={"schedule-btn-cntr" + i}
-                                            >
-                                              {item.alreadyScheduleDetails
-                                                .length > 0 &&
-                                                item.alreadyScheduleDetails.map(
-                                                  (data, k) => {
-                                                    var selectSlot = false;
-                                                    if (
-                                                      this.state.timeSlotData[i]
-                                                        .alreadyScheduleDetails[
-                                                        k
-                                                      ] ===
-                                                      this.state.selectedSlot
-                                                    ) {
-                                                      selectSlot = true;
-                                                    }
-
-                                                    if (
-                                                      data.maxCapacity ==
-                                                      data.visitedCount
-                                                    ) {
-                                                      return (
-                                                        <Tooltip
-                                                          placement="left"
-                                                          title={
-                                                            data.remaining +
-                                                            " MORE PEOPLE LEFT"
-                                                          }
-                                                        >
-                                                          <button
-                                                            key={k}
-                                                            className="s-red-active"
-                                                            style={{
-                                                              cursor: "no-drop",
-                                                            }}
-                                                          >
-                                                            {data.timeSlot}
-                                                          </button>
-                                                        </Tooltip>
-                                                      );
-                                                    }
-                                                    if (
-                                                      // data.remaining <
-                                                      // data.maxCapacity
-                                                      data.visitedCount >=
-                                                      (1 / 2) * data.maxCapacity
-                                                    ) {
-                                                      return (
-                                                        <Tooltip
-                                                          placement="left"
-                                                          title={
-                                                            data.remaining +
-                                                            " MORE PEOPLE LEFT"
-                                                          }
-                                                        >
-                                                          <button
-                                                            key={k}
-                                                            className={
-                                                              selectSlot
-                                                                ? "s-yellow-active"
-                                                                : "s-yellow-btn"
-                                                            }
-                                                            onClick={this.handleSelectSlot.bind(
-                                                              this,
-                                                              data,
-                                                              item.dates
-                                                            )}
-                                                          >
-                                                            {data.timeSlot}
-                                                            {selectSlot ? (
-                                                              <img
-                                                                className="s-img-select"
-                                                                src={
-                                                                  CircleRight
-                                                                }
-                                                                alt="circle-right"
-                                                              />
-                                                            ) : null}
-                                                          </button>
-                                                        </Tooltip>
-                                                      );
-                                                    }
-                                                    if (
-                                                      // data.maxCapacity ===
-                                                      // data.remaining
-                                                      data.visitedCount <
-                                                      (1 / 2) * data.maxCapacity
-                                                    ) {
-                                                      return (
-                                                        <Tooltip
-                                                          placement="left"
-                                                          title={
-                                                            data.remaining +
-                                                            " MORE PEOPLE LEFT"
-                                                          }
-                                                        >
-                                                          <button
-                                                            key={k}
-                                                            className={
-                                                              selectSlot
-                                                                ? "s-green-active"
-                                                                : "s-green-btn"
-                                                            }
-                                                            onClick={this.handleSelectSlot.bind(
-                                                              this,
-                                                              data,
-                                                              item.dates
-                                                            )}
-                                                          >
-                                                            {data.timeSlot}
-                                                            {selectSlot ? (
-                                                              <img
-                                                                className="s-img-select"
-                                                                src={
-                                                                  CircleRight
-                                                                }
-                                                                alt="circle-right"
-                                                              />
-                                                            ) : null}
-                                                          </button>
-                                                        </Tooltip>
-                                                      );
-                                                    }
-                                                  }
-                                                )}
-                                            </div>
-                                            <div
-                                              className="selectdot-blue"
-                                              onClick={this.handleScrollRight.bind(
-                                                this,
-                                                i
-                                              )}
-                                            >
-                                              <img
-                                                src={SchRight}
-                                                alt="right arrow"
-                                              />
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ) : null;
-                                    })
-                                  : null}
-                              </div>
-                              <div className="col-md-5">
-                                <div className="schedule-right-outer-cntr">
-                                  <div className="schedule-right-cntr">
-                                    <div>
-                                      <label className="s-lable">
-                                        Selected Slot
-                                      </label>
-                                      {Object.keys(this.state.selectedSlot)
-                                        .length !== 0 ? (
-                                        <button
-                                          className={
-                                            this.state.selectedSlot
-                                              .visitedCount <
-                                            (1 / 2) *
-                                              this.state.selectedSlot
-                                                .maxCapacity
-                                              ? // this.state.selectedSlot.maxCapacity ==
-                                                //   this.state.selectedSlot.remaining
-                                                "s-green-btn s-green-active select-slot-cntr mx-0"
-                                              : this.state.selectedSlot
-                                                  .visitedCount <
-                                                this.state.selectedSlot
-                                                  .maxCapacity
-                                              ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                              : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                          }
-                                        >
-                                          {this.state.selectedSlot.timeSlot}
-                                          <img
-                                            className="s-img-select"
-                                            src={CircleRight}
-                                            alt="circle-right"
-                                          />
-                                        </button>
-                                      ) : null}
-                                      {this.state.isSelectSlot !== "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.isSelectSlot}
-                                        </p>
+                                  ) : null}
+                                  {this.state.storeAgentDetail.length !== 0 &&
+                                  this.state.storeAgentDetail[0].freeText ===
+                                    1 ? (
+                                    <div
+                                      className="mobile-ck-send-btn"
+                                      onClick={this.handleSaveChatMessages.bind(
+                                        this,
+                                        this.state.message,
+                                        0,
+                                        "",
+                                        ""
                                       )}
+                                      title={"Send"}
+                                    >
+                                      <img src={Assign} alt="send img" />
                                     </div>
-                                    <div>
-                                      <label className="s-lable">
-                                        No of People
-                                      </label>
-                                      <input
-                                        type="text"
-                                        value={this.state.noOfPeople}
-                                        onChange={this.handleNoOfPeopleChange.bind(
+                                  ) : null}
+                                </div>
+                              </div>
+                              {/* --------Card Tab----- */}
+                              <div
+                                className={
+                                  this.state.toggle.two
+                                    ? "tab-pane fade active show"
+                                    : "tab-pane fade"
+                                }
+                                id="card-tab"
+                                role="tabpanel"
+                                aria-labelledby="card-tab"
+                              >
+                                <div>
+                                  <div
+                                    className="input-group searchtxt-new"
+                                    style={{ background: "none" }}
+                                  >
+                                    <input
+                                      type="text"
+                                      className="search-customerAddSrch searchtxt"
+                                      placeholder="Search ItemId/artcile/SKU ID"
+                                      name="Search"
+                                      maxLength="100"
+                                      autoComplete="off"
+                                      value={this.state.searchItem}
+                                      onChange={this.handleSearchItemChange.bind(
+                                        this
+                                      )}
+                                      onKeyPress={this.enterPressed.bind(this)}
+                                    />
+                                    <span
+                                      onClick={this.handleSearchChatItemDetails.bind(
+                                        this
+                                      )}
+                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                    >
+                                      <img
+                                        src={SearchBlueImg}
+                                        alt="SearchBlueImg"
+                                        className="srch-imge"
+                                        // onClick={this.handleSearchCustomer}
+                                      />
+                                    </span>
+                                    {this.state.searchCardData.length === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.noProductFound}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="container p-0">
+                                  <div
+                                    className="row product-card"
+                                    style={{
+                                      height: !this.state.isDownbtn
+                                        ? "100%"
+                                        : "",
+                                      maxHeight: !this.state.isDownbtn
+                                        ? "600px"
+                                        : "",
+                                    }}
+                                  >
+                                    {this.state.searchCardData !== null &&
+                                      this.state.searchCardData.map(
+                                        (item, i) => {
+                                          return (
+                                            <div
+                                              className="col-md-6"
+                                              key={i}
+                                              onClick={this.handleSelectCard.bind(
+                                                this,
+                                                item.itemID
+                                              )}
+                                            >
+                                              {item.itemID ===
+                                              this.state.selectedCard ? (
+                                                <div className="selectdot">
+                                                  <img
+                                                    src={CardTick}
+                                                    alt={"select-card"}
+                                                  />
+                                                </div>
+                                              ) : null}
+                                              <div
+                                                className="card"
+                                                id={"card" + item.itemID}
+                                              >
+                                                <div className="card-body position-relative">
+                                                  {/* <div className="container"> */}
+                                                  <div
+                                                    className="row"
+                                                    style={{
+                                                      margin: "0",
+                                                    }}
+                                                  >
+                                                    <div
+                                                      className="col-md-4 mb-md-0 mb-2"
+                                                      style={{
+                                                        alignSelf: "center",
+                                                      }}
+                                                    >
+                                                      <img
+                                                        className="chat-product-img"
+                                                        src={item.imageURL}
+                                                        alt="Product Image"
+                                                        title={item.productName}
+                                                      />
+                                                    </div>
+                                                    <div className="col-md-8 bkcprdt">
+                                                      <div>
+                                                        <label className="chat-product-name">
+                                                          {item.productName}
+                                                        </label>
+                                                      </div>
+                                                      <div>
+                                                        {item.brandName !==
+                                                        "" ? (
+                                                          <label className="chat-product-code">
+                                                            Brand :
+                                                            {" " +
+                                                              item.brandName}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.categoryName !==
+                                                        "" ? (
+                                                          <label className="chat-product-code">
+                                                            Category :
+                                                            {" " +
+                                                              item.categoryName}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.subCategoryName !==
+                                                        "" ? (
+                                                          <label className="chat-product-code">
+                                                            SubCategory :
+                                                            {" " +
+                                                              item.subCategoryName}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.color !== "" ? (
+                                                          <label className="chat-product-code">
+                                                            Color :
+                                                            {" " + item.color}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.size !== "" ? (
+                                                          <label className="chat-product-code">
+                                                            Size :
+                                                            {" " + item.size}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.uniqueItemCode !==
+                                                        "" ? (
+                                                          <label className="chat-product-code">
+                                                            Item Code :
+                                                            {" " +
+                                                              item.uniqueItemCode}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.discount !== "" &&
+                                                        parseFloat(
+                                                          item.discount
+                                                        ) !== 0 ? (
+                                                          <label className="chat-product-code">
+                                                            Discount :
+                                                            {" " +
+                                                              item.discount}
+                                                            {/* {item.alternativeText} */}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        {item.price !== "" &&
+                                                        parseFloat(
+                                                          item.price
+                                                        ) !== 0 ? (
+                                                          <label className="chat-product-prize">
+                                                            Price :
+                                                            {" " + item.price}
+                                                          </label>
+                                                        ) : null}
+                                                      </div>
+                                                      <div>
+                                                        <a
+                                                          href={item.url}
+                                                          target="_blank"
+                                                          className="chat-product-url"
+                                                        >
+                                                          {item.url}
+                                                        </a>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                  </div>
+                                  {this.state.searchCardData.length > 0 ? (
+                                    <div className="row m-0">
+                                      <button
+                                        className="storeUpbtn"
+                                        onClick={this.handleDownButtonClick.bind(
                                           this
                                         )}
-                                      />
-                                      {this.state.noOfPeopleMax !== "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                            width: "131px",
-                                          }}
-                                        >
-                                          {this.state.noOfPeopleMax}
-                                        </p>
-                                      )}
+                                      >
+                                        {this.state.isDownbtn ? (
+                                          <img
+                                            src={DownBlue}
+                                            alt="down-arrow"
+                                          />
+                                        ) : (
+                                          <img src={UpBlue} alt="up-arrow" />
+                                        )}
+                                      </button>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleSendCard.bind(this)}
+                                      >
+                                        Send
+                                        <img
+                                          src={SendUp}
+                                          alt="send"
+                                          className="send-up float-none"
+                                        />
+                                        {this.state.isSendRecomended ? (
+                                          <FontAwesomeIcon
+                                            icon={faCircleNotch}
+                                            className="circular-loader ml-2"
+                                            spin
+                                          />
+                                        ) : (
+                                          ""
+                                        )}
+                                      </button>
                                     </div>
-                                  </div>
+                                  ) : null}
+                                </div>
+                              </div>
+                              {/* --------Recommended List Tab----- */}
+                              <div
+                                className={
+                                  this.state.toggle.three
+                                    ? "tab-pane fade active show"
+                                    : "tab-pane fade"
+                                }
+                                id="recommended-list-tab"
+                                role="tabpanel"
+                                aria-labelledby="recommended-list-tab"
+                              >
+                                <div className="recommended-cntr">
                                   <button
-                                    className={
-                                      this.state.isSendClick
-                                        ? "butn ml-auto mt-4 isSendClick-dsle"
-                                        : "butn ml-auto mt-4"
-                                    }
-                                    onClick={this.handleScheduleVisit.bind(
+                                    disabled={this.state.isSendRecomended}
+                                    className="butn"
+                                    onClick={this.handleSendRecommendedList.bind(
                                       this
                                     )}
                                   >
-                                    Send
+                                    Send Recommended List
                                     <img
                                       src={SendUp}
                                       alt="send"
@@ -3352,1033 +3212,1469 @@ class Header extends Component {
                                       ""
                                     )}
                                   </button>
+
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px",
+                                    }}
+                                  >
+                                    {this.state.noRecommendedFound}
+                                  </p>
                                 </div>
                               </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <span className="slot-span">
-                                No slot added for this store
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        {/* --------Generate Payment Link Tab----- */}
-                        <div
-                          className={
-                            this.state.toggle.five
-                              ? "tab-pane fade active show"
-                              : "tab-pane fade"
-                          }
-                          id="generate-payment-link-tab"
-                          role="tabpanel"
-                          aria-labelledby="generate-payment-link-tab"
-                        >
-                          <div
-                            className="input-group searchtxt-new"
-                            style={{ background: "none" }}
-                          >
-                            <form
-                              style={{ width: "100%" }}
-                              // onSubmit={this.handleSearchChatItemDetails.bind(
-                              //   this
-                              // )}
-                            >
-                              <input
-                                type="text"
-                                className="search-customerAddSrch searchtxt"
-                                placeholder="Search Order Id"
-                                name="Search"
-                                maxLength="100"
-                                autoComplete="off"
-                                // value={this.state.searchItem}
-                                // onChange={this.handleSearchItemChange.bind(
-                                //   this
-                                // )}
-                              />
-                              <span
-                                // onClick={this.handleSearchChatItemDetails.bind(
-                                //   this
-                                // )}
-                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                              {/* --------Schedule Visit Tab----- */}
+                              <div
+                                className={
+                                  this.state.toggle.four
+                                    ? "tab-pane fade active show"
+                                    : "tab-pane fade"
+                                }
+                                id="schedule-visit-tab"
+                                role="tabpanel"
+                                aria-labelledby="schedule-visit-tab"
                               >
-                                <img
-                                  src={SearchBlueImg}
-                                  alt="SearchBlueImg"
-                                  className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
-                                />
-                              </span>
-                            </form>
-                          </div>
-                          <div className="payment-details">
-                            <label>Amount</label>
-                            <span>INR 1299</span>
-                          </div>
-                          <div className="payment-link-butn">
-                            <button className="butn">
-                              Send Payment Link
-                              <img
-                                src={SendUp}
-                                alt="send"
-                                className="send-up"
-                              />
-                            </button>
-                          </div>
-                          <div className="clearfix"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className="chatcontentdivtab chat-tabs-mobile"
-                      style={{
-                        height: !this.state.isDownbtn ? "80%" : "",
-                      }}
-                    >
-                      <ul className="nav nav-tabs" role="tablist">
-                        <li className="nav-item">
-                          <a
-                            className={
-                              this.state.toggle.one
-                                ? "nav-link active"
-                                : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#message-tab"
-                            role="tab"
-                            aria-controls="message-tab"
-                            aria-selected="true"
-                            id="one"
-                          >
-                            MESSAGE
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className={
-                              this.state.toggle.two
-                                ? "nav-link active"
-                                : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#card-tab"
-                            role="tab"
-                            aria-controls="card-tab"
-                            aria-selected="false"
-                            onClick={this.onOpenCardModal}
-                            id="two"
-                          >
-                            CARD
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className={
-                              this.state.toggle.three
-                                ? "nav-link active"
-                                : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#recommended-list-tab"
-                            role="tab"
-                            aria-controls="recommended-list-tab"
-                            aria-selected="false"
-                            onClick={this.onOpenRecommendedModal}
-                            id="three"
-                          >
-                            RECOMMENDED LIST
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className={
-                              this.state.toggle.four
-                                ? "nav-link active"
-                                : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#schedule-visit-tab"
-                            role="tab"
-                            aria-controls="schedule-visit-tab"
-                            aria-selected="false"
-                            onClick={this.onOpenScheduleModal}
-                            id="four"
-                          >
-                            SCHEDULE VISIT
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className={
-                              this.state.toggle.five
-                                ? "nav-link active"
-                                : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#generate-payment-link-tab"
-                            role="tab"
-                            aria-controls="generate-payment-link-tab"
-                            aria-selected="false"
-                            onClick={this.onOpenPaymentModal}
-                            id="five"
-                          >
-                            GENERATE PAYMENT LINK
-                          </a>
-                        </li>
-                      </ul>
-                      <div className="tab-content">
-                        {/* --------Message Tab----- */}
-                        <div
-                          className="tab-pane fade show active"
-                          id="message-tab"
-                          role="tabpanel"
-                          aria-labelledby="message-tab"
-                        >
-                          <div className="message-div">
-                            <span className="message-initial">
-                              {this.state.UserName.charAt(0).toUpperCase()}
-                            </span>
-                            <textarea
-                              placeholder="Search to get suggestions..."
-                              value={this.state.message}
-                              onChange={this.handleOnChangeCKEditor.bind(this)}
-                            ></textarea>
-                            <p
-                              className="cls-charcount"
-                              style={{ fontSize: "x-small" }}
-                            >
-                              {this.state.remainingCount}
-                            </p>
+                                {this.state.availableSlot > 0 ? (
+                                  <div className="row">
+                                    <div className="col-md-7 schedule-left-cntr">
+                                      {this.state.timeSlotData !== null
+                                        ? this.state.timeSlotData.map(
+                                            (item, i) => {
+                                              return item.alreadyScheduleDetails
+                                                .length > 0 ? (
+                                                <div key={i}>
+                                                  <label className="s-lable">
+                                                    {item.day}:{item.dates}
+                                                  </label>
+                                                  <div className="schedule-btn-outer-cntr">
+                                                    <div
+                                                      className="selectdot-blue selectdot-blue-left"
+                                                      onClick={this.handleScrollLeft.bind(
+                                                        this,
+                                                        i
+                                                      )}
+                                                    >
+                                                      <img
+                                                        src={SchRight}
+                                                        alt="right arrow"
+                                                      />
+                                                    </div>
+                                                    <div
+                                                      className="schedule-btn-cntr"
+                                                      id={
+                                                        "schedule-btn-cntr" + i
+                                                      }
+                                                    >
+                                                      {item
+                                                        .alreadyScheduleDetails
+                                                        .length > 0 &&
+                                                        item.alreadyScheduleDetails.map(
+                                                          (data, k) => {
+                                                            var selectSlot = false;
+                                                            if (
+                                                              this.state
+                                                                .timeSlotData[i]
+                                                                .alreadyScheduleDetails[
+                                                                k
+                                                              ] ===
+                                                              this.state
+                                                                .selectedSlot
+                                                            ) {
+                                                              selectSlot = true;
+                                                            }
 
-                            {this.state.messageSuggestionData !== null &&
-                              this.state.messageSuggestionData.length > 0 &&
-                              this.state.messageSuggestionData.length > 0 && (
-                                <div className="suggestions-cntr">
-                                  {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.map(
-                                      (item, i) => (
-                                        <div
+                                                            if (
+                                                              data.maxCapacity ==
+                                                              data.visitedCount
+                                                            ) {
+                                                              return (
+                                                                <Tooltip
+                                                                  placement="left"
+                                                                  title={
+                                                                    data.remaining +
+                                                                    " MORE PEOPLE LEFT"
+                                                                  }
+                                                                >
+                                                                  <button
+                                                                    key={k}
+                                                                    className="s-red-active"
+                                                                    style={{
+                                                                      cursor:
+                                                                        "no-drop",
+                                                                    }}
+                                                                  >
+                                                                    {
+                                                                      data.timeSlot
+                                                                    }
+                                                                  </button>
+                                                                </Tooltip>
+                                                              );
+                                                            }
+                                                            if (
+                                                              // data.remaining <
+                                                              // data.maxCapacity
+                                                              data.visitedCount >=
+                                                              (1 / 2) *
+                                                                data.maxCapacity
+                                                            ) {
+                                                              return (
+                                                                <Tooltip
+                                                                  placement="left"
+                                                                  title={
+                                                                    data.remaining +
+                                                                    " MORE PEOPLE LEFT"
+                                                                  }
+                                                                >
+                                                                  <button
+                                                                    key={k}
+                                                                    className={
+                                                                      selectSlot
+                                                                        ? "s-yellow-active"
+                                                                        : "s-yellow-btn"
+                                                                    }
+                                                                    onClick={this.handleSelectSlot.bind(
+                                                                      this,
+                                                                      data,
+                                                                      item.dates
+                                                                    )}
+                                                                  >
+                                                                    {
+                                                                      data.timeSlot
+                                                                    }
+                                                                    {selectSlot ? (
+                                                                      <img
+                                                                        className="s-img-select"
+                                                                        src={
+                                                                          CircleRight
+                                                                        }
+                                                                        alt="circle-right"
+                                                                      />
+                                                                    ) : null}
+                                                                  </button>
+                                                                </Tooltip>
+                                                              );
+                                                            }
+                                                            if (
+                                                              // data.maxCapacity ===
+                                                              // data.remaining
+                                                              data.visitedCount <
+                                                              (1 / 2) *
+                                                                data.maxCapacity
+                                                            ) {
+                                                              return (
+                                                                <Tooltip
+                                                                  placement="left"
+                                                                  title={
+                                                                    data.remaining +
+                                                                    " MORE PEOPLE LEFT"
+                                                                  }
+                                                                >
+                                                                  <button
+                                                                    key={k}
+                                                                    className={
+                                                                      selectSlot
+                                                                        ? "s-green-active"
+                                                                        : "s-green-btn"
+                                                                    }
+                                                                    onClick={this.handleSelectSlot.bind(
+                                                                      this,
+                                                                      data,
+                                                                      item.dates
+                                                                    )}
+                                                                  >
+                                                                    {
+                                                                      data.timeSlot
+                                                                    }
+                                                                    {selectSlot ? (
+                                                                      <img
+                                                                        className="s-img-select"
+                                                                        src={
+                                                                          CircleRight
+                                                                        }
+                                                                        alt="circle-right"
+                                                                      />
+                                                                    ) : null}
+                                                                  </button>
+                                                                </Tooltip>
+                                                              );
+                                                            }
+                                                          }
+                                                        )}
+                                                    </div>
+                                                    <div
+                                                      className="selectdot-blue"
+                                                      onClick={this.handleScrollRight.bind(
+                                                        this,
+                                                        i
+                                                      )}
+                                                    >
+                                                      <img
+                                                        src={SchRight}
+                                                        alt="right arrow"
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              ) : null;
+                                            }
+                                          )
+                                        : null}
+                                    </div>
+                                    <div className="col-md-5">
+                                      <div className="schedule-right-outer-cntr">
+                                        <div className="schedule-right-cntr">
+                                          <div>
+                                            <label className="s-lable">
+                                              Selected Slot
+                                            </label>
+                                            {Object.keys(
+                                              this.state.selectedSlot
+                                            ).length !== 0 ? (
+                                              <button
+                                                className={
+                                                  this.state.selectedSlot
+                                                    .visitedCount <
+                                                  (1 / 2) *
+                                                    this.state.selectedSlot
+                                                      .maxCapacity
+                                                    ? // this.state.selectedSlot.maxCapacity ==
+                                                      //   this.state.selectedSlot.remaining
+                                                      "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                    : this.state.selectedSlot
+                                                        .visitedCount <
+                                                      this.state.selectedSlot
+                                                        .maxCapacity
+                                                    ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                    : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                }
+                                              >
+                                                {
+                                                  this.state.selectedSlot
+                                                    .timeSlot
+                                                }
+                                                <img
+                                                  className="s-img-select"
+                                                  src={CircleRight}
+                                                  alt="circle-right"
+                                                />
+                                              </button>
+                                            ) : null}
+                                            {this.state.isSelectSlot !== "" && (
+                                              <p
+                                                style={{
+                                                  color: "red",
+                                                  marginBottom: "0px",
+                                                }}
+                                              >
+                                                {this.state.isSelectSlot}
+                                              </p>
+                                            )}
+                                          </div>
+                                          <div>
+                                            <label className="s-lable">
+                                              No of People
+                                            </label>
+                                            <input
+                                              type="text"
+                                              value={this.state.noOfPeople}
+                                              onChange={this.handleNoOfPeopleChange.bind(
+                                                this
+                                              )}
+                                            />
+                                            {this.state.noOfPeopleMax !==
+                                              "" && (
+                                              <p
+                                                style={{
+                                                  color: "red",
+                                                  marginBottom: "0px",
+                                                  width: "131px",
+                                                }}
+                                              >
+                                                {this.state.noOfPeopleMax}
+                                              </p>
+                                            )}
+                                          </div>
+                                        </div>
+                                        <button
                                           className={
-                                            this.state.chkSuggestion[i + 1] ===
-                                            1
-                                              ? "suggestions-tick"
-                                              : ""
+                                            this.state.isSendClick
+                                              ? "butn ml-auto mt-4 isSendClick-dsle"
+                                              : "butn ml-auto mt-4"
                                           }
-                                          key={i}
-                                          // onClick={this.handleSaveChatMessages.bind(
-                                          //   this,
-                                          //   item.suggestionText,
-                                          //   i
-                                          // )}
-                                          // onClick={this.handleSaveChatMessages.bind(
-                                          //   this,
-                                          //   item.suggestionText,
-                                          //   i + 1,
-                                          //   "",
-                                          //   ""
-                                          // )}
-
-                                          onClick={this.onOpenMobSuggestionModal.bind(
-                                            this,
-                                            item.suggestionText,
-                                            i + 1
+                                          onClick={this.handleScheduleVisit.bind(
+                                            this
                                           )}
                                         >
-                                          <Tooltip
-                                            placement="left"
-                                            title={item.suggestionText}
-                                          >
-                                            <span>{item.suggestionText}</span>
-                                          </Tooltip>
-                                        </div>
-                                      )
-                                    )}
-                                </div>
-                              )}
-
-                            {this.state.storeAgentDetail.length !== 0 &&
-                            this.state.storeAgentDetail[0].suggestion === 1 ? (
-                              <div
-                                className="mobile-ck-send"
-                                onClick={this.handleMessageSuggestion.bind(
-                                  this
-                                )}
-                                title={"Search"}
-                              >
-                                {/* <img src={Assign} alt="send img" /> */}
-                                <img src={SuggSearch} alt="send img" />
-                              </div>
-                            ) : null}
-                            {this.state.storeAgentDetail.length !== 0 &&
-                            this.state.storeAgentDetail[0].freeText === 1 ? (
-                              <div
-                                className="mobile-ck-send-btn"
-                                onClick={this.handleSaveChatMessages.bind(
-                                  this,
-                                  this.state.message,
-                                  0,
-                                  "",
-                                  ""
-                                )}
-                                title={"Send"}
-                              >
-                                <img src={Assign} alt="send img" />
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                        {/* -------- Card Modal ----- */}
-                        <Modal
-                          open={this.state.cardModal}
-                          onClose={this.onCloseCardModal}
-                          center
-                          modalId="mobile-tabs-popup"
-                          overlayId="mobile-tabs-overlay"
-                        >
-                          <div className="mobile-chat-popup">
-                            <div
-                              className="input-group searchtxt-new"
-                              style={{ background: "none" }}
-                            >
-                              <input
-                                type="text"
-                                className="search-customerAddSrch searchtxt"
-                                placeholder="Search ItemId/artcile/SKU ID"
-                                name="Search"
-                                maxLength="100"
-                                autoComplete="off"
-                                onChange={this.handleSearchItemChange.bind(
-                                  this
-                                )}
-                                onKeyPress={this.enterPressed.bind(this)}
-                              />
-                              <span
-                                onClick={this.handleSearchChatItemDetails.bind(
-                                  this
-                                )}
-                                className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                              >
-                                <img
-                                  src={SearchBlueImg}
-                                  alt="SearchBlueImg"
-                                  className="srch-imge"
-                                  // onClick={this.handleSearchCustomer}
-                                />
-                              </span>
-                              {this.state.searchCardData.length === 0 && (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    marginBottom: "0px",
-                                  }}
-                                >
-                                  {this.state.noProductFound}
-                                </p>
-                              )}
-                            </div>
-                            <div className="product-card">
-                              {this.state.searchCardData !== null &&
-                                this.state.searchCardData.map((item, i) => {
-                                  return (
-                                    <div
-                                      className="card"
-                                      key={i}
-                                      onClick={this.handleSelectCard.bind(
-                                        this,
-                                        item.itemID
-                                      )}
-                                    >
-                                      <div className="card-body position-relative">
-                                        {item.itemID ===
-                                        this.state.selectedCard ? (
-                                          <div className="selectdot">
-                                            <img
-                                              src={CardTick}
-                                              alt={"select-card"}
+                                          Send
+                                          <img
+                                            src={SendUp}
+                                            alt="send"
+                                            className="send-up float-none"
+                                          />
+                                          {this.state.isSendRecomended ? (
+                                            <FontAwesomeIcon
+                                              icon={faCircleNotch}
+                                              className="circular-loader ml-2"
+                                              spin
                                             />
-                                          </div>
-                                        ) : null}
-                                        <div className="mobile-card-cntr">
-                                          <div className="mobile-card-img">
-                                            <img
-                                              className="chat-product-img"
-                                              src={item.imageURL}
-                                              alt="Product Image"
-                                              title={item.productName}
-                                            />
-                                          </div>
-                                          <div className="bkcprdt">
-                                            <label className="chat-product-name">
-                                              {item.productName}
-                                            </label>
-                                            {item.brandName !== "" ? (
-                                              <label className="chat-product-code">
-                                                Brand :{" " + item.brandName}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.categoryName !== "" ? (
-                                              <label className="chat-product-code">
-                                                Category :
-                                                {" " + item.categoryName}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.subCategoryName !== "" ? (
-                                              <label className="chat-product-code">
-                                                SubCategory :
-                                                {" " + item.subCategoryName}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.color !== "" ? (
-                                              <label className="chat-product-code">
-                                                Color :{" " + item.color}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.size !== "" ? (
-                                              <label className="chat-product-code">
-                                                Size :{" " + item.size}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.uniqueItemCode !== "" ? (
-                                              <label className="chat-product-code">
-                                                Item Code :
-                                                {" " + item.uniqueItemCode}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.discount !== "" ? (
-                                              <label className="chat-product-code">
-                                                Discount :{" " + item.discount}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.categoryName !== "" ? (
-                                              <label className="chat-product-code">
-                                                Category :
-                                                {" " + item.categoryName}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.subCategoryName !== "" ? (
-                                              <label className="chat-product-code">
-                                                SubCategory :
-                                                {" " + item.subCategoryName}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.color !== "" ? (
-                                              <label className="chat-product-code">
-                                                Color :{" " + item.color}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.size !== "" ? (
-                                              <label className="chat-product-code">
-                                                Size :{" " + item.size}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.uniqueItemCode !== "" ? (
-                                              <label className="chat-product-code">
-                                                Item Code :
-                                                {" " + item.uniqueItemCode}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.discount !== "" &&
-                                            parseFloat(item.discount) !== 0 ? (
-                                              <label className="chat-product-code">
-                                                Discount :{" " + item.discount}
-                                                {/* {item.alternativeText} */}
-                                              </label>
-                                            ) : null}
-
-                                            {item.price !== "" &&
-                                            parseFloat(item.price) !== 0 ? (
-                                              <label className="chat-product-prize">
-                                                Price :{" " + item.price}
-                                              </label>
-                                            ) : null}
-
-                                            <label className="chat-product-url">
-                                              {item.url}
-                                            </label>
-                                          </div>
-                                        </div>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </button>
                                       </div>
                                     </div>
-                                  );
-                                })}
-                            </div>
-                            <div className="chat-btn-cntr">
-                              <button
-                                className="butn-inv"
-                                onClick={this.onCloseCardModal}
-                              >
-                                Close
-                              </button>
-                              <button
-                                className="butn"
-                                onClick={this.handleSendCard.bind(this)}
-                              >
-                                Send
-                                <img
-                                  src={SendUp}
-                                  alt="send"
-                                  className="send-up float-none"
-                                />
-                                {this.state.isSendRecomended ? (
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader ml-2"
-                                    spin
-                                  />
+                                  </div>
                                 ) : (
-                                  ""
+                                  <div>
+                                    <span className="slot-span">
+                                      No slot added for this store
+                                    </span>
+                                  </div>
                                 )}
-                              </button>
+                              </div>
+                              {/* --------Generate Payment Link Tab----- */}
+                              <div
+                                className={
+                                  this.state.toggle.five
+                                    ? "tab-pane fade active show"
+                                    : "tab-pane fade"
+                                }
+                                id="generate-payment-link-tab"
+                                role="tabpanel"
+                                aria-labelledby="generate-payment-link-tab"
+                              >
+                                <div
+                                  className="input-group searchtxt-new"
+                                  style={{ background: "none" }}
+                                >
+                                  <form
+                                    style={{ width: "100%" }}
+                                    // onSubmit={this.handleSearchChatItemDetails.bind(
+                                    //   this
+                                    // )}
+                                  >
+                                    <input
+                                      type="text"
+                                      className="search-customerAddSrch searchtxt"
+                                      placeholder="Search Order Id"
+                                      name="Search"
+                                      maxLength="100"
+                                      autoComplete="off"
+                                      // value={this.state.searchItem}
+                                      // onChange={this.handleSearchItemChange.bind(
+                                      //   this
+                                      // )}
+                                    />
+                                    <span
+                                      // onClick={this.handleSearchChatItemDetails.bind(
+                                      //   this
+                                      // )}
+                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                    >
+                                      <img
+                                        src={SearchBlueImg}
+                                        alt="SearchBlueImg"
+                                        className="srch-imge"
+                                        // onClick={this.handleSearchCustomer}
+                                      />
+                                    </span>
+                                  </form>
+                                </div>
+                                <div className="payment-details">
+                                  <label>Amount</label>
+                                  <span>INR 1299</span>
+                                </div>
+                                <div className="payment-link-butn">
+                                  <button className="butn">
+                                    Send Payment Link
+                                    <img
+                                      src={SendUp}
+                                      alt="send"
+                                      className="send-up"
+                                    />
+                                  </button>
+                                </div>
+                                <div className="clearfix"></div>
+                              </div>
                             </div>
                           </div>
-                        </Modal>
-                        {/* --------Recommended List Modal----- */}
-                        <Modal
-                          open={this.state.recommendedModal}
-                          onClose={this.onCloseRecommendedModal}
-                          center
-                          modalId="mobile-tabs-popup"
-                          overlayId="mobile-tabs-overlay"
-                          classNames={{
-                            modal: "recommended-list-popup",
-                          }}
-                        >
-                          <div className="recommended-cntr m-0 h-100">
-                            <div className="chat-btn-cntr">
-                              <button
-                                className="butn"
-                                onClick={this.handleSendRecommendedList.bind(
-                                  this
-                                )}
+                          <div
+                            className="chatcontentdivtab chat-tabs-mobile"
+                            style={{
+                              height: !this.state.isDownbtn ? "80%" : "",
+                            }}
+                          >
+                            <ul className="nav nav-tabs" role="tablist">
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.toggle.one
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                  data-toggle="tab"
+                                  href="#message-tab"
+                                  role="tab"
+                                  aria-controls="message-tab"
+                                  aria-selected="true"
+                                  id="one"
+                                >
+                                  MESSAGE
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.toggle.two
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                  data-toggle="tab"
+                                  href="#card-tab"
+                                  role="tab"
+                                  aria-controls="card-tab"
+                                  aria-selected="false"
+                                  onClick={this.onOpenCardModal}
+                                  id="two"
+                                >
+                                  CARD
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.toggle.three
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                  data-toggle="tab"
+                                  href="#recommended-list-tab"
+                                  role="tab"
+                                  aria-controls="recommended-list-tab"
+                                  aria-selected="false"
+                                  onClick={this.onOpenRecommendedModal}
+                                  id="three"
+                                >
+                                  RECOMMENDED LIST
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.toggle.four
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                  data-toggle="tab"
+                                  href="#schedule-visit-tab"
+                                  role="tab"
+                                  aria-controls="schedule-visit-tab"
+                                  aria-selected="false"
+                                  onClick={this.onOpenScheduleModal}
+                                  id="four"
+                                >
+                                  SCHEDULE VISIT
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.toggle.five
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                  data-toggle="tab"
+                                  href="#generate-payment-link-tab"
+                                  role="tab"
+                                  aria-controls="generate-payment-link-tab"
+                                  aria-selected="false"
+                                  onClick={this.onOpenPaymentModal}
+                                  id="five"
+                                >
+                                  GENERATE PAYMENT LINK
+                                </a>
+                              </li>
+                            </ul>
+                            <div className="tab-content">
+                              {/* --------Message Tab----- */}
+                              <div
+                                className="tab-pane fade show active"
+                                id="message-tab"
+                                role="tabpanel"
+                                aria-labelledby="message-tab"
                               >
-                                Send Recommended List
-                                <img
-                                  src={SendUp}
-                                  alt="send"
-                                  className="send-up"
-                                />
-                                {this.state.isSendRecomended ? (
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader ml-2"
-                                    spin
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                              </button>
-                              <p
-                                style={{
-                                  color: "red",
-                                  marginBottom: "0px",
-                                }}
-                              >
-                                {this.state.noRecommendedFound}
-                              </p>
-                              <button
-                                className="butn-inv"
-                                onClick={this.onCloseRecommendedModal}
-                              >
-                                Close
-                              </button>
-                            </div>
-                          </div>
-                        </Modal>
-                        {/* -------- Schedule Visit Modal ----- */}
-                        <Modal
-                          open={this.state.scheduleModal}
-                          onClose={this.onCloseScheduleModal}
-                          center
-                          modalId="mobile-tabs-popup"
-                          overlayId="mobile-tabs-overlay"
-                          classNames={{
-                            modal: "schedule-visit-popup",
-                          }}
-                        >
-                          {this.state.availableSlot > 0 ? (
-                            <div className="schedule-mobile-cntr">
-                              <div>
-                                <div className="schedule-left-outer-cntr">
-                                  <div className="schedule-left-cntr">
-                                    {this.state.timeSlotData !== null
-                                      ? this.state.timeSlotData.map(
-                                          (item, i) => {
-                                            return item.alreadyScheduleDetails
-                                              .length > 0 ? (
-                                              <div key={i}>
-                                                <label className="s-lable">
-                                                  {item.day}:{item.dates}
-                                                </label>
-                                                <div className="schedule-btn-outer-cntr">
-                                                  <div className="schedule-btn-cntr">
-                                                    {item.alreadyScheduleDetails
-                                                      .length > 0 &&
-                                                      item.alreadyScheduleDetails.map(
-                                                        (data, k) => {
-                                                          var selectSlot = false;
-                                                          if (
-                                                            this.state
-                                                              .timeSlotData[i]
-                                                              .alreadyScheduleDetails[
-                                                              k
-                                                            ] ===
-                                                            this.state
-                                                              .selectedSlot
-                                                          ) {
-                                                            selectSlot = true;
-                                                          }
+                                <div className="message-div">
+                                  <span className="message-initial">
+                                    {this.state.UserName.charAt(
+                                      0
+                                    ).toUpperCase()}
+                                  </span>
+                                  <textarea
+                                    placeholder="Search to get suggestions..."
+                                    value={this.state.message}
+                                    onChange={this.handleOnChangeCKEditor.bind(
+                                      this
+                                    )}
+                                  ></textarea>
+                                  <p
+                                    className="cls-charcount"
+                                    style={{ fontSize: "x-small" }}
+                                  >
+                                    {this.state.remainingCount}
+                                  </p>
 
-                                                          if (
-                                                            data.maxCapacity ==
-                                                            data.visitedCount
-                                                          ) {
-                                                            return (
-                                                              <Tooltip
-                                                                placement="left"
-                                                                title={
-                                                                  data.remaining +
-                                                                  " MORE PEOPLE LEFT"
-                                                                }
-                                                              >
-                                                                <button
-                                                                  key={k}
-                                                                  className="s-red-active"
-                                                                  style={{
-                                                                    cursor:
-                                                                      "no-drop",
-                                                                  }}
-                                                                >
-                                                                  {
-                                                                    data.timeSlot
-                                                                  }
-                                                                </button>
-                                                              </Tooltip>
-                                                            );
-                                                          }
-                                                          if (
-                                                            data.visitedCount >=
-                                                            (1 / 2) *
-                                                              data.maxCapacity
-                                                          ) {
-                                                            return (
-                                                              <Tooltip
-                                                                placement="left"
-                                                                title={
-                                                                  data.remaining +
-                                                                  " MORE PEOPLE LEFT"
-                                                                }
-                                                              >
-                                                                <button
-                                                                  key={k}
-                                                                  className={
-                                                                    selectSlot
-                                                                      ? "s-yellow-active"
-                                                                      : "s-yellow-btn"
-                                                                  }
-                                                                  onClick={this.handleSelectSlot.bind(
-                                                                    this,
-                                                                    data,
-                                                                    item.dates
-                                                                  )}
-                                                                >
-                                                                  {
-                                                                    data.timeSlot
-                                                                  }
-                                                                  {selectSlot ? (
-                                                                    <img
-                                                                      className="s-img-select"
-                                                                      src={
-                                                                        CircleRight
-                                                                      }
-                                                                      alt="circle-right"
-                                                                    />
-                                                                  ) : null}
-                                                                </button>
-                                                              </Tooltip>
-                                                            );
-                                                          }
-                                                          if (
-                                                            data.visitedCount <
-                                                            (1 / 2) *
-                                                              data.maxCapacity
-                                                          ) {
-                                                            return (
-                                                              <Tooltip
-                                                                placement="left"
-                                                                title={
-                                                                  data.remaining +
-                                                                  " MORE PEOPLE LEFT"
-                                                                }
-                                                              >
-                                                                <button
-                                                                  key={k}
-                                                                  className={
-                                                                    selectSlot
-                                                                      ? "s-green-active"
-                                                                      : "s-green-btn"
-                                                                  }
-                                                                  onClick={this.handleSelectSlot.bind(
-                                                                    this,
-                                                                    data,
-                                                                    item.dates
-                                                                  )}
-                                                                >
-                                                                  {
-                                                                    data.timeSlot
-                                                                  }
-                                                                  {selectSlot ? (
-                                                                    <img
-                                                                      className="s-img-select"
-                                                                      src={
-                                                                        CircleRight
-                                                                      }
-                                                                      alt="circle-right"
-                                                                    />
-                                                                  ) : null}
-                                                                </button>
-                                                              </Tooltip>
-                                                            );
-                                                          }
-                                                        }
-                                                      )}
-                                                  </div>
-                                                  <div className="selectdot-blue">
+                                  {this.state.messageSuggestionData !== null &&
+                                    this.state.messageSuggestionData.length >
+                                      0 &&
+                                    this.state.messageSuggestionData.length >
+                                      0 && (
+                                      <div className="suggestions-cntr">
+                                        {this.state.messageSuggestionData !==
+                                          null &&
+                                          this.state.messageSuggestionData.map(
+                                            (item, i) => (
+                                              <div
+                                                className={
+                                                  this.state.chkSuggestion[
+                                                    i + 1
+                                                  ] === 1
+                                                    ? "suggestions-tick"
+                                                    : ""
+                                                }
+                                                key={i}
+                                                // onClick={this.handleSaveChatMessages.bind(
+                                                //   this,
+                                                //   item.suggestionText,
+                                                //   i
+                                                // )}
+                                                // onClick={this.handleSaveChatMessages.bind(
+                                                //   this,
+                                                //   item.suggestionText,
+                                                //   i + 1,
+                                                //   "",
+                                                //   ""
+                                                // )}
+
+                                                onClick={this.onOpenMobSuggestionModal.bind(
+                                                  this,
+                                                  item.suggestionText,
+                                                  i + 1
+                                                )}
+                                              >
+                                                <Tooltip
+                                                  placement="left"
+                                                  title={item.suggestionText}
+                                                >
+                                                  <span>
+                                                    {item.suggestionText}
+                                                  </span>
+                                                </Tooltip>
+                                              </div>
+                                            )
+                                          )}
+                                      </div>
+                                    )}
+
+                                  {this.state.storeAgentDetail.length !== 0 &&
+                                  this.state.storeAgentDetail[0].suggestion ===
+                                    1 ? (
+                                    <div
+                                      className="mobile-ck-send"
+                                      onClick={this.handleMessageSuggestion.bind(
+                                        this
+                                      )}
+                                      title={"Search"}
+                                    >
+                                      {/* <img src={Assign} alt="send img" /> */}
+                                      <img src={SuggSearch} alt="send img" />
+                                    </div>
+                                  ) : null}
+                                  {this.state.storeAgentDetail.length !== 0 &&
+                                  this.state.storeAgentDetail[0].freeText ===
+                                    1 ? (
+                                    <div
+                                      className="mobile-ck-send-btn"
+                                      onClick={this.handleSaveChatMessages.bind(
+                                        this,
+                                        this.state.message,
+                                        0,
+                                        "",
+                                        ""
+                                      )}
+                                      title={"Send"}
+                                    >
+                                      <img src={Assign} alt="send img" />
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </div>
+                              {/* -------- Card Modal ----- */}
+                              <Modal
+                                open={this.state.cardModal}
+                                onClose={this.onCloseCardModal}
+                                center
+                                modalId="mobile-tabs-popup"
+                                overlayId="mobile-tabs-overlay"
+                              >
+                                <div className="mobile-chat-popup">
+                                  <div
+                                    className="input-group searchtxt-new"
+                                    style={{ background: "none" }}
+                                  >
+                                    <input
+                                      type="text"
+                                      className="search-customerAddSrch searchtxt"
+                                      placeholder="Search ItemId/artcile/SKU ID"
+                                      name="Search"
+                                      maxLength="100"
+                                      autoComplete="off"
+                                      onChange={this.handleSearchItemChange.bind(
+                                        this
+                                      )}
+                                      onKeyPress={this.enterPressed.bind(this)}
+                                    />
+                                    <span
+                                      onClick={this.handleSearchChatItemDetails.bind(
+                                        this
+                                      )}
+                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                    >
+                                      <img
+                                        src={SearchBlueImg}
+                                        alt="SearchBlueImg"
+                                        className="srch-imge"
+                                        // onClick={this.handleSearchCustomer}
+                                      />
+                                    </span>
+                                    {this.state.searchCardData.length === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.noProductFound}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div className="product-card">
+                                    {this.state.searchCardData !== null &&
+                                      this.state.searchCardData.map(
+                                        (item, i) => {
+                                          return (
+                                            <div
+                                              className="card"
+                                              key={i}
+                                              onClick={this.handleSelectCard.bind(
+                                                this,
+                                                item.itemID
+                                              )}
+                                            >
+                                              <div className="card-body position-relative">
+                                                {item.itemID ===
+                                                this.state.selectedCard ? (
+                                                  <div className="selectdot">
                                                     <img
-                                                      src={SchRight}
-                                                      alt="right arrow"
+                                                      src={CardTick}
+                                                      alt={"select-card"}
                                                     />
+                                                  </div>
+                                                ) : null}
+                                                <div className="mobile-card-cntr">
+                                                  <div className="mobile-card-img">
+                                                    <img
+                                                      className="chat-product-img"
+                                                      src={item.imageURL}
+                                                      alt="Product Image"
+                                                      title={item.productName}
+                                                    />
+                                                  </div>
+                                                  <div className="bkcprdt">
+                                                    <label className="chat-product-name">
+                                                      {item.productName}
+                                                    </label>
+                                                    {item.brandName !== "" ? (
+                                                      <label className="chat-product-code">
+                                                        Brand :
+                                                        {" " + item.brandName}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.categoryName !==
+                                                    "" ? (
+                                                      <label className="chat-product-code">
+                                                        Category :
+                                                        {" " +
+                                                          item.categoryName}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.subCategoryName !==
+                                                    "" ? (
+                                                      <label className="chat-product-code">
+                                                        SubCategory :
+                                                        {" " +
+                                                          item.subCategoryName}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.color !== "" ? (
+                                                      <label className="chat-product-code">
+                                                        Color :
+                                                        {" " + item.color}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.size !== "" ? (
+                                                      <label className="chat-product-code">
+                                                        Size :{" " + item.size}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.uniqueItemCode !==
+                                                    "" ? (
+                                                      <label className="chat-product-code">
+                                                        Item Code :
+                                                        {" " +
+                                                          item.uniqueItemCode}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.discount !== "" ? (
+                                                      <label className="chat-product-code">
+                                                        Discount :
+                                                        {" " + item.discount}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.categoryName !==
+                                                    "" ? (
+                                                      <label className="chat-product-code">
+                                                        Category :
+                                                        {" " +
+                                                          item.categoryName}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.subCategoryName !==
+                                                    "" ? (
+                                                      <label className="chat-product-code">
+                                                        SubCategory :
+                                                        {" " +
+                                                          item.subCategoryName}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.color !== "" ? (
+                                                      <label className="chat-product-code">
+                                                        Color :
+                                                        {" " + item.color}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.size !== "" ? (
+                                                      <label className="chat-product-code">
+                                                        Size :{" " + item.size}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.uniqueItemCode !==
+                                                    "" ? (
+                                                      <label className="chat-product-code">
+                                                        Item Code :
+                                                        {" " +
+                                                          item.uniqueItemCode}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.discount !== "" &&
+                                                    parseFloat(
+                                                      item.discount
+                                                    ) !== 0 ? (
+                                                      <label className="chat-product-code">
+                                                        Discount :
+                                                        {" " + item.discount}
+                                                        {/* {item.alternativeText} */}
+                                                      </label>
+                                                    ) : null}
+
+                                                    {item.price !== "" &&
+                                                    parseFloat(item.price) !==
+                                                      0 ? (
+                                                      <label className="chat-product-prize">
+                                                        Price :
+                                                        {" " + item.price}
+                                                      </label>
+                                                    ) : null}
+
+                                                    <label className="chat-product-url">
+                                                      {item.url}
+                                                    </label>
                                                   </div>
                                                 </div>
                                               </div>
-                                            ) : null;
-                                          }
-                                        )
-                                      : null}
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                  </div>
+                                  <div className="chat-btn-cntr">
+                                    <button
+                                      className="butn-inv"
+                                      onClick={this.onCloseCardModal}
+                                    >
+                                      Close
+                                    </button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleSendCard.bind(this)}
+                                    >
+                                      Send
+                                      <img
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up float-none"
+                                      />
+                                      {this.state.isSendRecomended ? (
+                                        <FontAwesomeIcon
+                                          icon={faCircleNotch}
+                                          className="circular-loader ml-2"
+                                          spin
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </button>
                                   </div>
                                 </div>
-                                <div className="schedule-right-cntr">
-                                  <div>
-                                    <label className="s-lable">
-                                      Selected Slot
-                                    </label>
-                                    {Object.keys(this.state.selectedSlot)
-                                      .length !== 0 ? (
-                                      <button
-                                        className={
-                                          this.state.selectedSlot.visitedCount <
-                                          (1 / 2) *
-                                            this.state.selectedSlot.maxCapacity
-                                            ? // this.state.selectedSlot.maxCapacity ==
-                                              //   this.state.selectedSlot.remaining
-                                              "s-green-btn s-green-active select-slot-cntr mx-0"
-                                            : this.state.selectedSlot
-                                                .visitedCount <
-                                              this.state.selectedSlot
-                                                .maxCapacity
-                                            ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                            : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                        }
-                                      >
-                                        {this.state.selectedSlot.timeSlot}
-                                        <img
-                                          className="s-img-select"
-                                          src={CircleRight}
-                                          alt="circle-right"
-                                        />
-                                      </button>
-                                    ) : null}
-                                    {this.state.isSelectSlot !== "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.isSelectSlot}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div>
-                                    <label className="s-lable">
-                                      No of People
-                                    </label>
-                                    <input
-                                      type="text"
-                                      value={this.state.noOfPeople}
-                                      onChange={this.handleNoOfPeopleChange.bind(
+                              </Modal>
+                              {/* --------Recommended List Modal----- */}
+                              <Modal
+                                open={this.state.recommendedModal}
+                                onClose={this.onCloseRecommendedModal}
+                                center
+                                modalId="mobile-tabs-popup"
+                                overlayId="mobile-tabs-overlay"
+                                classNames={{
+                                  modal: "recommended-list-popup",
+                                }}
+                              >
+                                <div className="recommended-cntr m-0 h-100">
+                                  <div className="chat-btn-cntr">
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleSendRecommendedList.bind(
                                         this
                                       )}
-                                    />
-                                    {this.state.noOfPeopleMax !== "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                          width: "131px",
-                                        }}
-                                      >
-                                        {this.state.noOfPeopleMax}
-                                      </p>
-                                    )}
+                                    >
+                                      Send Recommended List
+                                      <img
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up"
+                                      />
+                                      {this.state.isSendRecomended ? (
+                                        <FontAwesomeIcon
+                                          icon={faCircleNotch}
+                                          className="circular-loader ml-2"
+                                          spin
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </button>
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.noRecommendedFound}
+                                    </p>
+                                    <button
+                                      className="butn-inv"
+                                      onClick={this.onCloseRecommendedModal}
+                                    >
+                                      Close
+                                    </button>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="chat-btn-cntr">
-                                <button
-                                  className="butn-inv"
-                                  onClick={this.onCloseScheduleModal}
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  className="butn"
-                                  onClick={this.handleScheduleVisit.bind(this)}
-                                >
-                                  Send
-                                  <img
-                                    src={SendUp}
-                                    alt="send"
-                                    className="send-up float-none"
-                                  />
-                                  {this.state.isSendRecomended ? (
-                                    <FontAwesomeIcon
-                                      icon={faCircleNotch}
-                                      className="circular-loader ml-2"
-                                      spin
-                                    />
-                                  ) : (
-                                    ""
-                                  )}
-                                </button>
-                              </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <span className="slot-span">
-                                No slot added for this store
-                              </span>
-                            </div>
-                          )}
-                        </Modal>
-                        {/* -------- Generate Payment Link Modal ----- */}
-                        <Modal
-                          open={this.state.paymentModal}
-                          onClose={this.onClosePaymentModal}
-                          center
-                          modalId="mobile-tabs-popup"
-                          overlayId="mobile-tabs-overlay"
-                          classNames={{
-                            modal: "recommended-list-popup",
-                          }}
-                        >
-                          <div className="schedule-mobile-cntr p-0">
-                            <div>
-                              <div className="mobile-chat-popup">
-                                <div
-                                  className="input-group searchtxt-new pr-0"
-                                  style={{ background: "none" }}
-                                >
-                                  <input
-                                    type="text"
-                                    className="search-customerAddSrch searchtxt"
-                                    placeholder="Search Order Id"
-                                    name="Search"
-                                    maxLength="100"
-                                    autoComplete="off"
-                                    // value={this.state.searchItem}
-                                    // onChange={this.handleSearchItemChange.bind(
-                                    //   this
-                                    // )}
-                                  />
-                                  <span
-                                    // onClick={this.handleSearchChatItemDetails.bind(
-                                    //   this
-                                    // )}
-                                    className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                  >
-                                    <img
-                                      src={SearchBlueImg}
-                                      alt="SearchBlueImg"
-                                      className="srch-imge"
-                                      // onClick={this.handleSearchCustomer}
-                                    />
-                                  </span>
+                              </Modal>
+                              {/* -------- Schedule Visit Modal ----- */}
+                              <Modal
+                                open={this.state.scheduleModal}
+                                onClose={this.onCloseScheduleModal}
+                                center
+                                modalId="mobile-tabs-popup"
+                                overlayId="mobile-tabs-overlay"
+                                classNames={{
+                                  modal: "schedule-visit-popup",
+                                }}
+                              >
+                                {this.state.availableSlot > 0 ? (
+                                  <div className="schedule-mobile-cntr">
+                                    <div>
+                                      <div className="schedule-left-outer-cntr">
+                                        <div className="schedule-left-cntr">
+                                          {this.state.timeSlotData !== null
+                                            ? this.state.timeSlotData.map(
+                                                (item, i) => {
+                                                  return item
+                                                    .alreadyScheduleDetails
+                                                    .length > 0 ? (
+                                                    <div key={i}>
+                                                      <label className="s-lable">
+                                                        {item.day}:{item.dates}
+                                                      </label>
+                                                      <div className="schedule-btn-outer-cntr">
+                                                        <div className="schedule-btn-cntr">
+                                                          {item
+                                                            .alreadyScheduleDetails
+                                                            .length > 0 &&
+                                                            item.alreadyScheduleDetails.map(
+                                                              (data, k) => {
+                                                                var selectSlot = false;
+                                                                if (
+                                                                  this.state
+                                                                    .timeSlotData[
+                                                                    i
+                                                                  ]
+                                                                    .alreadyScheduleDetails[
+                                                                    k
+                                                                  ] ===
+                                                                  this.state
+                                                                    .selectedSlot
+                                                                ) {
+                                                                  selectSlot = true;
+                                                                }
+
+                                                                if (
+                                                                  data.maxCapacity ==
+                                                                  data.visitedCount
+                                                                ) {
+                                                                  return (
+                                                                    <Tooltip
+                                                                      placement="left"
+                                                                      title={
+                                                                        data.remaining +
+                                                                        " MORE PEOPLE LEFT"
+                                                                      }
+                                                                    >
+                                                                      <button
+                                                                        key={k}
+                                                                        className="s-red-active"
+                                                                        style={{
+                                                                          cursor:
+                                                                            "no-drop",
+                                                                        }}
+                                                                      >
+                                                                        {
+                                                                          data.timeSlot
+                                                                        }
+                                                                      </button>
+                                                                    </Tooltip>
+                                                                  );
+                                                                }
+                                                                if (
+                                                                  data.visitedCount >=
+                                                                  (1 / 2) *
+                                                                    data.maxCapacity
+                                                                ) {
+                                                                  return (
+                                                                    <Tooltip
+                                                                      placement="left"
+                                                                      title={
+                                                                        data.remaining +
+                                                                        " MORE PEOPLE LEFT"
+                                                                      }
+                                                                    >
+                                                                      <button
+                                                                        key={k}
+                                                                        className={
+                                                                          selectSlot
+                                                                            ? "s-yellow-active"
+                                                                            : "s-yellow-btn"
+                                                                        }
+                                                                        onClick={this.handleSelectSlot.bind(
+                                                                          this,
+                                                                          data,
+                                                                          item.dates
+                                                                        )}
+                                                                      >
+                                                                        {
+                                                                          data.timeSlot
+                                                                        }
+                                                                        {selectSlot ? (
+                                                                          <img
+                                                                            className="s-img-select"
+                                                                            src={
+                                                                              CircleRight
+                                                                            }
+                                                                            alt="circle-right"
+                                                                          />
+                                                                        ) : null}
+                                                                      </button>
+                                                                    </Tooltip>
+                                                                  );
+                                                                }
+                                                                if (
+                                                                  data.visitedCount <
+                                                                  (1 / 2) *
+                                                                    data.maxCapacity
+                                                                ) {
+                                                                  return (
+                                                                    <Tooltip
+                                                                      placement="left"
+                                                                      title={
+                                                                        data.remaining +
+                                                                        " MORE PEOPLE LEFT"
+                                                                      }
+                                                                    >
+                                                                      <button
+                                                                        key={k}
+                                                                        className={
+                                                                          selectSlot
+                                                                            ? "s-green-active"
+                                                                            : "s-green-btn"
+                                                                        }
+                                                                        onClick={this.handleSelectSlot.bind(
+                                                                          this,
+                                                                          data,
+                                                                          item.dates
+                                                                        )}
+                                                                      >
+                                                                        {
+                                                                          data.timeSlot
+                                                                        }
+                                                                        {selectSlot ? (
+                                                                          <img
+                                                                            className="s-img-select"
+                                                                            src={
+                                                                              CircleRight
+                                                                            }
+                                                                            alt="circle-right"
+                                                                          />
+                                                                        ) : null}
+                                                                      </button>
+                                                                    </Tooltip>
+                                                                  );
+                                                                }
+                                                              }
+                                                            )}
+                                                        </div>
+                                                        <div className="selectdot-blue">
+                                                          <img
+                                                            src={SchRight}
+                                                            alt="right arrow"
+                                                          />
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  ) : null;
+                                                }
+                                              )
+                                            : null}
+                                        </div>
+                                      </div>
+                                      <div className="schedule-right-cntr">
+                                        <div>
+                                          <label className="s-lable">
+                                            Selected Slot
+                                          </label>
+                                          {Object.keys(this.state.selectedSlot)
+                                            .length !== 0 ? (
+                                            <button
+                                              className={
+                                                this.state.selectedSlot
+                                                  .visitedCount <
+                                                (1 / 2) *
+                                                  this.state.selectedSlot
+                                                    .maxCapacity
+                                                  ? // this.state.selectedSlot.maxCapacity ==
+                                                    //   this.state.selectedSlot.remaining
+                                                    "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                  : this.state.selectedSlot
+                                                      .visitedCount <
+                                                    this.state.selectedSlot
+                                                      .maxCapacity
+                                                  ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                  : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                              }
+                                            >
+                                              {this.state.selectedSlot.timeSlot}
+                                              <img
+                                                className="s-img-select"
+                                                src={CircleRight}
+                                                alt="circle-right"
+                                              />
+                                            </button>
+                                          ) : null}
+                                          {this.state.isSelectSlot !== "" && (
+                                            <p
+                                              style={{
+                                                color: "red",
+                                                marginBottom: "0px",
+                                              }}
+                                            >
+                                              {this.state.isSelectSlot}
+                                            </p>
+                                          )}
+                                        </div>
+                                        <div>
+                                          <label className="s-lable">
+                                            No of People
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={this.state.noOfPeople}
+                                            onChange={this.handleNoOfPeopleChange.bind(
+                                              this
+                                            )}
+                                          />
+                                          {this.state.noOfPeopleMax !== "" && (
+                                            <p
+                                              style={{
+                                                color: "red",
+                                                marginBottom: "0px",
+                                                width: "131px",
+                                              }}
+                                            >
+                                              {this.state.noOfPeopleMax}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="chat-btn-cntr">
+                                      <button
+                                        className="butn-inv"
+                                        onClick={this.onCloseScheduleModal}
+                                      >
+                                        Close
+                                      </button>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleScheduleVisit.bind(
+                                          this
+                                        )}
+                                      >
+                                        Send
+                                        <img
+                                          src={SendUp}
+                                          alt="send"
+                                          className="send-up float-none"
+                                        />
+                                        {this.state.isSendRecomended ? (
+                                          <FontAwesomeIcon
+                                            icon={faCircleNotch}
+                                            className="circular-loader ml-2"
+                                            spin
+                                          />
+                                        ) : (
+                                          ""
+                                        )}
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <span className="slot-span">
+                                      No slot added for this store
+                                    </span>
+                                  </div>
+                                )}
+                              </Modal>
+                              {/* -------- Generate Payment Link Modal ----- */}
+                              <Modal
+                                open={this.state.paymentModal}
+                                onClose={this.onClosePaymentModal}
+                                center
+                                modalId="mobile-tabs-popup"
+                                overlayId="mobile-tabs-overlay"
+                                classNames={{
+                                  modal: "recommended-list-popup",
+                                }}
+                              >
+                                <div className="schedule-mobile-cntr p-0">
+                                  <div>
+                                    <div className="mobile-chat-popup">
+                                      <div
+                                        className="input-group searchtxt-new pr-0"
+                                        style={{ background: "none" }}
+                                      >
+                                        <input
+                                          type="text"
+                                          className="search-customerAddSrch searchtxt"
+                                          placeholder="Search Order Id"
+                                          name="Search"
+                                          maxLength="100"
+                                          autoComplete="off"
+                                          // value={this.state.searchItem}
+                                          // onChange={this.handleSearchItemChange.bind(
+                                          //   this
+                                          // )}
+                                        />
+                                        <span
+                                          // onClick={this.handleSearchChatItemDetails.bind(
+                                          //   this
+                                          // )}
+                                          className="input-group-addon seacrh-img-addsearch searchtxt-span"
+                                        >
+                                          <img
+                                            src={SearchBlueImg}
+                                            alt="SearchBlueImg"
+                                            className="srch-imge"
+                                            // onClick={this.handleSearchCustomer}
+                                          />
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div className="payment-details">
+                                      <label>Amount</label>
+                                      <span>INR 1299</span>
+                                    </div>
+                                  </div>
+                                  <div className="chat-btn-cntr">
+                                    <button
+                                      className="butn-inv"
+                                      onClick={this.onClosePaymentModal}
+                                    >
+                                      Close
+                                    </button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.onClosePaymentModal}
+                                    >
+                                      Send
+                                      <img
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up"
+                                      />
+                                      {this.state.isSendRecomended ? (
+                                        <FontAwesomeIcon
+                                          icon={faCircleNotch}
+                                          className="circular-loader ml-2"
+                                          spin
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="payment-details">
-                                <label>Amount</label>
-                                <span>INR 1299</span>
-                              </div>
-                            </div>
-                            <div className="chat-btn-cntr">
-                              <button
-                                className="butn-inv"
-                                onClick={this.onClosePaymentModal}
+                              </Modal>
+                              {/*Message Suggestion Modal*/}
+                              <Modal
+                                open={this.state.suggestionModal}
+                                onClose={this.onCloseSuggestionModal}
+                                center
+                                modalId="desktop-conf-popup"
+                                overlayId="mobile-tabs-overlay"
                               >
-                                Close
-                              </button>
-                              <button
-                                className="butn"
-                                onClick={this.onClosePaymentModal}
+                                <div className="">
+                                  <div
+                                    className="input-group"
+                                    style={{ background: "none" }}
+                                  >
+                                    <p className="cls-p-conf">
+                                      Are you sure & want to send?
+                                    </p>
+                                  </div>
+                                  <hr
+                                    style={{ borderTop: "1px solid #bbb" }}
+                                  ></hr>
+                                  <p className="cls-p-sugg">
+                                    {this.state.suggestionText}
+                                  </p>
+                                  <div className="chat-btn-conf">
+                                    <button
+                                      className="butn-inv"
+                                      onClick={this.onCloseSuggestionModal}
+                                    >
+                                      No
+                                    </button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleSaveChatMessages.bind(
+                                        this,
+                                        this.state.suggestionText,
+                                        "",
+                                        ""
+                                      )}
+                                    >
+                                      Yes
+                                      <img
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up float-none"
+                                      />
+                                      {this.state.isSendRecomended ? (
+                                        <FontAwesomeIcon
+                                          icon={faCircleNotch}
+                                          className="circular-loader ml-2"
+                                          spin
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </button>
+                                  </div>
+                                </div>
+                              </Modal>
+                              {/* Mobile View Message Suggestion*/}
+                              <Modal
+                                open={this.state.suggestionModalMob}
+                                onClose={this.onCloseMobSuggestionModal}
+                                center
+                                modalId="desktop-conf-mob-popup"
+                                overlayId="mobile-tabs-overlay"
                               >
-                                Send
-                                <img
-                                  src={SendUp}
-                                  alt="send"
-                                  className="send-up"
-                                />
-                                {this.state.isSendRecomended ? (
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader ml-2"
-                                    spin
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                              </button>
+                                <div className="">
+                                  <div
+                                    className="input-group"
+                                    style={{ background: "none" }}
+                                  >
+                                    <p className="cls-p-conf-mob">
+                                      Are you sure & want to send?
+                                    </p>
+                                  </div>
+                                  <hr
+                                    style={{ borderTop: "1px solid #bbb" }}
+                                  ></hr>
+                                  <p className="cls-p-sugg">
+                                    {this.state.suggestionText}
+                                  </p>
+                                  <div className="chat-btn-conf-mob">
+                                    <button
+                                      className="butn-inv"
+                                      onClick={this.onCloseMobSuggestionModal}
+                                    >
+                                      No
+                                    </button>
+                                    <button
+                                      className="butn"
+                                      onClick={this.handleSaveChatMessages.bind(
+                                        this,
+                                        this.state.suggestionText,
+                                        "",
+                                        ""
+                                      )}
+                                    >
+                                      Yes
+                                      <img
+                                        src={SendUp}
+                                        alt="send"
+                                        className="send-up float-none"
+                                      />
+                                      {this.state.isSendRecomended ? (
+                                        <FontAwesomeIcon
+                                          icon={faCircleNotch}
+                                          className="circular-loader ml-2"
+                                          spin
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </button>
+                                  </div>
+                                </div>
+                              </Modal>
                             </div>
                           </div>
-                        </Modal>
-                        {/*Message Suggestion Modal*/}
-                        <Modal
-                          open={this.state.suggestionModal}
-                          onClose={this.onCloseSuggestionModal}
-                          center
-                          modalId="desktop-conf-popup"
-                          overlayId="mobile-tabs-overlay"
+                        </div>
+                        <div
+                          className="tab-pane fade"
+                          id="recent-chat"
+                          role="tabpanel"
+                          aria-labelledby="recent-chat"
                         >
-                          <div className="">
-                            <div
-                              className="input-group"
-                              style={{ background: "none" }}
-                            >
-                              <p className="cls-p-conf">
-                                Are you sure & want to send?
-                              </p>
-                            </div>
-                            <hr style={{ borderTop: "1px solid #bbb" }}></hr>
-                            <p className="cls-p-sugg">
-                              {this.state.suggestionText}
-                            </p>
-                            <div className="chat-btn-conf">
-                              <button
-                                className="butn-inv"
-                                onClick={this.onCloseSuggestionModal}
-                              >
-                                No
-                              </button>
-                              <button
-                                className="butn"
-                                onClick={this.handleSaveChatMessages.bind(
-                                  this,
-                                  this.state.suggestionText,
-                                  "",
-                                  ""
-                                )}
-                              >
-                                Yes
-                                <img
-                                  src={SendUp}
-                                  alt="send"
-                                  className="send-up float-none"
-                                />
-                                {this.state.isSendRecomended ? (
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader ml-2"
-                                    spin
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                              </button>
-                            </div>
+                          <div className="table-cntr store chat-history chatabcus">
+                            <Table
+                              className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                              columns={[
+                                {
+                                  title: "Agent",
+                                  dataIndex: "customerName",
+                                  width: "20%",
+                                },
+                                {
+                                  title: "Satisfaction",
+                                  dataIndex: "",
+                                  width: "10%",
+
+                                },
+                                {
+                                  title: "Time",
+                                  dataIndex: "time",
+                                  width: "20%",
+                                },
+                                {
+                                  title: "Message",
+                                  dataIndex: "message",
+                                  width: "30%",
+                                },
+                              ]}
+                              pagination={{ defaultPageSize: 5 }}
+                              dataSource={this.state.historicalChatData}
+                            ></Table>
                           </div>
-                        </Modal>
-                        {/* Mobile View Message Suggestion*/}
-                        <Modal
-                          open={this.state.suggestionModalMob}
-                          onClose={this.onCloseMobSuggestionModal}
-                          center
-                          modalId="desktop-conf-mob-popup"
-                          overlayId="mobile-tabs-overlay"
-                        >
-                          <div className="">
-                            <div
-                              className="input-group"
-                              style={{ background: "none" }}
-                            >
-                              <p className="cls-p-conf-mob">
-                                Are you sure & want to send?
-                              </p>
-                            </div>
-                            <hr style={{ borderTop: "1px solid #bbb" }}></hr>
-                            <p className="cls-p-sugg">
-                              {this.state.suggestionText}
-                            </p>
-                            <div className="chat-btn-conf-mob">
-                              <button
-                                className="butn-inv"
-                                onClick={this.onCloseMobSuggestionModal}
-                              >
-                                No
-                              </button>
-                              <button
-                                className="butn"
-                                onClick={this.handleSaveChatMessages.bind(
-                                  this,
-                                  this.state.suggestionText,
-                                  "",
-                                  ""
-                                )}
-                              >
-                                Yes
-                                <img
-                                  src={SendUp}
-                                  alt="send"
-                                  className="send-up float-none"
-                                />
-                                {this.state.isSendRecomended ? (
-                                  <FontAwesomeIcon
-                                    icon={faCircleNotch}
-                                    className="circular-loader ml-2"
-                                    spin
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                              </button>
-                            </div>
-                          </div>
-                        </Modal>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="chatdivtitle">
+                        <label
+                          className="chattitlelbl"
+                          style={{ color: "Black" }}
+                        >
+                          My Historical Chat
+                        </label>
+                        <div className="table-cntr store chat-history">
+                          <Table
+                            className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                            columns={[
+                              {
+                                title: "Chat ID",
+                                dataIndex: "chatID",
+                                width: "10%",
+                              },
+                              {
+                                title: "Customer Name",
+                                dataIndex: "customerName",
+                                width: "20%",
+                              },
+                              {
+                                title: "Time",
+                                dataIndex: "time",
+                                width: "20%",
+                              },
+                              {
+                                title: "Message",
+                                dataIndex: "message",
+                                width: "30%",
+                              },
+                            ]}
+                            pagination={{ defaultPageSize: 5 }}
+                            dataSource={this.state.historicalChatData}
+                          ></Table>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
