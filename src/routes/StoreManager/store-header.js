@@ -4461,7 +4461,7 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="recent-chat"
                         >
-                          <div className="table-cntr store chat-history">
+                          <div className="table-cntr store chat-history chatabcus">
                             <Table
                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
                               columns={[

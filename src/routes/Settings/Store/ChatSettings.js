@@ -183,7 +183,7 @@ class ChatSettings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="chattxtdiv">
-                      <div>
+                      <div className="chattxtdivcus">
                         <input
                           type="text"
                           className="chatsetngtxt"
@@ -196,6 +196,7 @@ class ChatSettings extends Component {
                         <Select
                           showArrow={true}
                           defaultValue="M"
+                          style={{marginLeft: "10px"}}
                           name="chatSessionDuration"
                           onChange={this.handleSessionDuration.bind(this)}
                           value={this.state.chatSessionDuration}
@@ -206,7 +207,7 @@ class ChatSettings extends Component {
                         </Select>
                       </div>
                     </div>
-                    <div>
+                    <div className="chattxtdivcus">
                       <input
                         type="text"
                         className="chatsetngtxt"
@@ -219,6 +220,7 @@ class ChatSettings extends Component {
                       <Select
                         showArrow={true}
                         defaultValue="D"
+                          style={{marginLeft: "10px"}}
                         onChange={this.handleChatDisplayDurationHour.bind(this)}
                         value={this.state.chatDisplayDurationHour}
                       >
