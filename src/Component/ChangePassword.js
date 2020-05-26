@@ -35,7 +35,6 @@ class ChangePassword extends Component {
 
   handleGetUserProfileData() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -115,7 +114,8 @@ class ChangePassword extends Component {
       changePasswordType = "system";
       emailIDsystem = email;
     }
-
+    let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+    var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
       url: config.apiUrl + "/User/ChangePassword",
@@ -125,7 +125,12 @@ class ChangePassword extends Component {
         NewPassword: encPassword,
         ChangePasswordType: changePasswordType,
       },
-      headers: authHeader(),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "X-Authorized-Token": _token,
+        "X-Authorized-Domainname": X_Authorized_Domainname,
+      },
     }).then(function(response) {
       // let data = response;
       debugger;

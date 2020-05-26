@@ -237,7 +237,7 @@ class UserProfile extends Component {
             NotificationManager.success("Profile updated successfully.");
             transferData.sendProfilePic(data.profilePath);
             setTimeout(function() {
-              self.props.history.push("/store/storedashboard");
+              self.props.history.push("/store/campaign");
             }, 1000);
           }
         })

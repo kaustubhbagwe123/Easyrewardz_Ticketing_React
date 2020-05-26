@@ -129,6 +129,14 @@
   height: 31px;
   text-transform: initial;
 }
+.followUpBtnBlue{
+  background-color: #5c53ee;
+  border-radius: 4px;
+  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5); */
+  width: 105px;
+  height: 31px;
+  text-transform: initial;
+}
 .table-btnlabel {
   color: #ffffff;
   font-family: Lato;
@@ -2400,6 +2408,12 @@ table tr th:last-child {
     font-weight: normal;
     line-height: 2;
     height: 22px;
+  }
+  .followUpBtnBlue{
+    width: 95px;
+    height: 22px;
+    line-height: 2;
+    font-weight: 400;
   }
   .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
     background-size: 17px 17px;

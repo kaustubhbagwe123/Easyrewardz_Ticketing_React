@@ -445,11 +445,11 @@ class StoreCampaign extends Component {
     })
       .then(function(response) {
         var message = response.data.message;
-        var brandData = response.data.responseData;
-        if (message == "Success" && brandData.length > 0) {
-          self.setState({ brandData });
+        var data = response.data.responseData;
+        if (message == "Success") {
+          self.setState({ brandData: data });
         } else {
-          self.setState({ brandData });
+          self.setState({ brandData: [] });
         }
       })
       .catch((response) => {
@@ -1797,6 +1797,10 @@ class StoreCampaign extends Component {
                                 </label>
                               ) : item.statusID === 102 ? (
                                 <label className="table-btnlabel followUpBtnYellow">
+                                  {item.statusName}
+                                </label>
+                              ) : item.statusID === 104 ? (
+                                <label className="table-btnlabel followUpBtnBlue">
                                   {item.statusName}
                                 </label>
                               ) : null}

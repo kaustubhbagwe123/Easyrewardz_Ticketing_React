@@ -28,12 +28,19 @@ import Appointment from "./Appointment";
 import StoreCampaign from "../Campaign/StoreCampaign";
 import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 import ChatSettings from "./../Settings/Store/ChatSettings";
+// import LanguageSelection from "./Component/Store/LanguageSelection";
+// import LanguageSelection from "./../../Component/Store/LanguageSelection";
 
 export class StoreApp extends Component {
   render() {
     const { match } = this.props;
     return (
       <StoreLayout>
+        {/* <Route
+          exact
+          path={`${match.url}/languageSelection`}
+          component={LanguageSelection}
+        /> */}
         <Route
           exact
           path={`${match.url}/storeDashboard`}

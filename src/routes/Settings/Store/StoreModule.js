@@ -2,16 +2,16 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
-// import { Popover } from "antd";
-// import ReactTable from "react-table";
+import { Popover } from "antd";
+import ReactTable from "react-table";
 // import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import DelBlack from "./../../../assets/Images/del-black.png";
 // import DownExcel from "./../../../assets/Images/csv.png";
 // import FileUpload from "./../../../assets/Images/file.png";
-// import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 // import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-// import DelBigIcon from "./../../../assets/Images/del-big.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
@@ -2212,33 +2212,36 @@ class StoreModule extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="cusinput">
-                                    <input
-                                    type="text"
-                                    name="providerName"
-                                    autoComplete="off"
-                                    placeholder="Provider name"
-                                    maxLength={15}
-                                    value={
-                                      this.state.campaignChannelData
-                                        .providerName
-                                    }
-                                    onChange={this.CampCannelOnChange.bind(
-                                      this
-                                    )}
-                                  />
-                                  {this.state.campaignChannelData
-                                    .providerName === "" && (
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                      }}
-                                    >
-                                      {this.state.campProviderValidation}
-                                    </p>
-                                  )}
-                                  </div>
+                                  {this.state.campaignChannelData.smsFlag ? (
+                                    <div className="cusinput">
+                                      <input
+                                        type="text"
+                                        name="providerName"
+                                        autoComplete="off"
+                                        placeholder="Provider name"
+                                        maxLength={15}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .providerName
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .providerName === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.campProviderValidation}
+                                        </p>
+                                      )}
+                                    </div>
+                                  ) : null}
+
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
@@ -2506,7 +2509,56 @@ class StoreModule extends Component {
                                     </div>
                                   </div>
                                 </div>
-
+                                <table className="cmpaign-channel-table">
+                                  <tr>
+                                    <td>OTP Time Configuration</td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        // name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        // value={
+                                        //   this.state.BroadCastConfigData
+                                        //     .enableClickAfterValue
+                                        // }
+                                        // onChange={this.BroadCastOnChange.bind(
+                                        //   this
+                                        // )}
+                                      />
+                                      {/* {this.state.BroadCastConfigData
+                                        .enableClickAfterValue === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {
+                                            this.state
+                                              .broadCastEnabledAfterValid
+                                          }
+                                        </p>
+                                      )} */}
+                                    </td>
+                                    <td>
+                                      <select
+                                      // value={
+                                      //   this.state.BroadCastConfigData
+                                      //     .enableClickAfterDuration
+                                      // }
+                                      // name="enableClickAfterDuration"
+                                      // onChange={this.BroadCastOnChange.bind(
+                                      //   this
+                                      // )}
+                                      >
+                                        <option value="S">Sec</option>
+                                        <option value="M">Min</option>
+                                        <option value="H">Hr</option>
+                                      </select>
+                                    </td>
+                                  </tr>
+                                </table>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
@@ -2555,33 +2607,35 @@ class StoreModule extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
-                                    <div className="cusinput">
-                                      <input
-                                      type="text"
-                                      name="providerName"
-                                      autoComplete="off"
-                                      placeholder="Provider name"
-                                      maxLength={15}
-                                      value={
-                                        this.state.BroadCastConfigData
-                                          .providerName
-                                      }
-                                      onChange={this.BroadCastOnChange.bind(
-                                        this
-                                      )}
-                                    />
-                                    {this.state.BroadCastConfigData
-                                      .providerName === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.broadProviderValidation}
-                                      </p>
-                                    )}
-                                    </div>
+                                    {this.state.BroadCastConfigData.smsFlag ? (
+                                      <div className="cusinput">
+                                        <input
+                                          type="text"
+                                          name="providerName"
+                                          autoComplete="off"
+                                          placeholder="Provider name"
+                                          maxLength={15}
+                                          value={
+                                            this.state.BroadCastConfigData
+                                              .providerName
+                                          }
+                                          onChange={this.BroadCastOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                        {this.state.BroadCastConfigData
+                                          .providerName === "" && (
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.broadProviderValidation}
+                                          </p>
+                                        )}
+                                      </div>
+                                    ) : null}
                                   </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
@@ -2721,6 +2775,176 @@ class StoreModule extends Component {
                                   UPDATE
                                 </button>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label="Slot Settings">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>SLOT SETTINGS</h3>
+                                <div className="cmpaign-channel-table slot-setting-options">
+                                  <div>
+                                    <select name="">
+                                      <option value="">Store Code</option>
+                                      <option value="">Bata123</option>
+                                      <option value="">Fab456</option>
+                                    </select>
+                                  </div>
+                                  <div className="slot-timings">
+                                    <div className="d-flex">
+                                      <select name="" className="slot-hour">
+                                        <option value="">1</option>
+                                        <option value="">2</option>
+                                        <option value="">3</option>
+                                      </select>
+                                      <select name="" className="slot-shift">
+                                        <option value="">AM</option>
+                                        <option value="">PM</option>
+                                      </select>
+                                    </div>
+                                    <span className="slot-to">TO</span>
+                                    <div className="d-flex">
+                                      <select name="" className="slot-hour">
+                                        <option value="">1</option>
+                                        <option value="">2</option>
+                                        <option value="">3</option>
+                                      </select>
+                                      <select name="" className="slot-shift">
+                                        <option value="">AM</option>
+                                        <option value="">PM</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <input
+                                    type="text"
+                                    name=""
+                                    placeholder="Order no."
+                                    // value={
+                                    //   this.state.campaignChannelData
+                                    //     .maxClickAllowed
+                                    // }
+                                    // autoComplete="off"
+                                    // maxLength={2}
+                                    // onChange={this.CampCannelOnChange.bind(
+                                    //   this
+                                    // )}
+                                  />
+                                </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                >
+                                  UPDATE
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12">
+                              <ReactTable
+                                // data={this.state.campaignScriptData}
+                                columns={[
+                                  {
+                                    Header: "SR No",
+                                    sortable: false,
+                                    accessor: "campaignName",
+                                  },
+                                  {
+                                    Header: "Store Code",
+                                    accessor: "campaignScriptLess",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Slot",
+                                    accessor: "campaignScriptLess",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Order",
+                                    accessor: "campaignScriptLess",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Created by",
+                                    accessor: "createdBy",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Actions",
+                                    sortable: false,
+                                    Cell: (row) => {
+                                      var ids = row.original["id"];
+                                      return (
+                                        <>
+                                          <span>
+                                            <Popover
+                                              content={
+                                                <div className="d-flex general-popover popover-body">
+                                                  <div className="del-big-icon">
+                                                    <img
+                                                      src={DelBigIcon}
+                                                      alt="del-icon"
+                                                    />
+                                                  </div>
+                                                  <div>
+                                                    <p className="font-weight-bold blak-clr">
+                                                      Delete file?
+                                                    </p>
+                                                    <p className="mt-1 fs-12">
+                                                      Are you sure you want to
+                                                      delete this file?
+                                                    </p>
+                                                    <div className="del-can">
+                                                      <a href={Demo.BLANK_LINK}>
+                                                        CANCEL
+                                                      </a>
+                                                      <button
+                                                        className="butn"
+                                                        // onClick={this.deleteCampaign.bind(
+                                                        //   this,
+                                                        //   row.original.campaignID
+                                                        // )}
+                                                      >
+                                                        Delete
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              }
+                                              placement="bottom"
+                                              trigger="click"
+                                            >
+                                              <img
+                                                src={RedDeleteIcon}
+                                                alt="del-icon"
+                                                className="del-btn"
+                                                id={ids}
+                                              />
+                                            </Popover>
+
+                                            <button className="react-tabel-button editre">
+                                              EDIT
+                                            </button>
+                                          </span>
+                                        </>
+                                      );
+                                    },
+                                  },
+                                ]}
+                                resizable={false}
+                                minRows={2}
+                                defaultPageSize={5}
+                                showPagination={true}
+                              />
                             </div>
                           </div>
                         </div>

@@ -117,8 +117,8 @@ a {
   cursor: pointer;
 }
 .hamb-menu {
-  width: 20px;
-  margin-top: 13px;
+  width: 60px;
+  margin-top: 17px;
   float: right;
   display: none;
 }
@@ -9777,6 +9777,10 @@ font-size: 12px !important;
   color: #333;
 }
 
+.mob-header {
+  display: none !important;
+}
+
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
     flex: 0 0 33.333333%;
@@ -11367,6 +11371,12 @@ font-size: 12px !important;
   .module-switch {
     padding: 0;
   }
+  .d-nonemob {
+    display: none !important;
+  }
+  .mob-header {
+    display: block !important;
+  }
 }
 
 @media only screen and (max-width: 580px) {
@@ -11951,4 +11961,26 @@ font-size: 12px !important;
 .chattxtdivcus {
   display: flex;
   width: 100%;
+}
+.languagebox {
+  margin-bottom: 15px;
+}
+.languagebox .langbtn {
+  background-color: #eee;
+  border-color: #ccc;
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  height: 42px;
+  text-align: left;
+  font-weight: bold;
+}
+.languagebox .langbtn.active {
+  background-color: #2561a8;
+  color: #fff;
+}
+.skip {
+  margin-top: 10px;
+    text-transform: uppercase;
+    color: rgb(36, 110, 195);
 }

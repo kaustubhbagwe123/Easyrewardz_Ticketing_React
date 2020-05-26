@@ -2588,8 +2588,10 @@
   font-family: lato;
   /* width: 180px; */
   /* width: 190px; */
-  width: 260px;
+  /* width: 260px; */
   text-align: center;
+  white-space: nowrap;
+  min-width: 150px;
 }
 .cmpaign-channel-table {
   margin-top: 20px;
@@ -2623,6 +2625,40 @@
 .cmpaign-channel-table tr td:last-child {
   min-width: 65px;
   padding-right: 0;
+}
+.slot-setting-options {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.slot-setting-options input {
+  width: 75px;
+  font-size: 13px;
+}
+.slot-setting-options input::placeholder {
+  padding: 0;
+  font-weight: 400;
+  font-size: 13px;
+}
+.slot-timings {
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+}
+.slot-hour {
+  border-right: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.slot-shift {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  width: 50px !important;
+}
+.slot-to {
+  font-size: 12px;
+  margin: 0 10px;
 }
 .module-switch-cntr .module-switch {
   margin-top: 10px;
@@ -3470,6 +3506,6 @@
 }
 
 .chat-storemng {
-  color: #EB4D4B;
+  color: #eb4d4b;
   font-weight: bold !important;
 }
