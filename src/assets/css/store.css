@@ -2409,6 +2409,12 @@ table tr th:last-child {
     line-height: 2;
     height: 22px;
   }
+  .followUpBtnBlue{
+    width: 95px;
+    height: 22px;
+    line-height: 2;
+    font-weight: 400;
+  }
   .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
     background-size: 17px 17px;
     width: 17px;
