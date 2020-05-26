@@ -1444,7 +1444,7 @@ class Header extends Component {
           ? ", Price: " + messagewhatsAppData[0].price.trim()
           : "") +
         "\n" +
-        messagewhatsAppData[0].url;
+        messagewhatsAppData[0].url !== null?messagewhatsAppData[0].url:""
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -2986,7 +2986,8 @@ class Header extends Component {
                                                           </label>
                                                         ) : null}
                                                       </div>
-                                                      <div>
+                                                      {item.ur!==null && item.ur!==""?(
+                                                      <div> 
                                                         <a
                                                           href={item.url}
                                                           target="_blank"
@@ -2994,7 +2995,7 @@ class Header extends Component {
                                                         >
                                                           {item.url}
                                                         </a>
-                                                      </div>
+                                                      </div>):""}
                                                     </div>
                                                   </div>
                                                 </div>
@@ -3833,10 +3834,10 @@ class Header extends Component {
                                                         {" " + item.price}
                                                       </label>
                                                     ) : null}
-
+                                                    {item.url!==null && item.url!==""?(
                                                     <label className="chat-product-url">
-                                                      {item.url}
-                                                    </label>
+                                                      {item.url!==null?item.url:""}
+                                                    </label>):""}
                                                   </div>
                                                 </div>
                                               </div>
