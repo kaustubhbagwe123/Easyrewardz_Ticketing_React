@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import OTPInput, { ResendOTP } from "otp-input-react";
+// import OTPInput, { ResendOTP } from "otp-input-react";
 import { Table, Select } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
@@ -530,7 +530,7 @@ class Appointment extends Component {
                   <div className="otp-appoint-height">
                     <div className="appnt-input-group">
                       <label>Enter 4 digit OTP send to 9717419325</label>
-                      <OTPInput
+                      {/* <OTPInput
                         value={this.state.otp}
                         onChange={this.setOTP.bind(this)}
                         OTPLength={4}
@@ -542,7 +542,7 @@ class Appointment extends Component {
                         renderButton={renderButton}
                         renderTime={renderTime}
                         handelResendClick={() => console.log("Resend clicked")}
-                      />
+                      /> */}
                       <a href="#!" className="edit-num">
                         Edit Number
                       </a>
