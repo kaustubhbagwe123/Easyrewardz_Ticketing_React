@@ -859,7 +859,7 @@ class StoreFileUploadLogs extends Component {
             Status
             <FontAwesomeIcon
               icon={
-                this.state.isATOZ == false && this.state.sortHeader === "Status"
+                this.state.isATOZ === false && this.state.sortHeader === "Status"
                   ? faCaretUp
                   : faCaretDown
               }

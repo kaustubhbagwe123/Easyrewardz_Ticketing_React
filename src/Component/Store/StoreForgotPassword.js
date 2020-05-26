@@ -23,7 +23,6 @@ class StoreForgotPassword extends Component {
   }
   componentDidMount() {
     debugger;
-
     var finalEncProgramCode = this.props.location.state.programCode;
     if (finalEncProgramCode) {
       this.setState({
@@ -39,7 +38,7 @@ class StoreForgotPassword extends Component {
       let self = this;
       
       var encProgramCode = this.state.programCode;
-      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc"); 
       // validate email
       axios({
         method: "post",

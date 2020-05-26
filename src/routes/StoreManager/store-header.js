@@ -554,7 +554,7 @@ class Header extends Component {
         if (status === true) {
           //NotificationManager.success(Msg);
           localStorage.clear();
-          window.location.href = "/StoreProgramCode";
+          window.location.href = "/";
         }
       })
       .catch((data) => {
@@ -1430,34 +1430,42 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-        (messagewhatsAppData[0].brandName !== ""
+        (messagewhatsAppData[0].brandName !== "" &&
+        messagewhatsAppData[0].brandName !== null
           ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
           : "") +
-        (messagewhatsAppData[0].categoryName !== ""
+        (messagewhatsAppData[0].categoryName !== "" &&
+        messagewhatsAppData[0].categoryName !== null
           ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
           : "") +
-        (messagewhatsAppData[0].subCategoryName !== ""
+        (messagewhatsAppData[0].subCategoryName !== "" &&
+        messagewhatsAppData[0].subCategoryName !== null
           ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
           : "") +
-        (messagewhatsAppData[0].color !== ""
+        (messagewhatsAppData[0].color !== "" &&
+        messagewhatsAppData[0].color !== null
           ? ", Color: " + messagewhatsAppData[0].color.trim()
           : "") +
-        (messagewhatsAppData[0].size !== ""
+        (messagewhatsAppData[0].size !== "" &&
+        messagewhatsAppData[0].size !== null
           ? ", Size: " + messagewhatsAppData[0].size.trim()
           : "") +
-        (messagewhatsAppData[0].uniqueItemCode !== ""
+        (messagewhatsAppData[0].uniqueItemCode !== "" &&
+        messagewhatsAppData[0].uniqueItemCode !== null
           ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
           : "") +
         (messagewhatsAppData[0].discount !== "" &&
-        parseFloat(messagewhatsAppData[0].discount) !== 0
+        parseFloat(messagewhatsAppData[0].discount) !== 0 &&
+        messagewhatsAppData[0].discount !== null
           ? ", Discount: " + messagewhatsAppData[0].discount.trim()
           : "") +
         (messagewhatsAppData[0].price !== "" &&
-        parseFloat(messagewhatsAppData[0].price) !== 0
+        parseFloat(messagewhatsAppData[0].price) !== 0 &&
+        messagewhatsAppData[0].price !== null
           ? ", Price: " + messagewhatsAppData[0].price.trim()
           : "") +
         "\n" +
-        messagewhatsAppData[0].url;
+        messagewhatsAppData[0].url !== null?messagewhatsAppData[0].url:""
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -2916,7 +2924,7 @@ class Header extends Component {
                                                       </div>
                                                       <div>
                                                         {item.brandName !==
-                                                        "" ? (
+                                                        "" && item.brandName !== null? (
                                                           <label className="chat-product-code">
                                                             Brand :
                                                             {" " +
@@ -2927,7 +2935,7 @@ class Header extends Component {
                                                       </div>
                                                       <div>
                                                         {item.categoryName !==
-                                                        "" ? (
+                                                        "" && item.categoryName !== null? (
                                                           <label className="chat-product-code">
                                                             Category :
                                                             {" " +
@@ -2938,7 +2946,7 @@ class Header extends Component {
                                                       </div>
                                                       <div>
                                                         {item.subCategoryName !==
-                                                        "" ? (
+                                                        "" && item.subCategoryName !== null? (
                                                           <label className="chat-product-code">
                                                             SubCategory :
                                                             {" " +
@@ -2948,7 +2956,7 @@ class Header extends Component {
                                                         ) : null}
                                                       </div>
                                                       <div>
-                                                        {item.color !== "" ? (
+                                                        {item.color !== "" && item.color !== null? (
                                                           <label className="chat-product-code">
                                                             Color :
                                                             {" " + item.color}
@@ -2957,7 +2965,7 @@ class Header extends Component {
                                                         ) : null}
                                                       </div>
                                                       <div>
-                                                        {item.size !== "" ? (
+                                                        {item.size !== "" && item.size !== null? (
                                                           <label className="chat-product-code">
                                                             Size :
                                                             {" " + item.size}
@@ -2967,7 +2975,7 @@ class Header extends Component {
                                                       </div>
                                                       <div>
                                                         {item.uniqueItemCode !==
-                                                        "" ? (
+                                                        "" && item.uniqueItemCode !== null? (
                                                           <label className="chat-product-code">
                                                             Item Code :
                                                             {" " +
@@ -2980,7 +2988,7 @@ class Header extends Component {
                                                         {item.discount !== "" &&
                                                         parseFloat(
                                                           item.discount
-                                                        ) !== 0 ? (
+                                                        ) !== 0 && item.discount !== null? (
                                                           <label className="chat-product-code">
                                                             Discount :
                                                             {" " +
@@ -2993,14 +3001,15 @@ class Header extends Component {
                                                         {item.price !== "" &&
                                                         parseFloat(
                                                           item.price
-                                                        ) !== 0 ? (
+                                                        ) !== 0 && item.price !== null? (
                                                           <label className="chat-product-prize">
                                                             Price :
                                                             {" " + item.price}
                                                           </label>
                                                         ) : null}
                                                       </div>
-                                                      <div>
+                                                      {item.ur!==null && item.ur!==""?(
+                                                      <div> 
                                                         <a
                                                           href={item.url}
                                                           target="_blank"
@@ -3008,7 +3017,7 @@ class Header extends Component {
                                                         >
                                                           {item.url}
                                                         </a>
-                                                      </div>
+                                                      </div>):""}
                                                     </div>
                                                   </div>
                                                 </div>
@@ -3775,7 +3784,7 @@ class Header extends Component {
                                                     <label className="chat-product-name">
                                                       {item.productName}
                                                     </label>
-                                                    {item.brandName !== "" ? (
+                                                    {item.brandName !== "" && item.brandName !== null ? (
                                                       <label className="chat-product-code">
                                                         Brand :
                                                         {" " + item.brandName}
@@ -3784,7 +3793,7 @@ class Header extends Component {
                                                     ) : null}
 
                                                     {item.categoryName !==
-                                                    "" ? (
+                                                    "" && item.categoryName !==null? (
                                                       <label className="chat-product-code">
                                                         Category :
                                                         {" " +
@@ -3794,7 +3803,7 @@ class Header extends Component {
                                                     ) : null}
 
                                                     {item.subCategoryName !==
-                                                    "" ? (
+                                                    "" && item.subCategoryName !== null? (
                                                       <label className="chat-product-code">
                                                         SubCategory :
                                                         {" " +
@@ -3803,7 +3812,7 @@ class Header extends Component {
                                                       </label>
                                                     ) : null}
 
-                                                    {item.color !== "" ? (
+                                                    {item.color !== "" && item.color !== null? (
                                                       <label className="chat-product-code">
                                                         Color :
                                                         {" " + item.color}
@@ -3811,7 +3820,7 @@ class Header extends Component {
                                                       </label>
                                                     ) : null}
 
-                                                    {item.size !== "" ? (
+                                                    {item.size !== "" && item.size !== null? (
                                                       <label className="chat-product-code">
                                                         Size :{" " + item.size}
                                                         {/* {item.alternativeText} */}
@@ -3819,60 +3828,7 @@ class Header extends Component {
                                                     ) : null}
 
                                                     {item.uniqueItemCode !==
-                                                    "" ? (
-                                                      <label className="chat-product-code">
-                                                        Item Code :
-                                                        {" " +
-                                                          item.uniqueItemCode}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
-
-                                                    {item.discount !== "" ? (
-                                                      <label className="chat-product-code">
-                                                        Discount :
-                                                        {" " + item.discount}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
-
-                                                    {item.categoryName !==
-                                                    "" ? (
-                                                      <label className="chat-product-code">
-                                                        Category :
-                                                        {" " +
-                                                          item.categoryName}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
-
-                                                    {item.subCategoryName !==
-                                                    "" ? (
-                                                      <label className="chat-product-code">
-                                                        SubCategory :
-                                                        {" " +
-                                                          item.subCategoryName}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
-
-                                                    {item.color !== "" ? (
-                                                      <label className="chat-product-code">
-                                                        Color :
-                                                        {" " + item.color}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
-
-                                                    {item.size !== "" ? (
-                                                      <label className="chat-product-code">
-                                                        Size :{" " + item.size}
-                                                        {/* {item.alternativeText} */}
-                                                      </label>
-                                                    ) : null}
-
-                                                    {item.uniqueItemCode !==
-                                                    "" ? (
+                                                    "" && item.uniqueItemCode !== null? (
                                                       <label className="chat-product-code">
                                                         Item Code :
                                                         {" " +
@@ -3884,7 +3840,7 @@ class Header extends Component {
                                                     {item.discount !== "" &&
                                                     parseFloat(
                                                       item.discount
-                                                    ) !== 0 ? (
+                                                    ) !== 0 && item.discount !== null? (
                                                       <label className="chat-product-code">
                                                         Discount :
                                                         {" " + item.discount}
@@ -3894,16 +3850,16 @@ class Header extends Component {
 
                                                     {item.price !== "" &&
                                                     parseFloat(item.price) !==
-                                                      0 ? (
+                                                      0 && item.price !== null? (
                                                       <label className="chat-product-prize">
                                                         Price :
                                                         {" " + item.price}
                                                       </label>
                                                     ) : null}
-
+                                                    {item.url!==null && item.url!==""?(
                                                     <label className="chat-product-url">
-                                                      {item.url}
-                                                    </label>
+                                                      {item.url!==null?item.url:""}
+                                                    </label>):""}
                                                   </div>
                                                 </div>
                                               </div>
