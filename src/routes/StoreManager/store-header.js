@@ -29,6 +29,7 @@ import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
 import { Popover } from "antd";
+import { Drawer} from 'antd';
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
@@ -142,6 +143,7 @@ class Header extends Component {
       suggestionModalMob: false,
       availableSlot: 0,
       isHistoricalChat: false,
+      visible: false,
       historicalChatData: [
         {
           chatID: 1,
@@ -250,7 +252,16 @@ class Header extends Component {
     debugger;
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
-
+  handleShowMenu () {
+    this.setState({
+      visible: true,
+    });
+  };
+  handleCloseManu () {
+    this.setState({
+      visible: false,
+    });
+  };
   toggleFilter(e) {
     this.setState({
       toggle: {
@@ -1684,7 +1695,7 @@ class Header extends Component {
               <img src={BellIcon} alt="bell icon" />
             </div>
             <div className="hamb-menu">
-              <img src={Hamb} alt="hamburger icon" />
+              <img src={Hamb} onClick={this.handleShowMenu.bind(this)} alt="hamburger icon" />
             </div>
             <div className="headers-menu">
               {this.state.cont.map((item) => (
@@ -2053,7 +2064,16 @@ class Header extends Component {
             )}
           </div>
         </Modal>
-
+        <Drawer
+          title="Basic Drawer"
+          placement="left"
+          closable={false}
+          onClose={this.handleCloseManu.bind(this)}
+          visible={this.state.visible}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Drawer>
         {/*----------------- chat modal-------------- */}
         <Modal
           onClose={this.handleChatModalClose.bind(this)}

@@ -2588,8 +2588,10 @@
   font-family: lato;
   /* width: 180px; */
   /* width: 190px; */
-  width: 260px;
+  /* width: 260px; */
   text-align: center;
+  white-space: nowrap;
+  min-width: 150px;
 }
 .cmpaign-channel-table {
   margin-top: 20px;
@@ -3470,6 +3472,6 @@
 }
 
 .chat-storemng {
-  color: #EB4D4B;
+  color: #eb4d4b;
   font-weight: bold !important;
 }
