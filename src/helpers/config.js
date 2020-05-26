@@ -1,5 +1,5 @@
 let config = {
-   apiUrl: "https://localhost:44357/api",
+  //  apiUrl: "https://localhost:44357/api",
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -252,7 +252,8 @@ let config = {
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   // socketUrl: "http://api-socketserverqa.ercx.co",      /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
-  //  socketUrl:"https://bvsocketservermts.dcdev.brainvire.net" /// -------Socket MultiTenant URL---------
+   socketUrl:"wss://bvsocketservermts.dcdev.brainvire.net" /// -------Socket MultiTenant URL---------
+  //  socketUrl:"http://localhost:4000/" /// -------Socket MultiTenant URL---------
 };
 
 export default config;

@@ -187,7 +187,8 @@ class StoreSignIn extends Component {
               debugger;
               window.localStorage.setItem("token", res.data.responseData.token);
               window.localStorage.setItem("ERS", true);
-              self.handleCRMRole();
+              // self.handleCRMRole();
+              self.props.history.push("languageSelection");
             } else {
               NotificationManager.error(
                 "Username or password is invalid.",
