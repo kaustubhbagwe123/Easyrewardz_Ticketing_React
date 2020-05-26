@@ -9777,6 +9777,10 @@ font-size: 12px !important;
   color: #333;
 }
 
+.mob-header {
+  display: none !important;
+}
+
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
     flex: 0 0 33.333333%;
@@ -11366,6 +11370,12 @@ font-size: 12px !important;
   }
   .module-switch {
     padding: 0;
+  }
+  .d-nonemob {
+    display: none !important;
+  }
+  .mob-header {
+    display: block !important;
   }
 }
 
