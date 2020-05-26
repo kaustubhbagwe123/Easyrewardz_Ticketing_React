@@ -244,15 +244,24 @@ let config = {
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
   //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
+<<<<<<< HEAD
   //apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
   //apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
+=======
+   //apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
+  apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
+>>>>>>> 02252b58b1d56a6aa31f97069f325e5014ee51b6
   //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   // socketUrl: "http://ndjs.shopster.live/api/sendreply",      /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
+<<<<<<< HEAD
   socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+=======
+  // socketUrl:"https://bvsocketservermts.dcdev.brainvire.net" /// -------Socket MultiTenant URL---------
+>>>>>>> 02252b58b1d56a6aa31f97069f325e5014ee51b6
 };
 
 export default config;
