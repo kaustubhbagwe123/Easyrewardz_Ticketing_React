@@ -255,4 +255,4 @@ let config = {
    socketUrl:"https://bvsocketservermts.dcdev.brainvire.net" /// -------Socket MultiTenant URL---------
 };
 
-export default config; 
+export default config;
