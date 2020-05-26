@@ -2843,7 +2843,7 @@ class StoreModule extends Component {
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
                                 >
-                                  UPDATE
+                                  SUBMIT
                                 </button>
                               </div>
                             </div>
