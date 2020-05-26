@@ -254,7 +254,13 @@ class SingIn extends Component {
                 <br />
                 <p className="mb-0 text-muted">
                   <Link
-                    to="Forgotpassword"
+                    // to="Forgotpassword"
+                    to={{
+                      pathname: "Forgotpassword",
+                      state: {
+                        programCode: this.state.programCode,
+                      },
+                    }}
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                     FORGOT PASSWORD

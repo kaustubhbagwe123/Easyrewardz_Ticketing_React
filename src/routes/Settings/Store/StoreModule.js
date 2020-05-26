@@ -2212,33 +2212,36 @@ class StoreModule extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="cusinput">
-                                    <input
-                                      type="text"
-                                      name="providerName"
-                                      autoComplete="off"
-                                      placeholder="Provider name"
-                                      maxLength={15}
-                                      value={
-                                        this.state.campaignChannelData
-                                          .providerName
-                                      }
-                                      onChange={this.CampCannelOnChange.bind(
-                                        this
+                                  {this.state.campaignChannelData.smsFlag ? (
+                                    <div className="cusinput">
+                                      <input
+                                        type="text"
+                                        name="providerName"
+                                        autoComplete="off"
+                                        placeholder="Provider name"
+                                        maxLength={15}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .providerName
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .providerName === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.campProviderValidation}
+                                        </p>
                                       )}
-                                    />
-                                    {this.state.campaignChannelData
-                                      .providerName === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.campProviderValidation}
-                                      </p>
-                                    )}
-                                  </div>
+                                    </div>
+                                  ) : null}
+
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
@@ -2604,33 +2607,35 @@ class StoreModule extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
-                                    <div className="cusinput">
-                                      <input
-                                        type="text"
-                                        name="providerName"
-                                        autoComplete="off"
-                                        placeholder="Provider name"
-                                        maxLength={15}
-                                        value={
-                                          this.state.BroadCastConfigData
-                                            .providerName
-                                        }
-                                        onChange={this.BroadCastOnChange.bind(
-                                          this
+                                    {this.state.BroadCastConfigData.smsFlag ? (
+                                      <div className="cusinput">
+                                        <input
+                                          type="text"
+                                          name="providerName"
+                                          autoComplete="off"
+                                          placeholder="Provider name"
+                                          maxLength={15}
+                                          value={
+                                            this.state.BroadCastConfigData
+                                              .providerName
+                                          }
+                                          onChange={this.BroadCastOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                        {this.state.BroadCastConfigData
+                                          .providerName === "" && (
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.broadProviderValidation}
+                                          </p>
                                         )}
-                                      />
-                                      {this.state.BroadCastConfigData
-                                        .providerName === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.broadProviderValidation}
-                                        </p>
-                                      )}
-                                    </div>
+                                      </div>
+                                    ) : null}
                                   </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">

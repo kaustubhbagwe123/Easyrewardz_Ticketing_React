@@ -58,7 +58,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Table } from "antd";
 
-// const socket = io.connect("http://localhost:4000");
+var socket = io.connect(config.socketUrl, {
+  transports: ["polling"],
+});
 // var isSocketReady=1;
 class Header extends Component {
   constructor(props) {
@@ -552,7 +554,7 @@ class Header extends Component {
         if (status === true) {
           //NotificationManager.success(Msg);
           localStorage.clear();
-          window.location.href = "/StoreProgramCode";
+          window.location.href = "/";
         }
       })
       .catch((data) => {
@@ -678,7 +680,7 @@ class Header extends Component {
 
           if (value == "") {
             for (let i = 0; i < ongoingChatsData.length; i++) {
-              const socket = io.connect(config.socketUrl, {
+              socket = io.connect(config.socketUrl, {
                 transports: ["polling"],
               });
 
@@ -690,6 +692,7 @@ class Header extends Component {
                     ongoingChatsData[i].programCode.toLowerCase(),
                   function(data) {
                     console.log("Message Received");
+                    debugger;
                     if ("91" + self.state.mobileNo === data[3]) {
                       self.handleGetChatNotificationCount();
                       self.handleGetOngoingChat("isRead");
@@ -719,7 +722,7 @@ class Header extends Component {
 
   handleClearChatSearch = async () => {
     await this.setState({ searchChat: "" });
-    this.handleGetOngoingChat("");
+    this.handleGetOngoingChat("isRead");
   };
 
   ////handle Get New Chat
@@ -774,8 +777,23 @@ class Header extends Component {
         console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
-  handleUpdateCustomerChatStatus(id) {
+  handleUpdateCustomerChatStatus(id, mobileNo, programCode) {
     let self = this;
+    socket.on("connect", () => {
+      socket.send("hi");
+      socket.on("91" + mobileNo + programCode.toLowerCase(), function(data) {
+        console.log("Message Received");
+        debugger;
+        if ("91" + self.state.mobileNo === data[3]) {
+          self.handleGetChatNotificationCount();
+          // self.handleGetOngoingChat("isRead");
+          self.handleGetChatMessagesList(self.state.chatId);
+        } else {
+          self.handleGetChatNotificationCount();
+          // self.handleGetOngoingChat("isRead");
+        }
+      });
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
@@ -788,8 +806,11 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.setState({ chatId: 0 });
-          self.handleGetOngoingChat("isRead");
+          self.setState({
+            chatId: 0,
+          });
+          self.handleGetOngoingChat("");
+
           self.handleGetNewChat();
         } else {
         }
@@ -1444,7 +1465,7 @@ class Header extends Component {
           ? ", Price: " + messagewhatsAppData[0].price.trim()
           : "") +
         "\n" +
-        messagewhatsAppData[0].url;
+        messagewhatsAppData[0].url !== null?messagewhatsAppData[0].url:""
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -1590,7 +1611,6 @@ class Header extends Component {
       isHistoricalChat: true,
       isDownbtn: false,
     });
-    
   };
 
   render() {
@@ -2123,7 +2143,9 @@ class Header extends Component {
                             }
                             onClick={this.handleUpdateCustomerChatStatus.bind(
                               this,
-                              chat.chatID
+                              chat.chatID,
+                              chat.mobileNo,
+                              chat.programCode
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -2986,7 +3008,8 @@ class Header extends Component {
                                                           </label>
                                                         ) : null}
                                                       </div>
-                                                      <div>
+                                                      {item.ur!==null && item.ur!==""?(
+                                                      <div> 
                                                         <a
                                                           href={item.url}
                                                           target="_blank"
@@ -2994,7 +3017,7 @@ class Header extends Component {
                                                         >
                                                           {item.url}
                                                         </a>
-                                                      </div>
+                                                      </div>):""}
                                                     </div>
                                                   </div>
                                                 </div>
@@ -3833,10 +3856,10 @@ class Header extends Component {
                                                         {" " + item.price}
                                                       </label>
                                                     ) : null}
-
+                                                    {item.url!==null && item.url!==""?(
                                                     <label className="chat-product-url">
-                                                      {item.url}
-                                                    </label>
+                                                      {item.url!==null?item.url:""}
+                                                    </label>):""}
                                                   </div>
                                                 </div>
                                               </div>
@@ -4429,7 +4452,6 @@ class Header extends Component {
                                   title: "Satisfaction",
                                   dataIndex: "",
                                   width: "10%",
-
                                 },
                                 {
                                   title: "Time",
