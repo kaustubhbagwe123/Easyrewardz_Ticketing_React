@@ -2733,6 +2733,32 @@ class StoreModule extends Component {
                     </div>
                   </div>
                 </Tab>
+                <Tab label="Slot Settings">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>SLOT SETTINGS</h3>
+                                <div className="module-switch-cntr">
+                                  
+                                </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                >
+                                  UPDATE
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
               </Tabs>
             </section>
             <Modal
