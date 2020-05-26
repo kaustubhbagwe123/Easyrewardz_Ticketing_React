@@ -42,7 +42,11 @@ class Appointment extends Component {
       updateAppointModal: false,
       date: "",
       searchItem: "",
-      otp: ""
+      otp: "",
+      timeSlotData: [],
+      timeSlotColor: "",
+      slotColorName: "",
+      slotError:""
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -108,12 +112,46 @@ class Appointment extends Component {
     this.setState({
       appointDate: date,
     });
+
+    var date = moment(date).format("YYYY-MM-DD");
+    this.handleTimeSlotDetails(date)
   }
 
-  handleAppointTime() {
+  handleAppointTime(e) {
+    var slotColor = "";
+    var slotColorName = "";
+    var slotError = "";
+    var selectedSlotData = this.state.timeSlotData.filter(
+      (x) => x.timeSlotId === parseInt(e.target.value)
+    );
+    
+    if(selectedSlotData[0].remaining === 0){
+      slotColor = "#bd3939";
+      slotColorName = "Red";
+      slotError = "This slot is full.";
+    }
+    if(selectedSlotData[0].remaining !== 0 && 
+      selectedSlotData[0].visitedCount >= ((1 / 2) * selectedSlotData[0].maxCapacity))
+    {
+      slotColor = "#f7b500";
+      slotColorName = "Yellow";
+      slotError = "";
+    }
+    if(selectedSlotData[0].remaining !== 0 && 
+      selectedSlotData[0].visitedCount < ((1 / 2) * selectedSlotData[0].maxCapacity))
+    {
+      slotColor = "#30ba93";
+      slotColorName = "Green";
+      slotError = "";
+    }
+    
     this.setState({
       appointTime: true,
+      timeSlotColor: slotColor,
+      slotColorName,
+      slotError
     });
+    
   }
 
   handleCreateAppointmentOpen() {
@@ -305,6 +343,38 @@ class Appointment extends Component {
     this.setState({ searchItem: e.target.value});
   }
 
+  handleTimeSlotDetails(appointmentDate) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetTimeSlotDetail",
+      params: { 
+                AppDate: appointmentDate
+              },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            timeSlotData: data,
+          });
+        } else {
+          self.setState({
+            timeSlotData: [],
+          });
+        }
+        self.setState({
+          loading: false,
+        });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     const { Option } = Select;
     const renderButton = (buttonProps) => {
@@ -447,7 +517,7 @@ class Appointment extends Component {
                 </div>
               </div>
               <div className="appnt-bottom-white">
-                <div className="d-none">
+                <div className="">
                   <div className="appnt-input-group">
                     <label>Name</label>
                     <input type="text" placeholder="Your name" />
@@ -489,12 +559,22 @@ class Appointment extends Component {
                             this.state.appointTime ? "" : "appoint-time"
                           }
                           onChange={this.handleAppointTime.bind(this)}
+                          style={{color: this.state.timeSlotColor}}  
                         >
-                          <option hidden>00pm - 00pm</option>
-                          <option>2pm - 3pm</option>
-                          <option>3pm - 4pm</option>
-                          <option>4pm - 5pm</option>
+                          {this.state.timeSlotData !== null &&
+                          this.state.timeSlotData.map((item, i) => (
+                            <option value={item.timeSlotId}>{item.timeSlot}</option>
+                          ))}
                         </select>
+                        {this.state.slotError !== ""?(
+                        <p
+                            style={{
+                              color: "red",
+                              marginBottom: "0px",
+                            }}
+                          >
+                            {this.state.slotError}
+                        </p>):null}
                       </div>
                     </div>
                   </div>
@@ -514,7 +594,9 @@ class Appointment extends Component {
                     </div>
                   </div>
                   <div className="text-center">
-                    <button className="appoint-butn">book appointment</button>{" "}
+                    <button className={this.state.slotColorName==="Red"?"appoint-butn appoint-butn-grey":"appoint-butn"}
+                    disabled={this.state.slotColorName==="Red"?true:false}
+                    >generate otp</button>{" "}
                     {/* book appointment OR generate otp */}
                     <br />
                     <a
@@ -526,7 +608,7 @@ class Appointment extends Component {
                     </a>
                   </div>
                 </div>
-                <div className="otp-appoint">
+                <div className="otp-appoint" style={{display: "none"}}>
                   <div className="otp-appoint-height">
                     <div className="appnt-input-group">
                       <label>Enter 4 digit OTP send to 9717419325</label>

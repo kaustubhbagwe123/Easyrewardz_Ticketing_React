@@ -3286,6 +3286,9 @@ table tr th:last-child {
 .appoint-butn-orange {
   background: #f37b2b;
 }
+.appoint-butn-grey{
+  background: #aeaeae;
+}
 .appoint-cancel {
   font-size: 12px;
   color: #000;
