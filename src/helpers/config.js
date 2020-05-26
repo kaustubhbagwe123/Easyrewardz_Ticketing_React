@@ -1,5 +1,5 @@
 let config = {
-  //  apiUrl: "https://localhost:44357/api",
+  apiUrl: "https://localhost:44357/api",
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -255,4 +255,4 @@ let config = {
   //  socketUrl:"https://bvsocketservermts.dcdev.brainvire.net" /// -------Socket MultiTenant URL---------
 };
 
-export default config; 
+export default config;
