@@ -29,7 +29,7 @@ import ProfileImg from "./../../assets/Images/UserIcon.png";
 import config from "../../helpers/config";
 import axios from "axios";
 import { Popover } from "antd";
-import { Drawer} from 'antd';
+import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
@@ -252,16 +252,16 @@ class Header extends Component {
     debugger;
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
-  handleShowMenu () {
+  handleShowMenu() {
     this.setState({
       visible: true,
     });
-  };
-  handleCloseManu () {
+  }
+  handleCloseManu() {
     this.setState({
       visible: false,
     });
-  };
+  }
   toggleFilter(e) {
     this.setState({
       toggle: {
@@ -683,6 +683,7 @@ class Header extends Component {
       params: { Search: search },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
@@ -728,7 +729,7 @@ class Header extends Component {
             }
           }
         } else {
-          self.setState({ ongoingChatsData });
+          self.setState({ ongoingChatsData: [] });
         }
       })
       .catch((response) => {
@@ -1695,7 +1696,11 @@ class Header extends Component {
               <img src={BellIcon} alt="bell icon" />
             </div>
             <div className="hamb-menu">
-              <img src={Hamb} onClick={this.handleShowMenu.bind(this)} alt="hamburger icon" />
+              <img
+                src={Hamb}
+                onClick={this.handleShowMenu.bind(this)}
+                alt="hamburger icon"
+              />
             </div>
             <div className="headers-menu">
               {this.state.cont.map((item) => (
@@ -2563,7 +2568,8 @@ class Header extends Component {
                                         <div
                                           key={i}
                                           className={
-                                            item.byCustomer
+                                            item.byCustomer === true &&
+                                            item.isBotReply !== true
                                               ? "chat-trail-cntr"
                                               : "chat-trail-cntr chat-trail-cntr-right"
                                           }
@@ -2589,13 +2595,9 @@ class Header extends Component {
                                                     .join("")
                                                     .toUpperCase()}
                                             </span>
-                                            {/* <img
-                                      src={DummyFace2}
-                                      alt="face image"
-                                      title={item.customerName}
-                                    /> */}
                                           </div>
                                           <div className="chat-trail-chat-cntr">
+                                            {item.isBotReply && <p>B</p>}
                                             <p className="chat-trail-chat pd-0">
                                               {ReactHtmlParser(
                                                 item.message
@@ -2618,15 +2620,6 @@ class Header extends Component {
                                       );
                                     })
                                   : null}
-                                {/* <div className="chat-trail-cntr">
-                            <div className="chat-trail-img">
-                              <img src={DummyFace1} alt="face image" />
-                            </div>
-                            <div className="chat-trail-chat-cntr">
-                              <p className="chat-trail-chat">Shop</p>
-                              <span className="chat-trail-time">56s</span>
-                            </div>
-                          </div> */}
                               </div>
                             </div>
                           ) : null}
