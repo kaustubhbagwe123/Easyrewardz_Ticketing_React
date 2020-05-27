@@ -2791,17 +2791,59 @@ class StoreModule extends Component {
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
                                 <h3>SLOT SETTINGS</h3>
-                                <div className="module-switch-cntr">
-                                  <select name="enableClickAfterDuration">
-                                    <option value="M">Min</option>
-                                    <option value="H">Hr</option>
-                                  </select>
+                                <div className="cmpaign-channel-table slot-setting-options">
+                                  <div>
+                                    <select name="">
+                                      <option value="">Store Code</option>
+                                      <option value="">Bata123</option>
+                                      <option value="">Fab456</option>
+                                    </select>
+                                  </div>
+                                  <div className="slot-timings">
+                                    <div className="d-flex">
+                                      <select name="" className="slot-hour">
+                                        <option value="">1</option>
+                                        <option value="">2</option>
+                                        <option value="">3</option>
+                                      </select>
+                                      <select name="" className="slot-shift">
+                                        <option value="">AM</option>
+                                        <option value="">PM</option>
+                                      </select>
+                                    </div>
+                                    <span className="slot-to">TO</span>
+                                    <div className="d-flex">
+                                      <select name="" className="slot-hour">
+                                        <option value="">1</option>
+                                        <option value="">2</option>
+                                        <option value="">3</option>
+                                      </select>
+                                      <select name="" className="slot-shift">
+                                        <option value="">AM</option>
+                                        <option value="">PM</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <input
+                                    type="text"
+                                    name=""
+                                    placeholder="Order no."
+                                    // value={
+                                    //   this.state.campaignChannelData
+                                    //     .maxClickAllowed
+                                    // }
+                                    // autoComplete="off"
+                                    // maxLength={2}
+                                    // onChange={this.CampCannelOnChange.bind(
+                                    //   this
+                                    // )}
+                                  />
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
                                 >
-                                  UPDATE
+                                  SUBMIT
                                 </button>
                               </div>
                             </div>

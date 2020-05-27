@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-// import OTPInput, { ResendOTP } from "otp-input-react";
+import OTPInput, { ResendOTP } from "otp-input-react";
 import { Table, Select } from "antd";
 import axios from "axios";
 import config from "./../../helpers/config";
@@ -42,10 +42,20 @@ class Appointment extends Component {
       updateAppointModal: false,
       date: "",
       searchItem: "",
-      otp: ""
+      otp: "",
+      timeSlotData: [],
+      timeSlotColor: "",
+      slotColorName: "",
+      slotError:"",
+      timeSlotId: 0,
+      bookAppointment:"",
+      btnText:"generate otp",
+      isVerified:0,
+      type:"GenerateOTP"
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnChangeData = this.handleOnChangeData.bind(this);
   }
 
   componentDidMount() {
@@ -108,12 +118,47 @@ class Appointment extends Component {
     this.setState({
       appointDate: date,
     });
+
+    var date = moment(date).format("YYYY-MM-DD");
+    this.handleTimeSlotDetails(date)
   }
 
-  handleAppointTime() {
+  handleAppointTime(e) {
+    var slotColor = "";
+    var slotColorName = "";
+    var slotError = "";
+    var selectedSlotData = this.state.timeSlotData.filter(
+      (x) => x.timeSlotId === parseInt(e.target.value)
+    );
+    
+    if(selectedSlotData[0].remaining === 0){
+      slotColor = "#bd3939";
+      slotColorName = "Red";
+      slotError = "This slot is full.";
+    }
+    if(selectedSlotData[0].remaining !== 0 && 
+      selectedSlotData[0].visitedCount >= ((1 / 2) * selectedSlotData[0].maxCapacity))
+    {
+      slotColor = "#f7b500";
+      slotColorName = "Yellow";
+      slotError = "";
+    }
+    if(selectedSlotData[0].remaining !== 0 && 
+      selectedSlotData[0].visitedCount < ((1 / 2) * selectedSlotData[0].maxCapacity))
+    {
+      slotColor = "#30ba93";
+      slotColorName = "Green";
+      slotError = "";
+    }
+    
     this.setState({
       appointTime: true,
+      timeSlotColor: slotColor,
+      slotColorName,
+      slotError,
+      timeSlotId: e.target.value===""?0:parseInt(e.target.value)
     });
+    
   }
 
   handleCreateAppointmentOpen() {
@@ -305,6 +350,164 @@ class Appointment extends Component {
     this.setState({ searchItem: e.target.value});
   }
 
+  handleTimeSlotDetails(appointmentDate) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetTimeSlotDetail",
+      params: { 
+                AppDate: appointmentDate
+              },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            timeSlotData: data,
+          });
+        } else {
+          self.setState({
+            timeSlotData: [],
+          });
+        }
+        self.setState({
+          loading: false,
+        });
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleOnChangeData(e) {
+    debugger;
+    this.setState({
+      [e.target.name]: e.target.value,
+     });
+  }
+
+  handleCreateAppointment(type){
+    if(type === "GenerateOTP")
+    {
+      this.handleGenerateOTP();
+    }
+    if(type === "BookAppointment"){
+      this.handleBookAppointment();
+    }
+  }
+
+  handleGenerateOTP(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GenerateOTP",
+      params: { 
+                mobileNumber: this.state.custPhoneNo
+              },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            generateOTP: "OTP"
+          });
+        } else {
+          self.setState({
+            generateOTP: "",
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleEditNumber(){
+    this.setState({
+      generateOTP: "",
+    });
+  }
+
+  handleSubmitOTP(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/VarifyOTP",
+      params: { 
+                 otpID: 1,
+                 otp: this.state.otp
+              },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            bookAppointment: "BookAppointment",
+            btnText:"book appointment",
+            isVerified: 1,
+            type:"BookAppointment",
+            generateOTP: ""
+          });
+        } else {
+          self.setState({
+            bookAppointment: ""
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleBookAppointment(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/CreateAppointment",
+      data: {
+        AppointmentDate: this.state.appointDate,
+	      CustomerName:this.state.custName,
+	      MobileNo:this.state.custPhoneNo,
+	      NOofPeople:3,
+	      TimeSlot: "10AM-11AM"
+      },
+      params: { 
+                 otpID: 1,
+                 otp: this.state.otp
+              },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            bookAppointment: "BookAppointment",
+            btnText:"book appointment",
+            isVerified: 1,
+            generateOTP: ""
+          });
+        } else {
+          self.setState({
+            bookAppointment: ""
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     const { Option } = Select;
     const renderButton = (buttonProps) => {
@@ -447,25 +650,33 @@ class Appointment extends Component {
                 </div>
               </div>
               <div className="appnt-bottom-white">
-                <div className="d-none">
+                <div className={this.state.generateOTP === "OTP"?"d-none":""}>
                   <div className="appnt-input-group">
                     <label>Name</label>
-                    <input type="text" placeholder="Your name" />
+                    <input type="text" placeholder="Your name" 
+                      name="custName"
+                      value={this.state.custName}
+                      onChange={this.handleOnChangeData} 
+                    />
                   </div>
                   <div className="appnt-input-group">
                     <div className="d-flex">
                       <label>Phone no.</label>
+                      {this.state.isVerified === 1?(
                       <div
                         className="number-verified"
-                        style={{ display: "none" }}
                       >
                         <div className="verify-img">
                           <img src={NumberVerified} alt="number verified" />
                         </div>
                         <span>verified</span>
-                      </div>
+                      </div>):null}
                     </div>
-                    <input type="tel" placeholder="0123456789" />
+                    <input type="tel" placeholder="Phone No"
+                      name="custPhoneNo"
+                      value={this.state.custPhoneNo}
+                      onChange={this.handleOnChangeData} 
+                    />
                   </div>
                   <div className="appnt-input-group">
                     <label>Date &amp; Time</label>
@@ -489,12 +700,23 @@ class Appointment extends Component {
                             this.state.appointTime ? "" : "appoint-time"
                           }
                           onChange={this.handleAppointTime.bind(this)}
+                          style={{color: this.state.timeSlotColor}}
+                          value={this.state.timeSlotId}  
                         >
-                          <option hidden>00pm - 00pm</option>
-                          <option>2pm - 3pm</option>
-                          <option>3pm - 4pm</option>
-                          <option>4pm - 5pm</option>
+                          {this.state.timeSlotData !== null &&
+                          this.state.timeSlotData.map((item, i) => (
+                            <option value={item.timeSlotId}>{item.timeSlot}</option>
+                          ))}
                         </select>
+                        {this.state.slotError !== ""?(
+                        <p
+                            style={{
+                              color: "red",
+                              marginBottom: "0px",
+                            }}
+                          >
+                            {this.state.slotError}
+                        </p>):null}
                       </div>
                     </div>
                   </div>
@@ -502,7 +724,7 @@ class Appointment extends Component {
                     <div className="row">
                       <div className="col-md">
                         <label>No. of members</label>
-                        <input type="number" placeholder="00" min="1" />
+                        <input type="number" placeholder="00" min="1" max="2" />
                       </div>
                       <div className="col-md">
                         <label>Loyalty Member</label>
@@ -514,7 +736,10 @@ class Appointment extends Component {
                     </div>
                   </div>
                   <div className="text-center">
-                    <button className="appoint-butn">book appointment</button>{" "}
+                    <button className={this.state.slotColorName==="Red"?"appoint-butn appoint-butn-grey":"appoint-butn"}
+                    disabled={this.state.slotColorName==="Red"?true:false}
+                    onClick={this.handleCreateAppointment.bind(this,this.state.type)}
+                    >{this.state.btnText}</button>{" "}
                     {/* book appointment OR generate otp */}
                     <br />
                     <a
@@ -526,11 +751,11 @@ class Appointment extends Component {
                     </a>
                   </div>
                 </div>
-                <div className="otp-appoint">
+                <div className={this.state.generateOTP === "OTP"?"otp-appoint":"d-none"}>
                   <div className="otp-appoint-height">
                     <div className="appnt-input-group">
-                      <label>Enter 4 digit OTP send to 9717419325</label>
-                      {/* <OTPInput
+                      <label>Enter 4 digit OTP send to {this.state.custPhoneNo}</label>
+                      <OTPInput
                         value={this.state.otp}
                         onChange={this.setOTP.bind(this)}
                         OTPLength={4}
@@ -541,15 +766,18 @@ class Appointment extends Component {
                         maxTime={180}
                         renderButton={renderButton}
                         renderTime={renderTime}
-                        handelResendClick={() => console.log("Resend clicked")}
-                      /> */}
-                      <a href="#!" className="edit-num">
+                      />
+                      <a href="#!" className="edit-num"
+                       onClick={this.handleEditNumber.bind(this)}
+                      >
                         Edit Number
                       </a>
                     </div>
                   </div>
                   <div className="text-center">
-                    <button className="appoint-butn">Submit OTP</button>
+                    <button className="appoint-butn"
+                     onClick={this.handleSubmitOTP.bind(this)}
+                    >Submit OTP</button>
                     <br />
                     <a
                       href="#!"
