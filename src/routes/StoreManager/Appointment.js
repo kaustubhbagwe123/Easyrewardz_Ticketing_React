@@ -117,7 +117,7 @@ class Appointment extends Component {
   handleAppointDate(date) {
     debugger;
     this.setState({
-      appointDate: date,
+      appointDate: date
     });
 
     var date = moment(date).format("YYYY-MM-DD");
@@ -360,7 +360,7 @@ class Appointment extends Component {
       method: "post",
       url: config.apiUrl + "/Appointment/GetTimeSlotDetail",
       params: {
-        AppDate: appointmentDate,
+        AppDate: appointmentDate
       },
       headers: authHeader(),
     })
@@ -477,7 +477,7 @@ class Appointment extends Component {
       method: "post",
       url: config.apiUrl + "/Appointment/CreateAppointment",
       data: {
-        AppointmentDate: this.state.appointDate,
+        AppointmentDate: moment(this.state.appointDate).format("YYYY-MM-DD"),
 	      CustomerName:this.state.custName,
 	      MobileNo:this.state.custPhoneNo,
 	      NOofPeople:parseInt(this.state.noOfMember),
@@ -495,15 +495,13 @@ class Appointment extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            bookAppointment: "BookAppointment",
-            btnText: "book appointment",
-            isVerified: 1,
-            generateOTP: "",
+            createAppointModal: false,
           });
+          NotificationManager.success("Appointment booked successfully");
+          self.handleAppointmentGridData(self.state.tabFor);
+          self.handleAppointmentCount();
         } else {
-          self.setState({
-            bookAppointment: "",
-          });
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -740,7 +738,9 @@ class Appointment extends Component {
                           placeholder="00"
                           min="1"
                           max="2"
+                          name="noOfMember"
                           value={this.state.noOfMember}
+                          onChange={this.handleOnChangeData}
                         />
                       </div>
                       <div className="col-md">
@@ -1025,7 +1025,7 @@ class Appointment extends Component {
                         title: "Status",
                         width: "20%",
                         render: (row, item) => {
-                          if (item.status !== "") {
+                          if (item.status !== "" && item.status !== null) {
                             return (
                               <div className="d-flex">
                                 <div>
@@ -1156,7 +1156,7 @@ class Appointment extends Component {
                         title: "Actions",
                         width: "20%",
                         render: (row, item) => {
-                          if (item.status === "") {
+                          if (item.status === "" || item.status === null) {
                             return (
                               <div className="d-flex">
                                 <div>
