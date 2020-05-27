@@ -2597,7 +2597,9 @@ class Header extends Component {
                                             </span>
                                           </div>
                                           <div className="chat-trail-chat-cntr">
-                                            {item.isBotReply && <p>B</p>}
+                                            {item.isBotReply && (
+                                              <p className="bot-mark">B</p>
+                                            )}
                                             <p className="chat-trail-chat pd-0">
                                               {ReactHtmlParser(
                                                 item.message

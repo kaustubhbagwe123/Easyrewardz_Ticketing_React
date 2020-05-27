@@ -420,10 +420,18 @@ p {
   flex-direction: row-reverse;
   margin-left: auto;
 }
+.bot-mark {
+  color: #eb4d4b;
+  font-weight: 700;
+  font-size: 11px;
+  position: absolute;
+  top: -15px;
+}
 .chat-trail-chat-cntr {
   margin-top: 15px;
   margin-left: 10px;
   white-space: pre-line;
+  position: relative;
 }
 .chat-trail-cntr-right .chat-trail-chat-cntr {
   margin-right: 10px;
@@ -1460,7 +1468,7 @@ p {
   padding: 1px;
   padding-left: 10px;
 }
-.agentchatdrop-down{
+.agentchatdrop-down {
   margin-left: 10px;
   width: 50%;
 }
