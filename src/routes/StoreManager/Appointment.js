@@ -534,7 +534,7 @@ class Appointment extends Component {
             <i class="arrow-left"></i>
             Back
           </a>
-          <div className="d-flex">
+          <div className="d-flex appnt-date-cntr">
             <div
               className={
                 this.state.tabFor === 1 ? "custom-tabcount" : "custom-tabcount1"
@@ -546,6 +546,7 @@ class Appointment extends Component {
               >
                 Today
               </p>
+              <span className="mid-divider"></span>
               <span
                 className={this.state.tabFor === 1 ? "tab-count" : "tab-count1"}
               >
@@ -563,6 +564,7 @@ class Appointment extends Component {
               >
                 {this.state.tomorrowDay}
               </p>
+              <span className="mid-divider"></span>
               <span
                 className={this.state.tabFor === 2 ? "tab-count" : "tab-count1"}
               >
@@ -580,6 +582,7 @@ class Appointment extends Component {
               >
                 {this.state.dayAfterTomorrowDay}
               </p>
+              <span className="mid-divider"></span>
               <span
                 className={this.state.tabFor === 3 ? "tab-count" : "tab-count1"}
               >

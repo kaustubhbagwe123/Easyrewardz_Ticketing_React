@@ -129,7 +129,7 @@
   height: 31px;
   text-transform: initial;
 }
-.followUpBtnBlue{
+.followUpBtnBlue {
   background-color: #5c53ee;
   border-radius: 4px;
   /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5); */
@@ -2409,7 +2409,7 @@ table tr th:last-child {
     line-height: 2;
     height: 22px;
   }
-  .followUpBtnBlue{
+  .followUpBtnBlue {
     width: 95px;
     height: 22px;
     line-height: 2;
@@ -2894,6 +2894,13 @@ table tr th:last-child {
   font-size: 14px;
   font-weight: 700;
 }
+.mid-divider {
+  width: 0.5px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.6);
+  display: none;
+  margin: 0 10px;
+}
 .custom-tabs {
   /* margin-bottom: 15px; */
   /* margin-left: -5px; */
@@ -3088,6 +3095,7 @@ table tr th:last-child {
 }
 .filled-info {
   background: #ff9d58;
+  cursor: pointer;
 }
 .total-info {
   width: 100%;
@@ -3300,7 +3308,7 @@ table tr th:last-child {
 .appoint-butn-orange {
   background: #f37b2b;
 }
-.appoint-butn-grey{
+.appoint-butn-grey {
   background: #aeaeae;
 }
 .appoint-cancel {
@@ -3537,18 +3545,32 @@ table tr th:last-child {
 @media screen and (max-width: 600px) {
   .tab-count,
   .tab-count1 {
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    font-size: 13px;
+    width: auto;
+    height: auto;
+    line-height: initial;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.3);
+    background: transparent;
+  }
+  .tab-count {
+    color: #2561a8;
+  }
+  .mid-divider {
+    display: block;
   }
   .tab-title1,
   .tab-title {
-    font-size: 13px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
   }
-  /* .custom-tabs {
-    margin: 10px 15px;
-  } */
+  .tab-title {
+    color: #2561a8;
+  }
+  .custom-tabs {
+    padding-right: 15px;
+    padding-left: 15px;
+    background: #2561a8;
+  }
   .appoint-outer-pad {
     padding: 0;
   }
@@ -3562,8 +3584,20 @@ table tr th:last-child {
   .custom-tabcount {
     margin-left: 0;
     margin-right: 20px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 15px 12px;
+    /* min-width: 100px;
+    width: auto; */
+    flex-grow: 1;
   }
-  .custom-tabs > div:last-child {
+  .custom-tabcount {
+    background: rgba(255, 255, 255, 1);
+  }
+  .custom-tabcount .mid-divider {
+    background: #2561a8;
+  }
+  .custom-tabs .appnt-date-cntr div:last-child {
     margin-right: 0;
   }
   .appointment-mobile {
@@ -3622,6 +3656,13 @@ table tr th:last-child {
   }
   .appt-status .ant-select-selection::after {
     right: 7px;
+  }
+  .appointment-top-right {
+    display: none;
+  }
+  .appnt-date-cntr {
+    justify-content: space-between;
+    width: 100%;
   }
 
   /* ant pagination starts */
@@ -3686,6 +3727,28 @@ table tr th:last-child {
 @media screen and (max-width: 576px) {
   .ant-pagination-options {
     display: inline-block !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .custom-tabcount1,
+  .custom-tabcount {
+    margin-right: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .mid-divider {
+    margin: 0 7px;
+  }
+}
+@media screen and (max-width: 359px) {
+  .custom-tabcount1,
+  .custom-tabcount {
+    margin-right: 12px;
+  }
+  .tab-count,
+  .tab-count1 {
+    font-size: 16px;
   }
 }
 
