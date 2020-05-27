@@ -53,10 +53,14 @@ class Appointment extends Component {
       isVerified: 0,
       type: "GenerateOTP",
       noOfMember: "",
+      appointmentID: 0,
+      noOfPeople: 0,
+      statusUpdate: ""
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnChangeData = this.handleOnChangeData.bind(this);
+    this.handleOnChangeNoOfPeople = this.handleOnChangeNoOfPeople.bind(this);
   }
 
   componentDidMount() {
@@ -284,41 +288,43 @@ class Appointment extends Component {
       });
   }
 
-  handleUpdateAppointment(appointmentID) {
+  handleUpdateAppointment(appointmentID,status) {
     debugger;
     let self = this;
     this.setState({
       updateAppointModal: true,
+      appointmentID: appointmentID,
+      statusUpdate: status === null?"":status
     });
-    if (
-      this.state.status[appointmentID] !== "" &&
-      this.state.status[appointmentID] !== undefined
-    ) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Appointment/UpdateAppointmentStatus",
-        data: {
-          AppointmentID: appointmentID,
-          Status: parseInt(this.state.status[appointmentID]),
-        },
-        headers: authHeader(),
-      })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          if (status === "Success") {
-            NotificationManager.success("Record updated successFully.");
-          } else {
-            NotificationManager.error(status);
-          }
-          self.handleAppointmentGridData(self.state.tabFor);
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    } else {
-      NotificationManager.error("Please select status.");
-    }
+    // if (
+    //   this.state.status[appointmentID] !== "" &&
+    //   this.state.status[appointmentID] !== undefined
+    // ) {
+    //   axios({
+    //     method: "post",
+    //     url: config.apiUrl + "/Appointment/UpdateAppointmentStatus",
+    //     data: {
+    //       AppointmentID: appointmentID,
+    //       Status: parseInt(this.state.status[appointmentID]),
+    //     },
+    //     headers: authHeader(),
+    //   })
+    //     .then(function(res) {
+    //       debugger;
+    //       let status = res.data.message;
+    //       if (status === "Success") {
+    //         NotificationManager.success("Record updated successFully.");
+    //       } else {
+    //         NotificationManager.error(status);
+    //       }
+    //       self.handleAppointmentGridData(self.state.tabFor);
+    //     })
+    //     .catch((data) => {
+    //       console.log(data);
+    //     });
+    // } else {
+    //   NotificationManager.error("Please select status.");
+    // }
   }
 
   onRowExpand(expanded, record) {
@@ -389,7 +395,13 @@ class Appointment extends Component {
   handleOnChangeData(e) {
     debugger;
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleOnChangeNoOfPeople(e){
+    this.setState({
+      noOfPeople: parseInt(e.target.innerText)
     });
   }
 
@@ -1172,7 +1184,8 @@ class Appointment extends Component {
                                     }}
                                     onClick={this.handleUpdateAppointment.bind(
                                       this,
-                                      item.appointmentID
+                                      item.appointmentID,
+                                      item.status
                                     )}
                                   >
                                     <label className="saveLabel">Update</label>
@@ -1259,6 +1272,8 @@ class Appointment extends Component {
           <div className="appnt-bottom-white appnt-bottom-white-update">
             <div className="appnt-input-group">
               <div className="row">
+              {this.state.statusUpdate === ""?(
+                <>
                 <div className="col-md-6">
                   <label>
                     People entered :{" "}
@@ -1271,18 +1286,21 @@ class Appointment extends Component {
                     <span className="font-weight-bold">02</span>
                   </label>
                 </div>
+                </>):null}
               </div>
             </div>
             <div className="appnt-input-group">
               <label>No. of people entering</label>{" "}
               {/* here, entering or existing will come conditionally */}
-              <div className="people-selection">
-                <span>1</span>
-                <span className="active">2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
+              <div className="people-selection"
+               onClick={this.handleOnChangeNoOfPeople} 
+              >
+                <span className={this.state.noOfPeople === 1?"active":""}>1</span>
+                <span className={this.state.noOfPeople === 2?"active":""}>2</span>
+                <span className={this.state.noOfPeople === 3?"active":""}>3</span>
+                <span className={this.state.noOfPeople === 4?"active":""}>4</span>
+                <span className={this.state.noOfPeople === 5?"active":""}>5</span>
+                <span className={this.state.noOfPeople === 6?"active":""}>6</span>
               </div>
             </div>
             <div className="ticket-cut">
@@ -1290,18 +1308,19 @@ class Appointment extends Component {
             </div>
             <div className="appoint-code">
               <p>Appointment Code</p>
-              <span>L88392</span>
+              <span>{this.state.appointmentID}</span>
             </div>
             <div className="text-center">
-              {/* <button className="appoint-butn appoint-butn-blue">
+              {this.state.statusUpdate === ""?(
+              <button className="appoint-butn appoint-butn-blue">
                 Start Visit Time
-              </button> */}
+              </button>):null}
               {/* <button className="appoint-butn appoint-butn-red">
                 End Visit Time
               </button> */}
-              <button className="appoint-butn appoint-butn-orange">
+              {/* <button className="appoint-butn appoint-butn-orange">
                 Partial Check Out
-              </button>
+              </button> */}
               <br />
               <a
                 href="#!"
