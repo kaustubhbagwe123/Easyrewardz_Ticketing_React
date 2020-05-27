@@ -51,7 +51,8 @@ class Appointment extends Component {
       bookAppointment:"",
       btnText:"generate otp",
       isVerified:0,
-      type:"GenerateOTP"
+      type:"GenerateOTP",
+      noOfMember: ""
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -477,7 +478,7 @@ class Appointment extends Component {
         AppointmentDate: this.state.appointDate,
 	      CustomerName:this.state.custName,
 	      MobileNo:this.state.custPhoneNo,
-	      NOofPeople:3,
+	      NOofPeople:this.state.noOfMember,
 	      TimeSlot: "10AM-11AM"
       },
       params: { 
@@ -724,7 +725,9 @@ class Appointment extends Component {
                     <div className="row">
                       <div className="col-md">
                         <label>No. of members</label>
-                        <input type="number" placeholder="00" min="1" max="2" />
+                        <input type="number" placeholder="00" min="1" max="2"
+                         value={this.state.noOfMember}
+                        />
                       </div>
                       <div className="col-md">
                         <label>Loyalty Member</label>
