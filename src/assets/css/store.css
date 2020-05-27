@@ -3536,6 +3536,18 @@ table tr th:last-child {
 #promo-sms + label {
   white-space: nowrap;
 }
+.mobile-appoint-search {
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  padding: 20px 15px;
+  align-items: center;
+  display: none;
+}
+.mobile-appoint-search .appoint-input {
+  width: 100%;
+  margin-right: 11px;
+}
 
 @media screen and (max-width: 600px) {
   .customer-count-block {
@@ -3687,6 +3699,15 @@ table tr th:last-child {
   }
   .antd-table-appoint {
     padding-bottom: 65px;
+  }
+  .mobile-appoint-search {
+    display: flex;
+  }
+  .appoint-search-res {
+    margin: 0;
+    background: #fff;
+    font-size: 11px;
+    padding: 5px 15px;
   }
 
   /* ant pagination starts */
