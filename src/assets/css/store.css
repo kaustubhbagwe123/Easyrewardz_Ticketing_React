@@ -3533,7 +3533,7 @@ table tr th:last-child {
   padding: 15px;
   display: none;
 }
-.broadcastpop{
+.broadcastpop {
   max-height: 350px;
   overflow: auto;
 }
@@ -3830,6 +3830,12 @@ table tr th:last-child {
   }
   .appnt-bottom-white-update {
     margin-top: -5px;
+  }
+  .broadcastpop {
+    padding: 0;
+  }
+  #sharecamp-popupmob {
+    padding: 20px 14px 5px;
   }
 }
 
