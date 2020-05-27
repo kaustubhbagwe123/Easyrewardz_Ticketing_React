@@ -478,15 +478,15 @@ class Appointment extends Component {
       url: config.apiUrl + "/Appointment/CreateAppointment",
       data: {
         AppointmentDate: this.state.appointDate,
-        CustomerName: this.state.custName,
-        MobileNo: this.state.custPhoneNo,
-        NOofPeople: this.state.noOfMember,
-        TimeSlot: "10AM-11AM",
+	      CustomerName:this.state.custName,
+	      MobileNo:this.state.custPhoneNo,
+	      NOofPeople:parseInt(this.state.noOfMember),
+	      SlotID: this.state.timeSlotId
       },
-      params: {
-        otpID: 1,
-        otp: this.state.otp,
-      },
+      params: { 
+               IsSMS: true,
+               IsLoyalty: true
+              },
       headers: authHeader(),
     })
       .then(function(res) {
