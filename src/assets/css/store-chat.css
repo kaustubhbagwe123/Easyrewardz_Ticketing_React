@@ -421,11 +421,15 @@ p {
   margin-left: auto;
 }
 .bot-mark {
-  color: #eb4d4b;
+  background-color: #f7b500;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 10px;
   position: absolute;
-  top: -15px;
+  top: 9px;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  left: -20px;
 }
 .chat-trail-chat-cntr {
   margin-top: 15px;
@@ -1063,6 +1067,12 @@ p {
   .chat-trail-chat {
     font-size: 12px;
     padding: 8px 15px;
+  }
+  .bot-mark {
+    font-size: 8px;
+    padding: 4px;
+    top: 7px;
+    left: -15px;
   }
   .chat-trail-chat .card-body {
     margin: 0 -7px;
