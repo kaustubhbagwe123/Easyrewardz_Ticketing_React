@@ -2618,9 +2618,45 @@ class Alerts extends Component {
                       value={this.state.selectedStatus}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      <option value="">Select</option>
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
+                      <option value="">
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                      </option>
+                      <option value="true">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                      
+                      </option>
+                      <option value="false">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                      
+                      </option>
                     </select>
                     {this.state.selectedStatus === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3162,7 +3198,19 @@ class Alerts extends Component {
                                         "Store"
                                       )}
                                     >
-                                      <option value="0">Placeholders</option>
+                                      <option value="0">
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.placeholder
+                                      }
+                                      else {
+                                        return "Placeholders"
+                                      }
+                                    })()
+                                  }
+                                      
+                                      </option>
                                       {this.state.placeholderData !== null &&
                                         this.state.placeholderData.map(
                                           (item, i) => (
@@ -3283,7 +3331,19 @@ class Alerts extends Component {
                                     "Notification"
                                   )}
                                 >
-                                  <option value="0">Placeholders</option>
+                                  <option value="0">
+                                  
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.placeholder
+                                      }
+                                      else {
+                                        return "Placeholders"
+                                      }
+                                    })()
+                                  }
+                                  </option>
                                   {this.state.placeholderData !== null &&
                                     this.state.placeholderData.map(
                                       (item, i) => (
@@ -3341,7 +3401,17 @@ class Alerts extends Component {
                             ) : (
                               ""
                             )}
-                            SAVE
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.save
+                                      }
+                                      else {
+                                        return "SAVE"
+                                      }
+                                    })()
+                                  }
                           </button>
                         </div>
                       </div>
@@ -3791,9 +3861,45 @@ class Alerts extends Component {
                 value={this.state.alertEdit.alertIsActive}
                 onChange={this.editAlertModalData.bind(this)}
               >
-                <option value="">Select</option>
-                <option value={"Active"}>Active</option>
-                <option value={"Inactive"}>Inactive</option>
+                <option value="">
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                
+                </option>
+                <option value={"Active"}>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                </option>
+                <option value={"Inactive"}>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                
+                </option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>

@@ -1656,8 +1656,31 @@ class TicketCRMRole extends Component {
                         id="inputState"
                         className="form-control dropdown-setting"
                       >
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
+                        <option value="true">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="false">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                     <div className="btnSpace">
@@ -1994,8 +2017,32 @@ class TicketCRMRole extends Component {
                   name="status"
                   onChange={this.handleModaleDataChange.bind(this)}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="Active">
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                  </option>
+                  <option value="Inactive">
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                  
+                  </option>
                 </select>
               </div>
               <br />

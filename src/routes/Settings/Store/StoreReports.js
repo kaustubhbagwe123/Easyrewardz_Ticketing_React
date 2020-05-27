@@ -3097,7 +3097,17 @@ class StoreReports extends Component {
               "Schedule Status"
             )}
           >
-            Schedule Status
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.schedulestatus
+                                      }
+                                      else {
+                                        return "Schedule Status"
+                                      }
+                                    })()
+                                  }
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false &&
@@ -3119,7 +3129,17 @@ class StoreReports extends Component {
             }
             onClick={this.StatusOpenModel.bind(this, "createdBy", "Created by")}
           >
-            Created by
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.createdby
+                                      }
+                                      else {
+                                        return "Created by"
+                                      }
+                                    })()
+                                  }
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false &&
@@ -3144,21 +3164,66 @@ class StoreReports extends Component {
                       <div>
                         <b>
                           <p className="title">
-                            Created By: {row.original["createdBy"]}
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createdby
+                                      }
+                                      else {
+                                        return "Created by"
+                                      }
+                                    })()
+                                  }
+                            : {row.original["createdBy"]}
                           </p>
                         </b>
                         <p className="sub-title">
-                          Created Date: {row.original["createdDate"]}
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createddate
+                                      }
+                                      else {
+                                        return "Created Date"
+                                      }
+                                    })()
+                                  }
+                          : {row.original["createdDate"]}
                         </p>
                       </div>
                       <div>
                         <b>
                           <p className="title">
-                            Updated By: {row.original["modifiedBy"]}
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updatedby
+                                      }
+                                      else {
+                                        return "Updated By"
+                                      }
+                                    })()
+                                  }
+                            : {row.original["modifiedBy"]}
                           </p>
                         </b>
                         <p className="sub-title">
-                          Updated Date: {row.original["modifiedDate"]}
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updateddate
+                                      }
+                                      else {
+                                        return "Updated Date"
+                                      }
+                                    })()
+                                  }
+                          
+                          : {row.original["modifiedDate"]}
                         </p>
                       </div>
                     </>
@@ -3197,7 +3262,19 @@ class StoreReports extends Component {
         accessor: "reportStatus",
       },
       {
-        Header: <span>Actions</span>,
+        Header: <span>
+ {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.actions
+                                      }
+                                      else {
+                                        return "Actions"
+                                      }
+                                    })()
+                                  }
+
+        </span>,
         sortable: false,
         accessor: "actionReport",
         Cell: (row) => (
@@ -3223,12 +3300,47 @@ class StoreReports extends Component {
                       <img src={DelBigIcon} alt="del-icon" />
                     </div>
                     <div>
-                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                      <p className="font-weight-bold blak-clr">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file"
+                                      }
+                                    })()
+                                  }?
+                      
+                      </p>
                       <p className="mt-1 fs-12">
-                        Are you sure you want to delete this file?
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousureyouwanttodeletethisfile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file"
+                                      }
+                                    })()
+                                  }
+                        ?
                       </p>
                       <div className="del-can">
-                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                        <a href={Demo.BLANK_LINK}>
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.cancel
+                                      }
+                                      else {
+                                        return "CANCEL"
+                                      }
+                                    })()
+                                  }
+                          </a>
                         <button
                           className="butn"
                           onClick={this.handleDeleteStoreReports.bind(
@@ -3236,7 +3348,18 @@ class StoreReports extends Component {
                             row.original["reportID"]
                           )}
                         >
-                          Delete
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.delete
+                                      }
+                                      else {
+                                        return "Delete"
+                                      }
+                                    })()
+                                  }
+                                  
                         </button>
                       </div>
                     </div>
@@ -3254,7 +3377,17 @@ class StoreReports extends Component {
                 id="p-edit-pop-2"
                 onClick={this.handleEditReport.bind(this, row.original)}
               >
-                EDIT
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.edit
+                                      }
+                                      else {
+                                        return "EDIT"
+                                      }
+                                    })()
+                                  }
               </button>
             </div>
           </div>
@@ -3267,17 +3400,62 @@ class StoreReports extends Component {
           <img src={DelBigIcon} alt="del-icon" />
         </div>
         <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="font-weight-bold blak-clr">
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file"
+                                      }
+                                    })()
+                                  }?
+          
+          </p>
           <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousureyouwanttodeletethisfile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file"
+                                      }
+                                    })()
+                                  }
+                        ?
           </p>
           <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <a href={Demo.BLANK_LINK}>
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.cancel
+                                      }
+                                      else {
+                                        return "CANCEL"
+                                      }
+                                    })()
+                                  }
+                        
+            </a>
             <button
               className="butn"
               onClick={this.handleDeleteStoreReports.bind(this)}
             >
-              Delete
+              
+              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.delete
+                                      }
+                                      else {
+                                        return "Delete"
+                                      }
+                                    })()
+                                  }
             </button>
           </div>
         </div>
@@ -3287,15 +3465,61 @@ class StoreReports extends Component {
       <>
         <div>
           <b>
-            <p className="title">Created By: Admin</p>
+            <p className="title">
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createdbycolonadmin
+                                      }
+                                      else {
+                                        return "Created By: Admin"
+                                      }
+                                    })()
+                                  }
+            </p>
           </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
+          <p className="sub-title">
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createddatecolontwelveMarcheighteen
+                                      }
+                                      else {
+                                        return "Created Date: 12 March 2018"
+                                      }
+                                    })()
+                                  }
+          </p>
         </div>
         <div>
           <b>
-            <p className="title">Updated By: Manager</p>
+            <p className="title">
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updatedbycolonmanager
+                                      }
+                                      else {
+                                        return "Updated By: Manager"
+                                      }
+                                    })()
+                                  }
+            
+            </p>
           </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
+          <p className="sub-title">
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updateddatecolontwelveMarcheighteen
+                                      }
+                                      else {
+                                        return "Updated Date: 12 March 2018"
+                                      }
+                                    })()
+                                  }
+          
+          </p>
         </div>
       </>
     );
@@ -3322,7 +3546,19 @@ class StoreReports extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.sortatoz
+                                      }
+                                      else {
+                                        return "SORT BY A TO Z"
+                                      }
+                                    })()
+                                  }
+
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -3332,7 +3568,19 @@ class StoreReports extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.sortztoa
+                                      }
+                                      else {
+                                        return "SORT BY Z TO A"
+                                      }
+                                    })()
+                                  }
+                  </p>
                 </div>
               </div>
               <a
@@ -3344,10 +3592,34 @@ class StoreReports extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                
+
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.clearsearch
+                                      }
+                                      else {
+                                        return "clear search"
+                                      }
+                                    })()
+                                  }
+
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.filterbytype
+                                      }
+                                      else {
+                                        return "FILTER BY TYPE"
+                                      }
+                                    })()
+                                  }
+
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -3490,7 +3762,18 @@ class StoreReports extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
+
           </Link>
           <span>&gt;</span>
           <Link
@@ -3500,11 +3783,34 @@ class StoreReports extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
+
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Reports
+            
+
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.reports
+                                      }
+                                      else {
+                                        return "Reports"
+                                      }
+                                    })()
+                                  }
+
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -3513,7 +3819,19 @@ class StoreReports extends Component {
                 className="addplusbtnReport"
                 onClick={this.handleAddReportOpen}
               >
-                + Add
+                + 
+
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.add
+                                      }
+                                      else {
+                                        return "Add"
+                                      }
+                                    })()
+                                  }
+
               </button>
             </div>
           </div>
@@ -3585,7 +3903,19 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    Task
+                    
+
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.task
+                                      }
+                                      else {
+                                        return "Task"
+                                      }
+                                    })()
+                                  }
+
                   </a>
                 </li>
                 <li
@@ -3602,7 +3932,18 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    Claim
+                    
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.claim
+                                      }
+                                      else {
+                                        return "Claim"
+                                      }
+                                    })()
+                                  }
+
                   </a>
                 </li>
                 <li
@@ -3619,7 +3960,17 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    Campaign
+                    
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.campaign
+                                      }
+                                      else {
+                                        return "Campaign"
+                                      }
+                                    })()
+                                  }
                   </a>
                 </li>
               </ul>
@@ -3641,7 +3992,19 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task ID/ Title</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.taskidslashtitle
+                                      }
+                                      else {
+                                        return "Task ID/ Title"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3653,7 +4016,20 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Department</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.department
+                                      }
+                                      else {
+                                        return "Department"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -3661,7 +4037,18 @@ class StoreReports extends Component {
                           id="departmentNameValue"
                           onClick={this.handleDepartmentButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                           }
+
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -3690,14 +4077,37 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+
+
                                   </label>
                                 </li>
                                 <li>
                                   <label
                                     onClick={this.selectNoDepartment.bind(this)}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                               </ul>
@@ -3751,7 +4161,19 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task Creation On</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.taskcreationon
+                                      }
+                                      else {
+                                        return "Task Creation On"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.taskCreateDate}
@@ -3770,7 +4192,19 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task Status</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.taskstatus
+                                      }
+                                      else {
+                                        return "Task Status"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="normal-dropdown">
                         <Select
                           getOptionLabel={(option) => option.taskStatusName}
@@ -3786,7 +4220,19 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Function</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.function
+                                      }
+                                      else {
+                                        return "Function"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -3794,7 +4240,17 @@ class StoreReports extends Component {
                           id="functionNameValue"
                           onClick={this.handleFunctionButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -3821,14 +4277,35 @@ class StoreReports extends Component {
                                   <label
                                     onClick={this.selectAllFunction.bind(this)}
                                   >
-                                    Select All
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                                 <li>
                                   <label
                                     onClick={this.selectNoFunction.bind(this)}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                               </ul>
@@ -3880,14 +4357,38 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Created by</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.createdby
+                                      }
+                                      else {
+                                        return "Created by"
+                                      }
+                                    })()
+                                  }
+
+
+                      </label>
                       <select
                         name="taskCreatedBy"
                         value={this.state.taskCreatedBy}
                         onChange={this.handleOnChangeData}
                       >
                         {this.state.userData.length > 0 && (
-                          <option value="0">All</option>
+                          <option value="0">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
@@ -3900,7 +4401,19 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Linked Ticket ID</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.linkedticketid
+                                      }
+                                      else {
+                                        return "Linked Ticket ID"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -3912,7 +4425,19 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Priority</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.priority
+                                      }
+                                      else {
+                                        return "Priority"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -3920,7 +4445,18 @@ class StoreReports extends Component {
                           id="priorityNameValue"
                           onClick={this.handlePriorityButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -3947,14 +4483,38 @@ class StoreReports extends Component {
                                   <label
                                     onClick={this.selectAllPriority.bind(this)}
                                   >
-                                    Select All
+                                    
+
+
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                                 <li>
                                   <label
                                     onClick={this.selectNoPriority.bind(this)}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                               </ul>
@@ -4006,14 +4566,37 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Assigned To</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.assignedto
+                                      }
+                                      else {
+                                        return "Assigned To"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <select
                         name="taskAssignedTo"
                         value={this.state.taskAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
                         {this.state.userData.length > 0 && (
-                          <option value="0">All</option>
+                          <option value="0">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
@@ -4026,29 +4609,115 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task With Tickets</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.taskwithtickets
+                                      }
+                                      else {
+                                        return "Task With Tickets"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <select
                         name="taskWithTickets"
                         value={this.state.taskWithTickets}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
+                        <option value="yes">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        
+                        
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task With Claim</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.taskwithclaim
+                                      }
+                                      else {
+                                        return "Task With Claim"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <select
                         name="taskWithClaim"
                         value={this.state.taskWithClaim}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="yes">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim ID</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimid
+                                      }
+                                      else {
+                                        return "Claim ID"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -4067,7 +4736,17 @@ class StoreReports extends Component {
                         type="submit"
                         onClick={this.handleNextPopupOpen.bind(this, 1)}
                       >
-                        NEXT
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.next
+                                      }
+                                      else {
+                                        return "NEXT"
+                                      }
+                                    })()
+                                  }
                       </button>
                     </div>
                   </div>
@@ -4083,7 +4762,19 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim ID</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimid
+                                      }
+                                      else {
+                                        return "Claim ID"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -4095,7 +4786,21 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Category</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimcategory
+                                      }
+                                      else {
+                                        return "Claim Category"
+                                      }
+                                    })()
+                                  }
+
+
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4103,7 +4808,17 @@ class StoreReports extends Component {
                           id="claimCategoryNameValue"
                           onClick={this.handleClaimCategoryButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4132,7 +4847,17 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                                 <li>
@@ -4141,7 +4866,18 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                               </ul>
@@ -4197,7 +4933,20 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Creation On</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimcreationon
+                                      }
+                                      else {
+                                        return "Claim Creation On"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.claimCreateDate}
@@ -4215,7 +4964,20 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Status</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimstatus
+                                      }
+                                      else {
+                                        return "Claim Status"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4223,7 +4985,18 @@ class StoreReports extends Component {
                           id="claimStatusNameValue"
                           onClick={this.handleClaimStatusButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4252,7 +5025,19 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    
+
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                                 <li>
@@ -4261,7 +5046,17 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                               </ul>
@@ -4317,7 +5112,19 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Sub Category</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimsubcategory
+                                      }
+                                      else {
+                                        return "Claim Sub Category"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4325,7 +5132,16 @@ class StoreReports extends Component {
                           id="claimSubCategoryNameValue"
                           onClick={this.handleClaimSubCategoryButton}
                         >
-                          Select
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4354,7 +5170,17 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                   {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                                 <li>
@@ -4363,7 +5189,16 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                               </ul>
@@ -4440,7 +5275,19 @@ class StoreReports extends Component {
 
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Linked Ticket ID</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.linkedticketid
+                                      }
+                                      else {
+                                        return "Linked Ticket ID"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -4452,7 +5299,19 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Issue Type</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimissuetype
+                                      }
+                                      else {
+                                        return "Claim Issue Type"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4460,7 +5319,17 @@ class StoreReports extends Component {
                           id="claimIssueTypeNameValue"
                           onClick={this.handleClaimIssueTypeButton}
                         >
-                          Select
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                          
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4489,7 +5358,17 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                                 <li>
@@ -4498,7 +5377,16 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                               </ul>
@@ -4556,14 +5444,37 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Assigned To</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.assignedto
+                                      }
+                                      else {
+                                        return "Assigned To"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <select
                         name="claimAssignedTo"
                         value={this.state.claimAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
                         {this.state.userData.length > 0 && (
-                          <option value="0">All</option>
+                          <option value="0">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
@@ -4576,29 +5487,110 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim With Tickets</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimwithtickets
+                                      }
+                                      else {
+                                        return "Claim With Tickets"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <select
                         name="claimWithTickets"
                         value={this.state.claimWithTickets}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="yes">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim With Task</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.claimwithtickets
+                                      }
+                                      else {
+                                        return "Claim With Task"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <select
                         name="claimWithTask"
                         value={this.state.claimWithTask}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="yes">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Linked Task ID</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.linkedtaskid
+                                      }
+                                      else {
+                                        return "Linked Task ID"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
@@ -4618,7 +5610,18 @@ class StoreReports extends Component {
                         // onClick={this.handleNextPopupOpen}
                         onClick={this.handleNextPopupOpen.bind(this, 2)}
                       >
-                        NEXT
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.next
+                                      }
+                                      else {
+                                        return "NEXT"
+                                      }
+                                    })()
+                                  }
+
                       </button>
                     </div>
                   </div>
@@ -4634,7 +5637,19 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Campaign Name</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.campaignname
+                                      }
+                                      else {
+                                        return "Campaign Name"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4642,7 +5657,18 @@ class StoreReports extends Component {
                           id="campaignNameValue"
                           onClick={this.handleCampaignNameButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4671,7 +5697,18 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                                 <li>
@@ -4680,7 +5717,18 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
+
                                   </label>
                                 </li>
                               </ul>
@@ -4736,14 +5784,37 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Campaign Assigned To</label>
+                      <label>
+
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.campaignassignedto
+                                      }
+                                      else {
+                                        return "Campaign Assigned To"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <select
                         name="campaignAssignedTo"
                         value={this.state.campaignAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
                         {this.state.userData.length > 0 && (
-                          <option value="0">All</option>
+                          <option value="0">
+                           {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
@@ -4753,7 +5824,19 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4">
                       <div className=" ticketstrReport">
-                        <label>Campaign End Date</label>
+                        <label>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.campaignenddate
+                                      }
+                                      else {
+                                        return "Campaign End Date"
+                                      }
+                                    })()
+                                  }
+
+                        </label>
                       </div>
                       <div className="ticketreportdat campaign-end-date">
                         <DatePickerComponenet
@@ -4765,7 +5848,19 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Campaign Status</label>
+                      <label>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.campaignstatus
+                                      }
+                                      else {
+                                        return "Campaign Status"
+                                      }
+                                    })()
+                                  }
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4773,7 +5868,18 @@ class StoreReports extends Component {
                           id="campaignStatusNameValue"
                           onClick={this.handleCampaignStatusButton}
                         >
-                          Select
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4802,7 +5908,17 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                     {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.selectall
+                                      }
+                                      else {
+                                        return "Select All"
+                                      }
+                                    })()
+                                  }
+                                    
                                   </label>
                                 </li>
                                 <li>
@@ -4811,7 +5927,17 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.clear
+                                      }
+                                      else {
+                                        return "Clear"
+                                      }
+                                    })()
+                                  }
                                   </label>
                                 </li>
                               </ul>
@@ -4879,7 +6005,17 @@ class StoreReports extends Component {
                         onClick={this.handleNextPopupOpen.bind(this, 3)}
                         // onClick={this.handleChangeTab.bind(this,2)}
                       >
-                        NEXT
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.next
+                                      }
+                                      else {
+                                        return "NEXT"
+                                      }
+                                    })()
+                                  }
                       </button>
                     </div>
                   </div>
@@ -4896,7 +6032,19 @@ class StoreReports extends Component {
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
-                <label className="reportdetail">Enter Report Details</label>
+                <label className="reportdetail">
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.enterreportdetails
+                                      }
+                                      else {
+                                        return "Enter Report Details"
+                                      }
+                                    })()
+                                  }
+                
+                </label>
                 <img
                   src={CancelImg}
                   alt="CancelImg"
@@ -4907,7 +6055,19 @@ class StoreReports extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="store-totalresultcircle">
-                    <label className="totalresult">Total Result</label>
+                    <label className="totalresult">
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.totalresult
+                                      }
+                                      else {
+                                        return "Total Result"
+                                      }
+                                    })()
+                                  }
+                    
+                    </label>
                     <span className="totalresultnumber">
                       {this.state.totalResult}
                     </span>
@@ -4915,7 +6075,18 @@ class StoreReports extends Component {
                 </div>
                 <div className="col-md-6 rname">
                   <div className="ranmetext">
-                    <label className="renametext">Report Name</label>
+                    <label className="renametext">
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.reportname
+                                      }
+                                      else {
+                                        return "Report Name"
+                                      }
+                                    })()
+                                  }
+                    </label>
                     <input
                       className="no-bg"
                       type="text"
@@ -4931,12 +6102,32 @@ class StoreReports extends Component {
                       className="Schedulenext"
                       onClick={this.ScheduleOpenModel}
                     >
-                      SCHEDULE
+                       {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.schedule
+                                      }
+                                      else {
+                                        return "SCHEDULE"
+                                      }
+                                    })()
+                                  }
+                      
                     </button>
                   </div>
                   <div className="buttonschdulesave1">
                     <button className="Schedulenext1" onClick={this.handleSave}>
-                      SAVE
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.save
+                                      }
+                                      else {
+                                        return "SAVE"
+                                      }
+                                    })()
+                                  }
                     </button>
                   </div>
                 </div>
@@ -4954,7 +6145,19 @@ class StoreReports extends Component {
           >
             <div>
               <label>
-                <b>Schedule date to</b>
+                <b>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.b.scheduledateto
+                                      }
+                                      else {
+                                        return "Schedule date to"
+                                      }
+                                    })()
+                                  }
+
+                </b>
               </label>
               <div>
                 <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -4990,7 +6193,18 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 230 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Every</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.every
+                                      }
+                                      else {
+                                        return "Every"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -4999,7 +6213,18 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfDay}
                         onChange={this.handleOnChangeData}
                       />
-                      <label className="every1">Day</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.day
+                                      }
+                                      else {
+                                        return "Day"
+                                      }
+                                    })()
+                                  }
+                      </label>
                     </span>
                   </div>
                 ) : null}
@@ -5007,7 +6232,18 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 231 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Every</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.every
+                                      }
+                                      else {
+                                        return "Every"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5015,7 +6251,19 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfWeek}
                         onChange={this.handleWeekly}
                       />
-                      <label className="every1">Week on</label>
+                      <label className="every1">
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.weekon
+                                      }
+                                      else {
+                                        return "Week on"
+                                      }
+                                    })()
+                                  }
+                      </label>
                     </span>
                     <div
                       style={{
@@ -5027,49 +6275,119 @@ class StoreReports extends Component {
                         value="Mon"
                         id="Mon"
                       >
-                        Mon
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.mon
+                                      }
+                                      else {
+                                        return "Mon"
+                                      }
+                                    })()
+                                  }
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Tue"
                         id="Tue"
                       >
-                        Tue
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.tue
+                                      }
+                                      else {
+                                        return "Tue"
+                                      }
+                                    })()
+                                  }
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Wed"
                         id="Wed"
                       >
-                        Wed
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.wed
+                                      }
+                                      else {
+                                        return "Wed"
+                                      }
+                                    })()
+                                  }
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Thu"
                         id="Thu"
                       >
-                        Thu
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.thu
+                                      }
+                                      else {
+                                        return "Thu"
+                                      }
+                                    })()
+                                  }
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Fri"
                         id="Fri"
                       >
-                        Fri
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.fri
+                                      }
+                                      else {
+                                        return "Fri"
+                                      }
+                                    })()
+                                  }
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Sat"
                         id="Sat"
                       >
-                        Sat
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.sat
+                                      }
+                                      else {
+                                        return "Sat"
+                                      }
+                                    })()
+                                  }
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Sun"
                         id="Sun"
                       >
-                        Sun
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.checkbox.sun
+                                      }
+                                      else {
+                                        return "Sun"
+                                      }
+                                    })()
+                                  }
+                        
                       </Checkbox>
                     </div>
                   </div>
@@ -5078,7 +6396,19 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 232 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Day</label>
+                      <label className="every1">
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.day
+                                      }
+                                      else {
+                                        return "Day"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5086,7 +6416,19 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfDaysForMonth}
                         onChange={this.handleDaysForMonth}
                       />
-                      <label className="every1">of every</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.ofevery
+                                      }
+                                      else {
+                                        return "of every"
+                                      }
+                                    })()
+                                  }
+                      
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5094,7 +6436,19 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfMonthForMonth}
                         onChange={this.handleMonthForMonth}
                       />
-                      <label className="every1">months</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.months
+                                      }
+                                      else {
+                                        return "months"
+                                      }
+                                    })()
+                                  }
+                      
+                      </label>
                     </span>
                   </div>
                 ) : null}
@@ -5102,7 +6456,19 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 233 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Every</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.every
+                                      }
+                                      else {
+                                        return "Every"
+                                      }
+                                    })()
+                                  }
+                      
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5110,7 +6476,18 @@ class StoreReports extends Component {
                         onChange={this.handleMonthForWeek}
                         value={this.state.selectedNoOfMonthForWeek}
                       />
-                      <label className="every1">month on the</label>
+                      <label className="every1">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.monthonthe
+                                      }
+                                      else {
+                                        return "month on the"
+                                      }
+                                    })()
+                                  }
+                      </label>
                     </span>
                     <div className="row mt-3">
                       <div className="col-md-6">
@@ -5120,9 +6497,45 @@ class StoreReports extends Component {
                           onChange={this.handleWeekForWeek}
                           value={this.state.selectedNoOfWeekForWeek}
                         >
-                          <option value="0">Select</option>
-                          <option value="2">Second</option>
-                          <option value="4">Four</option>
+                          <option value="0">
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                          </option>
+                          <option value="2">
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.second
+                                      }
+                                      else {
+                                        return "Second"
+                                      }
+                                    })()
+                                  }
+                          </option>
+                          <option value="4">
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.four
+                                      }
+                                      else {
+                                        return "Four"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         </select>
                       </div>
                       <div className="col-md-6">
@@ -5156,7 +6569,18 @@ class StoreReports extends Component {
                           lineHeight: "40px",
                         }}
                       >
-                        on
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.on
+                                      }
+                                      else {
+                                        return "on"
+                                      }
+                                    })()
+                                  }
+
                       </label>
                       <div className="col-md-7">
                         <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -5197,7 +6621,19 @@ class StoreReports extends Component {
                             lineHeight: "40px",
                           }}
                         >
-                          on the
+                         
+
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.onthe
+                                      }
+                                      else {
+                                        return "on the"
+                                      }
+                                    })()
+                                  }
+
                         </label>
                         <div className="col-md-7">
                           <select
@@ -5206,9 +6642,45 @@ class StoreReports extends Component {
                             onChange={this.handleWeekForYear}
                             value={this.state.selectedNoOfWeekForYear}
                           >
-                            <option value="0">Select</option>
-                            <option value="2">Second</option>
-                            <option value="4">Four</option>
+                            <option value="0">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                            </option>
+                            <option value="2">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.second
+                                      }
+                                      else {
+                                        return "Second"
+                                      }
+                                    })()
+                                  }
+                            
+                            </option>
+                            <option value="4">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.fourth
+                                      }
+                                      else {
+                                        return "Four"
+                                      }
+                                    })()
+                                  }
+                            
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -5296,7 +6768,19 @@ class StoreReports extends Component {
                 </div>
                 <div onClick={this.ScheduleCloseModel}>
                   <button type="button" className="scheduleBtncancel">
-                    CANCEL
+                    
+
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.cancel
+                                      }
+                                      else {
+                                        return "CANCEL"
+                                      }
+                                    })()
+                                  }
+
                   </button>
                 </div>
               </div>

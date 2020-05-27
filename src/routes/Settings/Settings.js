@@ -806,11 +806,31 @@ class Settings extends Component {
                           <img src={modules} alt="modules" />
                         </div>
                         <div className="setting-desc">
-                          <strong>Home Shop Settings</strong>
+                          <strong>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.strong.homeshopsettings
+                                      }
+                                      else {
+                                        return "Home Shop Settings"
+                                      }
+                                    })()
+                                  }
+
+                          </strong>
                           <p>
-                            A system in which members of an organization or
-                            society are ranked according to relative status or
-                            authority.
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                                      }
+                                      else {
+                                        return "A system in which members of an organization or society are ranked according to relative status or authority."
+                                      }
+                                    })()
+                                  }
+                            
                           </p>
                         </div>
                       </Link>
@@ -824,6 +844,7 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>Priority 
+                            
                           {
                     (() => {
                       if (TranslationContext!==undefined) {
@@ -925,11 +946,29 @@ class Settings extends Component {
                           <img src={modules} alt="modules" />
                         </div>
                         <div className="setting-desc">
-                          <strong>Chat Settings</strong>
+                          <strong>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.strong.chatsetting
+                                      }
+                                      else {
+                                        return "Chat Settings"
+                                      }
+                                    })()
+                                  }
+                          </strong>
                           <p>
-                            A system in which members of an organization or
-                            society are ranked according to relative status or
-                            authority.
+                          {
+                    (() => {
+                      if (TranslationContext!==undefined) {
+                      return TranslationContext.p.setdesc
+                      }
+                    else{
+                      return "A system in which members of an organization or society are ranked according to relative status or authority."
+                    }
+                    })()
+                  }
                           </p>
                         </div>
                       </Link>

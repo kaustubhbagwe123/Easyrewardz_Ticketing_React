@@ -4948,8 +4948,32 @@ class StoreUsers extends Component {
                           className="store-create-select"
                         >
                           <option>Select</option>
-                          <option value={"yes"}>Yes</option>
-                          <option value={"no"}>No</option>
+                          <option value={"yes"}>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                          
+                          </option>
+                          <option value={"no"}>
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         </select>
                         {this.state.selectClaimApprover.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4974,7 +4998,19 @@ class StoreUsers extends Component {
                             value={this.state.selectCrmRole}
                             onChange={this.handleDropDownOnChange}
                           >
-                            <option>Select</option>
+                            <option>
+
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                            </option>
                             {this.state.CrmRoleData !== null &&
                               this.state.CrmRoleData.map((item, d) => (
                                 <option
@@ -5888,7 +5924,19 @@ class StoreUsers extends Component {
                               name="roleID"
                               onChange={this.handleChagenMapping.bind(this)}
                             >
-                              <option value={0}>Select</option>
+                              <option value={0}>
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                              
+                              </option>
                               {this.state.CrmRoleData !== null &&
                                 this.state.CrmRoleData.map((item, d) => (
                                   <option

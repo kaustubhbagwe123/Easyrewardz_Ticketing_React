@@ -1269,7 +1269,17 @@ class HierarchyMaster extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1279,11 +1289,31 @@ class HierarchyMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Hierarchy Master
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.hierarchymaster
+                                      }
+                                      else {
+                                        return "Hierarchy Master"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1713,24 +1743,70 @@ class HierarchyMaster extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By:&nbsp;
+                                            
+                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createdby
+                                      }
+                                      else {
+                                        return "Created By"
+                                      }
+                                    })()
+                                  }
+                                            
+                                            :&nbsp;
                                             {row.original["createdbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:&nbsp;
+                                          
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createddate
+                                      }
+                                      else {
+                                        return "Created Date"
+                                      }
+                                    })()
+                                  }
+                                          :&nbsp;
                                           {row.original["createdateformat"]}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:&nbsp;
+                                            
+                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updatedby
+                                      }
+                                      else {
+                                        return "Updated By"
+                                      }
+                                    })()
+                                  }
+                                            :&nbsp;
                                             {row.original["updatedbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:&nbsp;
+                                          
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updateddate
+                                      }
+                                      else {
+                                        return "Updated Date"
+                                      }
+                                    })()
+                                  }
+                                          
+                                          :&nbsp;
                                           {row.original["updateddateformat"]}
                                         </p>
                                       </div>

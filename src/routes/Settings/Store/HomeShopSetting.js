@@ -10,6 +10,7 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
+import { MyContext } from "./../../context";
 
 class HomeShopSetting extends Component {
     constructor(props) {
@@ -178,11 +179,22 @@ class HomeShopSetting extends Component {
       };
 
     render() {
+        const TranslationContext = this.context.state.translateLanguage.default
         return (
             <React.Fragment>
                 <div className="container-fluid setting-title setting-breadcrumb">
                     <Link to="/store/settings" className="header-path">
-                        Settings
+                        
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
                 </Link>
                     <span>&gt;</span>
                     <Link
@@ -192,11 +204,30 @@ class HomeShopSetting extends Component {
                         }}
                         className="header-path"
                     >
-                        Store
+                         {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
                 </Link>
                     <span>&gt;</span>
                     <Link to={Demo.BLANK_LINK} className="active header-path">
-                        Home Shop Setting
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.homeshopsetting
+                                      }
+                                      else {
+                                        return "Home Shop Setting"
+                                      }
+                                    })()
+                                  }
                 </Link>
 
 
@@ -271,7 +302,17 @@ class HomeShopSetting extends Component {
                                                                             style={{ margin: "10px", width: "180px" }}
                                                                             onClick={this. handleGetStoreAgentListData.bind(this)}
                                                                         >
-                                                                            VIEW SEARCH
+                                                                            
+                                                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.viewsearch
+                                      }
+                                      else {
+                                        return "VIEW SEARCH"
+                                      }
+                                    })()
+                                  }
                                                                         </button>
                                                                     </div>
                                                                 </ul>
@@ -303,7 +344,18 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Sr No. <FontAwesomeIcon icon={faCaretDown} />
+                                                            
+                                                            
+                                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.srno
+                                      }
+                                      else {
+                                        return "Sr No."
+                                      }
+                                    })()
+                                  } <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
                                                     accessor: "agentID",
@@ -314,7 +366,18 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Agent Name <FontAwesomeIcon icon={faCaretDown} />
+                                                             
+                                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.agentname
+                                      }
+                                      else {
+                                        return "Agent Name"
+                                      }
+                                    })()
+                                  }
+                                                            <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
                                                     accessor: "agentName",
@@ -323,7 +386,18 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Email ID <FontAwesomeIcon icon={faCaretDown} />
+                                                             
+                                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.emailid
+                                      }
+                                      else {
+                                        return "Email ID"
+                                      }
+                                    })()
+                                  }
+                                                            <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
                                                     accessor: "emailID",
@@ -332,7 +406,20 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Suggestion
+                                                            
+
+                                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.suggestion
+                                      }
+                                      else {
+                                        return "Suggestion"
+                                      }
+                                    })()
+                                  }
+
+
                                                         </span>
                                                     ),
                                                     accessor: "suggestion",
@@ -362,7 +449,18 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Free Text
+                                                            
+                                                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.freetext
+                                      }
+                                      else {
+                                        return "Free Text"
+                                      }
+                                    })()
+                                  }
+                                                            
                                                         </span>
                                                     ),
                                                     accessor: "freeText",
@@ -407,4 +505,5 @@ class HomeShopSetting extends Component {
     }
 }
 
+HomeShopSetting.contextType = MyContext;
 export default HomeShopSetting;

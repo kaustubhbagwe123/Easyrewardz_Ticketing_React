@@ -1371,7 +1371,16 @@ class StoreModule extends Component {
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.setting
+                }
+                else {
+                  return "Settings"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1381,11 +1390,30 @@ class StoreModule extends Component {
             }}
             className="header-path"
           >
-            Store
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.store
+                }
+                else {
+                  return "Store"
+                }
+              })()
+            }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Modules
+            
+            {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.Link.modules
+                }
+                else {
+                  return "Modules"
+                }
+              })()
+            }
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1706,7 +1734,19 @@ class StoreModule extends Component {
                           value={this.state.selectedFileFormat}
                           onChange={this.setClaimTabData}
                         >
-                          <option value={0}>Select File Format</option>
+                          <option value={0}>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectfileformat
+                                      }
+                                      else {
+                                        return "Select File Format"
+                                      }
+                                    })()
+                                  }
+                          
+                          </option>
                           {this.state.fileFormat !== null &&
                             this.state.fileFormat.map((item, i) => (
                               <option key={i} value={item.formatID}>
@@ -2604,7 +2644,17 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        SMS
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2653,7 +2703,17 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Whatsapp
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.whatsapp
+                                      }
+                                      else {
+                                        return "Whatsapp"
+                                      }
+                                    })()
+                                  }
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2676,7 +2736,17 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Chatbot
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.chatbot
+                                      }
+                                      else {
+                                        return "Chatbot"
+                                      }
+                                    })()
+                                  }
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2698,7 +2768,19 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Email
+                                        
+
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2722,7 +2804,17 @@ class StoreModule extends Component {
                                 <table className="cmpaign-channel-table">
                                   <tr>
                                     <td>
-                                      Max. click allowed on any channel CTA
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.td.maxclickallowedonanychannelcta
+                                      }
+                                      else {
+                                        return "Max. click allowed on any channel CTA"
+                                      }
+                                    })()
+                                  }
                                     </td>
                                     <td>
                                       <input
@@ -2750,10 +2842,34 @@ class StoreModule extends Component {
                                         </p>
                                       )}
                                     </td>
-                                    <td>Click</td>
+                                    <td>
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.td.click
+                                      }
+                                      else {
+                                        return "Click"
+                                      }
+                                    })()
+                                  }
+
+                                    </td>
                                   </tr>
                                   <tr>
-                                    <td>Click will be enabled after</td>
+                                    <td>
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.td.clickwillbeenabledafter
+                                      }
+                                      else {
+                                        return "Click will be enabled after"
+                                      }
+                                    })()
+                                  }
+
+                                    </td>
                                     <td>
                                       <input
                                         type="text"
@@ -2791,8 +2907,31 @@ class StoreModule extends Component {
                                           this
                                         )}
                                       >
-                                        <option value="M">Min</option>
-                                        <option value="H">Hr</option>
+                                        <option value="M">
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.min
+                                      }
+                                      else {
+                                        return "Min"
+                                      }
+                                    })()
+                                  }
+                                        </option>
+                                        <option value="H">Hr
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.hr
+                                      }
+                                      else {
+                                        return "Hr"
+                                      }
+                                    })()
+                                  }
+                                        </option>
                                       </select>
                                     </td>
                                   </tr>
@@ -2804,7 +2943,17 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                  UPDATE
+                                  
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.update
+                                      }
+                                      else {
+                                        return "UPDATE"
+                                      }
+                                    })()
+                                  }
                                 </button>
                               </div>
                             </div>
@@ -2822,12 +2971,35 @@ class StoreModule extends Component {
                           <div className="row">
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
-                                <h3>APPOINTMENT CONFIGURATION</h3>
+                                <h3>
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h3.appointmentconfiguration
+                                      }
+                                      else {
+                                        return "APPOINTMENT CONFIGURATION"
+                                      }
+                                    })()
+                                  }
+
+                                </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Generate OTP
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.generateotp
+                                      }
+                                      else {
+                                        return "Generate OTP"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2850,7 +3022,19 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Card + QR Code
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.cardplusqrcode
+                                      }
+                                      else {
+                                        return "Card + QR Code"
+                                      }
+                                    })()
+                                  }
+
+
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2873,7 +3057,18 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Card + Barcode
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.cardplusbarcode
+                                      }
+                                      else {
+                                        return "Card + Barcode"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2897,7 +3092,18 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Only Card
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.onlycard
+                                      }
+                                      else {
+                                        return "Only Card"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2925,7 +3131,18 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                  UPDATE
+                                  
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.update
+                                      }
+                                      else {
+                                        return "UPDATE"
+                                      }
+                                    })()
+                                  }
+
                                 </button>
                               </div>
                             </div>
@@ -2943,12 +3160,34 @@ class StoreModule extends Component {
                           <div className="row">
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
-                                <h3>BROADCAST CONFIGURATION</h3>
+                                <h3>
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h3.broadcastconfiguration
+                                      }
+                                      else {
+                                        return "BROADCAST CONFIGURATION"
+                                      }
+                                    })()
+                                  }
+
+                                </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        SMS
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2997,7 +3236,18 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Whatsapp
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.whatsapp
+                                      }
+                                      else {
+                                        return "Whatsapp"
+                                      }
+                                    })()
+                                  }
+
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3020,7 +3270,17 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Email
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3044,7 +3304,19 @@ class StoreModule extends Component {
                                 <table className="cmpaign-channel-table">
                                   <tr>
                                     <td>
-                                      Max. click allowed on any channel CTA
+                                      
+
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.td.maxclickallowedonanychannelcta
+                                      }
+                                      else {
+                                        return "Max. click allowed on any channel CTA"
+                                      }
+                                    })()
+                                  }
+
                                     </td>
                                     <td>
                                       <input
@@ -3072,10 +3344,34 @@ class StoreModule extends Component {
                                         </p>
                                       )}
                                     </td>
-                                    <td>Click</td>
+                                    <td>
+
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.td.click
+                                      }
+                                      else {
+                                        return "Click"
+                                      }
+                                    })()
+                                  }
+                                    </td>
                                   </tr>
                                   <tr>
-                                    <td>Click will be enabled after</td>
+                                    <td>
+
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.td.clickwillbeenabledafter
+                                      }
+                                      else {
+                                        return "Click will be enabled after"
+                                      }
+                                    })()
+                                  }
+                                    </td>
                                     <td>
                                       <input
                                         type="text"
@@ -3116,8 +3412,30 @@ class StoreModule extends Component {
                                           this
                                         )}
                                       >
-                                        <option value="M">Min</option>
-                                        <option value="H">Hr</option>
+                                        <option value="M">
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.min
+                                      }
+                                      else {
+                                        return "Min"
+                                      }
+                                    })()
+                                  }
+                                        </option>
+                                        <option value="H">
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.hr
+                                      }
+                                      else {
+                                        return "Hr"
+                                      }
+                                    })()
+                                  }
+                                        </option>
                                       </select>
                                     </td>
                                   </tr>
@@ -3129,7 +3447,17 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                  UPDATE
+                                  
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.update
+                                      }
+                                      else {
+                                        return "UPDATE"
+                                      }
+                                    })()
+                                  }
                                 </button>
                               </div>
                             </div>
@@ -3181,7 +3509,18 @@ class StoreModule extends Component {
                     disabled
                     // onChange={this.setClaimTabData}
                   >
-                    <option value={0}>Select</option>
+                    <option value={0}>
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                    </option>
                     {this.state.campaignName !== null &&
                       this.state.campaignName.map((item, i) => (
                         <option key={i} value={item.campaignNameID}>
@@ -3269,12 +3608,34 @@ class StoreModule extends Component {
             >
               <div className="edtpadding">
                 <label className="popover-header-text">
-                  EDIT CAMPAIGN SETTING
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.editcampaignsetting
+                                      }
+                                      else {
+                                        return "EDIT CAMPAIGN SETTING"
+                                      }
+                                    })()
+                                  }
                 </label>
                 <div className="module-switch-cntr">
                   <div className="module-switch">
                     <div className="switch switch-primary">
-                      <label className="storeRole-name-text m-0">SMS</label>
+                      <label className="storeRole-name-text m-0">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
+                        </label>
                       <input type="checkbox" id="new1" name="allModules" />
                       <label
                         htmlFor="new1"
@@ -3285,7 +3646,17 @@ class StoreModule extends Component {
                   <div className="module-switch">
                     <div className="switch switch-primary">
                       <label className="storeRole-name-text m-0">
-                        Whatsapp
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.whatsapp
+                                      }
+                                      else {
+                                        return "Whatsapp"
+                                      }
+                                    })()
+                                  }
+
                       </label>
                       <input type="checkbox" id="new2" name="allModules" />
                       <label
@@ -3296,7 +3667,20 @@ class StoreModule extends Component {
                   </div>
                   <div className="module-switch">
                     <div className="switch switch-primary">
-                      <label className="storeRole-name-text m-0">Chatbot</label>
+                      <label className="storeRole-name-text m-0">
+                        
+                        {
+                          (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.chatbot
+                                      }
+                                      else {
+                                        return "Chatbot"
+                                      }
+                                    })()
+                                  }
+                        
+                        </label>
                       <input type="checkbox" id="new3" name="allModules" />
                       <label
                         htmlFor="new3"
@@ -3306,7 +3690,19 @@ class StoreModule extends Component {
                   </div>
                   <div className="module-switch">
                     <div className="switch switch-primary">
-                      <label className="storeRole-name-text m-0">Email</label>
+                      <label className="storeRole-name-text m-0">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
+                      
+                      </label>
                       <input type="checkbox" id="new4" name="allModules" />
                       <label
                         htmlFor="new4"

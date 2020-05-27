@@ -7,6 +7,7 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
+import { MyContext } from "./../../context";
 
 const { Option } = Select;
 
@@ -142,6 +143,7 @@ class ChatSettings extends Component {
     this.setState({ chatDisplayDurationHour: e });
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -156,11 +158,31 @@ class ChatSettings extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Chat Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.chatsetting
+                                      }
+                                      else {
+                                        return "Chat Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
         <div className="row card1">
@@ -224,9 +246,42 @@ class ChatSettings extends Component {
                         onChange={this.handleChatDisplayDurationHour.bind(this)}
                         value={this.state.chatDisplayDurationHour}
                       >
-                        <Option value="M">M</Option>
-                        <Option value="H">H</Option>
-                        <Option value="D">D</Option>
+                        <Option value="M">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.Option.m
+                                      }
+                                      else {
+                                        return "M"
+                                      }
+                                    })()
+                                  }
+                        </Option>
+                        <Option value="H">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.Option.h
+                                      }
+                                      else {
+                                        return "H"
+                                      }
+                                    })()
+                                  }
+                        </Option>
+                        <Option value="D">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.Option.d
+                                      }
+                                      else {
+                                        return "D"
+                                      }
+                                    })()
+                                  }
+                        </Option>
                       </Select>
                       <Popover
                         content={<> How many days to show chat history.</>}
@@ -247,7 +302,17 @@ class ChatSettings extends Component {
                         type="button"
                         onClick={this.handleSubmit.bind(this)}
                       >
-                        SUBMIT
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.submit
+                                      }
+                                      else {
+                                        return "SUBMIT"
+                                      }
+                                    })()
+                                  }
                       </button>
                     </div>
                   </div>
@@ -262,4 +327,5 @@ class ChatSettings extends Component {
   }
 }
 
+ChatSettings.contextType = MyContext;
 export default ChatSettings;

@@ -2600,8 +2600,18 @@ class DepartmentMaster extends Component {
                         className="sweetAlert-inCategory"
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleDepartmentAdd.bind(this)}
-                      >
-                        + ADD NEW
+                      >+
+                        {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.addnew
+                }
+                else {
+                  return "ADD NEW"
+                }
+              })()
+            }
+                         
                       </span>
                     ) : null}
                     {this.state.list1Value === "" && (
@@ -2682,7 +2692,17 @@ class DepartmentMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleFuncationAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + 
+                        {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.addnew
+                }
+                else {
+                  return "ADD NEW"
+                }
+              })()
+            }
                       </span>
                     ) : null}
                     {this.state.functionStatus === true ? (
@@ -2691,7 +2711,17 @@ class DepartmentMaster extends Component {
                         style={{ marginTop: "-53px" }}
                         onClick={this.handletoggleFunctionChange.bind(this)}
                       >
-                        + ADD NEW
+                        + 
+                        {
+              (() => {
+                if (TranslationContext !== undefined) {
+                  return TranslationContext.span.addnew
+                }
+                else {
+                  return "ADD NEW"
+                }
+              })()
+            }
                       </span>
                     ) : null}
                     {this.state.listFunction === "" && (
@@ -2950,7 +2980,18 @@ class DepartmentMaster extends Component {
                             </span>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.failed
+                                      }
+                                      else {
+                                        return "Failed"
+                                      }
+                                    })()
+                                  }
+                            </span>
                           </div>
                         </div>
                         <div>
@@ -3107,7 +3148,18 @@ class DepartmentMaster extends Component {
                       value={this.state.editDepartment.departmentID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                      </option>
                       {this.state.departmentData !== null &&
                         this.state.departmentData.map((item, j) => (
                           <option
@@ -3170,7 +3222,18 @@ class DepartmentMaster extends Component {
                       value={this.state.editDepartment.functionID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                      </option>
                       {this.state.functionData !== null &&
                         this.state.functionData.map((item, j) => (
                           <option

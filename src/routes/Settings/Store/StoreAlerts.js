@@ -2093,7 +2093,17 @@ class Alerts extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link
@@ -2103,11 +2113,31 @@ class Alerts extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Alerts
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.alerts
+                                      }
+                                      else {
+                                        return "Alerts"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -2222,7 +2252,18 @@ class Alerts extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.all
+                                      }
+                                      else {
+                                        return "ALL"
+                                      }
+                                    })()
+                                  }
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "alertTypeName"
@@ -3970,7 +4011,19 @@ class Alerts extends Component {
                 onChange={this.editAlertModalData.bind(this)}
                 disabled
               >
-                <option>Select Alert</option>
+                <option>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.options.selectalert
+                                      }
+                                      else {
+                                        return "Select Alert"
+                                      }
+                                    })()
+                                  }
+
+                </option>
                 {this.state.alertData !== null &&
                   this.state.alertData.map((item, i) => (
                     <option key={i} value={item.alertID}>
@@ -4167,8 +4220,31 @@ class Alerts extends Component {
                 onChange={this.editAlertModalData.bind(this)}
               >
                 {/* <option value="">Select</option> */}
-                <option value={"Active"}>Active</option>
-                <option value={"InActive"}>Inactive</option>
+                <option value={"Active"}>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                </option>
+                <option value={"InActive"}>
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                </option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>

@@ -1239,7 +1239,16 @@ class SlaTemplateDepartment extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link
@@ -1249,11 +1258,30 @@ class SlaTemplateDepartment extends Component {
             }}
             className="header-path"
           >
-            Store
+             {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            SLA Template-Department
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.slatemplatedepartment
+                                      }
+                                      else {
+                                        return "SLA Template-Department"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -2293,8 +2321,30 @@ class SlaTemplateDepartment extends Component {
                           value={this.state.SlaIsActive}
                           onChange={this.handleSlaIsActive}
                         >
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
+                          <option value="true">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                          </option>
+                          <option value="false">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -2756,9 +2806,44 @@ class SlaTemplateDepartment extends Component {
                           value={item.ResolveType}
                           onChange={this.handleEditSlaTargets.bind(this, i)}
                         >
-                          <option value="M">M</option>
-                          <option value="H">H</option>
-                          <option value="D">D</option>
+                          <option value="M">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.m
+                                      }
+                                      else {
+                                        return "M"
+                                      }
+                                    })()
+                                  }
+                          </option>
+                          <option value="H">
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.h
+                                      }
+                                      else {
+                                        return "H"
+                                      }
+                                    })()
+                                  }
+                          </option>
+                          <option value="D">
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.d
+                                      }
+                                      else {
+                                        return "D"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -2792,8 +2877,32 @@ class SlaTemplateDepartment extends Component {
                   }
                   onChange={this.handleEditSlaIsActive}
                 >
-                  <option value={"Active"}>Active</option>
-                  <option value={"Inactive"}>Inactive</option>
+                  <option value={"Active"}>
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                  
+                  </option>
+                  <option value={"Inactive"}>
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                  
+                  </option>
                 </select>
               </div>
             </div>

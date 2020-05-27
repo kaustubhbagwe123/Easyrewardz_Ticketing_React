@@ -1769,7 +1769,18 @@ class StoreCRMRole extends Component {
                         value={this.state.RoleisActive}
                         onChange={this.handleRoleisActive}
                       >
-                        <option value="0">select</option>
+                        <option value="0">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "select"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -2127,8 +2138,31 @@ class StoreCRMRole extends Component {
                       name="status"
                       onChange={this.handleModaleDataChange.bind(this)}
                     >
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
+                      <option value="Active">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                      </option>
+                      <option value="Inactive">
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                      </option>
                     </select>
                   </div>
                   <br />

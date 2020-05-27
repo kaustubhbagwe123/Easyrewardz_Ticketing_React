@@ -1805,7 +1805,19 @@ class Templates extends Component {
                                           }
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.cancel
+                                      }
+                                      else {
+                                        return "CANCEL"
+                                      }
+                                    })()
+                                  }
+                                          
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteTemplate.bind(
@@ -1886,7 +1898,18 @@ class Templates extends Component {
                       }
                     </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Name</label>
+                      <label className="designation-name">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.name
+                                      }
+                                      else {
+                                        return "Name"
+                                      }
+                                    })()
+                                  }
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
@@ -2094,15 +2117,49 @@ class Templates extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.status
+                                      }
+                                      else {
+                                        return "Status"
+                                      }
+                                    })()
+                                  }
+                        </label>
                         <select
                           id="inputState"
                           className="form-control dropdown-setting"
                           value={this.state.TemplateIsActive}
                           onChange={this.handleTemplateIsActive}
                         >
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
+                          <option value="true">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                          </option>
+                          <option value="false">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -2209,7 +2266,18 @@ class Templates extends Component {
                               value="0"
                               onChange={this.setPlaceholderValue.bind(this)}
                             >
-                              <option value="0">Placeholders</option>
+                              <option value="0">
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.placeholder
+                                      }
+                                      else {
+                                        return "Placeholders"
+                                      }
+                                    })()
+                                  }
+                              </option>
                               {this.state.placeholderData !== null &&
                                 this.state.placeholderData.map((item, i) => (
                                   <option key={i} value={item.mailParameterID}>
@@ -2374,8 +2442,32 @@ class Templates extends Component {
                     value={this.state.templateEdit.template_Status}
                     onChange={this.handleOnChangeEditData}
                   >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="Active">
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                    
+                    </option>
+                    <option value="Inactive">
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                    
+                    </option>
                   </select>
                 </div>
                 <br />

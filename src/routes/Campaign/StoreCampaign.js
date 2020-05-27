@@ -27,6 +27,7 @@ import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
 import ReactHtmlParser from "react-html-parser";
+import { MyContext } from "./../../context"
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -1414,6 +1415,7 @@ class StoreCampaign extends Component {
     }
   }
   render() {
+    const TranslationContext = this.context.state.translateLanguage.default
     return (
       <div className="custom-tableak">
         <div className="table-cntr store">
@@ -1426,7 +1428,19 @@ class StoreCampaign extends Component {
                 className: "camp-status-header camp-status-header-cust-name",
                 filterDropdown: (dataIndex) => (
                   <div className="cust-name-drpdwn">
-                    <label>Campaign Name</label>
+                    <label>
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.campaignname
+                                      }
+                                      else {
+                                        return "Campaign Name"
+                                      }
+                                    })()
+                                  }
+                      </label>
                     <input
                       type="text"
                       className="txt-1"
@@ -1483,7 +1497,19 @@ class StoreCampaign extends Component {
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
-                              <label className="poptitle">Chatbot Script</label>
+                              <label className="poptitle">
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.chatbotscript
+                                      }
+                                      else {
+                                        return "Chatbot Script"
+                                      }
+                                    })()
+                                  }
+                                </label>
                               <label className="channelScript">
                                 {item.chatbotScript}
                               </label>
@@ -1498,7 +1524,17 @@ class StoreCampaign extends Component {
                             src={ChatbotS}
                             alt="Chatbot Icon"
                           />
-                          Chatbot Script
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.chatbotscript
+                                      }
+                                      else {
+                                        return "Chatbot Script"
+                                      }
+                                    })()
+                                  }
                         </a>
                       </Popover>
                       <Popover
@@ -1506,7 +1542,18 @@ class StoreCampaign extends Component {
                         content={
                           <div className="insertpop1">
                             <div className="dash-creation-popup custompop">
-                              <label className="poptitle">SMS Script</label>
+                              <label className="poptitle">
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.smsscript
+                                      }
+                                      else {
+                                        return "SMS Script"
+                                      }
+                                    })()
+                                  }
+                                </label>
                               <label className="channelScript">
                                 {item.smsScript}
                               </label>
@@ -1521,7 +1568,17 @@ class StoreCampaign extends Component {
                             src={Smsicon}
                             alt="Chatbot Icon"
                           />
-                          SMS Script
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.smsscript
+                                      }
+                                      else {
+                                        return "SMS Script"
+                                      }
+                                    })()
+                                  }
                         </a>
                       </Popover>
                     </div>
@@ -1551,7 +1608,19 @@ class StoreCampaign extends Component {
                             name="CampallStatus"
                           />
                           <label htmlFor="Campall-status">
-                            <span className="ch1-text">All</span>
+                            <span className="ch1-text">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                            
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -1566,7 +1635,18 @@ class StoreCampaign extends Component {
                             attrIds={100}
                           />
                           <label htmlFor="New100">
-                            <span className="ch1-text">New</span>
+                            <span className="ch1-text">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.new
+                                      }
+                                      else {
+                                        return "New"
+                                      }
+                                    })()
+                                  }
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -1581,7 +1661,18 @@ class StoreCampaign extends Component {
                             attrIds={101}
                           />
                           <label htmlFor="Inproress101">
-                            <span className="ch1-text">InProgress</span>
+                            <span className="ch1-text">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.inprogress
+                                      }
+                                      else {
+                                        return "InProgress"
+                                      }
+                                    })()
+                                  }
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -1596,7 +1687,18 @@ class StoreCampaign extends Component {
                             attrIds={102}
                           />
                           <label htmlFor="Close102">
-                            <span className="ch1-text">Close</span>
+                            <span className="ch1-text">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.close
+                                      }
+                                      else {
+                                        return "Close"
+                                      }
+                                    })()
+                                  }
+                            </span>
                           </label>
                         </li>
                       </ul>
@@ -1621,12 +1723,47 @@ class StoreCampaign extends Component {
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                            Recent Campaigns
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.recentcampaigns
+                                      }
+                                      else {
+                                        return "Recent Campaigns"
+                                      }
+                                    })()
+                                  }
+
                           </label>
                           <div className="broembox clearfix">
                             <p>
-                              <label>Email</label>
-                              <span>Executed Date: 24 Aug 2019</span>
+                              <label>
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
+
+                              </label>
+                              <span>
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.executedatetwentyfourauguastnineteen
+                                      }
+                                      else {
+                                        return "Executed Date: 24 Aug 2019"
+                                      }
+                                    })()
+                                  }
+                                </span>
                             </p>
                             <img
                               src={PlusIcon}
@@ -1635,10 +1772,34 @@ class StoreCampaign extends Component {
                             />
                           </div>
                           <label className="broadcasttitle">
-                            Broadcast Campaign to Customers
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.broadcastcampaigntocustomers
+                                      }
+                                      else {
+                                        return "Broadcast Campaign to Customers"
+                                      }
+                                    })()
+                                  }
+
+
                           </label>
                           <label className="broadcastsubtitle">
-                            Choose Channel
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.choosechannel
+                                      }
+                                      else {
+                                        return "Choose Channel"
+                                      }
+                                    })()
+                                  }
+
+
                           </label>
                           <div>
                             <Radio.Group
@@ -1646,18 +1807,59 @@ class StoreCampaign extends Component {
                               value={this.state.broadcastChannel}
                             >
                               <Radio className="broadChannel" value={1}>
-                                Email
+                              
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.radio.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
                               </Radio>
                               <Radio className="broadChannel" value={2}>
-                                SMS
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.radio.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
                               </Radio>
                               <Radio className="broadChannel" value={3}>
-                                Whatsapp
+                                
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.radio.whatsapp
+                                      }
+                                      else {
+                                        return "Whatsapp"
+                                      }
+                                    })()
+                                  }
                               </Radio>
                             </Radio.Group>
                           </div>
                           <button type="button" className="executebtn">
-                            Execute
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.execute
+                                      }
+                                      else {
+                                        return "Execute"
+                                      }
+                                    })()
+                                  }
                           </button>
                         </div>
                       }
@@ -1693,7 +1895,19 @@ class StoreCampaign extends Component {
                         dataIndex: "id",
                         filterDropdown: (dataIndex) => (
                           <div className="cust-name-drpdwn">
-                            <label>Customer Number</label>
+                            <label>
+                              
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.customernumber
+                                      }
+                                      else {
+                                        return "Customer Number"
+                                      }
+                                    })()
+                                  }
+                            </label>
                             <input
                               type="text"
                               className="txt-1"
@@ -1766,7 +1980,18 @@ class StoreCampaign extends Component {
                                   item
                                 )}
                               >
-                                <option hidden>Select Response</option>
+                                <option hidden>
+                                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectoptions
+                                      }
+                                      else {
+                                        return "Select Response"
+                                      }
+                                    })()
+                                  }
+                                </option>
                                 {item.hsCampaignResponseList !== null &&
                                   item.hsCampaignResponseList.map(
                                     (items, i) => (
@@ -1855,7 +2080,17 @@ class StoreCampaign extends Component {
                                 />
                                 <label htmlFor="status101">
                                   <span className="ch1-text">
-                                    Not Contacted
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.notcontacted
+                                      }
+                                      else {
+                                        return "Not Contacted"
+                                      }
+                                    })()
+                                  }
                                   </span>
                                 </label>
                               </li>
@@ -1873,7 +2108,18 @@ class StoreCampaign extends Component {
                                   attrIds={102}
                                 />
                                 <label htmlFor="status102">
-                                  <span className="ch1-text">Follow Up</span>
+                                  <span className="ch1-text">
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.followup
+                                      }
+                                      else {
+                                        return "Follow Up"
+                                      }
+                                    })()
+                                  }
+                                  </span>
                                 </label>
                               </li>
                               <li>
@@ -1890,7 +2136,18 @@ class StoreCampaign extends Component {
                                   attrIds={103}
                                 />
                                 <label htmlFor="status103">
-                                  <span className="ch1-text">Converted</span>
+                                  <span className="ch1-text">
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.converted
+                                      }
+                                      else {
+                                        return "Converted"
+                                      }
+                                    })()
+                                  }
+                                  </span>
                                 </label>
                               </li>
                               <li>
@@ -1907,7 +2164,19 @@ class StoreCampaign extends Component {
                                   attrIds={104}
                                 />
                                 <label htmlFor="status104">
-                                  <span className="ch1-text">Conversation</span>
+                                  <span className="ch1-text">
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.conversation
+                                      }
+                                      else {
+                                        return "Conversation"
+                                      }
+                                    })()
+                                  }
+                                    </span>
                                 </label>
                               </li>
                             </ul>
@@ -2002,7 +2271,18 @@ class StoreCampaign extends Component {
                                       item.campaignScriptID
                                     )}
                                   >
-                                    Update
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.update
+                                      }
+                                      else {
+                                        return "Update"
+                                      }
+                                    })()
+                                  }
+
                                   </button>
                                   <button
                                     className="raisedticket-Btn"
@@ -2015,7 +2295,17 @@ class StoreCampaign extends Component {
                                     // )}
                                   >
                                     <label className="raise-ticketLbl">
-                                      Raise Ticket
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.raisedticket
+                                      }
+                                      else {
+                                        return "Raise Ticket"
+                                      }
+                                    })()
+                                  }
                                     </label>
                                   </button>
                                 </div>
@@ -2032,7 +2322,20 @@ class StoreCampaign extends Component {
                             <tbody>
                               <tr>
                                 <td>
-                                  <label>Customer Name</label>
+                                  <label>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.customername
+                                      }
+                                      else {
+                                        return "Customer Name"
+                                      }
+                                    })()
+                                  }
+                              
+
+                                  </label>
                                 </td>
                                 <td>
                                   <label className="cust-name">
@@ -2051,7 +2354,20 @@ class StoreCampaign extends Component {
                               </tr>
                               <tr>
                                 <td>
-                                  <label>Date</label>
+                                  <label>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.date
+                                      }
+                                      else {
+                                        return "Date"
+                                      }
+                                    })()
+                                  }
+                              
+
+                                  </label>
                                 </td>
                                 <td>
                                   <label>{row.campaignDate}</label>
@@ -2060,7 +2376,19 @@ class StoreCampaign extends Component {
                               </tr>
                               <tr>
                                 <td>
-                                  <label>Response</label>
+                                  <label>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.response
+                                      }
+                                      else {
+                                        return "Response"
+                                      }
+                                    })()
+                                  }
+
+                                  </label>
                                 </td>
                                 <td>
                                   <select
@@ -2072,7 +2400,19 @@ class StoreCampaign extends Component {
                                       row
                                     )}
                                   >
-                                    <option hidden>Select Response</option>
+                                    <option hidden>
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectresponse
+                                      }
+                                      else {
+                                        return "Select Response"
+                                      }
+                                    })()
+                                  }
+                                      </option>
                                     {row.hsCampaignResponseList !== null &&
                                       row.hsCampaignResponseList.map(
                                         (items, i) => (
@@ -2090,7 +2430,19 @@ class StoreCampaign extends Component {
                               </tr>
                               <tr>
                                 <td>
-                                  <label>Status</label>
+                                  <label>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.status
+                                      }
+                                      else {
+                                        return "Status"
+                                      }
+                                    })()
+                                  }
+
+                                  </label>
                                 </td>
                                 <td>
                                   <label className="table-btnlabel notConnectedBtnRed">
@@ -2101,7 +2453,19 @@ class StoreCampaign extends Component {
                               </tr>
                               <tr>
                                 <td>
-                                  <label>Call Rescheduled to</label>
+                                  <label>
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.callrescheduledto
+                                      }
+                                      else {
+                                        return "Call Rescheduled to"
+                                      }
+                                    })()
+                                  }
+                                    </label>
                                 </td>
                                 <td>
                                   <div
@@ -2169,13 +2533,35 @@ class StoreCampaign extends Component {
                                         row.campaignScriptID
                                       )}
                                     >
-                                      Update
+                                      
+                                      {
+                                        (() => {
+                                        if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.update
+                                        }
+                                         else {
+                                        return "Update"
+                                        }
+                                       })()
+                                     }
+
                                     </button>
                                     <button
                                       className="raisedticket-Btn saveLabel"
                                       style={{ display: "none" }}
                                     >
-                                      Raise Ticket
+                                      
+                                      {
+                                        (() => {
+                                        if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.raiseticket
+                                        }
+                                         else {
+                                        return "Raise Ticket"
+                                        }
+                                       })()
+                                     }
+                              
                                     </button>
                                   </div>
                                 </td>
@@ -2204,11 +2590,59 @@ class StoreCampaign extends Component {
                         value={this.state.ChildPostsPerPage}
                         onChange={this.handlePageItemchange}
                       >
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={30}>30</option>
+                        <option value={10}>
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.ten
+                                      }
+                                      else {
+                                        return "10"
+                                      }
+                                    })()
+                                  }
+                              
+                        </option>
+                        <option value={20}>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.twenty
+                                      }
+                                      else {
+                                        return "20"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value={30}>30
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.thirty
+                                      }
+                                      else {
+                                        return "30"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
-                      <p>Items per page</p>
+                      <p>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.itemperpage
+                                      }
+                                      else {
+                                        return "Items per page"
+                                      }
+                                    })()
+                                  }
+                              
+
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -2247,14 +2681,38 @@ class StoreCampaign extends Component {
               <Tab label="Chatbot Script">
                 <div className="">
                   <div class="dash-creation-popup custompop">
-                    <label class="poptitle">Chatbot Script</label>
+                    <label class="poptitle">
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.chatbotscript
+                                      }
+                                      else {
+                                        return "Chatbot Script"
+                                      }
+                                    })()
+                                  }
+                    
+                    </label>
                     <label class="channelScript">
                       {this.state.chatbotScript}
                     </label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>{this.state.campaingPeriod}</span>
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.campaignperiod
+                                      }
+                                      else {
+                                        return "Campaign Period"
+                                      }
+                                    })()
+                       }
+
+                      <span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -2262,12 +2720,34 @@ class StoreCampaign extends Component {
               <Tab label="SMS Script">
                 <div className="">
                   <div class="dash-creation-popup custompop">
-                    <label class="poptitle">SMS Script</label>
+                    <label class="poptitle">
+                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.smsscript
+                                      }
+                                      else {
+                                        return "SMS Script"
+                                      }
+                                    })()
+                                  }
+                    </label>
                     <label class="channelScript">{this.state.smsScript}</label>
                   </div>
                   <div className="camperiod">
                     <h4>
-                      Campaign Period<span>{this.state.campaingPeriod}</span>
+                     
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.campaignperiod
+                                      }
+                                      else {
+                                        return "Campaign Period"
+                                      }
+                                    })()
+                       }
+                      <span>{this.state.campaingPeriod}</span>
                     </h4>
                   </div>
                 </div>
@@ -2313,7 +2793,19 @@ class StoreCampaign extends Component {
                     <tbody>
                       <tr>
                         <td>
-                          <h4>Lifetime Value</h4>
+                          <h4>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.lifetimevalue
+                                      }
+                                      else {
+                                        return "Lifetime Value"
+                                      }
+                                    })()
+                                  }
+
+                          </h4>
                           <label>
                             {this.state.useratvdetails.lifeTimeValue !==
                             null ? (
@@ -2324,7 +2816,19 @@ class StoreCampaign extends Component {
                           </label>
                         </td>
                         <td>
-                          <h4>Visit Count</h4>
+                          <h4>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.visitcount
+                                      }
+                                      else {
+                                        return "Visit Count"
+                                      }
+                                    })()
+                                  }
+
+                          </h4>
                           <label>
                             {this.state.useratvdetails.visitCount !== null ? (
                               <>
@@ -2347,7 +2851,19 @@ class StoreCampaign extends Component {
                     <tbody>
                       <tr>
                         <td>
-                          <h4>Lifetime Value</h4>
+                          <h4>
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.lifetimevalue
+                                      }
+                                      else {
+                                        return "Lifetime Value"
+                                      }
+                                    })()
+                                  }
+
+                          </h4>
                           <label>
                             {this.state.useratvdetails.lifeTimeValue !==
                             null ? (
@@ -2358,7 +2874,19 @@ class StoreCampaign extends Component {
                           </label>
                         </td>
                         <td>
-                          <h4>Visit Count</h4>
+                          <h4>
+
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.visitcount
+                                      }
+                                      else {
+                                        return "Visit Count"
+                                      }
+                                    })()
+                                  }
+                          </h4>
                           <label>
                             {this.state.useratvdetails.visitCount !== null ? (
                               <>
@@ -2386,7 +2914,19 @@ class StoreCampaign extends Component {
                   }
                 >
                   {this.state.campaignkeyinsight.showKeyInsights && (
-                    <h4>Key Insights</h4>
+                    <h4>
+                                 {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.keyinsights
+                                      }
+                                      else {
+                                        return "Key Insights"
+                                      }
+                                    })()
+                                  }
+
+                    </h4>
                   )}
                   <p
                     id="insight-data"
@@ -2439,7 +2979,17 @@ class StoreCampaign extends Component {
                           aria-controls="recommended-tab"
                           aria-selected="true"
                         >
-                          Recommended
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.recommended
+                                      }
+                                      else {
+                                        return "Recommended"
+                                      }
+                                    })()
+                                  }
                         </a>
                       </li>
                     ) : null}
@@ -2458,7 +3008,17 @@ class StoreCampaign extends Component {
                           aria-controls="lastTransaction-tab"
                           aria-selected="false"
                         >
-                          Last Transaction
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.lasttransaction
+                                      }
+                                      else {
+                                        return "Last Transaction"
+                                      }
+                                    })()
+                                  }
                         </a>
                       </li>
                     ) : null}
@@ -2496,7 +3056,17 @@ class StoreCampaign extends Component {
                                                 <div className="productdesc">
                                                   <h4>{FullProductName}</h4>
                                                   <p>
-                                                    Product Code -
+                                                    
+                                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.productcode
+                                      }
+                                      else {
+                                        return "Product Code -"
+                                      }
+                                    })()
+                                  }
                                                     {item.itemCode}
                                                   </p>
                                                   <table>
@@ -2510,7 +3080,18 @@ class StoreCampaign extends Component {
                                                               }}
                                                             >
                                                               <label>
-                                                                Colors:
+                                                                   
+                                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.colors
+                                      }
+                                      else {
+                                        return "Colors:"
+                                      }
+                                    })()
+                                  }
+                                                               
                                                               </label>
                                                             </td>
                                                             <td>
@@ -2520,7 +3101,17 @@ class StoreCampaign extends Component {
                                                                   <li>
                                                                     <a className="colorblue">
                                                                       <span>
-                                                                        1
+                                                                        
+                                                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
                                                                       </span>
                                                                     </a>
                                                                   </li>
@@ -2531,7 +3122,17 @@ class StoreCampaign extends Component {
                                                                   <li>
                                                                     <a className="colorblack">
                                                                       <span>
-                                                                        1
+                                                                        
+                                                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
                                                                       </span>
                                                                     </a>
                                                                   </li>
@@ -2542,7 +3143,17 @@ class StoreCampaign extends Component {
                                                                   <li>
                                                                     <a className="colorgrey">
                                                                       <span>
-                                                                        1
+                                                                        
+                                                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
                                                                       </span>
                                                                     </a>
                                                                   </li>
@@ -2553,7 +3164,17 @@ class StoreCampaign extends Component {
                                                                   <li>
                                                                     <a className="colorRed">
                                                                       <span>
-                                                                        1
+                                                                        
+                                                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
                                                                       </span>
                                                                     </a>
                                                                   </li>
@@ -2563,7 +3184,17 @@ class StoreCampaign extends Component {
                                                                   <li>
                                                                     <a className="colorYellow">
                                                                       <span>
-                                                                        1
+                                                                        
+                                                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
                                                                       </span>
                                                                     </a>
                                                                   </li>
@@ -2573,7 +3204,17 @@ class StoreCampaign extends Component {
                                                                   <li>
                                                                     <a className="colorGreen">
                                                                       <span>
-                                                                        1
+                                                                        
+                                                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.one
+                                      }
+                                      else {
+                                        return "1"
+                                      }
+                                    })()
+                                  }
                                                                       </span>
                                                                     </a>
                                                                   </li>
@@ -2589,7 +3230,18 @@ class StoreCampaign extends Component {
                                                           <tr>
                                                             <td>
                                                               <label>
-                                                                Sizes:
+                                                                
+                                                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.sizes
+                                      }
+                                      else {
+                                        return "Sizes:"
+                                      }
+                                    })()
+                                  }
+                                                               
                                                               </label>
                                                             </td>
                                                             <td>
@@ -2736,13 +3388,37 @@ class StoreCampaign extends Component {
                             <tbody>
                               <tr>
                                 <td>
-                                  <h5>Bill No.</h5>
+                                  <h5>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h5.billno
+                                      }
+                                      else {
+                                        return "Bill No"
+                                      }
+                                    })()
+                                  }.
+
+                                  </h5>
                                   <label>
                                     {this.state.lasttransactiondetails.billNo}
                                   </label>
                                 </td>
                                 <td>
-                                  <h5>Amount</h5>
+                                  <h5>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h5.amount
+                                      }
+                                      else {
+                                        return "Amount"
+                                      }
+                                    })()
+                                  }
+
+                                  </h5>
                                   <label>
                                     {this.state.lasttransactiondetails.amount}
                                   </label>
@@ -2750,7 +3426,19 @@ class StoreCampaign extends Component {
                               </tr>
                               <tr>
                                 <td>
-                                  <h5>Store</h5>
+                                  <h5>
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h5.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
+                                    </h5>
                                   <label>
                                     {
                                       this.state.lasttransactiondetails
@@ -2759,7 +3447,18 @@ class StoreCampaign extends Component {
                                   </label>
                                 </td>
                                 <td>
-                                  <h5>Date</h5>
+                                  <h5>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h5.date
+                                      }
+                                      else {
+                                        return "Date"
+                                      }
+                                    })()
+                                  }
+                                  </h5>
                                   <label>
                                     {this.state.lasttransactiondetails.billDate}
                                   </label>
@@ -2774,16 +3473,51 @@ class StoreCampaign extends Component {
                                 data={this.state.lastTransactionItem}
                                 columns={[
                                   {
-                                    Header: <span>Article</span>,
+                                    Header: <span>
+                                   {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.article
+                                      }
+                                      else {
+                                        return "Article"
+                                      }
+                                    })()
+                                  }
+
+                                    </span>,
                                     accessor: "article",
                                   },
                                   {
-                                    Header: <span>Qty.</span>,
+                                    Header: <span>
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.quantity
+                                      }
+                                      else {
+                                        return "Qty"
+                                      }
+                                    })()
+                                  }.
+                                    </span>,
                                     accessor: "quantity",
                                     width: 60,
                                   },
                                   {
-                                    Header: <span>Amount</span>,
+                                    Header: <span>
+                                      
+                                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.amount
+                                      }
+                                      else {
+                                        return "Amount"
+                                      }
+                                    })()
+                                  }
+                                      </span>,
                                     accessor: "amount",
                                     width: 80,
                                   },
@@ -2798,7 +3532,17 @@ class StoreCampaign extends Component {
                         </div>
                       ) : (
                         <label className="ChecknoDataCamp">
-                          No Record Found
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.norecordfound
+                                      }
+                                      else {
+                                        return "No Record Found"
+                                      }
+                                    })()
+                                  }
                         </label>
                       )}
                     </div>
@@ -2810,7 +3554,19 @@ class StoreCampaign extends Component {
           <div className="row">
             <div className="col-12">
               <div className="sharecamp">
-                <h4>Share Campaign Via</h4>
+                <h4>
+
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.sharecampaignvia
+                                      }
+                                      else {
+                                        return "Share Campaign Via"
+                                      }
+                                    })()
+                                  }
+                </h4>
                 <ul>
                   {this.state.shareCampaignViaSettingModal.smsFlag === true ? (
                     <li
@@ -2826,7 +3582,17 @@ class StoreCampaign extends Component {
                       id={this.state.smsDisable ? "dis-sms" : ""}
                     >
                       <img className="ico" src={Sms1} alt="SMS Icon" />
-                      SMS
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.li.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.emailFlag ===
@@ -2839,7 +3605,17 @@ class StoreCampaign extends Component {
                       }
                     >
                       <img className="emailico" src={Email} alt="Email Icon" />
-                      Email
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.li.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.messengerFlag ===
@@ -2858,7 +3634,17 @@ class StoreCampaign extends Component {
                       id={this.state.msngrDisable ? "dis-msngr" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      Send Via Messenger
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.li.sendviamessage
+                                      }
+                                      else {
+                                        return "Send Via Messenger"
+                                      }
+                                    })()
+                                  }
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.botFlag === true ? (
@@ -2875,7 +3661,17 @@ class StoreCampaign extends Component {
                       id={this.state.botDisable ? "dis-bot" : ""}
                     >
                       <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
-                      Send Via Bot
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.li.sendviabot
+                                      }
+                                      else {
+                                        return "Send Via Bot"
+                                      }
+                                    })()
+                                  }
                     </li>
                   ) : null}
                 </ul>
@@ -2886,7 +3682,18 @@ class StoreCampaign extends Component {
                   onClick={this.handleShareViaModalOpen.bind(this)}
                 >
                   <img className="shareviaimg" src={Sharevia} alt="Share Via" />
-                  Share Via
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.sendvia
+                                      }
+                                      else {
+                                        return "Share Via"
+                                      }
+                                    })()
+                                  }
+
                 </label>
               </div>
             </div>
@@ -2907,8 +3714,31 @@ class StoreCampaign extends Component {
           />
           <div>
             <img className="tick" src={Tick} alt="Tick Icon" />
-            <h3>Shared Successfully!</h3>
-            <p>Your Message has been shared successfully</p>
+            <h3>
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h3.sharedsuccessfully
+                                      }
+                                      else {
+                                        return "Shared Successfully"
+                                      }
+                                    })()
+                                  }!
+            </h3>
+            <p>
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.yourmessagehasbeensharedsuccessfully
+                                      }
+                                      else {
+                                        return "Your Message has been shared successfully"
+                                      }
+                                    })()
+                                  }
+
+            </p>
           </div>
         </Modal>
         <Modal
@@ -2925,31 +3755,117 @@ class StoreCampaign extends Component {
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
           <div className="general-popover popover-body broadcastpop">
-            <label className="broadcasttitle">Recent Campaigns</label>
+            <label className="broadcasttitle">
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.recentcampaigns
+                                      }
+                                      else {
+                                        return "Recent Campaigns"
+                                      }
+                                    })()
+                                  }
+            </label>
             <div className="broembox clearfix">
               <p>
-                <label>Email</label>
-                <span>Executed Date: 24 Aug 2019</span>
+                <label>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
+                </label>
+                <span>
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.executedatetwentyfourauguastnineteen
+                                      }
+                                      else {
+                                        return "Executed Date: 24 Aug 2019"
+                                      }
+                                    })()
+                                  }
+                  </span>
               </p>
               <img src={PlusIcon} alt="plus-icone" className="plusico" />
             </div>
             <label className="broadcasttitle">
-              Broadcast Campaign to Customers
+              
+              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.broadcastcampaigntocustomers
+                                      }
+                                      else {
+                                        return "Broadcast Campaign to Customers"
+                                      }
+                                    })()
+                                  }
             </label>
-            <label className="broadcastsubtitle">Choose Channel</label>
+            <label className="broadcastsubtitle">
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.choosechannel
+                                      }
+                                      else {
+                                        return "Choose Channel"
+                                      }
+                                    })()
+                                  }
+            
+            </label>
             <div>
               <Radio.Group
                 onChange={this.handleBroadcastChange}
                 value={this.state.broadcastChannel}
               >
                 <Radio className="broadChannel" value={1}>
-                  Email
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.radio.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
                 </Radio>
                 <Radio className="broadChannel" value={2}>
-                  SMS
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.radio.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
                 </Radio>
                 <Radio className="broadChannel" value={3}>
-                  Whatsapp
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.radio.whatsapp
+                                      }
+                                      else {
+                                        return "Whatsapp"
+                                      }
+                                    })()
+                                  }
                 </Radio>
               </Radio.Group>
             </div>
@@ -2970,7 +3886,19 @@ class StoreCampaign extends Component {
             onClick={this.handleShareViaModalClose.bind(this)}
           />
           <div>
-            <h4>Choose Channel</h4>
+            <h4>
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.h4.choosechannel
+                                      }
+                                      else {
+                                        return "Choose Channel"
+                                      }
+                                    })()
+                                  }
+                              
+            </h4>
             <table className="w-100">
               <tbody>
                 <tr>
@@ -3001,7 +3929,18 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelMessanger === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Send Via Messenger
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.div.sendviamessage
+                                      }
+                                      else {
+                                        return "Send Via Messenger"
+                                      }
+                                    })()
+                                  }
+                              
                         </div>
                       </a>
                     </td>
@@ -3031,7 +3970,18 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelBot === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Send Via Bot
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.div.sendviabot
+                                      }
+                                      else {
+                                        return "Send Via Bot"
+                                      }
+                                    })()
+                                  }
+                              
                         </div>
                       </a>
                     </td>
@@ -3059,7 +4009,18 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelSMS === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          SMS
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.div.sms
+                                      }
+                                      else {
+                                        return "SMS"
+                                      }
+                                    })()
+                                  }
+                              
                         </div>
                       </a>
                     </td>
@@ -3086,7 +4047,18 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelEmail === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Email
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.div.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
+                              
                         </div>
                       </a>
                     </td>
@@ -3100,7 +4072,17 @@ class StoreCampaign extends Component {
                 onClick={this.handleShareNowOpenModal.bind(this)}
                 id={this.state.shareDisable ? "dis-share" : ""}
               >
-                Share Now
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.sharednow
+                                      }
+                                      else {
+                                        return "Share Now"
+                                      }
+                                    })()
+                                  }
               </label>
             </div>
           </div>
@@ -3121,14 +4103,52 @@ class StoreCampaign extends Component {
           />
           <div className="raise-ticket-popup">
             <div className="d-flex justify-content-between mb-2">
-              <p className="blak-clr font-weight-bold m-0">Customer Details</p>
+              <p className="blak-clr font-weight-bold m-0">
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.customerdetails
+                                      }
+                                      else {
+                                        return "Customer Details"
+                                      }
+                                    })()
+                                  }
+                              
+                </p>
               <p className="m-0">
-                Source:<span>Store</span>
+                
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.source
+                                      }
+                                      else {
+                                        return "Source"
+                                      }
+                                    })()
+                                  }:
+                              
+                <span>Store</span>
               </p>
             </div>
             <div className="row">
               <div className="col-md-4 mb-3">
-                <label>Name</label>
+                <label>
+
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.name
+                                      }
+                                      else {
+                                        return "Name"
+                                      }
+                                    })()
+                                  }
+                              
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3144,7 +4164,18 @@ class StoreCampaign extends Component {
                 )}
               </div>
               <div className="col-md-4 mb-3">
-                <label>Mobile</label>
+                <label>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.mobile
+                                      }
+                                      else {
+                                        return "Mobile"
+                                      }
+                                    })()
+                                  }
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3160,7 +4191,19 @@ class StoreCampaign extends Component {
                 )}
               </div>
               <div className="col-md-4 mb-3">
-                <label>Email</label>
+                <label>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.email
+                                      }
+                                      else {
+                                        return "Email"
+                                      }
+                                    })()
+                                  }
+
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3178,7 +4221,20 @@ class StoreCampaign extends Component {
             </div>
             <div className="row">
               <div className="col-md-4 mb-3">
-                <label>Date of birth</label>
+                <label>
+                {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.dateofbirth
+                                      }
+                                      else {
+                                        return "Date of birth"
+                                      }
+                                    })()
+                                  }
+                              
+
+                </label>
                 <input
                   type="text"
                   className="mobile_no disabled-input"
@@ -3189,7 +4245,19 @@ class StoreCampaign extends Component {
                 />
 
                 <div className="col-md-4 mb-3">
-                  <label>Brand</label>
+                  <label>
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.brand
+                                      }
+                                      else {
+                                        return "Brand"
+                                      }
+                                    })()
+                                  }
+
+                  </label>
                   <select
                     name="brand"
                     value={this.state.modalData["brand"]}
@@ -3214,7 +4282,19 @@ class StoreCampaign extends Component {
                   )}
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label>Category</label>
+                  <label>
+
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.category
+                                      }
+                                      else {
+                                        return "Category"
+                                      }
+                                    })()
+                                  }
+                  </label>
                   <select
                     name="category"
                     value={this.state.modalData["category"]}
@@ -3241,7 +4321,19 @@ class StoreCampaign extends Component {
               </div>
               <div className="row">
                 <div className="col-md-4 mb-3">
-                  <label>Sub Category</label>
+                  <label>
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.subcategory
+                                      }
+                                      else {
+                                        return "Sub Category"
+                                      }
+                                    })()
+                                  }
+
+                  </label>
                   <select
                     name="subCategory"
                     value={this.state.modalData["subCategoryId"]}
@@ -3266,7 +4358,19 @@ class StoreCampaign extends Component {
                   )}
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label>Issue Type</label>
+                  <label>
+
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.issuetype
+                                      }
+                                      else {
+                                        return "Issue Type"
+                                      }
+                                    })()
+                                  }
+                  </label>
                   <select
                     name="issueType"
                     value={this.state.modalData["issueTypeId"]}
@@ -3291,7 +4395,19 @@ class StoreCampaign extends Component {
                   )}
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label>Ticket Title</label>
+                  <label>
+
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.tickettitle
+                                      }
+                                      else {
+                                        return "Ticket Title"
+                                      }
+                                    })()
+                                  }
+                  </label>
                   <input
                     type="text"
                     name="tiketTitle"
@@ -3308,7 +4424,19 @@ class StoreCampaign extends Component {
               </div>
               <div className="row">
                 <div className="col-md-12 mb-3">
-                  <label>Ticket Details</label>
+                  <label>
+
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.label.ticketdetails
+                                      }
+                                      else {
+                                        return "Ticket Details"
+                                      }
+                                    })()
+                                  }
+                  </label>
                   <textarea
                     name="tiketDetails"
                     className="textarea-store"
@@ -3328,14 +4456,35 @@ class StoreCampaign extends Component {
                   onClick={this.handleRaisedTicketModalClose.bind(this)}
                   className="blue-clr mr-4"
                 >
-                  CANCEL
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.cancel
+                                      }
+                                      else {
+                                        return "CANCEL"
+                                      }
+                                    })()
+                                  }
                 </a>
                 <button
                   className="butn"
                   type="button"
                   onClick={this.handleCreateTicket.bind(this)}
                 >
-                  CREATE TICKET
+                  
+                   
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.createticket
+                                      }
+                                      else {
+                                        return "CREATE TICKET"
+                                      }
+                                    })()
+                                  }
                 </button>
               </div>
             </div>
@@ -3346,4 +4495,5 @@ class StoreCampaign extends Component {
   }
 }
 
+StoreCampaign.contextType = MyContext;
 export default StoreCampaign;

@@ -313,12 +313,46 @@
       "options":"विकल्प",
       "createrule":"नियम बनाएं",
       "createtheme":"उन्हें बनाएँ",
-      "myhistricalchat":"मेरी ऐतिहासिक चैट"
-     
+      "myhistricalchat":"मेरी ऐतिहासिक चैट",
+      "campaignname":"अभियान का नाम",
+      "chatbotscript":"चैटबॉट स्क्रिप्ट",
+      "smsscript":"एसएमएस स्क्रिप्ट",
+      "recentcampaigns":"हालिया अभियान",
+      "broadcastcampaigntocustomers":"ग्राहकों के लिए प्रसारण अभियान",
+      "choosechannel":"चैनल चुनें",
+      "customernumber":"ग्राहक संख्या",
+      "raisedticket":"टिकट उठाएं",
+      "date":"तारीख",
+      "selectresponse":"प्रतिक्रिया का चयन करें",
+      "callrescheduledto":"को पुनर्निर्धारित कॉल करें",
+      "colors":"रंग की",
+      "sizes":"आकार",
+      "norecordfound":"कोई रिकॉर्ड नहीं मिला",
+      "sendvia":"के माध्यम से बाँटे",
+      "sharednow":"अब साझा करें",
+      "whatsapp":"व्हाट्स एप्लीकेशन",
+      "chatbot":"बॉट चैट करें",
+      "generateotp":"ओटीपी जनरेट करें",
+      "cardplusqrcode":"कार्ड + क्यूआर कोड",
+      "cardplusbarcode":"कार्ड + बारकोड",
+      "onlycard":"केवल कार्ड",
+      "editcampaignsetting":"एडिट कैम्पिंग सेटिंग",
+      "taskidslashtitle":"टास्क आईडी / शीर्षक",
+      "createdby":"के द्वारा बनाई गई",
+      "linkedticketid":"लिंक्ड टिकट आईडी",
+      "assignedto":"को सौंपना",
+      "taskwithtickets":"टिकट के साथ कार्य",
+      "taskwithclaim":"दावा के साथ कार्य",
+      "claimcreationon":"पर दावा निर्माण",
+      "claimwithtickets":"टिकट के साथ दावा",
+      "linkedtaskid":"लिंक की गई टास्क आई.डी.",
+      "campaignassignedto":"अभियान सौंपा गया",
+      "campaignenddate":"अभियान की अंतिम तिथि",
+      "campaignstatus":"अभियान की स्थिति"
    
-      
-      
-    },
+   
+  
+  },
     "text":{
       "brand": "ब्रांड :",
       "agent": "एजेंट :",
@@ -447,7 +481,20 @@
       "onehrsago":"१ घंटे पहले",
       "thirtymins":"३० मिनट",
       "onehrs":"१ घंटे",
-      "twohrs":"२ घंटे"
+      "twohrs":"२ घंटे",
+      "productcode":"उत्पाद कोड",
+      "yourmessagehasbeensharedsuccessfully":"आपका संदेश सफलतापूर्वक साझा किया गया है",
+      "areyousureyouwanttodeletethisfile":"क्या आप द्वारा इस फाइल को हटाया जाना सुनिश्चित है",
+      "createdbycolonadmin":"इनके द्वारा निर्मित: व्यवस्थापक",
+      "createddatecolontwelveMarcheighteen":"निर्मित तिथि: १२ मार्च २०१८",
+      "updatedbycolonmanager":"द्वारा अद्यतन: प्रबंधक",
+      "updateddatecolontwelveMarcheighteen":"अपडेटेड तारीख: १२ मार्च २०१८",
+      "asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority":"क प्रणाली जिसमें किसी संगठन के सदस्य हों या समाज को रिश्तेदार की हैसियत के अनुसार रैंक दिया जाता है या अधिकार।"
+      
+     
+     
+      
+      
       
     },
     "small":{
@@ -543,7 +590,13 @@
       "seven":"७",
       "eight":"८",
       "nine":"९",
-      "ten":"१०"
+      "ten":"१०",
+      "chatbotscript":"चैटबॉट स्क्रिप्ट",
+      "smsscript":"एसएमएस स्क्रिप्ट",
+      "recommended":"सिफारिश की",
+      "lasttransaction":"अंतिम लेन-देन",
+      "priority":"प्राथमिकता"
+     
       
     },
     "span":{
@@ -692,6 +745,15 @@
       "zeroseven":"०७",
       "zeroeight":"०८",
       "zeronine":"०९",
+      "one":"१",
+      "two":"२",
+      "three":"३",
+      "four":"४",
+      "five":"५",
+      "six":"६",
+      "seven":"७",
+      "eight":"८",
+      "nine":"९",
       "ten":"१०",
       "seventysix":"७६",
       "fortyfive":"४५",
@@ -709,7 +771,32 @@
       "themename":"थीम का नाम",
       "themeedit":"संपादित करें",
       "themecss":"(सीएसएस फ़ाइल केवल)",
-      "assignedto":"को सौंपना"
+      "assignedto":"को सौंपना",
+      "inprogress":"चालू",
+      "close":"बंद करे",
+      "executedatetwentyfourauguastnineteen":"निष्पादित तिथि: २४ अगस्त २०१९",
+      "notcontacted":"संपर्क नहीं किया गया",
+      "followup":"जाँच करना",
+      "converted":"परिवर्तित",
+      "conversation":"बातचीत",
+      "article":"लेख",
+      "quantity":"मात्रा",
+      "srno":"अनु क्रमांक।",
+      "agentname":"एजेंट का नाम",
+      "suggestion":"सुझाव",
+      "freetext":"फ्री टेक्स्ट",
+      "active":"सक्रिय",
+      "inactive":"निष्क्रिय",
+      "schedulestatus":"अनुसूची स्थिति",
+      "address":"पता",
+      "region":"क्षेत्र",
+      "zone":"क्षेत्र",
+      "storetype":"स्टोर प्रकार",
+      "phonenumber":"फ़ोन नंबर",
+      "hopethishelppleaserateus":"आशा है कि यह मदद, हमें दर कृपया",
+      "hopethishelppleaserateusonenewcomment":"इस मदद की उम्मीद है, कृपया हमें दर (१ नई टिप्पणी)"
+     
+      
 
     },
     "div": {
@@ -728,7 +815,11 @@
       "ticketsource":"टिकट स्रोत",
       "status":"स्थिति",
       "view":"राय देखना",
-      "ordropfilehere":"या फ़ाइल यहाँ छोड़ें"
+      "ordropfilehere":"या फ़ाइल यहाँ छोड़ें",
+      "sendviamessage":"वाया मैसेंजर भेजें",
+      "sendviabot":"वाया बॉट भेजें",
+      "sms":"एसएमएस",
+      "email":"ईमेल"
     },
     "button": {
       "logout": "लॉगआउट",
@@ -785,7 +876,13 @@
       "setpassword":"पासवर्ड सेट करें",
       "recoverpassword":"गोपनीय शब्द पुन प्राप्त करे",
       "addrole":"भूमिका जोड़ें",
-      "myhistricalchat":"मेरी ऐतिहासिक चैट"
+      "myhistricalchat":"मेरी ऐतिहासिक चैट",
+      "execute":"निष्पादित",
+      "raiseticket":"टिकट उठाएं",
+      "createticket":"टिकट बनाएँ",
+      "taskcreationon":"टास्क क्रिएशन ऑन",
+      "taskstatus":"कार्य की स्थिति",
+      "function":"समारोह"
      
      
     },
@@ -815,31 +912,51 @@
       "language": "भाषा",
       "theme": "विषय",
       "rules": "नियम",
-      "configuration": "विन्यास"
+      "configuration": "विन्यास",
+      "homeshopsettings":"घर की दुकान सेटिंग्स",
+      "chatsetting":"चैट सेटिंग्स"
     },
     "li": {
       "creationdetails": "निर्माण विवरण",
       "dashboard": "डैशबोर्ड",
       "myticket":"मेरा टिकट",
-      "knowledgebase":"ज्ञानधार"
+      "knowledgebase":"ज्ञानधार",
+      "sms":"एसएमएस",
+      "email":"ईमेल",
+      "sendviamessage":"वाया मैसेंजर भेजें",
+      "sendviabot":"वाया बॉट भेजें"
     },
     "h5": {
       "knowledgebase":"ज्ञानधार",
-      "KBtemplate":"KB टेम्पलेट"
+      "KBtemplate":"KB टेम्पलेट",
+      "billno":"बील संख्या",
+      "amount":"रकम",
+      "store":"दुकान",
+      "date":"तारीख"
     },
     "h3": {
       "bulkupload":"बल्कू अपलोड",
       "createusers":"उपयोगकर्ता बनाएँ",
       "createalerts":"अलर्ट बनाएं",
       "createdepartment":"विभाग बनाएँ",
-      "signin":"साइन इन करें"
+      "signin":"साइन इन करें",
+      "sharedsuccessfully":"सफलतापूर्वक साझा किया गया",
+      "appointmentconfiguration":"आवेदन संरचना",
+      "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
       "profiledetails":"प्रोफ़ाइल विवरण",
       "mappedcategory":"मैप की गई श्रेणी",
       "communicationmode":"संचार मोड",
-      "mappedclaimcategory":"मैप किए गए दावे श्रेणी"
+      "mappedclaimcategory":"मैप किए गए दावे श्रेणी",
+      "campaignperiod":"अभियान की अवधि",
+      "lifetimevalue":"आजीवन मूल्य",
+      "visitcount":"काउंट पर जाएं",
+      "keyinsights":"महत्वपूर्ण अंतर्दृष्टि",
+      "sharecampaignvia":"साझा करें अभियान वाया",
+      "choosechannel":"चैनल चुनें"
+
     },
     "checkbox": {
       "mon":"सोम",
@@ -887,7 +1004,12 @@
       "element":"तत्त्व",
       "language":"भाषा",
       "rules":"नियम",
-      "themes":"विषय-वस्तु"
+      "themes":"विषय-वस्तु",
+      "chatsetting":"चैट सेटिंग्स",
+      "claimscategorymaster":"दावा श्रेणी के मास्टर",
+      "homeshopsetting":"घर की दुकान की स्थापना",
+      "slatemplatedepartment":"SLA टेम्पलेट-विभाग",
+      "all":"सब"
     },
     "mybutton": {
       "edit":"संपादित करें"
@@ -903,7 +1025,8 @@
       "claimstatus":"दावा की स्थिति",
       "twohundred":"२००",
       "ninetyfive":"९५",
-      "onehundredfive":"१०५"
+      "onehundredfive":"१०५",
+      "scheduledateto":"को शेड्यूल डेट"
     },
     "option":{
       "active":"सक्रिय",
@@ -926,7 +1049,75 @@
       "claimstatus":"दावा की स्थिति",
       "taskpriority":"कार्य प्राथमिकता",
       "taskwithticket":"कार्य टिकट के साथ",
-      "taskmapped":"टास्क मैप किया गया"
-     
+      "taskmapped":"टास्क मैप किया गया",
+      "selectoptions":"प्रतिक्रिया का चयन करें",
+      "one":"१",
+      "two":"२",
+      "three":"३",
+      "four":"४",
+      "five":"५",
+      "six":"६",
+      "seven":"७",
+      "eight":"८",
+      "nine":"९",
+      "ten":"१०",
+      "twenty":"२०",
+      "m":"म",
+      "h":"एच",
+      "d":"डी",
+      "select":"चुनें",
+      "selectalert":"अलर्ट का चयन करें",
+      "selectfileformat":"फ़ाइल प्रारूप का चयन करें",
+      "min":"मिन",
+      "hr":"घंटा",
+      "sms":"एसएमएस",
+      "second":"दूसरा",
+      "fourth":"चार",
+      "selectassignedto":"असाइन का चयन करें",
+      "selectsubcategory":"उपश्रेणी का चयन करें",
+      "slatatus":"एसएलए स्थिति",
+      "taskfunction":"कार्य समारोह",
+      "onchatresolution":"चैट रिज़ॉल्यूशन पर",
+      "resolution":"संकल्प",
+      "good":"अच्छा",
+      "bad":"खराब",
+      "chatstart":"चैट प्रारंभ करें",
+      "chatend":"चैट अंत",
+      "naman":"नमन",
+      "NamanRpoint":"नमन आर।",
+      "placeholder":"प्लेसहोल्डर",
+      "selectdesignation":"पदनाम का चयन करें",
+      "selectreporteedesignation":"रिपोर्ट पदनाम का चयन करें",
+      "root":"जड़",
+      "selectreportto":"रिपोर्ट को चुनें",
+      "selectagent":"एजेंट का चयन करें"
+    },
+    "radio":{
+        "email":"ईमेल",
+        "sms":"एसएमएस",
+        "whatsapp":"व्हाट्स एप्लीकेशन"
+    },
+    "th":{
+     "priorityname":"प्राथमिकता नाम",
+     "createdby":"के द्वारा बनाई गई",
+     "createddate":"रचना तिथि",
+     "status":"स्थिति",
+     "action":"कार्य"
+    },
+    "td":{
+      "maxclickallowedonanychannelcta":"मैक्स। किसी भी चैनल CTA पर अनुमति दी गई क्लिक करें",
+      "click":"क्लिक करें",
+      "clickwillbeenabledafter":"क्लिक के बाद सक्षम हो जाएगा",
+      "high":"उच्च",
+      "admin":"व्यवस्थापक",
+      "twentythreeMaynineteen":"२३-मई -१९",
+      "active":"सक्रिय",
+      "abc":"एखसी१२३",
+      "needtochangemyshippingaddress":"मेरा शिपिंग पता बदलने की आवश्यकता है",
+      "defectivearticle":"दोषपूर्ण लेख",
+      "nraman":"एन रामपाल",
+      "twelvemarcheighty":"१२ मार्च २०१८"
+      
+
     }
   }

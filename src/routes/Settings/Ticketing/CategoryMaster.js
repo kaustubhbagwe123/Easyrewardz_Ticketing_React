@@ -2736,7 +2736,16 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              + ADD NEW
+                              +{
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                             </span>
                           </Option>
                         </Select>
@@ -2746,7 +2755,17 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleSubcategoryAdd.bind(this)}
                           >
-                            + ADD NEW
+                            + 
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                           </span>
                         ) : null}
                         {this.state.ListOfSubCate === "" && (
@@ -2822,7 +2841,16 @@ class CategoryMaster extends Component {
                             ))}
                           <Option value={NEW_ITEM}>
                             <span className="sweetAlert-inCategory">
-                              + ADD NEW
+                              +{
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                             </span>
                           </Option>
                         </Select>
@@ -2832,7 +2860,16 @@ class CategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleIssueAdd.bind(this)}
                           >
-                            + ADD NEW
+                            +{
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                           </span>
                         ) : null}
                         {this.state.ListOfIssue === "" && (
@@ -3260,7 +3297,16 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditcategoryAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                       </span>
                     ) : null}
                     {this.state.editCategory.categoryName === "" && (
@@ -3338,7 +3384,17 @@ class CategoryMaster extends Component {
                           </Option>
                         ))}
                       <Option value={NEW_ITEM}>
-                        <span className="sweetAlert-inCategory">+ ADD NEW</span>
+                        <span className="sweetAlert-inCategory">+{
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
+                        </span>
                       </Option>
                     </Select>
                     {this.state.EditshowMsgSubCategory === true ? (
@@ -3347,7 +3403,16 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditSubcategoryAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                       </span>
                     ) : null}
                     {this.state.editCategory.subCategoryName === "" && (
@@ -3439,7 +3504,16 @@ class CategoryMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleEditIssueAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.addnew
+                                      }
+                                      else {
+                                        return "ADD NEW"
+                                      }
+                                    })()
+                                  }
                       </span>
                     ) : null}
                     {this.state.editCategory.issueTypeName === "" && (
@@ -3505,8 +3579,32 @@ class CategoryMaster extends Component {
                   name="statusName"
                   onChange={this.handleModalStatusChange.bind(this)}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="Active">
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                  
+                  </option>
+                  <option value="Inactive">
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                  
+                  </option>
                 </select>
               </div>
               <br />

@@ -1032,7 +1032,18 @@ class StoreFileUploadLogs extends Component {
       <div className="mainDivPadding">
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
+
           </Link>
           <span>&gt;</span>
           <Link
@@ -1042,11 +1053,34 @@ class StoreFileUploadLogs extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
+
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            File Upload Logs
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.fileuploadlog
+                                      }
+                                      else {
+                                        return "File Upload Logs"
+                                      }
+                                    })()
+                                  }
+
           </Link>
         </div>
         <div className="position-relative d-inline-block">

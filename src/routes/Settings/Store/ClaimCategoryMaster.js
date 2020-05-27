@@ -32,6 +32,8 @@ import matchSorter from "match-sorter";
 import { MyContext } from './../../../context'
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
+
+
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -2047,7 +2049,17 @@ class ClaimCategoryMaster extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.setting
+                                      }
+                                      else {
+                                        return "Settings"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link
@@ -2057,11 +2069,31 @@ class ClaimCategoryMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.store
+                                      }
+                                      else {
+                                        return "Store"
+                                      }
+                                    })()
+                                  }
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Claim Category Master
+            
+            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.link.claimscategorymaster
+                                      }
+                                      else {
+                                        return "Claim Category Master"
+                                      }
+                                    })()
+                                  }
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -3656,8 +3688,31 @@ class ClaimCategoryMaster extends Component {
                   name="statusName"
                   onChange={this.handleModalStatusChange.bind(this)}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="Active">
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                  </option>
+                  <option value="Inactive">
+                  
+                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                  </option>
                 </select>
               </div>
               <br />

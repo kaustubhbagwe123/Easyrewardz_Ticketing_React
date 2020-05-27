@@ -3560,7 +3560,17 @@ class StoreMaster extends Component {
                             //   "Pin Code"
                             // )}
                             >
-                              Address
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.address
+                                      }
+                                      else {
+                                        return "Address"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3578,7 +3588,18 @@ class StoreMaster extends Component {
                                 "Region Name"
                               )}
                             >
-                              Region
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.region
+                                      }
+                                      else {
+                                        return "Region"
+                                      }
+                                    })()
+                                  }
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3595,7 +3616,18 @@ class StoreMaster extends Component {
                                 "Zone"
                               )}
                             >
-                              Zone
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.zone
+                                      }
+                                      else {
+                                        return "Zone"
+                                      }
+                                    })()
+                                  }
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3612,7 +3644,18 @@ class StoreMaster extends Component {
                                 "Store Type"
                               )}
                             >
-                              Store Type
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.storetype
+                                      }
+                                      else {
+                                        return "Store Type"
+                                      }
+                                    })()
+                                  }
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3629,7 +3672,17 @@ class StoreMaster extends Component {
                                 "Email ID"
                               )}
                             >
-                              Email ID
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.emailid
+                                      }
+                                      else {
+                                        return "Email ID"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3647,7 +3700,17 @@ class StoreMaster extends Component {
                                 "Phone No"
                               )}
                             >
-                              Phone No
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.phonenumber
+                                      }
+                                      else {
+                                        return "Phone No"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3665,7 +3728,18 @@ class StoreMaster extends Component {
                                 "Status"
                               )}
                             >
-                              Status
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.status
+                                      }
+                                      else {
+                                        return "Status"
+                                      }
+                                    })()
+                                  }
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3682,7 +3756,17 @@ class StoreMaster extends Component {
                             //   "Pin Code"
                             // )}
                             >
-                              Address
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.address
+                                      }
+                                      else {
+                                        return "Address"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3700,7 +3784,17 @@ class StoreMaster extends Component {
                                 "Region Name"
                               )}
                             >
-                              Region
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.region
+                                      }
+                                      else {
+                                        return "Region"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3717,7 +3811,19 @@ class StoreMaster extends Component {
                                 "Zone"
                               )}
                             >
-                              Zone
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.zone
+                                      }
+                                      else {
+                                        return "Zone"
+                                      }
+                                    })()
+                                  }
+
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3734,7 +3840,19 @@ class StoreMaster extends Component {
                                 "Store Type"
                               )}
                             >
-                              Store Type
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.storetype
+                                      }
+                                      else {
+                                        return "Store Type"
+                                      }
+                                    })()
+                                  }
+
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3751,7 +3869,17 @@ class StoreMaster extends Component {
                                 "Email ID"
                               )}
                             >
-                              Email ID
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.emailid
+                                      }
+                                      else {
+                                        return "Email ID"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3769,7 +3897,17 @@ class StoreMaster extends Component {
                                 "Phone No"
                               )}
                             >
-                              Phone No
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.phonenumber
+                                      }
+                                      else {
+                                        return "Phone No"
+                                      }
+                                    })()
+                                  }
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -3787,7 +3925,19 @@ class StoreMaster extends Component {
                                 "Status"
                               )}
                             >
-                              Status
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.status
+                                      }
+                                      else {
+                                        return "Status"
+                                      }
+                                    })()
+                                  }
+
+
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -4086,7 +4236,18 @@ class StoreMaster extends Component {
                         value={this.state.selectState}
                         onChange={this.handleStateChange}
                       >
-                        <option value={0}>Select</option>
+                        <option value={0}>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.stateData !== null &&
                           this.state.stateData.map((item, i) => (
                             <option
@@ -4120,7 +4281,19 @@ class StoreMaster extends Component {
                         value={this.state.selectCity}
                         onChange={this.handleCityChange}
                       >
-                        <option value="0">Select</option>
+                        <option value="0">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.cityData !== null &&
                           this.state.cityData.map((item, i) => (
                             <option
@@ -4222,7 +4395,18 @@ class StoreMaster extends Component {
                         value={this.state.selectRegion}
                         onChange={this.handleRegionChange}
                       >
-                        <option value="0">Select</option>
+                        <option value="0">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.regionData !== null &&
                           this.state.regionData.map((item, s) => (
                             <option key={s} value={item.regionID}>
@@ -4252,7 +4436,19 @@ class StoreMaster extends Component {
                         value={this.state.selectZone}
                         onChange={this.handleZoneChange}
                       >
-                        <option value="0">Select</option>
+                        <option value="0">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
                         {this.state.zoneData !== null &&
                           this.state.zoneData.map((item, s) => (
                             <option key={s} value={item.zoneID}>
@@ -4282,7 +4478,19 @@ class StoreMaster extends Component {
                         value={this.state.store_type}
                         onChange={this.handleStoreTypeChange}
                       >
-                        <option value="0">Select</option>
+                        <option value="0">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
                         {this.state.storeTypeData !== null &&
                           this.state.storeTypeData.map((item, t) => (
                             <option key={t} value={item.storeTypeID}>
@@ -4906,9 +5114,44 @@ class StoreMaster extends Component {
                       }
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
+                      <option value={0}>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                      
+                      </option>
+                      <option value="Active">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                      </option>
+                      <option value="Inactive">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                      
+                      </option>
                     </select>
                     {this.state.userEditData.status_ID === "0" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
@@ -4935,7 +5178,19 @@ class StoreMaster extends Component {
                       value={this.state.userEditData.region_ID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                      
+                      </option>
                       {this.state.regionData !== null &&
                         this.state.regionData.map((item, s) => (
                           <option key={s} value={item.regionID}>

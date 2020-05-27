@@ -2968,7 +2968,18 @@ class Users extends Component {
                       value={this.state.userEditData.designation_ID}
                       onChange={this.handleEditDesination.bind(this, "edit")}
                     >
-                      <option value="0">Select Designation</option>
+                      <option value="0">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectdesignation
+                                      }
+                                      else {
+                                        return "Select Designation"
+                                      }
+                                    })()
+                                  }
+                      </option>
                       {this.state.DesignationData !== null &&
                         this.state.DesignationData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -3004,10 +3015,34 @@ class Users extends Component {
                         "edit"
                       )}
                     >
-                      <option value="0">Select Reportee Designation</option>
+                      <option value="0">
+                      
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectreporteedesignation
+                                      }
+                                      else {
+                                        return "Select Reportee Designation"
+                                      }
+                                    })()
+                                  }
+                      </option>
                       {this.state.ReporteeDesignData.length === 0 &&
                         this.state.userEditData.designation_ID && (
-                          <option value="-1">Root</option>
+                          <option value="-1">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.root
+                                      }
+                                      else {
+                                        return "Root"
+                                      }
+                                    })()
+                                  }
+                          
+                          </option>
                         )}
                       {this.state.ReporteeDesignData !== null &&
                         this.state.ReporteeDesignData.map((item, i) => (
@@ -3041,10 +3076,33 @@ class Users extends Component {
                       value={this.state.userEditData.reportee_ID}
                       onChange={this.handleOnChangeEditData}
                     >
-                      <option value="0">Select Report To</option>
+                      <option value="0">
+                      {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectreportto
+                                      }
+                                      else {
+                                        return "Select Report To"
+                                      }
+                                    })()
+                                  }
+                      
+                      </option>
                       {this.state.ReporteeDesignData.length === 0 &&
                         this.state.userEditData.designation_ID && (
-                          <option value="-1">Root</option>
+                          <option value="-1">
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.root
+                                      }
+                                      else {
+                                        return "Root"
+                                      }
+                                    })()
+                                  }
+                          </option>
                         )}
                       {this.state.ReportToData !== null &&
                         this.state.ReportToData.map((item, i) => (
@@ -3264,7 +3322,19 @@ class Users extends Component {
                         value={this.state.userEditData.role_ID}
                         onChange={this.handleOnChangeEditData}
                       >
-                        <option>Select Designation</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectdesignation
+                                      }
+                                      else {
+                                        return "Select Designation"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.CRMRoleData !== null &&
                           this.state.CRMRoleData.map((item, i) => (
                             <option key={i} value={item.crmRoleID}>
@@ -3440,8 +3510,30 @@ class Users extends Component {
                         value={this.state.userEditData.is_Active}
                         onChange={this.handleOnChangeEditData}
                       >
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
+                        <option value="true">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="false">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -4506,10 +4598,35 @@ class Users extends Component {
                             "add"
                           )}
                         >
-                          <option>Select Reportee Designation</option>
+                          <option>
+
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectreporteedesignation
+                                      }
+                                      else {
+                                        return "Select Reportee Designation"
+                                      }
+                                    })()
+                                  }
+
+                          </option>
                           {this.state.ReporteeDesignData.length === 0 &&
                             this.state.selectedDesignation && (
-                              <option value="-1">Root</option>
+                              <option value="-1">
+                              
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.root
+                                      }
+                                      else {
+                                        return "Root"
+                                      }
+                                    })()
+                                  }
+                              </option>
                             )}
                           {this.state.ReporteeDesignData !== null &&
                             this.state.ReporteeDesignData.map((item, i) => (
@@ -4549,10 +4666,34 @@ class Users extends Component {
                           value={this.state.selectedReportTO}
                           onChange={this.handleOnChangeUserData}
                         >
-                          <option>Select Report To</option>
+                          <option>
+
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectreportto
+                                      }
+                                      else {
+                                        return "Select Report To"
+                                      }
+                                    })()
+                                  }
+
+                          </option>
                           {this.state.ReporteeDesignData.length === 0 &&
                             this.state.selectedDesignation && (
-                              <option value="-1">Root</option>
+                              <option value="-1">
+                               {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.root
+                                      }
+                                      else {
+                                        return "Root"
+                                      }
+                                    })()
+                                  }
+                              </option>
                             )}
                           {this.state.ReportToData !== null &&
                             this.state.ReportToData.map((item, i) => (
@@ -4990,7 +5131,19 @@ class Users extends Component {
                               value={this.state.selectedAgent}
                               onChange={this.handleOnChangeUserData}
                             >
-                              <option>Select Agent</option>
+                              <option>
+                              {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectagent
+                                      }
+                                      else {
+                                        return "Select Agent"
+                                      }
+                                    })()
+                                  }
+
+                              </option>
                               {this.state.AgentData !== null &&
                                 this.state.AgentData.map((item, i) => (
                                   <option key={i} value={item.user_ID}>
@@ -5022,8 +5175,31 @@ class Users extends Component {
                             value={this.state.selectedStatus}
                             onChange={this.handleOnChangeUserData}
                           >
-                            <option value="true">Active</option>
-                            <option value="false">Inactive</option>
+                            <option value="true">
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.active
+                                      }
+                                      else {
+                                        return "Active"
+                                      }
+                                    })()
+                                  }
+                            </option>
+                            <option value="false">
+                            
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.inactive
+                                      }
+                                      else {
+                                        return "Inactive"
+                                      }
+                                    })()
+                                  }
+                            </option>
                           </select>
                         </div>
                       </div>

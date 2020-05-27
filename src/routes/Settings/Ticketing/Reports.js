@@ -3508,9 +3508,44 @@ class Reports extends Component {
                         value={this.state.selectedVisitStore}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="all">All</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="all">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="yes">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="no">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
                       </select>
                       {this.state.selectedVisitStore === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3537,7 +3572,19 @@ class Reports extends Component {
                         value={this.state.selectedAssignedTo}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>Select Assigned To</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectassignedto
+                                      }
+                                      else {
+                                        return "Select Assigned To"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.AssignToData !== null &&
                           this.state.AssignToData.map((item, i) => (
                             <option key={i} value={item.userID}>
@@ -3633,9 +3680,45 @@ class Reports extends Component {
                         value={this.state.selectedWantVisitStore}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="all">All</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="all">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.all
+                                      }
+                                      else {
+                                        return "All"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
+                        <option value="yes">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option value="no">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                       {this.state.selectedWantVisitStore === "" && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3662,7 +3745,19 @@ class Reports extends Component {
                         value={this.state.selectedSubCategory}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>Select Subcategory</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.selectsubcategory
+                                      }
+                                      else {
+                                        return "Select Subcategory"
+                                      }
+                                    })()
+                                  }
+                        </option>
                         {this.state.SubCategoryData !== null &&
                           this.state.SubCategoryData.map((item, i) => (
                             <option key={i} value={item.subCategoryID}>
@@ -3694,7 +3789,19 @@ class Reports extends Component {
                         value={this.state.selectedSLAStatus}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="0">SLA Status</option>
+                        <option value="0">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.slatatus
+                                      }
+                                      else {
+                                        return "SLA Status"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
                         {this.state.SlaDueData !== null &&
                           this.state.SlaDueData.map((item, i) => (
                             <option key={i} value={item.slaDueID}>
@@ -3862,8 +3969,32 @@ class Reports extends Component {
                         value={this.state.selectedWithTaskAll}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.no
+                                      }
+                                      else {
+                                        return "No"
+                                      }
+                                    })()
+                                  }
+                        
+                        </option>
+                        <option value="yes">
+                        
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.yes
+                                      }
+                                      else {
+                                        return "Yes"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -3965,7 +4096,19 @@ class Reports extends Component {
                             value={this.state.selectedClaimCategory}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>Claim Category</option>
+                            <option>
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.claimcategory
+                                      }
+                                      else {
+                                        return "Claim Category"
+                                      }
+                                    })()
+                                  }
+
+                            </option>
                             {this.state.CategoryData !== null &&
                               this.state.CategoryData.map((item, i) => (
                                 <option key={i} value={item.categoryID}>
@@ -4151,7 +4294,20 @@ class Reports extends Component {
                             value={this.state.selectedFunction}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>Task Function</option>
+                            <option>
+                            {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.taskfunction
+                                      }
+                                      else {
+                                        return "Task Function"
+                                      }
+                                    })()
+                                  }
+
+
+                            </option>
                             {this.state.FunctionData !== null &&
                               this.state.FunctionData.map((item, i) => (
                                 <option key={i} value={item.functionID}>
@@ -4223,8 +4379,34 @@ class Reports extends Component {
                   }
                       </label>
                       <select>
-                        <option>On Chat Resolution</option>
-                        <option>Resolution</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.onchatresolution
+                                      }
+                                      else {
+                                        return "On Chat Resolution"
+                                      }
+                                    })()
+                                  }
+
+                        </option>
+                        <option>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.resolution
+                                      }
+                                      else {
+                                        return "Resolution"
+                                      }
+                                    })()
+                                  }
+
+
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketreport">
@@ -4241,8 +4423,32 @@ class Reports extends Component {
                   }
                       </label>
                       <select>
-                        <option>Good</option>
-                        <option>Bad</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.good
+                                      }
+                                      else {
+                                        return "Good"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.bad
+                                      }
+                                      else {
+                                        return "Bad"
+                                      }
+                                    })()
+                                  }
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -4320,8 +4526,32 @@ class Reports extends Component {
                   }
                       </label>
                       <select>
-                        <option>Chat Start</option>
-                        <option>Chat End</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.chatstart
+                                      }
+                                      else {
+                                        return "Chat Start"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.chatend
+                                      }
+                                      else {
+                                        return "Chat End"
+                                      }
+                                    })()
+                                  }
+
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketreport">
@@ -4338,8 +4568,32 @@ class Reports extends Component {
                   }
                       </label>
                       <select>
-                        <option>Naman</option>
-                        <option>Naman R.</option>
+                        <option>
+
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.naman
+                                      }
+                                      else {
+                                        return "Naman"
+                                      }
+                                    })()
+                                  }
+                        </option>
+                        <option>
+                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.NamanRpoint
+                                      }
+                                      else {
+                                        return "Naman R."
+                                      }
+                                    })()
+                                  }
+
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketreport">
@@ -5355,9 +5609,45 @@ class Reports extends Component {
                                     onChange={this.handleWeekForYear}
                                     value={this.state.selectedNoOfWeekForYear}
                                   >
-                                    <option value="0">Select</option>
-                                    <option value="2">Second</option>
-                                    <option value="4">Four</option>
+                                    <option value="0">
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.select
+                                      }
+                                      else {
+                                        return "Select"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="2">
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.second
+                                      }
+                                      else {
+                                        return "Second"
+                                      }
+                                    })()
+                                  }
+                                    </option>
+                                    <option value="4">
+                                    
+                                    {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.option.fourth
+                                      }
+                                      else {
+                                        return "Four"
+                                      }
+                                    })()
+                                  }
+                                    </option>
                                   </select>
                                 </div>
                               </div>
@@ -5527,7 +5817,18 @@ class Reports extends Component {
                             "Report Name"
                           )}
                         >
-                          Name
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.name
+                                      }
+                                      else {
+                                        return "Name"
+                                      }
+                                    })()
+                                  }
+
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -5544,7 +5845,17 @@ class Reports extends Component {
                             "Schedule Status"
                           )}
                         >
-                          Schedule Status
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.schedulestatus
+                                      }
+                                      else {
+                                        return "Schedule Status"
+                                      }
+                                    })()
+                                  }
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -5561,7 +5872,19 @@ class Reports extends Component {
                             "Created By"
                           )}
                         >
-                          Created by
+                          
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.createdby
+                                      }
+                                      else {
+                                        return "Created by"
+                                      }
+                                    })()
+                                  }
+
+
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -5579,21 +5902,69 @@ class Reports extends Component {
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Created By: {row.original.createdBy}
+                                           
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createdby
+                                      }
+                                      else {
+                                        return "Created By"
+                                      }
+                                    })()
+                                  }:
+                                          
+                                          {row.original.createdBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Created Date: {row.original.createdDate}
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.createddate
+                                      }
+                                      else {
+                                        return "Created Date"
+                                      }
+                                    })()
+                                  }:
+                                        
+                                        {row.original.createdDate}
                                       </p>
                                     </div>
                                     <div>
                                       <b>
                                         <p className="title">
-                                          Updated By: {row.original.modifiedBy}
+                                          
+                                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updatedby
+                                      }
+                                      else {
+                                        return "Updated By"
+                                      }
+                                    })()
+                                  }:
+                                          
+                                          {row.original.modifiedBy}
                                         </p>
                                       </b>
                                       <p className="sub-title">
-                                        Updated Date:{" "}
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.updateddate
+                                      }
+                                      else {
+                                        return "Updated Date"
+                                      }
+                                    })()
+                                  }:
+                                        
+                                        {" "}
                                         {row.original.modifiedDate}
                                       </p>
                                     </div>
@@ -5623,7 +5994,17 @@ class Reports extends Component {
                             "Status"
                           )}
                         >
-                          Status
+                          {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.status
+                                      }
+                                      else {
+                                        return "Status"
+                                      }
+                                    })()
+                                  }
+                          
                           <FontAwesomeIcon icon={faCaretDown} />
                         </span>
                       ),
@@ -5631,7 +6012,20 @@ class Reports extends Component {
                       accessor: "reportStatus",
                     },
                     {
-                      Header: <span>Actions</span>,
+                      Header: <span>
+                                  {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.span.actions
+                                      }
+                                      else {
+                                        return "Actions"
+                                      }
+                                    })()
+                                  }
+
+
+                      </span>,
                       accessor: "actionReport",
                       sortable: false,
                       Cell: (row) => (
@@ -5662,14 +6056,45 @@ class Reports extends Component {
                                     </div>
                                     <div>
                                       <p className="font-weight-bold blak-clr">
-                                        Delete file?
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.deletefile
+                                      }
+                                      else {
+                                        return "Delete file"
+                                      }
+                                    })()
+                                  }?
                                       </p>
                                       <p className="mt-1 fs-12">
-                                        Are you sure you want to delete this
-                                        file?
+                                        
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.p.areyousureyouwanttodeletethisfile
+                                      }
+                                      else {
+                                        return "Are you sure you want to delete this file"
+                                      }
+                                    })()
+                                  }?
                                       </p>
                                       <div className="del-can">
-                                        <a>CANCEL</a>
+                                        <a>
+                                        {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.a.cancel
+                                      }
+                                      else {
+                                        return "CANCEL"
+                                      }
+                                    })()
+                                  }
+
+                                        </a>
                                         <button
                                           className="butn"
                                           onClick={this.handleDeleteReport.bind(
@@ -5677,7 +6102,17 @@ class Reports extends Component {
                                             row.original.reportID
                                           )}
                                         >
-                                          Delete
+                                           {
+                                    (() => {
+                                      if (TranslationContext !== undefined) {
+                                        return TranslationContext.button.delete
+                                      }
+                                      else {
+                                        return "Delete"
+                                      }
+                                    })()
+                                  }
+                                          
                                         </button>
                                       </div>
                                     </div>
