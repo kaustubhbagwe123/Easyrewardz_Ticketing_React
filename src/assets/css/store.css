@@ -3415,6 +3415,7 @@ table tr th:last-child {
 .appnt-bottom-white-update .appnt-input-group label {
   font-size: 14px;
   font-weight: 400;
+  white-space: nowrap;
 }
 .people-selection span {
   background-color: #daddec;
@@ -3517,6 +3518,23 @@ table tr th:last-child {
 }
 .otp-appoint-height {
   min-height: 219px;
+}
+.add-appoint-mob {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+  background: #2561a8;
+  border-radius: 15px 15px 0 0;
+  padding: 15px;
+  display: none;
+}
+#promo-sms + label {
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 600px) {
@@ -3664,6 +3682,12 @@ table tr th:last-child {
     justify-content: space-between;
     width: 100%;
   }
+  .add-appoint-mob {
+    display: block;
+  }
+  .antd-table-appoint {
+    padding-bottom: 65px;
+  }
 
   /* ant pagination starts */
   .ant-pagination-prev .ant-pagination-item-link,
@@ -3728,6 +3752,9 @@ table tr th:last-child {
   .ant-pagination-options {
     display: inline-block !important;
   }
+  .create-appoint-popup {
+    padding: 15px !important;
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -3741,7 +3768,7 @@ table tr th:last-child {
     margin: 0 7px;
   }
 }
-@media screen and (max-width: 359px) {
+@media screen and (max-width: 360px) {
   .custom-tabcount1,
   .custom-tabcount {
     margin-right: 12px;
@@ -3749,6 +3776,21 @@ table tr th:last-child {
   .tab-count,
   .tab-count1 {
     font-size: 16px;
+  }
+  .appoint-update-det .col-md-7,
+  .appoint-update-det .col-md-5 {
+    max-width: 100%;
+    flex: 0 0 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .appnt-bottom-white-update .appnt-input-group .col-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 5px;
+  }
+  .appnt-bottom-white-update {
+    margin-top: -5px;
   }
 }
 
