@@ -2943,8 +2943,6 @@ table tr th:last-child {
   font-weight: 700;
 }
 .custom-tableak .statusBtn {
-  background-color: #00b894;
-  border: 1px solid #00b894;
   border-radius: 4px;
   width: 60px;
   height: 30px;
@@ -3547,6 +3545,11 @@ table tr th:last-child {
 .mobile-appoint-search .appoint-input {
   width: 100%;
   margin-right: 11px;
+}
+
+.custom-tableak .visitedBtn{
+  background-color: #FF9D58;
+  border: #FF9D58;
 }
 
 @media screen and (max-width: 600px) {
