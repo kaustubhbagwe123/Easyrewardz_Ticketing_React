@@ -55,7 +55,13 @@ class Appointment extends Component {
       noOfMember: "",
       appointmentID: 0,
       noOfPeople: 0,
-      statusUpdate: ""
+      statusUpdate: "",
+      appointmentDate: "",
+      timeSlot: "",
+      numberOfPeople: 0,
+      customerName: "",
+      customerNumber: "",
+      slotID: 0
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -288,13 +294,19 @@ class Appointment extends Component {
       });
   }
 
-  handleUpdateAppointment(appointmentID,status) {
+  handleUpdateAppointment(slotData, custDetails) {
     debugger;
     let self = this;
     this.setState({
       updateAppointModal: true,
-      appointmentID: appointmentID,
-      statusUpdate: status === null?"":status
+      appointmentID: custDetails.appointmentID,
+      statusUpdate: custDetails.status === null?"":custDetails.status,
+      appointmentDate: slotData.appointmentDate,
+      timeSlot: slotData.timeSlot,
+      numberOfPeople: custDetails.nOofPeople,
+      customerName: custDetails.customerName,
+      customerNumber: custDetails.customerNumber,
+      slotID: slotData.slotId
     });
     // if (
     //   this.state.status[appointmentID] !== "" &&
@@ -509,9 +521,43 @@ class Appointment extends Component {
           self.setState({
             createAppointModal: false,
           });
-          NotificationManager.success("Appointment booked successfully");
+          NotificationManager.success("Record updated successFully.");
           self.handleAppointmentGridData(self.state.tabFor);
           self.handleAppointmentCount();
+        } else {
+          NotificationManager.error(status);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleStartVisit(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/StartAppointmentVisit",
+      data: {
+        AppointmentID: this.state.appointmentID,
+        Status: 1,
+        NOofPeople: this.state.numberOfPeople,
+        SlotId: this.state.slotID,
+        Slotdate: this.state.timeSlot,
+        CustomerNumber: this.state.customerNumber
+      },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success" && data) {
+          self.setState({
+            updateAppointModal: false,
+          });
+          NotificationManager.success("Appointment booked successfully");
+          self.handleAppointmentGridData(self.state.tabFor);
         } else {
           NotificationManager.error(status);
         }
@@ -1174,7 +1220,7 @@ class Appointment extends Component {
                         {
                           title: "Actions",
                           width: "20%",
-                          render: (row, item) => {
+                          render: (item) => {
                             if (item.status === "" || item.status === null) {
                               return (
                                 <div className="d-flex">
@@ -1188,7 +1234,8 @@ class Appointment extends Component {
                                       }}
                                       onClick={this.handleUpdateAppointment.bind(
                                         this,
-                                        item.appointmentID
+                                        row,
+                                        item
                                       )}
                                     >
                                       <label className="saveLabel">
@@ -1248,14 +1295,14 @@ class Appointment extends Component {
               </div>
             </div>
             <div className="create-appnt-details">
-              <h4>Naman Rampal</h4>
+              <h4>{this.state.customerName}</h4>
               <div className="row appoint-update-det">
                 <div className="col-md-7">
                   <div className="appnt-info-cntr">
                     <div className="appnt-img-cntr">
                       <img src={WhiteCalendar} alt="calendar icon" />
                     </div>
-                    <p>Date: 11 th May 2020</p>
+                    <p>Date: {this.state.appointmentDate}</p>
                   </div>
                 </div>
                 <div className="col-md-5">
@@ -1263,7 +1310,7 @@ class Appointment extends Component {
                     <div className="appnt-img-cntr">
                       <img src={WhiteClock} alt="clock icon" />
                     </div>
-                    <p>Time: 2pm to 3pm</p>
+                    <p>Time: {this.state.timeSlot}</p>
                   </div>
                 </div>
                 <div className="col-md-7">
@@ -1271,7 +1318,7 @@ class Appointment extends Component {
                     <div className="appnt-img-cntr">
                       <img src={Calling} alt="phone icon" />
                     </div>
-                    <p>Phone: +91 9873470074</p>
+                    <p>Phone: +91 {this.state.customerNumber}</p>
                   </div>
                 </div>
                 <div className="col-md-5">
@@ -1279,7 +1326,7 @@ class Appointment extends Component {
                     <div className="appnt-img-cntr">
                       <img src={WhitePeople} alt="people icon" />
                     </div>
-                    <p>People: 02</p>
+                    <p>People: {this.state.numberOfPeople}</p>
                   </div>
                 </div>
               </div>
@@ -1288,7 +1335,7 @@ class Appointment extends Component {
           <div className="appnt-bottom-white appnt-bottom-white-update">
             <div className="appnt-input-group">
               <div className="row">
-              {this.state.statusUpdate === ""?(
+              {this.state.statusUpdate !== ""?(
                 <>
                 <div className="col-md-6">
                   <label>
@@ -1328,7 +1375,9 @@ class Appointment extends Component {
             </div>
             <div className="text-center">
               {this.state.statusUpdate === ""?(
-              <button className="appoint-butn appoint-butn-blue">
+              <button className="appoint-butn appoint-butn-blue"
+               onClick={this.handleStartVisit.bind(this)}
+              >
                 Start Visit Time
               </button>):null}
               {/* <button className="appoint-butn appoint-butn-red">
