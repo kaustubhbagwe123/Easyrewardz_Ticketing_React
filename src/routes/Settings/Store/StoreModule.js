@@ -435,6 +435,31 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
+
+  handleDeleteTimeSlot(slotId){
+    var self=this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      headers: authHeader(),
+      params:{
+        SlotID:slotId
+      }
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record Deleted Successfully.");
+          self.handleGetTimeslotGridData();
+        } else {
+          NotificationManager.error("Record Not Deleted.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   //// Handle get time slot grid data
   handleGetTimeslotGridData(){
     let self = this;
@@ -2904,7 +2929,7 @@ class StoreModule extends Component {
                           <div className="row">
                             <div className="col-md-12">
                               <ReactTable
-                                // data={this.state.campaignScriptData}
+                                data={this.state.TimeSlotGridData}
                                 columns={[
                                   {
                                     Header: "SR No",
@@ -2913,17 +2938,17 @@ class StoreModule extends Component {
                                   },
                                   {
                                     Header: "Store Code",
-                                    accessor: "campaignScriptLess",
+                                    accessor: "storeCode",
                                     sortable: false,
                                   },
                                   {
-                                    Header: "Slot",
-                                    accessor: "campaignScriptLess",
+                                    Header: "Time Slot",
+                                    accessor: "timeSlot",
                                     sortable: false,
                                   },
                                   {
                                     Header: "Order",
-                                    accessor: "campaignScriptLess",
+                                    accessor: "orderNumber",
                                     sortable: false,
                                   },
                                   {
@@ -2962,10 +2987,10 @@ class StoreModule extends Component {
                                                       </a>
                                                       <button
                                                         className="butn"
-                                                        // onClick={this.deleteCampaign.bind(
-                                                        //   this,
-                                                        //   row.original.campaignID
-                                                        // )}
+                                                        onClick={this.handleDeleteTimeSlot.bind(
+                                                          this,
+                                                          row.original.slotId
+                                                        )}
                                                       >
                                                         Delete
                                                       </button>
@@ -2995,7 +3020,7 @@ class StoreModule extends Component {
                                 ]}
                                 resizable={false}
                                 minRows={2}
-                                defaultPageSize={5}
+                                defaultPageSize={10}
                                 showPagination={true}
                               />
                             </div>
