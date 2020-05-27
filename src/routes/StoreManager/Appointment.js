@@ -121,7 +121,7 @@ class Appointment extends Component {
   handleAppointDate(date) {
     debugger;
     this.setState({
-      appointDate: date
+      appointDate: date,
     });
 
     var date = moment(date).format("YYYY-MM-DD");
@@ -366,7 +366,7 @@ class Appointment extends Component {
       method: "post",
       url: config.apiUrl + "/Appointment/GetTimeSlotDetail",
       params: {
-        AppDate: appointmentDate
+        AppDate: appointmentDate,
       },
       headers: authHeader(),
     })
@@ -490,15 +490,15 @@ class Appointment extends Component {
       url: config.apiUrl + "/Appointment/CreateAppointment",
       data: {
         AppointmentDate: moment(this.state.appointDate).format("YYYY-MM-DD"),
-	      CustomerName:this.state.custName,
-	      MobileNo:this.state.custPhoneNo,
-	      NOofPeople:parseInt(this.state.noOfMember),
-	      SlotID: this.state.timeSlotId
+        CustomerName: this.state.custName,
+        MobileNo: this.state.custPhoneNo,
+        NOofPeople: parseInt(this.state.noOfMember),
+        SlotID: this.state.timeSlotId,
       },
-      params: { 
-               IsSMS: true,
-               IsLoyalty: true
-              },
+      params: {
+        IsSMS: true,
+        IsLoyalty: true,
+      },
       headers: authHeader(),
     })
       .then(function(res) {
@@ -636,7 +636,10 @@ class Appointment extends Component {
               center
               modalId="create-appoint-popup"
               overlayId="chat-popup-overlay"
-              classNames={{ modal: "ticket-cut" }}
+              classNames={{
+                modal: "ticket-cut",
+                overlay: "create-appoint-popup",
+              }}
             >
               <div className="appnt-top-blue">
                 <div className="position-relative">
@@ -702,7 +705,7 @@ class Appointment extends Component {
                   <div className="appnt-input-group">
                     <label>Date &amp; Time</label>
                     <div className="row time-date-sep">
-                      <div className="col-md-6">
+                      <div className="col-6">
                         <DatePicker
                           selected={this.state.appointDate}
                           onChange={(date) => this.handleAppointDate(date)}
@@ -715,7 +718,7 @@ class Appointment extends Component {
                           dateFormat="dd - MM - yyyy"
                         />
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-6">
                         <select
                           className={
                             this.state.appointTime ? "" : "appoint-time"
@@ -746,7 +749,7 @@ class Appointment extends Component {
                   </div>
                   <div className="appnt-input-group">
                     <div className="row">
-                      <div className="col-md">
+                      <div className="col">
                         <label>No. of members</label>
                         <input
                           type="number"
@@ -758,7 +761,7 @@ class Appointment extends Component {
                           onChange={this.handleOnChangeData}
                         />
                       </div>
-                      <div className="col-md">
+                      <div className="col">
                         <label>Loyalty Member</label>
                         <div className="promotional-sms">
                           <input type="checkbox" id="promo-sms" />
@@ -951,266 +954,276 @@ class Appointment extends Component {
               </table>
             </div>
           </Modal>
-          <div className="table-cntr store">
-            <Table
-              className="components-table-demo-nested antd-table-campaign custom-antd-table"
-              columns={[
-                {
-                  title: "Date",
-                  dataIndex: "appointmentDate",
-                  width: "20%",
-                },
-                {
-                  title: "Time",
-                  dataIndex: "timeSlot",
-                  width: "20%",
-                },
-                {
-                  title: "Appointments",
-                  dataIndex: "nOofPeople",
-                  className: "appointment-desktop",
-                  width: "20%",
-                },
-                {
-                  title: "Appt.",
-                  dataIndex: "nOofPeople",
-                  className: "appointment-mobile",
-                },
-                {
-                  title: "Max Capacity",
-                  dataIndex: "maxCapacity",
-                  className: "appointment-desktop",
-                  width: "20%",
-                },
-                {
-                  title: "Max Cap.",
-                  dataIndex: "maxCapacity",
-                  className: "appointment-mobile",
-                },
-                {
-                  title: "Actions",
-                  // dataIndex: "orderPricePaid"
-                  width: "20%",
-                },
-              ]}
-              expandedRowRender={(row) => {
-                return (
-                  <Table
-                    dataSource={row.appointmentCustomerList}
-                    columns={[
-                      {
-                        title: "Customer Name",
-                        dataIndex: "customerName",
-                        className: "appointment-desktop",
-                        width: "20%",
-                      },
-                      {
-                        title: "Mobile No.",
-                        dataIndex: "customerNumber",
-                        className: "appointment-desktop",
-                        width: "20%",
-                      },
-                      {
-                        title: "No. of People",
-                        dataIndex: "nOofPeople",
-                        className: "appointment-desktop",
-                        width: "20%",
-                      },
-                      {
-                        title: "Customer Name",
-                        dataIndex: "customerName",
-                        className: "appointment-mobile",
-                        render: (row, item) => {
-                          return (
-                            <div>
-                              <p className="appt-cust-name">
-                                {item.customerName}
-                              </p>
-                              <p className="appt-cust-mob">
-                                {item.customerNumber}
-                              </p>
-                              <p className="appt-cust-mob">
-                                No. of People: {item.nOofPeople}
-                              </p>
-                            </div>
-                          );
+          <div className=" antd-table-appoint">
+            <div className="table-cntr store">
+              <Table
+                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                columns={[
+                  {
+                    title: "Date",
+                    dataIndex: "appointmentDate",
+                    width: "20%",
+                  },
+                  {
+                    title: "Time",
+                    dataIndex: "timeSlot",
+                    width: "20%",
+                  },
+                  {
+                    title: "Appointments",
+                    dataIndex: "nOofPeople",
+                    className: "appointment-desktop",
+                    width: "20%",
+                  },
+                  {
+                    title: "Appt.",
+                    dataIndex: "nOofPeople",
+                    className: "appointment-mobile",
+                  },
+                  {
+                    title: "Max Capacity",
+                    dataIndex: "maxCapacity",
+                    className: "appointment-desktop",
+                    width: "20%",
+                  },
+                  {
+                    title: "Max Cap.",
+                    dataIndex: "maxCapacity",
+                    className: "appointment-mobile",
+                  },
+                  {
+                    title: "Actions",
+                    // dataIndex: "orderPricePaid"
+                    width: "20%",
+                  },
+                ]}
+                expandedRowRender={(row) => {
+                  return (
+                    <Table
+                      dataSource={row.appointmentCustomerList}
+                      columns={[
+                        {
+                          title: "Customer Name",
+                          dataIndex: "customerName",
+                          className: "appointment-desktop",
+                          width: "20%",
                         },
-                      },
-                      {
-                        title: "Status",
-                        width: "20%",
-                        render: (row, item) => {
-                          if (item.status !== "" && item.status !== null) {
+                        {
+                          title: "Mobile No.",
+                          dataIndex: "customerNumber",
+                          className: "appointment-desktop",
+                          width: "20%",
+                        },
+                        {
+                          title: "No. of People",
+                          dataIndex: "nOofPeople",
+                          className: "appointment-desktop",
+                          width: "20%",
+                        },
+                        {
+                          title: "Customer Name",
+                          dataIndex: "customerName",
+                          className: "appointment-mobile",
+                          render: (row, item) => {
                             return (
-                              <div className="d-flex">
-                                <div>
-                                  <button
-                                    className="statusBtn"
-                                    type="button"
-                                    style={{ marginRight: "10px" }}
-                                    disabled
-                                  >
-                                    <label className="statusLabel">
-                                      {item.status}
-                                    </label>
-                                  </button>
+                              <div>
+                                <p className="appt-cust-name">
+                                  {item.customerName}
+                                </p>
+                                <p className="appt-cust-mob">
+                                  {item.customerNumber}
+                                </p>
+                                <p className="appt-cust-mob">
+                                  No. of People: {item.nOofPeople}
+                                </p>
+                              </div>
+                            );
+                          },
+                        },
+                        {
+                          title: "Status",
+                          width: "20%",
+                          render: (row, item) => {
+                            if (item.status !== "" && item.status !== null) {
+                              return (
+                                <div className="d-flex">
+                                  <div>
+                                    <button
+                                      className="statusBtn"
+                                      type="button"
+                                      style={{ marginRight: "10px" }}
+                                      disabled
+                                    >
+                                      <label className="statusLabel">
+                                        {item.status}
+                                      </label>
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          } else {
-                            return (
-                              <div className="appt-status">
-                                <Select
-                                  placeholder="Select Status"
-                                  onChange={(e) =>
-                                    this.handleOnChange(e, row.appointmentID)
-                                  }
-                                  dropdownClassName="appt-status-dropdown"
-                                >
-                                  <Option value="0">Cancel</Option>
-                                  <Option value="1">Visited</Option>
-                                  <Option value="2">Not Visited</Option>
-                                </Select>
-                              </div>
-                            );
-                          }
-                        },
-                        //   render: (row, item) => {
-                        //     return (
-                        //       <div className="d-flex">
-                        //         <div>
-                        //           <input
-                        //             type="radio"
-                        //             name={
-                        //               "campaign-status-" + item.campaignCustomerID
-                        //             }
-                        //             className="campaign-status-btn"
-                        //             id={"contactBtnGreen" + item.campaignCustomerID}
-                        //             onChange={this.onStatusChange.bind(
-                        //               this,
-                        //               item.campaignTypeID,
-                        //               item.campaignCustomerID
-                        //             )}
-                        //             value="100"
-                        //             checked={item.campaignStatus === 100}
-                        //           />
-                        //           <label
-                        //             className="table-btnlabel contactBtnGreen"
-                        //             htmlFor={
-                        //               "contactBtnGreen" + item.campaignCustomerID
-                        //             }
-                        //           >
-                        //             Contacted
-                        //           </label>
-                        //         </div>
-                        //         <div className="position-relative">
-                        //           {item.noOfTimesNotContacted !== 0 &&
-                        //             item.campaignStatus === 101 && (
-                        //               <div className="not-contacted-count">
-                        //                 {item.noOfTimesNotContacted}
-                        //               </div>
-                        //             )}
-                        //           <input
-                        //             type="radio"
-                        //             name={
-                        //               "campaign-status-" + item.campaignCustomerID
-                        //             }
-                        //             className="campaign-status-btn"
-                        //             id={
-                        //               "notConnectedBtnRed" + item.campaignCustomerID
-                        //             }
-                        //             onChange={this.onStatusChange.bind(
-                        //               this,
-                        //               item.campaignTypeID,
-                        //               item.campaignCustomerID
-                        //             )}
-                        //             value="101"
-                        //             checked={item.campaignStatus === 101}
-                        //           />
-                        //           <label
-                        //             className="table-btnlabel notConnectedBtnRed"
-                        //             htmlFor={
-                        //               "notConnectedBtnRed" + item.campaignCustomerID
-                        //             }
-                        //           >
-                        //             Not Contacted
-                        //           </label>
-                        //         </div>
-                        //         <div>
-                        //           <input
-                        //             type="radio"
-                        //             name={
-                        //               "campaign-status-" + item.campaignCustomerID
-                        //             }
-                        //             className="campaign-status-btn"
-                        //             id={
-                        //               "followUpBtnYellow" + item.campaignCustomerID
-                        //             }
-                        //             onChange={this.onStatusChange.bind(
-                        //               this,
-                        //               item.campaignTypeID,
-                        //               item.campaignCustomerID
-                        //             )}
-                        //             value="102"
-                        //             checked={item.campaignStatus === 102}
-                        //           />
-                        //           <label
-                        //             className="table-btnlabel followUpBtnYellow"
-                        //             htmlFor={
-                        //               "followUpBtnYellow" + item.campaignCustomerID
-                        //             }
-                        //           >
-                        //             Follow Up
-                        //           </label>
-                        //         </div>
-                        //       </div>
-                        //     );
-                        //   },
-                      },
-                      {
-                        title: "Actions",
-                        width: "20%",
-                        render: (row, item) => {
-                          if (item.status === "" || item.status === null) {
-                            return (
-                              <div className="d-flex">
-                                <div>
-                                  <button
-                                    className="saveBtn"
-                                    type="button"
-                                    style={{
-                                      minWidth: "5px",
-                                      marginRight: "10px",
-                                    }}
-                                    onClick={this.handleUpdateAppointment.bind(
-                                      this,
-                                      item.appointmentID,
-                                      item.status
-                                    )}
+                              );
+                            } else {
+                              return (
+                                <div className="appt-status">
+                                  <Select
+                                    placeholder="Select Status"
+                                    onChange={(e) =>
+                                      this.handleOnChange(e, row.appointmentID)
+                                    }
+                                    dropdownClassName="appt-status-dropdown"
                                   >
-                                    <label className="saveLabel">Update</label>
-                                  </button>
+                                    <Option value="0">Cancel</Option>
+                                    <Option value="1">Visited</Option>
+                                    <Option value="2">Not Visited</Option>
+                                  </Select>
                                 </div>
-                              </div>
-                            );
-                          }
+                              );
+                            }
+                          },
+                          //   render: (row, item) => {
+                          //     return (
+                          //       <div className="d-flex">
+                          //         <div>
+                          //           <input
+                          //             type="radio"
+                          //             name={
+                          //               "campaign-status-" + item.campaignCustomerID
+                          //             }
+                          //             className="campaign-status-btn"
+                          //             id={"contactBtnGreen" + item.campaignCustomerID}
+                          //             onChange={this.onStatusChange.bind(
+                          //               this,
+                          //               item.campaignTypeID,
+                          //               item.campaignCustomerID
+                          //             )}
+                          //             value="100"
+                          //             checked={item.campaignStatus === 100}
+                          //           />
+                          //           <label
+                          //             className="table-btnlabel contactBtnGreen"
+                          //             htmlFor={
+                          //               "contactBtnGreen" + item.campaignCustomerID
+                          //             }
+                          //           >
+                          //             Contacted
+                          //           </label>
+                          //         </div>
+                          //         <div className="position-relative">
+                          //           {item.noOfTimesNotContacted !== 0 &&
+                          //             item.campaignStatus === 101 && (
+                          //               <div className="not-contacted-count">
+                          //                 {item.noOfTimesNotContacted}
+                          //               </div>
+                          //             )}
+                          //           <input
+                          //             type="radio"
+                          //             name={
+                          //               "campaign-status-" + item.campaignCustomerID
+                          //             }
+                          //             className="campaign-status-btn"
+                          //             id={
+                          //               "notConnectedBtnRed" + item.campaignCustomerID
+                          //             }
+                          //             onChange={this.onStatusChange.bind(
+                          //               this,
+                          //               item.campaignTypeID,
+                          //               item.campaignCustomerID
+                          //             )}
+                          //             value="101"
+                          //             checked={item.campaignStatus === 101}
+                          //           />
+                          //           <label
+                          //             className="table-btnlabel notConnectedBtnRed"
+                          //             htmlFor={
+                          //               "notConnectedBtnRed" + item.campaignCustomerID
+                          //             }
+                          //           >
+                          //             Not Contacted
+                          //           </label>
+                          //         </div>
+                          //         <div>
+                          //           <input
+                          //             type="radio"
+                          //             name={
+                          //               "campaign-status-" + item.campaignCustomerID
+                          //             }
+                          //             className="campaign-status-btn"
+                          //             id={
+                          //               "followUpBtnYellow" + item.campaignCustomerID
+                          //             }
+                          //             onChange={this.onStatusChange.bind(
+                          //               this,
+                          //               item.campaignTypeID,
+                          //               item.campaignCustomerID
+                          //             )}
+                          //             value="102"
+                          //             checked={item.campaignStatus === 102}
+                          //           />
+                          //           <label
+                          //             className="table-btnlabel followUpBtnYellow"
+                          //             htmlFor={
+                          //               "followUpBtnYellow" + item.campaignCustomerID
+                          //             }
+                          //           >
+                          //             Follow Up
+                          //           </label>
+                          //         </div>
+                          //       </div>
+                          //     );
+                          //   },
                         },
-                      },
-                    ]}
-                    pagination={false}
-                  />
-                );
-              }}
-              onExpand={this.onRowExpand}
-              expandIconColumnIndex={6}
-              expandIconAsCell={false}
-              pagination={{ defaultPageSize: 10, showSizeChanger: true }}
-              showSizeChanger={true}
-              onShowSizeChange={true}
-              loading={this.state.loading}
-              dataSource={this.state.appointmentGridData}
-            />
+                        {
+                          title: "Actions",
+                          width: "20%",
+                          render: (row, item) => {
+                            if (item.status === "" || item.status === null) {
+                              return (
+                                <div className="d-flex">
+                                  <div>
+                                    <button
+                                      className="saveBtn"
+                                      type="button"
+                                      style={{
+                                        minWidth: "5px",
+                                        marginRight: "10px",
+                                      }}
+                                      onClick={this.handleUpdateAppointment.bind(
+                                        this,
+                                        item.appointmentID
+                                      )}
+                                    >
+                                      <label className="saveLabel">
+                                        Update
+                                      </label>
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            }
+                          },
+                        },
+                      ]}
+                      pagination={false}
+                    />
+                  );
+                }}
+                onExpand={this.onRowExpand}
+                expandIconColumnIndex={6}
+                expandIconAsCell={false}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                showSizeChanger={true}
+                onShowSizeChange={true}
+                loading={this.state.loading}
+                dataSource={this.state.appointmentGridData}
+              />
+            </div>
           </div>
+          <a
+            href="#!"
+            className="add-appoint-mob"
+            onClick={this.handleCreateAppointmentOpen.bind(this)}
+          >
+            Add instant appointment
+          </a>
         </div>
         {/* Update Appointment Modal */}
         <Modal
@@ -1219,6 +1232,9 @@ class Appointment extends Component {
           center
           modalId="create-appoint-popup"
           overlayId="chat-popup-overlay"
+          classNames={{
+            overlay: "create-appoint-popup",
+          }}
         >
           <div className="appnt-top-blue">
             <div className="position-relative">
