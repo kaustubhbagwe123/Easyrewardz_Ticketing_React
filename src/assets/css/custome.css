@@ -9758,6 +9758,9 @@ table tr th:last-child {
   padding-bottom: 5px;
   width: 400px;
 }
+.totalconcount-popup {
+  padding: 15px !important;
+}
 .counttab td {
   padding: 0 0 25px 0;
   text-align: center;
@@ -11421,8 +11424,12 @@ table tr th:last-child {
     width: 160px !important;
   }
   #totalconcount-popup {
-    padding: 30px 15px;
-    width: 90%;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 100%;
+  }
+  .counttab span {
+    font-size: 11px !important;
   }
   /* program code ends */
 }
