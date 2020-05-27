@@ -46,13 +46,13 @@ class Appointment extends Component {
       timeSlotData: [],
       timeSlotColor: "",
       slotColorName: "",
-      slotError:"",
+      slotError: "",
       timeSlotId: 0,
-      bookAppointment:"",
-      btnText:"generate otp",
-      isVerified:0,
-      type:"GenerateOTP",
-      noOfMember: ""
+      bookAppointment: "",
+      btnText: "generate otp",
+      isVerified: 0,
+      type: "GenerateOTP",
+      noOfMember: "",
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -81,36 +81,36 @@ class Appointment extends Component {
       searchExpand: true,
     });
     let self = this;
-    if(this.state.searchExpand === true){
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Appointment/SearchAppointment",
-      params: { 
-                searchText: this.state.searchItem, 
-                appointmentDate: this.state.date
-              },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success" && data) {
-          self.setState({
-            appointmentGridData: data,
-          });
-        } else {
-          self.setState({
-            appointmentGridData: [],
-          });
-        }
-        self.setState({
-          loading: false,
-        });
+    if (this.state.searchExpand === true) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/SearchAppointment",
+        params: {
+          searchText: this.state.searchItem,
+          appointmentDate: this.state.date,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success" && data) {
+            self.setState({
+              appointmentGridData: data,
+            });
+          } else {
+            self.setState({
+              appointmentGridData: [],
+            });
+          }
+          self.setState({
+            loading: false,
+          });
+        })
+        .catch((data) => {
+          console.log(data);
+        });
     }
   }
 
@@ -121,7 +121,7 @@ class Appointment extends Component {
     });
 
     var date = moment(date).format("YYYY-MM-DD");
-    this.handleTimeSlotDetails(date)
+    this.handleTimeSlotDetails(date);
   }
 
   handleAppointTime(e) {
@@ -131,35 +131,38 @@ class Appointment extends Component {
     var selectedSlotData = this.state.timeSlotData.filter(
       (x) => x.timeSlotId === parseInt(e.target.value)
     );
-    
-    if(selectedSlotData[0].remaining === 0){
+
+    if (selectedSlotData[0].remaining === 0) {
       slotColor = "#bd3939";
       slotColorName = "Red";
       slotError = "This slot is full.";
     }
-    if(selectedSlotData[0].remaining !== 0 && 
-      selectedSlotData[0].visitedCount >= ((1 / 2) * selectedSlotData[0].maxCapacity))
-    {
+    if (
+      selectedSlotData[0].remaining !== 0 &&
+      selectedSlotData[0].visitedCount >=
+        (1 / 2) * selectedSlotData[0].maxCapacity
+    ) {
       slotColor = "#f7b500";
       slotColorName = "Yellow";
       slotError = "";
     }
-    if(selectedSlotData[0].remaining !== 0 && 
-      selectedSlotData[0].visitedCount < ((1 / 2) * selectedSlotData[0].maxCapacity))
-    {
+    if (
+      selectedSlotData[0].remaining !== 0 &&
+      selectedSlotData[0].visitedCount <
+        (1 / 2) * selectedSlotData[0].maxCapacity
+    ) {
       slotColor = "#30ba93";
       slotColorName = "Green";
       slotError = "";
     }
-    
+
     this.setState({
       appointTime: true,
       timeSlotColor: slotColor,
       slotColorName,
       slotError,
-      timeSlotId: e.target.value===""?0:parseInt(e.target.value)
+      timeSlotId: e.target.value === "" ? 0 : parseInt(e.target.value),
     });
-    
   }
 
   handleCreateAppointmentOpen() {
@@ -213,7 +216,7 @@ class Appointment extends Component {
     }
 
     this.setState({
-      date
+      date,
     });
 
     axios({
@@ -346,9 +349,9 @@ class Appointment extends Component {
     });
   }
 
-  handleOnChangeSearch(e){
+  handleOnChangeSearch(e) {
     debugger;
-    this.setState({ searchItem: e.target.value});
+    this.setState({ searchItem: e.target.value });
   }
 
   handleTimeSlotDetails(appointmentDate) {
@@ -356,9 +359,9 @@ class Appointment extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetTimeSlotDetail",
-      params: { 
-                AppDate: appointmentDate
-              },
+      params: {
+        AppDate: appointmentDate,
+      },
       headers: authHeader(),
     })
       .then(function(res) {
@@ -387,27 +390,26 @@ class Appointment extends Component {
     debugger;
     this.setState({
       [e.target.name]: e.target.value,
-     });
+    });
   }
 
-  handleCreateAppointment(type){
-    if(type === "GenerateOTP")
-    {
+  handleCreateAppointment(type) {
+    if (type === "GenerateOTP") {
       this.handleGenerateOTP();
     }
-    if(type === "BookAppointment"){
+    if (type === "BookAppointment") {
       this.handleBookAppointment();
     }
   }
 
-  handleGenerateOTP(){
+  handleGenerateOTP() {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GenerateOTP",
-      params: { 
-                mobileNumber: this.state.custPhoneNo
-              },
+      params: {
+        mobileNumber: this.state.custPhoneNo,
+      },
       headers: authHeader(),
     })
       .then(function(res) {
@@ -416,7 +418,7 @@ class Appointment extends Component {
         let data = res.data.responseData;
         if (status === "Success" && data) {
           self.setState({
-            generateOTP: "OTP"
+            generateOTP: "OTP",
           });
         } else {
           self.setState({
@@ -429,21 +431,21 @@ class Appointment extends Component {
       });
   }
 
-  handleEditNumber(){
+  handleEditNumber() {
     this.setState({
       generateOTP: "",
     });
   }
 
-  handleSubmitOTP(){
+  handleSubmitOTP() {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/VarifyOTP",
-      params: { 
-                 otpID: 1,
-                 otp: this.state.otp
-              },
+      params: {
+        otpID: 1,
+        otp: this.state.otp,
+      },
       headers: authHeader(),
     })
       .then(function(res) {
@@ -453,14 +455,14 @@ class Appointment extends Component {
         if (status === "Success" && data) {
           self.setState({
             bookAppointment: "BookAppointment",
-            btnText:"book appointment",
+            btnText: "book appointment",
             isVerified: 1,
-            type:"BookAppointment",
-            generateOTP: ""
+            type: "BookAppointment",
+            generateOTP: "",
           });
         } else {
           self.setState({
-            bookAppointment: ""
+            bookAppointment: "",
           });
         }
       })
@@ -469,7 +471,7 @@ class Appointment extends Component {
       });
   }
 
-  handleBookAppointment(){
+  handleBookAppointment() {
     let self = this;
     axios({
       method: "post",
@@ -494,13 +496,13 @@ class Appointment extends Component {
         if (status === "Success" && data) {
           self.setState({
             bookAppointment: "BookAppointment",
-            btnText:"book appointment",
+            btnText: "book appointment",
             isVerified: 1,
-            generateOTP: ""
+            generateOTP: "",
           });
         } else {
           self.setState({
-            bookAppointment: ""
+            bookAppointment: "",
           });
         }
       })
@@ -651,32 +653,37 @@ class Appointment extends Component {
                 </div>
               </div>
               <div className="appnt-bottom-white">
-                <div className={this.state.generateOTP === "OTP"?"d-none":""}>
+                <div
+                  className={this.state.generateOTP === "OTP" ? "d-none" : ""}
+                >
                   <div className="appnt-input-group">
                     <label>Name</label>
-                    <input type="text" placeholder="Your name" 
+                    <input
+                      type="text"
+                      placeholder="Your name"
                       name="custName"
                       value={this.state.custName}
-                      onChange={this.handleOnChangeData} 
+                      onChange={this.handleOnChangeData}
                     />
                   </div>
                   <div className="appnt-input-group">
                     <div className="d-flex">
                       <label>Phone no.</label>
-                      {this.state.isVerified === 1?(
-                      <div
-                        className="number-verified"
-                      >
-                        <div className="verify-img">
-                          <img src={NumberVerified} alt="number verified" />
+                      {this.state.isVerified === 1 ? (
+                        <div className="number-verified">
+                          <div className="verify-img">
+                            <img src={NumberVerified} alt="number verified" />
+                          </div>
+                          <span>verified</span>
                         </div>
-                        <span>verified</span>
-                      </div>):null}
+                      ) : null}
                     </div>
-                    <input type="tel" placeholder="Phone No"
+                    <input
+                      type="tel"
+                      placeholder="Phone No"
                       name="custPhoneNo"
                       value={this.state.custPhoneNo}
-                      onChange={this.handleOnChangeData} 
+                      onChange={this.handleOnChangeData}
                     />
                   </div>
                   <div className="appnt-input-group">
@@ -701,23 +708,26 @@ class Appointment extends Component {
                             this.state.appointTime ? "" : "appoint-time"
                           }
                           onChange={this.handleAppointTime.bind(this)}
-                          style={{color: this.state.timeSlotColor}}
-                          value={this.state.timeSlotId}  
+                          style={{ color: this.state.timeSlotColor }}
+                          value={this.state.timeSlotId}
                         >
                           {this.state.timeSlotData !== null &&
-                          this.state.timeSlotData.map((item, i) => (
-                            <option value={item.timeSlotId}>{item.timeSlot}</option>
-                          ))}
+                            this.state.timeSlotData.map((item, i) => (
+                              <option value={item.timeSlotId}>
+                                {item.timeSlot}
+                              </option>
+                            ))}
                         </select>
-                        {this.state.slotError !== ""?(
-                        <p
+                        {this.state.slotError !== "" ? (
+                          <p
                             style={{
                               color: "red",
                               marginBottom: "0px",
                             }}
                           >
                             {this.state.slotError}
-                        </p>):null}
+                          </p>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -725,8 +735,12 @@ class Appointment extends Component {
                     <div className="row">
                       <div className="col-md">
                         <label>No. of members</label>
-                        <input type="number" placeholder="00" min="1" max="2"
-                         value={this.state.noOfMember}
+                        <input
+                          type="number"
+                          placeholder="00"
+                          min="1"
+                          max="2"
+                          value={this.state.noOfMember}
                         />
                       </div>
                       <div className="col-md">
@@ -739,10 +753,22 @@ class Appointment extends Component {
                     </div>
                   </div>
                   <div className="text-center">
-                    <button className={this.state.slotColorName==="Red"?"appoint-butn appoint-butn-grey":"appoint-butn"}
-                    disabled={this.state.slotColorName==="Red"?true:false}
-                    onClick={this.handleCreateAppointment.bind(this,this.state.type)}
-                    >{this.state.btnText}</button>{" "}
+                    <button
+                      className={
+                        this.state.slotColorName === "Red"
+                          ? "appoint-butn appoint-butn-grey"
+                          : "appoint-butn"
+                      }
+                      disabled={
+                        this.state.slotColorName === "Red" ? true : false
+                      }
+                      onClick={this.handleCreateAppointment.bind(
+                        this,
+                        this.state.type
+                      )}
+                    >
+                      {this.state.btnText}
+                    </button>{" "}
                     {/* book appointment OR generate otp */}
                     <br />
                     <a
@@ -754,10 +780,16 @@ class Appointment extends Component {
                     </a>
                   </div>
                 </div>
-                <div className={this.state.generateOTP === "OTP"?"otp-appoint":"d-none"}>
+                <div
+                  className={
+                    this.state.generateOTP === "OTP" ? "otp-appoint" : "d-none"
+                  }
+                >
                   <div className="otp-appoint-height">
                     <div className="appnt-input-group">
-                      <label>Enter 4 digit OTP send to {this.state.custPhoneNo}</label>
+                      <label>
+                        Enter 4 digit OTP send to {this.state.custPhoneNo}
+                      </label>
                       <OTPInput
                         value={this.state.otp}
                         onChange={this.setOTP.bind(this)}
@@ -770,17 +802,22 @@ class Appointment extends Component {
                         renderButton={renderButton}
                         renderTime={renderTime}
                       />
-                      <a href="#!" className="edit-num"
-                       onClick={this.handleEditNumber.bind(this)}
+                      <a
+                        href="#!"
+                        className="edit-num"
+                        onClick={this.handleEditNumber.bind(this)}
                       >
                         Edit Number
                       </a>
                     </div>
                   </div>
                   <div className="text-center">
-                    <button className="appoint-butn"
-                     onClick={this.handleSubmitOTP.bind(this)}
-                    >Submit OTP</button>
+                    <button
+                      className="appoint-butn"
+                      onClick={this.handleSubmitOTP.bind(this)}
+                    >
+                      Submit OTP
+                    </button>
                     <br />
                     <a
                       href="#!"
@@ -841,6 +878,9 @@ class Appointment extends Component {
             center
             modalId="totalconcount-popup"
             overlayId="logout-ovrly"
+            classNames={{
+              overlay: "totalconcount-popup",
+            }}
           >
             <img
               src={CancelIcon}
