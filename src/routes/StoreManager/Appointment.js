@@ -407,13 +407,13 @@ class Appointment extends Component {
   handleOnChangeData(e) {
     debugger;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
-  handleOnChangeNoOfPeople(e){
+  handleOnChangeNoOfPeople(e) {
     this.setState({
-      noOfPeople: parseInt(e.target.innerText)
+      noOfPeople: parseInt(e.target.innerText),
     });
   }
 
@@ -647,6 +647,16 @@ class Appointment extends Component {
                 {this.state.dayAfterTomorrowCount}
               </span>
             </div>
+          </div>
+          <div className="mobile-appoint-search d-none">
+            <input
+              placeholder="Search by Mobile No, Appointment ID"
+              type="text"
+              className="appoint-input"
+            />
+            <a href="#!" className="appoint-search">
+              <img src={SearchBlue} alt="search icon" />
+            </a>
           </div>
           <div className="appointment-top-right">
             <div className="butn d-flex align-items-center">
@@ -1355,15 +1365,28 @@ class Appointment extends Component {
             <div className="appnt-input-group">
               <label>No. of people entering</label>{" "}
               {/* here, entering or existing will come conditionally */}
-              <div className="people-selection"
-               onClick={this.handleOnChangeNoOfPeople} 
+              <div
+                className="people-selection"
+                onClick={this.handleOnChangeNoOfPeople}
               >
-                <span className={this.state.noOfPeople === 1?"active":""}>1</span>
-                <span className={this.state.noOfPeople === 2?"active":""}>2</span>
-                <span className={this.state.noOfPeople === 3?"active":""}>3</span>
-                <span className={this.state.noOfPeople === 4?"active":""}>4</span>
-                <span className={this.state.noOfPeople === 5?"active":""}>5</span>
-                <span className={this.state.noOfPeople === 6?"active":""}>6</span>
+                <span className={this.state.noOfPeople === 1 ? "active" : ""}>
+                  1
+                </span>
+                <span className={this.state.noOfPeople === 2 ? "active" : ""}>
+                  2
+                </span>
+                <span className={this.state.noOfPeople === 3 ? "active" : ""}>
+                  3
+                </span>
+                <span className={this.state.noOfPeople === 4 ? "active" : ""}>
+                  4
+                </span>
+                <span className={this.state.noOfPeople === 5 ? "active" : ""}>
+                  5
+                </span>
+                <span className={this.state.noOfPeople === 6 ? "active" : ""}>
+                  6
+                </span>
               </div>
             </div>
             <div className="ticket-cut">
