@@ -478,12 +478,12 @@ class Appointment extends Component {
         AppointmentDate: this.state.appointDate,
 	      CustomerName:this.state.custName,
 	      MobileNo:this.state.custPhoneNo,
-	      NOofPeople:this.state.noOfMember,
-	      TimeSlot: "10AM-11AM"
+	      NOofPeople:parseInt(this.state.noOfMember),
+	      SlotID: this.state.timeSlotId
       },
       params: { 
-                 otpID: 1,
-                 otp: this.state.otp
+               IsSMS: true,
+               IsLoyalty: true
               },
       headers: authHeader(),
     })
