@@ -24,6 +24,7 @@ import matchSorter from "match-sorter";
 // import { CSVLink } from "react-csv";
 // import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import TimeSlotdropdown from "./TimeSlotDropdown";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -90,6 +91,8 @@ class StoreModule extends Component {
       broadCastEnabledAfterValid: "",
       campProviderValidation: "",
       broadProviderValidation: "",
+      TimeSlotData: TimeSlotdropdown(),
+      TimeSlotGridData:[]
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -100,6 +103,7 @@ class StoreModule extends Component {
     this.handleEditModal = this.handleEditModal.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.handleGetTimeslotGridData= this.handleGetTimeslotGridData.bind(this);
   }
   // fileUpload = (e) => {
   //   this.setState({ fileName: e.target.files[0].name });
@@ -317,6 +321,7 @@ class StoreModule extends Component {
     this.handleCampaignChannelGridData();
     this.handleGetAppointmentConfigData();
     this.handleGetBroadCastConfigData();
+    this.handleGetTimeslotGridData();
   }
 
   setClaimTabData = (e) => {
@@ -423,6 +428,32 @@ class StoreModule extends Component {
         } else {
           self.setState({
             campaignChannelData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  //// Handle get time slot grid data
+  handleGetTimeslotGridData(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetStoreTimeSlotMasterList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            TimeSlotGridData: data,
+          });
+        } else {
+          self.setState({
+            TimeSlotGridData: [],
           });
         }
       })
@@ -1139,6 +1170,7 @@ class StoreModule extends Component {
   };
   /// handle Broadcast configuration toggle change
   handleBroadCongiFlageOnchange = (id) => {
+    debugger
     var BroadConfig = id.target.id;
     if (BroadConfig === "ckbroadSMS") {
       this.state.BroadCastConfigData.smsFlag = !this.state.BroadCastConfigData
@@ -1343,7 +1375,7 @@ class StoreModule extends Component {
             .enableClickAfterDuration,
           SmsFlag: this.state.BroadCastConfigData.smsFlag,
           EmailFlag: this.state.BroadCastConfigData.emailFlag,
-          MessengerFlag: this.state.BroadCastConfigData.whatsappFlag,
+          WhatsappFlag: this.state.BroadCastConfigData.whatsappFlag,
           ProviderName: this.state.BroadCastConfigData.providerName,
         },
       })
@@ -2788,12 +2820,12 @@ class StoreModule extends Component {
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
-                            <div className="col-md-5 m-auto">
+                            <div className="col-md-6 m-auto">
                               <div className="right-sect-div">
                                 <h3>SLOT SETTINGS</h3>
                                 <div className="cmpaign-channel-table slot-setting-options">
                                   <div>
-                                    <select name="">
+                                    <select >
                                       <option value="">Store Code</option>
                                       <option value="">Bata123</option>
                                       <option value="">Fab456</option>
@@ -2801,24 +2833,40 @@ class StoreModule extends Component {
                                   </div>
                                   <div className="slot-timings">
                                     <div className="d-flex">
-                                      <select name="" className="slot-hour">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
+                                      <select className="slot-hour">
+                                      {this.state.TimeSlotData !== null &&
+                                          this.state.TimeSlotData.map(
+                                            (item, j) => (
+                                              <option
+                                                value={item.TimeSlotId}
+                                                key={j}
+                                              >
+                                                {item.TimeSlot}
+                                              </option>
+                                            )
+                                          )}
                                       </select>
-                                      <select name="" className="slot-shift">
+                                      <select className="slot-shift">
                                         <option value="">AM</option>
                                         <option value="">PM</option>
                                       </select>
                                     </div>
                                     <span className="slot-to">TO</span>
                                     <div className="d-flex">
-                                      <select name="" className="slot-hour">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
+                                      <select  className="slot-hour">
+                                      {this.state.TimeSlotData !== null &&
+                                          this.state.TimeSlotData.map(
+                                            (item, j) => (
+                                              <option
+                                                value={item.TimeSlotId}
+                                                key={j}
+                                              >
+                                                {item.TimeSlot}
+                                              </option>
+                                            )
+                                          )}
                                       </select>
-                                      <select name="" className="slot-shift">
+                                      <select className="slot-shift">
                                         <option value="">AM</option>
                                         <option value="">PM</option>
                                       </select>
@@ -2838,6 +2886,11 @@ class StoreModule extends Component {
                                     //   this
                                     // )}
                                   />
+                                  <input
+                                    type="text"
+                                    name=""
+                                    placeholder="Max Cpty"
+                                  /> 
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"

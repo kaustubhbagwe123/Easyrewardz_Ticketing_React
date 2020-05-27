@@ -1462,9 +1462,9 @@ table tr th:last-child {
   cursor: pointer;
 }
 .antbroadcast {
-  left: 950px !important;
+  left: 890px !important;
   /* width: 330px; */
-  width: 290px;
+  width: 320px;
 }
 #customername-popup {
   border-radius: 25px;
@@ -3509,6 +3509,24 @@ table tr th:last-child {
 }
 .otp-appoint-height {
   min-height: 219px;
+}
+.broadcastpop{
+  max-height: 350px;
+  overflow: auto;
+}
+.broadcastpop::-webkit-scrollbar {
+  width: 4px;
+}
+.broadcastpop::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.broadcastpop::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.broadcastpop::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 @media screen and (max-width: 600px) {
