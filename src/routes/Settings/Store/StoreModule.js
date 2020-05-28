@@ -97,8 +97,8 @@ class StoreModule extends Component {
       selectStore: 0,
       selectTimeSlot1: 0,
       selectTimeSlot2: 0,
-      selectAmPm1: 0,
-      selectAmPm2: 0,
+      selectAmPm1: "AM",
+      selectAmPm2: "AM",
       orderNumber: "",
       maxCapacity: "",
       storeCodeValidation: "",
@@ -1484,28 +1484,41 @@ class StoreModule extends Component {
   }
 
   /// handle Timeslot add data
-  handleSubmitTimeSlotDate(){
-    debugger
+  handleSubmitTimeSlotDate() {
+    debugger;
+    var self = this;
     if (
       this.state.selectStore !== 0 &&
       this.state.orderNumber !== "" &&
       this.state.maxCapacity !== ""
     ) {
+      var slot1 = this.state.selectTimeSlot1 + this.state.selectAmPm1;
+      var slot2 = this.state.selectTimeSlot2 + this.state.selectAmPm2;
       axios({
         method: "post",
         url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
         headers: authHeader(),
         data: {
           StoreId: this.state.selectStore,
-          TimeSlot: this.state.selectTimeSlot1,
-          OrderNumber: this.state.orderNumber,
-          MaxCapacity: this.state.maxCapacity,
+          TimeSlot: slot1 + "-" + slot2,
+          OrderNumber: parseInt(this.state.orderNumber),
+          MaxCapacity: parseInt(this.state.maxCapacity),
         },
       })
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
+            self.setState({
+              selectStore: 0,
+              selectTimeSlot1: 1,
+              selectTimeSlot2: 1,
+              selectAmPm1: "AM",
+              selectAmPm2: "AM",
+              orderNumber: "",
+              maxCapacity: "",
+            });
             NotificationManager.success("Time Slot Added Successfully.");
+            self.handleGetTimeslotGridData();
           }
         })
         .catch((data) => {
@@ -3043,6 +3056,7 @@ class StoreModule extends Component {
                                     type="text"
                                     placeholder="Order no."
                                     name="orderNumber"
+                                    maxLength={3}
                                     value={this.state.orderNumber}
                                     autoComplete="off"
                                     onChange={this.handleInputOnchange}
@@ -3061,6 +3075,7 @@ class StoreModule extends Component {
                                     type="text"
                                     placeholder="Max Cpty"
                                     name="maxCapacity"
+                                    maxLength={2}
                                     autoComplete="off"
                                     value={this.state.maxCapacity}
                                     onChange={this.handleInputOnchange}
@@ -3079,7 +3094,9 @@ class StoreModule extends Component {
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
-                                  onClick={this.handleSubmitTimeSlotDate.bind(this)}
+                                  onClick={this.handleSubmitTimeSlotDate.bind(
+                                    this
+                                  )}
                                 >
                                   SUBMIT
                                 </button>
