@@ -3138,6 +3138,7 @@ table tr th:last-child {
   height: 20px;
   width: 0;
   margin-right: 0;
+  padding: 0;
 }
 .appoint-input::placeholder {
   color: #2561a8;
@@ -3565,14 +3566,14 @@ table tr th:last-child {
   margin-right: 11px;
 }
 
-.custom-tableak .visitedBtn{
-  background-color: #FF9D58;
-  border: #FF9D58;
+.custom-tableak .visitedBtn {
+  background-color: #ff9d58;
+  border: #ff9d58;
 }
 
-.custom-tableak .partialBtn{
-  background-color: #EB4D4B;
-  border: #EB4D4B;
+.custom-tableak .partialBtn {
+  background-color: #eb4d4b;
+  border: #eb4d4b;
 }
 
 .custom-tableak .endVisitBtn{
