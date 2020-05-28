@@ -55,13 +55,14 @@ class Appointment extends Component {
       noOfMember: "",
       appointmentID: 0,
       noOfPeople: 0,
-      statusUpdate: "",
+      statusUpdate: "Visit Booked",
       appointmentDate: "",
       timeSlot: "",
       numberOfPeople: 0,
       customerName: "",
       customerNumber: "",
-      slotID: 0
+      slotID: 0,
+      appointStatus: "EndVisitedTime"
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -300,7 +301,7 @@ class Appointment extends Component {
     this.setState({
       updateAppointModal: true,
       appointmentID: custDetails.appointmentID,
-      statusUpdate: custDetails.status === null?"":custDetails.status,
+      statusUpdate: custDetails.status,
       appointmentDate: slotData.appointmentDate,
       timeSlot: slotData.timeSlot,
       numberOfPeople: custDetails.nOofPeople,
@@ -540,10 +541,10 @@ class Appointment extends Component {
       url: config.apiUrl + "/Appointment/StartAppointmentVisit",
       data: {
         AppointmentID: this.state.appointmentID,
-        Status: 1,
+        Status: 2,
         NOofPeople: this.state.numberOfPeople,
         SlotId: this.state.slotID,
-        Slotdate: this.state.timeSlot,
+        Slotdate: this.state.appointmentDate,
         CustomerNumber: this.state.customerNumber
       },
       headers: authHeader(),
@@ -551,8 +552,7 @@ class Appointment extends Component {
       .then(function(res) {
         debugger;
         let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success" && data) {
+        if (status === "Success") {
           self.setState({
             updateAppointModal: false,
           });
@@ -1100,12 +1100,12 @@ class Appointment extends Component {
                           title: "Status",
                           width: "20%",
                           render: (row, item) => {
-                            if (item.status !== "" && item.status !== null) {
+                            if (item.status !== "Visit Booked") {
                               return (
                                 <div className="d-flex">
                                   <div>
                                     <button
-                                      className="statusBtn"
+                                      className={item.status==="In Store"?"statusBtn visitedBtn":"statusBtn"}
                                       type="button"
                                       style={{ marginRight: "10px" }}
                                       disabled
@@ -1231,7 +1231,7 @@ class Appointment extends Component {
                           title: "Actions",
                           width: "20%",
                           render: (item) => {
-                            if (item.status === "" || item.status === null) {
+                            if (item.status !== "Visited") {
                               return (
                                 <div className="d-flex">
                                   <div>
@@ -1345,7 +1345,7 @@ class Appointment extends Component {
           <div className="appnt-bottom-white appnt-bottom-white-update">
             <div className="appnt-input-group">
               <div className="row">
-              {this.state.statusUpdate !== ""?(
+              {this.state.statusUpdate !== "Visit Booked"?(
                 <>
                 <div className="col-md-6">
                   <label>
@@ -1397,18 +1397,22 @@ class Appointment extends Component {
               <span>{this.state.appointmentID}</span>
             </div>
             <div className="text-center">
-              {this.state.statusUpdate === ""?(
+              {this.state.statusUpdate === "Visit Booked"?(
               <button className="appoint-butn appoint-butn-blue"
                onClick={this.handleStartVisit.bind(this)}
               >
                 Start Visit Time
               </button>):null}
-              {/* <button className="appoint-butn appoint-butn-red">
+              {this.state.statusUpdate !== "Visit Booked"?(
+              
+              this.state.appointStatus === "EndVisitedTime"?(
+              <button className="appoint-butn appoint-butn-red">
                 End Visit Time
-              </button> */}
-              {/* <button className="appoint-butn appoint-butn-orange">
+              </button>):(
+              <button className="appoint-butn appoint-butn-orange">
                 Partial Check Out
-              </button> */}
+              </button>)
+              ):null}
               <br />
               <a
                 href="#!"

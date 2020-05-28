@@ -144,46 +144,11 @@ class Header extends Component {
       availableSlot: 0,
       isHistoricalChat: false,
       visible: false,
-      historicalChatData: [
-        {
-          chatID: 1,
-          customerName: "Kaustubh",
-          time: "12 Jan, 03:30 PM",
-          message: "Lorem ipsum, or lipsum as it is sometimes.",
-        },
-        {
-          chatID: 2,
-          customerName: "Kaustubh",
-          time: "12 Jan, 03:30 PM",
-          message: "Lorem ipsum, or lipsum as it is sometimes.",
-        },
-        {
-          chatID: 3,
-          customerName: "Kaustubh",
-          time: "12 Jan, 03:30 PM",
-          message: "Lorem ipsum, or lipsum as it is sometimes.",
-        },
-        {
-          chatID: 4,
-          customerName: "Kaustubh",
-          time: "12 Jan, 03:30 PM",
-          message: "Lorem ipsum, or lipsum as it is sometimes.",
-        },
-        {
-          chatID: 5,
-          customerName: "Kaustubh",
-          time: "12 Jan, 03:30 PM",
-          message: "Lorem ipsum, or lipsum as it is sometimes.",
-        },
-        {
-          chatID: 6,
-          customerName: "Kaustubh",
-          time: "12 Jan, 03:30 PM",
-          message: "Lorem ipsum, or lipsum as it is sometimes.",
-        },
-      ],
+      historicalChatData: [],
       agentRecentChatData: [],
       agentData: [],
+      sAgentId: 0,
+      isScroll: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -393,7 +358,8 @@ class Header extends Component {
     this.subscription.unsubscribe();
   }
   componentDidUpdate() {
-    if (this.state.chatModal && this.state.isDownbtn) {
+    if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
+      this.setState({ isScroll: false });
       this.scrollToBottom();
     }
   }
@@ -680,7 +646,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetOngoingChat",
       headers: authHeader(),
-      params: { Search: search },
+      params: { Search: search, StoreManagerID: this.state.sAgentId },
     })
       .then(function(response) {
         debugger;
@@ -761,7 +727,7 @@ class Header extends Component {
           // }
           // }, 40000);
         } else {
-          self.setState({ newChatsData });
+          self.setState({ newChatsData: [] });
         }
       })
       .catch((response) => {
@@ -854,6 +820,7 @@ class Header extends Component {
           self.setState({
             ...messageData,
             messageData,
+            isScroll: true,
           });
           // self.handleGetChatNotificationCount();
         } else {
@@ -1631,6 +1598,7 @@ class Header extends Component {
       isHistoricalChat: true,
       isDownbtn: false,
     });
+    this.handleGetAgentChatHistory();
   };
   ////handle get agent recent chat data
   handleGetAgentRecentChat() {
@@ -1682,7 +1650,34 @@ class Header extends Component {
       this.handleGetAgentRecentChat();
     }
   }
+  ////handle change agent dropdown
+  handleChangeAgentDropdown(e) {
+    this.setState({ sAgentId: e });
+    setTimeout(() => {
+      this.handleGetOngoingChat("isRead");
+    }, 10);
+  }
 
+  handleGetAgentChatHistory() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetAgentChatHistory",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var historicalChatData = response.data.responseData;
+        if (message === "Success" && historicalChatData) {
+          self.setState({ historicalChatData });
+        } else {
+          self.setState({ historicalChatData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetAgentChatHistory");
+      });
+  }
   render() {
     return (
       <React.Fragment>
@@ -2149,15 +2144,19 @@ class Header extends Component {
                         : this.state.ongoingChatsData.length}
                       )
                       <Select
-                        defaultValue="0"
                         className="agentchatdrop-down"
                         showArrow={true}
+                        value={this.state.sAgentId}
+                        onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value="0">All</Option>
+                        <Option value={0}>All</Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
-                              <Option key={i} value={item.storeManagerID}>
+                              <Option
+                                key={i}
+                                value={Number(item.storeManagerID)}
+                              >
                                 {item.agentName}
                               </Option>
                             );
@@ -3027,7 +3026,6 @@ class Header extends Component {
                                                             Brand :
                                                             {" " +
                                                               item.brandName}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3040,7 +3038,6 @@ class Header extends Component {
                                                             Category :
                                                             {" " +
                                                               item.categoryName}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3053,7 +3050,6 @@ class Header extends Component {
                                                             SubCategory :
                                                             {" " +
                                                               item.subCategoryName}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3063,7 +3059,6 @@ class Header extends Component {
                                                           <label className="chat-product-code">
                                                             Color :
                                                             {" " + item.color}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3073,7 +3068,6 @@ class Header extends Component {
                                                           <label className="chat-product-code">
                                                             Size :
                                                             {" " + item.size}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3086,7 +3080,6 @@ class Header extends Component {
                                                             Item Code :
                                                             {" " +
                                                               item.uniqueItemCode}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3101,7 +3094,6 @@ class Header extends Component {
                                                             Discount :
                                                             {" " +
                                                               item.discount}
-                                                            {/* {item.alternativeText} */}
                                                           </label>
                                                         ) : null}
                                                       </div>
@@ -3902,7 +3894,6 @@ class Header extends Component {
                                                       <label className="chat-product-code">
                                                         Brand :
                                                         {" " + item.brandName}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -3913,7 +3904,6 @@ class Header extends Component {
                                                         Category :
                                                         {" " +
                                                           item.categoryName}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -3925,7 +3915,6 @@ class Header extends Component {
                                                         SubCategory :
                                                         {" " +
                                                           item.subCategoryName}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -3934,7 +3923,6 @@ class Header extends Component {
                                                       <label className="chat-product-code">
                                                         Color :
                                                         {" " + item.color}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -3942,7 +3930,6 @@ class Header extends Component {
                                                     item.size !== null ? (
                                                       <label className="chat-product-code">
                                                         Size :{" " + item.size}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -3954,7 +3941,6 @@ class Header extends Component {
                                                         Item Code :
                                                         {" " +
                                                           item.uniqueItemCode}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -3966,7 +3952,6 @@ class Header extends Component {
                                                       <label className="chat-product-code">
                                                         Discount :
                                                         {" " + item.discount}
-                                                        {/* {item.alternativeText} */}
                                                       </label>
                                                     ) : null}
 
@@ -4637,7 +4622,7 @@ class Header extends Component {
                               },
                               {
                                 title: "Time",
-                                dataIndex: "time",
+                                dataIndex: "timeAgo",
                                 width: "20%",
                               },
                               {
