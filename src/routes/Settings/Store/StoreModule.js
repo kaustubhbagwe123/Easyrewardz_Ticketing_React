@@ -3676,6 +3676,73 @@ class StoreModule extends Component {
             </Modal>
             {/* edit slot ends */}
 
+            {/* edit language starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    EDIT LANGUAGE SETTINGS
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label className="edit-label-1">Language</label>
+                    <div>
+                      <select
+                      // name="storeId"
+                      // value={this.state.timeSlotEdit.storeId}
+                      // onChange={this.handleEditDrop_downOnchange}
+                      >
+                        <option>Select Language</option>
+                        <option>Hindi</option>
+                        {/* <option value={0}>Store code</option>
+                        {this.state.storeCodeData !== null &&
+                          this.state.storeCodeData.map((item, s) => (
+                            <option
+                              key={s}
+                              value={item.storeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.storeCode}
+                            </option>
+                          ))} */}
+                      </select>
+                      {/* {this.state.timeSlotEdit.storeId === "0" && (
+                        <p
+                          style={{
+                            color: "red",
+                            marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.editStoreCodeValidation}
+                        </p>
+                      )} */}
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    onClick={this.closeSlotEditModal}
+                  >
+                    CANCEL
+                  </a>
+                  <button
+                    className="pop-over-button FlNone"
+                    onClick={this.handleUpdateTimeSlotData.bind(this)}
+                  >
+                    <label className="pop-over-btnsave-text">SAVE</label>
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit language ends */}
+
             <Modal
               className="EditModa"
               show={this.state.editModal}
