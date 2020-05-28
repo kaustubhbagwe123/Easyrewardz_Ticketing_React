@@ -2932,9 +2932,9 @@ class StoreModule extends Component {
                                 data={this.state.TimeSlotGridData}
                                 columns={[
                                   {
-                                    Header: "SR No",
+                                    Header: "Slot No",
                                     sortable: false,
-                                    accessor: "campaignName",
+                                    accessor: "slotId",
                                   },
                                   {
                                     Header: "Store Code",
@@ -2952,15 +2952,15 @@ class StoreModule extends Component {
                                     sortable: false,
                                   },
                                   {
-                                    Header: "Created by",
-                                    accessor: "createdBy",
+                                    Header: "Created Name",
+                                    accessor: "createdByName",
                                     sortable: false,
                                   },
                                   {
                                     Header: "Actions",
                                     sortable: false,
                                     Cell: (row) => {
-                                      var ids = row.original["id"];
+                                      var ids = row.original["slotId"];
                                       return (
                                         <>
                                           <span>
@@ -3018,7 +3018,7 @@ class StoreModule extends Component {
                                     },
                                   },
                                 ]}
-                                resizable={false}
+                                // resizable={false}
                                 minRows={2}
                                 defaultPageSize={10}
                                 showPagination={true}

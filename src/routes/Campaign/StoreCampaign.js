@@ -1741,17 +1741,26 @@ class StoreCampaign extends Component {
                                 >
                                   {this.state.broadcastConfiguration
                                     .emailFlag ? (
-                                    <div className="">
-                                      <Radio
-                                        className="broadChannel"
-                                        value="Email"
-                                      >
-                                        Email
-                                      </Radio>
-                                    </div>
+                                    <Radio
+                                      className="broadChannel"
+                                      value="Email"
+                                      disabled={
+                                        this.state.broadcastConfiguration
+                                          .disableEmail
+                                      }
+                                    >
+                                      Email
+                                    </Radio>
                                   ) : null}
                                   {this.state.broadcastConfiguration.smsFlag ? (
-                                    <Radio className="broadChannel" value="SMS">
+                                    <Radio
+                                      className="broadChannel"
+                                      value="SMS"
+                                      disabled={
+                                        this.state.broadcastConfiguration
+                                          .disableSMS
+                                      }
+                                    >
                                       SMS
                                     </Radio>
                                   ) : null}
@@ -1760,6 +1769,10 @@ class StoreCampaign extends Component {
                                     <Radio
                                       className="broadChannel"
                                       value="Whatsapp"
+                                      disabled={
+                                        this.state.broadcastConfiguration
+                                          .disableWhatsapp
+                                      }
                                     >
                                       Whatsapp
                                     </Radio>
@@ -3085,7 +3098,7 @@ class StoreCampaign extends Component {
                   />
                 </div>
               ))}
-            
+
             {this.state.showBroadcastChannel ? (
               <>
                 <label className="broadcasttitle">
@@ -3099,18 +3112,34 @@ class StoreCampaign extends Component {
                   >
                     {this.state.broadcastConfiguration.emailFlag ? (
                       <div className="">
-                        <Radio className="broadChannel" value="Email">
+                        <Radio
+                          className="broadChannel"
+                          value="Email"
+                          disabled={
+                            this.state.broadcastConfiguration.disableEmail
+                          }
+                        >
                           Email
                         </Radio>
                       </div>
                     ) : null}
                     {this.state.broadcastConfiguration.smsFlag ? (
-                      <Radio className="broadChannel" value="SMS">
+                      <Radio
+                        className="broadChannel"
+                        value="SMS"
+                        disabled={this.state.broadcastConfiguration.disableSMS}
+                      >
                         SMS
                       </Radio>
                     ) : null}
                     {this.state.broadcastConfiguration.whatsappFlag ? (
-                      <Radio className="broadChannel" value="Whatsapp">
+                      <Radio
+                        className="broadChannel"
+                        value="Whatsapp"
+                        disabled={
+                          this.state.broadcastConfiguration.disableWhatsapp
+                        }
+                      >
                         Whatsapp
                       </Radio>
                     ) : null}
