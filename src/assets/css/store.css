@@ -3571,9 +3571,9 @@ table tr th:last-child {
   border: #ff9d58;
 }
 
-.custom-tableak .partialBtn{
-  background-color: #EB4D4B;
-  border: #EB4D4B;
+.custom-tableak .partialBtn {
+  background-color: #eb4d4b;
+  border: #eb4d4b;
 }
 
 @media screen and (max-width: 600px) {
