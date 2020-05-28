@@ -58,6 +58,8 @@ import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Table, Select } from "antd";
+import * as translationHI from '../../translations/hindi'
+import * as translationMA from '../../translations/marathi'
 
 const { Option } = Select;
 
@@ -149,6 +151,7 @@ class Header extends Component {
       agentData: [],
       sAgentId: 0,
       isScroll: false,
+      translateLanguage: {}
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -205,6 +208,15 @@ class Header extends Component {
       }, 6000);
 
       this.handleGetOngoingChat("");
+    }
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+     this.state.translateLanguage = translationHI
+    }
+    else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+      this.state.translateLanguage = translationMA
+    }
+    else{
+      this.state.translateLanguage = {}
     }
   }
 
@@ -268,7 +280,8 @@ class Header extends Component {
       activeClass: page === "claim" ? "active single-menu" : "single-menu",
     };
     var campaign = {
-      data: "Campaign",
+      data: this.state.translateLanguage.default !== undefined?
+            this.state.translateLanguage.default.nav.campaign:"Campaign",
       urls: "campaign",
       logoBlack: CampaignLogo,
       logoBlue: CampaignLogoBlue,
@@ -277,7 +290,8 @@ class Header extends Component {
       activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
     };
     var appointment = {
-      data: "Appointment",
+      data: this.state.translateLanguage.default !== undefined?
+            this.state.translateLanguage.default.nav.appointment:"Appointment",
       urls: "appointment",
       logoBlack: AppointmentLogo,
       logoBlue: AppointmentLogoBlue,
@@ -1449,10 +1463,10 @@ class Header extends Component {
             ? ", Price: " + messagewhatsAppData[0].price.trim()
             : "") +
           "\n" +
-          messagewhatsAppData[0].url !==
+          (messagewhatsAppData[0].url !==
         null
           ? messagewhatsAppData[0].url
-          : "";
+          : "");
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -1679,6 +1693,8 @@ class Header extends Component {
       });
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default
+
     return (
       <React.Fragment>
         <div

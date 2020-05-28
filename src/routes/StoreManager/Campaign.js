@@ -12,6 +12,8 @@ import { NotificationManager } from "react-notifications";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
+import * as translationHI from '../../translations/hindi'
+import * as translationMA from '../../translations/marathi'
 
 class Campaign extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ class Campaign extends Component {
       isTiketTitle: "",
       isTiketDetails: "",
       loading: false,
+      translateLanguage: {}
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -54,6 +57,15 @@ class Campaign extends Component {
   componentDidMount() {
     this.handleCampaignGridData();
     this.handleGetBrand();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   onRowExpand(expanded, record) {
@@ -643,6 +655,9 @@ class Campaign extends Component {
     }
   };
   render() {
+
+    const TranslationContext = this.state.translateLanguage.default
+    
     return (
       <div>
         <div className="table-cntr store">

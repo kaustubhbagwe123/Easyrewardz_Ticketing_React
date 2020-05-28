@@ -18,6 +18,8 @@ import moment from "moment";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-responsive-modal";
 import DatePicker from "react-datepicker";
+import * as translationHI from '../../translations/hindi'
+import * as translationMA from '../../translations/marathi'
 
 class Appointment extends Component {
   constructor(props) {
@@ -73,7 +75,8 @@ class Appointment extends Component {
       errCustNumber: "",
       errAppDate: "",
       errNoOfMember: "",
-      otpID: 0
+      otpID: 0,
+      translateLanguage: {}
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -84,6 +87,17 @@ class Appointment extends Component {
   componentDidMount() {
     this.handleAppointmentGridData(1);
     this.handleAppointmentCount();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+     this.setState({translateLanguage: this.state.translateLanguage})
   }
 
   ShowPeopleModalOpen() {
@@ -701,6 +715,8 @@ class Appointment extends Component {
     const renderTime = () => {
       return null;
     };
+
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <div className="custom-tableak custom-table-ck custom-table-bg p-0">
         <div className="custom-tabs">
@@ -799,7 +815,7 @@ class Appointment extends Component {
               className="butn"
               onClick={this.handleCreateAppointmentOpen.bind(this)}
             >
-              + Create Appointment
+              + {TranslationContext!==undefined?TranslationContext.a.createappointment:"Create Appointment"} 
             </a>
             {/* Create Appointment Modal */}
             <Modal
