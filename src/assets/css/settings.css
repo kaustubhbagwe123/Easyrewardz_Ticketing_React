@@ -2626,10 +2626,30 @@
   min-width: 65px;
   padding-right: 0;
 }
+.edit-slot .right-sect-div {
+  box-shadow: none;
+  padding: 0;
+  display: block;
+  margin-top: -5px;
+}
+.edit-slot .right-sect-div label {
+  font-size: 12px;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+.slotEditModal {
+  width: 300px;
+}
+.edit-slot .slot-timings {
+  margin: 0;
+}
+.edit-slot .slot-setting-options input {
+  width: 100%;
+}
 .slot-setting-options {
   margin-top: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 .slot-setting-options input {

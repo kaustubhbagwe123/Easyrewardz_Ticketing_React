@@ -28,7 +28,7 @@ class StoreSignIn extends Component {
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCRMRole = this.handleCRMRole.bind(this);
+    // this.handleCRMRole = this.handleCRMRole.bind(this);
     this.validator = new SimpleReactValidator();
   }
   hanleChange(e) {
@@ -53,10 +53,10 @@ class StoreSignIn extends Component {
           programCode: finalEncProgramCode,
         });
       } else {
-        this.props.history.push("/storeProgramCode");
+        this.props.history.push("/");
       }
     } else {
-      this.props.history.push("/storeProgramCode");
+      this.props.history.push("/");
     }
   }
 
@@ -70,11 +70,11 @@ class StoreSignIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption(
-        "https://multitenancyshopster.dcdev.brainvire.net",
-        "enc"
-      );
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "https://multitenancyshopster.dcdev.brainvire.net",
+      //   "enc"
+      // );
       // let X_Authorized_Domainname = encryption(
       //   "https://erbelltkthomeshop.dcdev.brainvire.net",
       //   "enc"
