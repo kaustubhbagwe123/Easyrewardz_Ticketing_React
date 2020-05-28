@@ -92,7 +92,18 @@ class StoreModule extends Component {
       campProviderValidation: "",
       broadProviderValidation: "",
       TimeSlotData: TimeSlotdropdown(),
-      TimeSlotGridData:[]
+      TimeSlotGridData: [],
+      storeCodeData: [],
+      selectStore: 0,
+      selectTimeSlot1: 0,
+      selectTimeSlot2: 0,
+      selectAmPm1: 0,
+      selectAmPm2: 0,
+      orderNumber: "",
+      maxCapacity: "",
+      storeCodeValidation: "",
+      orderNovalidation: "",
+      maxCapacityValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -103,7 +114,8 @@ class StoreModule extends Component {
     this.handleEditModal = this.handleEditModal.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
-    this.handleGetTimeslotGridData= this.handleGetTimeslotGridData.bind(this);
+    this.handleGetTimeslotGridData = this.handleGetTimeslotGridData.bind(this);
+    this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
   }
   // fileUpload = (e) => {
   //   this.setState({ fileName: e.target.files[0].name });
@@ -322,6 +334,7 @@ class StoreModule extends Component {
     this.handleGetAppointmentConfigData();
     this.handleGetBroadCastConfigData();
     this.handleGetTimeslotGridData();
+    this.handleGetstoreCodeData();
   }
 
   setClaimTabData = (e) => {
@@ -340,12 +353,39 @@ class StoreModule extends Component {
     });
   };
 
-  setUpdateCampaign = (e) => {
+  handleInputOnchange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
       [name]: value,
     });
+  };
+
+  handleDrop_downOnchange = (e) => {
+    debugger;
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "selectStore") {
+      this.setState({
+        selectStore: value,
+      });
+    } else if (name === "selectTimeSlot1") {
+      this.setState({
+        selectTimeSlot1: value,
+      });
+    } else if (name === "selectTimeSlot2") {
+      this.setState({
+        selectTimeSlot2: value,
+      });
+    } else if (name === "selectAmPm1") {
+      this.setState({
+        selectAmPm1: value,
+      });
+    } else if (name === "selectAmPm2") {
+      this.setState({
+        selectAmPm2: value,
+      });
+    }
   };
 
   handleClaimTabData() {
@@ -435,16 +475,38 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
-
-  handleDeleteTimeSlot(slotId){
-    var self=this;
+  ////get Store Code for dropdown
+  handleGetstoreCodeData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/StoreList",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ storeCodeData: data });
+        } else {
+          self.setState({ storeCodeData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  //// handle table record deleted
+  handleDeleteTimeSlot(slotId) {
+    var self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
       headers: authHeader(),
-      params:{
-        SlotID:slotId
-      }
+      params: {
+        SlotID: slotId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -461,7 +523,7 @@ class StoreModule extends Component {
       });
   }
   //// Handle get time slot grid data
-  handleGetTimeslotGridData(){
+  handleGetTimeslotGridData() {
     let self = this;
     axios({
       method: "post",
@@ -1195,7 +1257,7 @@ class StoreModule extends Component {
   };
   /// handle Broadcast configuration toggle change
   handleBroadCongiFlageOnchange = (id) => {
-    debugger
+    debugger;
     var BroadConfig = id.target.id;
     if (BroadConfig === "ckbroadSMS") {
       this.state.BroadCastConfigData.smsFlag = !this.state.BroadCastConfigData
@@ -1421,6 +1483,42 @@ class StoreModule extends Component {
     }
   }
 
+  /// handle Timeslot add data
+  handleSubmitTimeSlotDate(){
+    debugger
+    if (
+      this.state.selectStore !== 0 &&
+      this.state.orderNumber !== "" &&
+      this.state.maxCapacity !== ""
+    ) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
+        headers: authHeader(),
+        data: {
+          StoreId: this.state.selectStore,
+          TimeSlot: this.state.selectTimeSlot1,
+          OrderNumber: this.state.orderNumber,
+          MaxCapacity: this.state.maxCapacity,
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Time Slot Added Successfully.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        storeCodeValidation: "Required",
+        orderNovalidation: "Required",
+        maxCapacityValidation: "Required",
+      });
+    }
+  }
   render() {
     return (
       <Fragment>
@@ -2850,16 +2948,45 @@ class StoreModule extends Component {
                                 <h3>SLOT SETTINGS</h3>
                                 <div className="cmpaign-channel-table slot-setting-options">
                                   <div>
-                                    <select >
-                                      <option value="">Store Code</option>
-                                      <option value="">Bata123</option>
-                                      <option value="">Fab456</option>
+                                    <select
+                                      name="selectStore"
+                                      value={this.state.selectStore}
+                                      onChange={this.handleDrop_downOnchange}
+                                    >
+                                      <option value={0}>Store code</option>
+                                      {this.state.storeCodeData !== null &&
+                                        this.state.storeCodeData.map(
+                                          (item, s) => (
+                                            <option
+                                              key={s}
+                                              value={item.storeID}
+                                              className="select-category-placeholder"
+                                            >
+                                              {item.storeCode}
+                                            </option>
+                                          )
+                                        )}
                                     </select>
+                                    {this.state.selectStore === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.storeCodeValidation}
+                                      </p>
+                                    )}
                                   </div>
                                   <div className="slot-timings">
                                     <div className="d-flex">
-                                      <select className="slot-hour">
-                                      {this.state.TimeSlotData !== null &&
+                                      <select
+                                        className="slot-hour"
+                                        name="selectTimeSlot1"
+                                        value={this.state.selectTimeSlot1}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        {this.state.TimeSlotData !== null &&
                                           this.state.TimeSlotData.map(
                                             (item, j) => (
                                               <option
@@ -2871,15 +2998,25 @@ class StoreModule extends Component {
                                             )
                                           )}
                                       </select>
-                                      <select className="slot-shift">
-                                        <option value="">AM</option>
-                                        <option value="">PM</option>
+                                      <select
+                                        className="slot-shift"
+                                        name="selectAmPm1"
+                                        value={this.state.selectAmPm1}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
                                       </select>
                                     </div>
                                     <span className="slot-to">TO</span>
                                     <div className="d-flex">
-                                      <select  className="slot-hour">
-                                      {this.state.TimeSlotData !== null &&
+                                      <select
+                                        className="slot-hour"
+                                        name="selectTimeSlot2"
+                                        value={this.state.selectTimeSlot2}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        {this.state.TimeSlotData !== null &&
                                           this.state.TimeSlotData.map(
                                             (item, j) => (
                                               <option
@@ -2891,35 +3028,58 @@ class StoreModule extends Component {
                                             )
                                           )}
                                       </select>
-                                      <select className="slot-shift">
-                                        <option value="">AM</option>
-                                        <option value="">PM</option>
+                                      <select
+                                        className="slot-shift"
+                                        name="selectAmPm2"
+                                        value={this.state.selectAmPm2}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
                                       </select>
                                     </div>
                                   </div>
                                   <input
                                     type="text"
-                                    name=""
                                     placeholder="Order no."
-                                    // value={
-                                    //   this.state.campaignChannelData
-                                    //     .maxClickAllowed
-                                    // }
-                                    // autoComplete="off"
-                                    // maxLength={2}
-                                    // onChange={this.CampCannelOnChange.bind(
-                                    //   this
-                                    // )}
+                                    name="orderNumber"
+                                    value={this.state.orderNumber}
+                                    autoComplete="off"
+                                    onChange={this.handleInputOnchange}
                                   />
+                                  {this.state.orderNumber === "" && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.orderNovalidation}
+                                    </p>
+                                  )}
                                   <input
                                     type="text"
-                                    name=""
                                     placeholder="Max Cpty"
-                                  /> 
+                                    name="maxCapacity"
+                                    autoComplete="off"
+                                    value={this.state.maxCapacity}
+                                    onChange={this.handleInputOnchange}
+                                  />
+                                  {this.state.maxCapacity === "" && (
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0px",
+                                      }}
+                                    >
+                                      {this.state.maxCapacityValidation}
+                                    </p>
+                                  )}
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
+                                  onClick={this.handleSubmitTimeSlotDate.bind(this)}
                                 >
                                   SUBMIT
                                 </button>
@@ -3068,7 +3228,7 @@ class StoreModule extends Component {
                     rows="4"
                     value={this.state.updateScriptDetails}
                     name="updateScriptDetails"
-                    onChange={this.setUpdateCampaign}
+                    onChange={this.handleInputOnchange}
                   ></textarea>
                   {this.state.updateScriptDetails.length == 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
