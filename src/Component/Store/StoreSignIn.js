@@ -28,7 +28,6 @@ class StoreSignIn extends Component {
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCRMRole = this.handleCRMRole.bind(this);
     this.validator = new SimpleReactValidator();
   }
   hanleChange(e) {
