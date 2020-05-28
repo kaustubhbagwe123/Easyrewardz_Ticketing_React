@@ -105,6 +105,15 @@ class StoreModule extends Component {
       orderNovalidation: "",
       maxCapacityValidation: "",
       editSlotModal: false,
+      timeSlotEdit: {},
+      editSelectTimeSlot1: 0,
+      editSelectTimeSlot2: 0,
+      editSelectAmPm1: "",
+      editSelectAmPm2: "",
+      timeSlotId: 0,
+      editStoreCodeValidation: "",
+      editOrderNovalidation: "",
+      editMaxCapacityValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -363,6 +372,31 @@ class StoreModule extends Component {
     });
   };
 
+  handleSlotInputOnchange = (e) => {
+    var name = e.target.name;
+    var reg = /^[0-9\b]+$/;
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({ [e.target.name]: e.target.value });
+    } else {
+      e.target.value = "";
+    }
+  };
+
+  handleSlotEditInputOnchange = (e) => {
+    var name = e.target.name;
+    var value = e.target.value;
+    var timeSlotEdit = this.state.timeSlotEdit;
+    var reg = /^[0-9\b]+$/;
+    if (value === "" || reg.test(value)) {
+      timeSlotEdit[name] = value;
+      this.setState({
+        timeSlotEdit,
+      });
+    } else {
+      value = "";
+    }
+  };
+
   handleDrop_downOnchange = (e) => {
     debugger;
     let name = e.target.name;
@@ -386,6 +420,35 @@ class StoreModule extends Component {
     } else if (name === "selectAmPm2") {
       this.setState({
         selectAmPm2: value,
+      });
+    }
+  };
+
+  handleEditDrop_downOnchange = (e) => {
+    debugger;
+    let name = e.target.name;
+    let value = e.target.value;
+    var timeSlotEdit = this.state.timeSlotEdit;
+    if (name === "editSelectTimeSlot1") {
+      this.setState({
+        editSelectTimeSlot1: value,
+      });
+    } else if (name === "editSelectTimeSlot2") {
+      this.setState({
+        editSelectTimeSlot2: value,
+      });
+    } else if (name === "editSelectAmPm1") {
+      this.setState({
+        editSelectAmPm1: value,
+      });
+    } else if (name === "editSelectAmPm2") {
+      this.setState({
+        editSelectAmPm2: value,
+      });
+    } else if (name === "storeId") {
+      timeSlotEdit[name] = value;
+      this.setState({
+        timeSlotEdit,
       });
     }
   };
@@ -1487,8 +1550,7 @@ class StoreModule extends Component {
 
   /// handle Timeslot add data
   handleSubmitTimeSlotDate() {
-    debugger;
-    var self=this;
+    var self = this;
     if (
       this.state.selectStore !== 0 &&
       this.state.orderNumber !== "" &&
@@ -1521,6 +1583,8 @@ class StoreModule extends Component {
             });
             NotificationManager.success("Time Slot Added Successfully.");
             self.handleGetTimeslotGridData();
+          } else {
+            NotificationManager.error("Time Slot Not Added.");
           }
         })
         .catch((data) => {
@@ -1535,16 +1599,79 @@ class StoreModule extends Component {
     }
   }
 
+  /// Handle Update TimeSlot data
+  handleUpdateTimeSlotData() {
+    debugger
+    var self = this;
+    if (
+      this.state.timeSlotEdit.storeId !== "0" &&
+      this.state.timeSlotEdit.orderNumber !== "" &&
+      this.state.timeSlotEdit.maxCapacity !== ""
+    ) {
+      var slot1 = this.state.editSelectTimeSlot1 + this.state.editSelectAmPm1;
+      var slot2 = this.state.editSelectTimeSlot2 + this.state.editSelectAmPm2;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
+        headers: authHeader(),
+        data: {
+          SlotId: this.state.timeSlotId,
+          StoreId: this.state.timeSlotEdit.storeId,
+          TimeSlot: slot1 + "-" + slot2,
+          OrderNumber: parseInt(this.state.timeSlotEdit.orderNumber),
+          MaxCapacity: parseInt(this.state.timeSlotEdit.maxCapacity),
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Time Slot Updated Successfully.");
+            self.handleGetTimeslotGridData();
+            self.setState({
+              editSlotModal: false,
+            });
+          } else {
+            NotificationManager.error("Time Slot Not Updated.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        editStoreCodeValidation: "Required",
+        editOrderNovalidation: "Required",
+        editMaxCapacityValidation: "Required",
+      });
+    }
+  }
+
   closeSlotEditModal() {
     this.setState({
       editSlotModal: false,
     });
   }
-
-  openSlotEditModal() {
+  /// handle Edit Time slot
+  openSlotEditModal(EditData) {
     debugger;
+    var timeSlotEdit = {};
+
+    timeSlotEdit.storeId = EditData.storeId;
+    timeSlotEdit.storeCode = EditData.storeCode;
+    timeSlotEdit.orderNumber = EditData.orderNumber;
+    timeSlotEdit.maxCapacity = EditData.maxCapacity;
+    timeSlotEdit.timeSlot = EditData.timeSlot;
+
+    var slot = timeSlotEdit.timeSlot.match(/[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g);
+
     this.setState({
       editSlotModal: true,
+      timeSlotEdit,
+      timeSlotId: EditData.slotId,
+      editSelectTimeSlot1: slot[0],
+      editSelectTimeSlot2: slot[2],
+      editSelectAmPm1: slot[1],
+      editSelectAmPm2: slot[3],
     });
   }
 
@@ -3076,7 +3203,7 @@ class StoreModule extends Component {
                                       value={this.state.orderNumber}
                                       autoComplete="off"
                                       maxLength={3}
-                                      onChange={this.handleInputOnchange}
+                                      onChange={this.handleSlotInputOnchange}
                                     />
                                     {this.state.orderNumber === "" && (
                                       <p
@@ -3095,9 +3222,9 @@ class StoreModule extends Component {
                                       placeholder="Max Cpty"
                                       name="maxCapacity"
                                       autoComplete="off"
-                                      maxLength={3}
+                                      maxLength={2}
                                       value={this.state.maxCapacity}
-                                      onChange={this.handleInputOnchange}
+                                      onChange={this.handleSlotInputOnchange}
                                     />
                                     {this.state.maxCapacity === "" && (
                                       <p
@@ -3209,7 +3336,8 @@ class StoreModule extends Component {
                                             <button
                                               className="react-tabel-button editre"
                                               onClick={this.openSlotEditModal.bind(
-                                                this
+                                                this,
+                                                row.original
                                               )}
                                             >
                                               EDIT
@@ -3251,9 +3379,9 @@ class StoreModule extends Component {
                     <label className="edit-label-1">Store Code</label>
                     <div>
                       <select
-                        name="selectStore"
-                        value={this.state.selectStore}
-                        onChange={this.handleDrop_downOnchange}
+                        name="storeId"
+                        value={this.state.timeSlotEdit.storeId}
+                        onChange={this.handleEditDrop_downOnchange}
                       >
                         <option value={0}>Store code</option>
                         {this.state.storeCodeData !== null &&
@@ -3267,15 +3395,25 @@ class StoreModule extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.timeSlotEdit.storeId === "0" && (
+                        <p
+                          style={{
+                            color: "red",
+                            marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.editStoreCodeValidation}
+                        </p>
+                      )}
                     </div>
                     <label className="edit-label-1">Store Timings</label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <select
                           className="slot-hour"
-                          name="selectTimeSlot1"
-                          value={this.state.selectTimeSlot1}
-                          onChange={this.handleDrop_downOnchange}
+                          name="editSelectTimeSlot1"
+                          value={this.state.editSelectTimeSlot1}
+                          onChange={this.handleEditDrop_downOnchange}
                         >
                           {this.state.TimeSlotData !== null &&
                             this.state.TimeSlotData.map((item, j) => (
@@ -3286,9 +3424,9 @@ class StoreModule extends Component {
                         </select>
                         <select
                           className="slot-shift"
-                          name="selectAmPm1"
-                          value={this.state.selectAmPm1}
-                          onChange={this.handleDrop_downOnchange}
+                          name="editSelectAmPm1"
+                          value={this.state.editSelectAmPm1}
+                          onChange={this.handleEditDrop_downOnchange}
                         >
                           <option value="AM">AM</option>
                           <option value="PM">PM</option>
@@ -3298,9 +3436,9 @@ class StoreModule extends Component {
                       <div className="d-flex">
                         <select
                           className="slot-hour"
-                          name="selectTimeSlot2"
-                          value={this.state.selectTimeSlot2}
-                          onChange={this.handleDrop_downOnchange}
+                          name="editSelectTimeSlot2"
+                          value={this.state.editSelectTimeSlot2}
+                          onChange={this.handleEditDrop_downOnchange}
                         >
                           {this.state.TimeSlotData !== null &&
                             this.state.TimeSlotData.map((item, j) => (
@@ -3311,9 +3449,9 @@ class StoreModule extends Component {
                         </select>
                         <select
                           className="slot-shift"
-                          name="selectAmPm2"
-                          value={this.state.selectAmPm2}
-                          onChange={this.handleDrop_downOnchange}
+                          name="editSelectAmPm2"
+                          value={this.state.editSelectAmPm2}
+                          onChange={this.handleEditDrop_downOnchange}
                         >
                           <option value="AM">AM</option>
                           <option value="PM">PM</option>
@@ -3325,19 +3463,41 @@ class StoreModule extends Component {
                       type="text"
                       placeholder="Order no."
                       name="orderNumber"
-                      value={this.state.orderNumber}
+                      value={this.state.timeSlotEdit.orderNumber}
                       autoComplete="off"
-                      onChange={this.handleInputOnchange}
+                      maxLength={3}
+                      onChange={this.handleSlotEditInputOnchange}
                     />
+                    {this.state.timeSlotEdit.orderNumber === "" && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginBottom: "0px",
+                        }}
+                      >
+                        {this.state.editOrderNovalidation}
+                      </p>
+                    )}
                     <label className="edit-label-1">Maximum Capacity</label>
                     <input
                       type="text"
                       placeholder="Max Cpty"
                       name="maxCapacity"
                       autoComplete="off"
-                      value={this.state.maxCapacity}
-                      onChange={this.handleInputOnchange}
+                      maxLength={2}
+                      value={this.state.timeSlotEdit.maxCapacity}
+                      onChange={this.handleSlotEditInputOnchange}
                     />
+                    {this.state.timeSlotEdit.maxCapacity === "" && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginBottom: "0px",
+                        }}
+                      >
+                        {this.state.editMaxCapacityValidation}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <br />
@@ -3348,7 +3508,10 @@ class StoreModule extends Component {
                   >
                     CANCEL
                   </a>
-                  <button className="pop-over-button FlNone">
+                  <button
+                    className="pop-over-button FlNone"
+                    onClick={this.handleUpdateTimeSlotData.bind(this)}
+                  >
                     <label className="pop-over-btnsave-text">SAVE</label>
                   </button>
                 </div>
