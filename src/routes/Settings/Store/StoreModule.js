@@ -104,6 +104,7 @@ class StoreModule extends Component {
       storeCodeValidation: "",
       orderNovalidation: "",
       maxCapacityValidation: "",
+      editSlotModal: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -116,6 +117,7 @@ class StoreModule extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.handleGetTimeslotGridData = this.handleGetTimeslotGridData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
+    this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
   // fileUpload = (e) => {
   //   this.setState({ fileName: e.target.files[0].name });
@@ -1486,7 +1488,7 @@ class StoreModule extends Component {
   /// handle Timeslot add data
   handleSubmitTimeSlotDate() {
     debugger;
-    var self = this;
+    var self=this;
     if (
       this.state.selectStore !== 0 &&
       this.state.orderNumber !== "" &&
@@ -1532,6 +1534,20 @@ class StoreModule extends Component {
       });
     }
   }
+
+  closeSlotEditModal() {
+    this.setState({
+      editSlotModal: false,
+    });
+  }
+
+  openSlotEditModal() {
+    debugger;
+    this.setState({
+      editSlotModal: true,
+    });
+  }
+
   render() {
     return (
       <Fragment>
@@ -3052,44 +3068,48 @@ class StoreModule extends Component {
                                       </select>
                                     </div>
                                   </div>
-                                  <input
-                                    type="text"
-                                    placeholder="Order no."
-                                    name="orderNumber"
-                                    maxLength={3}
-                                    value={this.state.orderNumber}
-                                    autoComplete="off"
-                                    onChange={this.handleInputOnchange}
-                                  />
-                                  {this.state.orderNumber === "" && (
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                      }}
-                                    >
-                                      {this.state.orderNovalidation}
-                                    </p>
-                                  )}
-                                  <input
-                                    type="text"
-                                    placeholder="Max Cpty"
-                                    name="maxCapacity"
-                                    maxLength={2}
-                                    autoComplete="off"
-                                    value={this.state.maxCapacity}
-                                    onChange={this.handleInputOnchange}
-                                  />
-                                  {this.state.maxCapacity === "" && (
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        marginBottom: "0px",
-                                      }}
-                                    >
-                                      {this.state.maxCapacityValidation}
-                                    </p>
-                                  )}
+                                  <div>
+                                    <input
+                                      type="text"
+                                      placeholder="Order no."
+                                      name="orderNumber"
+                                      value={this.state.orderNumber}
+                                      autoComplete="off"
+                                      maxLength={3}
+                                      onChange={this.handleInputOnchange}
+                                    />
+                                    {this.state.orderNumber === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.orderNovalidation}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="text"
+                                      placeholder="Max Cpty"
+                                      name="maxCapacity"
+                                      autoComplete="off"
+                                      maxLength={3}
+                                      value={this.state.maxCapacity}
+                                      onChange={this.handleInputOnchange}
+                                    />
+                                    {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
@@ -3186,7 +3206,12 @@ class StoreModule extends Component {
                                               />
                                             </Popover>
 
-                                            <button className="react-tabel-button editre">
+                                            <button
+                                              className="react-tabel-button editre"
+                                              onClick={this.openSlotEditModal.bind(
+                                                this
+                                              )}
+                                            >
                                               EDIT
                                             </button>
                                           </span>
@@ -3209,6 +3234,128 @@ class StoreModule extends Component {
                 </Tab>
               </Tabs>
             </section>
+            {/* edit slot starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    EDIT SLOT SETTINGS
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label className="edit-label-1">Store Code</label>
+                    <div>
+                      <select
+                        name="selectStore"
+                        value={this.state.selectStore}
+                        onChange={this.handleDrop_downOnchange}
+                      >
+                        <option value={0}>Store code</option>
+                        {this.state.storeCodeData !== null &&
+                          this.state.storeCodeData.map((item, s) => (
+                            <option
+                              key={s}
+                              value={item.storeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.storeCode}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <label className="edit-label-1">Store Timings</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="selectTimeSlot1"
+                          value={this.state.selectTimeSlot1}
+                          onChange={this.handleDrop_downOnchange}
+                        >
+                          {this.state.TimeSlotData !== null &&
+                            this.state.TimeSlotData.map((item, j) => (
+                              <option value={item.TimeSlotId} key={j}>
+                                {item.TimeSlot}
+                              </option>
+                            ))}
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="selectAmPm1"
+                          value={this.state.selectAmPm1}
+                          onChange={this.handleDrop_downOnchange}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                      <span className="slot-to">TO</span>
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="selectTimeSlot2"
+                          value={this.state.selectTimeSlot2}
+                          onChange={this.handleDrop_downOnchange}
+                        >
+                          {this.state.TimeSlotData !== null &&
+                            this.state.TimeSlotData.map((item, j) => (
+                              <option value={item.TimeSlotId} key={j}>
+                                {item.TimeSlot}
+                              </option>
+                            ))}
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="selectAmPm2"
+                          value={this.state.selectAmPm2}
+                          onChange={this.handleDrop_downOnchange}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-label-1">Order Number</label>
+                    <input
+                      type="text"
+                      placeholder="Order no."
+                      name="orderNumber"
+                      value={this.state.orderNumber}
+                      autoComplete="off"
+                      onChange={this.handleInputOnchange}
+                    />
+                    <label className="edit-label-1">Maximum Capacity</label>
+                    <input
+                      type="text"
+                      placeholder="Max Cpty"
+                      name="maxCapacity"
+                      autoComplete="off"
+                      value={this.state.maxCapacity}
+                      onChange={this.handleInputOnchange}
+                    />
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    onClick={this.closeSlotEditModal}
+                  >
+                    CANCEL
+                  </a>
+                  <button className="pop-over-button FlNone">
+                    <label className="pop-over-btnsave-text">SAVE</label>
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit slot ends */}
+
             <Modal
               className="EditModa"
               show={this.state.editModal}
