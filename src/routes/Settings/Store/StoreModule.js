@@ -1601,7 +1601,7 @@ class StoreModule extends Component {
 
   /// Handle Update TimeSlot data
   handleUpdateTimeSlotData() {
-    debugger
+    debugger;
     var self = this;
     if (
       this.state.timeSlotEdit.storeId !== "0" &&
@@ -3339,6 +3339,163 @@ class StoreModule extends Component {
                                                 this,
                                                 row.original
                                               )}
+                                            >
+                                              EDIT
+                                            </button>
+                                          </span>
+                                        </>
+                                      );
+                                    },
+                                  },
+                                ]}
+                                // resizable={false}
+                                minRows={2}
+                                defaultPageSize={10}
+                                showPagination={true}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label="Language Settings">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-4 m-auto">
+                              <div className="right-sect-div">
+                                <h3>LANGUAGE SETTINGS</h3>
+                                <div className="cmpaign-channel-table slot-setting-options">
+                                  <div className="w-100">
+                                    <select
+                                      name="selectStore"
+                                      // value={this.state.selectStore}
+                                      // onChange={this.handleDrop_downOnchange}
+                                    >
+                                      <option>Select Language</option>
+                                      <option>English</option>
+                                      <option>Hindi</option>
+                                      {/* <option value={0}>Store code</option> */}
+                                      {/* {this.state.storeCodeData !== null &&
+                                        this.state.storeCodeData.map(
+                                          (item, s) => (
+                                            <option
+                                              key={s}
+                                              value={item.storeID}
+                                              className="select-category-placeholder"
+                                            >
+                                              {item.storeCode}
+                                            </option>
+                                          )
+                                        )} */}
+                                    </select>
+                                    {/* {this.state.selectStore === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.storeCodeValidation}
+                                      </p>
+                                    )} */}
+                                  </div>
+                                </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  // onClick={this.handleSubmitTimeSlotDate.bind(
+                                  //   this
+                                  // )}
+                                >
+                                  SUBMIT
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12">
+                              <ReactTable
+                                // data={this.state.TimeSlotGridData}
+                                columns={[
+                                  {
+                                    Header: "Tenant Id",
+                                    sortable: false,
+                                    // accessor: "slotId",
+                                  },
+                                  {
+                                    Header: "Tenant Name",
+                                    // accessor: "storeCode",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Selected Languages",
+                                    // accessor: "timeSlot",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Actions",
+                                    sortable: false,
+                                    Cell: (row) => {
+                                      // var ids = row.original["slotId"];
+                                      return (
+                                        <>
+                                          <span>
+                                            <Popover
+                                              content={
+                                                <div className="d-flex general-popover popover-body">
+                                                  <div className="del-big-icon">
+                                                    <img
+                                                      src={DelBigIcon}
+                                                      alt="del-icon"
+                                                    />
+                                                  </div>
+                                                  <div>
+                                                    <p className="font-weight-bold blak-clr">
+                                                      Delete file?
+                                                    </p>
+                                                    <p className="mt-1 fs-12">
+                                                      Are you sure you want to
+                                                      delete this file?
+                                                    </p>
+                                                    <div className="del-can">
+                                                      <a href={Demo.BLANK_LINK}>
+                                                        CANCEL
+                                                      </a>
+                                                      <button
+                                                        className="butn"
+                                                        // onClick={this.handleDeleteTimeSlot.bind(
+                                                        //   this,
+                                                        //   row.original.slotId
+                                                        // )}
+                                                      >
+                                                        Delete
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              }
+                                              placement="bottom"
+                                              trigger="click"
+                                            >
+                                              <img
+                                                src={RedDeleteIcon}
+                                                alt="del-icon"
+                                                className="del-btn"
+                                                // id={ids}
+                                              />
+                                            </Popover>
+
+                                            <button
+                                              className="react-tabel-button editre"
+                                              // onClick={this.openSlotEditModal.bind(
+                                              //   this,
+                                              //   row.original
+                                              // )}
                                             >
                                               EDIT
                                             </button>
