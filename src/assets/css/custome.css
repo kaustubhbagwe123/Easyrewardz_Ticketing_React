@@ -9727,54 +9727,54 @@ table tr th:last-child {
   border: 0;
 }
 
-
 .broembox {
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   padding: 10px 15px;
   border-radius: 5px;
   margin-bottom: 25px;
 }
 .broembox p {
-float: left;
+  float: left;
 }
 .broembox img {
-float: right;
-height: 20px;
-margin-top: 13px;
-cursor: pointer;
+  float: right;
+  height: 20px;
+  margin-top: 13px;
+  cursor: pointer;
 }
 .broembox label {
-font-size: 16px;
-font-weight: bolder;
+  font-size: 16px;
+  font-weight: bolder;
 }
 .broembox span {
-font-size: 12px;
-font-style: italic;
-color: #666;
+  font-size: 12px;
+  font-style: italic;
+  color: #666;
 }
 #totalconcount-popup {
-border-radius: 5px;
-position: relative;
-padding: 30px;
-padding-bottom: 5px;
-width: 400px;
+  border-radius: 5px;
+  position: relative;
+  padding: 30px;
+  padding-bottom: 5px;
+  width: 400px;
+}
+.totalconcount-popup {
+  padding: 15px !important;
 }
 .counttab td {
-padding: 0 0 20px 0;
-text-align: center;
-font-size: 12px;
+  padding: 0 0 25px 0;
+  text-align: center;
+  font-size: 12px;
 }
 .counttab label {
-font-size: 17px;
-  color: #2561a8;
-}
-.counttab label {
-font-size: 17px;
+  /* font-size: 17px; */
+  font-size: 16px;
   color: #2561a8;
 }
 .counttab span {
-font-size: 12px !important;
+  font-size: 12px !important;
   color: #333;
+  font-weight: 400;
 }
 
 .mob-header {
@@ -11424,9 +11424,13 @@ font-size: 12px !important;
     width: 160px !important;
   }
   #totalconcount-popup {
-    padding: 30px 15px;
-    width: 90%;
-}
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 100%;
+  }
+  .counttab span {
+    font-size: 11px !important;
+  }
   /* program code ends */
 }
 
@@ -11941,9 +11945,9 @@ font-size: 12px !important;
 }
 .cusinput {
   position: absolute;
-    width: 135px;
-    right: -135px;
-    top: 50px;
+  width: 135px;
+  right: -135px;
+  top: 50px;
 }
 .chatabcus table td {
   color: #333;
@@ -11981,6 +11985,6 @@ font-size: 12px !important;
 }
 .skip {
   margin-top: 10px;
-    text-transform: uppercase;
-    color: rgb(36, 110, 195);
+  text-transform: uppercase;
+  color: rgb(36, 110, 195);
 }
