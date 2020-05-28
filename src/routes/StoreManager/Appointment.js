@@ -62,7 +62,10 @@ class Appointment extends Component {
       customerName: "",
       customerNumber: "",
       slotID: 0,
-      appointStatus: "EndVisitedTime"
+      appointStatus: "EndVisitedTime",
+      peopleEntered: 0,
+      peopleCheckout: 0,
+      enteredPeople: 0
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -305,6 +308,8 @@ class Appointment extends Component {
       appointmentDate: slotData.appointmentDate,
       timeSlot: slotData.timeSlot,
       numberOfPeople: custDetails.nOofPeople,
+      peopleEntered:custDetails.peopleEntered,
+      peopleCheckout:custDetails.peopleCheckout,
       customerName: custDetails.customerName,
       customerNumber: custDetails.customerNumber,
       slotID: slotData.slotId
@@ -414,8 +419,24 @@ class Appointment extends Component {
 
   handleOnChangeNoOfPeople(e) {
     this.setState({
-      noOfPeople: parseInt(e.target.innerText),
+      enteredPeople: parseInt(e.target.innerText),
     });
+
+    if(this.state.statusUpdate === "In Store" || this.state.statusUpdate === "Partial Checkout")
+    {
+      if((this.state.peopleCheckout + parseInt(e.target.innerText)) < this.state.peopleEntered)
+      {
+        this.setState({ appointStatus: "PartialCheckout" });
+      }
+      if((this.state.peopleCheckout + parseInt(e.target.innerText)) === this.state.peopleEntered)
+      {
+        this.setState({ appointStatus: "EndVisitedTime" });
+      }
+      if((this.state.peopleCheckout + parseInt(e.target.innerText)) > this.state.peopleEntered)
+      {
+        this.setState({ appointStatus: "EndVisitedTime" });
+      }
+    }
   }
 
   handleCreateAppointment(type) {
@@ -522,7 +543,7 @@ class Appointment extends Component {
           self.setState({
             createAppointModal: false,
           });
-          NotificationManager.success("Record updated successFully.");
+          NotificationManager.success("Appointment booked successfully.");
           self.handleAppointmentGridData(self.state.tabFor);
           self.handleAppointmentCount();
         } else {
@@ -542,7 +563,7 @@ class Appointment extends Component {
       data: {
         AppointmentID: this.state.appointmentID,
         Status: 2,
-        NOofPeople: this.state.numberOfPeople,
+        NOofPeople: this.state.enteredPeople,
         SlotId: this.state.slotID,
         Slotdate: this.state.appointmentDate,
         CustomerNumber: this.state.customerNumber
@@ -556,7 +577,37 @@ class Appointment extends Component {
           self.setState({
             updateAppointModal: false,
           });
-          NotificationManager.success("Appointment booked successfully");
+          NotificationManager.success("Record updated successfully");
+          self.handleAppointmentGridData(self.state.tabFor);
+        } else {
+          NotificationManager.error(status);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleEndVisited(type){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/UpdateAppointmentStatus",
+      data: {
+        AppointmentID: this.state.appointmentID,
+        Status: type==="partialcheckout"?3:4,
+        PeopleCheckout: (this.state.peopleCheckout + this.state.enteredPeople)
+      },
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            updateAppointModal: false,
+          });
+          NotificationManager.success("Record updated successfully");
           self.handleAppointmentGridData(self.state.tabFor);
         } else {
           NotificationManager.error(status);
@@ -1105,7 +1156,7 @@ class Appointment extends Component {
                                 <div className="d-flex">
                                   <div>
                                     <button
-                                      className={item.status==="In Store"?"statusBtn visitedBtn":"statusBtn"}
+                                      className={item.status==="In Store"?"statusBtn visitedBtn":item.status==="Partial Checkout"?"statusBtn partialBtn":"statusBtn"}
                                       type="button"
                                       style={{ marginRight: "10px" }}
                                       disabled
@@ -1350,13 +1401,13 @@ class Appointment extends Component {
                 <div className="col-md-6">
                   <label>
                     People entered :{" "}
-                    <span className="font-weight-bold">03</span>
+                    <span className="font-weight-bold">{this.state.peopleEntered}</span>
                   </label>
                 </div>
                 <div className="col-md-6">
                   <label>
                     People Checkout :{" "}
-                    <span className="font-weight-bold">02</span>
+                    <span className="font-weight-bold">{this.state.peopleCheckout}</span>
                   </label>
                 </div>
                 </>):null}
@@ -1369,22 +1420,22 @@ class Appointment extends Component {
                 className="people-selection"
                 onClick={this.handleOnChangeNoOfPeople}
               >
-                <span className={this.state.noOfPeople === 1 ? "active" : ""}>
+                <span className={this.state.enteredPeople === 1 ? "active" : ""}>
                   1
                 </span>
-                <span className={this.state.noOfPeople === 2 ? "active" : ""}>
+                <span className={this.state.enteredPeople === 2 ? "active" : ""}>
                   2
                 </span>
-                <span className={this.state.noOfPeople === 3 ? "active" : ""}>
+                <span className={this.state.enteredPeople === 3 ? "active" : ""}>
                   3
                 </span>
-                <span className={this.state.noOfPeople === 4 ? "active" : ""}>
+                <span className={this.state.enteredPeople === 4 ? "active" : ""}>
                   4
                 </span>
-                <span className={this.state.noOfPeople === 5 ? "active" : ""}>
+                <span className={this.state.enteredPeople === 5 ? "active" : ""}>
                   5
                 </span>
-                <span className={this.state.noOfPeople === 6 ? "active" : ""}>
+                <span className={this.state.enteredPeople === 6 ? "active" : ""}>
                   6
                 </span>
               </div>
@@ -1406,10 +1457,14 @@ class Appointment extends Component {
               {this.state.statusUpdate !== "Visit Booked"?(
               
               this.state.appointStatus === "EndVisitedTime"?(
-              <button className="appoint-butn appoint-butn-red">
+              <button className="appoint-butn appoint-butn-red"
+               onClick={this.handleEndVisited.bind(this,"endvisited")}
+              >
                 End Visit Time
               </button>):(
-              <button className="appoint-butn appoint-butn-orange">
+              <button className="appoint-butn appoint-butn-orange"
+               onClick={this.handleEndVisited.bind(this,"partialcheckout")}
+              >
                 Partial Check Out
               </button>)
               ):null}
