@@ -65,7 +65,15 @@ class Appointment extends Component {
       appointStatus: "EndVisitedTime",
       peopleEntered: 0,
       peopleCheckout: 0,
-      enteredPeople: 0
+      enteredPeople: 0,
+      custName: "",
+      custPhoneNo: "",
+      appointDate: "",
+      errCustName: "",
+      errCustNumber: "",
+      errAppDate: "",
+      errNoOfMember: "",
+      otpID: 0
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -132,6 +140,7 @@ class Appointment extends Component {
     debugger;
     this.setState({
       appointDate: date,
+      errAppDate: ""
     });
 
     var date = moment(date).format("YYYY-MM-DD");
@@ -182,6 +191,20 @@ class Appointment extends Component {
   handleCreateAppointmentOpen() {
     this.setState({
       createAppointModal: true,
+      timeSlotData: [],
+      timeSlotColor: "",
+      slotColorName: "",
+      slotError: "",
+      timeSlotId: 0,
+      bookAppointment: "",
+      btnText: "generate otp",
+      isVerified: 0,
+      type: "GenerateOTP",
+      noOfMember: "",
+      custName: "",
+      custPhoneNo: "",
+      appointDate: "",
+      otpID: 0
     });
   }
 
@@ -414,6 +437,10 @@ class Appointment extends Component {
     debugger;
     this.setState({
       [e.target.name]: e.target.value,
+      errCustName: "",
+      errCustNumber: "",
+      errNoOfMember: "",
+      errAppDate: ""
     });
   }
 
@@ -450,31 +477,50 @@ class Appointment extends Component {
 
   handleGenerateOTP() {
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Appointment/GenerateOTP",
-      params: {
-        mobileNumber: this.state.custPhoneNo,
-      },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success" && data) {
-          self.setState({
-            generateOTP: "OTP",
-          });
-        } else {
-          self.setState({
-            generateOTP: "",
-          });
-        }
+    if(this.state.custName !== "" && this.state.custPhoneNo !== "" 
+      && this.state.noOfMember !== "" && this.state.appointDate !== ""
+    ){
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/GenerateOTP",
+        params: {
+          mobileNumber: this.state.custPhoneNo,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success" && data) {
+            self.setState({
+              generateOTP: "OTP",
+              otpID: data
+            });
+          } else {
+            self.setState({
+              generateOTP: "",
+            });
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    }
+    else{
+        if(this.state.custName === ""){
+          this.setState({errCustName: "Please enter name"});
+        }
+        if(this.state.custPhoneNo === ""){
+          this.setState({errCustNumber: "Please enter phone number"});
+        }
+        if(this.state.noOfMember === ""){
+          this.setState({errNoOfMember: "Please enter no of members"});
+        }
+        if(this.state.appointDate === ""){
+          this.setState({errAppDate: "Please enter appointment date"});
+        }
+    }
   }
 
   handleEditNumber() {
@@ -489,8 +535,8 @@ class Appointment extends Component {
       method: "post",
       url: config.apiUrl + "/Appointment/VarifyOTP",
       params: {
-        otpID: 1,
-        otp: this.state.otp,
+        otpID: this.state.otpID,
+        otp: this.state.otp
       },
       headers: authHeader(),
     })
@@ -519,40 +565,59 @@ class Appointment extends Component {
 
   handleBookAppointment() {
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Appointment/CreateAppointment",
-      data: {
-        AppointmentDate: moment(this.state.appointDate).format("YYYY-MM-DD"),
-        CustomerName: this.state.custName,
-        MobileNo: this.state.custPhoneNo,
-        NOofPeople: parseInt(this.state.noOfMember),
-        SlotID: this.state.timeSlotId,
-      },
-      params: {
-        IsSMS: true,
-        IsLoyalty: true,
-      },
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success" && data) {
-          self.setState({
-            createAppointModal: false,
-          });
-          NotificationManager.success("Appointment booked successfully.");
-          self.handleAppointmentGridData(self.state.tabFor);
-          self.handleAppointmentCount();
-        } else {
-          NotificationManager.error(status);
-        }
+
+    if(this.state.custName !== "" && this.state.custPhoneNo !== "" 
+      && this.state.noOfMember !== "" && this.state.appointDate !== ""
+    ){
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/CreateAppointment",
+        data: {
+          AppointmentDate: moment(this.state.appointDate).format("YYYY-MM-DD"),
+          CustomerName: this.state.custName,
+          MobileNo: this.state.custPhoneNo,
+          NOofPeople: parseInt(this.state.noOfMember),
+          SlotID: this.state.timeSlotId,
+        },
+        params: {
+          IsSMS: true,
+          IsLoyalty: true,
+        },
+        headers: authHeader(),
       })
-      .catch((data) => {
-        console.log(data);
-      });
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          let data = res.data.responseData;
+          if (status === "Success" && data) {
+            self.setState({
+              createAppointModal: false,
+            });
+            NotificationManager.success("Appointment booked successfully.");
+            self.handleAppointmentGridData(self.state.tabFor);
+            self.handleAppointmentCount();
+          } else {
+            NotificationManager.error(status);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    }
+    else{
+      if(this.state.custName === ""){
+        this.setState({errCustName: "Please enter name"});
+      }
+      if(this.state.custPhoneNo === ""){
+        this.setState({errCustNumber: "Please enter phone number"});
+      }
+      if(this.state.noOfMember === ""){
+        this.setState({errNoOfMember: "Please enter no of members"});
+      }
+      if(this.state.appointDate === ""){
+        this.setState({errAppDate: "Please enter appointment date"});
+      }
+    }
   }
 
   handleStartVisit(){
@@ -788,6 +853,16 @@ class Appointment extends Component {
                       value={this.state.custName}
                       onChange={this.handleOnChangeData}
                     />
+                    {this.state.errCustName !== "" ? (
+                        <p
+                          style={{
+                          color: "red",
+                          marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.errCustName}
+                        </p>
+                        ) : null}
                   </div>
                   <div className="appnt-input-group">
                     <div className="d-flex">
@@ -808,6 +883,16 @@ class Appointment extends Component {
                       value={this.state.custPhoneNo}
                       onChange={this.handleOnChangeData}
                     />
+                    {this.state.errCustNumber !== "" ? (
+                        <p
+                          style={{
+                          color: "red",
+                          marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.errCustNumber}
+                        </p>
+                        ) : null}
                   </div>
                   <div className="appnt-input-group">
                     <label>Date &amp; Time</label>
@@ -824,6 +909,16 @@ class Appointment extends Component {
                           className="appoint-date"
                           dateFormat="dd - MM - yyyy"
                         />
+                        {this.state.errAppDate !== "" ? (
+                        <p
+                          style={{
+                          color: "red",
+                          marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.errAppDate}
+                        </p>
+                        ) : null}
                       </div>
                       <div className="col-6">
                         <select
@@ -867,6 +962,16 @@ class Appointment extends Component {
                           value={this.state.noOfMember}
                           onChange={this.handleOnChangeData}
                         />
+                        {this.state.errNoOfMember !== "" ? (
+                        <p
+                          style={{
+                          color: "red",
+                          marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.errNoOfMember}
+                        </p>
+                        ) : null}
                       </div>
                       <div className="col">
                         <label>Loyalty Member</label>
@@ -1156,7 +1261,8 @@ class Appointment extends Component {
                                 <div className="d-flex">
                                   <div>
                                     <button
-                                      className={item.status==="In Store"?"statusBtn visitedBtn":item.status==="Partial Checkout"?"statusBtn partialBtn":"statusBtn"}
+                                      className={item.status==="In Store"?"statusBtn visitedBtn":
+                                                 item.status==="Partial Checkout"?"statusBtn partialBtn":"endVisitBtn statusBtn"}
                                       type="button"
                                       style={{ marginRight: "10px" }}
                                       disabled

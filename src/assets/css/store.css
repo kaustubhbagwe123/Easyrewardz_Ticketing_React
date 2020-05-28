@@ -3575,6 +3575,11 @@ table tr th:last-child {
   border: #EB4D4B;
 }
 
+.custom-tableak .endVisitBtn{
+  background-color: #00B894;
+  border: #00B894;
+}
+
 @media screen and (max-width: 600px) {
   .customer-count-block {
     background: #f5f6fc;
