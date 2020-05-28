@@ -494,7 +494,6 @@ class MyTicket extends Component {
       });
   }
   handleOnLoadFiles() {
-    ////
     for (let i = 0; i < this.state.fileDummy.length; i++) {
       var objFile = new Object();
       var name = this.state.fileDummy[i].attachmentName;
@@ -508,7 +507,6 @@ class MyTicket extends Component {
     }
   }
   handleAssignDataList() {
-    ////
     let self = this;
     axios({
       method: "post",

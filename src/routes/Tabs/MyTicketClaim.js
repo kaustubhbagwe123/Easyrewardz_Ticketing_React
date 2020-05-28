@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
-import BataShoesIcon from "./../../assets/Images/bata.png";
 import { Drawer, Popover } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +10,6 @@ import { authHeader } from "./../../helpers/authHeader";
 import config from "./../../helpers/config";
 import ReactTable from "react-table";
 import StoreImg from "./../../assets/Images/store.png";
-import moment from "moment";
 import { NotificationManager } from "react-notifications";
 
 class MyTicketClaim extends Component {
@@ -268,8 +266,7 @@ class MyTicketClaim extends Component {
                 accessor: "category",
                 Cell: (row) => (
                   <span>
-                    <label>{row.original.category} </label>
-
+                    <label>{row.original.category}</label>
                     <Popover
                       content={
                         <div className="dash-creation-popup-cntr">

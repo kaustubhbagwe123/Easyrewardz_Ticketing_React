@@ -3,13 +3,13 @@ import { Route } from "react-router-dom";
 import StoreLayout from "./../StoreManager/storelayout";
 import StoreDashboard from "./StoreDashboard";
 import StoreTask from "./StoreTask";
-import StoreTaskView from "./StoreTaskView";
 import EditStoreTask from "./EditStoreTask";
 import StoreTaskByTicket from "./StoreTaskByTicket";
 import RaiseClaim from "./RaiseClaim";
 import Claim from "./Claim";
 import ClaimApproveReject from "./ClaimApproveReject";
 import StoreAddTask from "./StoreAddTask";
+import Settings from "./../Settings/Settings";
 import HierarchyMaster from "./../Settings/Store/HierarchyMaster";
 import StorePriority from "./../Settings/Store/StorePriority";
 import StoreCRMRole from "./../Settings/Store/StoreCRMRole";
@@ -22,6 +22,11 @@ import DepartmentMaster from "./../Settings/Store/DepartmentMaster";
 import ClaimCategoryMaster from "./../Settings/Store/ClaimCategoryMaster";
 import StoreAlerts from "./../Settings/Store/StoreAlerts";
 import { NotificationContainer } from "react-notifications";
+import StoreFileUploadLogs from "../Settings/Store/StoreFileUploadLogs";
+import UserProfile from "./UserProfile";
+import Appointment from "./Appointment"
+import StoreCampaign from "../Campaign/StoreCampaign";
+import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 
 export class StoreApp extends Component {
   render() {
@@ -34,11 +39,6 @@ export class StoreApp extends Component {
           component={StoreDashboard}
         />
         <Route exact path={`${match.url}/storetask`} component={StoreTask} />
-        <Route
-          exact
-          path={`${match.url}/storetaskview`}
-          component={StoreTaskView}
-        />
 
         <Route
           exact
@@ -77,6 +77,7 @@ export class StoreApp extends Component {
           path={`${match.url}/storeCRMRole`}
           component={StoreCRMRole}
         />
+        <Route exact path={`${match.url}/settings`} component={Settings} />
         <Route
           exact
           path={`${match.url}/storeReports`}
@@ -109,6 +110,23 @@ export class StoreApp extends Component {
           path={`${match.url}/storeAlerts`}
           component={StoreAlerts}
         />
+        <Route
+          exact
+          path={`${match.url}/storeFileUploadLogs`}
+          component={StoreFileUploadLogs}
+        />
+        <Route
+          exact
+          path={`${match.url}/userProfile`}
+          component={UserProfile}
+        />
+        <Route exact path={`${match.url}/appointment`} component={Appointment} />
+        <Route
+          exact
+          path={`${match.url}/campaign`}
+          component={StoreCampaign}
+        />
+        <Route exact path={`${match.url}/homeshopsetting`} component={HomeShopSetting} />
         <NotificationContainer />
       </StoreLayout>
     );

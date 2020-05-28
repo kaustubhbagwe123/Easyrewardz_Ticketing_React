@@ -2925,7 +2925,6 @@ class Dashboard extends Component {
   }
   handleGetCategoryList() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2933,6 +2932,7 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let data = res.data;
         let CategoryData = res.data;
         if(data.length > 0){
@@ -2945,6 +2945,7 @@ class Dashboard extends Component {
             CategoryData: [],
           });
         }
+        
       })
       .catch((data) => {
         console.log(data);

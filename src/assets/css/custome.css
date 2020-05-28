@@ -106,6 +106,16 @@ a {
   line-height: 58px;
   text-align: center;
 }
+.bell-icon {
+  flex: 0 0 85px;
+  background: #fff;
+  border-right: 1px solid #e9e9e9;
+  line-height: 53px;
+}
+.bell-icon img {
+  width: 50px;
+  cursor: pointer;
+}
 .hamb-menu {
   width: 20px;
   margin-top: 13px;
@@ -1565,7 +1575,7 @@ table {
 }
 
 .sort-column {
-  color: #0066cc;
+  color: #0066cc !important;
   font-weight: bold;
   text-decoration-line: underline;
 }
@@ -3326,6 +3336,30 @@ table tr th:last-child {
   background: url("./../Images//table-arr.png") no-repeat right 20px center;
   background-size: 13px;
 }
+.store-report-add .normal-dropdown .css-1hwfws3 {
+  background-color: #ecf2f4;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 4px;
+  padding-left: 14px;
+  padding-right: 40px;
+}
+.store-report-add .normal-dropdown .css-1wa3eu0-placeholder {
+  color: #9b9b9b;
+  font-weight: 700;
+}
+.store-report-add .normal-dropdown .css-yk16xz-control,
+.store-report-add .normal-dropdown .css-1pahdxg-control {
+  min-height: auto;
+}
+.store-report-add .normal-dropdown .css-1n7v3ny-option,
+.store-report-add .normal-dropdown .css-yt9ioa-option,
+.store-report-add .normal-dropdown .css-9gakcf-option {
+  padding: 3px 14px;
+}
+.store-report-add .issuetype-cusdrp .category-box {
+  margin-bottom: 0;
+}
 .common-adv-padd {
   padding: 20px 0;
 }
@@ -3593,6 +3627,111 @@ table tr th:last-child {
   background: transparent !important;
   border-bottom: 0;
 }
+.custom-antd-table.antd-table-campaign .ant-table-thead > tr > th {
+  background: #e5e9ed !important;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+.custom-antd-table.antd-table-campaign .ant-table-thead > tr > th:last-child {
+  text-align: left;
+  float: none;
+}
+.custom-antd-table.antd-table-campaign .ant-spin-nested-loading,
+.custom-antd-table.antd-table-campaign .ant-spin-container,
+.custom-antd-table.antd-table-campaign .ant-table {
+  position: static;
+}
+.custom-antd-table.antd-table-campaign .react-datepicker__time-list {
+  overflow-x: hidden;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-thead
+  > tr
+  > th {
+  color: #989898;
+  background: #f0f0f0 !important;
+}
+.custom-table-bg
+  .custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-thead
+  > tr
+  > th {
+  background: #f5f8f9 !important;
+}
+.custom-table-bg
+  .custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
+  background: rgb(250, 254, 255) !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+  background: #fcfcfc !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:first-child
+  > td {
+  padding-top: 15px !important;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr:last-child
+  > td {
+  padding-bottom: 15px !important;
+}
+.antd-table-campaign tr.ant-table-expanded-row td > .ant-table-wrapper {
+  margin: 0;
+}
+.custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+.custom-antd-table.antd-table-campaign table {
+  padding: 0;
+}
+.antd-table-campaign .ant-table-row-collapsed::after {
+  content: "";
+  background: url("./../Images/collapsedown.png") no-repeat center center;
+  background-size: 24px 24px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0px, -50%);
+}
+.antd-table-campaign .ant-table-row-expanded::after {
+  content: "";
+  background: url("./../Images/collapseUp.png") no-repeat center center;
+  background-size: 24px 24px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0px, -50%);
+}
+.antd-table-campaign
+  .ant-table
+  .ant-table-row-indent
+  + .ant-table-row-expand-icon {
+  margin-right: 0;
+  position: relative;
+  border: 0;
+}
+.antd-table-campaign .ant-table-tbody > tr > td {
+  border-color: #f1f1f1;
+}
 .custom-react-table .rt-thead .rt-th span {
   padding: 0 !important;
   font-size: 12px;
@@ -3618,6 +3757,12 @@ table tr th:last-child {
 }
 .custom-antd-table .ant-table-expanded-row > td:first-child {
   display: none;
+}
+.custom-antd-table.antd-table-campaign
+  .ant-table-expanded-row
+  > td:first-child {
+  display: table-cell;
+  padding: 0 !important;
 }
 .custom-antd-table .ant-table-expanded-row,
 .inner-custom-react-table .ReactTable {
@@ -3647,10 +3792,12 @@ table tr th:last-child {
 .custom-antd-table .ant-table-expanded-row table {
   padding: 0;
 }
-.date-picker-arrows .react-datepicker button {
+.date-picker-arrows .react-datepicker button,
+.antd-table-campaign .react-datepicker button {
   min-width: auto;
 }
-.date-picker-arrows .react-datepicker span {
+.date-picker-arrows .react-datepicker span,
+.antd-table-campaign .react-datepicker span {
   display: inline-block;
 }
 .datepicker-overflow table,
@@ -3895,7 +4042,16 @@ table tr th:last-child {
 .category-box input {
   display: none;
 }
-#overlaySla {
+#overlaySla,
+#overlayDepartment,
+#overlayFunction,
+#overlayPriority,
+#overlayClaimStatus,
+#overlayClaimCategory,
+#overlayClaimSubCategory,
+#overlayClaimIssueType,
+#overlayCampaignName,
+#overlayCampaignStatus {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -3904,7 +4060,16 @@ table tr th:last-child {
   z-index: 1000;
   display: none;
 }
-#overlaySla.show {
+#overlaySla.show,
+#overlayDepartment.show,
+#overlayFunction.show,
+#overlayPriority.show,
+#overlayClaimStatus.show,
+#overlayClaimCategory.show,
+#overlayClaimSubCategory.show,
+#overlayClaimIssueType.show,
+#overlayCampaignName.show,
+#overlayCampaignStatus.show {
   display: block;
 }
 .dropdown-menu-sla {
@@ -4018,6 +4183,9 @@ table tr th:last-child {
 .search-customer-padding {
   padding: 30px;
 }
+.cusrow .row {
+  margin: 0 !important;
+}
 .back-color {
   background-color: #f5f8f9;
   padding-top: 20px;
@@ -4120,9 +4288,9 @@ table tr th:last-child {
   padding-top: 15px;
   padding-bottom: 10px;
 }
-.raiseclaim .row {
+/* .raiseclaim .row {
   margin: 0;
-}
+} */
 .ticket-comments-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
@@ -4766,6 +4934,9 @@ progress::-webkit-progress-bar {
   width: 135px;
   height: 76px;
 }
+.batashoes-icon img {
+  width: 100%;
+}
 .reacttableclaimdrawer .ReactTable {
   border: none;
 }
@@ -4989,8 +5160,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  /* padding-left: 20px; */
-  /* padding-top: 17px; */
+  /* padding-left: 20px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5001,8 +5172,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  /* padding-left: 24px; */
-  /* padding-top: 17px; */
+  /* padding-left: 24px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5206,8 +5377,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  /* padding-left: 20px; */
-  /* padding-top: 17px; */
+  /* padding-left: 20px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 
@@ -5218,8 +5389,8 @@ progress::-webkit-progress-bar {
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  /* padding-left: 24px; */
-  /* padding-top: 17px; */
+  /* padding-left: 24px;
+  padding-top: 17px; */
   cursor: pointer;
 }
 .kb-header span {
@@ -6129,7 +6300,8 @@ progress::-webkit-progress-bar {
   border-radius: 60px;
   cursor: pointer;
   z-index: 0;
-  top: 10px;
+  /* top: 10px; */
+  top: 2px;
   margin-left: 115px;
 }
 .switch input[type="checkbox"] + .cr:after,
@@ -6401,6 +6573,9 @@ table thead tr {
 .ant-checkbox + span {
   padding-right: 18px !important;
   font-weight: 500 !important;
+}
+.cre-str-alrt .ant-checkbox + span {
+  padding-right: 9px !important;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #2561a8 !important;
@@ -9547,6 +9722,11 @@ table tr th:last-child {
 .DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(3) {
   background-color: #def3ff;
 }
+
+.modal-content {
+  border: 0;
+}
+
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
     flex: 0 0 33.333333%;
@@ -10028,6 +10208,7 @@ table tr th:last-child {
 }
 .dashallbrand1 .dropdown-menu.show {
   min-width: 155px;
+  display: grid;
 }
 .DashTimeRange .inputDate form-control {
   margin: 0 0 0 100px;
@@ -10319,11 +10500,21 @@ table tr th:last-child {
 .notification-popover::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-.cus-drp .css-yk16xz-control {
+.cus-drp .css-yk16xz-control,
+.cus-drp .css-1fhf3k1-control {
   border: none;
   color: #000;
   /* display: block; */
   margin-top: 5px;
+}
+.cus-drp .css-14jk2my-container {
+  pointer-events: initial;
+}
+.cus-drp .css-14jk2my-container .css-1hwfws3 {
+  cursor: not-allowed;
+}
+.cus-drp .css-14jk2my-container .css-1rhbuit-multiValue {
+  pointer-events: none;
 }
 .cus-drp .css-1hwfws3 {
   background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 25px
@@ -10435,6 +10626,13 @@ table tr th:last-child {
   text-align: left;
   padding: 10px 15px;
 }
+.store-report-add .ticketstrReport select {
+  padding-left: 15px;
+}
+.store-report-add .issuetype-cusdrp .btn {
+  padding: 7px 40px 7px 15px;
+  font-size: 14px;
+}
 .issuetype-cusdrp .dropdown-menu.show {
   margin: 0;
   width: 100%;
@@ -10525,6 +10723,9 @@ table tr th:last-child {
   display: block;
   margin-bottom: 13px;
 }
+.store-report-add .issuetype-cusdrp .category-box li:last-child {
+  margin-bottom: 0;
+}
 .category-scroll {
   max-height: 190px;
   overflow-x: hidden;
@@ -10569,6 +10770,9 @@ table tr th:last-child {
 .issuesladrop {
   background: #fff url("./../Images//table-arr.png") no-repeat right 12px center;
   background-size: 12px;
+}
+.store-report-add .issuesladrop {
+  background-position: right 19px center;
 }
 .issuetype-cusdrp .category-box label img {
   height: auto;
@@ -11106,6 +11310,13 @@ table tr th:last-child {
     left: 5px;
   }
   /* dashboard ends */
+
+  .storeRole-name-text {
+    width: 105px;
+  }
+  .module-switch {
+    padding: 0;
+  }
 }
 
 @media only screen and (max-width: 580px) {
@@ -11137,6 +11348,22 @@ table tr th:last-child {
     max-width: 70%;
     min-width: 70%;
   }
+  .rolle-name-text {
+    width: 90px;
+  }
+
+  /* program code starts */
+  .auth-wrapper .auth-content {
+    width: 360px;
+  }
+  .sign-in {
+    font-size: 24px;
+  }
+  .programcode-card-new img,
+  .main-logo {
+    width: 160px !important;
+  }
+  /* program code ends */
 }
 
 @media only screen and (max-width: 480px) {
@@ -11491,6 +11718,12 @@ table tr th:last-child {
     padding: 70px 0px 0 0;
   }
   /* dashboard ends */
+
+  /* program code starts */
+  .auth-wrapper .auth-content {
+    width: 100%;
+  }
+  /* program code ends */
 }
 #customer-tab {
   position: relative;
@@ -11600,4 +11833,45 @@ table tr th:last-child {
 }
 .autopriority {
   display: none;
+}
+.plusline1new {
+  border-right: 1px solid #9b9b9b;
+  padding-top: 12px;
+  padding-bottom: 14px;
+}
+
+.campaign-end-date .ant-calendar-picker-input {
+  height: 37px;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
+  border-color: transparent;
+}
+.campaign-end-date
+  .ant-calendar-picker:hover
+  .ant-calendar-picker-input:not(.ant-input-disabled) {
+  border-color: transparent;
+}
+.campaign-end-date .ant-calendar-picker:hover .ant-calendar-picker-clear {
+  opacity: 0;
+  pointer-events: none;
+}
+.campaign-end-date .ant-calendar-picker-icon {
+  display: none;
+}
+.campaign-end-date .ant-calendar-range-picker-input {
+  font-weight: 700;
+  color: #333;
+}
+.campaign-end-date .ant-calendar-range-picker-separator {
+  color: #333;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.tasksearchdiv {
+  text-align: right;
+  width: 100%;
+}
+.rejectmodal-popup {
+  margin-right: auto !important;
+  min-width: 40%;
 }

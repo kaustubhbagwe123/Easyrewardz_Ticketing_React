@@ -794,14 +794,13 @@ class CreatePriority extends Component {
     if (this.state.rowData.isActive === "") {
       this.setState({ editstatusCompulsion: "Please select status" });
     } else {
-      this.setState({ editstatusCompulsion: "" });
+      this.setState({ editstatusCompulsion: "Please select status" });
     }
     setTimeout(() => {
       if (
         this.state.rowData.priortyName !== "" &&
         this.state.editpriorityNameCompulsion == "" &&
-        this.state.isprority == false &&
-        this.state.editstatusCompulsion==""
+        this.state.isprority == false
       ) {
         let self = this;
         var activeStatus = 0;
