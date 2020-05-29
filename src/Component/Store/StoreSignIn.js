@@ -28,7 +28,6 @@ class StoreSignIn extends Component {
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCRMRole = this.handleCRMRole.bind(this);
     this.validator = new SimpleReactValidator();
   }
   hanleChange(e) {
@@ -53,93 +52,11 @@ class StoreSignIn extends Component {
           programCode: finalEncProgramCode,
         });
       } else {
-        this.props.history.push("/storeProgramCode");
+        this.props.history.push("/");
       }
     } else {
-      this.props.history.push("/storeProgramCode");
+      this.props.history.push("/");
     }
-  }
-
-  handleCRMRole() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
-      headers: authHeader(),
-    })
-      .then(function(res) {
-        debugger;
-        let msg = res.data.message;
-        let data = res.data.responseData.modules;
-        if (msg === "Success") {
-          if (data !== null) {
-            for (var i = 0; i <= data.length; i++) {
-              if (i === data.length) {
-                NotificationManager.error(
-                  "You don't have any sufficient page access. Please contact administrator for access.",
-                  "",
-                  2000
-                );
-                self.setState({
-                  loading: false,
-                });
-              } else if (
-                data[i].moduleName === "Dashboard" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/storedashboard");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Tasks" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/StoreTask");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Claim" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/claim");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Campaign" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Appointment" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/appointment");
-                }, 400);
-                return;
-              } else if (
-                data[i].moduleName === "Settings" &&
-                data[i].modulestatus === true
-              ) {
-                setTimeout(function() {
-                  self.props.history.push("/store/campaign");
-                }, 400);
-                return;
-              }
-            }
-          }
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-      });
   }
 
   handleSubmit(event) {

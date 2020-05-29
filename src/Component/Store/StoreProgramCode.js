@@ -23,7 +23,7 @@ class StoreProgramCode extends Component {
 
   hanleChange(e) {
     e.preventDefault();
-    // debugger
+    debugger
     let self = this;
     if (this.validator.allValid()) {
       const { programCode } = this.state;

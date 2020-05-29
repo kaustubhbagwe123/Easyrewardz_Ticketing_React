@@ -24,6 +24,7 @@ import matchSorter from "match-sorter";
 // import { CSVLink } from "react-csv";
 // import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import TimeSlotdropdown from "./TimeSlotDropdown";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -90,6 +91,29 @@ class StoreModule extends Component {
       broadCastEnabledAfterValid: "",
       campProviderValidation: "",
       broadProviderValidation: "",
+      TimeSlotData: TimeSlotdropdown(),
+      TimeSlotGridData: [],
+      storeCodeData: [],
+      selectStore: 0,
+      selectTimeSlot1: 0,
+      selectTimeSlot2: 0,
+      selectAmPm1: "AM",
+      selectAmPm2: "AM",
+      orderNumber: "",
+      maxCapacity: "",
+      storeCodeValidation: "",
+      orderNovalidation: "",
+      maxCapacityValidation: "",
+      editSlotModal: false,
+      timeSlotEdit: {},
+      editSelectTimeSlot1: 0,
+      editSelectTimeSlot2: 0,
+      editSelectAmPm1: "",
+      editSelectAmPm2: "",
+      timeSlotId: 0,
+      editStoreCodeValidation: "",
+      editOrderNovalidation: "",
+      editMaxCapacityValidation: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -100,6 +124,9 @@ class StoreModule extends Component {
     this.handleEditModal = this.handleEditModal.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.handleGetTimeslotGridData = this.handleGetTimeslotGridData.bind(this);
+    this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
+    this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
   // fileUpload = (e) => {
   //   this.setState({ fileName: e.target.files[0].name });
@@ -317,6 +344,8 @@ class StoreModule extends Component {
     this.handleCampaignChannelGridData();
     this.handleGetAppointmentConfigData();
     this.handleGetBroadCastConfigData();
+    this.handleGetTimeslotGridData();
+    this.handleGetstoreCodeData();
   }
 
   setClaimTabData = (e) => {
@@ -335,12 +364,93 @@ class StoreModule extends Component {
     });
   };
 
-  setUpdateCampaign = (e) => {
+  handleInputOnchange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     this.setState({
       [name]: value,
     });
+  };
+
+  handleSlotInputOnchange = (e) => {
+    var name = e.target.name;
+    var reg = /^[0-9\b]+$/;
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({ [e.target.name]: e.target.value });
+    } else {
+      e.target.value = "";
+    }
+  };
+
+  handleSlotEditInputOnchange = (e) => {
+    var name = e.target.name;
+    var value = e.target.value;
+    var timeSlotEdit = this.state.timeSlotEdit;
+    var reg = /^[0-9\b]+$/;
+    if (value === "" || reg.test(value)) {
+      timeSlotEdit[name] = value;
+      this.setState({
+        timeSlotEdit,
+      });
+    } else {
+      value = "";
+    }
+  };
+
+  handleDrop_downOnchange = (e) => {
+    debugger;
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "selectStore") {
+      this.setState({
+        selectStore: value,
+      });
+    } else if (name === "selectTimeSlot1") {
+      this.setState({
+        selectTimeSlot1: value,
+      });
+    } else if (name === "selectTimeSlot2") {
+      this.setState({
+        selectTimeSlot2: value,
+      });
+    } else if (name === "selectAmPm1") {
+      this.setState({
+        selectAmPm1: value,
+      });
+    } else if (name === "selectAmPm2") {
+      this.setState({
+        selectAmPm2: value,
+      });
+    }
+  };
+
+  handleEditDrop_downOnchange = (e) => {
+    debugger;
+    let name = e.target.name;
+    let value = e.target.value;
+    var timeSlotEdit = this.state.timeSlotEdit;
+    if (name === "editSelectTimeSlot1") {
+      this.setState({
+        editSelectTimeSlot1: value,
+      });
+    } else if (name === "editSelectTimeSlot2") {
+      this.setState({
+        editSelectTimeSlot2: value,
+      });
+    } else if (name === "editSelectAmPm1") {
+      this.setState({
+        editSelectAmPm1: value,
+      });
+    } else if (name === "editSelectAmPm2") {
+      this.setState({
+        editSelectAmPm2: value,
+      });
+    } else if (name === "storeId") {
+      timeSlotEdit[name] = value;
+      this.setState({
+        timeSlotEdit,
+      });
+    }
   };
 
   handleClaimTabData() {
@@ -423,6 +533,79 @@ class StoreModule extends Component {
         } else {
           self.setState({
             campaignChannelData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  ////get Store Code for dropdown
+  handleGetstoreCodeData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/StoreList",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ storeCodeData: data });
+        } else {
+          self.setState({ storeCodeData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  //// handle table record deleted
+  handleDeleteTimeSlot(slotId) {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      headers: authHeader(),
+      params: {
+        SlotID: slotId,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record Deleted Successfully.");
+          self.handleGetTimeslotGridData();
+        } else {
+          NotificationManager.error("Record Not Deleted.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  //// Handle get time slot grid data
+  handleGetTimeslotGridData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetStoreTimeSlotMasterList",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            TimeSlotGridData: data,
+          });
+        } else {
+          self.setState({
+            TimeSlotGridData: [],
           });
         }
       })
@@ -1139,6 +1322,7 @@ class StoreModule extends Component {
   };
   /// handle Broadcast configuration toggle change
   handleBroadCongiFlageOnchange = (id) => {
+    debugger;
     var BroadConfig = id.target.id;
     if (BroadConfig === "ckbroadSMS") {
       this.state.BroadCastConfigData.smsFlag = !this.state.BroadCastConfigData
@@ -1343,7 +1527,7 @@ class StoreModule extends Component {
             .enableClickAfterDuration,
           SmsFlag: this.state.BroadCastConfigData.smsFlag,
           EmailFlag: this.state.BroadCastConfigData.emailFlag,
-          MessengerFlag: this.state.BroadCastConfigData.whatsappFlag,
+          WhatsappFlag: this.state.BroadCastConfigData.whatsappFlag,
           ProviderName: this.state.BroadCastConfigData.providerName,
         },
       })
@@ -1362,6 +1546,133 @@ class StoreModule extends Component {
         broadCastEnabledAfterValid: "Required",
       });
     }
+  }
+
+  /// handle Timeslot add data
+  handleSubmitTimeSlotDate() {
+    var self = this;
+    if (
+      this.state.selectStore !== 0 &&
+      this.state.orderNumber !== "" &&
+      this.state.maxCapacity !== ""
+    ) {
+      var slot1 = this.state.selectTimeSlot1 + this.state.selectAmPm1;
+      var slot2 = this.state.selectTimeSlot2 + this.state.selectAmPm2;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
+        headers: authHeader(),
+        data: {
+          StoreId: this.state.selectStore,
+          TimeSlot: slot1 + "-" + slot2,
+          OrderNumber: parseInt(this.state.orderNumber),
+          MaxCapacity: parseInt(this.state.maxCapacity),
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              selectStore: 0,
+              selectTimeSlot1: 1,
+              selectTimeSlot2: 1,
+              selectAmPm1: "AM",
+              selectAmPm2: "AM",
+              orderNumber: "",
+              maxCapacity: "",
+            });
+            NotificationManager.success("Time Slot Added Successfully.");
+            self.handleGetTimeslotGridData();
+          } else {
+            NotificationManager.error("Time Slot Not Added.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        storeCodeValidation: "Required",
+        orderNovalidation: "Required",
+        maxCapacityValidation: "Required",
+      });
+    }
+  }
+
+  /// Handle Update TimeSlot data
+  handleUpdateTimeSlotData() {
+    debugger;
+    var self = this;
+    if (
+      this.state.timeSlotEdit.storeId !== "0" &&
+      this.state.timeSlotEdit.orderNumber !== "" &&
+      this.state.timeSlotEdit.maxCapacity !== ""
+    ) {
+      var slot1 = this.state.editSelectTimeSlot1 + this.state.editSelectAmPm1;
+      var slot2 = this.state.editSelectTimeSlot2 + this.state.editSelectAmPm2;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
+        headers: authHeader(),
+        data: {
+          SlotId: this.state.timeSlotId,
+          StoreId: this.state.timeSlotEdit.storeId,
+          TimeSlot: slot1 + "-" + slot2,
+          OrderNumber: parseInt(this.state.timeSlotEdit.orderNumber),
+          MaxCapacity: parseInt(this.state.timeSlotEdit.maxCapacity),
+        },
+      })
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Time Slot Updated Successfully.");
+            self.handleGetTimeslotGridData();
+            self.setState({
+              editSlotModal: false,
+            });
+          } else {
+            NotificationManager.error("Time Slot Not Updated.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        editStoreCodeValidation: "Required",
+        editOrderNovalidation: "Required",
+        editMaxCapacityValidation: "Required",
+      });
+    }
+  }
+
+  closeSlotEditModal() {
+    this.setState({
+      editSlotModal: false,
+    });
+  }
+  /// handle Edit Time slot
+  openSlotEditModal(EditData) {
+    debugger;
+    var timeSlotEdit = {};
+
+    timeSlotEdit.storeId = EditData.storeId;
+    timeSlotEdit.storeCode = EditData.storeCode;
+    timeSlotEdit.orderNumber = EditData.orderNumber;
+    timeSlotEdit.maxCapacity = EditData.maxCapacity;
+    timeSlotEdit.timeSlot = EditData.timeSlot;
+
+    var slot = timeSlotEdit.timeSlot.match(/[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g);
+
+    this.setState({
+      editSlotModal: true,
+      timeSlotEdit,
+      timeSlotId: EditData.slotId,
+      editSelectTimeSlot1: slot[0],
+      editSelectTimeSlot2: slot[2],
+      editSelectAmPm1: slot[1],
+      editSelectAmPm2: slot[3],
+    });
   }
 
   render() {
@@ -2788,20 +3099,153 @@ class StoreModule extends Component {
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
-                            <div className="col-md-5 m-auto">
+                            <div className="col-md-6 m-auto">
                               <div className="right-sect-div">
                                 <h3>SLOT SETTINGS</h3>
-                                <div className="module-switch-cntr">
-                                  <select name="enableClickAfterDuration">
-                                    <option value="M">Min</option>
-                                    <option value="H">Hr</option>
-                                  </select>
+                                <div className="cmpaign-channel-table slot-setting-options">
+                                  <div>
+                                    <select
+                                      name="selectStore"
+                                      value={this.state.selectStore}
+                                      onChange={this.handleDrop_downOnchange}
+                                    >
+                                      <option value={0}>Store code</option>
+                                      {this.state.storeCodeData !== null &&
+                                        this.state.storeCodeData.map(
+                                          (item, s) => (
+                                            <option
+                                              key={s}
+                                              value={item.storeID}
+                                              className="select-category-placeholder"
+                                            >
+                                              {item.storeCode}
+                                            </option>
+                                          )
+                                        )}
+                                    </select>
+                                    {this.state.selectStore === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.storeCodeValidation}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div className="slot-timings">
+                                    <div className="d-flex">
+                                      <select
+                                        className="slot-hour"
+                                        name="selectTimeSlot1"
+                                        value={this.state.selectTimeSlot1}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        {this.state.TimeSlotData !== null &&
+                                          this.state.TimeSlotData.map(
+                                            (item, j) => (
+                                              <option
+                                                value={item.TimeSlotId}
+                                                key={j}
+                                              >
+                                                {item.TimeSlot}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                      <select
+                                        className="slot-shift"
+                                        name="selectAmPm1"
+                                        value={this.state.selectAmPm1}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                      </select>
+                                    </div>
+                                    <span className="slot-to">TO</span>
+                                    <div className="d-flex">
+                                      <select
+                                        className="slot-hour"
+                                        name="selectTimeSlot2"
+                                        value={this.state.selectTimeSlot2}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        {this.state.TimeSlotData !== null &&
+                                          this.state.TimeSlotData.map(
+                                            (item, j) => (
+                                              <option
+                                                value={item.TimeSlotId}
+                                                key={j}
+                                              >
+                                                {item.TimeSlot}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                      <select
+                                        className="slot-shift"
+                                        name="selectAmPm2"
+                                        value={this.state.selectAmPm2}
+                                        onChange={this.handleDrop_downOnchange}
+                                      >
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="text"
+                                      placeholder="Order no."
+                                      name="orderNumber"
+                                      value={this.state.orderNumber}
+                                      autoComplete="off"
+                                      maxLength={3}
+                                      onChange={this.handleSlotInputOnchange}
+                                    />
+                                    {this.state.orderNumber === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.orderNovalidation}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="text"
+                                      placeholder="Max Cpty"
+                                      name="maxCapacity"
+                                      autoComplete="off"
+                                      maxLength={2}
+                                      value={this.state.maxCapacity}
+                                      onChange={this.handleSlotInputOnchange}
+                                    />
+                                    {this.state.maxCapacity === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.maxCapacityValidation}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
+                                  onClick={this.handleSubmitTimeSlotDate.bind(
+                                    this
+                                  )}
                                 >
-                                  UPDATE
+                                  SUBMIT
                                 </button>
                               </div>
                             </div>
@@ -2809,38 +3253,38 @@ class StoreModule extends Component {
                           <div className="row">
                             <div className="col-md-12">
                               <ReactTable
-                                // data={this.state.campaignScriptData}
+                                data={this.state.TimeSlotGridData}
                                 columns={[
                                   {
-                                    Header: "SR No",
+                                    Header: "Slot No",
                                     sortable: false,
-                                    accessor: "campaignName",
+                                    accessor: "slotId",
                                   },
                                   {
                                     Header: "Store Code",
-                                    accessor: "campaignScriptLess",
+                                    accessor: "storeCode",
                                     sortable: false,
                                   },
                                   {
-                                    Header: "Slot",
-                                    accessor: "campaignScriptLess",
+                                    Header: "Time Slot",
+                                    accessor: "timeSlot",
                                     sortable: false,
                                   },
                                   {
                                     Header: "Order",
-                                    accessor: "campaignScriptLess",
+                                    accessor: "orderNumber",
                                     sortable: false,
                                   },
                                   {
-                                    Header: "Created by",
-                                    accessor: "createdBy",
+                                    Header: "Created Name",
+                                    accessor: "createdByName",
                                     sortable: false,
                                   },
                                   {
                                     Header: "Actions",
                                     sortable: false,
                                     Cell: (row) => {
-                                      var ids = row.original["id"];
+                                      var ids = row.original["slotId"];
                                       return (
                                         <>
                                           <span>
@@ -2867,10 +3311,10 @@ class StoreModule extends Component {
                                                       </a>
                                                       <button
                                                         className="butn"
-                                                        // onClick={this.deleteCampaign.bind(
-                                                        //   this,
-                                                        //   row.original.campaignID
-                                                        // )}
+                                                        onClick={this.handleDeleteTimeSlot.bind(
+                                                          this,
+                                                          row.original.slotId
+                                                        )}
                                                       >
                                                         Delete
                                                       </button>
@@ -2889,7 +3333,13 @@ class StoreModule extends Component {
                                               />
                                             </Popover>
 
-                                            <button className="react-tabel-button editre">
+                                            <button
+                                              className="react-tabel-button editre"
+                                              onClick={this.openSlotEditModal.bind(
+                                                this,
+                                                row.original
+                                              )}
+                                            >
                                               EDIT
                                             </button>
                                           </span>
@@ -2898,9 +3348,166 @@ class StoreModule extends Component {
                                     },
                                   },
                                 ]}
-                                resizable={false}
+                                // resizable={false}
                                 minRows={2}
-                                defaultPageSize={5}
+                                defaultPageSize={10}
+                                showPagination={true}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label="Language Settings">
+                  <div className="store-mdl backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-4 m-auto">
+                              <div className="right-sect-div">
+                                <h3>LANGUAGE SETTINGS</h3>
+                                <div className="cmpaign-channel-table slot-setting-options">
+                                  <div className="w-100">
+                                    <select
+                                      name="selectStore"
+                                      // value={this.state.selectStore}
+                                      // onChange={this.handleDrop_downOnchange}
+                                    >
+                                      <option>Select Language</option>
+                                      <option>English</option>
+                                      <option>Hindi</option>
+                                      {/* <option value={0}>Store code</option> */}
+                                      {/* {this.state.storeCodeData !== null &&
+                                        this.state.storeCodeData.map(
+                                          (item, s) => (
+                                            <option
+                                              key={s}
+                                              value={item.storeID}
+                                              className="select-category-placeholder"
+                                            >
+                                              {item.storeCode}
+                                            </option>
+                                          )
+                                        )} */}
+                                    </select>
+                                    {/* {this.state.selectStore === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.storeCodeValidation}
+                                      </p>
+                                    )} */}
+                                  </div>
+                                </div>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  // onClick={this.handleSubmitTimeSlotDate.bind(
+                                  //   this
+                                  // )}
+                                >
+                                  SUBMIT
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12">
+                              <ReactTable
+                                // data={this.state.TimeSlotGridData}
+                                columns={[
+                                  {
+                                    Header: "Tenant Id",
+                                    sortable: false,
+                                    // accessor: "slotId",
+                                  },
+                                  {
+                                    Header: "Tenant Name",
+                                    // accessor: "storeCode",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Selected Languages",
+                                    // accessor: "timeSlot",
+                                    sortable: false,
+                                  },
+                                  {
+                                    Header: "Actions",
+                                    sortable: false,
+                                    Cell: (row) => {
+                                      // var ids = row.original["slotId"];
+                                      return (
+                                        <>
+                                          <span>
+                                            <Popover
+                                              content={
+                                                <div className="d-flex general-popover popover-body">
+                                                  <div className="del-big-icon">
+                                                    <img
+                                                      src={DelBigIcon}
+                                                      alt="del-icon"
+                                                    />
+                                                  </div>
+                                                  <div>
+                                                    <p className="font-weight-bold blak-clr">
+                                                      Delete file?
+                                                    </p>
+                                                    <p className="mt-1 fs-12">
+                                                      Are you sure you want to
+                                                      delete this file?
+                                                    </p>
+                                                    <div className="del-can">
+                                                      <a href={Demo.BLANK_LINK}>
+                                                        CANCEL
+                                                      </a>
+                                                      <button
+                                                        className="butn"
+                                                        // onClick={this.handleDeleteTimeSlot.bind(
+                                                        //   this,
+                                                        //   row.original.slotId
+                                                        // )}
+                                                      >
+                                                        Delete
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              }
+                                              placement="bottom"
+                                              trigger="click"
+                                            >
+                                              <img
+                                                src={RedDeleteIcon}
+                                                alt="del-icon"
+                                                className="del-btn"
+                                                // id={ids}
+                                              />
+                                            </Popover>
+
+                                            <button
+                                              className="react-tabel-button editre"
+                                              // onClick={this.openSlotEditModal.bind(
+                                              //   this,
+                                              //   row.original
+                                              // )}
+                                            >
+                                              EDIT
+                                            </button>
+                                          </span>
+                                        </>
+                                      );
+                                    },
+                                  },
+                                ]}
+                                // resizable={false}
+                                minRows={2}
+                                defaultPageSize={10}
                                 showPagination={true}
                               />
                             </div>
@@ -2912,6 +3519,230 @@ class StoreModule extends Component {
                 </Tab>
               </Tabs>
             </section>
+            {/* edit slot starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    EDIT SLOT SETTINGS
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label className="edit-label-1">Store Code</label>
+                    <div>
+                      <select
+                        name="storeId"
+                        value={this.state.timeSlotEdit.storeId}
+                        onChange={this.handleEditDrop_downOnchange}
+                      >
+                        <option value={0}>Store code</option>
+                        {this.state.storeCodeData !== null &&
+                          this.state.storeCodeData.map((item, s) => (
+                            <option
+                              key={s}
+                              value={item.storeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.storeCode}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.timeSlotEdit.storeId === "0" && (
+                        <p
+                          style={{
+                            color: "red",
+                            marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.editStoreCodeValidation}
+                        </p>
+                      )}
+                    </div>
+                    <label className="edit-label-1">Store Timings</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="editSelectTimeSlot1"
+                          value={this.state.editSelectTimeSlot1}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          {this.state.TimeSlotData !== null &&
+                            this.state.TimeSlotData.map((item, j) => (
+                              <option value={item.TimeSlotId} key={j}>
+                                {item.TimeSlot}
+                              </option>
+                            ))}
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="editSelectAmPm1"
+                          value={this.state.editSelectAmPm1}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                      <span className="slot-to">TO</span>
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="editSelectTimeSlot2"
+                          value={this.state.editSelectTimeSlot2}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          {this.state.TimeSlotData !== null &&
+                            this.state.TimeSlotData.map((item, j) => (
+                              <option value={item.TimeSlotId} key={j}>
+                                {item.TimeSlot}
+                              </option>
+                            ))}
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="editSelectAmPm2"
+                          value={this.state.editSelectAmPm2}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-label-1">Order Number</label>
+                    <input
+                      type="text"
+                      placeholder="Order no."
+                      name="orderNumber"
+                      value={this.state.timeSlotEdit.orderNumber}
+                      autoComplete="off"
+                      maxLength={3}
+                      onChange={this.handleSlotEditInputOnchange}
+                    />
+                    {this.state.timeSlotEdit.orderNumber === "" && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginBottom: "0px",
+                        }}
+                      >
+                        {this.state.editOrderNovalidation}
+                      </p>
+                    )}
+                    <label className="edit-label-1">Maximum Capacity</label>
+                    <input
+                      type="text"
+                      placeholder="Max Cpty"
+                      name="maxCapacity"
+                      autoComplete="off"
+                      maxLength={2}
+                      value={this.state.timeSlotEdit.maxCapacity}
+                      onChange={this.handleSlotEditInputOnchange}
+                    />
+                    {this.state.timeSlotEdit.maxCapacity === "" && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginBottom: "0px",
+                        }}
+                      >
+                        {this.state.editMaxCapacityValidation}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    onClick={this.closeSlotEditModal}
+                  >
+                    CANCEL
+                  </a>
+                  <button
+                    className="pop-over-button FlNone"
+                    onClick={this.handleUpdateTimeSlotData.bind(this)}
+                  >
+                    <label className="pop-over-btnsave-text">SAVE</label>
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit slot ends */}
+
+            {/* edit language starts */}
+            <Modal
+              show={this.state.editSlotModal}
+              onHide={this.closeSlotEditModal}
+              dialogClassName="slotEditModal"
+            >
+              <div className="edtpadding">
+                <div className="">
+                  <label className="popover-header-text">
+                    EDIT LANGUAGE SETTINGS
+                  </label>
+                </div>
+                <div className="pop-over-div edit-slot">
+                  <div className="cmpaign-channel-table slot-setting-options right-sect-div">
+                    <label className="edit-label-1">Language</label>
+                    <div>
+                      <select
+                      // name="storeId"
+                      // value={this.state.timeSlotEdit.storeId}
+                      // onChange={this.handleEditDrop_downOnchange}
+                      >
+                        <option>Select Language</option>
+                        <option>Hindi</option>
+                        {/* <option value={0}>Store code</option>
+                        {this.state.storeCodeData !== null &&
+                          this.state.storeCodeData.map((item, s) => (
+                            <option
+                              key={s}
+                              value={item.storeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.storeCode}
+                            </option>
+                          ))} */}
+                      </select>
+                      {/* {this.state.timeSlotEdit.storeId === "0" && (
+                        <p
+                          style={{
+                            color: "red",
+                            marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.editStoreCodeValidation}
+                        </p>
+                      )} */}
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div className="text-center">
+                  <a
+                    className="pop-over-cancle"
+                    onClick={this.closeSlotEditModal}
+                  >
+                    CANCEL
+                  </a>
+                  <button
+                    className="pop-over-button FlNone"
+                    onClick={this.handleUpdateTimeSlotData.bind(this)}
+                  >
+                    <label className="pop-over-btnsave-text">SAVE</label>
+                  </button>
+                </div>
+              </div>
+            </Modal>
+            {/* edit language ends */}
+
             <Modal
               className="EditModa"
               show={this.state.editModal}
@@ -2948,7 +3779,7 @@ class StoreModule extends Component {
                     rows="4"
                     value={this.state.updateScriptDetails}
                     name="updateScriptDetails"
-                    onChange={this.setUpdateCampaign}
+                    onChange={this.handleInputOnchange}
                   ></textarea>
                   {this.state.updateScriptDetails.length == 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>

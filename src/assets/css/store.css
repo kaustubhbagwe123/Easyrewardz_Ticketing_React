@@ -129,7 +129,7 @@
   height: 31px;
   text-transform: initial;
 }
-.followUpBtnBlue{
+.followUpBtnBlue {
   background-color: #5c53ee;
   border-radius: 4px;
   /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5); */
@@ -1462,9 +1462,9 @@ table tr th:last-child {
   cursor: pointer;
 }
 .antbroadcast {
-  left: 950px !important;
+  left: 890px !important;
   /* width: 330px; */
-  width: 290px;
+  width: 320px;
 }
 #customername-popup {
   border-radius: 25px;
@@ -2409,6 +2409,12 @@ table tr th:last-child {
     line-height: 2;
     height: 22px;
   }
+  .followUpBtnBlue {
+    width: 95px;
+    height: 22px;
+    line-height: 2;
+    font-weight: 400;
+  }
   .custom-tableak .antd-table-campaign .ant-table-row-collapsed::after {
     background-size: 17px 17px;
     width: 17px;
@@ -2888,6 +2894,13 @@ table tr th:last-child {
   font-size: 14px;
   font-weight: 700;
 }
+.mid-divider {
+  width: 0.5px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.6);
+  display: none;
+  margin: 0 10px;
+}
 .custom-tabs {
   /* margin-bottom: 15px; */
   /* margin-left: -5px; */
@@ -2930,8 +2943,6 @@ table tr th:last-child {
   font-weight: 700;
 }
 .custom-tableak .statusBtn {
-  background-color: #00b894;
-  border: 1px solid #00b894;
   border-radius: 4px;
   width: 60px;
   height: 30px;
@@ -3082,6 +3093,7 @@ table tr th:last-child {
 }
 .filled-info {
   background: #ff9d58;
+  cursor: pointer;
 }
 .total-info {
   width: 100%;
@@ -3126,6 +3138,7 @@ table tr th:last-child {
   height: 20px;
   width: 0;
   margin-right: 0;
+  padding: 0;
 }
 .appoint-input::placeholder {
   color: #2561a8;
@@ -3294,6 +3307,9 @@ table tr th:last-child {
 .appoint-butn-orange {
   background: #f37b2b;
 }
+.appoint-butn-grey {
+  background: #aeaeae;
+}
 .appoint-cancel {
   font-size: 12px;
   color: #000;
@@ -3398,6 +3414,7 @@ table tr th:last-child {
 .appnt-bottom-white-update .appnt-input-group label {
   font-size: 14px;
   font-weight: 400;
+  white-space: nowrap;
 }
 .people-selection span {
   background-color: #daddec;
@@ -3501,6 +3518,68 @@ table tr th:last-child {
 .otp-appoint-height {
   min-height: 219px;
 }
+.add-appoint-mob {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+  background: #2561a8;
+  border-radius: 15px 15px 0 0;
+  padding: 15px;
+  display: none;
+}
+.broadcastpop {
+  max-height: 350px;
+  overflow: auto;
+}
+.broadcastpop::-webkit-scrollbar {
+  width: 4px;
+}
+.broadcastpop::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+.broadcastpop::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.broadcastpop::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+#promo-sms + label {
+  white-space: nowrap;
+}
+.mobile-appoint-search {
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  padding: 20px 15px;
+  align-items: center;
+  display: none;
+}
+.mobile-appoint-search .appoint-input {
+  width: 100%;
+  margin-right: 11px;
+}
+
+.custom-tableak .visitedBtn {
+  background-color: #ff9d58;
+  border: #ff9d58;
+}
+
+.custom-tableak .partialBtn {
+  background-color: #eb4d4b;
+  border: #eb4d4b;
+}
+
+.custom-tableak .endVisitBtn{
+  background-color: #00B894;
+  border: #00B894;
+}
 
 @media screen and (max-width: 600px) {
   .customer-count-block {
@@ -3528,18 +3607,32 @@ table tr th:last-child {
 @media screen and (max-width: 600px) {
   .tab-count,
   .tab-count1 {
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    font-size: 13px;
+    width: auto;
+    height: auto;
+    line-height: initial;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.3);
+    background: transparent;
+  }
+  .tab-count {
+    color: #2561a8;
+  }
+  .mid-divider {
+    display: block;
   }
   .tab-title1,
   .tab-title {
-    font-size: 13px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
   }
-  /* .custom-tabs {
-    margin: 10px 15px;
-  } */
+  .tab-title {
+    color: #2561a8;
+  }
+  .custom-tabs {
+    padding-right: 15px;
+    padding-left: 15px;
+    background: #2561a8;
+  }
   .appoint-outer-pad {
     padding: 0;
   }
@@ -3553,8 +3646,20 @@ table tr th:last-child {
   .custom-tabcount {
     margin-left: 0;
     margin-right: 20px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 15px 12px;
+    /* min-width: 100px;
+    width: auto; */
+    flex-grow: 1;
   }
-  .custom-tabs > div:last-child {
+  .custom-tabcount {
+    background: rgba(255, 255, 255, 1);
+  }
+  .custom-tabcount .mid-divider {
+    background: #2561a8;
+  }
+  .custom-tabs .appnt-date-cntr div:last-child {
     margin-right: 0;
   }
   .appointment-mobile {
@@ -3613,6 +3718,28 @@ table tr th:last-child {
   }
   .appt-status .ant-select-selection::after {
     right: 7px;
+  }
+  .appointment-top-right {
+    display: none;
+  }
+  .appnt-date-cntr {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .add-appoint-mob {
+    display: block;
+  }
+  .antd-table-appoint {
+    padding-bottom: 65px;
+  }
+  .mobile-appoint-search {
+    display: flex;
+  }
+  .appoint-search-res {
+    margin: 0;
+    background: #fff;
+    font-size: 11px;
+    padding: 5px 15px;
   }
 
   /* ant pagination starts */
@@ -3677,6 +3804,52 @@ table tr th:last-child {
 @media screen and (max-width: 576px) {
   .ant-pagination-options {
     display: inline-block !important;
+  }
+  .create-appoint-popup {
+    padding: 15px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .custom-tabcount1,
+  .custom-tabcount {
+    margin-right: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .mid-divider {
+    margin: 0 7px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .custom-tabcount1,
+  .custom-tabcount {
+    margin-right: 12px;
+  }
+  .tab-count,
+  .tab-count1 {
+    font-size: 16px;
+  }
+  .appoint-update-det .col-md-7,
+  .appoint-update-det .col-md-5 {
+    max-width: 100%;
+    flex: 0 0 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .appnt-bottom-white-update .appnt-input-group .col-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 5px;
+  }
+  .appnt-bottom-white-update {
+    margin-top: -5px;
+  }
+  .broadcastpop {
+    padding: 0;
+  }
+  #sharecamp-popupmob {
+    padding: 20px 14px 5px;
   }
 }
 

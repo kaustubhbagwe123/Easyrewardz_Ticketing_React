@@ -2626,6 +2626,60 @@
   min-width: 65px;
   padding-right: 0;
 }
+.edit-slot .right-sect-div {
+  box-shadow: none;
+  padding: 0;
+  display: block;
+  margin-top: -5px;
+}
+.edit-slot .right-sect-div label {
+  font-size: 12px;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+.slotEditModal {
+  width: 300px;
+}
+.edit-slot .slot-timings {
+  margin: 0;
+}
+.edit-slot .slot-setting-options input {
+  width: 100%;
+}
+.slot-setting-options {
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.slot-setting-options input {
+  width: 75px;
+  font-size: 13px;
+}
+.slot-setting-options input::placeholder {
+  padding: 0;
+  font-weight: 400;
+  font-size: 13px;
+}
+.slot-timings {
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+}
+.slot-hour {
+  border-right: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.slot-shift {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  width: 50px !important;
+}
+.slot-to {
+  font-size: 12px;
+  margin: 0 10px;
+}
 .module-switch-cntr .module-switch {
   margin-top: 10px;
 }

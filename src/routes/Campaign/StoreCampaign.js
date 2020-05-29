@@ -26,7 +26,6 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
-import ReactHtmlParser from "react-html-parser";
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -55,7 +54,7 @@ class StoreCampaign extends Component {
       isTiketDetails: "",
       loading: false,
       ChildTblLoading: false,
-      broadcastChannel: 1,
+      broadcastChannel: "Email",
       responsiveShareVia: false,
       sortCustName: "",
       customerModalDetails: {},
@@ -102,6 +101,11 @@ class StoreCampaign extends Component {
       shareDisable: false,
       custMobileValidation: "",
       CampCustNameValidation: "",
+      campaignExecutionDetails: [],
+      broadcastConfiguration: {},
+      showBroadcastChannel: false,
+      storeCode: "",
+      campaignCode: "",
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -717,6 +721,11 @@ class StoreCampaign extends Component {
   handleBroadCastModalClose() {
     this.setState({
       ResponsiveBroadCast: false,
+    });
+  }
+  handleToggleBroadChannel() {
+    this.setState({
+      showBroadcastChannel: !this.state.showBroadcastChannel,
     });
   }
 
@@ -1380,9 +1389,82 @@ class StoreCampaign extends Component {
         console.log(response);
       });
   };
-
-  handleSelectChannelsOnchange(check) {
+  ///handle get Broadcast configuration
+  handleGetBroadcastConfiguration(store_Code, campaign_Code) {
     debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetBroadcastConfigurationResponses",
+      headers: authHeader(),
+      params: {
+        storeCode: store_Code,
+        campaignCode: campaign_Code,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message == "Success") {
+          if (data.campaignExecutionDetailsResponse.length > 0) {
+            self.setState({ showBroadcastChannel: false });
+          } else {
+            self.setState({ showBroadcastChannel: true });
+          }
+          self.setState({
+            campaignExecutionDetails: data.campaignExecutionDetailsResponse,
+            broadcastConfiguration: data.broadcastConfigurationResponse,
+            ResponsiveBroadCast: true,
+            storeCode: store_Code,
+            campaignCode: campaign_Code,
+          });
+        } else {
+          self.setState({
+            campaignExecutionDetails: [],
+            broadcastConfiguration: {},
+            ResponsiveBroadCast: true,
+            showBroadcastChannel: true,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  /// handle Broadcast execute
+  handleBroadcastExecute(store_Code, campaign_Code) {
+    debugger;
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/InsertBroadCastDetails",
+      headers: authHeader(),
+      params: {
+        storeCode: store_Code,
+        campaignCode: campaign_Code,
+        channelType: this.state.broadcastChannel,
+      },
+    })
+      .then(function(response) {
+        debugger;
+        var message = response.data.message;
+        if (message == "Success") {
+          NotificationManager.success("Sent Successfully.");
+          self.handleGetBroadcastConfiguration(store_Code, campaign_Code);
+          self.setState({
+            broadcastChannel: "Email",
+          });
+        } else {
+          NotificationManager.error("Sent Failed.");
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  //// handle Channel onchange
+  handleSelectChannelsOnchange(check) {
     if (check === "Messenger") {
       this.setState({
         Respo_ChannelMessanger: true,
@@ -1623,42 +1705,93 @@ class StoreCampaign extends Component {
                           <label className="broadcasttitle">
                             Recent Campaigns
                           </label>
-                          <div className="broembox clearfix">
-                            <p>
-                              <label>Email</label>
-                              <span>Executed Date: 24 Aug 2019</span>
-                            </p>
-                            <img
-                              src={PlusIcon}
-                              alt="plus-icone"
-                              className="plusico"
-                            />
-                          </div>
-                          <label className="broadcasttitle">
-                            Broadcast Campaign to Customers
-                          </label>
-                          <label className="broadcastsubtitle">
-                            Choose Channel
-                          </label>
-                          <div>
-                            <Radio.Group
-                              onChange={this.handleBroadcastChange}
-                              value={this.state.broadcastChannel}
-                            >
-                              <Radio className="broadChannel" value={1}>
-                                Email
-                              </Radio>
-                              <Radio className="broadChannel" value={2}>
-                                SMS
-                              </Radio>
-                              <Radio className="broadChannel" value={3}>
-                                Whatsapp
-                              </Radio>
-                            </Radio.Group>
-                          </div>
-                          <button type="button" className="executebtn">
-                            Execute
-                          </button>
+                          {this.state.campaignExecutionDetails !== null &&
+                            this.state.campaignExecutionDetails.map(
+                              (item, b) => (
+                                <div className="broembox clearfix" key={b}>
+                                  <p>
+                                    <label>{item.channelType}</label>
+                                    <span>
+                                      Executed Date: {item.executionDate}
+                                    </span>
+                                  </p>
+                                  <img
+                                    src={PlusIcon}
+                                    alt="plus-icone"
+                                    className="plusico"
+                                    onClick={this.handleToggleBroadChannel.bind(
+                                      this
+                                    )}
+                                  />
+                                </div>
+                              )
+                            )}
+                          {this.state.showBroadcastChannel ? (
+                            <>
+                              <label className="broadcasttitle">
+                                Broadcast Campaign to Customers
+                              </label>
+                              <label className="broadcastsubtitle">
+                                Choose Channel
+                              </label>
+                              <div>
+                                <Radio.Group
+                                  onChange={this.handleBroadcastChange}
+                                  value={this.state.broadcastChannel}
+                                >
+                                  {this.state.broadcastConfiguration
+                                    .emailFlag ? (
+                                    <Radio
+                                      className="broadChannel"
+                                      value="Email"
+                                      disabled={
+                                        this.state.broadcastConfiguration
+                                          .disableEmail
+                                      }
+                                    >
+                                      Email
+                                    </Radio>
+                                  ) : null}
+                                  {this.state.broadcastConfiguration.smsFlag ? (
+                                    <Radio
+                                      className="broadChannel"
+                                      value="SMS"
+                                      disabled={
+                                        this.state.broadcastConfiguration
+                                          .disableSMS
+                                      }
+                                    >
+                                      SMS
+                                    </Radio>
+                                  ) : null}
+                                  {this.state.broadcastConfiguration
+                                    .whatsappFlag ? (
+                                    <Radio
+                                      className="broadChannel"
+                                      value="Whatsapp"
+                                      disabled={
+                                        this.state.broadcastConfiguration
+                                          .disableWhatsapp
+                                      }
+                                    >
+                                      Whatsapp
+                                    </Radio>
+                                  ) : null}
+                                </Radio.Group>
+                              </div>
+                              <button
+                                type="button"
+                                className="executebtn"
+                                onClick={this.handleBroadcastExecute.bind(
+                                  this,
+                                  row.storeCode,
+                                  row.campaignCode
+                                )}
+                              >
+                                Execute
+                              </button>
+                            </>
+                          ) : null}
                         </div>
                       }
                       placement="bottom"
@@ -1668,7 +1801,11 @@ class StoreCampaign extends Component {
                         <img
                           src={BroadCastIcon}
                           alt="cancel-icone"
-                          onClick={this.handleBroadCastModalOpen.bind(this)}
+                          onClick={this.handleGetBroadcastConfiguration.bind(
+                            this,
+                            row.storeCode,
+                            row.campaignCode
+                          )}
                           className="broadcastimg"
                         />
                       </div>
@@ -2097,9 +2234,25 @@ class StoreCampaign extends Component {
                                   <label>Status</label>
                                 </td>
                                 <td>
-                                  <label className="table-btnlabel notConnectedBtnRed">
-                                    {row.statusName}
-                                  </label>
+                                  <div>
+                                    {row.statusID === 100 ? (
+                                      <label className="table-btnlabel contactBtnGreen">
+                                        {row.statusName}
+                                      </label>
+                                    ) : row.statusID === 101 ? (
+                                      <label className="table-btnlabel notConnectedBtnRed">
+                                        {row.statusName}
+                                      </label>
+                                    ) : row.statusID === 102 ? (
+                                      <label className="table-btnlabel followUpBtnYellow">
+                                        {row.statusName}
+                                      </label>
+                                    ) : row.statusID === 104 ? (
+                                      <label className="table-btnlabel followUpBtnBlue">
+                                        {row.statusName}
+                                      </label>
+                                    ) : null}
+                                  </div>
                                 </td>
                                 <td></td>
                               </tr>
@@ -2930,33 +3083,81 @@ class StoreCampaign extends Component {
           />
           <div className="general-popover popover-body broadcastpop">
             <label className="broadcasttitle">Recent Campaigns</label>
-            <div className="broembox clearfix">
-              <p>
-                <label>Email</label>
-                <span>Executed Date: 24 Aug 2019</span>
-              </p>
-              <img src={PlusIcon} alt="plus-icone" className="plusico" />
-            </div>
-            <label className="broadcasttitle">
-              Broadcast Campaign to Customers
-            </label>
-            <label className="broadcastsubtitle">Choose Channel</label>
-            <div>
-              <Radio.Group
-                onChange={this.handleBroadcastChange}
-                value={this.state.broadcastChannel}
-              >
-                <Radio className="broadChannel" value={1}>
-                  Email
-                </Radio>
-                <Radio className="broadChannel" value={2}>
-                  SMS
-                </Radio>
-                <Radio className="broadChannel" value={3}>
-                  Whatsapp
-                </Radio>
-              </Radio.Group>
-            </div>
+            {this.state.campaignExecutionDetails !== null &&
+              this.state.campaignExecutionDetails.map((item, b) => (
+                <div className="broembox clearfix" key={b}>
+                  <p>
+                    <label>{item.channelType}</label>
+                    <span>Executed Date: {item.executionDate}</span>
+                  </p>
+                  <img
+                    src={PlusIcon}
+                    alt="plus-icone"
+                    className="plusico"
+                    onClick={this.handleToggleBroadChannel.bind(this)}
+                  />
+                </div>
+              ))}
+
+            {this.state.showBroadcastChannel ? (
+              <>
+                <label className="broadcasttitle">
+                  Broadcast Campaign to Customers
+                </label>
+                <label className="broadcastsubtitle">Choose Channel</label>
+                <div>
+                  <Radio.Group
+                    onChange={this.handleBroadcastChange}
+                    value={this.state.broadcastChannel}
+                  >
+                    {this.state.broadcastConfiguration.emailFlag ? (
+                      <div className="">
+                        <Radio
+                          className="broadChannel"
+                          value="Email"
+                          disabled={
+                            this.state.broadcastConfiguration.disableEmail
+                          }
+                        >
+                          Email
+                        </Radio>
+                      </div>
+                    ) : null}
+                    {this.state.broadcastConfiguration.smsFlag ? (
+                      <Radio
+                        className="broadChannel"
+                        value="SMS"
+                        disabled={this.state.broadcastConfiguration.disableSMS}
+                      >
+                        SMS
+                      </Radio>
+                    ) : null}
+                    {this.state.broadcastConfiguration.whatsappFlag ? (
+                      <Radio
+                        className="broadChannel"
+                        value="Whatsapp"
+                        disabled={
+                          this.state.broadcastConfiguration.disableWhatsapp
+                        }
+                      >
+                        Whatsapp
+                      </Radio>
+                    ) : null}
+                  </Radio.Group>
+                </div>
+                <button
+                  type="button"
+                  className="executebtn"
+                  onClick={this.handleBroadcastExecute.bind(
+                    this,
+                    this.state.storeCode,
+                    this.state.campaignCode
+                  )}
+                >
+                  Execute
+                </button>
+              </>
+            ) : null}
           </div>
         </Modal>
         {/* ---------------Share via Modal-------------------- */}
