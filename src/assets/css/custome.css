@@ -117,9 +117,9 @@ a {
   cursor: pointer;
 }
 .hamb-menu {
-  width: 60px;
+  width: 20px;
   margin-top: 17px;
-  float: right;
+  float: none;
   display: none;
 }
 .hamb-menu img {
@@ -11376,7 +11376,38 @@ table tr th:last-child {
   }
   .mob-header {
     display: block !important;
+    background-color: #2561A8;
+    color: #fff;
+    padding: 10px;
   }
+  .message-icon-cnt {
+    position: absolute;
+    background-color: #eb4d4b;
+    width: 13px !important;
+    height: 13px !important;
+    line-height: 11px !important;
+    text-align: center;
+    border-radius: 10%;
+    font-size: 10px !important;
+    color: #fff;
+    font-weight: 700;
+    top: -5px !important;
+    right: -5px !important;
+}
+.verticaldots {
+  margin: 0 0 0 8px !important;
+}
+.verticaldots img {
+  height: 17px;
+}
+.header-right-icons {
+  padding: 0;
+  float: right;
+}
+.hamb-menu {
+  display: inline-block;
+  margin: 0 10px 0;
+}
 }
 
 @media only screen and (max-width: 580px) {
@@ -11453,9 +11484,7 @@ table tr th:last-child {
   .header-right-icons a:last-child {
     margin-right: 0px;
   }
-  .header-right-icons {
-    padding: 0 15px;
-  }
+  
   .vl {
     border: 0;
     height: auto;
@@ -11665,10 +11694,7 @@ table tr th:last-child {
     font-size: 16px;
     margin-top: 0;
   }
-  .hamb-menu {
-    display: block;
-    margin-left: 10px;
-  }
+  
 
   /* dashboard starts */
   .dash-dropdowns {
@@ -11987,4 +12013,71 @@ table tr th:last-child {
   margin-top: 10px;
   text-transform: uppercase;
   color: rgb(36, 110, 195);
+}
+.ant-drawer-content-wrapper {
+    width: 230px !important;
+}
+.ant-drawer-body {
+  padding:0 !important;
+}
+.mobsidebar {
+  height: 100vh;
+}
+.uppersec {
+  background-color: #2561a8;
+  padding: 50px 20px;
+}
+.uppersec ul {
+  margin-bottom: 0;
+}
+.uppersec ul li:first-child {
+  background-color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    height: 50px;
+    margin-right: 10px;
+    width: 50px;
+}
+.uppersec ul li:last-child {
+  vertical-align: -webkit-baseline-middle;
+}
+.uppersec ul li img {
+    height: 10px;
+}
+.uppersec h3 {
+  font-size: 14px;
+  color: #fff;
+}
+.uppersec p {
+  font-size: 12px;
+  color: #fff;
+}
+.lowersec ul {
+  padding: 20px;
+  margin-bottom: 0;
+}
+.lowersec ul li {
+  display: block;
+  margin-bottom: 25px;
+}
+.lowersec img {
+  height: 15px;
+  margin-right: 10px;
+  max-width: 20px;
+}
+.lowersec span {
+  width: 30px;
+  display: inline-block;
+}
+.logoutbox {
+  padding: 20px;
+  border-top: 1px solid #ccc;
+}
+.logoutbox ul {
+  margin-bottom: 0;
+}
+.logoutbox img {
+  height: 15px;
+  margin-right: 10px;
+  max-width: 20px;
 }

@@ -2,7 +2,9 @@
     "nav": {
       "dashboard": "डैशबोर्ड",
       "ticket": "मेरे टिकट",
-      "knowledge": "ज्ञानधार"
+      "knowledge": "ज्ञानधार",
+      "campaign": "अभियान",
+      "appointment": "नियुक्ति"
     },
     "label":{
       "er": "एर",
@@ -595,8 +597,8 @@
       "smsscript":"एसएमएस स्क्रिप्ट",
       "recommended":"सिफारिश की",
       "lasttransaction":"अंतिम लेन-देन",
-      "priority":"प्राथमिकता"
-     
+      "priority":"प्राथमिकता",
+      "createappointment":"अपॉइंटमेंट बनाएं"
       
     },
     "span":{
