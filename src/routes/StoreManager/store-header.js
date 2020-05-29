@@ -58,6 +58,8 @@ import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Table, Select } from "antd";
+import Pagination from "react-pagination-js";
+import "react-pagination-js/dist/styles.css";
 
 const { Option } = Select;
 
@@ -149,6 +151,8 @@ class Header extends Component {
       agentData: [],
       sAgentId: 0,
       isScroll: false,
+      selectedSugpage: 1,
+      tempmessageSuggestionData: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -615,6 +619,7 @@ class Header extends Component {
       selectSlot: {},
       scheduleModal: false,
       selectedSlot: {},
+      isScroll: true,
       toggle: {
         one: true,
         two: false,
@@ -824,7 +829,7 @@ class Header extends Component {
           });
           // self.handleGetChatNotificationCount();
         } else {
-          self.setState({ messageData });
+          self.setState({ messageData:[] });
         }
       })
       .catch((response) => {
@@ -868,6 +873,7 @@ class Header extends Component {
               isSendRecomended: false,
               message: "",
               messageSuggestionData: [],
+              tempmessageSuggestionData:[],
               cardModal: false,
               selectedCard: 0,
               remainingCount: "100 characters remaining...",
@@ -1119,6 +1125,7 @@ class Header extends Component {
                 chkSuggestion: [],
                 message: "",
                 messageSuggestionData: [],
+                tempmessageSuggestionData:[]
               });
               self.handleGetChatMessagesList(self.state.chatId);
             }
@@ -1166,6 +1173,7 @@ class Header extends Component {
       } else {
         this.setState({
           messageSuggestionData: [],
+          tempmessageSuggestionData:[],
           chkSuggestion: [],
         });
       }
@@ -1184,11 +1192,25 @@ class Header extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
-        let data = res.data.responseData;
+        let messageSuggestionData = res.data.responseData;
         if (status === "Success") {
-          self.setState({ messageSuggestionData: data, chkSuggestion: [] });
+          debugger;
+          var tempmessageSuggestionData = [];
+          if (messageSuggestionData.length > 10) {
+            for (let index = 0; index < 10; index++) {
+              tempmessageSuggestionData.push(messageSuggestionData[index]);
+            }
+          } else {
+            tempmessageSuggestionData = messageSuggestionData;
+          }
+
+          self.setState({
+            tempmessageSuggestionData,
+            messageSuggestionData,
+            chkSuggestion: [],
+          });
         } else {
-          self.setState({ messageSuggestionData: [], chkSuggestion: [] });
+          self.setState({ messageSuggestionData: [], chkSuggestion: [] ,tempmessageSuggestionData:[]});
         }
       })
       .catch((res) => {
@@ -1678,6 +1700,25 @@ class Header extends Component {
         console.log(response, "---handleGetAgentChatHistory");
       });
   }
+
+  /// Pagination Onchange
+  PaginationOnChange = async (numPage) => {
+    debugger;
+    var tempmessageSuggestionData = [];
+    if (this.state.messageSuggestionData.length < 10) {
+      tempmessageSuggestionData = this.state.messageSuggestionData;
+    } else {
+      for (let i = numPage * 10; i < numPage * 10 + 10; i++) {
+        if (this.state.messageSuggestionData[i]) {
+          tempmessageSuggestionData.push(this.state.messageSuggestionData[i]);
+        }
+      }
+    }
+    await this.setState({
+      selectedSugpage: numPage,
+      tempmessageSuggestionData,
+    });
+  };
   render() {
     return (
       <React.Fragment>
@@ -2796,15 +2837,16 @@ class Header extends Component {
                                       {this.state.isMessage}
                                     </p>
                                   )}
-                                  {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.length >
-                                      0 &&
-                                    this.state.messageSuggestionData.length >
-                                      0 && (
+                                  {this.state.tempmessageSuggestionData !==
+                                    null &&
+                                    this.state.tempmessageSuggestionData
+                                      .length > 0 &&
+                                    this.state.tempmessageSuggestionData
+                                      .length > 0 && (
                                       <div className="suggestions-cntr">
-                                        {this.state.messageSuggestionData !==
-                                          null &&
-                                          this.state.messageSuggestionData.map(
+                                        {this.state
+                                          .tempmessageSuggestionData !== null &&
+                                          this.state.tempmessageSuggestionData.map(
                                             (item, i) => (
                                               <div
                                                 className={
@@ -2846,26 +2888,22 @@ class Header extends Component {
                                           )}
                                       </div>
                                     )}
-                                  {/* {this.state.messageSuggestionData !== null &&
-                              this.state.messageSuggestionData.length > 0 &&
-                              this.state.messageSuggestionData.length > 0 && (
-                                <div className="custom-ticket-title-suggestions">
-                                  {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.map(
-                                      (item, i) => (
-                                        <span
-                                          key={i}
-                                          onClick={
-                                            this.handleAppendMessageSuggestion
-                                          }
-                                          title={item.ticketTitleToolTip}
-                                        >
-                                          {item.ticketTitle}
-                                        </span>
-                                      )
-                                    )}
-                                </div>
-                              )} */}
+                                  {this.state.messageSuggestionData.length >
+                                    0 && (
+                                    <Pagination
+                                      currentPage={this.state.selectedSugpage}
+                                      totalSize={
+                                        this.state.messageSuggestionData.length
+                                      }
+                                      // totalSize={row.customerCount}
+                                      sizePerPage={10}
+                                      hideFirstLastPages={true}
+                                      changeCurrentPage={
+                                        this.PaginationOnChange
+                                      }
+                                      theme="bootstrap"
+                                    />
+                                  )}
                                   {this.state.storeAgentDetail.length !== 0 &&
                                   this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
@@ -3719,15 +3757,16 @@ class Header extends Component {
                                     {this.state.remainingCount}
                                   </p>
 
-                                  {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.length >
-                                      0 &&
-                                    this.state.messageSuggestionData.length >
-                                      0 && (
+                                  {this.state.tempmessageSuggestionData !==
+                                    null &&
+                                    this.state.tempmessageSuggestionData
+                                      .length > 0 &&
+                                    this.state.tempmessageSuggestionData
+                                      .length > 0 && (
                                       <div className="suggestions-cntr">
-                                        {this.state.messageSuggestionData !==
-                                          null &&
-                                          this.state.messageSuggestionData.map(
+                                        {this.state
+                                          .tempmessageSuggestionData !== null &&
+                                          this.state.tempmessageSuggestionData.map(
                                             (item, i) => (
                                               <div
                                                 className={
@@ -3770,6 +3809,21 @@ class Header extends Component {
                                           )}
                                       </div>
                                     )}
+                                  {this.state.messageSuggestionData.length >
+                                    0 && (
+                                    <Pagination
+                                      currentPage={this.state.selectedSugpage}
+                                      totalSize={
+                                        this.state.messageSuggestionData.length
+                                      }
+                                      // totalSize={row.customerCount}
+                                      sizePerPage={10}
+                                      changeCurrentPage={
+                                        this.PaginationOnChange
+                                      }
+                                      theme="bootstrap"
+                                    />
+                                  )}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
                                   this.state.storeAgentDetail[0].suggestion ===
