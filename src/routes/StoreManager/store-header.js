@@ -224,7 +224,8 @@ class Header extends Component {
 
       setInterval(() => {
         this.handleGetChatNotificationCount();
-      }, 6000);
+        console.clear();
+      }, 10000);
 
       this.handleGetOngoingChat("");
     }
@@ -391,8 +392,10 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
+    console.clear();
   }
   componentDidUpdate() {
+    console.clear();
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
@@ -860,7 +863,7 @@ class Header extends Component {
           });
           // self.handleGetChatNotificationCount();
         } else {
-          self.setState({ messageData:[] });
+          self.setState({ messageData: [] });
         }
       })
       .catch((response) => {
@@ -904,7 +907,7 @@ class Header extends Component {
               isSendRecomended: false,
               message: "",
               messageSuggestionData: [],
-              tempmessageSuggestionData:[],
+              tempmessageSuggestionData: [],
               cardModal: false,
               selectedCard: 0,
               remainingCount: "100 characters remaining...",
@@ -1156,7 +1159,7 @@ class Header extends Component {
                 chkSuggestion: [],
                 message: "",
                 messageSuggestionData: [],
-                tempmessageSuggestionData:[]
+                tempmessageSuggestionData: [],
               });
               self.handleGetChatMessagesList(self.state.chatId);
             }
@@ -1204,7 +1207,7 @@ class Header extends Component {
       } else {
         this.setState({
           messageSuggestionData: [],
-          tempmessageSuggestionData:[],
+          tempmessageSuggestionData: [],
           chkSuggestion: [],
         });
       }
@@ -1241,7 +1244,11 @@ class Header extends Component {
             chkSuggestion: [],
           });
         } else {
-          self.setState({ messageSuggestionData: [], chkSuggestion: [] ,tempmessageSuggestionData:[]});
+          self.setState({
+            messageSuggestionData: [],
+            chkSuggestion: [],
+            tempmessageSuggestionData: [],
+          });
         }
       })
       .catch((res) => {
@@ -1935,7 +1942,9 @@ class Header extends Component {
                 </span>
               </div>
             </a>
-            <a className="verticaldots"><img src={Dots} alt="Dots" className="" /></a>
+            <a className="verticaldots">
+              <img src={Dots} alt="Dots" className="" />
+            </a>
           </div>
         </div>
         <Modal
@@ -2695,7 +2704,8 @@ class Header extends Component {
                               aria-selected="true"
                               onClick={this.handleMainTabChange.bind(this, 1)}
                             >
-                              Current Chat
+                              {/* Current Chat */}
+                              {this.state.customerName}
                             </a>
                           </li>
                           <li className="nav-item">
