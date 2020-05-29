@@ -12,8 +12,8 @@ import { NotificationManager } from "react-notifications";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CampaignTable1 from "./Tables/Campaign-row1";
 import Modal from "react-responsive-modal";
-import * as translationHI from '../../translations/hindi'
-import * as translationMA from '../../translations/marathi'
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class Campaign extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class Campaign extends Component {
       isTiketTitle: "",
       isTiketDetails: "",
       loading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -57,15 +57,13 @@ class Campaign extends Component {
   componentDidMount() {
     this.handleCampaignGridData();
     this.handleGetBrand();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   onRowExpand(expanded, record) {
@@ -296,6 +294,15 @@ class Campaign extends Component {
 
         const formData = new FormData();
 
+        var mailData = [];
+        var mailFiled = {};
+        mailFiled["ToEmail"] = "";
+        mailFiled["TikcketMailSubject"] = "";
+        mailFiled["TicketMailBody"] = "";
+        mailFiled["PriorityID"] = -9;
+        mailFiled["IsInforToStore"] = false;
+        mailData.push(mailFiled);
+
         var paramData = {
           TicketTitle: this.state.modalData.tiketTitle,
           Ticketdescription: this.state.modalData.tiketDetails,
@@ -304,12 +311,12 @@ class Campaign extends Component {
           CategoryID: this.state.modalData.cateogryId,
           SubCategoryID: this.state.modalData.subCategoryId,
           IssueTypeID: this.state.modalData.issueTypeId,
-          PriorityID: 73,
-          ChannelOfPurchaseID: 29,
+          PriorityID: -9,
+          ChannelOfPurchaseID: -9,
           Ticketnotes: "",
           taskMasters: [],
           StatusID: 101,
-          TicketActionID: 201,
+          TicketActionID: -9,
           IsInstantEscalateToHighLevel: 0,
           IsWantToAttachOrder: 1,
           TicketTemplateID: 0,
@@ -319,7 +326,7 @@ class Campaign extends Component {
           TicketSourceID: 1,
           OrderItemID: "",
           StoreID: "",
-          ticketingMailerQues: [],
+          ticketingMailerQues: mailData,
         };
         formData.append("ticketingDetails", JSON.stringify(paramData));
         formData.append("Filedata", []);
@@ -655,14 +662,13 @@ class Campaign extends Component {
     }
   };
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
 
-    const TranslationContext = this.state.translateLanguage.default
-    
     return (
       <div>
         <div className="table-cntr store">
           <Table
-            className="components-table-demo-nested antd-table-campaign custom-antd-table"
+            className="components-table-demo-nested antd-table-campaign-padd antd-table-campaign custom-antd-table"
             columns={[
               {
                 title: "Campaign Name",
