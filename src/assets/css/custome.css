@@ -117,9 +117,9 @@ a {
   cursor: pointer;
 }
 .hamb-menu {
-  width: 60px;
+  width: 20px;
   margin-top: 17px;
-  float: right;
+  float: none;
   display: none;
 }
 .hamb-menu img {
@@ -11376,7 +11376,38 @@ table tr th:last-child {
   }
   .mob-header {
     display: block !important;
+    background-color: #2561A8;
+    color: #fff;
+    padding: 10px;
   }
+  .message-icon-cnt {
+    position: absolute;
+    background-color: #eb4d4b;
+    width: 13px !important;
+    height: 13px !important;
+    line-height: 11px !important;
+    text-align: center;
+    border-radius: 10%;
+    font-size: 10px !important;
+    color: #fff;
+    font-weight: 700;
+    top: -5px !important;
+    right: -5px !important;
+}
+.verticaldots {
+  margin: 0 0 0 8px !important;
+}
+.verticaldots img {
+  height: 17px;
+}
+.header-right-icons {
+  padding: 0;
+  float: right;
+}
+.hamb-menu {
+  display: inline-block;
+  margin: 0 10px 0;
+}
 }
 
 @media only screen and (max-width: 580px) {
@@ -11453,9 +11484,7 @@ table tr th:last-child {
   .header-right-icons a:last-child {
     margin-right: 0px;
   }
-  .header-right-icons {
-    padding: 0 15px;
-  }
+  
   .vl {
     border: 0;
     height: auto;
@@ -11665,10 +11694,7 @@ table tr th:last-child {
     font-size: 16px;
     margin-top: 0;
   }
-  .hamb-menu {
-    display: block;
-    margin-left: 10px;
-  }
+  
 
   /* dashboard starts */
   .dash-dropdowns {

@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import DashboardLogo from "./../../assets/Images/store-black.png";
 import TicketLogo from "./../../assets/Images/ticket.png";
 import ChatLogo from "./../../assets/Images/chat.png";
+import ChatLogow from "./../../assets/Images/chatw.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
+import Hambw from "./../../assets/Images/hambw.png";
 import SuggSearch from "./../../assets/Images/sugg-search.png";
 import CancelIcon from "./../../assets/Images/cancel.png";
 import CancelIconW from "./../../assets/Images/cancel-white.png";
+import Dots from "./../../assets/Images/dotsw.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
@@ -70,8 +73,8 @@ import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { Table, Select } from "antd";
-import * as translationHI from '../../translations/hindi'
-import * as translationMA from '../../translations/marathi'
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 const { Option } = Select;
 
@@ -163,7 +166,7 @@ class Header extends Component {
       agentData: [],
       sAgentId: 0,
       isScroll: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -221,14 +224,12 @@ class Header extends Component {
 
       this.handleGetOngoingChat("");
     }
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-     this.state.translateLanguage = translationHI
-    }
-    else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-      this.state.translateLanguage = translationMA
-    }
-    else{
-      this.state.translateLanguage = {}
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
     }
   }
 
@@ -292,8 +293,10 @@ class Header extends Component {
       activeClass: page === "claim" ? "active single-menu" : "single-menu",
     };
     var campaign = {
-      data: this.state.translateLanguage.default !== undefined?
-            this.state.translateLanguage.default.nav.campaign:"Campaign",
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.campaign
+          : "Campaign",
       urls: "campaign",
       logoBlack: CampaignLogo,
       logoBlue: CampaignLogoBlue,
@@ -302,8 +305,10 @@ class Header extends Component {
       activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
     };
     var appointment = {
-      data: this.state.translateLanguage.default !== undefined?
-            this.state.translateLanguage.default.nav.appointment:"Appointment",
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.appointment
+          : "Appointment",
       urls: "appointment",
       logoBlack: AppointmentLogo,
       logoBlue: AppointmentLogoBlue,
@@ -1440,45 +1445,42 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-          (messagewhatsAppData[0].brandName !== "" &&
-          messagewhatsAppData[0].brandName !== null
-            ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
-            : "") +
-          (messagewhatsAppData[0].categoryName !== "" &&
-          messagewhatsAppData[0].categoryName !== null
-            ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
-            : "") +
-          (messagewhatsAppData[0].subCategoryName !== "" &&
-          messagewhatsAppData[0].subCategoryName !== null
-            ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
-            : "") +
-          (messagewhatsAppData[0].color !== "" &&
-          messagewhatsAppData[0].color !== null
-            ? ", Color: " + messagewhatsAppData[0].color.trim()
-            : "") +
-          (messagewhatsAppData[0].size !== "" &&
-          messagewhatsAppData[0].size !== null
-            ? ", Size: " + messagewhatsAppData[0].size.trim()
-            : "") +
-          (messagewhatsAppData[0].uniqueItemCode !== "" &&
-          messagewhatsAppData[0].uniqueItemCode !== null
-            ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
-            : "") +
-          (messagewhatsAppData[0].discount !== "" &&
-          parseFloat(messagewhatsAppData[0].discount) !== 0 &&
-          messagewhatsAppData[0].discount !== null
-            ? ", Discount: " + messagewhatsAppData[0].discount.trim()
-            : "") +
-          (messagewhatsAppData[0].price !== "" &&
-          parseFloat(messagewhatsAppData[0].price) !== 0 &&
-          messagewhatsAppData[0].price !== null
-            ? ", Price: " + messagewhatsAppData[0].price.trim()
-            : "") +
-          "\n" +
-          (messagewhatsAppData[0].url !==
-        null
-          ? messagewhatsAppData[0].url
-          : "");
+        (messagewhatsAppData[0].brandName !== "" &&
+        messagewhatsAppData[0].brandName !== null
+          ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
+          : "") +
+        (messagewhatsAppData[0].categoryName !== "" &&
+        messagewhatsAppData[0].categoryName !== null
+          ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
+          : "") +
+        (messagewhatsAppData[0].subCategoryName !== "" &&
+        messagewhatsAppData[0].subCategoryName !== null
+          ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
+          : "") +
+        (messagewhatsAppData[0].color !== "" &&
+        messagewhatsAppData[0].color !== null
+          ? ", Color: " + messagewhatsAppData[0].color.trim()
+          : "") +
+        (messagewhatsAppData[0].size !== "" &&
+        messagewhatsAppData[0].size !== null
+          ? ", Size: " + messagewhatsAppData[0].size.trim()
+          : "") +
+        (messagewhatsAppData[0].uniqueItemCode !== "" &&
+        messagewhatsAppData[0].uniqueItemCode !== null
+          ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
+          : "") +
+        (messagewhatsAppData[0].discount !== "" &&
+        parseFloat(messagewhatsAppData[0].discount) !== 0 &&
+        messagewhatsAppData[0].discount !== null
+          ? ", Discount: " + messagewhatsAppData[0].discount.trim()
+          : "") +
+        (messagewhatsAppData[0].price !== "" &&
+        parseFloat(messagewhatsAppData[0].price) !== 0 &&
+        messagewhatsAppData[0].price !== null
+          ? ", Price: " + messagewhatsAppData[0].price.trim()
+          : "") +
+        "\n" +
+        (messagewhatsAppData[0].url !== null ? messagewhatsAppData[0].url : "");
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -1705,12 +1707,12 @@ class Header extends Component {
       });
   }
   render() {
-    const TranslationContext = this.state.translateLanguage.default
+    const TranslationContext = this.state.translateLanguage.default;
 
     return (
       <React.Fragment>
         <div
-          className="d-flex align-items-center justify-content-between"
+          className="d-flex align-items-center justify-content-between d-nonemob"
           style={{ background: "white" }}
         >
           <div className="d-flex">
@@ -1865,7 +1867,36 @@ class Header extends Component {
             </a>
           </div>
         </div>
-        <div className="mob-header"></div>
+        <div className="mob-header">
+          <div className="hamb-menu">
+            <img
+              src={Hambw}
+              onClick={this.handleShowMenu.bind(this)}
+              alt="hamburger icon"
+            />
+          </div>
+          <label className="cusheadermob">Campaign</label>
+          <div className="header-right-icons">
+            <a
+              onClick={this.handleChatModalOpen.bind(this)}
+              style={{ display: this.state.chatAccess }}
+            >
+              <div className="position-relative">
+                <img src={ChatLogow} alt="logo" className="chatImg" />
+                <img
+                  src={ChatLogoBlue}
+                  alt="logo"
+                  className="chatImg"
+                  style={{ display: "none" }}
+                />
+                <span className="message-icon-cnt">
+                  {this.state.chatMessageCount}
+                </span>
+              </div>
+            </a>
+            <a className="verticaldots"><img src={Dots} alt="Dots" className="" /></a>
+          </div>
+        </div>
         <Modal
           open={this.state.open}
           onClose={this.onCloseModal}
@@ -2101,7 +2132,7 @@ class Header extends Component {
           visible={this.state.visible}
           overlayClassName="cussidebar"
         >
-        <img
+          <img
             src={CancelIconW}
             alt="cancel-icone"
             className="cust-icon"
@@ -2110,7 +2141,9 @@ class Header extends Component {
           <div className="mobsidebar">
             <div className="uppersec">
               <ul>
-                <li><img src={BellIcon} alt="Icon" /></li>
+                <li>
+                  <img src={BellIcon} alt="Icon" />
+                </li>
                 <li>
                   <h3>HomeEshop</h3>
                   <p>SMB3557</p>
@@ -2119,18 +2152,56 @@ class Header extends Component {
             </div>
             <div className="lowersec">
               <ul>
-                <li><span><img src={DashboardIco} alt="Dashboard" /></span>Dashboard</li>
-                <li><span><img src={TaskIco} alt="Task" /></span>Task</li>
-                <li><span><img src={ClaimIco} alt="Claim" /></span>Claim</li>
-                <li><span><img src={CampaignIco} alt="Campaign" /></span>Campaign</li>
-                <li><span><img src={AppointmentIco} alt="Appointment" /></span>Appointment</li>
-                <li><span><img src={OrdersIco} alt="Orders" /></span>Orders</li>
-                <li><span><img src={TodoIco} alt="To-do" /></span>To-do's</li>
+                <li>
+                  <span>
+                    <img src={DashboardIco} alt="Dashboard" />
+                  </span>
+                  Dashboard
+                </li>
+                <li>
+                  <span>
+                    <img src={TaskIco} alt="Task" />
+                  </span>
+                  Task
+                </li>
+                <li>
+                  <span>
+                    <img src={ClaimIco} alt="Claim" />
+                  </span>
+                  Claim
+                </li>
+                <li>
+                  <span>
+                    <img src={CampaignIco} alt="Campaign" />
+                  </span>
+                  Campaign
+                </li>
+                <li>
+                  <span>
+                    <img src={AppointmentIco} alt="Appointment" />
+                  </span>
+                  Appointment
+                </li>
+                <li>
+                  <span>
+                    <img src={OrdersIco} alt="Orders" />
+                  </span>
+                  Orders
+                </li>
+                <li>
+                  <span>
+                    <img src={TodoIco} alt="To-do" />
+                  </span>
+                  To-do's
+                </li>
               </ul>
             </div>
             <div className="logoutbox">
               <ul>
-                <li><img src={Logout} alt="Logout" />Logout</li>
+                <li>
+                  <img src={Logout} alt="Logout" />
+                  Logout
+                </li>
               </ul>
             </div>
           </div>
