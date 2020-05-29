@@ -2935,17 +2935,16 @@ class Dashboard extends Component {
         debugger;
         let data = res.data;
         let CategoryData = res.data;
-        if(data.length > 0){
+        if (data.length > 0) {
           self.setState({
             CategoryData: CategoryData,
             // CategoryDataAll: CategoryDataAll
           });
-        }else{
+        } else {
           self.setState({
             CategoryData: [],
           });
         }
-        
       })
       .catch((data) => {
         console.log(data);
