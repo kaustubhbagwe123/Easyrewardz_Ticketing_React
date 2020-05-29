@@ -6,6 +6,8 @@ import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import SuggSearch from "./../../assets/Images/sugg-search.png";
+import CancelIcon from "./../../assets/Images/cancel.png";
+import CancelIconW from "./../../assets/Images/cancel-white.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/storeBlue.png";
@@ -18,6 +20,16 @@ import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import SendUp from "./../../assets/Images/send-up.png";
 import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
+
+import DashboardIco from "./../../assets/Images/store-black.png";
+import TaskIco from "./../../assets/Images/ticket.png";
+import ClaimIco from "./../../assets/Images/icon9.svg";
+import CampaignIco from "./../../assets/Images/campaign.svg";
+import AppointmentIco from "./../../assets/Images/appointments.svg";
+import OrdersIco from "./../../assets/Images/order.png";
+import TodoIco from "./../../assets/Images/ticket.png";
+import Logout from "./../../assets/Images/logout.png";
+
 import DummyFace2 from "./../../assets/Images/dummy-face-2.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/mobile-back.svg";
@@ -1779,6 +1791,7 @@ class Header extends Component {
             </a>
           </div>
         </div>
+        <div className="mob-header"></div>
         <Modal
           open={this.state.open}
           onClose={this.onCloseModal}
@@ -2007,14 +2020,46 @@ class Header extends Component {
           </div>
         </Modal>
         <Drawer
-          title="Basic Drawer"
+          //title="Basic Drawer"
           placement="left"
           closable={false}
           onClose={this.handleCloseManu.bind(this)}
           visible={this.state.visible}
+          overlayClassName="cussidebar"
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+        <img
+            src={CancelIconW}
+            alt="cancel-icone"
+            className="cust-icon"
+            onClick={this.handleCloseManu.bind(this)}
+          />
+          <div className="mobsidebar">
+            <div className="uppersec">
+              <ul>
+                <li><img src={BellIcon} alt="Icon" /></li>
+                <li>
+                  <h3>HomeEshop</h3>
+                  <p>SMB3557</p>
+                </li>
+              </ul>
+            </div>
+            <div className="lowersec">
+              <ul>
+                <li><span><img src={DashboardIco} alt="Dashboard" /></span>Dashboard</li>
+                <li><span><img src={TaskIco} alt="Task" /></span>Task</li>
+                <li><span><img src={ClaimIco} alt="Claim" /></span>Claim</li>
+                <li><span><img src={CampaignIco} alt="Campaign" /></span>Campaign</li>
+                <li><span><img src={AppointmentIco} alt="Appointment" /></span>Appointment</li>
+                <li><span><img src={OrdersIco} alt="Orders" /></span>Orders</li>
+                <li><span><img src={TodoIco} alt="To-do" /></span>To-do's</li>
+              </ul>
+            </div>
+            <div className="logoutbox">
+              <ul>
+                <li><img src={Logout} alt="Logout" />Logout</li>
+              </ul>
+            </div>
+          </div>
         </Drawer>
         {/*----------------- chat modal-------------- */}
         <Modal

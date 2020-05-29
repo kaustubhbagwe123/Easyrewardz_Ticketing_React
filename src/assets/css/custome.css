@@ -11984,3 +11984,70 @@ font-size: 12px !important;
     text-transform: uppercase;
     color: rgb(36, 110, 195);
 }
+.ant-drawer-content-wrapper {
+    width: 230px !important;
+}
+.ant-drawer-body {
+  padding:0 !important;
+}
+.mobsidebar {
+  height: 100vh;
+}
+.uppersec {
+  background-color: #2561a8;
+  padding: 50px 20px;
+}
+.uppersec ul {
+  margin-bottom: 0;
+}
+.uppersec ul li:first-child {
+  background-color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    height: 50px;
+    margin-right: 10px;
+    width: 50px;
+}
+.uppersec ul li:last-child {
+  vertical-align: -webkit-baseline-middle;
+}
+.uppersec ul li img {
+    height: 10px;
+}
+.uppersec h3 {
+  font-size: 14px;
+  color: #fff;
+}
+.uppersec p {
+  font-size: 12px;
+  color: #fff;
+}
+.lowersec ul {
+  padding: 20px;
+  margin-bottom: 0;
+}
+.lowersec ul li {
+  display: block;
+  margin-bottom: 25px;
+}
+.lowersec img {
+  height: 15px;
+  margin-right: 10px;
+  max-width: 20px;
+}
+.lowersec span {
+  width: 30px;
+  display: inline-block;
+}
+.logoutbox {
+  padding: 20px;
+  border-top: 1px solid #ccc;
+}
+.logoutbox ul {
+  margin-bottom: 0;
+}
+.logoutbox img {
+  height: 15px;
+  margin-right: 10px;
+  max-width: 20px;
+}
