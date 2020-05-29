@@ -2207,7 +2207,8 @@ class StoreTask extends Component {
                 aria-selected="false"
                 onClick={this.handleGetTaskData.bind(this, 4)}
               >
-                Campaign
+                {TranslationContext!==undefined?TranslationContext.a.campaign:"Campaign"}
+                
               </a>
             </li>
           </ul>

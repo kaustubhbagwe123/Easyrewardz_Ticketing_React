@@ -1142,6 +1142,9 @@
       "customername":"ग्राहक का नाम",
       "date":"तारीख",
       "response":"प्रतिक्रिया",
-      "callrecheduledto":"कॉल पुनर्निर्धारित करने के लिए"
+      "callrecheduledto":"कॉल पुनर्निर्धारित करने के लिए",
+      "contact":"संपर्क",
+      "campaignenddate":"अभियान की अंतिम तिथि",
+      "campaignstatus":"अभियान की स्थिति"
     }
   }
