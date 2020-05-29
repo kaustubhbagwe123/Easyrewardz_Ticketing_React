@@ -1431,7 +1431,7 @@ p {
 }
 
 .chat-hist {
-  padding: 90px 100px 12px 100px;
+  padding: 90px 100px 30px 100px;
   position: relative;
 }
 
@@ -1468,15 +1468,15 @@ p {
 .storeaget-chat-ctn {
   background-color: #ebebeb;
   border-radius: 4px;
-  width: 28px;
+  width: 42px;
   height: 22px;
+  text-align: center;
   color: #989898;
   font-family: Lato;
   font-weight: 700;
   display: inline-block;
   margin-right: 10px;
   padding: 1px;
-  padding-left: 10px;
 }
 .agentchatdrop-down {
   margin-left: 10px;
