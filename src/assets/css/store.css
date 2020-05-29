@@ -2943,6 +2943,8 @@ table tr th:last-child {
   font-weight: 700;
 }
 .custom-tableak .statusBtn {
+  background-color: #00B894;
+  border: #00B894;
   border-radius: 4px;
   width: 60px;
   height: 30px;
