@@ -171,6 +171,7 @@ class Header extends Component {
       selectedSugpage: 1,
       tempmessageSuggestionData: [],
       translateLanguage: {},
+      storeCode: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -523,8 +524,10 @@ class Header extends Component {
             percentLog,
             workTime: data.workTimeInPercentage,
             workTimeHours: data.totalWorkingTime,
+            programCode: data.programCode,
+            storeCode: data.storeCode,
           });
-
+          self.handleCreateSocketConnection(data.programCode, data.storeCode);
           // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
@@ -699,40 +702,6 @@ class Header extends Component {
           self.setState({
             ongoingChatsData,
           });
-
-          if (value == "") {
-            for (let i = 0; i < ongoingChatsData.length; i++) {
-              socket = io.connect(config.socketUrl, {
-                transports: ["polling"],
-              });
-
-              socket.on("connect", () => {
-                socket.send("hi");
-                socket.on(
-                  "91" +
-                    ongoingChatsData[i].mobileNo +
-                    ongoingChatsData[i].programCode.toLowerCase(),
-                  function(data) {
-                    console.log("Message Received");
-                    debugger;
-                    if ("91" + self.state.mobileNo === data[3]) {
-                      self.handleGetChatNotificationCount();
-                      self.handleGetOngoingChat("isRead");
-                      self.handleGetChatMessagesList(self.state.chatId);
-                    } else {
-                      self.handleGetChatNotificationCount();
-                      self.handleGetOngoingChat("isRead");
-                    }
-                  }
-                );
-                window.onbeforeunload = function() {
-                  console.log("unloading resources");
-                  socket.disconnect();
-                  socket.close();
-                };
-              });
-            }
-          }
         } else {
           self.setState({ ongoingChatsData: [] });
         }
@@ -965,6 +934,7 @@ class Header extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var searchCardData = response.data.responseData;
 
@@ -1754,6 +1724,46 @@ class Header extends Component {
       tempmessageSuggestionData,
     });
   };
+
+  handleCreateSocketConnection(programCode, storeCode) {
+    let self = this;
+    var socket = io.connect(config.socketUrl);
+
+    socket.on("connect", () => {
+      socket.send("hi");
+      socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
+        data
+      ) {
+        debugger;
+        if (self.state.storeCode.toLowerCase() === data[5]) {
+          var isMobileNoExist = self.state.ongoingChatsData.filter(
+            (x) => x.mobileNo === data[3].substring(2)
+          );
+          if (isMobileNoExist.length > 0) {
+            if ("91" + self.state.mobileNo === data[3]) {
+              // self.handleGetChatNotificationCount();
+              // self.handleGetOngoingChat();
+              var chatId = 0;
+              if (self.state.ongoingChatsData.length > 0) {
+                chatId = self.state.ongoingChatsData.filter(
+                  (x) => x.mobileNo === self.state.mobileNo
+                )[0].chatID;
+              }
+              self.handleMakeAsReadOnGoingChat(chatId);
+              // self.handleGetChatMessagesList(chatId);
+            } else {
+              self.handleGetChatNotificationCount();
+              self.handleGetOngoingChat();
+              self.handleGetNewChat();
+            }
+          } else {
+            self.handleGetNewChat();
+          }
+        }
+      });
+    });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -2551,7 +2561,31 @@ class Header extends Component {
                     aria-labelledby="ongoing-chat-tab"
                   >
                     <div>
-                      <p className="mobile-chat-header">Ongoing Chats</p>
+                      <p
+                        className="mobile-chat-header"
+                        style={{ display: "inline-block" }}
+                      >
+                        Ongoing Chats
+                      </p>
+                      <Select
+                        className="agentchatdrop-down"
+                        showArrow={true}
+                        value={this.state.sAgentId}
+                        onChange={this.handleChangeAgentDropdown.bind(this)}
+                      >
+                        <Option value={0}>All</Option>
+                        {this.state.agentData !== null &&
+                          this.state.agentData.map((item, i) => {
+                            return (
+                              <Option
+                                key={i}
+                                value={Number(item.storeManagerID)}
+                              >
+                                {item.agentName}
+                              </Option>
+                            );
+                          })}
+                      </Select>
                       <div className="chat-detail-outer-cntr">
                         {this.state.ongoingChatsData &&
                           this.state.ongoingChatsData.map((chat, i) => (
@@ -2694,20 +2728,22 @@ class Header extends Component {
                     <div className="row" style={{ margin: "0" }}>
                       <div className="chatdivtitle">
                         <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className={"nav-link active chattitletab"}
-                              data-toggle="tab"
-                              href="#current-chat"
-                              role="tab"
-                              aria-controls="current-chat"
-                              aria-selected="true"
-                              onClick={this.handleMainTabChange.bind(this, 1)}
-                            >
-                              {/* Current Chat */}
-                              {this.state.customerName}
-                            </a>
-                          </li>
+                          {this.state.customerName && (
+                            <li className="nav-item">
+                              <a
+                                className={"nav-link active chattitletab"}
+                                data-toggle="tab"
+                                href="#current-chat"
+                                role="tab"
+                                aria-controls="current-chat"
+                                aria-selected="true"
+                                onClick={this.handleMainTabChange.bind(this, 1)}
+                              >
+                                {/* Current Chat */}
+                                {this.state.customerName}
+                              </a>
+                            </li>
+                          )}
                           <li className="nav-item">
                             <a
                               className="nav-link chattitletab"
@@ -2719,12 +2755,12 @@ class Header extends Component {
                               onClick={this.handleMainTabChange.bind(this, 2)}
                             >
                               {this.state.agentRecentChatData.length < 9
-                                ? "Recent Chat( 0" +
+                                ? "Recent Chat(0" +
                                   this.state.agentRecentChatData.length +
-                                  " )"
-                                : "Recent Chat( " +
+                                  ")"
+                                : "Recent Chat(" +
                                   this.state.agentRecentChatData.length +
-                                  " )"}
+                                  ")"}
                             </a>
                           </li>
                         </ul>
@@ -3145,172 +3181,178 @@ class Header extends Component {
                                         : "",
                                     }}
                                   >
-                                    {this.state.searchCardData !== null &&
-                                      this.state.searchCardData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div
-                                              className="col-md-6"
-                                              key={i}
-                                              onClick={this.handleSelectCard.bind(
-                                                this,
-                                                item.itemID
-                                              )}
-                                            >
-                                              {item.itemID ===
-                                              this.state.selectedCard ? (
-                                                <div className="selectdot">
-                                                  <img
-                                                    src={CardTick}
-                                                    alt={"select-card"}
-                                                  />
-                                                </div>
-                                              ) : null}
+                                    {this.state.searchCardData !== null
+                                      ? this.state.searchCardData.map(
+                                          (item, i) => {
+                                            return (
                                               <div
-                                                className="card"
-                                                id={"card" + item.itemID}
+                                                className="col-md-6"
+                                                key={i}
+                                                onClick={this.handleSelectCard.bind(
+                                                  this,
+                                                  item.itemID
+                                                )}
                                               >
-                                                <div className="card-body position-relative">
-                                                  {/* <div className="container"> */}
-                                                  <div
-                                                    className="row"
-                                                    style={{
-                                                      margin: "0",
-                                                    }}
-                                                  >
+                                                {item.itemID ===
+                                                this.state.selectedCard ? (
+                                                  <div className="selectdot">
+                                                    <img
+                                                      src={CardTick}
+                                                      alt={"select-card"}
+                                                    />
+                                                  </div>
+                                                ) : null}
+                                                <div
+                                                  className="card"
+                                                  id={"card" + item.itemID}
+                                                >
+                                                  <div className="card-body position-relative">
+                                                    {/* <div className="container"> */}
                                                     <div
-                                                      className="col-md-4 mb-md-0 mb-2"
+                                                      className="row"
                                                       style={{
-                                                        alignSelf: "center",
+                                                        margin: "0",
                                                       }}
                                                     >
-                                                      <img
-                                                        className="chat-product-img"
-                                                        src={item.imageURL}
-                                                        alt="Product Image"
-                                                        title={item.productName}
-                                                      />
-                                                    </div>
-                                                    <div className="col-md-8 bkcprdt">
-                                                      <div>
-                                                        <label className="chat-product-name">
-                                                          {item.productName}
-                                                        </label>
+                                                      <div
+                                                        className="col-md-4 mb-md-0 mb-2"
+                                                        style={{
+                                                          alignSelf: "center",
+                                                        }}
+                                                      >
+                                                        <img
+                                                          className="chat-product-img"
+                                                          src={item.imageURL}
+                                                          alt="Product Image"
+                                                          title={
+                                                            item.productName
+                                                          }
+                                                        />
                                                       </div>
-                                                      <div>
-                                                        {item.brandName !==
-                                                          "" &&
-                                                        item.brandName !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Brand :
-                                                            {" " +
-                                                              item.brandName}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.categoryName !==
-                                                          "" &&
-                                                        item.categoryName !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Category :
-                                                            {" " +
-                                                              item.categoryName}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.subCategoryName !==
-                                                          "" &&
-                                                        item.subCategoryName !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            SubCategory :
-                                                            {" " +
-                                                              item.subCategoryName}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.color !== "" &&
-                                                        item.color !== null ? (
-                                                          <label className="chat-product-code">
-                                                            Color :
-                                                            {" " + item.color}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.size !== "" &&
-                                                        item.size !== null ? (
-                                                          <label className="chat-product-code">
-                                                            Size :
-                                                            {" " + item.size}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.uniqueItemCode !==
-                                                          "" &&
-                                                        item.uniqueItemCode !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Item Code :
-                                                            {" " +
-                                                              item.uniqueItemCode}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.discount !== "" &&
-                                                        parseFloat(
-                                                          item.discount
-                                                        ) !== 0 &&
-                                                        item.discount !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Discount :
-                                                            {" " +
-                                                              item.discount}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.price !== "" &&
-                                                        parseFloat(
-                                                          item.price
-                                                        ) !== 0 &&
-                                                        item.price !== null ? (
-                                                          <label className="chat-product-prize">
-                                                            Price :
-                                                            {" " + item.price}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      {item.ur !== null &&
-                                                      item.ur !== "" ? (
+                                                      <div className="col-md-8 bkcprdt">
                                                         <div>
-                                                          <a
-                                                            href={item.url}
-                                                            target="_blank"
-                                                            className="chat-product-url"
-                                                          >
-                                                            {item.url}
-                                                          </a>
+                                                          <label className="chat-product-name">
+                                                            {item.productName}
+                                                          </label>
                                                         </div>
-                                                      ) : (
-                                                        ""
-                                                      )}
+                                                        <div>
+                                                          {item.brandName !==
+                                                            "" &&
+                                                          item.brandName !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              Brand :
+                                                              {" " +
+                                                                item.brandName}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.categoryName !==
+                                                            "" &&
+                                                          item.categoryName !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              Category :
+                                                              {" " +
+                                                                item.categoryName}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.subCategoryName !==
+                                                            "" &&
+                                                          item.subCategoryName !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              SubCategory :
+                                                              {" " +
+                                                                item.subCategoryName}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.color !== "" &&
+                                                          item.color !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              Color :
+                                                              {" " + item.color}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.size !== "" &&
+                                                          item.size !== null ? (
+                                                            <label className="chat-product-code">
+                                                              Size :
+                                                              {" " + item.size}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.uniqueItemCode !==
+                                                            "" &&
+                                                          item.uniqueItemCode !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              Item Code :
+                                                              {" " +
+                                                                item.uniqueItemCode}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.discount !==
+                                                            "" &&
+                                                          parseFloat(
+                                                            item.discount
+                                                          ) !== 0 &&
+                                                          item.discount !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              Discount :
+                                                              {" " +
+                                                                item.discount}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.price !== "" &&
+                                                          parseFloat(
+                                                            item.price
+                                                          ) !== 0 &&
+                                                          item.price !==
+                                                            null ? (
+                                                            <label className="chat-product-prize">
+                                                              Price :
+                                                              {" " + item.price}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        {item.url !== null &&
+                                                        item.url !== "" ? (
+                                                          <div>
+                                                            <a
+                                                              href={item.url}
+                                                              target="_blank"
+                                                              className="chat-product-url"
+                                                            >
+                                                              {item.url}
+                                                            </a>
+                                                          </div>
+                                                        ) : (
+                                                          ""
+                                                        )}
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          );
-                                        }
-                                      )}
+                                            );
+                                          }
+                                        )
+                                      : null}
                                   </div>
                                   {this.state.searchCardData.length > 0 ? (
                                     <div className="row m-0">
@@ -4050,133 +4092,137 @@ class Header extends Component {
                                     )}
                                   </div>
                                   <div className="product-card">
-                                    {this.state.searchCardData !== null &&
-                                      this.state.searchCardData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div
-                                              className="card"
-                                              key={i}
-                                              onClick={this.handleSelectCard.bind(
-                                                this,
-                                                item.itemID
-                                              )}
-                                            >
-                                              <div className="card-body position-relative">
-                                                {item.itemID ===
-                                                this.state.selectedCard ? (
-                                                  <div className="selectdot">
-                                                    <img
-                                                      src={CardTick}
-                                                      alt={"select-card"}
-                                                    />
-                                                  </div>
-                                                ) : null}
-                                                <div className="mobile-card-cntr">
-                                                  <div className="mobile-card-img">
-                                                    <img
-                                                      className="chat-product-img"
-                                                      src={item.imageURL}
-                                                      alt="Product Image"
-                                                      title={item.productName}
-                                                    />
-                                                  </div>
-                                                  <div className="bkcprdt">
-                                                    <label className="chat-product-name">
-                                                      {item.productName}
-                                                    </label>
-                                                    {item.brandName !== "" &&
-                                                    item.brandName !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Brand :
-                                                        {" " + item.brandName}
+                                    {this.state.searchCardData !== null
+                                      ? this.state.searchCardData.map(
+                                          (item, i) => {
+                                            return (
+                                              <div
+                                                className="card"
+                                                key={i}
+                                                onClick={this.handleSelectCard.bind(
+                                                  this,
+                                                  item.itemID
+                                                )}
+                                              >
+                                                <div className="card-body position-relative">
+                                                  {item.itemID ===
+                                                  this.state.selectedCard ? (
+                                                    <div className="selectdot">
+                                                      <img
+                                                        src={CardTick}
+                                                        alt={"select-card"}
+                                                      />
+                                                    </div>
+                                                  ) : null}
+                                                  <div className="mobile-card-cntr">
+                                                    <div className="mobile-card-img">
+                                                      <img
+                                                        className="chat-product-img"
+                                                        src={item.imageURL}
+                                                        alt="Product Image"
+                                                        title={item.productName}
+                                                      />
+                                                    </div>
+                                                    <div className="bkcprdt">
+                                                      <label className="chat-product-name">
+                                                        {item.productName}
                                                       </label>
-                                                    ) : null}
+                                                      {item.brandName !== "" &&
+                                                      item.brandName !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          Brand :
+                                                          {" " + item.brandName}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.categoryName !== "" &&
-                                                    item.categoryName !==
-                                                      null ? (
-                                                      <label className="chat-product-code">
-                                                        Category :
-                                                        {" " +
-                                                          item.categoryName}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.categoryName !==
+                                                        "" &&
+                                                      item.categoryName !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          Category :
+                                                          {" " +
+                                                            item.categoryName}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.subCategoryName !==
-                                                      "" &&
-                                                    item.subCategoryName !==
-                                                      null ? (
-                                                      <label className="chat-product-code">
-                                                        SubCategory :
-                                                        {" " +
-                                                          item.subCategoryName}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.subCategoryName !==
+                                                        "" &&
+                                                      item.subCategoryName !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          SubCategory :
+                                                          {" " +
+                                                            item.subCategoryName}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.color !== "" &&
-                                                    item.color !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Color :
-                                                        {" " + item.color}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.color !== "" &&
+                                                      item.color !== null ? (
+                                                        <label className="chat-product-code">
+                                                          Color :
+                                                          {" " + item.color}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.size !== "" &&
-                                                    item.size !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Size :{" " + item.size}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.size !== "" &&
+                                                      item.size !== null ? (
+                                                        <label className="chat-product-code">
+                                                          Size :
+                                                          {" " + item.size}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.uniqueItemCode !==
-                                                      "" &&
-                                                    item.uniqueItemCode !==
-                                                      null ? (
-                                                      <label className="chat-product-code">
-                                                        Item Code :
-                                                        {" " +
-                                                          item.uniqueItemCode}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.uniqueItemCode !==
+                                                        "" &&
+                                                      item.uniqueItemCode !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          Item Code :
+                                                          {" " +
+                                                            item.uniqueItemCode}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.discount !== "" &&
-                                                    parseFloat(
-                                                      item.discount
-                                                    ) !== 0 &&
-                                                    item.discount !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Discount :
-                                                        {" " + item.discount}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.discount !== "" &&
+                                                      parseFloat(
+                                                        item.discount
+                                                      ) !== 0 &&
+                                                      item.discount !== null ? (
+                                                        <label className="chat-product-code">
+                                                          Discount :
+                                                          {" " + item.discount}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.price !== "" &&
-                                                    parseFloat(item.price) !==
-                                                      0 &&
-                                                    item.price !== null ? (
-                                                      <label className="chat-product-prize">
-                                                        Price :
-                                                        {" " + item.price}
-                                                      </label>
-                                                    ) : null}
-                                                    {item.url !== null &&
-                                                    item.url !== "" ? (
-                                                      <label className="chat-product-url">
-                                                        {item.url !== null
-                                                          ? item.url
-                                                          : ""}
-                                                      </label>
-                                                    ) : (
-                                                      ""
-                                                    )}
+                                                      {item.price !== "" &&
+                                                      parseFloat(item.price) !==
+                                                        0 &&
+                                                      item.price !== null ? (
+                                                        <label className="chat-product-prize">
+                                                          Price :
+                                                          {" " + item.price}
+                                                        </label>
+                                                      ) : null}
+                                                      {item.url !== null &&
+                                                      item.url !== "" ? (
+                                                        <label className="chat-product-url">
+                                                          {item.url !== null
+                                                            ? item.url
+                                                            : ""}
+                                                        </label>
+                                                      ) : (
+                                                        ""
+                                                      )}
+                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          );
-                                        }
-                                      )}
+                                            );
+                                          }
+                                        )
+                                      : null}
                                   </div>
                                   <div className="chat-btn-cntr">
                                     <button

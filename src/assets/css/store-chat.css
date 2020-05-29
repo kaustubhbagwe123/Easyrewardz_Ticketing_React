@@ -48,7 +48,8 @@ p {
   cursor: pointer;
 }
 .chats-heading {
-  margin: 0 18px 7px;
+  /* margin: 0 18px 7px; */
+  margin-bottom: 7px;
   font-size: 16px;
 }
 .name-num p,
@@ -1431,7 +1432,7 @@ p {
 }
 
 .chat-hist {
-  padding: 90px 100px 12px 100px;
+  padding: 90px 100px 30px 100px;
   position: relative;
 }
 
@@ -1468,7 +1469,7 @@ p {
 .storeaget-chat-ctn {
   background-color: #ebebeb;
   border-radius: 4px;
-  width: 28px;
+  width: 42px;
   height: 22px;
   color: #989898;
   font-family: Lato;
@@ -1476,9 +1477,10 @@ p {
   display: inline-block;
   margin-right: 10px;
   padding: 1px;
-  padding-left: 10px;
+  
+  text-align: center;
 }
 .agentchatdrop-down {
-  margin-left: 10px;
+  margin-left: 27px;
   width: 50%;
 }
