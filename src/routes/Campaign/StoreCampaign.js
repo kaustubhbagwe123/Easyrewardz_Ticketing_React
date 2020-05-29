@@ -54,7 +54,8 @@ class StoreCampaign extends Component {
       isTiketDetails: "",
       loading: false,
       ChildTblLoading: false,
-      broadcastChannel: "Email",
+      broadcastChannel: "",
+      broadChannelValidation: "",
       responsiveShareVia: false,
       sortCustName: "",
       customerModalDetails: {},
@@ -1436,32 +1437,39 @@ class StoreCampaign extends Component {
   handleBroadcastExecute(store_Code, campaign_Code) {
     debugger;
     var self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/StoreCampaign/InsertBroadCastDetails",
-      headers: authHeader(),
-      params: {
-        storeCode: store_Code,
-        campaignCode: campaign_Code,
-        channelType: this.state.broadcastChannel,
-      },
-    })
-      .then(function(response) {
-        debugger;
-        var message = response.data.message;
-        if (message == "Success") {
-          NotificationManager.success("Sent Successfully.");
-          self.handleGetBroadcastConfiguration(store_Code, campaign_Code);
-          self.setState({
-            broadcastChannel: "Email",
-          });
-        } else {
-          NotificationManager.error("Sent Failed.");
-        }
+    if (this.state.broadcastChannel !== "") {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/InsertBroadCastDetails",
+        headers: authHeader(),
+        params: {
+          storeCode: store_Code,
+          campaignCode: campaign_Code,
+          channelType: this.state.broadcastChannel,
+        },
       })
-      .catch((response) => {
-        console.log(response);
+        .then(function(response) {
+          debugger;
+          var message = response.data.message;
+          if (message == "Success") {
+            NotificationManager.success("Sent Successfully.");
+            self.handleGetBroadcastConfiguration(store_Code, campaign_Code);
+            self.setState({
+              broadcastChannel: "",
+              broadChannelValidation: "",
+            });
+          } else {
+            NotificationManager.error("Sent Failed.");
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    } else {
+      self.setState({
+        broadChannelValidation: "Please Choose Channel.",
       });
+    }
   }
   //// handle Channel onchange
   handleSelectChannelsOnchange(check) {
@@ -1778,6 +1786,17 @@ class StoreCampaign extends Component {
                                     </Radio>
                                   ) : null}
                                 </Radio.Group>
+
+                                {this.state.broadcastChannel === "" && (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px",
+                                    }}
+                                  >
+                                    {this.state.broadChannelValidation}
+                                  </p>
+                                )}
                               </div>
                               <button
                                 type="button"
