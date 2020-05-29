@@ -2197,7 +2197,7 @@ class StoreTask extends Component {
                 
               </a>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -2209,7 +2209,7 @@ class StoreTask extends Component {
               >
                 Campaign
               </a>
-            </li> */}
+            </li>
           </ul>
           {this.state.showAddTask && (
             <button

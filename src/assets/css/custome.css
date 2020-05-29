@@ -3677,6 +3677,14 @@ table tr th:last-child {
   padding-bottom: 11px !important;
   background: #fcfcfc !important;
 }
+.custom-antd-table.antd-table-campaign.antd-table-campaign-padd
+  .ant-table-expanded-row
+  .ant-table-tbody
+  > tr
+  > td {
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
 .custom-antd-table.antd-table-campaign
   .ant-table-expanded-row
   .ant-table-tbody
@@ -11376,7 +11384,7 @@ table tr th:last-child {
   }
   .mob-header {
     display: block !important;
-    background-color: #2561A8;
+    background-color: #2561a8;
     color: #fff;
     padding: 10px;
   }
@@ -11393,21 +11401,21 @@ table tr th:last-child {
     font-weight: 700;
     top: -5px !important;
     right: -5px !important;
-}
-.verticaldots {
-  margin: 0 0 0 8px !important;
-}
-.verticaldots img {
-  height: 17px;
-}
-.header-right-icons {
-  padding: 0;
-  float: right;
-}
-.hamb-menu {
-  display: inline-block;
-  margin: 0 10px 0;
-}
+  }
+  .verticaldots {
+    margin: 0 0 0 8px !important;
+  }
+  .verticaldots img {
+    height: 17px;
+  }
+  .header-right-icons {
+    padding: 0;
+    float: right;
+  }
+  .hamb-menu {
+    display: inline-block;
+    margin: 0 10px 0;
+  }
 }
 
 @media only screen and (max-width: 580px) {
@@ -11484,7 +11492,7 @@ table tr th:last-child {
   .header-right-icons a:last-child {
     margin-right: 0px;
   }
-  
+
   .vl {
     border: 0;
     height: auto;
@@ -11694,7 +11702,6 @@ table tr th:last-child {
     font-size: 16px;
     margin-top: 0;
   }
-  
 
   /* dashboard starts */
   .dash-dropdowns {
@@ -12015,10 +12022,10 @@ table tr th:last-child {
   color: rgb(36, 110, 195);
 }
 .ant-drawer-content-wrapper {
-    width: 230px !important;
+  width: 230px !important;
 }
 .ant-drawer-body {
-  padding:0 !important;
+  padding: 0 !important;
 }
 .mobsidebar {
   height: 100vh;
@@ -12032,17 +12039,17 @@ table tr th:last-child {
 }
 .uppersec ul li:first-child {
   background-color: #fff;
-    padding: 10px;
-    border-radius: 50%;
-    height: 50px;
-    margin-right: 10px;
-    width: 50px;
+  padding: 10px;
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 10px;
+  width: 50px;
 }
 .uppersec ul li:last-child {
   vertical-align: -webkit-baseline-middle;
 }
 .uppersec ul li img {
-    height: 10px;
+  height: 10px;
 }
 .uppersec h3 {
   font-size: 14px;

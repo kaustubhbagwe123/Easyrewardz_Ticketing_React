@@ -114,6 +114,10 @@ class StoreModule extends Component {
       editStoreCodeValidation: "",
       editOrderNovalidation: "",
       editMaxCapacityValidation: "",
+      languageData: [],
+      selectLanguage: 0,
+      languageValidation: "",
+      languageGridData: [],
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -128,19 +132,19 @@ class StoreModule extends Component {
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
     this.closeSlotEditModal = this.closeSlotEditModal.bind(this);
   }
-  // fileUpload = (e) => {
-  //   this.setState({ fileName: e.target.files[0].name });
-  // };
-  // fileDrop = (e) => {
-  //   this.setState({ fileName: e.dataTransfer.files[0].name });
-  //   e.preventDefault();
-  // };
-  // fileDragOver = (e) => {
-  //   e.preventDefault();
-  // };
-  // fileDragEnter = (e) => {
-  //   e.preventDefault();
-  // };
+
+  componentDidMount() {
+    this.handleClaimTabData();
+    this.handleCampaignNameList();
+    this.handleCampaignScriptGridData();
+    this.handleCampaignChannelGridData();
+    this.handleGetAppointmentConfigData();
+    this.handleGetBroadCastConfigData();
+    this.handleGetTimeslotGridData();
+    this.handleGetstoreCodeData();
+    this.handleGetLanguageDropdownlist();
+    this.handleGetLanguageGridData();
+  }
 
   fileUpload = (file) => {
     if (file) {
@@ -251,21 +255,6 @@ class StoreModule extends Component {
       });
   }
 
-  // handleSearchSla = async (e) => {
-  //
-  //   if (e.target.value.length > 3) {
-  //     await this.setState({
-  //       SearchText: e.target.value,
-  //     });
-  //     this.handleGetSLAIssueType();
-  //   } else {
-  //     await this.setState({
-  //       SearchText: "",
-  //     });
-  //     this.handleGetSLAIssueType();
-  //   }
-  // };
-
   selectIndividualCampaign = async (issueId, event) => {
     var indiCampaign = this.state.indiCampaign;
     var separator = ",";
@@ -336,17 +325,6 @@ class StoreModule extends Component {
       indiCampaign: "",
     });
   };
-
-  componentDidMount() {
-    this.handleClaimTabData();
-    this.handleCampaignNameList();
-    this.handleCampaignScriptGridData();
-    this.handleCampaignChannelGridData();
-    this.handleGetAppointmentConfigData();
-    this.handleGetBroadCastConfigData();
-    this.handleGetTimeslotGridData();
-    this.handleGetstoreCodeData();
-  }
 
   setClaimTabData = (e) => {
     let name = e.target.name;
@@ -420,6 +398,10 @@ class StoreModule extends Component {
     } else if (name === "selectAmPm2") {
       this.setState({
         selectAmPm2: value,
+      });
+    } else if (name === "selectLanguage") {
+      this.setState({
+        selectLanguage: value,
       });
     }
   };
@@ -523,7 +505,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -540,7 +521,7 @@ class StoreModule extends Component {
         console.log(data);
       });
   }
-  ////get Store Code for dropdown
+  ////get Store Code for dropdown list
   handleGetstoreCodeData() {
     let self = this;
     axios({
@@ -549,13 +530,56 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({ storeCodeData: data });
         } else {
           self.setState({ storeCodeData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  ////get Language for dropdown list
+  handleGetLanguageDropdownlist() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetLanguageDetails",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ languageData: data });
+        } else {
+          self.setState({ languageData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  }
+  ////get Language grid data
+  handleGetLanguageGridData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetSelectedLanguageDetails",
+      headers: authHeader(),
+    })
+      .then((res) => {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({ languageGridData: data });
+        } else {
+          self.setState({ languageGridData: [] });
         }
       })
       .catch((response) => {
@@ -574,11 +598,34 @@ class StoreModule extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Record Deleted Successfully.");
           self.handleGetTimeslotGridData();
+        } else {
+          NotificationManager.error("Record Not Deleted.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Delete Language record
+  handleDeleteLanguage(languageID) {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/DeleteSelectedLanguage",
+      headers: authHeader(),
+      params: {
+        selectedLanguageID: languageID,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Record Deleted Successfully.");
+          self.handleGetLanguageGridData();
         } else {
           NotificationManager.error("Record Not Deleted.");
         }
@@ -596,7 +643,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -622,7 +668,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -649,7 +694,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1642,6 +1686,40 @@ class StoreModule extends Component {
         editStoreCodeValidation: "Required",
         editOrderNovalidation: "Required",
         editMaxCapacityValidation: "Required",
+      });
+    }
+  }
+
+  handleSubmitLanguageDate() {
+    var self = this;
+    if (parseInt(this.state.selectLanguage) !== 0) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/StoreCampaign/InsertLanguageDetails",
+        headers: authHeader(),
+        params: {
+          languageID: parseInt(this.state.selectLanguage),
+        },
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Language Added Successfully.");
+            self.handleGetLanguageGridData();
+            self.setState({
+              selectLanguage: 0,
+            });
+          } else {
+            NotificationManager.error(status);
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        languageValidation: "Please Select Language.",
       });
     }
   }
@@ -3372,45 +3450,43 @@ class StoreModule extends Component {
                                 <div className="cmpaign-channel-table slot-setting-options">
                                   <div className="w-100">
                                     <select
-                                      name="selectStore"
-                                      // value={this.state.selectStore}
-                                      // onChange={this.handleDrop_downOnchange}
+                                      name="selectLanguage"
+                                      value={this.state.selectLanguage}
+                                      onChange={this.handleDrop_downOnchange}
                                     >
-                                      <option>Select Language</option>
-                                      <option>English</option>
-                                      <option>Hindi</option>
-                                      {/* <option value={0}>Store code</option> */}
-                                      {/* {this.state.storeCodeData !== null &&
-                                        this.state.storeCodeData.map(
+                                      <option value={0}>Select Language</option>
+                                      {this.state.languageData !== null &&
+                                        this.state.languageData.map(
                                           (item, s) => (
                                             <option
                                               key={s}
-                                              value={item.storeID}
+                                              value={item.id}
                                               className="select-category-placeholder"
                                             >
-                                              {item.storeCode}
+                                              {item.language}
                                             </option>
                                           )
-                                        )} */}
+                                        )}
                                     </select>
-                                    {/* {this.state.selectStore === 0 && (
+                                    {parseInt(this.state.selectLanguage) ===
+                                      0 && (
                                       <p
                                         style={{
                                           color: "red",
                                           marginBottom: "0px",
                                         }}
                                       >
-                                        {this.state.storeCodeValidation}
+                                        {this.state.languageValidation}
                                       </p>
-                                    )} */}
+                                    )}
                                   </div>
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
                                   type="button"
-                                  // onClick={this.handleSubmitTimeSlotDate.bind(
-                                  //   this
-                                  // )}
+                                  onClick={this.handleSubmitLanguageDate.bind(
+                                    this
+                                  )}
                                 >
                                   SUBMIT
                                 </button>
@@ -3420,28 +3496,34 @@ class StoreModule extends Component {
                           <div className="row">
                             <div className="col-md-12">
                               <ReactTable
-                                // data={this.state.TimeSlotGridData}
+                                data={this.state.languageGridData}
                                 columns={[
                                   {
-                                    Header: "Tenant Id",
-                                    sortable: false,
-                                    // accessor: "slotId",
-                                  },
-                                  {
-                                    Header: "Tenant Name",
-                                    // accessor: "storeCode",
+                                    Header: "Language Name",
+                                    accessor: "language",
                                     sortable: false,
                                   },
                                   {
-                                    Header: "Selected Languages",
-                                    // accessor: "timeSlot",
+                                    Header: "Status",
+                                    accessor: "isActive",
                                     sortable: false,
+                                    Cell: (row) => {
+                                      return (
+                                        <div>
+                                          <span>
+                                            {row.original.isActive
+                                              ? "Active"
+                                              : "Inactive"}
+                                          </span>
+                                        </div>
+                                      );
+                                    },
                                   },
                                   {
                                     Header: "Actions",
                                     sortable: false,
                                     Cell: (row) => {
-                                      // var ids = row.original["slotId"];
+                                      var ids = row.original["slotId"];
                                       return (
                                         <>
                                           <span>
@@ -3468,10 +3550,10 @@ class StoreModule extends Component {
                                                       </a>
                                                       <button
                                                         className="butn"
-                                                        // onClick={this.handleDeleteTimeSlot.bind(
-                                                        //   this,
-                                                        //   row.original.slotId
-                                                        // )}
+                                                        onClick={this.handleDeleteLanguage.bind(
+                                                          this,
+                                                          row.original.id
+                                                        )}
                                                       >
                                                         Delete
                                                       </button>
@@ -3486,19 +3568,9 @@ class StoreModule extends Component {
                                                 src={RedDeleteIcon}
                                                 alt="del-icon"
                                                 className="del-btn"
-                                                // id={ids}
+                                                id={ids}
                                               />
                                             </Popover>
-
-                                            <button
-                                              className="react-tabel-button editre"
-                                              // onClick={this.openSlotEditModal.bind(
-                                              //   this,
-                                              //   row.original
-                                              // )}
-                                            >
-                                              EDIT
-                                            </button>
                                           </span>
                                         </>
                                       );
