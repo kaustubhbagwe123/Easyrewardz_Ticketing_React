@@ -2906,7 +2906,7 @@ table tr th:last-child {
   /* margin-left: -5px; */
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   background: #ecf2f4;
   padding: 12px 20px;
 }
@@ -2943,8 +2943,8 @@ table tr th:last-child {
   font-weight: 700;
 }
 .custom-tableak .statusBtn {
-  background-color: #00B894;
-  border: #00B894;
+  background-color: #00b894;
+  border: #00b894;
   border-radius: 4px;
   width: 60px;
   height: 30px;
@@ -3578,9 +3578,9 @@ table tr th:last-child {
   border: #eb4d4b;
 }
 
-.custom-tableak .endVisitBtn{
-  background-color: #00B894;
-  border: #00B894;
+.custom-tableak .endVisitBtn {
+  background-color: #00b894;
+  border: #00b894;
 }
 
 @media screen and (max-width: 600px) {
