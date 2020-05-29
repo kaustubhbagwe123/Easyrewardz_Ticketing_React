@@ -493,9 +493,6 @@
       "updateddatecolontwelveMarcheighteen":"अपडेटेड तारीख: १२ मार्च २०१८",
       "asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority":"क प्रणाली जिसमें किसी संगठन के सदस्य हों या समाज को रिश्तेदार की हैसियत के अनुसार रैंक दिया जाता है या अधिकार।"
       
-     
-     
-      
       
       
     },
@@ -598,7 +595,8 @@
       "recommended":"सिफारिश की",
       "lasttransaction":"अंतिम लेन-देन",
       "priority":"प्राथमिकता",
-      "createappointment":"अपॉइंटमेंट बनाएं"
+      "createappointment":"अपॉइंटमेंट बनाएं",
+      "taskbytickets":"टिकट द्वारा कार्य"
       
     },
     "span":{
@@ -716,8 +714,8 @@
       "tasktitle":"कार्य का शीर्षक",
       "department": "विभाग",
       "creationon":"निर्माण पर",
-      "ticketid":"टिकट आईडी :",
-      "taskid":"कार्य आईडी:",
+      "ticketid":"टिकट आईडी",
+      "taskid":"कार्य आईडी",
       "comments":"टिप्पणियाँ",
       "retry":"पुन: प्रयास करें",
       "itemcode":"आइटम कोड",
@@ -773,7 +771,7 @@
       "themename":"थीम का नाम",
       "themeedit":"संपादित करें",
       "themecss":"(सीएसएस फ़ाइल केवल)",
-      "assignedto":"को सौंपना",
+      "assignedto":"को आवंटित",
       "inprogress":"चालू",
       "close":"बंद करे",
       "executedatetwentyfourauguastnineteen":"निष्पादित तिथि: २४ अगस्त २०१९",
@@ -916,7 +914,14 @@
       "rules": "नियम",
       "configuration": "विन्यास",
       "homeshopsettings":"घर की दुकान सेटिंग्स",
-      "chatsetting":"चैट सेटिंग्स"
+      "chatsetting":"चैट सेटिंग्स",
+      "prioritymaster":"प्राथमिकता मास्टर",
+      "sla":"SLA",
+      "fileuploadlogs":"फ़ाइल अपलोड लॉग",
+      "blockedemailid":"ईमेल आईडी अवरुद्ध",
+      "itemmaster":"आइटम मास्टर",
+      "slatemplatedepartment":"SLA टेम्पलेट-विभाग",
+      "claimcategorymaster":"दावा श्रेणी मास्टर"
     },
     "li": {
       "creationdetails": "निर्माण विवरण",
@@ -1092,7 +1097,8 @@
       "selectreporteedesignation":"रिपोर्ट पदनाम का चयन करें",
       "root":"जड़",
       "selectreportto":"रिपोर्ट को चुनें",
-      "selectagent":"एजेंट का चयन करें"
+      "selectagent":"एजेंट का चयन करें",
+      "department":"विभाग"
     },
     "radio":{
         "email":"ईमेल",
@@ -1121,5 +1127,21 @@
       "twelvemarcheighty":"१२ मार्च २०१८"
       
 
+    },
+    "placeholder":{
+      "entercampaignname":"अभियान का नाम दर्ज करें",
+      "entermobileno":"मोबाइल नंबर दर्ज करें"
+    },
+    "title":{
+      "campaignname":"अभियान का नाम",
+      "customers":"ग्राहकों",
+      "campaignscript":"अभियान स्क्रिप्ट",
+      "campaignperiod":"अभियान की अवधि",
+      "status":"स्थिति",
+      "actions":"क्रिया",
+      "customername":"ग्राहक का नाम",
+      "date":"तारीख",
+      "response":"प्रतिक्रिया",
+      "callrecheduledto":"कॉल पुनर्निर्धारित करने के लिए"
     }
   }

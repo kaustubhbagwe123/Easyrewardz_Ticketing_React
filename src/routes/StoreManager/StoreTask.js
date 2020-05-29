@@ -18,6 +18,8 @@ import SearchIcon from "../../assets/Images/search-icon.png";
 import CreationOnDatePickerCompo from "./../Settings/Store/CreationDatePickerCompo";
 import StoreStatus from "./StoreStatus.js";
 import moment from "moment";
+import * as translationHI from '../../translations/hindi'
+import * as translationMA from '../../translations/marathi'
 class StoreTask extends Component {
   constructor(props) {
     super(props);
@@ -71,6 +73,7 @@ class StoreTask extends Component {
       isViewSerach: false,
       isATOZ: true,
       itemData: [],
+      translateLanguage: {}
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -82,6 +85,15 @@ class StoreTask extends Component {
     this.handleGetDepartment();
     this.handleGetPriorityList();
     this.handleGetStoreUser();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
   handleChangeStoreTask() {
     this.props.history.push("/store/editStoreTask");
@@ -2138,6 +2150,7 @@ class StoreTask extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="store-task-tabs">
@@ -2152,7 +2165,8 @@ class StoreTask extends Component {
                 aria-selected="true"
                 onClick={this.handleGetTaskData.bind(this, 1)}
               >
-                Raised by Me
+               
+                 {TranslationContext!==undefined?TranslationContext.a.raisedbyme:"Raised by Me"} 
               </a>
             </li>
             <li className="nav-item">
@@ -2165,7 +2179,8 @@ class StoreTask extends Component {
                 aria-selected="false"
                 onClick={this.handleGetTaskData.bind(this, 2)}
               >
-                Assigned To Me
+                 {TranslationContext!==undefined?TranslationContext.a.assignedtome:"Assigned To Me"}
+                
               </a>
             </li>
             <li className="nav-item">
@@ -2178,7 +2193,8 @@ class StoreTask extends Component {
                 aria-selected="false"
                 onClick={this.handleGetTaskbyTicket.bind(this)}
               >
-                Task By Tickets
+                {TranslationContext!==undefined?TranslationContext.a.taskbytickets:"Task By Tickets"}
+                
               </a>
             </li>
             {/* <li className="nav-item">
@@ -2200,7 +2216,8 @@ class StoreTask extends Component {
               className="butn"
               onClick={this.handleChagneAddTask.bind(this)}
             >
-              Add Task
+               {TranslationContext!==undefined?TranslationContext.button.addtask:"Add Task"}
+              
             </button>
           )}
         </div>
@@ -2234,7 +2251,8 @@ class StoreTask extends Component {
                                 this
                               )}
                             >
-                              VIEW SEARCH
+                              {TranslationContext!==undefined?TranslationContext.button.viewsearch:"VIEW SEARCH"}
+                              
                             </button>
                           </div>
                         </ul>
@@ -2266,7 +2284,7 @@ class StoreTask extends Component {
                                     onChange={this.handleOnChange.bind(this)}
                                   >
                                     <option value="" selected>
-                                      Department
+                                        Department
                                     </option>
 
                                     {this.state.departmentData !== null &&
@@ -2439,7 +2457,10 @@ class StoreTask extends Component {
                       data={this.state.raisedByMeData}
                       columns={[
                         {
-                          Header: <span>ID</span>,
+                          Header: <span>
+
+                        {TranslationContext!==undefined?TranslationContext.span.id:"ID"}
+                          </span>,
                           accessor: "storeTaskID",
                         },
                         {
@@ -2456,11 +2477,12 @@ class StoreTask extends Component {
                                 "Status"
                               )}
                             >
-                              Status
+                              
+                              {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
-                                  this.state.sortHeader === "Status"
+                                  this.state.sortHeader ==="Status"
                                     ? faCaretUp
                                     : faCaretDown
                                 }
@@ -2492,7 +2514,10 @@ class StoreTask extends Component {
                           },
                         },
                         {
-                          Header: <span>Task Title</span>,
+                          Header: <span>
+
+                        {TranslationContext!==undefined?TranslationContext.span.tasktitle:"Task Title"}
+                          </span>,
                           accessor: "taskTitle",
                         },
                         {
@@ -2506,10 +2531,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "departmentName",
-                                "Department"
+                                TranslationContext!==undefined?TranslationContext.span.department:"Department"
                               )}
                             >
-                              Department{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.department:"Department"} {" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2560,10 +2585,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
-                                "Store Name"
+                                TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"
                               )}
                             >
-                              Store Name{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2585,7 +2610,9 @@ class StoreTask extends Component {
                                     <div className="dash-creation-popup-cntr">
                                       <ul className="dash-category-popup dashnewpopup">
                                         <li>
-                                          <p>Store Address</p>
+                                          <p>Store Address
+                                            
+                                          </p>
                                           <p>{row.original.storeAddress}</p>
                                         </li>
                                       </ul>
@@ -2614,10 +2641,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "priorityName",
-                                "Priority"
+                                TranslationContext!==undefined?TranslationContext.span.priority:"Priority"
                               )}
                             >
-                              Priority{" "}
+                               {TranslationContext!==undefined?TranslationContext.span.priority:"Priority"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2645,10 +2672,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
-                                "Creation On"
+                                TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2671,6 +2698,7 @@ class StoreTask extends Component {
                                     <ul className="dash-creation-popup">
                                       <li className="title">
                                         Creation details
+                                        
                                       </li>
                                       <li>
                                         <p>
@@ -2681,7 +2709,9 @@ class StoreTask extends Component {
                                       </li>
                                       <li>
                                         <p>
-                                          Assigned to{" "}
+                                        Assigned to
+                                        
+                                       {" "}
                                           {" " + row.original.assignto}
                                         </p>
                                         <p>{row.original.assignedago}</p>
@@ -2734,10 +2764,11 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "assignto",
-                                "Assign to"
+                                TranslationContext!==undefined?TranslationContext.span.assignedto:"Assign to"
                               )}
                             >
-                              Assign to
+                              {TranslationContext!==undefined?TranslationContext.span.assignedto:"Assign to"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2794,7 +2825,7 @@ class StoreTask extends Component {
                                 this
                               )}
                             >
-                              VIEW SEARCH
+                              {TranslationContext!==undefined?TranslationContext.button.viewsearch:"VIEW SEARCH"}
                             </button>
                           </div>
                         </ul>
@@ -2983,7 +3014,10 @@ class StoreTask extends Component {
                       data={this.state.assignToMeData}
                       columns={[
                         {
-                          Header: <span>ID</span>,
+                          Header: <span>
+
+                        {TranslationContext!==undefined?TranslationContext.span.id:"ID"}
+                          </span>,
                           accessor: "storeTaskID",
                         },
                         {
@@ -3000,7 +3034,8 @@ class StoreTask extends Component {
                                 "Status"
                               )}
                             >
-                              Status
+                                 {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3036,7 +3071,10 @@ class StoreTask extends Component {
                           },
                         },
                         {
-                          Header: <span>Task Title</span>,
+                          Header: <span>
+
+                             {TranslationContext!==undefined?TranslationContext.span.tasktitle:"Task Title"}
+                          </span>,
                           accessor: "taskTitle",
                         },
                         {
@@ -3050,10 +3088,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "departmentName",
-                                "Department"
+                                TranslationContext!==undefined?TranslationContext.span.department:"Department"
                               )}
                             >
-                              Department{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.department:"Department"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3104,10 +3142,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "createdBy",
-                                "Created by"
+                                TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"
                               )}
                             >
-                              Created by{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3132,10 +3170,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "priorityName",
-                                "Priority"
+                                TranslationContext!==undefined?TranslationContext.span.priority:"Priority"
                               )}
                             >
-                              Priority{" "}
+                               {TranslationContext!==undefined?TranslationContext.span.priority:"Priority"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3160,10 +3198,11 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
-                                "Store Name"
+                                TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"
                               )}
                             >
-                              Store Name
+                              
+                              {TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3213,10 +3252,11 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
-                                "Creation On"
+                               // "Creation On",
+                                TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3335,7 +3375,8 @@ class StoreTask extends Component {
                                 this
                               )}
                             >
-                              VIEW SEARCH
+                               {TranslationContext!==undefined?TranslationContext.button.viewsearch:"VIEW SEARCH"}
+                              
                             </button>
                           </div>
                         </ul>
@@ -3601,11 +3642,16 @@ class StoreTask extends Component {
                       data={this.state.taskByTicketData}
                       columns={[
                         {
-                          Header: <span>Task ID</span>,
+                          Header: <span>
+
+                           {TranslationContext!==undefined?TranslationContext.span.taskid:"Task ID"}
+                          </span>,
                           accessor: "storeTaskID",
                         },
                         {
-                          Header: <span>Ticket ID</span>,
+                          Header: <span>
+                            {TranslationContext!==undefined?TranslationContext.span.ticketid:"Ticket ID"}
+                          </span>,
                           accessor: "ticketID",
                         },
                         {
@@ -3619,10 +3665,11 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "taskStatus",
-                                "Status"
+                                TranslationContext!==undefined?TranslationContext.span.status:"Status"
                               )}
                             >
-                              Status
+                              {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3658,7 +3705,9 @@ class StoreTask extends Component {
                           },
                         },
                         {
-                          Header: <span>Task Title</span>,
+                          Header: <span>
+                            {TranslationContext!==undefined?TranslationContext.span.tasktitle:"tasktitle"}
+                          </span>,
                           accessor: "taskTitle",
                         },
                         {
@@ -3672,10 +3721,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "departmentName",
-                                "Department"
+                                TranslationContext!==undefined?TranslationContext.span.department:"Department"
                               )}
                             >
-                              Department{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.department:"Department"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3726,10 +3775,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "createdBy",
-                                "Created by"
+                                TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"
                               )}
                             >
-                              Created by{" "}
+                             {TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3754,10 +3803,11 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "storeName",
-                                "Store Name"
+                                TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"
                               )}
                             >
-                              Store Name
+                              {TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3808,10 +3858,10 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "creationOn",
-                                "Creation On"
+                                TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"
                               )}
                             >
-                              Creation On{" "}
+                              {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}{" "}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3897,10 +3947,11 @@ class StoreTask extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "assignto",
-                                "Assign to"
+                                TranslationContext!==undefined?TranslationContext.span.assignto:"Assign to"
                               )}
                             >
-                              Assign to
+                              {TranslationContext!==undefined?TranslationContext.span.assignto:"Assign to"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -3954,7 +4005,10 @@ class StoreTask extends Component {
                 >
                   <img src={Sorting} alt="sorting-icon" />
                 </a>
-                <p>SORT BY A TO Z</p>
+                <p>
+
+                {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                </p>
               </div>
               <div className="d-flex">
                 <a
@@ -3964,7 +4018,9 @@ class StoreTask extends Component {
                 >
                   <img src={Sorting} alt="sorting-icon" />
                 </a>
-                <p>SORT BY Z TO A</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                </p>
               </div>
             </div>
             <a
@@ -3976,10 +4032,14 @@ class StoreTask extends Component {
               }}
               onClick={this.handleClearSearch.bind(this)}
             >
-              clear search
+               {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+              
             </a>
             <div className="filter-type">
-              <p>FILTER BY TYPE</p>
+              <p>
+
+              {TranslationContext!==undefined?TranslationContext.a.filterbytype:"FILTER BY TYPE"}
+              </p>
               <input
                 type="text"
                 style={{ display: "block" }}

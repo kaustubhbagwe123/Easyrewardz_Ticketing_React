@@ -26,6 +26,8 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
+import * as translationHI from '../../translations/hindi'
+import * as translationMA from '../../translations/marathi'
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -106,6 +108,7 @@ class StoreCampaign extends Component {
       showBroadcastChannel: false,
       storeCode: "",
       campaignCode: "",
+      translateLanguage: {}
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -116,6 +119,15 @@ class StoreCampaign extends Component {
   componentDidMount() {
     this.handleGetCampaignGridData();
     this.handleGetBrand();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   handleArrowImg() {
@@ -1496,6 +1508,7 @@ class StoreCampaign extends Component {
     }
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <div className="custom-tableak">
         <div className="table-cntr store">
@@ -1503,18 +1516,20 @@ class StoreCampaign extends Component {
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: "Campaign Name",
+                title: TranslationContext!==undefined?TranslationContext.title.campaignname:"Campaign Name",
                 dataIndex: "campaignName",
                 className: "camp-status-header camp-status-header-cust-name",
                 filterDropdown: (dataIndex) => (
                   <div className="cust-name-drpdwn">
-                    <label>Campaign Name</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.campaignname:"Campaign Name"}
+                    </label>
                     <input
                       type="text"
                       className="txt-1"
                       autoComplete="off"
                       maxLength={100}
-                      placeholder="Enter Campaign Name"
+                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercampaignname:"Enter Campaign Name"}
                       value={this.state.filterCampName}
                       onChange={this.handleCampaignNameOnchange.bind(this)}
                     />
@@ -1550,11 +1565,11 @@ class StoreCampaign extends Component {
                 },
               },
               {
-                title: "Customers",
+                title: TranslationContext!==undefined?TranslationContext.title.customers:"Customers" ,
                 dataIndex: "customerCount",
               },
               {
-                title: "Campaign Script",
+                title:TranslationContext!==undefined?TranslationContext.title.campaignscript:"Campaign Script", 
                 dataIndex: "campaignScript",
                 className: "table-coloum-hide",
                 render: (row, item) => {
@@ -1611,12 +1626,12 @@ class StoreCampaign extends Component {
                 },
               },
               {
-                title: "Campaign Period",
+                title: TranslationContext!==undefined?TranslationContext.title.campaignperiod:"Campaign Period",
                 dataIndex: "campaingPeriod",
                 className: "table-coloum-hide",
               },
               {
-                title: "Status",
+                title:TranslationContext!==undefined?TranslationContext.title.status:"Status",
                 dataIndex: "status",
                 className: "camp-status-header camp-status-header-statusFilter",
                 filterDropdown: (data, row) => {
@@ -1633,7 +1648,9 @@ class StoreCampaign extends Component {
                             name="CampallStatus"
                           />
                           <label htmlFor="Campall-status">
-                            <span className="ch1-text">All</span>
+                            <span className="ch1-text">
+                            {TranslationContext!==undefined?TranslationContext.span.all:"All"}
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -1648,7 +1665,9 @@ class StoreCampaign extends Component {
                             attrIds={100}
                           />
                           <label htmlFor="New100">
-                            <span className="ch1-text">New</span>
+                            <span className="ch1-text">
+                            {TranslationContext!==undefined?TranslationContext.span.new:"New"}
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -1663,7 +1682,9 @@ class StoreCampaign extends Component {
                             attrIds={101}
                           />
                           <label htmlFor="Inproress101">
-                            <span className="ch1-text">InProgress</span>
+                            <span className="ch1-text">
+                            {TranslationContext!==undefined?TranslationContext.span.inprogress:"InProgress"}
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -1678,7 +1699,9 @@ class StoreCampaign extends Component {
                             attrIds={102}
                           />
                           <label htmlFor="Close102">
-                            <span className="ch1-text">Close</span>
+                            <span className="ch1-text">
+                            {TranslationContext!==undefined?TranslationContext.span.close:"Close"}
+                            </span>
                           </label>
                         </li>
                       </ul>
@@ -1695,7 +1718,7 @@ class StoreCampaign extends Component {
                 ),
               },
               {
-                title: "Actions",
+                title:TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
                 render: (row, item) => {
                   return (
                     <Popover
@@ -1703,7 +1726,8 @@ class StoreCampaign extends Component {
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                            Recent Campaigns
+                            
+                            {TranslationContext!==undefined?TranslationContext.label.recentcampaigns:"Recent Campaigns"}
                           </label>
                           {this.state.campaignExecutionDetails !== null &&
                             this.state.campaignExecutionDetails.map(
@@ -1824,18 +1848,19 @@ class StoreCampaign extends Component {
                     className="midalResponseAction"
                     columns={[
                       {
-                        title: "Customer Name",
-                        className:
-                          "camp-status-header camp-status-header-cust-name",
+                        title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
+                        className:"camp-status-header camp-status-header-cust-name",
                         dataIndex: "id",
                         filterDropdown: (dataIndex) => (
                           <div className="cust-name-drpdwn">
-                            <label>Customer Number</label>
+                            <label>
+                            {TranslationContext!==undefined?TranslationContext.label.customernumber:"Customer Number"}
+                            </label>
                             <input
                               type="text"
                               className="txt-1"
                               autoComplete="off"
-                              placeholder="Enter Mobile No"
+                              placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entermobileno:"Enter Mobile No"}
                               maxLength={10}
                               value={this.state.filterCustNO}
                               onChange={this.handleCustomerFilerOnchange.bind(
@@ -1884,12 +1909,12 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        title: "Date",
+                        title:TranslationContext!==undefined?TranslationContext.title.date:"Date",
                         dataIndex: "campaignDate",
                         className: "table-coloum-hide",
                       },
                       {
-                        title: "Response",
+                        title: TranslationContext!==undefined?TranslationContext.title.response:"Response",
                         className: "table-coloum-hide",
                         render: (row, item) => {
                           return (
@@ -1918,7 +1943,7 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        title: "Status",
+                        title:TranslationContext!==undefined?TranslationContext.title.status:"Status",
                         dataIndex: "statusName",
                         className: "camp-status-header",
                         render: (row, item) => {
@@ -2064,7 +2089,7 @@ class StoreCampaign extends Component {
                         ),
                       },
                       {
-                        title: "Call Recheduled To",
+                        title:TranslationContext!==undefined?TranslationContext.title.callrecheduledto:"Call Recheduled To",
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
@@ -2126,7 +2151,7 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        title: "Actions",
+                        title:TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
                         render: (row, item) => {
                           return (
                             <div>
@@ -2143,7 +2168,8 @@ class StoreCampaign extends Component {
                                       item.campaignScriptID
                                     )}
                                   >
-                                    Update
+                                    {TranslationContext!==undefined?TranslationContext.button.update:"Update"}
+                                    
                                   </button>
                                   <button
                                     className="raisedticket-Btn"
