@@ -192,6 +192,7 @@ class Header extends Component {
 
       setInterval(() => {
         this.handleGetChatNotificationCount();
+        console.clear();
       }, 10000);
 
       this.handleGetOngoingChat("");
@@ -337,12 +338,14 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
+    console.clear();
   }
   componentDidUpdate() {
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
     }
+    console.clear();
   }
 
   handleCRMRole(id) {
@@ -673,7 +676,7 @@ class Header extends Component {
             }
           }
         } else {
-          self.setState({ ongoingChatsData:[] });
+          self.setState({ ongoingChatsData: [] });
         }
       })
       .catch((response) => {
@@ -705,7 +708,7 @@ class Header extends Component {
           // }
           // }, 40000);
         } else {
-          self.setState({ newChatsData:[] });
+          self.setState({ newChatsData: [] });
         }
       })
       .catch((response) => {
@@ -800,7 +803,7 @@ class Header extends Component {
 
           // self.handleGetChatNotificationCount();
         } else {
-          self.setState({ messageData });
+          self.setState({ messageData:[] });
         }
       })
       .catch((response) => {
@@ -1386,45 +1389,42 @@ class Header extends Component {
 
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
-          (messagewhatsAppData[0].brandName !== "" &&
-          messagewhatsAppData[0].brandName !== null
-            ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
-            : "") +
-          (messagewhatsAppData[0].categoryName !== "" &&
-          messagewhatsAppData[0].categoryName !== null
-            ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
-            : "") +
-          (messagewhatsAppData[0].subCategoryName !== "" &&
-          messagewhatsAppData[0].subCategoryName !== null
-            ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
-            : "") +
-          (messagewhatsAppData[0].color !== "" &&
-          messagewhatsAppData[0].color !== null
-            ? ", Color: " + messagewhatsAppData[0].color.trim()
-            : "") +
-          (messagewhatsAppData[0].size !== "" &&
-          messagewhatsAppData[0].size !== null
-            ? ", Size: " + messagewhatsAppData[0].size.trim()
-            : "") +
-          (messagewhatsAppData[0].uniqueItemCode !== "" &&
-          messagewhatsAppData[0].uniqueItemCode !== null
-            ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
-            : "") +
-          (messagewhatsAppData[0].discount !== "" &&
-          parseFloat(messagewhatsAppData[0].discount) !== 0 &&
-          messagewhatsAppData[0].discount !== null
-            ? ", Discount: " + messagewhatsAppData[0].discount.trim()
-            : "") +
-          (messagewhatsAppData[0].price !== "" &&
-          parseFloat(messagewhatsAppData[0].price) !== 0 &&
-          messagewhatsAppData[0].price !== null
-            ? ", Price: " + messagewhatsAppData[0].price.trim()
-            : "") +
-          "\n" +
-          messagewhatsAppData[0].url !==
-        null
-          ? messagewhatsAppData[0].url
-          : "";
+        (messagewhatsAppData[0].brandName !== "" &&
+        messagewhatsAppData[0].brandName !== null
+          ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
+          : "") +
+        (messagewhatsAppData[0].categoryName !== "" &&
+        messagewhatsAppData[0].categoryName !== null
+          ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
+          : "") +
+        (messagewhatsAppData[0].subCategoryName !== "" &&
+        messagewhatsAppData[0].subCategoryName !== null
+          ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
+          : "") +
+        (messagewhatsAppData[0].color !== "" &&
+        messagewhatsAppData[0].color !== null
+          ? ", Color: " + messagewhatsAppData[0].color.trim()
+          : "") +
+        (messagewhatsAppData[0].size !== "" &&
+        messagewhatsAppData[0].size !== null
+          ? ", Size: " + messagewhatsAppData[0].size.trim()
+          : "") +
+        (messagewhatsAppData[0].uniqueItemCode !== "" &&
+        messagewhatsAppData[0].uniqueItemCode !== null
+          ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
+          : "") +
+        (messagewhatsAppData[0].discount !== "" &&
+        parseFloat(messagewhatsAppData[0].discount) !== 0 &&
+        messagewhatsAppData[0].discount !== null
+          ? ", Discount: " + messagewhatsAppData[0].discount.trim()
+          : "") +
+        (messagewhatsAppData[0].price !== "" &&
+        parseFloat(messagewhatsAppData[0].price) !== 0 &&
+        messagewhatsAppData[0].price !== null
+          ? ", Price: " + messagewhatsAppData[0].price.trim()
+          : "") +
+        "\n" +
+        (messagewhatsAppData[0].url !== null ? messagewhatsAppData[0].url : "");
 
       var imageURL = messagewhatsAppData[0].imageURL;
       // this.setState({ message: messageStringData });
@@ -2804,7 +2804,6 @@ class Header extends Component {
                                                   <label className="chat-product-code">
                                                     Brand :
                                                     {" " + item.brandName}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -2814,7 +2813,6 @@ class Header extends Component {
                                                   <label className="chat-product-code">
                                                     Category :
                                                     {" " + item.categoryName}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -2825,7 +2823,6 @@ class Header extends Component {
                                                   <label className="chat-product-code">
                                                     SubCategory :
                                                     {" " + item.subCategoryName}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -2834,7 +2831,6 @@ class Header extends Component {
                                                 item.color !== null ? (
                                                   <label className="chat-product-code">
                                                     Color :{" " + item.color}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -2843,7 +2839,6 @@ class Header extends Component {
                                                 item.size !== null ? (
                                                   <label className="chat-product-code">
                                                     Size :{" " + item.size}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -2853,7 +2848,6 @@ class Header extends Component {
                                                   <label className="chat-product-code">
                                                     Item Code :
                                                     {" " + item.uniqueItemCode}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -2865,7 +2859,6 @@ class Header extends Component {
                                                   <label className="chat-product-code">
                                                     Discount :
                                                     {" " + item.discount}
-                                                    
                                                   </label>
                                                 ) : null}
                                               </div>
@@ -3624,7 +3617,6 @@ class Header extends Component {
                                             item.brandName !== null ? (
                                               <label className="chat-product-code">
                                                 Brand :{" " + item.brandName}
-                                                
                                               </label>
                                             ) : null}
 
@@ -3633,7 +3625,6 @@ class Header extends Component {
                                               <label className="chat-product-code">
                                                 Category :
                                                 {" " + item.categoryName}
-                                                
                                               </label>
                                             ) : null}
 
@@ -3642,7 +3633,6 @@ class Header extends Component {
                                               <label className="chat-product-code">
                                                 SubCategory :
                                                 {" " + item.subCategoryName}
-                                                
                                               </label>
                                             ) : null}
 
@@ -3650,7 +3640,6 @@ class Header extends Component {
                                             item.color !== null ? (
                                               <label className="chat-product-code">
                                                 Color :{" " + item.color}
-                                                
                                               </label>
                                             ) : null}
 
@@ -3658,7 +3647,6 @@ class Header extends Component {
                                             item.size !== null ? (
                                               <label className="chat-product-code">
                                                 Size :{" " + item.size}
-                                                
                                               </label>
                                             ) : null}
 
@@ -3667,7 +3655,6 @@ class Header extends Component {
                                               <label className="chat-product-code">
                                                 Item Code :
                                                 {" " + item.uniqueItemCode}
-                                                
                                               </label>
                                             ) : null}
 
@@ -3676,7 +3663,6 @@ class Header extends Component {
                                             item.discount !== null ? (
                                               <label className="chat-product-code">
                                                 Discount :{" " + item.discount}
-                                                
                                               </label>
                                             ) : null}
 
