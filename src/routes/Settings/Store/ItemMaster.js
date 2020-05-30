@@ -24,6 +24,8 @@ import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
 import { CSVLink } from "react-csv";
+import * as translationHI from './../../../translations/hindi';
+import * as translationMA from './../../../translations/marathi';
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -65,6 +67,7 @@ class ItemMaster extends Component {
       tempitemData: [],
       isortA: false,
       isATOZ: true,
+      translateLanguage: {}
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -74,6 +77,15 @@ class ItemMaster extends Component {
 
   componentDidMount() {
     this.handleGetItem();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
   fileUpload = (file) => {
     debugger;
@@ -1277,6 +1289,7 @@ class ItemMaster extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <NotificationContainer />
@@ -1300,7 +1313,9 @@ class ItemMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1310,7 +1325,9 @@ class ItemMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1322,10 +1339,13 @@ class ItemMaster extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1579,7 +1599,8 @@ class ItemMaster extends Component {
           </Modal>
 
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1589,11 +1610,13 @@ class ItemMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Item Master
+            
+            {TranslationContext!==undefined?TranslationContext.link.itemmaster:"Item Master"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1615,10 +1638,11 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
-                              "Brand Name"
+                              TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"
                             )}
                           >
-                            Brand Name
+                            {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1643,10 +1667,11 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCode",
-                              "Item Code"
+                              TranslationContext!==undefined?TranslationContext.span.itemcode:"Item Code"
                             )}
                           >
-                            Item Code
+                              {TranslationContext!==undefined?TranslationContext.span.itemcode:"Item Code"}
+                           
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1671,10 +1696,10 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemName",
-                              "Item Name"
+                              TranslationContext!==undefined?TranslationContext.span.itemname:"Item Name"
                             )}
                           >
-                            Item Name
+                            {TranslationContext!==undefined?TranslationContext.span.itemname:"Item Name"}
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1699,10 +1724,11 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
-                              "Department Name"
+                              TranslationContext!==undefined?TranslationContext.span.departmentname:"Department Name"
                             )}
                           >
-                            Department Name
+                            {TranslationContext!==undefined?TranslationContext.span.departmentname:"Department Name"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1727,10 +1753,11 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCategory",
-                              "Item Cat"
+                              TranslationContext!==undefined?TranslationContext.span.itemcat:"Item Cat"
                             )}
                           >
-                            Item Cat
+                              {TranslationContext!==undefined?TranslationContext.span.itemcat:"Item Cat"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1755,10 +1782,11 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemSubCategory",
-                              "Item Sub Cat"
+                              TranslationContext!==undefined?TranslationContext.span.itemsubcat:"Item Sub Cat"
                             )}
                           >
-                            Item Sub Cat
+                            {TranslationContext!==undefined?TranslationContext.span.itemsubcat:"Item Sub Cat"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1783,10 +1811,11 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemGroup",
-                              "Item Group"
+                              TranslationContext!==undefined?TranslationContext.span.itemgroup:"Item Group"
                             )}
                           >
-                            Item Group
+                            {TranslationContext!==undefined?TranslationContext.span.itemgroup:"Item Group"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1810,9 +1839,13 @@ class ItemMaster extends Component {
               <div className="col-md-4">
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                    {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                      {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                      </p>
                       <CSVLink
                         filename={"ItemMaster.csv"}
                         data={config.itemMasterTemplate}
@@ -1832,8 +1865,9 @@ class ItemMaster extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>{TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
+                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
+                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                         </div>
                       )}
                     </Dropzone>
@@ -1927,7 +1961,7 @@ class ItemMaster extends Component {
                     className="butn"
                     onClick={this.handleBulkUpload.bind(this)}
                   >
-                    ADD
+                    {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
                   </button>
                 </div>
               </div>
