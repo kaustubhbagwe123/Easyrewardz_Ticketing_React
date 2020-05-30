@@ -1739,7 +1739,7 @@ class Header extends Component {
         data
       ) {
         debugger;
-        if (self.state.storeCode === data[5]) {
+        if (self.state.storeCode.toLowerCase() === data[5]) {
           var isMobileNoExist = self.state.ongoingChatsData.filter(
             (x) => x.mobileNo === data[3].substring(2)
           );
@@ -1766,9 +1766,7 @@ class Header extends Component {
         }
       });
     });
-    socket.on('disconnect', () => {
-      socket.removeAllListeners();
-   });
+     
   }
 
   handleInsertCardImageUpload() {
