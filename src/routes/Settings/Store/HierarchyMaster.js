@@ -26,6 +26,8 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import { NotificationManager } from "react-notifications";
 import axios from "axios";
 import { authHeader } from "./../../../helpers/authHeader";
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 
 const MyButton = (props) => {
   const { children } = props;
@@ -205,6 +207,7 @@ class HierarchyMaster extends Component {
       temphierarchyData: [],
       isortA: false,
       isATOZ: true,
+      translateLanguage: {}
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -219,6 +222,17 @@ class HierarchyMaster extends Component {
     debugger;
     this.handleGetItem();
     this.hanldeGetReportListDropDown();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   StatusCloseModel() {
@@ -1249,12 +1263,13 @@ class HierarchyMaster extends Component {
 
   render() {
     const { hierarchyData } = this.state;
-
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1264,11 +1279,13 @@ class HierarchyMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Hierarchy Master
+            
+            {TranslationContext!==undefined?TranslationContext.link.hierarchymaster:"Hierarchy Master"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1291,7 +1308,10 @@ class HierarchyMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1301,7 +1321,10 @@ class HierarchyMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1313,10 +1336,13 @@ class HierarchyMaster extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type ">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1488,10 +1514,11 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
-                              "Designation"
+                              TranslationContext!==undefined?TranslationContext.span.designation:"Designation"
                             )}
                           >
-                            Designation
+                            {TranslationContext!==undefined?TranslationContext.span.designation:"Designation"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1516,10 +1543,11 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reportTo",
-                              "Report To"
+                              TranslationContext!==undefined?TranslationContext.span.reportto:"Report To"
                             )}
                           >
-                            Report To
+                            {TranslationContext!==undefined?TranslationContext.span.reportto:"Report To"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1544,10 +1572,11 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdbyperson",
-                              "Created By"
+                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
                             )}
                           >
-                            Created By
+                            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1572,24 +1601,24 @@ class HierarchyMaster extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By:&nbsp;
+                                            {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}:&nbsp;
                                             {row.original["createdbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:&nbsp;
+                                          {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:&nbsp;
                                           {row.original["createdateformat"]}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:&nbsp;
+                                            {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:&nbsp;
                                             {row.original["updatedbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:&nbsp;
+                                          {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:&nbsp;
                                           {row.original["updateddateformat"]}
                                         </p>
                                       </div>
@@ -1622,7 +1651,8 @@ class HierarchyMaster extends Component {
                               "Status"
                             )}
                           >
-                            Status
+                            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1637,7 +1667,9 @@ class HierarchyMaster extends Component {
                         accessor: "status",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                          {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
+                        </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["designationID"];
@@ -1655,14 +1687,17 @@ class HierarchyMaster extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                          {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                          
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                          
+                                          </a>
                                           <button
                                             className="butn"
                                             type="button"
@@ -1671,7 +1706,9 @@ class HierarchyMaster extends Component {
                                               ids
                                             )}
                                           >
-                                            Delete
+                                        {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                          
+                                            
                                           </button>
                                         </div>
                                       </div>
@@ -1728,7 +1765,9 @@ class HierarchyMaster extends Component {
                                     EDIT
                                   </button> */}
                                   <label className="Table-action-edit-button-text">
-                                    <MyButton>EDIT</MyButton>
+                                    <MyButton>
+                                   {TranslationContext!==undefined?TranslationContext.mybutton.edit:"EDIT"}
+                                    </MyButton>
                                   </label>
                                 </Popover>
                               </span>
@@ -1748,16 +1787,18 @@ class HierarchyMaster extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
-                      CREATE HIERARCHY
+                      
+                      {TranslationContext!==undefined?TranslationContext.label.createhierarchy:"CREATE HIERARCHY"}
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                        Designation Name
+                        
+                        {TranslationContext!==undefined?TranslationContext.label.designationname:"Designation Name"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder="Enter Designation Name"
+                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterdesignationname:"Enter Designation Name"}
                         maxLength={25}
                         name="designation_name"
                         value={this.state.designation_name}
@@ -1771,13 +1812,17 @@ class HierarchyMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Reports To</label>
+                        <label className="reports-to">
+                        {TranslationContext!==undefined?TranslationContext.label.reportto:"Reports To"}
+                        </label>
                         <select
                           className="form-control dropdown-setting"
                           value={this.state.selectReportTo}
                           onChange={this.handleOnReportToChange}
                         >
-                          <option value="0">Select</option>
+                          <option value="0">
+                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          </option>
                           <option value={-1}>Root</option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, i) => (
@@ -1794,7 +1839,9 @@ class HierarchyMaster extends Component {
                       </div>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">
+                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                      </label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectStatus}
@@ -1830,7 +1877,8 @@ class HierarchyMaster extends Component {
                           ) : (
                             ""
                           )}
-                          ADD
+                          
+                          {TranslationContext!==undefined?TranslationContext.label.add:"ADD"}
                         </label>
                       </button>
                     </div>
@@ -1839,9 +1887,13 @@ class HierarchyMaster extends Component {
                 <br />
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                    {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                      {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                      </p>
                       <CSVLink
                         filename={"Hierarchy.csv"}
                         data={config.Store_HierarchyTemplate}
@@ -1861,8 +1913,10 @@ class HierarchyMaster extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>
+                          {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
+                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
+                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                         </div>
                       )}
                     </Dropzone>
@@ -1893,18 +1947,23 @@ class HierarchyMaster extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                  
+                                  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                  </a>
                                   <button
                                     className="butn"
                                     onClick={this.DeleteBulkUploadFile}
                                   >
-                                    Delete
+                                     {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                    
                                   </button>
                                 </div>
                               </div>
@@ -1925,11 +1984,14 @@ class HierarchyMaster extends Component {
                               className="file-retry"
                               onClick={this.handleBulkUpload.bind(this)}
                             >
-                              Retry
+                              {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
+                              
                             </span>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">
+                            {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}
+                            </span>
                           </div>
                         </div>
                       ) : null}
@@ -1956,7 +2018,8 @@ class HierarchyMaster extends Component {
                     className="butn"
                     onClick={this.handleBulkUpload.bind(this)}
                   >
-                    ADD
+                    {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+                    
                   </button>
                 </div>
               </div>

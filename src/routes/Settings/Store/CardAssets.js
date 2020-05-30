@@ -53,6 +53,38 @@ class CardAssets extends Component {
     };
   }
   componentDidMount() {}
+  ////handle get card image upload log
+  handleGetCardImageUploadlog() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetCardImageUploadlog",
+      headers: authHeader(),
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageUploadlog");
+      });
+  }
+
+  handleApproveRejectCardImage(){
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/ApproveRejectCardImage",
+      headers: authHeader(),
+      params:{
+        ID:1,
+        ItemID:"",
+        AddToLibrary:""
+      }
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageUploadlog");
+      });
+  }
   render() {
     return (
       <React.Fragment>
