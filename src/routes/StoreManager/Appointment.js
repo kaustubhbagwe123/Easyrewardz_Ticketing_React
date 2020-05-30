@@ -5,6 +5,9 @@ import config from "./../../helpers/config";
 import { authHeader } from "./../../helpers/authHeader";
 import moment from "moment";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from '../../translations/hindi'
+import * as translationMA from '../../translations/marathi'
+
 
 class Appointment extends Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class Appointment extends Component {
       dayAfterTomorrowDay: "",
       status: [],
       tabFor: 1,
+      translateLanguage: {}
     };
     this.onRowExpand = this.onRowExpand.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -28,6 +32,17 @@ class Appointment extends Component {
   componentDidMount() {
     this.handleAppointmentGridData(1);
     this.handleAppointmentCount();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   handleAppointmentGridData(tabFor) {
@@ -184,6 +199,7 @@ class Appointment extends Component {
 
   render() {
     const { Option } = Select;
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <div className="custom-tableak custom-table-ck custom-table-bg">
         <div className="custom-tabs">
@@ -194,7 +210,8 @@ class Appointment extends Component {
             onClick={this.handleAppointmentGridData.bind(this, 1)}
           >
             <p className={this.state.tabFor === 1 ? "tab-title" : "tab-title1"}>
-              Today
+              
+              {TranslationContext!==undefined?TranslationContext.p.today:"Today"}
             </p>
             <span
               className={this.state.tabFor === 1 ? "tab-count" : "tab-count1"}
@@ -238,39 +255,39 @@ class Appointment extends Component {
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: "Date",
+                title: TranslationContext!==undefined?TranslationContext.title.date:"Date",
                 dataIndex: "appointmentDate",
                 width: "20%",
               },
               {
-                title: "Time",
+                title:TranslationContext!==undefined?TranslationContext.title.time:"Time",
                 dataIndex: "timeSlot",
                 width: "20%",
               },
               {
-                title: "Appointments",
+                title: TranslationContext!==undefined?TranslationContext.title.appointments:"Appointments",
                 dataIndex: "nOofPeople",
                 className: "appointment-desktop",
                 width: "20%",
               },
               {
-                title: "Appt.",
+                title: TranslationContext!==undefined?TranslationContext.title.appointments:"Appt.",
                 dataIndex: "nOofPeople",
                 className: "appointment-mobile",
               },
               {
-                title: "Max Capacity",
+                title: TranslationContext!==undefined?TranslationContext.title.maxcapacity:"Max Capacity",
                 dataIndex: "maxCapacity",
                 className: "appointment-desktop",
                 width: "20%",
               },
               {
-                title: "Max Cap.",
+                title: TranslationContext!==undefined?TranslationContext.title.maxcapacity:"Max Cap.",
                 dataIndex: "maxCapacity",
                 className: "appointment-mobile",
               },
               {
-                title: "Actions",
+                title: TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
                 // dataIndex: "orderPricePaid"
                 width: "20%",
               },
@@ -281,25 +298,25 @@ class Appointment extends Component {
                   dataSource={row.appointmentCustomerList}
                   columns={[
                     {
-                      title: "Customer Name",
+                      title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
                       dataIndex: "customerName",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: "Mobile No.",
+                      title: TranslationContext!==undefined?TranslationContext.title.mobilenumber:"Mobile No.",
                       dataIndex: "customerNumber",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: "No. of People",
+                      title: TranslationContext!==undefined?TranslationContext.title.numberofpeople:"No. of People",
                       dataIndex: "nOofPeople",
                       className: "appointment-desktop",
                       width: "20%",
                     },
                     {
-                      title: "Customer Name",
+                      title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
                       dataIndex: "customerName",
                       className: "appointment-mobile",
                       render: (row, item) => {
@@ -312,14 +329,14 @@ class Appointment extends Component {
                               {item.customerNumber}
                             </p>
                             <p className="appt-cust-mob">
-                              No. of People: {item.nOofPeople}
+                        {TranslationContext!==undefined?TranslationContext.p.numberofpeople:"No. of People"}: {item.nOofPeople}
                             </p>
                           </div>
                         );
                       },
                     },
                     {
-                      title: "Status",
+                      title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
                       width: "20%",
                       render: (row, item) => {
                         if (item.status !== "") {
@@ -349,9 +366,15 @@ class Appointment extends Component {
                                 }
                                 dropdownClassName="appt-status-dropdown"
                               >
-                                <Option value="0">Cancel</Option>
-                                <Option value="1">Visited</Option>
-                                <Option value="2">Not Visited</Option>
+                                <Option value="0">
+                                {TranslationContext!==undefined?TranslationContext.option.cancel:"Cancel"}
+                                </Option>
+                                <Option value="1">
+                                {TranslationContext!==undefined?TranslationContext.option.visited:"Visited"}
+                                </Option>
+                                <Option value="2">
+                                {TranslationContext!==undefined?TranslationContext.option.notvisited:"Not Visited"}
+                                </Option>
                               </Select>
                             </div>
                           );
@@ -469,7 +492,9 @@ class Appointment extends Component {
                                     item.appointmentID
                                   )}
                                 >
-                                  <label className="saveLabel">Update</label>
+                                  <label className="saveLabel">
+                                  {TranslationContext!==undefined?TranslationContext.label.update:"Update"}
+                                  </label>
                                 </button>
                               </div>
                             </div>
