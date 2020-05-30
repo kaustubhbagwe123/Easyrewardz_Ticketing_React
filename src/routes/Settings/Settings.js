@@ -705,7 +705,7 @@ class Settings extends Component {
                           <strong>
                             {TranslationContext !== undefined
                               ? TranslationContext.strong.chatsetting
-                              : "Card Asset"}
+                              : "Card Assets"}
                           </strong>
                           <p>
                             {TranslationContext !== undefined
