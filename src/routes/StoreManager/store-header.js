@@ -9,6 +9,7 @@ import Hamb from "./../../assets/Images/hamb.png";
 import Hambw from "./../../assets/Images/hambw.png";
 import SuggSearch from "./../../assets/Images/sugg-search.png";
 import CancelIcon from "./../../assets/Images/cancel.png";
+import addimg from "./../../assets/Images/addimg.png";
 import CancelIconW from "./../../assets/Images/cancel-white.png";
 import Dots from "./../../assets/Images/dotsw.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
@@ -3314,7 +3315,8 @@ class Header extends Component {
                                                           title={
                                                             item.productName
                                                           }
-                                                        />
+                                                          
+                                                        /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
                                                       </div>
                                                       <div className="col-md-8 bkcprdt">
                                                         <div>
@@ -4285,7 +4287,7 @@ class Header extends Component {
                                                         src={item.imageURL}
                                                         alt="Product Image"
                                                         title={item.productName}
-                                                      />
+                                                      /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
                                                     </div>
                                                     <div className="bkcprdt">
                                                       <label className="chat-product-name">

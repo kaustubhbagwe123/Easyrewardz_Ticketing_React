@@ -9842,6 +9842,10 @@ table tr th:last-child {
 .cardsresbtn {
   text-align: right !important;
 }
+.addimg input {
+  width: 100%;
+  display: none;
+}
 
 
 @media (min-width: 768px) {
@@ -11554,6 +11558,9 @@ table tr th:last-child {
 }
 .cardasscus .btnred {
   padding: 6px 10px !important;
+}
+.addimg input {
+  height: 53px;
 }
   /* program code ends */
 }
