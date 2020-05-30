@@ -620,7 +620,6 @@
       "recommendedlist":"विस्तृत सूची",
       "schedulevisit":"अनुसूची देखें",
       "generatepaymentlink":"सामान्य भुगतान लिंक"
-      
     },
     "span":{
       "status": "स्थिति",
@@ -818,7 +817,8 @@
       "phonenumber":"फ़ोन नंबर",
       "hopethishelppleaserateus":"आशा है कि यह मदद, हमें दर कृपया",
       "hopethishelppleaserateusonenewcomment":"इस मदद की उम्मीद है, कृपया हमें दर (१ नई टिप्पणी)",
-      "noslotaddedforthisstore":"इस स्टोर के लिए कोई स्लॉट नहीं जोड़ा गया है"
+      "noslotaddedforthisstore":"इस स्टोर के लिए कोई स्लॉट नहीं जोड़ा गया है",
+      "claimsubcat":"उप बिल्ली का दावा करें"
      
       
 
@@ -970,7 +970,7 @@
       "date":"तारीख"
     },
     "h3": {
-      "bulkupload":"बल्कू अपलोड",
+      "bulkupload":"सामूहिक अपलोड",
       "createusers":"उपयोगकर्ता बनाएँ",
       "createalerts":"अलर्ट बनाएं",
       "createdepartment":"विभाग बनाएँ",
@@ -1165,7 +1165,8 @@
       "entermobileno":"मोबाइल नंबर दर्ज करें",
       "search":"खोज",
       "searchitemidarticleskuid":"आइटम आईडी खोजें/लेख/SKU आईडी",
-      "searchorderid":"खोज क्रम आईडी"
+      "searchorderid":"खोज क्रम आईडी",
+      "enterdesignationname":"पदनाम नाम दर्ज करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1190,5 +1191,8 @@
       "chatid":"चैट आईडी",
       "agent":"एजेंट",
       "message":"संदेश"
+    },
+    "content":{
+      "howmanydaystoshowchathistory":"चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"
     }
   }

@@ -30,9 +30,12 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
+import * as translationHI from './../../../translations/hindi';
+import * as translationMA from './../../../translations/marathi';
 import Dropzone from "react-dropzone";
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
+
 
 class ClaimCategoryMaster extends Component {
   constructor(props) {
@@ -116,6 +119,7 @@ class ClaimCategoryMaster extends Component {
       showEditAddCategory: false,
       showEditAddSubCategory: false,
       showEditAddIssue: false,
+      translateLanguage: {}
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -133,6 +137,16 @@ class ClaimCategoryMaster extends Component {
   componentDidMount() {
     this.handleGetCategoryGridData();
     this.handleGetBrandList();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
   sortStatusZtoA() {
     debugger;
@@ -2040,12 +2054,13 @@ class ClaimCategoryMaster extends Component {
   }
   render() {
     const { categoryGridData } = this.state;
-
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -2055,11 +2070,14 @@ class ClaimCategoryMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Claim Category Master
+            
+            {TranslationContext!==undefined?TranslationContext.link.claimcategorymaster:"Claim Category Master"}
+
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -2082,7 +2100,10 @@ class ClaimCategoryMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2092,7 +2113,10 @@ class ClaimCategoryMaster extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -2104,10 +2128,14 @@ class ClaimCategoryMaster extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -2301,10 +2329,11 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName",
-                                "Brand"
+                                TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"
                               )}
                             >
-                              Brand Name
+                            {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2332,7 +2361,8 @@ class ClaimCategoryMaster extends Component {
                                 "Category"
                               )}
                             >
-                              Claim Category
+                              {TranslationContext!==undefined?TranslationContext.span.claimcategory:"Claim Category"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2357,10 +2387,11 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName",
-                                "SubCategory"
+                                TranslationContext!==undefined?TranslationContext.span.subcategory:"SubCategory"
                               )}
                             >
-                              Claim Sub Cat
+                              {TranslationContext!==undefined?TranslationContext.span.subcategory:"SubCategory"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2385,10 +2416,11 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName",
-                                "IssueType"
+                                TranslationContext!==undefined?TranslationContext.span.claimissuetype:"Claim Issue Type"
                               )}
                             >
-                              Claim Issue Type
+                              {TranslationContext!==undefined?TranslationContext.span.claimissuetype:"Claim Issue Type"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2413,10 +2445,11 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "statusName",
-                                "Status"
+                                TranslationContext!==undefined?TranslationContext.span.status:"Status"
                               )}
                             >
-                              Status
+                              {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2431,7 +2464,9 @@ class ClaimCategoryMaster extends Component {
                           accessor: "statusName",
                         },
                         {
-                          Header: <span>Actions</span>,
+                          Header: <span>
+                            {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
+                          </span>,
                           accessor: "actiondept",
                           sortable: false,
                           Cell: (row) => {
@@ -2450,14 +2485,17 @@ class ClaimCategoryMaster extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                            Delete file?
+                                          {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                           </p>
                                           <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
+                                          {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                          
                                           </p>
                                           <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <a href={Demo.BLANK_LINK}>
+                                            {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                          
+                                            </a>
                                             <button
                                               className="butn"
                                               type="button"
@@ -2466,7 +2504,8 @@ class ClaimCategoryMaster extends Component {
                                                 ids
                                               )}
                                             >
-                                              Delete
+                                               {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                              
                                             </button>
                                           </div>
                                         </div>
@@ -2490,7 +2529,9 @@ class ClaimCategoryMaster extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                     {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                              
+                                    
                                   </button>
                                 </span>
                               </>
@@ -2510,11 +2551,14 @@ class ClaimCategoryMaster extends Component {
                 <div className="store-col-2">
                   <div className="createSpace cus-cs">
                     <label className="Create-store-text">
-                      CREATE CLAIM CATEGORY
+                      
+                      {TranslationContext!==undefined?TranslationContext.label.createclaimcategory:"CREATE CLAIM CATEGORY"}
                     </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Brand Name</label>
+                        <label className="reports-to">
+                        {TranslationContext!==undefined?TranslationContext.label.brandname:"Brand Name"}
+                        </label>
                         <Select
                           getOptionLabel={(option) => option.brandName}
                           getOptionValue={(option) => option.brandID}
@@ -2537,7 +2581,8 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace ClaimPlaceHolder">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
-                          Claim Category
+                          
+                          {TranslationContext!==undefined?TranslationContext.label.claimcategory:"Claim Category"}
                         </label>
                         <Aselect
                           className="store-create-select showborder-select"
@@ -2561,7 +2606,7 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleCategoryAdd.bind(this)}
                           >
-                            + ADD NEW
+                            +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"} 
                           </span>
                         ) : null}
                         {this.state.list1Value === "" && (
@@ -2616,7 +2661,9 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
-                          Claim Sub Category
+                          
+                          {TranslationContext!==undefined?TranslationContext.label.claimsubcategory:"Claim Sub Category"} 
+
                         </label>
                         <Aselect
                           showSearch={true}
@@ -2640,7 +2687,7 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleSubCategoryAdd.bind(this)}
                           >
-                            + ADD NEW
+                            +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                           </span>
                         ) : null}
                         {this.state.ListOfSubCate === "" && (
@@ -2689,7 +2736,9 @@ class ClaimCategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Claim Issue Type</label>
+                        <label className="reports-to">
+                        {TranslationContext!==undefined?TranslationContext.label.claimissuetype:"Claim Issue Type"}
+                        </label>
                         <Aselect
                           showSearch={true}
                           value={this.state.ListOfIssue}
@@ -2712,7 +2761,7 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleIssueTypeAdd.bind(this)}
                           >
-                            + ADD NEW
+                            + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                           </span>
                         ) : null}
                         {this.state.ListOfIssue === "" && (
@@ -2759,7 +2808,9 @@ class ClaimCategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">
+                        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                        </label>
                         <select
                           className="form-control dropdown-setting"
                           value={this.state.selectStatus}
@@ -2786,7 +2837,8 @@ class ClaimCategoryMaster extends Component {
                         type="button"
                         onClick={this.handleSubmitData.bind(this)}
                       >
-                        ADD
+                         {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+                        
                       </button>
                     </div>
                     <br />
@@ -2797,9 +2849,14 @@ class ClaimCategoryMaster extends Component {
                   <div className="right-sect-div">
                     <br />
                     <div className="d-flex justify-content-between align-items-center pb-2">
-                      <h3 className="pb-0">Bulk Upload</h3>
+                      <h3 className="pb-0">
+                      {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                      </h3>
                       <div className="down-excel">
-                        <p>Template</p>
+                        <p>
+
+                        {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                        </p>
                         <CSVLink
                           filename={"ClaimCategory.csv"}
                           data={config.claimCategoryTemplate}
@@ -2819,8 +2876,11 @@ class ClaimCategoryMaster extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>{" "}
-                            or Drop File here
+                            <span className={"fileupload-span"}>
+                            {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
+                            </span>{" "}
+                            {TranslationContext!==undefined?TranslationContext.div.or:"or"}   
+                            {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                           </div>
                         )}
                       </Dropzone>
@@ -2850,18 +2910,21 @@ class ClaimCategoryMaster extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                  {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}>
+                                    {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                    </a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                       {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                     </button>
                                   </div>
                                 </div>
@@ -2917,7 +2980,8 @@ class ClaimCategoryMaster extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                       {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+                      
                     </button>
                     <br />
                   </div>
@@ -2931,9 +2995,13 @@ class ClaimCategoryMaster extends Component {
             modalId="categoryEditModal"
           >
             <div className="edtpadding cus-cs">
-              <label className="popover-header-text">EDIT CLAIM CATEGORY</label>
+              <label className="popover-header-text">
+              {TranslationContext!==undefined?TranslationContext.label.editclaimcategory:"EDIT CLAIM CATEGORY"}
+              </label>
               <div className="pop-over-div">
-                <label className="edit-label-1">Brand Name</label>
+                <label className="edit-label-1">
+                {TranslationContext!==undefined?TranslationContext.label.brandname:"Brand Name"}
+                </label>
                 <select
                   className="store-create-select"
                   value={this.state.editCategory.brandID}
@@ -2962,7 +3030,9 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Claim Category</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.claimcategory:"Claim Category"}
+                    </label>
                     <Aselect
                       showSearch={true}
                       value={this.state.editCategory.categoryName}
@@ -2984,7 +3054,7 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditCategoryAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.editCategory.categoryName === "" && (
@@ -3036,7 +3106,9 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Claim Sub Category</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.claimsubcategory:"Claim Sub Category"}
+                    </label>
                     <Aselect
                       showSearch={true}
                       value={this.state.editCategory.subCategoryName}
@@ -3058,7 +3130,7 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditSubCategoryAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.editCategory.subCategoryName === "" && (
@@ -3138,7 +3210,7 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditIssueAdd.bind(this)}
                       >
-                        + ADD NEW
+                        + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.editCategory.issueTypeName === "" && (
@@ -3195,8 +3267,12 @@ class ClaimCategoryMaster extends Component {
                   name="statusName"
                   onChange={this.handleModalStatusChange.bind(this)}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="Active">
+                  {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                  </option>
+                  <option value="Inactive">
+                  {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                  </option>
                 </select>
               </div>
               <br />
@@ -3220,7 +3296,8 @@ class ClaimCategoryMaster extends Component {
                     ) : (
                       ""
                     )}
-                    SAVE
+                    
+                    {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
                   </label>
                 </button>
               </div>
