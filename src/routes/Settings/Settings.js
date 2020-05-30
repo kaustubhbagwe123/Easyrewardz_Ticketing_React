@@ -20,8 +20,8 @@ import department from "./../../assets/Images/department.png";
 import audit from "./../../assets/Images/audit.png";
 // import Demo from "../../store/Hashtag";
 import { Link } from "react-router-dom";
-import * as translationHI from '../../translations/hindi'
-import * as translationMA from '../../translations/marathi'
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class Settings extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class Settings extends Component {
       ticketShow: false,
       storeShow: false,
       showReport: true,
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
 
@@ -76,27 +76,25 @@ class Settings extends Component {
       });
     }
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   render() {
-
     const TranslationContext = this.state.translateLanguage.default;
 
     return (
       <React.Fragment>
         <div className="container-fluid setting-title">
           <div className="setmainscreen">
-          {TranslationContext!==undefined?TranslationContext.div.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.div.setting
+              : "Settings"}
           </div>
         </div>
         <div className="container-fluid">
@@ -112,8 +110,9 @@ class Settings extends Component {
                     aria-controls="ticketing-tab"
                     aria-selected="true"
                   >
-                    {TranslationContext!==undefined?TranslationContext.a.ticketing:"Ticketing"}
-                    
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.ticketing
+                      : "Ticketing"}
                   </a>
                 </li>
               ) : null}
@@ -127,8 +126,9 @@ class Settings extends Component {
                     aria-controls="store-tab"
                     aria-selected="false"
                   >
-                    {TranslationContext!==undefined?TranslationContext.a.store:"Store"}
-                    
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.store
+                      : "Store"}
                   </a>
                 </li>
               ) : null}
@@ -179,11 +179,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.hierarchy:"Hierarchy"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.hierarchy
+                              : "Hierarchy"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -193,11 +197,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.brand:"Brand"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.brand
+                              : "Brand"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -212,8 +220,10 @@ class Settings extends Component {
                         <div className="setting-desc">
                           <strong>Store</strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -224,8 +234,10 @@ class Settings extends Component {
                         <div className="setting-desc">
                           <strong>Category</strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -239,11 +251,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.priority:"Priority"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.priority
+                              : "Priority"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -253,11 +269,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.sla:"SLA"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.sla
+                              : "SLA"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -271,11 +291,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.users:"Users"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.users
+                              : "Users"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -284,10 +308,16 @@ class Settings extends Component {
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
                         <div className="setting-desc">
-                          <strong>{TranslationContext!==undefined?TranslationContext.strong.crmroles:"CRM Roles"}</strong>
+                          <strong>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.crmroles
+                              : "CRM Roles"}
+                          </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -303,11 +333,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.alerts:"Alerts"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.alerts
+                              : "Alerts"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -317,11 +351,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.templates:"Templates"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.templates
+                              : "Templates"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -335,11 +373,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.reports:"Reports"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.reports
+                              : "Reports"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -349,11 +391,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.modules:"Modules"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.modules
+                              : "Modules"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -367,11 +413,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.fileuploadlogs:"File Upload Logs"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.fileuploadlogs
+                              : "File Upload Logs"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -381,11 +431,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.blockedemailid:"Blocked Email Id"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.blockedemailid
+                              : "Blocked Email Id"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -399,12 +453,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.junkwords:"Junk Words"}
-
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.junkwords
+                              : "Junk Words"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -431,11 +488,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.hierarchymaster:"Hierarchy Master"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.hierarchymaster
+                              : "Hierarchy Master"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -445,11 +506,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.itemmaster:"Item Master"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.itemmaster
+                              : "Item Master"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -462,11 +527,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.department:"Department"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.department
+                              : "Department"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -476,11 +545,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.homeshopsettings:"Home Shop Settings"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.homeshopsettings
+                              : "Home Shop Settings"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -493,10 +566,16 @@ class Settings extends Component {
                           <img src={priority} alt="priority" />
                         </div>
                         <div className="setting-desc">
-                          <strong>{TranslationContext!==undefined?TranslationContext.strong.prioritymaster:"Priority Master"}</strong>
+                          <strong>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.prioritymaster
+                              : "Priority Master"}
+                          </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -509,11 +588,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.slatemplatedepartment:"SLA Template-Department"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.slatemplatedepartment
+                              : "SLA Template-Department"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -526,11 +609,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.claimcategorymaster:"Claim Category Master"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.claimcategorymaster
+                              : "Claim Category Master"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -540,11 +627,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.chatsetting:"Chat Settings"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.chatsetting
+                              : "Chat Settings"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -558,11 +649,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.crmroles:"CRM Roles"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.crmroles
+                              : "CRM Roles"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -572,11 +667,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.users:"Users"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.users
+                              : "Users"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -586,11 +685,33 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.alerts:"Alerts"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.alerts
+                              : "Alerts"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                          </p>
+                        </div>
+                      </Link>
+                      <Link to="/store/cardassets" className="setting-box">
+                        <div className="setting-icons">
+                          <img src={modules} alt="modules" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.chatsetting
+                              : "Card Asset"}
+                          </strong>
+                          <p>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -605,11 +726,15 @@ class Settings extends Component {
                           </div>
                           <div className="setting-desc">
                             <strong>
-                            {TranslationContext!==undefined?TranslationContext.strong.reports:"Reports"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.strong.reports
+                                : "Reports"}
                             </strong>
                             <p>
-                            {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p
+                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
                             </p>
                           </div>
                         </Link>
@@ -620,11 +745,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.modulesettings:"Module Settings"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.modulesettings
+                              : "Module Settings"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -637,11 +766,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.fileuploadlogs:"File Upload Logs"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.fileuploadlogs
+                              : "File Upload Logs"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -664,11 +797,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.hierarchy:"Hierarchy"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.hierarchy
+                              : "Hierarchy"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -678,11 +815,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.crmroles:"CRM Roles"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.crmroles
+                              : "CRM Roles"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -696,11 +837,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.users:"Users"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.users
+                              : "Users"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -710,11 +855,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.auditparameters:"Audit Parameters"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.auditparameters
+                              : "Audit Parameters"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -728,11 +877,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.reports:"Reports"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.reports
+                              : "Reports"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -742,11 +895,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.fileuploadlogs:"File Upload Logs"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.fileuploadlogs
+                              : "File Upload Logs"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -769,11 +926,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.elements:"Elements"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.elements
+                              : "Elements"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -787,11 +948,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.language:"Language"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.language
+                              : "Language"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -805,11 +970,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.theme:"Theme"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.theme
+                              : "Theme"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -825,11 +994,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.rules:"Rules"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.rules
+                              : "Rules"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
@@ -843,11 +1016,15 @@ class Settings extends Component {
                         </div>
                         <div className="setting-desc">
                           <strong>
-                          {TranslationContext!==undefined?TranslationContext.strong.configuration:"Configuration"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.strong.configuration
+                              : "Configuration"}
                           </strong>
                           <p>
-                          {TranslationContext!==undefined?TranslationContext.p.asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority:"A system in which members of an organization or society are ranked according to relative status or authority."}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
                           </p>
                         </div>
                       </Link>
