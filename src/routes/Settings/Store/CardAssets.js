@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag.js";
 import { Select, Popover } from "antd";
-import InfoIcon from "./../../../assets/Images/Info-black.png";
+import InfoIcon from "./../../../assets/Images/ico.png";
 import axios from "axios";
 import config from "../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
@@ -88,7 +88,8 @@ class CardAssets extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="store-task-tabs">
+        <div className="custom-tableak cardasscus">
+        <div className="store-task-tabs" style={{backgroundColor: "transparent"}}>
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
               <a
@@ -123,7 +124,7 @@ class CardAssets extends Component {
             role="tabpanel"
             aria-labelledby="asset-approval"
           >
-            <div className="table-cntr store chat-history chatabcus">
+            <div className="table-cntr store">
               <Table
                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                 columns={[
@@ -133,7 +134,7 @@ class CardAssets extends Component {
                     render: (row, rowdata) => {
                       return (
                         <>
-                          <img src={Bata} alt="card-img" />
+                          <div className="card-img"><img src={Bata} alt="card-img" /></div>
                         </>
                       );
                     },
@@ -150,24 +151,25 @@ class CardAssets extends Component {
                         <>
                           {rowdata.updateBy}
                           <Popover
+                            overlayClassName="cardassetspop"
                             content={
-                              <div className="dash-creation-popup-cntr">
+                              <div className="dash-creation-popup-cntr" style={{display: "block"}}>
                                 <ul className="dash-category-popup dashnewpopup">
-                                  <li>
-                                    <p>Uploaded Data</p>
-                                    <p>{rowdata.uploadData}</p>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Uploaded Data</label>
+                                    <p style={{display: "inline"}}>{rowdata.uploadData}</p>
+                                  </li>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Code</label>
+                                    <p style={{display: "inline"}}>{rowdata.storeCode}</p>
+                                  </li>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Name</label>
+                                    <p style={{display: "inline"}}>{rowdata.storeName}</p>
                                   </li>
                                   <li>
-                                    <p>Store Code</p>
-                                    <p>{rowdata.storeCode}</p>
-                                  </li>
-                                  <li>
-                                    <p>Store Name</p>
-                                    <p>{rowdata.storeName}</p>
-                                  </li>
-                                  <li>
-                                    <p>Store Address</p>
-                                    <p>{rowdata.StoreAddress}</p>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Address</label>
+                                    <p style={{display: "inline"}}>{rowdata.StoreAddress}</p>
                                   </li>
                                 </ul>
                               </div>
@@ -189,8 +191,10 @@ class CardAssets extends Component {
                     render: (row, rowdata) => {
                       return (
                         <>
-                          <button>Add to Libarary</button>
-                          <button>reject</button>
+                          <div className="cardsresbtn">
+                            <button className="btngreen">Add to Library</button>
+                            <button className="btnred">Reject</button>
+                          </div>
                         </>
                       );
                     },
@@ -207,7 +211,7 @@ class CardAssets extends Component {
             role="tabpanel"
             aria-labelledby="upload-log"
           >
-            <div className="table-cntr store chat-history chatabcus">
+            <div className="table-cntr store">
               <Table
                 className="components-table-demo-nested antd-table-campaign custom-antd-table"
                 columns={[
@@ -217,7 +221,7 @@ class CardAssets extends Component {
                     render: (row, rowdata) => {
                       return (
                         <>
-                          <img src={Bata} alt="card-img" />
+                          <div className="card-img"><img src={Bata} alt="card-img" /></div>
                         </>
                       );
                     },
@@ -234,24 +238,25 @@ class CardAssets extends Component {
                         <>
                           {rowdata.updateBy}
                           <Popover
+                            overlayClassName="cardassetspop"
                             content={
-                              <div className="dash-creation-popup-cntr">
+                              <div className="dash-creation-popup-cntr" style={{display: "block"}}>
                                 <ul className="dash-category-popup dashnewpopup">
-                                  <li>
-                                    <p>Uploaded Data</p>
-                                    <p>{rowdata.uploadData}</p>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Uploaded Data</label>
+                                    <p style={{display: "inline"}}>{rowdata.uploadData}</p>
+                                  </li>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Code</label>
+                                    <p style={{display: "inline"}}>{rowdata.storeCode}</p>
+                                  </li>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Name</label>
+                                    <p style={{display: "inline"}}>{rowdata.storeName}</p>
                                   </li>
                                   <li>
-                                    <p>Store Code</p>
-                                    <p>{rowdata.storeCode}</p>
-                                  </li>
-                                  <li>
-                                    <p>Store Name</p>
-                                    <p>{rowdata.storeName}</p>
-                                  </li>
-                                  <li>
-                                    <p>Store Address</p>
-                                    <p>{rowdata.StoreAddress}</p>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Address</label>
+                                    <p style={{display: "inline"}}>{rowdata.StoreAddress}</p>
                                   </li>
                                 </ul>
                               </div>
@@ -277,24 +282,25 @@ class CardAssets extends Component {
                         <>
                           {rowdata.approvedBy}
                           <Popover
+                            overlayClassName="cardassetspop"
                             content={
-                              <div className="dash-creation-popup-cntr">
+                              <div className="dash-creation-popup-cntr" style={{display: "block"}}>
                                 <ul className="dash-category-popup dashnewpopup">
-                                  <li>
-                                    <p>Rejected Data</p>
-                                    <p>{rowdata.rejectedData}</p>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Rejected Data</label>
+                                    <p style={{display: "inline"}}>{rowdata.rejectedData}</p>
+                                  </li>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Code</label>
+                                    <p style={{display: "inline"}}>{rowdata.storeCode}</p>
+                                  </li>
+                                  <li style={{paddingBottom: "10px",borderBottom: "1px solid #ddd",marginBottom: "8px"}}>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Name</label>
+                                    <p style={{display: "inline"}}>{rowdata.storeName}</p>
                                   </li>
                                   <li>
-                                    <p>Store Code</p>
-                                    <p>{rowdata.storeCode}</p>
-                                  </li>
-                                  <li>
-                                    <p>Store Name</p>
-                                    <p>{rowdata.storeName}</p>
-                                  </li>
-                                  <li>
-                                    <p>Store Address</p>
-                                    <p>{rowdata.StoreAddress}</p>
+                                    <label style={{width: "50%",fontWeight:"bold"}}>Store Address</label>
+                                    <p style={{display: "inline"}}>{rowdata.StoreAddress}</p>
                                   </li>
                                 </ul>
                               </div>
@@ -316,7 +322,7 @@ class CardAssets extends Component {
                     render: (row, rowdata) => {
                       return (
                         <>
-                          <label>{rowdata.status}</label>
+                          <div className="text-right"><label className="statusbtnadd">{rowdata.status}</label></div>
                         </>
                       );
                     },
@@ -327,6 +333,7 @@ class CardAssets extends Component {
               ></Table>
             </div>
           </div>
+        </div>
         </div>
       </React.Fragment>
     );
