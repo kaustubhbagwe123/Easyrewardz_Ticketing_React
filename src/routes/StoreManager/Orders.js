@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from "react";
+import { Table, Popover } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Popover } from "antd";
 import ReactTable from "react-table";
-import InfoIcon from "./../../assets/Images/info-icon.png";
-import HeadphoneImg from "./../../assets/Images/headphone3.png";
+import OrderHamb from "./../../assets/Images/order-hamb.png";
+import OrderSearch from "./../../assets/Images/order-search.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
-import SearchIcon from "../../assets/Images/search-icon.png";
+import OrderDel from "../../assets/Images/order-del.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import ClaimStatus from "../../routes/ClaimStatus";
 import DatePicker from "react-datepicker";
@@ -19,13 +19,36 @@ import "./../../assets/css/orders.css";
 class Orders extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      shoppingBagGridData: [
+        {
+          ShoppingBagNo: "12017768",
+          Date: "25 April  2020",
+          Time: "11:45 AM",
+          CustomerName: "Sandeep",
+          CustomerNumber: "+91 9717419325",
+          Items: "6",
+          Status: "New",
+          Deliverytype: "Store Delivery",
+          PickupDateTime: "—Nil—",
+          Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+        },
+      ],
+      itemPopupDate: [
+        {
+          ItemID: "123456",
+          ItemName: "Blue Casual shoes",
+          ItemPrice: "1299",
+          Quantity: "02",
+        },
+      ],
+    };
   }
 
   render() {
     return (
       <Fragment>
-        <div className="store-task-tabs">
+        <div className="store-task-tabs orders-tabs-outer">
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
               <a
@@ -88,15 +111,130 @@ class Orders extends Component {
               </a>
             </li>
           </ul>
+          <div className="order-search">
+            <input type="text" placeholder="Search..." />
+            <img src={OrderSearch} alt="search icon" />
+          </div>
         </div>
-        <div className="tab-content store-task-tab-cont">
+        <div className="tab-content store-task-tab-cont orders-tab-cont">
           <div
             className="tab-pane fade show active"
             id="shopping-bag-tab"
             role="tabpanel"
             aria-labelledby="shopping-bag-tab"
           >
-            1
+            <div className="table-cntr store">
+              <Table
+                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                columns={[
+                  {
+                    title: "Shopping Bag No.",
+                    dataIndex: "ShoppingBagNo",
+                  },
+                  {
+                    title: "Date",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.Date}</p>
+                          <p className="order-small-font">{item.Time}</p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Customer",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.CustomerName},</p>
+                          <p className="order-small-font">
+                            {item.CustomerNumber}
+                          </p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Items",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p>{item.Items}</p>
+                          <Popover
+                            content={
+                              <Table
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                columns={[
+                                  {
+                                    title: "Item ID",
+                                    dataIndex: "ItemID",
+                                  },
+                                  {
+                                    title: "Item Name",
+                                    dataIndex: "ItemName",
+                                  },
+                                  {
+                                    title: "Item Price",
+                                    dataIndex: "ItemPrice",
+                                  },
+                                  {
+                                    title: "Quantity",
+                                    dataIndex: "Quantity",
+                                  },
+                                ]}
+                                pagination={false}
+                                dataSource={this.state.itemPopupDate}
+                              />
+                            }
+                            trigger="click"
+                          >
+                            <img src={OrderHamb} className="order-hamb" />
+                          </Popover>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "Status",
+                  },
+                  {
+                    title: "Delivery type",
+                    dataIndex: "Deliverytype",
+                  },
+                  {
+                    title: "Pickup Date & Time",
+                    dataIndex: "PickupDateTime",
+                  },
+                  {
+                    title: "Address",
+                    render: (row, item) => {
+                      return <p className="order-small-font">{item.Address}</p>;
+                    },
+                  },
+                  {
+                    title: "Action",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <button className="butn order-grid-butn">
+                            Convert to Order
+                          </button>
+                          <button className="butn order-grid-butn order-del-butn">
+                            <img src={OrderDel} alt="delete icon" />
+                          </button>
+                        </div>
+                      );
+                    },
+                  },
+                ]}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                showSizeChanger={true}
+                onShowSizeChange={true}
+                dataSource={this.state.shoppingBagGridData}
+              />
+            </div>
           </div>
           <div
             className="tab-pane fade"

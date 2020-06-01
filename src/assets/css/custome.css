@@ -1858,7 +1858,7 @@ textarea:focus {
   outline: none;
 } */
 a:focus,
-a:hover:focus {
+a:hover:focus, button:focus {
   outline: 1.5px #7aacfe solid;
   /* outline: 1.5px #e5efff solid; */
 }
@@ -9813,31 +9813,31 @@ table tr th:last-child {
 .cardasscus .btngreen {
   background-color: #00b894;
   color: #fff;
-    padding: 8px 15px !important;
-    border: none;
-    margin-right: 10px;
-    cursor: pointer;
+  padding: 8px 15px !important;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
 }
 .cardasscus .btnred {
   background-color: #ff7163;
   color: #fff;
-    padding: 8px 15px !important;
-    border: none;
-    cursor: pointer;
+  padding: 8px 15px !important;
+  border: none;
+  cursor: pointer;
 }
 .cardasscus .statusbtnadd {
   background-color: #e5f7f4;
-    color: #0ebc9a;
-    border-radius: 50px;
-    padding: 10px 25px;
-    font-weight: 600;
+  color: #0ebc9a;
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 600;
 }
 .cardasscus .statusbtnrej {
   background-color: #ffe3e0;
-    color: #ff7171;
-    border-radius: 50px;
-    padding: 10px 25px;
-    font-weight: 600;
+  color: #ff7171;
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 600;
 }
 .cardassetspop {
   width: 300px;
@@ -9849,7 +9849,6 @@ table tr th:last-child {
   width: 100%;
   display: none;
 }
-
 
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
@@ -11542,29 +11541,29 @@ table tr th:last-child {
     margin: auto;
     display: block;
     padding: 8px 10px;
-}
-.cardasscus .card-img {
-  width: 100px;
-  margin: 7px 0;
-}
-.cardasscus td:nth-child(3) {
-  white-space: nowrap;
-}
-.cardasscus .statusbtnadd {
-  padding: 5px 20px;
-}
-.cardsresbtn {
-  white-space: nowrap;
-}
-.cardasscus .btngreen {
-  padding: 6px 10px !important;
-}
-.cardasscus .btnred {
-  padding: 6px 10px !important;
-}
-.addimg input {
-  height: 53px;
-}
+  }
+  .cardasscus .card-img {
+    width: 100px;
+    margin: 7px 0;
+  }
+  .cardasscus td:nth-child(3) {
+    white-space: nowrap;
+  }
+  .cardasscus .statusbtnadd {
+    padding: 5px 20px;
+  }
+  .cardsresbtn {
+    white-space: nowrap;
+  }
+  .cardasscus .btngreen {
+    padding: 6px 10px !important;
+  }
+  .cardasscus .btnred {
+    padding: 6px 10px !important;
+  }
+  .addimg input {
+    height: 53px;
+  }
   /* program code ends */
 }
 
