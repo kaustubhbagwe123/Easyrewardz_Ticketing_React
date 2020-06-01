@@ -29,25 +29,26 @@ import StoreCampaign from "../Campaign/StoreCampaign";
 import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 import ChatSettings from "./../Settings/Store/ChatSettings";
 import CardAssets from "./../Settings/Store/CardAssets";
-// import LanguageSelection from "./Component/Store/LanguageSelection";
-// import LanguageSelection from "./../../Component/Store/LanguageSelection";
+import storeMyTicket from "./storeMyTicket";
+import storeMyTicketList from "./storeMyTicketList";
 
 export class StoreApp extends Component {
   render() {
     const { match } = this.props;
     return (
       <StoreLayout>
-        {/* <Route
-          exact
-          path={`${match.url}/languageSelection`}
-          component={LanguageSelection}
-        /> */}
         <Route
           exact
           path={`${match.url}/storeDashboard`}
           component={StoreDashboard}
         />
         <Route exact path={`${match.url}/storetask`} component={StoreTask} />
+        <Route exact path={`${match.url}/myTicket`} component={storeMyTicket} />
+        <Route
+          exact
+          path={`${match.url}/myTicketList`}
+          component={storeMyTicketList}
+        />
 
         <Route
           exact
