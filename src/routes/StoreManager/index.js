@@ -31,6 +31,7 @@ import ChatSettings from "./../Settings/Store/ChatSettings";
 import CardAssets from "./../Settings/Store/CardAssets";
 import storeMyTicket from "./storeMyTicket";
 import storeMyTicketList from "./storeMyTicketList";
+import Orders from "./Orders";
 
 export class StoreApp extends Component {
   render() {
@@ -147,6 +148,7 @@ export class StoreApp extends Component {
           component={ChatSettings}
         />
         <Route exact path={`${match.url}/cardassets`} component={CardAssets} />
+        <Route exact path={`${match.url}/orders`} component={Orders} />
         <NotificationContainer />
       </StoreLayout>
     );
