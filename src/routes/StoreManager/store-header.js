@@ -1796,9 +1796,10 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            <div className="er bell-icon">
-              {/* <label className="er-label">ER</label> */}
-              <img src={BellIcon} alt="bell icon" />
+            <div className="er"> 
+            {/* bell-icon */} 
+              <label className="er-label">ER</label>
+              {/* <img src={BellIcon} alt="bell icon" /> */}
             </div>
             <div className="hamb-menu">
               <img
