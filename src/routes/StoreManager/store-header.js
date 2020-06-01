@@ -226,8 +226,8 @@ class Header extends Component {
       this.handleGetNotigfication();
 
       // setInterval(() => {
-        this.handleGetChatNotificationCount();
-        // console.clear();
+      this.handleGetChatNotificationCount();
+      // console.clear();
       // }, 10000);
 
       this.handleGetOngoingChat("");
@@ -1767,7 +1767,6 @@ class Header extends Component {
         }
       });
     });
-     
   }
 
   handleInsertCardImageUpload() {
@@ -3316,8 +3315,14 @@ class Header extends Component {
                                                           title={
                                                             item.productName
                                                           }
-                                                          
-                                                        /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
+                                                        />
+                                                        <span className="addimg">
+                                                          <input
+                                                            type="image"
+                                                            alt="Add Image"
+                                                            src={addimg}
+                                                          />
+                                                        </span>
                                                       </div>
                                                       <div className="col-md-8 bkcprdt">
                                                         <div>
@@ -4288,7 +4293,14 @@ class Header extends Component {
                                                         src={item.imageURL}
                                                         alt="Product Image"
                                                         title={item.productName}
-                                                      /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
+                                                      />
+                                                      <span className="addimg">
+                                                        <input
+                                                          type="image"
+                                                          alt="Add Image"
+                                                          src={addimg}
+                                                        />
+                                                      </span>
                                                     </div>
                                                     <div className="bkcprdt">
                                                       <label className="chat-product-name">
@@ -5081,14 +5093,14 @@ class Header extends Component {
                                   width: "30%",
                                   render: (row, rowdata) => {
                                     return (
-                                      <>
+                                      <div className="d-flex">
                                         <p className="storeaget-chat-ctn">
                                           {rowdata.chatCount}
                                         </p>
                                         <p style={{ display: "inline-block" }}>
                                           {row}
                                         </p>
-                                      </>
+                                      </div>
                                     );
                                   },
                                 },
