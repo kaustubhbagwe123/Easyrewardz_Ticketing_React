@@ -19,6 +19,8 @@ import CampaignLogo from "./../../assets/Images/campaign.svg";
 import CampaignLogoBlue from "./../../assets/Images/campaign.svg";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
+import OrderLogoBlue from "./../../assets/Images/order-icon-blue.png";
+import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
@@ -226,8 +228,8 @@ class Header extends Component {
       this.handleGetNotigfication();
 
       // setInterval(() => {
-        this.handleGetChatNotificationCount();
-        // console.clear();
+      this.handleGetChatNotificationCount();
+      // console.clear();
       // }, 10000);
 
       this.handleGetOngoingChat("");
@@ -1767,7 +1769,6 @@ class Header extends Component {
         }
       });
     });
-     
   }
 
   handleInsertCardImageUpload() {
@@ -1830,6 +1831,22 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
+              <Link to="orders" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={OrderLogoBlack}
+                    alt="order icon"
+                    className="dashboardImg1"
+                  />
+                  <img
+                    src={OrderLogoBlue}
+                    alt="order icon"
+                    className="order-blue"
+                    style={{ display: "none" }}
+                  />
+                </div>
+                <label className="cusheade">Orders</label>
+              </Link>
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
@@ -3315,8 +3332,14 @@ class Header extends Component {
                                                           title={
                                                             item.productName
                                                           }
-                                                          
-                                                        /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
+                                                        />
+                                                        <span className="addimg">
+                                                          <input
+                                                            type="image"
+                                                            alt="Add Image"
+                                                            src={addimg}
+                                                          />
+                                                        </span>
                                                       </div>
                                                       <div className="col-md-8 bkcprdt">
                                                         <div>
@@ -4287,7 +4310,14 @@ class Header extends Component {
                                                         src={item.imageURL}
                                                         alt="Product Image"
                                                         title={item.productName}
-                                                      /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
+                                                      />
+                                                      <span className="addimg">
+                                                        <input
+                                                          type="image"
+                                                          alt="Add Image"
+                                                          src={addimg}
+                                                        />
+                                                      </span>
                                                     </div>
                                                     <div className="bkcprdt">
                                                       <label className="chat-product-name">
