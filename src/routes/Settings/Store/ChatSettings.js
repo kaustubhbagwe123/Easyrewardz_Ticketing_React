@@ -7,6 +7,8 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from '../../../translations/hindi'
+import * as translationMA from '../../../translations/marathi'
 
 const { Option } = Select;
 
@@ -22,11 +24,23 @@ class ChatSettings extends Component {
       isChatSessionValue: "",
       isChatDisplayValue: "",
       programCode:"",
+      translateLanguage: {}
     };
   }
 
   componentDidMount() {
     this.handleGetChatSession();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   ////handle get chat session
@@ -142,11 +156,12 @@ class ChatSettings extends Component {
     this.setState({ chatDisplayDurationHour: e });
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -156,11 +171,11 @@ class ChatSettings extends Component {
             }}
             className="header-path"
           >
-            Store
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Chat Settings
+          {TranslationContext!==undefined?TranslationContext.link.chatsetting:"Chat Settings"} 
           </Link>
         </div>
         <div className="row card1">
@@ -201,12 +216,18 @@ class ChatSettings extends Component {
                           onChange={this.handleSessionDuration.bind(this)}
                           value={this.state.chatSessionDuration}
                         >
-                          <Option value="M">M</Option>
-                          <Option value="H">H</Option>
-                          <Option value="D">D</Option>
+                          <Option value="M">
+                          {TranslationContext!==undefined?TranslationContext.option.m:"M"}
+                          </Option>
+                          <Option value="H">
+                          {TranslationContext!==undefined?TranslationContext.option.h:"H"}
+                          </Option>
+                          <Option value="D">
+                          {TranslationContext!==undefined?TranslationContext.option.d:"D"}
+                          </Option>
                         </Select>
                         <Popover
-                        content={<> How many days to show chat history.</>}
+                        content={<> {TranslationContext!==undefined?TranslationContext.content.howmanydaystoshowchathistory:"How many days to show chat history."}</>}
                         placement="bottom"
                       >
                         <img
@@ -234,12 +255,18 @@ class ChatSettings extends Component {
                         onChange={this.handleChatDisplayDurationHour.bind(this)}
                         value={this.state.chatDisplayDurationHour}
                       >
-                        <Option value="M">M</Option>
-                        <Option value="H">H</Option>
-                        <Option value="D">D</Option>
+                         <Option value="M">
+                          {TranslationContext!==undefined?TranslationContext.option.m:"M"}
+                          </Option>
+                          <Option value="H">
+                          {TranslationContext!==undefined?TranslationContext.option.h:"H"}
+                          </Option>
+                          <Option value="D">
+                          {TranslationContext!==undefined?TranslationContext.option.d:"D"}
+                          </Option>
                       </Select>
                       <Popover
-                        content={<> How many days to show chat history.</>}
+                        content={<>{TranslationContext!==undefined?TranslationContext.content.howmanydaystoshowchathistory:"How many days to show chat history."}</>}
                         placement="bottom"
                       >
                         <img
@@ -257,7 +284,8 @@ class ChatSettings extends Component {
                         type="button"
                         onClick={this.handleSubmit.bind(this)}
                       >
-                        SUBMIT
+                        {TranslationContext!==undefined?TranslationContext.button.submit:"SUBMIT"}
+                        
                       </button>
                     </div>
                   </div>

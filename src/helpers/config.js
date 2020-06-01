@@ -253,6 +253,7 @@ let config = {
   // socketUrl: "http://ndjs.shopster.live/api/sendreply",      /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
   socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+  //  socketUrl:"http://localhost:4000/"
 };
 
 export default config;

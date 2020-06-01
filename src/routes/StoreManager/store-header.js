@@ -9,6 +9,7 @@ import Hamb from "./../../assets/Images/hamb.png";
 import Hambw from "./../../assets/Images/hambw.png";
 import SuggSearch from "./../../assets/Images/sugg-search.png";
 import CancelIcon from "./../../assets/Images/cancel.png";
+import addimg from "./../../assets/Images/addimg.png";
 import CancelIconW from "./../../assets/Images/cancel-white.png";
 import Dots from "./../../assets/Images/dotsw.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
@@ -80,9 +81,10 @@ import * as translationMA from "../../translations/marathi";
 
 const { Option } = Select;
 
-var socket = io.connect(config.socketUrl, {
-  transports: ["polling"],
-});
+// var socket = io.connect(config.socketUrl, {
+//   // transports: ["polling"],
+//   upgrade: false,
+// });
 // var isSocketReady=1;
 class Header extends Component {
   constructor(props) {
@@ -171,6 +173,7 @@ class Header extends Component {
       selectedSugpage: 1,
       tempmessageSuggestionData: [],
       translateLanguage: {},
+      storeCode: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -222,10 +225,10 @@ class Header extends Component {
       );
       this.handleGetNotigfication();
 
-      setInterval(() => {
+      // setInterval(() => {
         this.handleGetChatNotificationCount();
-        console.clear();
-      }, 10000);
+        // console.clear();
+      // }, 10000);
 
       this.handleGetOngoingChat("");
     }
@@ -392,10 +395,10 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
-    console.clear();
+    // console.clear();
   }
   componentDidUpdate() {
-    console.clear();
+    // console.clear();
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
@@ -523,8 +526,10 @@ class Header extends Component {
             percentLog,
             workTime: data.workTimeInPercentage,
             workTimeHours: data.totalWorkingTime,
+            programCode: data.programCode,
+            storeCode: data.storeCode,
           });
-
+          self.handleCreateSocketConnection(data.programCode, data.storeCode);
           // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
@@ -699,40 +704,6 @@ class Header extends Component {
           self.setState({
             ongoingChatsData,
           });
-
-          if (value == "") {
-            for (let i = 0; i < ongoingChatsData.length; i++) {
-              socket = io.connect(config.socketUrl, {
-                transports: ["polling"],
-              });
-
-              socket.on("connect", () => {
-                socket.send("hi");
-                socket.on(
-                  "91" +
-                    ongoingChatsData[i].mobileNo +
-                    ongoingChatsData[i].programCode.toLowerCase(),
-                  function(data) {
-                    console.log("Message Received");
-                    debugger;
-                    if ("91" + self.state.mobileNo === data[3]) {
-                      self.handleGetChatNotificationCount();
-                      self.handleGetOngoingChat("isRead");
-                      self.handleGetChatMessagesList(self.state.chatId);
-                    } else {
-                      self.handleGetChatNotificationCount();
-                      self.handleGetOngoingChat("isRead");
-                    }
-                  }
-                );
-                window.onbeforeunload = function() {
-                  console.log("unloading resources");
-                  socket.disconnect();
-                  socket.close();
-                };
-              });
-            }
-          }
         } else {
           self.setState({ ongoingChatsData: [] });
         }
@@ -801,21 +772,21 @@ class Header extends Component {
   }
   handleUpdateCustomerChatStatus(id, mobileNo, programCode) {
     let self = this;
-    socket.on("connect", () => {
-      socket.send("hi");
-      socket.on("91" + mobileNo + programCode.toLowerCase(), function(data) {
-        console.log("Message Received");
-        debugger;
-        if ("91" + self.state.mobileNo === data[3]) {
-          self.handleGetChatNotificationCount();
-          // self.handleGetOngoingChat("isRead");
-          self.handleGetChatMessagesList(self.state.chatId);
-        } else {
-          self.handleGetChatNotificationCount();
-          // self.handleGetOngoingChat("isRead");
-        }
-      });
-    });
+    // socket.on("connect", () => {
+    //   socket.send("hi");
+    //   socket.on("91" + mobileNo + programCode.toLowerCase(), function(data) {
+    //     console.log("Message Received");
+    //     debugger;
+    //     if ("91" + self.state.mobileNo === data[3]) {
+    //       self.handleGetChatNotificationCount();
+    //       // self.handleGetOngoingChat("isRead");
+    //       self.handleGetChatMessagesList(self.state.chatId);
+    //     } else {
+    //       self.handleGetChatNotificationCount();
+    //       // self.handleGetOngoingChat("isRead");
+    //     }
+    //   });
+    // });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
@@ -965,6 +936,7 @@ class Header extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var searchCardData = response.data.responseData;
 
@@ -1754,6 +1726,66 @@ class Header extends Component {
       tempmessageSuggestionData,
     });
   };
+
+  handleCreateSocketConnection(programCode, storeCode) {
+    let self = this;
+    var socket = io.connect(config.socketUrl, {
+      transports: ["polling"],
+      upgrade: false,
+    });
+
+    socket.on("connect", () => {
+      socket.send("hi");
+      socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
+        data
+      ) {
+        debugger;
+        if (self.state.storeCode.toLowerCase() === data[5]) {
+          var isMobileNoExist = self.state.ongoingChatsData.filter(
+            (x) => x.mobileNo === data[3].substring(2)
+          );
+          if (isMobileNoExist.length > 0) {
+            if ("91" + self.state.mobileNo === data[3]) {
+              // self.handleGetChatNotificationCount();
+              // self.handleGetOngoingChat();
+              var chatId = 0;
+              if (self.state.ongoingChatsData.length > 0) {
+                chatId = self.state.ongoingChatsData.filter(
+                  (x) => x.mobileNo === self.state.mobileNo
+                )[0].chatID;
+              }
+              self.handleMakeAsReadOnGoingChat(chatId);
+              // self.handleGetChatMessagesList(chatId);
+            } else {
+              self.handleGetChatNotificationCount();
+              self.handleGetOngoingChat();
+              self.handleGetNewChat();
+            }
+          } else {
+            self.handleGetNewChat();
+          }
+        }
+      });
+    });
+     
+  }
+
+  handleInsertCardImageUpload() {
+    var formData = new FormData();
+    formData.append("ItemID", "");
+    formData.append("ImageUrl ", "");
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/InsertCardImageUpload",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageUploadlog");
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -2270,7 +2302,11 @@ class Header extends Component {
               alt="back arrow"
               onClick={this.handleChatModalClose}
             />
-            <h3>Store chat window</h3>
+            <h3>
+              {TranslationContext !== undefined
+                ? TranslationContext.h3.storechatwindow
+                : "Store chat window"}
+            </h3>
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>
@@ -2283,7 +2319,11 @@ class Header extends Component {
                     <input
                       type="text"
                       className="search-customerChatSrch"
-                      placeholder="Search"
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.search
+                          : "Search"
+                      }
                       name="Search"
                       maxLength="100"
                       autoComplete="off"
@@ -2320,7 +2360,10 @@ class Header extends Component {
                   </div>
                   <div className="chat-cntr">
                     <p className="chats-heading">
-                      Ongoing Chats (
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.ongoingchats
+                        : "Ongoing Chats"}
+                      (
                       {this.state.ongoingChatsData.length < 9
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
@@ -2331,7 +2374,11 @@ class Header extends Component {
                         value={this.state.sAgentId}
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value={0}>All</Option>
+                        <Option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.all
+                            : "All"}
+                        </Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
@@ -2393,7 +2440,9 @@ class Header extends Component {
                                   {chat.messageCount === 0
                                     ? "No"
                                     : chat.messageCount}{" "}
-                                  New Messages
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.newmessages
+                                    : "New Messages"}
                                 </p>
                                 <p>{chat.timeAgo}</p>
                               </div>
@@ -2404,7 +2453,10 @@ class Header extends Component {
                   </div>
                   <div className="chat-cntr">
                     <p className="chats-heading">
-                      New Chats (
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.newchats
+                        : "New Chats"}{" "}
+                      (
                       {this.state.newChatsData.length < 9
                         ? "0" + this.state.newChatsData.length
                         : this.state.newChatsData.length}
@@ -2447,7 +2499,9 @@ class Header extends Component {
                                   {chat.messageCount === 0
                                     ? "No"
                                     : chat.messageCount}{" "}
-                                  New Messages
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.newmessages
+                                    : "New Messages"}
                                 </p>
                                 <p>{chat.timeAgo}</p>
                               </div>
@@ -2467,7 +2521,9 @@ class Header extends Component {
                         aria-selected="false"
                         onClick={this.handleHistTabClick.bind(this)}
                       >
-                        MY HISTORICAL CHAT
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.myhistoricalchat
+                          : "MY HISTORICAL CHAT"}
                       </a>
                     </li>
                   </div>
@@ -2512,7 +2568,10 @@ class Header extends Component {
                           />
                           <span>{this.state.ongoingChatsData.length}</span>
                         </div>
-                        Ongoing Chats
+
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.ongoingchats
+                          : "Ongoing Chats"}
                       </a>
                     </li>
                     <li className="nav-item">
@@ -2538,7 +2597,10 @@ class Header extends Component {
                           />
                           <span>{this.state.newChatsData.length}</span>
                         </div>
-                        New Chats
+
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.newchats
+                          : "New Chats"}
                       </a>
                     </li>
                   </ul>
@@ -2551,7 +2613,33 @@ class Header extends Component {
                     aria-labelledby="ongoing-chat-tab"
                   >
                     <div>
-                      <p className="mobile-chat-header">Ongoing Chats</p>
+                      <p
+                        className="mobile-chat-header"
+                        style={{ display: "inline-block" }}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.ongoingchats
+                          : "Ongoing Chats"}
+                      </p>
+                      <Select
+                        className="agentchatdrop-down"
+                        showArrow={true}
+                        value={this.state.sAgentId}
+                        onChange={this.handleChangeAgentDropdown.bind(this)}
+                      >
+                        <Option value={0}>All</Option>
+                        {this.state.agentData !== null &&
+                          this.state.agentData.map((item, i) => {
+                            return (
+                              <Option
+                                key={i}
+                                value={Number(item.storeManagerID)}
+                              >
+                                {item.agentName}
+                              </Option>
+                            );
+                          })}
+                      </Select>
                       <div className="chat-detail-outer-cntr">
                         {this.state.ongoingChatsData &&
                           this.state.ongoingChatsData.map((chat, i) => (
@@ -2615,7 +2703,12 @@ class Header extends Component {
                             </div>
                           ))}
                         {this.state.ongoingChatsData.length === 0 && (
-                          <p className="no-record">No Records Found !</p>
+                          <p className="no-record">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.norecordsfound
+                              : "No Records Found"}
+                            !
+                          </p>
                         )}
                       </div>
                     </div>
@@ -2627,7 +2720,11 @@ class Header extends Component {
                     aria-labelledby="new-chat-tab"
                   >
                     <div>
-                      <p className="mobile-chat-header">New Chats</p>
+                      <p className="mobile-chat-header">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.newchats
+                          : "New Chats"}
+                      </p>
                       <div className="chat-detail-outer-cntr">
                         {this.state.newChatsData &&
                           this.state.newChatsData.map((chat, i) => (
@@ -2681,7 +2778,12 @@ class Header extends Component {
                             </div>
                           ))}
                         {this.state.newChatsData.length === 0 && (
-                          <p className="no-record">No Records Found !</p>
+                          <p className="no-record">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.norecordsfound
+                              : "No Records Found"}
+                            !
+                          </p>
                         )}
                       </div>
                     </div>
@@ -2694,20 +2796,22 @@ class Header extends Component {
                     <div className="row" style={{ margin: "0" }}>
                       <div className="chatdivtitle">
                         <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className={"nav-link active chattitletab"}
-                              data-toggle="tab"
-                              href="#current-chat"
-                              role="tab"
-                              aria-controls="current-chat"
-                              aria-selected="true"
-                              onClick={this.handleMainTabChange.bind(this, 1)}
-                            >
-                              {/* Current Chat */}
-                              {this.state.customerName}
-                            </a>
-                          </li>
+                          {this.state.customerName && (
+                            <li className="nav-item">
+                              <a
+                                className={"nav-link active chattitletab"}
+                                data-toggle="tab"
+                                href="#current-chat"
+                                role="tab"
+                                aria-controls="current-chat"
+                                aria-selected="true"
+                                onClick={this.handleMainTabChange.bind(this, 1)}
+                              >
+                                {/* Current Chat */}
+                                {this.state.customerName}
+                              </a>
+                            </li>
+                          )}
                           <li className="nav-item">
                             <a
                               className="nav-link chattitletab"
@@ -2719,12 +2823,12 @@ class Header extends Component {
                               onClick={this.handleMainTabChange.bind(this, 2)}
                             >
                               {this.state.agentRecentChatData.length < 9
-                                ? "Recent Chat( 0" +
+                                ? "Recent Chat(0" +
                                   this.state.agentRecentChatData.length +
-                                  " )"
-                                : "Recent Chat( " +
+                                  ")"
+                                : "Recent Chat(" +
                                   this.state.agentRecentChatData.length +
-                                  " )"}
+                                  ")"}
                             </a>
                           </li>
                         </ul>
@@ -2780,7 +2884,12 @@ class Header extends Component {
                                           </div>
                                           <div className="chat-trail-chat-cntr">
                                             {item.isBotReply && (
-                                              <p className="bot-mark">BOT</p>
+                                              <p className="bot-mark">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p.bot
+                                                  : "BOT"}
+                                              </p>
                                             )}
                                             <p className="chat-trail-chat pd-0">
                                               {ReactHtmlParser(
@@ -2830,7 +2939,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 1)}
                                     id="one"
                                   >
-                                    MESSAGE
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.message
+                                      : "MESSAGE"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2848,7 +2959,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 2)}
                                     id="two"
                                   >
-                                    CARD
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.card
+                                      : "CARD"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2866,7 +2979,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 3)}
                                     id="three"
                                   >
-                                    RECOMMENDED LIST
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.recommendedlist
+                                      : "RECOMMENDED LIST"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2885,7 +3000,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 4)}
                                     id="four"
                                   >
-                                    SCHEDULE VISIT
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.schedulevisit
+                                      : "SCHEDULE VISIT"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2903,7 +3020,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 5)}
                                     id="five"
                                   >
-                                    GENERATE PAYMENT LINK
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.schedulevisit
+                                      : "GENERATE PAYMENT LINK"}
                                   </a>
                                 </li>
                               </ul>
@@ -3098,7 +3217,12 @@ class Header extends Component {
                                     <input
                                       type="text"
                                       className="search-customerAddSrch searchtxt"
-                                      placeholder="Search ItemId/artcile/SKU ID"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .searchitemidarticleskuid
+                                          : "Search ItemId/artcile/SKU ID"
+                                      }
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
@@ -3145,172 +3269,222 @@ class Header extends Component {
                                         : "",
                                     }}
                                   >
-                                    {this.state.searchCardData !== null &&
-                                      this.state.searchCardData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div
-                                              className="col-md-6"
-                                              key={i}
-                                              onClick={this.handleSelectCard.bind(
-                                                this,
-                                                item.itemID
-                                              )}
-                                            >
-                                              {item.itemID ===
-                                              this.state.selectedCard ? (
-                                                <div className="selectdot">
-                                                  <img
-                                                    src={CardTick}
-                                                    alt={"select-card"}
-                                                  />
-                                                </div>
-                                              ) : null}
+                                    {this.state.searchCardData !== null
+                                      ? this.state.searchCardData.map(
+                                          (item, i) => {
+                                            return (
                                               <div
-                                                className="card"
-                                                id={"card" + item.itemID}
+                                                className="col-md-6"
+                                                key={i}
+                                                onClick={this.handleSelectCard.bind(
+                                                  this,
+                                                  item.itemID
+                                                )}
                                               >
-                                                <div className="card-body position-relative">
-                                                  {/* <div className="container"> */}
-                                                  <div
-                                                    className="row"
-                                                    style={{
-                                                      margin: "0",
-                                                    }}
-                                                  >
+                                                {item.itemID ===
+                                                this.state.selectedCard ? (
+                                                  <div className="selectdot">
+                                                    <img
+                                                      src={CardTick}
+                                                      alt={"select-card"}
+                                                    />
+                                                  </div>
+                                                ) : null}
+                                                <div
+                                                  className="card"
+                                                  id={"card" + item.itemID}
+                                                >
+                                                  <div className="card-body position-relative">
+                                                    {/* <div className="container"> */}
                                                     <div
-                                                      className="col-md-4 mb-md-0 mb-2"
+                                                      className="row"
                                                       style={{
-                                                        alignSelf: "center",
+                                                        margin: "0",
                                                       }}
                                                     >
-                                                      <img
-                                                        className="chat-product-img"
-                                                        src={item.imageURL}
-                                                        alt="Product Image"
-                                                        title={item.productName}
-                                                      />
-                                                    </div>
-                                                    <div className="col-md-8 bkcprdt">
-                                                      <div>
-                                                        <label className="chat-product-name">
-                                                          {item.productName}
-                                                        </label>
+                                                      <div
+                                                        className="col-md-4 mb-md-0 mb-2"
+                                                        style={{
+                                                          alignSelf: "center",
+                                                        }}
+                                                      >
+                                                        <img
+                                                          className="chat-product-img"
+                                                          src={item.imageURL}
+                                                          alt="Product Image"
+                                                          title={
+                                                            item.productName
+                                                          }
+                                                          
+                                                        /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
                                                       </div>
-                                                      <div>
-                                                        {item.brandName !==
-                                                          "" &&
-                                                        item.brandName !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Brand :
-                                                            {" " +
-                                                              item.brandName}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.categoryName !==
-                                                          "" &&
-                                                        item.categoryName !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Category :
-                                                            {" " +
-                                                              item.categoryName}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.subCategoryName !==
-                                                          "" &&
-                                                        item.subCategoryName !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            SubCategory :
-                                                            {" " +
-                                                              item.subCategoryName}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.color !== "" &&
-                                                        item.color !== null ? (
-                                                          <label className="chat-product-code">
-                                                            Color :
-                                                            {" " + item.color}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.size !== "" &&
-                                                        item.size !== null ? (
-                                                          <label className="chat-product-code">
-                                                            Size :
-                                                            {" " + item.size}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.uniqueItemCode !==
-                                                          "" &&
-                                                        item.uniqueItemCode !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Item Code :
-                                                            {" " +
-                                                              item.uniqueItemCode}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.discount !== "" &&
-                                                        parseFloat(
-                                                          item.discount
-                                                        ) !== 0 &&
-                                                        item.discount !==
-                                                          null ? (
-                                                          <label className="chat-product-code">
-                                                            Discount :
-                                                            {" " +
-                                                              item.discount}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.price !== "" &&
-                                                        parseFloat(
-                                                          item.price
-                                                        ) !== 0 &&
-                                                        item.price !== null ? (
-                                                          <label className="chat-product-prize">
-                                                            Price :
-                                                            {" " + item.price}
-                                                          </label>
-                                                        ) : null}
-                                                      </div>
-                                                      {item.ur !== null &&
-                                                      item.ur !== "" ? (
+                                                      <div className="col-md-8 bkcprdt">
                                                         <div>
-                                                          <a
-                                                            href={item.url}
-                                                            target="_blank"
-                                                            className="chat-product-url"
-                                                          >
-                                                            {item.url}
-                                                          </a>
+                                                          <label className="chat-product-name">
+                                                            {item.productName}
+                                                          </label>
                                                         </div>
-                                                      ) : (
-                                                        ""
-                                                      )}
+                                                        <div>
+                                                          {item.brandName !==
+                                                            "" &&
+                                                          item.brandName !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.brand
+                                                                : "Brand"}{" "}
+                                                              :
+                                                              {" " +
+                                                                item.brandName}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.categoryName !==
+                                                            "" &&
+                                                          item.categoryName !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .category
+                                                                : "Category"}{" "}
+                                                              :
+                                                              {" " +
+                                                                item.categoryName}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.subCategoryName !==
+                                                            "" &&
+                                                          item.subCategoryName !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .subcategory
+                                                                : "SubCategory"}{" "}
+                                                              :
+                                                              {" " +
+                                                                item.subCategoryName}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.color !== "" &&
+                                                          item.color !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.color
+                                                                : "Color"}{" "}
+                                                              :
+                                                              {" " + item.color}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.size !== "" &&
+                                                          item.size !== null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.color
+                                                                : "Size"}{" "}
+                                                              :{" " + item.size}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.uniqueItemCode !==
+                                                            "" &&
+                                                          item.uniqueItemCode !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .itemcode
+                                                                : "Item Code"}{" "}
+                                                              :
+                                                              {" " +
+                                                                item.uniqueItemCode}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.discount !==
+                                                            "" &&
+                                                          parseFloat(
+                                                            item.discount
+                                                          ) !== 0 &&
+                                                          item.discount !==
+                                                            null ? (
+                                                            <label className="chat-product-code">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .discount
+                                                                : "Discount"}{" "}
+                                                              :
+                                                              {" " +
+                                                                item.discount}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        <div>
+                                                          {item.price !== "" &&
+                                                          parseFloat(
+                                                            item.price
+                                                          ) !== 0 &&
+                                                          item.price !==
+                                                            null ? (
+                                                            <label className="chat-product-prize">
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.price
+                                                                : "Price"}{" "}
+                                                              :
+                                                              {" " + item.price}
+                                                            </label>
+                                                          ) : null}
+                                                        </div>
+                                                        {item.url !== null &&
+                                                        item.url !== "" ? (
+                                                          <div>
+                                                            <a
+                                                              href={item.url}
+                                                              target="_blank"
+                                                              className="chat-product-url"
+                                                            >
+                                                              {item.url}
+                                                            </a>
+                                                          </div>
+                                                        ) : (
+                                                          ""
+                                                        )}
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          );
-                                        }
-                                      )}
+                                            );
+                                          }
+                                        )
+                                      : null}
                                   </div>
                                   {this.state.searchCardData.length > 0 ? (
                                     <div className="row m-0">
@@ -3333,7 +3507,9 @@ class Header extends Component {
                                         className="butn"
                                         onClick={this.handleSendCard.bind(this)}
                                       >
-                                        Send
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.send
+                                          : "Send"}
                                         <img
                                           src={SendUp}
                                           alt="send"
@@ -3372,7 +3548,11 @@ class Header extends Component {
                                       this
                                     )}
                                   >
-                                    Send Recommended List
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button
+                                          .sendrecommendedlist
+                                      : "Send Recommended List"}
+
                                     <img
                                       src={SendUp}
                                       alt="send"
@@ -3601,7 +3781,10 @@ class Header extends Component {
                                         <div className="schedule-right-cntr">
                                           <div>
                                             <label className="s-lable">
-                                              Selected Slot
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .selectedslot
+                                                : "Selected Slot"}
                                             </label>
                                             {Object.keys(
                                               this.state.selectedSlot
@@ -3703,7 +3886,10 @@ class Header extends Component {
                                 ) : (
                                   <div>
                                     <span className="slot-span">
-                                      No slot added for this store
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span
+                                            .noslotaddedforthisstore
+                                        : "No slot added for this store"}
                                     </span>
                                   </div>
                                 )}
@@ -3732,7 +3918,12 @@ class Header extends Component {
                                     <input
                                       type="text"
                                       className="search-customerAddSrch searchtxt"
-                                      placeholder="Search Order Id"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .searchorderid
+                                          : "Search Order Id"
+                                      }
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
@@ -3757,12 +3948,19 @@ class Header extends Component {
                                   </form>
                                 </div>
                                 <div className="payment-details">
-                                  <label>Amount</label>
+                                  <label>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.amount
+                                      : "Amount"}
+                                  </label>
                                   <span>INR 1299</span>
                                 </div>
                                 <div className="payment-link-butn">
                                   <button className="butn">
-                                    Send Payment Link
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button
+                                          .sendpaymentlink
+                                      : "Send Payment Link"}
                                     <img
                                       src={SendUp}
                                       alt="send"
@@ -3795,7 +3993,9 @@ class Header extends Component {
                                   aria-selected="true"
                                   id="one"
                                 >
-                                  MESSAGE
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.message
+                                    : "MESSAGE"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3813,7 +4013,9 @@ class Header extends Component {
                                   onClick={this.onOpenCardModal}
                                   id="two"
                                 >
-                                  CARD
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.card
+                                    : "CARD"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3831,7 +4033,9 @@ class Header extends Component {
                                   onClick={this.onOpenRecommendedModal}
                                   id="three"
                                 >
-                                  RECOMMENDED LIST
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.recommendedlist
+                                    : "RECOMMENDED LIST"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3849,7 +4053,9 @@ class Header extends Component {
                                   onClick={this.onOpenScheduleModal}
                                   id="four"
                                 >
-                                  SCHEDULE VISIT
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.schedulevisit
+                                    : "SCHEDULE VISIT"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3867,7 +4073,9 @@ class Header extends Component {
                                   onClick={this.onOpenPaymentModal}
                                   id="five"
                                 >
-                                  GENERATE PAYMENT LINK
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.generatepaymentlink
+                                    : "GENERATE PAYMENT LINK"}
                                 </a>
                               </li>
                             </ul>
@@ -4050,146 +4258,191 @@ class Header extends Component {
                                     )}
                                   </div>
                                   <div className="product-card">
-                                    {this.state.searchCardData !== null &&
-                                      this.state.searchCardData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div
-                                              className="card"
-                                              key={i}
-                                              onClick={this.handleSelectCard.bind(
-                                                this,
-                                                item.itemID
-                                              )}
-                                            >
-                                              <div className="card-body position-relative">
-                                                {item.itemID ===
-                                                this.state.selectedCard ? (
-                                                  <div className="selectdot">
-                                                    <img
-                                                      src={CardTick}
-                                                      alt={"select-card"}
-                                                    />
-                                                  </div>
-                                                ) : null}
-                                                <div className="mobile-card-cntr">
-                                                  <div className="mobile-card-img">
-                                                    <img
-                                                      className="chat-product-img"
-                                                      src={item.imageURL}
-                                                      alt="Product Image"
-                                                      title={item.productName}
-                                                    />
-                                                  </div>
-                                                  <div className="bkcprdt">
-                                                    <label className="chat-product-name">
-                                                      {item.productName}
-                                                    </label>
-                                                    {item.brandName !== "" &&
-                                                    item.brandName !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Brand :
-                                                        {" " + item.brandName}
+                                    {this.state.searchCardData !== null
+                                      ? this.state.searchCardData.map(
+                                          (item, i) => {
+                                            return (
+                                              <div
+                                                className="card"
+                                                key={i}
+                                                onClick={this.handleSelectCard.bind(
+                                                  this,
+                                                  item.itemID
+                                                )}
+                                              >
+                                                <div className="card-body position-relative">
+                                                  {item.itemID ===
+                                                  this.state.selectedCard ? (
+                                                    <div className="selectdot">
+                                                      <img
+                                                        src={CardTick}
+                                                        alt={"select-card"}
+                                                      />
+                                                    </div>
+                                                  ) : null}
+                                                  <div className="mobile-card-cntr">
+                                                    <div className="mobile-card-img">
+                                                      <img
+                                                        className="chat-product-img"
+                                                        src={item.imageURL}
+                                                        alt="Product Image"
+                                                        title={item.productName}
+                                                      /><span className="addimg"><input type="image" alt="Add Image" src={addimg}/></span>
+                                                    </div>
+                                                    <div className="bkcprdt">
+                                                      <label className="chat-product-name">
+                                                        {item.productName}
                                                       </label>
-                                                    ) : null}
+                                                      {item.brandName !== "" &&
+                                                      item.brandName !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.brand
+                                                            : "Brand"}{" "}
+                                                          :
+                                                          {" " + item.brandName}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.categoryName !== "" &&
-                                                    item.categoryName !==
-                                                      null ? (
-                                                      <label className="chat-product-code">
-                                                        Category :
-                                                        {" " +
-                                                          item.categoryName}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.categoryName !==
+                                                        "" &&
+                                                      item.categoryName !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.category
+                                                            : "Category"}{" "}
+                                                          :
+                                                          {" " +
+                                                            item.categoryName}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.subCategoryName !==
-                                                      "" &&
-                                                    item.subCategoryName !==
-                                                      null ? (
-                                                      <label className="chat-product-code">
-                                                        SubCategory :
-                                                        {" " +
-                                                          item.subCategoryName}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.subCategoryName !==
+                                                        "" &&
+                                                      item.subCategoryName !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label
+                                                                .subcategory
+                                                            : "SubCategory"}{" "}
+                                                          :
+                                                          {" " +
+                                                            item.subCategoryName}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.color !== "" &&
-                                                    item.color !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Color :
-                                                        {" " + item.color}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.color !== "" &&
+                                                      item.color !== null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.color
+                                                            : "Color"}{" "}
+                                                          :{" " + item.color}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.size !== "" &&
-                                                    item.size !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Size :{" " + item.size}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.size !== "" &&
+                                                      item.size !== null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.color
+                                                            : "Size"}{" "}
+                                                          :{" " + item.size}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.uniqueItemCode !==
-                                                      "" &&
-                                                    item.uniqueItemCode !==
-                                                      null ? (
-                                                      <label className="chat-product-code">
-                                                        Item Code :
-                                                        {" " +
-                                                          item.uniqueItemCode}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.uniqueItemCode !==
+                                                        "" &&
+                                                      item.uniqueItemCode !==
+                                                        null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.itemcode
+                                                            : "Item Code"}{" "}
+                                                          :
+                                                          {" " +
+                                                            item.uniqueItemCode}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.discount !== "" &&
-                                                    parseFloat(
-                                                      item.discount
-                                                    ) !== 0 &&
-                                                    item.discount !== null ? (
-                                                      <label className="chat-product-code">
-                                                        Discount :
-                                                        {" " + item.discount}
-                                                      </label>
-                                                    ) : null}
+                                                      {item.discount !== "" &&
+                                                      parseFloat(
+                                                        item.discount
+                                                      ) !== 0 &&
+                                                      item.discount !== null ? (
+                                                        <label className="chat-product-code">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.discount
+                                                            : "Discount"}{" "}
+                                                          :{" " + item.discount}
+                                                        </label>
+                                                      ) : null}
 
-                                                    {item.price !== "" &&
-                                                    parseFloat(item.price) !==
-                                                      0 &&
-                                                    item.price !== null ? (
-                                                      <label className="chat-product-prize">
-                                                        Price :
-                                                        {" " + item.price}
-                                                      </label>
-                                                    ) : null}
-                                                    {item.url !== null &&
-                                                    item.url !== "" ? (
-                                                      <label className="chat-product-url">
-                                                        {item.url !== null
-                                                          ? item.url
-                                                          : ""}
-                                                      </label>
-                                                    ) : (
-                                                      ""
-                                                    )}
+                                                      {item.price !== "" &&
+                                                      parseFloat(item.price) !==
+                                                        0 &&
+                                                      item.price !== null ? (
+                                                        <label className="chat-product-prize">
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.price
+                                                            : "Price"}{" "}
+                                                          :{" " + item.price}
+                                                        </label>
+                                                      ) : null}
+                                                      {item.url !== null &&
+                                                      item.url !== "" ? (
+                                                        <label className="chat-product-url">
+                                                          {item.url !== null
+                                                            ? item.url
+                                                            : ""}
+                                                        </label>
+                                                      ) : (
+                                                        ""
+                                                      )}
+                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          );
-                                        }
-                                      )}
+                                            );
+                                          }
+                                        )
+                                      : null}
                                   </div>
                                   <div className="chat-btn-cntr">
                                     <button
                                       className="butn-inv"
                                       onClick={this.onCloseCardModal}
                                     >
-                                      Close
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.close
+                                        : "Close"}
                                     </button>
                                     <button
                                       className="butn"
                                       onClick={this.handleSendCard.bind(this)}
                                     >
-                                      Send
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.send
+                                        : "Send"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4227,7 +4480,11 @@ class Header extends Component {
                                         this
                                       )}
                                     >
-                                      Send Recommended List
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .sendrecommendedlist
+                                        : "Send Recommended List"}
+
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4255,7 +4512,9 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseRecommendedModal}
                                     >
-                                      Close
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.close
+                                        : "Close"}
                                     </button>
                                   </div>
                                 </div>
@@ -4439,7 +4698,10 @@ class Header extends Component {
                                       <div className="schedule-right-cntr">
                                         <div>
                                           <label className="s-lable">
-                                            Selected Slot
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .selectedslot
+                                              : "Selected Slot"}
                                           </label>
                                           {Object.keys(this.state.selectedSlot)
                                             .length !== 0 ? (
@@ -4482,7 +4744,10 @@ class Header extends Component {
                                         </div>
                                         <div>
                                           <label className="s-lable">
-                                            No of People
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .noofpeople
+                                              : "No of People"}
                                           </label>
                                           <input
                                             type="text"
@@ -4510,7 +4775,9 @@ class Header extends Component {
                                         className="butn-inv"
                                         onClick={this.onCloseScheduleModal}
                                       >
-                                        Close
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.close
+                                          : "Close"}
                                       </button>
                                       <button
                                         className="butn"
@@ -4539,7 +4806,10 @@ class Header extends Component {
                                 ) : (
                                   <div>
                                     <span className="slot-span">
-                                      No slot added for this store
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span
+                                            .noslotaddedforthisstore
+                                        : "No slot added for this store"}
                                     </span>
                                   </div>
                                 )}
@@ -4590,7 +4860,11 @@ class Header extends Component {
                                       </div>
                                     </div>
                                     <div className="payment-details">
-                                      <label>Amount</label>
+                                      <label>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.amount
+                                          : "Amount"}
+                                      </label>
                                       <span>INR 1299</span>
                                     </div>
                                   </div>
@@ -4599,13 +4873,17 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onClosePaymentModal}
                                     >
-                                      Close
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.close
+                                        : "Close"}
                                     </button>
                                     <button
                                       className="butn"
                                       onClick={this.onClosePaymentModal}
                                     >
-                                      Send
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.send
+                                        : "Send"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4638,7 +4916,11 @@ class Header extends Component {
                                     style={{ background: "none" }}
                                   >
                                     <p className="cls-p-conf">
-                                      Are you sure & want to send?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureandwanttosend
+                                        : "Are you sure & want to send"}
+                                      ?
                                     </p>
                                   </div>
                                   <hr
@@ -4652,7 +4934,9 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseSuggestionModal}
                                     >
-                                      No
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.no
+                                        : "No"}
                                     </button>
                                     <button
                                       className="butn"
@@ -4663,7 +4947,9 @@ class Header extends Component {
                                         ""
                                       )}
                                     >
-                                      Yes
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.yes
+                                        : "Yes"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4696,7 +4982,11 @@ class Header extends Component {
                                     style={{ background: "none" }}
                                   >
                                     <p className="cls-p-conf-mob">
-                                      Are you sure & want to send?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureandwanttosend
+                                        : "Are you sure & want to send"}
+                                      ?
                                     </p>
                                   </div>
                                   <hr
@@ -4710,7 +5000,9 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseMobSuggestionModal}
                                     >
-                                      No
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.no
+                                        : "No"}
                                     </button>
                                     <button
                                       className="butn"
@@ -4721,7 +5013,9 @@ class Header extends Component {
                                         ""
                                       )}
                                     >
-                                      Yes
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.yes
+                                        : "Yes"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4754,22 +5048,34 @@ class Header extends Component {
                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
                               columns={[
                                 {
-                                  title: "Chat ID",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.chatid
+                                      : "Chat ID",
                                   dataIndex: "chatID",
                                   width: "10%",
                                 },
                                 {
-                                  title: "Agent",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.agent
+                                      : "Agent",
                                   dataIndex: "agentName",
                                   width: "20%",
                                 },
                                 {
-                                  title: "Time",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.time
+                                      : "Time",
                                   dataIndex: "timeAgo",
                                   width: "20%",
                                 },
                                 {
-                                  title: "Message",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.message
+                                      : "Message",
                                   dataIndex: "message",
                                   width: "30%",
                                   render: (row, rowdata) => {
@@ -4800,29 +5106,43 @@ class Header extends Component {
                           className="chattitlelbl"
                           style={{ color: "Black" }}
                         >
-                          My Historical Chat
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.myhistoricalchat
+                            : "My Historical Chat"}
                         </label>
                         <div className="table-cntr store chat-history">
                           <Table
                             className="components-table-demo-nested antd-table-campaign custom-antd-table"
                             columns={[
                               {
-                                title: "Chat ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.chatid
+                                    : "Chat ID",
                                 dataIndex: "chatID",
                                 width: "10%",
                               },
                               {
-                                title: "Customer Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.customername
+                                    : "Customer Name",
                                 dataIndex: "customerName",
                                 width: "20%",
                               },
                               {
-                                title: "Time",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.time
+                                    : "Time",
                                 dataIndex: "timeAgo",
                                 width: "20%",
                               },
                               {
-                                title: "Message",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.message
+                                    : "Message",
                                 dataIndex: "message",
                                 width: "30%",
                               },

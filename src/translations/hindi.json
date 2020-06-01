@@ -350,7 +350,18 @@
       "linkedtaskid":"लिंक की गई टास्क आई.डी.",
       "campaignassignedto":"अभियान सौंपा गया",
       "campaignenddate":"अभियान की अंतिम तिथि",
-      "campaignstatus":"अभियान की स्थिति"
+      "campaignstatus":"अभियान की स्थिति",
+      "update":"अपडेट करें",
+      "color":"रंग",
+      "size":"आकार",
+      "itemcode":"आइटम कोड",
+      "discount":"छूट",
+      "price":"कीमत",
+      "selectedslot":"चयनित स्लॉट",
+      "amount":"रकम",
+      "noofpeople":"लोगों की नहीं",
+      "myhistoricalchat":"मेरी इतिहास चैट"
+    
    
    
   
@@ -491,8 +502,13 @@
       "createddatecolontwelveMarcheighteen":"निर्मित तिथि: १२ मार्च २०१८",
       "updatedbycolonmanager":"द्वारा अद्यतन: प्रबंधक",
       "updateddatecolontwelveMarcheighteen":"अपडेटेड तारीख: १२ मार्च २०१८",
-      "asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority":"क प्रणाली जिसमें किसी संगठन के सदस्य हों या समाज को रिश्तेदार की हैसियत के अनुसार रैंक दिया जाता है या अधिकार।"
-      
+      "asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority":"क प्रणाली जिसमें किसी संगठन के सदस्य हों या समाज को रिश्तेदार की हैसियत के अनुसार रैंक दिया जाता है या अधिकार।",
+      "today":"आज",
+      "numberofpeople":"लोगों की संख्या",
+      "ongoingchats":"चल रहे चैट",
+      "norecordsfound":"कोई रिकॉर्ड नहीं मिला",
+      "bot":"बीओटी",
+      "areyousureandwanttosend":"क्या आप सुनिश्चित हैं और भेजना चाहते हैं"
       
       
     },
@@ -596,8 +612,14 @@
       "lasttransaction":"अंतिम लेन-देन",
       "priority":"प्राथमिकता",
       "createappointment":"अपॉइंटमेंट बनाएं",
-      "taskbytickets":"टिकट द्वारा कार्य"
-      
+      "taskbytickets":"टिकट द्वारा कार्य",
+      "myhistoricalchat":"मेरी इतिहास चैट",
+      "ongoingchats":"चल रहे चैट",
+      "newchats":"नई चैट",
+      "card":"कार्ड",
+      "recommendedlist":"विस्तृत सूची",
+      "schedulevisit":"अनुसूची देखें",
+      "generatepaymentlink":"सामान्य भुगतान लिंक"
     },
     "span":{
       "status": "स्थिति",
@@ -794,7 +816,9 @@
       "storetype":"स्टोर प्रकार",
       "phonenumber":"फ़ोन नंबर",
       "hopethishelppleaserateus":"आशा है कि यह मदद, हमें दर कृपया",
-      "hopethishelppleaserateusonenewcomment":"इस मदद की उम्मीद है, कृपया हमें दर (१ नई टिप्पणी)"
+      "hopethishelppleaserateusonenewcomment":"इस मदद की उम्मीद है, कृपया हमें दर (१ नई टिप्पणी)",
+      "noslotaddedforthisstore":"इस स्टोर के लिए कोई स्लॉट नहीं जोड़ा गया है",
+      "claimsubcat":"उप बिल्ली का दावा करें"
      
       
 
@@ -882,7 +906,11 @@
       "createticket":"टिकट बनाएँ",
       "taskcreationon":"टास्क क्रिएशन ऑन",
       "taskstatus":"कार्य की स्थिति",
-      "function":"समारोह"
+      "function":"समारोह",
+      "sendrecommendedlist":"अनुशंसित सूची भेजें",
+      "sendpaymentlink":"भुगतान लिंक भेजें",
+      "close":"बंद करे"
+      
      
      
     },
@@ -942,14 +970,15 @@
       "date":"तारीख"
     },
     "h3": {
-      "bulkupload":"बल्कू अपलोड",
+      "bulkupload":"सामूहिक अपलोड",
       "createusers":"उपयोगकर्ता बनाएँ",
       "createalerts":"अलर्ट बनाएं",
       "createdepartment":"विभाग बनाएँ",
       "signin":"साइन इन करें",
       "sharedsuccessfully":"सफलतापूर्वक साझा किया गया",
       "appointmentconfiguration":"आवेदन संरचना",
-      "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन"
+      "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन",
+      "storechatwindow":"चैट विंडो स्टोर करें"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
@@ -1098,7 +1127,10 @@
       "root":"जड़",
       "selectreportto":"रिपोर्ट को चुनें",
       "selectagent":"एजेंट का चयन करें",
-      "department":"विभाग"
+      "department":"विभाग",
+      "cancel":"इसे रद्द करें",
+      "visited":"का दौरा किया",
+      "notvisited":"दौरा नहीं किया"
     },
     "radio":{
         "email":"ईमेल",
@@ -1130,7 +1162,11 @@
     },
     "placeholder":{
       "entercampaignname":"अभियान का नाम दर्ज करें",
-      "entermobileno":"मोबाइल नंबर दर्ज करें"
+      "entermobileno":"मोबाइल नंबर दर्ज करें",
+      "search":"खोज",
+      "searchitemidarticleskuid":"आइटम आईडी खोजें/लेख/SKU आईडी",
+      "searchorderid":"खोज क्रम आईडी",
+      "enterdesignationname":"पदनाम नाम दर्ज करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1145,6 +1181,18 @@
       "callrecheduledto":"कॉल पुनर्निर्धारित करने के लिए",
       "contact":"संपर्क",
       "campaignenddate":"अभियान की अंतिम तिथि",
-      "campaignstatus":"अभियान की स्थिति"
+      "campaignstatus":"अभियान की स्थिति",
+      "time":"समय",
+      "appointments":"नियुक्तियों",
+      "appt":"appt",
+      "maxcapacity":"अधिकतम क्षमता",
+      "mobilenumber":"मोबाइल नंबर",
+      "numberofpeople":"लोगों की संख्या",
+      "chatid":"चैट आईडी",
+      "agent":"एजेंट",
+      "message":"संदेश"
+    },
+    "content":{
+      "howmanydaystoshowchathistory":"चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"
     }
   }
