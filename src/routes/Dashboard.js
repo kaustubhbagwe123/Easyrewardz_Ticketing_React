@@ -395,7 +395,7 @@ class Dashboard extends Component {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
-    this.ViewSearchData();
+    // this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
@@ -407,9 +407,9 @@ class Dashboard extends Component {
     this.handleGetBrandList();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
-    this.handleGetSaveSearchList();
+    // this.handleGetSaveSearchList();
 
-    this.handleGetModulesNames();
+    // this.handleGetModulesNames();
   }
 
   handleTicketsOnLoadLoader() {

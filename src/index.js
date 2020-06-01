@@ -47,7 +47,7 @@ import LanguageSelection from "./Component/Store/LanguageSelection";
 
 ReactDOM.render(
   <Router>
-    <Route exact path="/" component={ModuleSelect} />
+    <Route exact path="/ModuleSelect" component={ModuleSelect} />
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />
@@ -57,7 +57,7 @@ ReactDOM.render(
     <Route exact path="/ChangePassword" component={ChangePassword} />
     <Route exact path="/storeChangePassword" component={StoreChangePassword} />
     <Route exact path="/languageSelection" component={LanguageSelection} />
-    <Route exact path="/StoreProgramCode" component={StoreProgramCode} />
+    <Route exact path="/" component={StoreProgramCode} />
     <Route exact path="/storeSignIn" component={StoreSignIn} />
     <Route exact path="/storeForgotpassword" component={StoreForgotPassword} />
     <Route
