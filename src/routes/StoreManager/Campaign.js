@@ -671,23 +671,23 @@ class Campaign extends Component {
             className="components-table-demo-nested antd-table-campaign-padd antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: "Campaign Name",
+                title:TranslationContext!==undefined?TranslationContext.title.campaignname:"Campaign Name",
                 dataIndex: "campaignName",
               },
               {
-                title: "Contacts",
+                title: TranslationContext!==undefined?TranslationContext.title.contact:"Contacts",
                 dataIndex: "contactCount",
               },
               {
-                title: "Campaign Script",
+                title:TranslationContext!==undefined?TranslationContext.title.campaignscript:"Campaign Script",
                 dataIndex: "campaignScript",
               },
               {
-                title: "Campaign End Date",
+                title:TranslationContext!==undefined?TranslationContext.title.campaignenddate:"Campaign End Date",
                 dataIndex: "campaignEndDate",
               },
               {
-                title: "Campaign Status",
+                title:TranslationContext!==undefined?TranslationContext.title.campaignstatus:"Campaign Status",
                 render: (row) => {
                   return (
                     <button
@@ -698,7 +698,10 @@ class Campaign extends Component {
                         row.campaignTypeID
                       )}
                     >
-                      <label className="hdrcloselabel">Close</label>
+                      <label className="hdrcloselabel">
+                        
+                        {TranslationContext!==undefined?TranslationContext.label.close:"Close"}
+                        </label>
                     </button>
                   );
                 },
@@ -706,7 +709,7 @@ class Campaign extends Component {
                   this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
               },
               {
-                title: "Actions",
+                title:TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
                 // dataIndex: "orderPricePaid"
               },
             ]}
@@ -716,7 +719,7 @@ class Campaign extends Component {
                   dataSource={row.storeCampaignCustomerList}
                   columns={[
                     {
-                      title: "Customer Name",
+                      title:TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
                       // dataIndex: "orderMasterID",
                       render: (row, item) => {
                         return (
@@ -730,11 +733,11 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title: "Date",
+                      title:TranslationContext!==undefined?TranslationContext.title.date:"Date",
                       dataIndex: "campaignTypeDate",
                     },
                     {
-                      title: "Status",
+                      title:TranslationContext!==undefined?TranslationContext.title.status:"Status",
                       // dataIndex: "articleName"
                       render: (row, item) => {
                         return (
@@ -761,7 +764,8 @@ class Campaign extends Component {
                                   "contactBtnGreen" + item.campaignCustomerID
                                 }
                               >
-                                Contacted
+                                {TranslationContext!==undefined?TranslationContext.label.contacted:"Contacted"}
+                                
                               </label>
                             </div>
                             <div className="position-relative">
@@ -794,7 +798,8 @@ class Campaign extends Component {
                                   "notConnectedBtnRed" + item.campaignCustomerID
                                 }
                               >
-                                Not Contacted
+                                {TranslationContext!==undefined?TranslationContext.label.notcontacted:"Not Contacted"}
+                                
                               </label>
                             </div>
                             <div>
@@ -821,7 +826,8 @@ class Campaign extends Component {
                                   "followUpBtnYellow" + item.campaignCustomerID
                                 }
                               >
-                                Follow Up
+                                {TranslationContext!==undefined?TranslationContext.label.followup:"Follow Up"}
+                                
                               </label>
                             </div>
                           </div>
@@ -829,7 +835,7 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title: "Responce",
+                      title:TranslationContext!==undefined?TranslationContext.title.response:"Response",
                       render: (row, item) => {
                         return (
                           <div
@@ -868,7 +874,7 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title: "Call Recheduled To",
+                      title:TranslationContext!==undefined?TranslationContext.title.callrecheduledto:"Call Recheduled To" ,
                       // dataIndex: "pricePaid"
                       render: (row, item) => {
                         return (
@@ -915,7 +921,7 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title: "Actions",
+                      title: TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
@@ -954,7 +960,9 @@ class Campaign extends Component {
                                   item.callReScheduledTo
                                 )}
                               >
-                                <label className="saveLabel">Save</label>
+                                <label className="saveLabel">
+                                {TranslationContext!==undefined?TranslationContext.label.save:"Save"}
+                                </label>
                               </button>
                             </div>
                             <div
@@ -980,7 +988,8 @@ class Campaign extends Component {
                                 )}
                               >
                                 <label className="raise-ticketLbl">
-                                  Raise Ticket
+                                  
+                                  {TranslationContext!==undefined?TranslationContext.label.raiseticket:"Raise Ticket"}
                                 </label>
                               </button>
                             </div>

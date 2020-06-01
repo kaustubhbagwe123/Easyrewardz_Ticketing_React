@@ -47,7 +47,8 @@ import LanguageSelection from "./Component/Store/LanguageSelection";
 
 ReactDOM.render(
   <Router>
-    <Route exact path="/ModuleSelect" component={ModuleSelect} />
+    {/* if required the only on uncomment this code and your system do not push this line*/}
+    {/* <Route exact path="/" component={ModuleSelect} /> */}
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
     <Route path="/qa" component={QAApp} />

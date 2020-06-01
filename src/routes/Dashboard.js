@@ -1299,7 +1299,6 @@ class Dashboard extends Component {
     let self = this;
     var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
     var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
-
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/DashBoardGraphData",
@@ -2935,17 +2934,16 @@ class Dashboard extends Component {
         debugger;
         let data = res.data;
         let CategoryData = res.data;
-        if(data.length > 0){
+        if (data.length > 0) {
           self.setState({
             CategoryData: CategoryData,
             // CategoryDataAll: CategoryDataAll
           });
-        }else{
+        } else {
           self.setState({
             CategoryData: [],
           });
         }
-        
       })
       .catch((data) => {
         console.log(data);
@@ -4964,7 +4962,7 @@ class Dashboard extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="col-lg-6 order-1 order-lg-0 d-none">
+                        {/* <div className="col-lg-6 order-1 order-lg-0 d-none">
                           <div className="dash-top-cards p-0">
                             <ul className="nav nav-tabs" role="tablist">
                               <li className="nav-item">
@@ -5005,8 +5003,18 @@ class Dashboard extends Component {
                                     data={this.state.DashboardTaskGraphData}
                                   />
                                 ) : null}
-                                {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
-                                {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
+                                {Object.keys(this.state.DashboardGraphData)
+                                  .length > 0 ? (
+                                  <MultiBarChart
+                                    data={this.state.DashboardTaskGraphData}
+                                  />
+                                ) : null}
+                                <MultiBarChart
+                                  data={
+                                    this.state.DashboardGraphData
+                                      .tickettoTaskGraph
+                                  }
+                                />
                               </div>
                               <div
                                 className="tab-pane fade"
@@ -5023,8 +5031,8 @@ class Dashboard extends Component {
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-lg-3 col-sm-6 d-none">
+                        </div> */}
+                        {/* <div className="col-lg-3 col-sm-6 d-none">
                           <div className="dash-top-cards">
                             <p className="card-head">Claim</p>
                             <div className="aside-cont">
@@ -5056,7 +5064,7 @@ class Dashboard extends Component {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </>
