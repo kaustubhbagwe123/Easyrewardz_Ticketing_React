@@ -381,9 +381,9 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
-          setTimeout(() => {
-            transferData.sendReport(this.state.reportAccess);
-          }, 100);
+          // setTimeout(() => {
+          //   transferData.sendReport(this.state.reportAccess);
+          // }, 100);
         }
       }
     }
