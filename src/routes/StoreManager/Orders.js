@@ -190,6 +190,7 @@ class Orders extends Component {
         },
       ],
       filterOrderDeliveredStatus: false,
+      filterOrderStatus: false,
     };
   }
 
@@ -643,7 +644,7 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">Delivered</span>
+                                <span className="ch1-text">Ready to Ship</span>
                               </label>
                             </li>
                             <li>
@@ -658,7 +659,7 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">RTO</span>
+                                <span className="ch1-text">Fresh</span>
                               </label>
                             </li>
                             <li>
@@ -673,7 +674,24 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress101">
-                                <span className="ch1-text">Self Picked</span>
+                                <span className="ch1-text">
+                                  Order Sync Pending
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress102"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress102">
+                                <span className="ch1-text">Complete</span>
                               </label>
                             </li>
                           </ul>
@@ -686,10 +704,9 @@ class Orders extends Component {
                         </div>
                       );
                     },
-                    filterDropdownVisible: this.state
-                      .filterOrderDeliveredStatus,
+                    filterDropdownVisible: this.state.filterOrderStatus,
                     onFilterDropdownVisibleChange: (visible) =>
-                      this.setState({ filterOrderDeliveredStatus: visible }),
+                      this.setState({ filterOrderStatus: visible }),
                     filterIcon: (filtered) => (
                       <span
                         style={{ color: filtered ? "#1890ff" : undefined }}
