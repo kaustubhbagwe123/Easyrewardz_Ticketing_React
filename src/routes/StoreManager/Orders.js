@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import OrderHamb from "./../../assets/Images/order-hamb.png";
 import OrderSearch from "./../../assets/Images/order-search.png";
+import OrderInfo from "./../../assets/Images/order-info.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -23,15 +24,29 @@ class Orders extends Component {
       shoppingBagGridData: [
         {
           ShoppingBagNo: "12017768",
-          Date: "25 April  2020",
+          Date: "25 April 2020",
           Time: "11:45 AM",
           CustomerName: "Sandeep",
           CustomerNumber: "+91 9717419325",
           Items: "6",
           Status: "New",
           Deliverytype: "Store Delivery",
-          PickupDateTime: "—Nil—",
+          PickupDate: "",
+          PickupTime: "",
           Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+        },
+        {
+          ShoppingBagNo: "12017890",
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
+          CustomerNumber: "+91 9717419325",
+          Items: "12",
+          Status: "Cancelled",
+          Deliverytype: "Self Picked Up",
+          PickupDate: "12 May",
+          PickupTime: "11:30 am",
+          Address: "",
         },
       ],
       itemPopupDate: [
@@ -197,27 +212,83 @@ class Orders extends Component {
                   },
                   {
                     title: "Status",
-                    dataIndex: "Status",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p
+                            className={
+                              item.Status === "Cancelled"
+                                ? "order-clr-pink"
+                                : ""
+                            }
+                          >
+                            {item.Status}
+                          </p>
+                          {item.Status === "Cancelled" ? (
+                            <Popover content={<p>Hello</p>} trigger="click">
+                              <img src={OrderInfo} className="order-info" />
+                            </Popover>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      );
+                    },
                   },
                   {
                     title: "Delivery type",
-                    dataIndex: "Deliverytype",
+                    render: (row, item) => {
+                      return (
+                        <p
+                          className={
+                            item.Deliverytype === "Store Delivery"
+                              ? "order-clr-green"
+                              : "order-clr-blue"
+                          }
+                        >
+                          {item.Deliverytype}
+                        </p>
+                      );
+                    },
                   },
                   {
                     title: "Pickup Date & Time",
-                    dataIndex: "PickupDateTime",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          {item.PickupDate === "" && item.PickupTime === "" ? (
+                            <p className="order-clr-blue">—NIL—</p>
+                          ) : (
+                            <>
+                              <p className="order-clr-blue">
+                                {item.PickupDate},
+                              </p>
+                              <p className="order-clr-blue order-more-small-font">
+                                {item.PickupTime}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      );
+                    },
+                    className: "pick-up-date",
                   },
                   {
                     title: "Address",
                     render: (row, item) => {
-                      return <p className="order-small-font">{item.Address}</p>;
+                      return (
+                        <p className="order-small-font">
+                          {item.Address === "" ? "—NIL—" : item.Address}
+                        </p>
+                      );
                     },
+                    className: "white-space-init",
                   },
                   {
                     title: "Action",
                     render: (row, item) => {
                       return (
-                        <div>
+                        <div className="d-flex">
                           <button className="butn order-grid-butn">
                             Convert to Order
                           </button>
