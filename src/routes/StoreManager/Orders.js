@@ -106,6 +106,9 @@ class Orders extends Component {
   render() {
     return (
       <Fragment>
+        {this.state.orderPopoverOverlay && (
+          <div className="order-popover-overlay"></div>
+        )}
         <div className="store-task-tabs orders-tabs-outer">
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">

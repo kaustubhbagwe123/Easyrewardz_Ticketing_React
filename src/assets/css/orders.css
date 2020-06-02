@@ -168,6 +168,15 @@
   > .ant-popover-arrow {
   top: 3px;
 }
+.order-popover-overlay {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.3);
+}
 /* shopping bag ends */
 
 /* chetan css ends */
