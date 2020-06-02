@@ -2155,9 +2155,9 @@ class StoreTask extends Component {
       <React.Fragment>
         <div className="store-task-tabs">
           <ul className="nav nav-tabs" role="tablist">
-            <li className="nav-item">
+            <li className="nav-item" style={{display:"none"}}>
               <a
-                className="nav-link active"
+                className="nav-link"
                 data-toggle="tab"
                 href="#raised-by-me-tab"
                 role="tab"
@@ -2169,7 +2169,7 @@ class StoreTask extends Component {
                  {TranslationContext!==undefined?TranslationContext.a.raisedbyme:"Raised by Me"} 
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" style={{display:"none"}}>
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -2183,7 +2183,7 @@ class StoreTask extends Component {
                 
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" style={{display:"none"}}>
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -2199,7 +2199,7 @@ class StoreTask extends Component {
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className="nav-link active"
                 data-toggle="tab"
                 href="#campaign-tab"
                 role="tab"
@@ -2227,7 +2227,7 @@ class StoreTask extends Component {
           style={{ padding: "15px" }}
         >
           <div
-            className="tab-pane fade show active"
+            className="tab-pane fade"
             id="raised-by-me-tab"
             role="tabpanel"
             aria-labelledby="raised-by-me-tab"
@@ -3979,7 +3979,7 @@ class StoreTask extends Component {
             )}
           </div>
           <div
-            className="tab-pane fade"
+            className="tab-pane fade show active"
             id="campaign-tab"
             role="tabpanel"
             aria-labelledby="campaign-tab"

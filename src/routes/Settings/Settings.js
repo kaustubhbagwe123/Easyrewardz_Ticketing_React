@@ -18,7 +18,7 @@ import modules from "./../../assets/Images/modules.png";
 import item from "./../../assets/Images/item.png";
 import department from "./../../assets/Images/department.png";
 import audit from "./../../assets/Images/audit.png";
-// import Demo from "../../store/Hashtag";
+import config from "./../../helpers/config";
 import { Link } from "react-router-dom";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
@@ -539,24 +539,29 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="/store/homeshopsetting" className="setting-box">
-                        <div className="setting-icons">
-                          <img src={modules} alt="modules" />
-                        </div>
-                        <div className="setting-desc">
-                          <strong>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.strong.homeshopsettings
-                              : "Home Shop Settings"}
-                          </strong>
-                          <p>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
-                          </p>
-                        </div>
-                      </Link>
+                      {config.isHomeShope ? (
+                        <Link
+                          to="/store/homeshopsetting"
+                          className="setting-box"
+                        >
+                          <div className="setting-icons">
+                            <img src={modules} alt="modules" />
+                          </div>
+                          <div className="setting-desc">
+                            <strong>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.strong.homeshopsettings
+                                : "Home Shop Settings"}
+                            </strong>
+                            <p>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p
+                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                            </p>
+                          </div>
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                   <div className="col-md-3">
@@ -621,24 +626,26 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="/store/chatsettings" className="setting-box">
-                        <div className="setting-icons">
-                          <img src={modules} alt="modules" />
-                        </div>
-                        <div className="setting-desc">
-                          <strong>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.strong.chatsetting
-                              : "Chat Settings"}
-                          </strong>
-                          <p>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
-                          </p>
-                        </div>
-                      </Link>
+                      {config.isHomeShope ? (
+                        <Link to="/store/chatsettings" className="setting-box">
+                          <div className="setting-icons">
+                            <img src={modules} alt="modules" />
+                          </div>
+                          <div className="setting-desc">
+                            <strong>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.strong.chatsetting
+                                : "Chat Settings"}
+                            </strong>
+                            <p>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p
+                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                            </p>
+                          </div>
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                   <div className="col-md-3">
@@ -697,24 +704,26 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <Link to="/store/cardassets" className="setting-box">
-                        <div className="setting-icons">
-                          <img src={modules} alt="modules" />
-                        </div>
-                        <div className="setting-desc">
-                          <strong>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.strong.chatsetting
-                              : "Card Assets"}
-                          </strong>
-                          <p>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
-                          </p>
-                        </div>
-                      </Link>
+                      {config.isHomeShope ? (
+                        <Link to="/store/cardassets" className="setting-box">
+                          <div className="setting-icons">
+                            <img src={modules} alt="modules" />
+                          </div>
+                          <div className="setting-desc">
+                            <strong>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.strong.chatsetting
+                                : "Card Assets"}
+                            </strong>
+                            <p>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p
+                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                            </p>
+                          </div>
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                   <div className="col-md-3">
