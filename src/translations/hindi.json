@@ -365,7 +365,15 @@
       "taskcreationon":"टास्क क्रिएशन ऑन",
       "claimwithtask":"कार्य के साथ दावा करें",
       "enterlinkedtaskid":"लिंक्ड टास्क आईडी दर्ज करें",
-      "attachmentsettings":"लगाव सेटिंग्स"
+      "attachmentsettings":"लगाव सेटिंग्स",
+      "cardqrcode":"कार्ड + क्यूआर कोड",
+      "cardbarcode":"कार्ड + बारकोड",
+      "editslotsettings":"संपादित करें स्लॉट सेटिंग",
+      "maximumcapacity":"अधिकतम योग्यता",
+      "editcampaignscript":"अभियान स्क्रिप्ट संपादित करें",
+      "scriptdetails":"स्क्रिप्ट विवरण",
+      "claim":"दावा",
+      "editpriorty":"प्राथमिकता संपादित करें"
     
    
    
@@ -830,7 +838,10 @@
       "noslotaddedforthisstore":"इस स्टोर के लिए कोई स्लॉट नहीं जोड़ा गया है",
       "claimsubcat":"उप बिल्ली का दावा करें",
       "priortyname":"प्राथमिकता नाम",
-      "prioritystatus":"प्राथमिकता की स्थिति"
+      "prioritystatus":"प्राथमिकता की स्थिति",
+      "starttime":"समय शुरू",
+      "endtime":"अंतिम समय",
+      "to":"से"
      
       
 
@@ -991,7 +1002,10 @@
       "sharedsuccessfully":"सफलतापूर्वक साझा किया गया",
       "appointmentconfiguration":"आवेदन संरचना",
       "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन",
-      "storechatwindow":"चैट विंडो स्टोर करें"
+      "storechatwindow":"चैट विंडो स्टोर करें",
+      "campaignchannel":"अभियान चैनल",
+      "slotsettings":"स्लॉट सेटिंग्स",
+      "languagesettings":"भाषा सेटिंग"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
@@ -1160,7 +1174,11 @@
       "notvisited":"दौरा नहीं किया",
       "selectall":"सभी का चयन करे",
       "selectsize":"माप चुनिये",
-      "fileformat":"फाइल प्रारूप"
+      "fileformat":"फाइल प्रारूप",
+      "sec":"सेकंड",
+      "selectlanguage":"भाषा का चयन करें",
+      "storecode":"स्टोर कोड",
+      "storetimings":"स्टोर टाइमिंग"
     },
     "radio":{
         "email":"ईमेल",
@@ -1186,7 +1204,9 @@
       "needtochangemyshippingaddress":"मेरा शिपिंग पता बदलने की आवश्यकता है",
       "defectivearticle":"दोषपूर्ण लेख",
       "nraman":"एन रामपाल",
-      "twelvemarcheighty":"१२ मार्च २०१८"
+      "twelvemarcheighty":"१२ मार्च २०१८",
+      "maxclickallowesonanychannelcta":"मैक्स। किसी भी चैनल CTA पर अनुमति दी गई क्लिक करें",
+      "otptimeconfiguration":"OTP समय विन्यास"
       
 
     },
@@ -1206,7 +1226,8 @@
       "entertaskidslashtitle":"कार्य आईडी / शीर्षक दर्ज करें",
       "enterlinkedticketid":"लिंक्ड टिकट आईडी दर्ज करें",
       "enterclaimid":"दावा आईडी दर्ज करें",
-      "creationdate":"रचना तिथि"
+      "creationdate":"रचना तिथि",
+      "providername":"प्रदाता का नाम"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1237,6 +1258,13 @@
     },
     "header":{
       "communicationmode":"संचार मोड",
-      "actions":"कार्रवाई"
+      "actions":"कार्रवाई",
+      "slotno":"स्लॉट नं",
+      "storecode":"स्टोर कोड",
+      "timeslot":"टाइम स्लॉट",
+      "order":"गण",
+      "createdname":"बनाया हुआ नाम",
+      "languagename":"भाषा का नाम",
+      "status":"स्थिति"
     }
   }

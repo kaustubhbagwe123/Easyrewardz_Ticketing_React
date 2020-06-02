@@ -2068,14 +2068,18 @@ class CreatePriority extends Component {
           Id="tampleteEditModal"
         >
           <div className="edtpadding">
-            <label className="popover-header-text">EDIT PRORITY</label>
+            <label className="popover-header-text">
+            {TranslationContext!==undefined?TranslationContext.label.editpriorty:"EDIT PRIORITY"}
+            </label>
             <div className=" pop-over-div">
-              <label className="pop-over-lbl-text">Priority Name</label>
+              <label className="pop-over-lbl-text">
+              {TranslationContext!==undefined?TranslationContext.label.priorityname:"Priority Name"}
+              </label>
 
               <input
                 type="text"
                 className="form-control dropdown-settings"
-                placeholder="Enter Priority Name"
+                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterpriorityname:"Enter Priority Name"}
                 maxLength={25}
                 name="priortyName"
                 value={this.state.rowData.priortyName}
@@ -2104,7 +2108,9 @@ class CreatePriority extends Component {
               )}
             </div>
             <div className=" pop-over-div">
-              <label className="pop-over-lbl-text">Status</label>
+              <label className="pop-over-lbl-text">
+              {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+              </label>
               <select
                 className="form-control dropdown-setting"
                 name="isActive"
@@ -2136,7 +2142,8 @@ class CreatePriority extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2153,7 +2160,9 @@ class CreatePriority extends Component {
                 ) : (
                   ""
                 )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                <label className="pop-over-btnsave-text">
+                {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+                </label>
               </button>
             </div>
           </div>
