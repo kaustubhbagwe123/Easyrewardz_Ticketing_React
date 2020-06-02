@@ -3879,12 +3879,7 @@ class MyTicket extends Component {
                           Resolution
                         </label>
                       </div>
-                      {/* <progress
-                        className="ticket-progress"
-                        style={{ width: "100%" }}
-                        value="50"
-                        max="100"
-                      ></progress> */}
+                     
                       <div className="tic-det-progress">
                         <Progress multi>
                           {this.state.progressDataWithcColor.map(function(

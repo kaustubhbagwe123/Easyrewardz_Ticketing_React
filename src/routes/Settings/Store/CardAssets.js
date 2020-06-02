@@ -8,8 +8,8 @@ import config from "../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { Table } from "antd";
 import Bata from "./../../../assets/Images/Bata2.jpg";
-import * as translationHI from './../../../translations/hindi'
-import * as translationMA from './../../../translations/marathi'
+import * as translationHI from '../../../translations/hindi'
+import * as translationMA from '../../../translations/marathi'
 // import InfoIcon from "../../assets/Images/info-icon.png";
 class CardAssets extends Component {
   constructor(props) {
@@ -57,7 +57,6 @@ class CardAssets extends Component {
     };
   }
   componentDidMount() {
-
     if(window.localStorage.getItem("translateLanguage") === "hindi"){
       this.state.translateLanguage = translationHI
      }
@@ -68,6 +67,38 @@ class CardAssets extends Component {
        this.state.translateLanguage = {}
      }
 
+  }
+  ////handle get card image upload log
+  handleGetCardImageUploadlog() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetCardImageUploadlog",
+      headers: authHeader(),
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageUploadlog");
+      });
+  }
+
+  handleApproveRejectCardImage(){
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/ApproveRejectCardImage",
+      headers: authHeader(),
+      params:{
+        ID:1,
+        ItemID:"",
+        AddToLibrary:""
+      }
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageUploadlog");
+      });
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;

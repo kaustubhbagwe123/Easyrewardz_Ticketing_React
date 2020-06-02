@@ -8,7 +8,7 @@ import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import Hambw from "./../../assets/Images/hambw.png";
 import SuggSearch from "./../../assets/Images/sugg-search.png";
-import CancelIcon from "./../../assets/Images/cancel.png";
+import addimg from "./../../assets/Images/addimg.png";
 import CancelIconW from "./../../assets/Images/cancel-white.png";
 import Dots from "./../../assets/Images/dotsw.png";
 import Assign from "./../../assets/Images/sent-icon.svg";
@@ -18,6 +18,8 @@ import CampaignLogo from "./../../assets/Images/campaign.svg";
 import CampaignLogoBlue from "./../../assets/Images/campaign.svg";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
+import OrderLogoBlue from "./../../assets/Images/order-icon-blue.png";
+import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
@@ -80,9 +82,10 @@ import * as translationMA from "../../translations/marathi";
 
 const { Option } = Select;
 
-var socket = io.connect(config.socketUrl, {
-  transports: ["polling"],
-});
+// var socket = io.connect(config.socketUrl, {
+//   // transports: ["polling"],
+//   upgrade: false,
+// });
 // var isSocketReady=1;
 class Header extends Component {
   constructor(props) {
@@ -223,10 +226,10 @@ class Header extends Component {
       );
       this.handleGetNotigfication();
 
-      setInterval(() => {
-        this.handleGetChatNotificationCount();
-        console.clear();
-      }, 10000);
+      // setInterval(() => {
+      this.handleGetChatNotificationCount();
+      // console.clear();
+      // }, 10000);
 
       this.handleGetOngoingChat("");
     }
@@ -323,6 +326,16 @@ class Header extends Component {
       activeClass:
         page === "Appointment" ? "active single-menu" : "single-menu",
     };
+    var myTicketList = {
+      data: "myTicketList",
+      urls: "myTicketList",
+      logoBlack: TicketLogo,
+      logoBlue: TicketLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass:
+        page === "myTicketList" ? "active single-menu" : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -350,6 +363,11 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(appointment);
+        } else if (
+          data[i].moduleName === "myTicketList" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(myTicketList);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -379,9 +397,9 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
-          setTimeout(() => {
-            transferData.sendReport(this.state.reportAccess);
-          }, 100);
+          // setTimeout(() => {
+          //   transferData.sendReport(this.state.reportAccess);
+          // }, 100);
         }
       }
     }
@@ -393,10 +411,10 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
-    console.clear();
+    // console.clear();
   }
   componentDidUpdate() {
-    console.clear();
+    // console.clear();
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
@@ -770,21 +788,21 @@ class Header extends Component {
   }
   handleUpdateCustomerChatStatus(id, mobileNo, programCode) {
     let self = this;
-    socket.on("connect", () => {
-      socket.send("hi");
-      socket.on("91" + mobileNo + programCode.toLowerCase(), function(data) {
-        console.log("Message Received");
-        debugger;
-        if ("91" + self.state.mobileNo === data[3]) {
-          self.handleGetChatNotificationCount();
-          // self.handleGetOngoingChat("isRead");
-          self.handleGetChatMessagesList(self.state.chatId);
-        } else {
-          self.handleGetChatNotificationCount();
-          // self.handleGetOngoingChat("isRead");
-        }
-      });
-    });
+    // socket.on("connect", () => {
+    //   socket.send("hi");
+    //   socket.on("91" + mobileNo + programCode.toLowerCase(), function(data) {
+    //     console.log("Message Received");
+    //     debugger;
+    //     if ("91" + self.state.mobileNo === data[3]) {
+    //       self.handleGetChatNotificationCount();
+    //       // self.handleGetOngoingChat("isRead");
+    //       self.handleGetChatMessagesList(self.state.chatId);
+    //     } else {
+    //       self.handleGetChatNotificationCount();
+    //       // self.handleGetOngoingChat("isRead");
+    //     }
+    //   });
+    // });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
@@ -1727,7 +1745,10 @@ class Header extends Component {
 
   handleCreateSocketConnection(programCode, storeCode) {
     let self = this;
-    var socket = io.connect(config.socketUrl);
+    var socket = io.connect(config.socketUrl, {
+      transports: ["polling"],
+      upgrade: false,
+    });
 
     socket.on("connect", () => {
       socket.send("hi");
@@ -1762,6 +1783,22 @@ class Header extends Component {
         }
       });
     });
+  }
+
+  handleInsertCardImageUpload() {
+    var formData = new FormData();
+    formData.append("ItemID", "");
+    formData.append("ImageUrl ", "");
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/InsertCardImageUpload",
+      headers: authHeader(),
+      data: formData,
+    })
+      .then(function(response) {})
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageUploadlog");
+      });
   }
 
   render() {
@@ -1808,6 +1845,22 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
+              <Link to="orders" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={OrderLogoBlack}
+                    alt="order icon"
+                    className="dashboardImg1"
+                  />
+                  <img
+                    src={OrderLogoBlue}
+                    alt="order icon"
+                    className="order-blue"
+                    style={{ display: "none" }}
+                  />
+                </div>
+                <label className="cusheade">Orders</label>
+              </Link>
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
@@ -2281,7 +2334,9 @@ class Header extends Component {
               onClick={this.handleChatModalClose}
             />
             <h3>
-            {TranslationContext!==undefined?TranslationContext.h3.storechatwindow:"Store chat window"}
+              {TranslationContext !== undefined
+                ? TranslationContext.h3.storechatwindow
+                : "Store chat window"}
             </h3>
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
@@ -2295,7 +2350,11 @@ class Header extends Component {
                     <input
                       type="text"
                       className="search-customerChatSrch"
-                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.search:"Search"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.search
+                          : "Search"
+                      }
                       name="Search"
                       maxLength="100"
                       autoComplete="off"
@@ -2332,7 +2391,10 @@ class Header extends Component {
                   </div>
                   <div className="chat-cntr">
                     <p className="chats-heading">
-                      {TranslationContext!==undefined?TranslationContext.p.ongoingchats:"Ongoing Chats"}(
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.ongoingchats
+                        : "Ongoing Chats"}
+                      (
                       {this.state.ongoingChatsData.length < 9
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
@@ -2344,7 +2406,9 @@ class Header extends Component {
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
                         <Option value={0}>
-                        {TranslationContext!==undefined?TranslationContext.option.all:"All"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.all
+                            : "All"}
                         </Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
@@ -2407,8 +2471,9 @@ class Header extends Component {
                                   {chat.messageCount === 0
                                     ? "No"
                                     : chat.messageCount}{" "}
-                                  
-                                  {TranslationContext!==undefined?TranslationContext.p.newmessages:"New Messages"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.newmessages
+                                    : "New Messages"}
                                 </p>
                                 <p>{chat.timeAgo}</p>
                               </div>
@@ -2419,7 +2484,10 @@ class Header extends Component {
                   </div>
                   <div className="chat-cntr">
                     <p className="chats-heading">
-                      {TranslationContext!==undefined?TranslationContext.p.newchats:"New Chats"} (
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.newchats
+                        : "New Chats"}{" "}
+                      (
                       {this.state.newChatsData.length < 9
                         ? "0" + this.state.newChatsData.length
                         : this.state.newChatsData.length}
@@ -2462,7 +2530,9 @@ class Header extends Component {
                                   {chat.messageCount === 0
                                     ? "No"
                                     : chat.messageCount}{" "}
-                                  {TranslationContext!==undefined?TranslationContext.p.newmessages:"New Messages"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.newmessages
+                                    : "New Messages"}
                                 </p>
                                 <p>{chat.timeAgo}</p>
                               </div>
@@ -2482,8 +2552,9 @@ class Header extends Component {
                         aria-selected="false"
                         onClick={this.handleHistTabClick.bind(this)}
                       >
-                        {TranslationContext!==undefined?TranslationContext.a.myhistoricalchat:"MY HISTORICAL CHAT"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.myhistoricalchat
+                          : "MY HISTORICAL CHAT"}
                       </a>
                     </li>
                   </div>
@@ -2528,8 +2599,10 @@ class Header extends Component {
                           />
                           <span>{this.state.ongoingChatsData.length}</span>
                         </div>
-                        
-                        {TranslationContext!==undefined?TranslationContext.a.ongoingchats:"Ongoing Chats"}
+
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.ongoingchats
+                          : "Ongoing Chats"}
                       </a>
                     </li>
                     <li className="nav-item">
@@ -2555,8 +2628,10 @@ class Header extends Component {
                           />
                           <span>{this.state.newChatsData.length}</span>
                         </div>
-                        
-                        {TranslationContext!==undefined?TranslationContext.a.newchats:"New Chats"}
+
+                        {TranslationContext !== undefined
+                          ? TranslationContext.a.newchats
+                          : "New Chats"}
                       </a>
                     </li>
                   </ul>
@@ -2573,8 +2648,9 @@ class Header extends Component {
                         className="mobile-chat-header"
                         style={{ display: "inline-block" }}
                       >
-                        {TranslationContext!==undefined?TranslationContext.p.ongoingchats:"Ongoing Chats"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.ongoingchats
+                          : "Ongoing Chats"}
                       </p>
                       <Select
                         className="agentchatdrop-down"
@@ -2659,7 +2735,10 @@ class Header extends Component {
                           ))}
                         {this.state.ongoingChatsData.length === 0 && (
                           <p className="no-record">
-                          {TranslationContext!==undefined?TranslationContext.p.norecordsfound:"No Records Found"}!
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.norecordsfound
+                              : "No Records Found"}
+                            !
                           </p>
                         )}
                       </div>
@@ -2673,7 +2752,9 @@ class Header extends Component {
                   >
                     <div>
                       <p className="mobile-chat-header">
-                      {TranslationContext!==undefined?TranslationContext.p.newchats:"New Chats"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.newchats
+                          : "New Chats"}
                       </p>
                       <div className="chat-detail-outer-cntr">
                         {this.state.newChatsData &&
@@ -2729,7 +2810,10 @@ class Header extends Component {
                           ))}
                         {this.state.newChatsData.length === 0 && (
                           <p className="no-record">
-                          {TranslationContext!==undefined?TranslationContext.p.norecordsfound:"No Records Found"}!
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.norecordsfound
+                              : "No Records Found"}
+                            !
                           </p>
                         )}
                       </div>
@@ -2832,7 +2916,10 @@ class Header extends Component {
                                           <div className="chat-trail-chat-cntr">
                                             {item.isBotReply && (
                                               <p className="bot-mark">
-                                              {TranslationContext!==undefined?TranslationContext.p.bot:"BOT"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p.bot
+                                                  : "BOT"}
                                               </p>
                                             )}
                                             <p className="chat-trail-chat pd-0">
@@ -2883,8 +2970,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 1)}
                                     id="one"
                                   >
-                                     {TranslationContext!==undefined?TranslationContext.a.message:"MESSAGE"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.message
+                                      : "MESSAGE"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2902,8 +2990,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 2)}
                                     id="two"
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.a.card:"CARD"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.card
+                                      : "CARD"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2921,8 +3010,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 3)}
                                     id="three"
                                   >
-                                     {TranslationContext!==undefined?TranslationContext.a.recommendedlist:"RECOMMENDED LIST"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.recommendedlist
+                                      : "RECOMMENDED LIST"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2941,8 +3031,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 4)}
                                     id="four"
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.a.schedulevisit:"SCHEDULE VISIT"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.schedulevisit
+                                      : "SCHEDULE VISIT"}
                                   </a>
                                 </li>
                                 <li className="nav-item">
@@ -2960,8 +3051,9 @@ class Header extends Component {
                                     onClick={this.handleTabClick.bind(this, 5)}
                                     id="five"
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.a.schedulevisit:"GENERATE PAYMENT LINK"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.schedulevisit
+                                      : "GENERATE PAYMENT LINK"}
                                   </a>
                                 </li>
                               </ul>
@@ -3156,7 +3248,12 @@ class Header extends Component {
                                     <input
                                       type="text"
                                       className="search-customerAddSrch searchtxt"
-                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.searchitemidarticleskuid:"Search ItemId/artcile/SKU ID"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .searchitemidarticleskuid
+                                          : "Search ItemId/artcile/SKU ID"
+                                      }
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
@@ -3250,6 +3347,13 @@ class Header extends Component {
                                                             item.productName
                                                           }
                                                         />
+                                                        <span className="addimg">
+                                                          <input
+                                                            type="image"
+                                                            alt="Add Image"
+                                                            src={addimg}
+                                                          />
+                                                        </span>
                                                       </div>
                                                       <div className="col-md-8 bkcprdt">
                                                         <div>
@@ -3263,7 +3367,12 @@ class Header extends Component {
                                                           item.brandName !==
                                                             null ? (
                                                             <label className="chat-product-code">
-                                                              {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.brand
+                                                                : "Brand"}{" "}
+                                                              :
                                                               {" " +
                                                                 item.brandName}
                                                             </label>
@@ -3275,7 +3384,13 @@ class Header extends Component {
                                                           item.categoryName !==
                                                             null ? (
                                                             <label className="chat-product-code">
-                                                               {TranslationContext!==undefined?TranslationContext.label.category:"Category"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .category
+                                                                : "Category"}{" "}
+                                                              :
                                                               {" " +
                                                                 item.categoryName}
                                                             </label>
@@ -3287,7 +3402,13 @@ class Header extends Component {
                                                           item.subCategoryName !==
                                                             null ? (
                                                             <label className="chat-product-code">
-                                                               {TranslationContext!==undefined?TranslationContext.label.subcategory:"SubCategory"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .subcategory
+                                                                : "SubCategory"}{" "}
+                                                              :
                                                               {" " +
                                                                 item.subCategoryName}
                                                             </label>
@@ -3298,7 +3419,12 @@ class Header extends Component {
                                                           item.color !==
                                                             null ? (
                                                             <label className="chat-product-code">
-                                                              {TranslationContext!==undefined?TranslationContext.label.color:"Color"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.color
+                                                                : "Color"}{" "}
+                                                              :
                                                               {" " + item.color}
                                                             </label>
                                                           ) : null}
@@ -3307,8 +3433,12 @@ class Header extends Component {
                                                           {item.size !== "" &&
                                                           item.size !== null ? (
                                                             <label className="chat-product-code">
-                                                              {TranslationContext!==undefined?TranslationContext.label.color:"Size"} :
-                                                              {" " + item.size}
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.color
+                                                                : "Size"}{" "}
+                                                              :{" " + item.size}
                                                             </label>
                                                           ) : null}
                                                         </div>
@@ -3318,7 +3448,13 @@ class Header extends Component {
                                                           item.uniqueItemCode !==
                                                             null ? (
                                                             <label className="chat-product-code">
-                                                              {TranslationContext!==undefined?TranslationContext.label.itemcode:"Item Code"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .itemcode
+                                                                : "Item Code"}{" "}
+                                                              :
                                                               {" " +
                                                                 item.uniqueItemCode}
                                                             </label>
@@ -3333,7 +3469,13 @@ class Header extends Component {
                                                           item.discount !==
                                                             null ? (
                                                             <label className="chat-product-code">
-                                                              {TranslationContext!==undefined?TranslationContext.label.discount:"Discount"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label
+                                                                    .discount
+                                                                : "Discount"}{" "}
+                                                              :
                                                               {" " +
                                                                 item.discount}
                                                             </label>
@@ -3347,7 +3489,12 @@ class Header extends Component {
                                                           item.price !==
                                                             null ? (
                                                             <label className="chat-product-prize">
-                                                              {TranslationContext!==undefined?TranslationContext.label.price:"Price"} :
+                                                              {TranslationContext !==
+                                                              undefined
+                                                                ? TranslationContext
+                                                                    .label.price
+                                                                : "Price"}{" "}
+                                                              :
                                                               {" " + item.price}
                                                             </label>
                                                           ) : null}
@@ -3397,8 +3544,9 @@ class Header extends Component {
                                         className="butn"
                                         onClick={this.handleSendCard.bind(this)}
                                       >
-                                        
-                                        {TranslationContext!==undefined?TranslationContext.button.send:"Send"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.send
+                                          : "Send"}
                                         <img
                                           src={SendUp}
                                           alt="send"
@@ -3437,8 +3585,11 @@ class Header extends Component {
                                       this
                                     )}
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.button.sendrecommendedlist:"Send Recommended List"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button
+                                          .sendrecommendedlist
+                                      : "Send Recommended List"}
+
                                     <img
                                       src={SendUp}
                                       alt="send"
@@ -3667,8 +3818,10 @@ class Header extends Component {
                                         <div className="schedule-right-cntr">
                                           <div>
                                             <label className="s-lable">
-                                              
-                                              {TranslationContext!==undefined?TranslationContext.label.selectedslot:"Selected Slot"}
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label
+                                                    .selectedslot
+                                                : "Selected Slot"}
                                             </label>
                                             {Object.keys(
                                               this.state.selectedSlot
@@ -3770,8 +3923,10 @@ class Header extends Component {
                                 ) : (
                                   <div>
                                     <span className="slot-span">
-                                      
-                                      {TranslationContext!==undefined?TranslationContext.span.noslotaddedforthisstore:"No slot added for this store"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span
+                                            .noslotaddedforthisstore
+                                        : "No slot added for this store"}
                                     </span>
                                   </div>
                                 )}
@@ -3800,7 +3955,12 @@ class Header extends Component {
                                     <input
                                       type="text"
                                       className="search-customerAddSrch searchtxt"
-                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.searchorderid:"Search Order Id"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .searchorderid
+                                          : "Search Order Id"
+                                      }
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
@@ -3826,16 +3986,18 @@ class Header extends Component {
                                 </div>
                                 <div className="payment-details">
                                   <label>
-                                  {TranslationContext!==undefined?TranslationContext.label.amount:"Amount"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.amount
+                                      : "Amount"}
                                   </label>
-                                  <span>INR 1299
-                                    
-                                  </span>
+                                  <span>INR 1299</span>
                                 </div>
                                 <div className="payment-link-butn">
                                   <button className="butn">
-                                    
-                                    {TranslationContext!==undefined?TranslationContext.button.sendpaymentlink:"Send Payment Link"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button
+                                          .sendpaymentlink
+                                      : "Send Payment Link"}
                                     <img
                                       src={SendUp}
                                       alt="send"
@@ -3868,8 +4030,9 @@ class Header extends Component {
                                   aria-selected="true"
                                   id="one"
                                 >
-                                  {TranslationContext!==undefined?TranslationContext.a.message:"MESSAGE"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.message
+                                    : "MESSAGE"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3887,8 +4050,9 @@ class Header extends Component {
                                   onClick={this.onOpenCardModal}
                                   id="two"
                                 >
-                                  {TranslationContext!==undefined?TranslationContext.a.card:"CARD"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.card
+                                    : "CARD"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3906,8 +4070,9 @@ class Header extends Component {
                                   onClick={this.onOpenRecommendedModal}
                                   id="three"
                                 >
-                                  {TranslationContext!==undefined?TranslationContext.a.recommendedlist:"RECOMMENDED LIST"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.recommendedlist
+                                    : "RECOMMENDED LIST"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3925,8 +4090,9 @@ class Header extends Component {
                                   onClick={this.onOpenScheduleModal}
                                   id="four"
                                 >
-                                  {TranslationContext!==undefined?TranslationContext.a.schedulevisit:"SCHEDULE VISIT"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.schedulevisit
+                                    : "SCHEDULE VISIT"}
                                 </a>
                               </li>
                               <li className="nav-item">
@@ -3944,8 +4110,9 @@ class Header extends Component {
                                   onClick={this.onOpenPaymentModal}
                                   id="five"
                                 >
-                                  {TranslationContext!==undefined?TranslationContext.a.generatepaymentlink:"GENERATE PAYMENT LINK"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.a.generatepaymentlink
+                                    : "GENERATE PAYMENT LINK"}
                                 </a>
                               </li>
                             </ul>
@@ -4158,6 +4325,13 @@ class Header extends Component {
                                                         alt="Product Image"
                                                         title={item.productName}
                                                       />
+                                                      <span className="addimg">
+                                                        <input
+                                                          type="image"
+                                                          alt="Add Image"
+                                                          src={addimg}
+                                                        />
+                                                      </span>
                                                     </div>
                                                     <div className="bkcprdt">
                                                       <label className="chat-product-name">
@@ -4167,7 +4341,12 @@ class Header extends Component {
                                                       item.brandName !==
                                                         null ? (
                                                         <label className="chat-product-code">
-                                                        {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"} :
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.brand
+                                                            : "Brand"}{" "}
+                                                          :
                                                           {" " + item.brandName}
                                                         </label>
                                                       ) : null}
@@ -4177,7 +4356,12 @@ class Header extends Component {
                                                       item.categoryName !==
                                                         null ? (
                                                         <label className="chat-product-code">
-                                                          {TranslationContext!==undefined?TranslationContext.label.category:"Category"} :
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.category
+                                                            : "Category"}{" "}
+                                                          :
                                                           {" " +
                                                             item.categoryName}
                                                         </label>
@@ -4188,7 +4372,13 @@ class Header extends Component {
                                                       item.subCategoryName !==
                                                         null ? (
                                                         <label className="chat-product-code">
-                                                          {TranslationContext!==undefined?TranslationContext.label.subcategory:"SubCategory"} :
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label
+                                                                .subcategory
+                                                            : "SubCategory"}{" "}
+                                                          :
                                                           {" " +
                                                             item.subCategoryName}
                                                         </label>
@@ -4197,16 +4387,24 @@ class Header extends Component {
                                                       {item.color !== "" &&
                                                       item.color !== null ? (
                                                         <label className="chat-product-code">
-                                                          {TranslationContext!==undefined?TranslationContext.label.color:"Color"} :
-                                                          {" " + item.color}
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.color
+                                                            : "Color"}{" "}
+                                                          :{" " + item.color}
                                                         </label>
                                                       ) : null}
 
                                                       {item.size !== "" &&
                                                       item.size !== null ? (
                                                         <label className="chat-product-code">
-                                                          {TranslationContext!==undefined?TranslationContext.label.color:"Size"} :
-                                                          {" " + item.size}
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.color
+                                                            : "Size"}{" "}
+                                                          :{" " + item.size}
                                                         </label>
                                                       ) : null}
 
@@ -4215,7 +4413,12 @@ class Header extends Component {
                                                       item.uniqueItemCode !==
                                                         null ? (
                                                         <label className="chat-product-code">
-                                                          {TranslationContext!==undefined?TranslationContext.label.itemcode:"Item Code"} :
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.itemcode
+                                                            : "Item Code"}{" "}
+                                                          :
                                                           {" " +
                                                             item.uniqueItemCode}
                                                         </label>
@@ -4227,8 +4430,12 @@ class Header extends Component {
                                                       ) !== 0 &&
                                                       item.discount !== null ? (
                                                         <label className="chat-product-code">
-                                                        {TranslationContext!==undefined?TranslationContext.label.discount:"Discount"} :
-                                                          {" " + item.discount}
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.discount
+                                                            : "Discount"}{" "}
+                                                          :{" " + item.discount}
                                                         </label>
                                                       ) : null}
 
@@ -4237,8 +4444,12 @@ class Header extends Component {
                                                         0 &&
                                                       item.price !== null ? (
                                                         <label className="chat-product-prize">
-                                                          {TranslationContext!==undefined?TranslationContext.label.price:"Price"} :
-                                                          {" " + item.price}
+                                                          {TranslationContext !==
+                                                          undefined
+                                                            ? TranslationContext
+                                                                .label.price
+                                                            : "Price"}{" "}
+                                                          :{" " + item.price}
                                                         </label>
                                                       ) : null}
                                                       {item.url !== null &&
@@ -4265,13 +4476,17 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseCardModal}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.close:"Close"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.close
+                                        : "Close"}
                                     </button>
                                     <button
                                       className="butn"
                                       onClick={this.handleSendCard.bind(this)}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.send:"Send"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.send
+                                        : "Send"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4309,8 +4524,11 @@ class Header extends Component {
                                         this
                                       )}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.sendrecommendedlist:"Send Recommended List"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button
+                                            .sendrecommendedlist
+                                        : "Send Recommended List"}
+
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4338,8 +4556,9 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseRecommendedModal}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.close:"Close"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.close
+                                        : "Close"}
                                     </button>
                                   </div>
                                 </div>
@@ -4523,8 +4742,10 @@ class Header extends Component {
                                       <div className="schedule-right-cntr">
                                         <div>
                                           <label className="s-lable">
-                                            
-                                            {TranslationContext!==undefined?TranslationContext.label.selectedslot:"Selected Slot"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .selectedslot
+                                              : "Selected Slot"}
                                           </label>
                                           {Object.keys(this.state.selectedSlot)
                                             .length !== 0 ? (
@@ -4567,9 +4788,10 @@ class Header extends Component {
                                         </div>
                                         <div>
                                           <label className="s-lable">
-                                            
-                                            {TranslationContext!==undefined?TranslationContext.label.noofpeople:"No of People"}
-
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .noofpeople
+                                              : "No of People"}
                                           </label>
                                           <input
                                             type="text"
@@ -4597,8 +4819,9 @@ class Header extends Component {
                                         className="butn-inv"
                                         onClick={this.onCloseScheduleModal}
                                       >
-                                      {TranslationContext!==undefined?TranslationContext.button.close:"Close"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.close
+                                          : "Close"}
                                       </button>
                                       <button
                                         className="butn"
@@ -4627,8 +4850,10 @@ class Header extends Component {
                                 ) : (
                                   <div>
                                     <span className="slot-span">
-                                    {TranslationContext!==undefined?TranslationContext.span.noslotaddedforthisstore:"No slot added for this store"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span
+                                            .noslotaddedforthisstore
+                                        : "No slot added for this store"}
                                     </span>
                                   </div>
                                 )}
@@ -4680,7 +4905,9 @@ class Header extends Component {
                                     </div>
                                     <div className="payment-details">
                                       <label>
-                                      {TranslationContext!==undefined?TranslationContext.label.amount:"Amount"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.amount
+                                          : "Amount"}
                                       </label>
                                       <span>INR 1299</span>
                                     </div>
@@ -4690,15 +4917,17 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onClosePaymentModal}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.close:"Close"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.close
+                                        : "Close"}
                                     </button>
                                     <button
                                       className="butn"
                                       onClick={this.onClosePaymentModal}
                                     >
-                                      
-                                      {TranslationContext!==undefined?TranslationContext.button.send:"Send"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.send
+                                        : "Send"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4731,8 +4960,11 @@ class Header extends Component {
                                     style={{ background: "none" }}
                                   >
                                     <p className="cls-p-conf">
-                                      
-                                      {TranslationContext!==undefined?TranslationContext.p.areyousureandwanttosend:"Are you sure & want to send"}?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureandwanttosend
+                                        : "Are you sure & want to send"}
+                                      ?
                                     </p>
                                   </div>
                                   <hr
@@ -4746,7 +4978,9 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseSuggestionModal}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.button.no:"No"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.no
+                                        : "No"}
                                     </button>
                                     <button
                                       className="butn"
@@ -4757,8 +4991,9 @@ class Header extends Component {
                                         ""
                                       )}
                                     >
-                                      
-                                      {TranslationContext!==undefined?TranslationContext.button.yes:"Yes"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.yes
+                                        : "Yes"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4791,7 +5026,11 @@ class Header extends Component {
                                     style={{ background: "none" }}
                                   >
                                     <p className="cls-p-conf-mob">
-                                    {TranslationContext!==undefined?TranslationContext.p.areyousureandwanttosend:"Are you sure & want to send"}?
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureandwanttosend
+                                        : "Are you sure & want to send"}
+                                      ?
                                     </p>
                                   </div>
                                   <hr
@@ -4805,7 +5044,9 @@ class Header extends Component {
                                       className="butn-inv"
                                       onClick={this.onCloseMobSuggestionModal}
                                     >
-                                       {TranslationContext!==undefined?TranslationContext.button.no:"No"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.no
+                                        : "No"}
                                     </button>
                                     <button
                                       className="butn"
@@ -4816,7 +5057,9 @@ class Header extends Component {
                                         ""
                                       )}
                                     >
-                                       {TranslationContext!==undefined?TranslationContext.button.yes:"Yes"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.yes
+                                        : "Yes"}
                                       <img
                                         src={SendUp}
                                         alt="send"
@@ -4849,22 +5092,34 @@ class Header extends Component {
                               className="components-table-demo-nested antd-table-campaign custom-antd-table"
                               columns={[
                                 {
-                                  title: TranslationContext!==undefined?TranslationContext.title.chatid:"Chat ID",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.chatid
+                                      : "Chat ID",
                                   dataIndex: "chatID",
                                   width: "10%",
                                 },
                                 {
-                                  title:  TranslationContext!==undefined?TranslationContext.title.agent:"Agent",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.agent
+                                      : "Agent",
                                   dataIndex: "agentName",
                                   width: "20%",
                                 },
                                 {
-                                  title: TranslationContext!==undefined?TranslationContext.title.time:"Time",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.time
+                                      : "Time",
                                   dataIndex: "timeAgo",
                                   width: "20%",
                                 },
                                 {
-                                  title: TranslationContext!==undefined?TranslationContext.title.message:"Message",
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.message
+                                      : "Message",
                                   dataIndex: "message",
                                   width: "30%",
                                   render: (row, rowdata) => {
@@ -4895,30 +5150,43 @@ class Header extends Component {
                           className="chattitlelbl"
                           style={{ color: "Black" }}
                         >
-                          {TranslationContext!==undefined?TranslationContext.label.myhistoricalchat:"My Historical Chat"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.myhistoricalchat
+                            : "My Historical Chat"}
                         </label>
                         <div className="table-cntr store chat-history">
                           <Table
                             className="components-table-demo-nested antd-table-campaign custom-antd-table"
                             columns={[
                               {
-                                title:TranslationContext!==undefined?TranslationContext.title.chatid:"Chat ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.chatid
+                                    : "Chat ID",
                                 dataIndex: "chatID",
                                 width: "10%",
                               },
                               {
-                                title:TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.customername
+                                    : "Customer Name",
                                 dataIndex: "customerName",
                                 width: "20%",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.time:"Time",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.time
+                                    : "Time",
                                 dataIndex: "timeAgo",
                                 width: "20%",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.message:"Message",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.message
+                                    : "Message",
                                 dataIndex: "message",
                                 width: "30%",
                               },
