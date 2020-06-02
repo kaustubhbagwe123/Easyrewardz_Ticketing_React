@@ -373,7 +373,9 @@
       "editcampaignscript":"अभियान स्क्रिप्ट संपादित करें",
       "scriptdetails":"स्क्रिप्ट विवरण",
       "claim":"दावा",
-      "editpriorty":"प्राथमिकता संपादित करें"
+      "editpriorty":"प्राथमिकता संपादित करें",
+      "uploadeddata":"अपलोड किया गया डेटा",
+      "rejecteddata":"अस्वीकृत डेटा"
     
    
    
@@ -637,7 +639,8 @@
       "recommendedlist":"विस्तृत सूची",
       "schedulevisit":"अनुसूची देखें",
       "generatepaymentlink":"सामान्य भुगतान लिंक",
-      "assetapproval":"संपत्ति की मंजूरी"
+      "assetapproval":"संपत्ति की मंजूरी",
+      "uploadlogs":"लॉग अपलोड करें"
     },
     "span":{
       "status": "स्थिति",
@@ -932,7 +935,9 @@
       "function":"समारोह",
       "sendrecommendedlist":"अनुशंसित सूची भेजें",
       "sendpaymentlink":"भुगतान लिंक भेजें",
-      "close":"बंद करे"
+      "close":"बंद करे",
+      "addtolibrary":"पुस्तकालय में जोड़ें",
+      "reject":"अस्वीकार"
       
      
      
@@ -1251,7 +1256,11 @@
       "numberofpeople":"लोगों की संख्या",
       "chatid":"चैट आईडी",
       "agent":"एजेंट",
-      "message":"संदेश"
+      "message":"संदेश",
+      "approvedby":"के द्वारा अनुमोदित",
+      "uploadedby":"द्वारा डाली गई",
+      "imteidskuid":"ImteID/SKU ID",
+      "image":"छवि"
     },
     "content":{
       "howmanydaystoshowchathistory":"चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"
