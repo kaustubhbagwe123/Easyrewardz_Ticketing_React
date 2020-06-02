@@ -244,6 +244,18 @@
   margin-top: 15px;
 }
 
+.btn-ref{
+  background-color: #FFFFFF;
+  border: 1px solid #2561A8;
+  color: #2561A8;
+}
+
+.btn-proc{
+  background-color: #2561A8;
+  border: 1px solid #2561A8;
+  color: #FFFFFF;
+}
+
 /* Delivered End */
 
 /* order starts */
