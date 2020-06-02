@@ -256,7 +256,7 @@ class StoreModule extends Component {
         CampaignID: deleteId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign deleted successfully.");
@@ -457,7 +457,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetStoreAttachmentSettings",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -497,7 +497,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetCampaignName",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -519,7 +519,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -612,7 +612,7 @@ class StoreModule extends Component {
         SlotID: slotId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Record Deleted Successfully.");
@@ -628,18 +628,18 @@ class StoreModule extends Component {
   /// handle Delete Language record
   handleDeleteLanguage = async (row, type) => {
     let languageGridData = [...this.state.languageGridData],
-        isActive
+      isActive;
 
-        for (let i = 0; i < languageGridData.length; i++) {
-                if (languageGridData[i].languageID === row.languageID) {
-                  isActive = languageGridData[i].isActive;
-                  languageGridData[i].isActive = isActive===false?true:false;
-                }
-            }
+    for (let i = 0; i < languageGridData.length; i++) {
+      if (languageGridData[i].languageID === row.languageID) {
+        isActive = languageGridData[i].isActive;
+        languageGridData[i].isActive = isActive === false ? true : false;
+      }
+    }
 
-            await this.setState({
-              languageGridData
-          });
+    await this.setState({
+      languageGridData,
+    });
 
     var self = this;
     axios({
@@ -648,10 +648,10 @@ class StoreModule extends Component {
       headers: authHeader(),
       params: {
         selectedLanguageID: row.id,
-        isActive: row.isActive
+        isActive: row.isActive,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Record Updated Successfully.");
@@ -663,7 +663,7 @@ class StoreModule extends Component {
       .catch((data) => {
         console.log(data);
       });
-  }
+  };
   //// Handle get time slot grid data
   handleGetTimeslotGridData() {
     let self = this;
@@ -672,7 +672,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/Appointment/GetStoreTimeSlotMasterList",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -697,7 +697,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetAppointmentConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -723,7 +723,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/StoreCampaign/GetBroadcastConfiguration",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -748,7 +748,7 @@ class StoreModule extends Component {
       url: config.apiUrl + "/ModuleSetting/GetCampaignScript",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success" && data) {
@@ -830,7 +830,7 @@ class StoreModule extends Component {
           FileFomatID: this.state.selectedFileFormat,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Attachment saved successfully.");
@@ -878,7 +878,7 @@ class StoreModule extends Component {
           Status: true,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -923,7 +923,7 @@ class StoreModule extends Component {
           Status: true,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -1529,7 +1529,7 @@ class StoreModule extends Component {
               : "",
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Campaign Updated Successfully.");
@@ -1559,7 +1559,7 @@ class StoreModule extends Component {
         OnlyCard: this.state.AppointConfigData.onlyCard,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Appointment Updated Successfully.");
@@ -1605,7 +1605,7 @@ class StoreModule extends Component {
           ProviderName: this.state.BroadCastConfigData.providerName,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Broadcast Updated Successfully.");
@@ -1643,7 +1643,7 @@ class StoreModule extends Component {
           MaxCapacity: parseInt(this.state.maxCapacity),
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -1696,7 +1696,7 @@ class StoreModule extends Component {
           MaxCapacity: parseInt(this.state.timeSlotEdit.maxCapacity),
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Time Slot Updated Successfully.");
@@ -1731,7 +1731,7 @@ class StoreModule extends Component {
           languageID: parseInt(this.state.selectLanguage),
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
@@ -1887,83 +1887,83 @@ class StoreModule extends Component {
                   </div>
                   {this.state.sortColumn === "campaignName"
                     ? this.state.sortFiltercampaignName !== null &&
-                    this.state.sortFiltercampaignName.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.campaignName}
-                          value={item.campaignName}
-                          checked={this.state.scampaignNameFilterCheckbox.includes(
-                            item.campaignName
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "campaignName",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.campaignName}>
-                          <span className="table-btn table-blue-btn">
-                            {item.campaignName}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFiltercampaignName.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.campaignName}
+                            value={item.campaignName}
+                            checked={this.state.scampaignNameFilterCheckbox.includes(
+                              item.campaignName
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "campaignName",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.campaignName}>
+                            <span className="table-btn table-blue-btn">
+                              {item.campaignName}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "createdBy"
                     ? this.state.sortFiltercreatedBy !== null &&
-                    this.state.sortFiltercreatedBy.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.createdBy}
-                          value={item.createdBy}
-                          checked={this.state.screatedByFilterCheckbox.includes(
-                            item.createdBy
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "createdBy",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.createdBy}>
-                          <span className="table-btn table-blue-btn">
-                            {item.createdBy}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFiltercreatedBy.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.createdBy}
+                            value={item.createdBy}
+                            checked={this.state.screatedByFilterCheckbox.includes(
+                              item.createdBy
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "createdBy",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.createdBy}>
+                            <span className="table-btn table-blue-btn">
+                              {item.createdBy}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
 
                   {this.state.sortColumn === "status"
                     ? this.state.sortFilteristatus !== null &&
-                    this.state.sortFilteristatus.map((item, i) => (
-                      <div className="filter-checkbox">
-                        <input
-                          type="checkbox"
-                          name="filter-type"
-                          id={"fil-open" + item.status}
-                          value={item.status}
-                          checked={this.state.sstatusFilterCheckbox.includes(
-                            item.status
-                          )}
-                          onChange={this.setSortCheckStatus.bind(
-                            this,
-                            "status",
-                            "value"
-                          )}
-                        />
-                        <label htmlFor={"fil-open" + item.status}>
-                          <span className="table-btn table-blue-btn">
-                            {item.status}
-                          </span>
-                        </label>
-                      </div>
-                    ))
+                      this.state.sortFilteristatus.map((item, i) => (
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            name="filter-type"
+                            id={"fil-open" + item.status}
+                            value={item.status}
+                            checked={this.state.sstatusFilterCheckbox.includes(
+                              item.status
+                            )}
+                            onChange={this.setSortCheckStatus.bind(
+                              this,
+                              "status",
+                              "value"
+                            )}
+                          />
+                          <label htmlFor={"fil-open" + item.status}>
+                            <span className="table-btn table-blue-btn">
+                              {item.status}
+                            </span>
+                          </label>
+                        </div>
+                      ))
                     : null}
                 </div>
               </div>
@@ -2681,8 +2681,8 @@ class StoreModule extends Component {
                                             {this.state.campProviderValidation}
                                           </p>
                                         )}
-                                    </div>
-                                  ) : null}
+                                      </div>
+                                    ) : null}
 
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
@@ -2984,13 +2984,13 @@ class StoreModule extends Component {
                                         // name="enableClickAfterValue"
                                         autoComplete="off"
                                         maxLength={2}
-                                      // value={
-                                      //   this.state.BroadCastConfigData
-                                      //     .enableClickAfterValue
-                                      // }
-                                      // onChange={this.BroadCastOnChange.bind(
-                                      //   this
-                                      // )}
+                                        // value={
+                                        //   this.state.BroadCastConfigData
+                                        //     .enableClickAfterValue
+                                        // }
+                                        // onChange={this.BroadCastOnChange.bind(
+                                        //   this
+                                        // )}
                                       />
                                       {/* {this.state.BroadCastConfigData
                                         .enableClickAfterValue === "" && (
@@ -3102,15 +3102,15 @@ class StoreModule extends Component {
                                         />
                                         {this.state.BroadCastConfigData
                                           .providerName === "" && (
-                                            <p
-                                              style={{
-                                                color: "red",
-                                                marginBottom: "0px",
-                                              }}
-                                            >
-                                              {this.state.broadProviderValidation}
-                                            </p>
-                                          )}
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0px",
+                                            }}
+                                          >
+                                            {this.state.broadProviderValidation}
+                                          </p>
+                                        )}
                                       </div>
                                     ) : null}
                                   </div>
@@ -3183,15 +3183,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.BroadCastConfigData
                                         .maxClickAllowed === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.braodCastMaxClickValid}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.braodCastMaxClickValid}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>{TranslationContext!==undefined?TranslationContext.td.click:"Click"}</td>
                                   </tr>
@@ -3213,18 +3213,18 @@ class StoreModule extends Component {
                                       />
                                       {this.state.BroadCastConfigData
                                         .enableClickAfterValue === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {
-                                              this.state
-                                                .broadCastEnabledAfterValid
-                                            }
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {
+                                            this.state
+                                              .broadCastEnabledAfterValid
+                                          }
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       <select
@@ -3581,15 +3581,15 @@ class StoreModule extends Component {
                                     </select>
                                     {parseInt(this.state.selectLanguage) ===
                                       0 && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {this.state.languageValidation}
-                                        </p>
-                                      )}
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.languageValidation}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <button
@@ -3686,24 +3686,30 @@ class StoreModule extends Component {
                                       //     </span>
                                       //   </>
                                       // );
-                                      return (<div className="switch switch-primary d-inline m-r-10">
-                                        <input
-                                          type="checkbox"
-                                          id={"i" + row.index}
-                                          name="allModules"
-                                          //attrIds={item.moduleId}
-                                          checked={row.original.isActive === false ? true : false}
-                                          onClick={this.handleDeleteLanguage.bind(
-                                                   this,
-                                                   row.original
-                                                  )}
-                                        />
-                                        <label
-                                          htmlFor={"i" + row.index}
-                                          className="cr cr-float-auto"
-                                          style={{ float: "inherit" }}
-                                        ></label>
-                                      </div>)
+                                      return (
+                                        <div className="switch switch-primary d-inline m-r-10">
+                                          <input
+                                            type="checkbox"
+                                            id={"i" + row.index}
+                                            name="allModules"
+                                            //attrIds={item.moduleId}
+                                            checked={
+                                              row.original.isActive === false
+                                                ? true
+                                                : false
+                                            }
+                                            onClick={this.handleDeleteLanguage.bind(
+                                              this,
+                                              row.original
+                                            )}
+                                          />
+                                          <label
+                                            htmlFor={"i" + row.index}
+                                            className="cr cr-float-auto"
+                                            style={{ float: "inherit" }}
+                                          ></label>
+                                        </div>
+                                      );
                                     },
                                   },
                                 ]}
@@ -3911,7 +3917,7 @@ class StoreModule extends Component {
                     // name="selectedMaxAttachSize"
                     value={this.state.updateIndiCampaignId}
                     disabled
-                  // onChange={this.setClaimTabData}
+                    // onChange={this.setClaimTabData}
                   >
                     <option value={0}>Select</option>
                     {this.state.campaignName !== null &&

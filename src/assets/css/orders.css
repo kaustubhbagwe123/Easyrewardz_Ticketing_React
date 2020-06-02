@@ -54,6 +54,7 @@
   color: #000;
   font-weight: 400 !important;
   white-space: nowrap;
+  height: 60px;
 }
 .custom-antd-table.antd-table-campaign.antd-table-order
   .ant-table-thead
@@ -105,6 +106,87 @@
   white-space: initial !important;
   display: inline-block;
   width: 70px;
+}
+.order-popover-table .ant-popover-inner-content {
+  padding: 0;
+  width: 425px;
+}
+.order-popover-table .ant-popover-inner {
+  overflow: hidden;
+}
+.order-popover-table .ant-table-hide-scrollbar {
+  background: #e5e9ed;
+  min-width: 10px !important;
+}
+.order-popover-table
+  .ant-table-hide-scrollbar
+  + .ant-table-body::-webkit-scrollbar {
+  width: 7px;
+}
+.order-popover-table
+  .ant-table-hide-scrollbar
+  + .ant-table-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.order-popover-table
+  .ant-table-hide-scrollbar
+  + .ant-table-body::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.order-popover-table
+  .ant-table-hide-scrollbar
+  + .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+}
+.order-popover .ant-popover-arrow {
+  border-width: 7px;
+  width: 14px !important;
+  height: 14px !important;
+  margin-top: 0 !important;
+}
+.order-popover.ant-popover-placement-top
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.order-popover.ant-popover-placement-topLeft
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.order-popover.ant-popover-placement-topRight
+  > .ant-popover-content
+  > .ant-popover-arrow {
+  bottom: 3px;
+}
+.order-popover.ant-popover-placement-bottom
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.order-popover.ant-popover-placement-bottomLeft
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.order-popover.ant-popover-placement-bottomRight
+  > .ant-popover-content
+  > .ant-popover-arrow {
+  top: 3px;
+}
+
+.deliv-grid-butn{ 
+  border-radius: 3px;
+  width: 142px;
+  height: 31px;
+}
+.delibutn{
+  background-color: #25A874;
+  border: 1px solid #25A874;
+  color: #fff;
+}
+.order-popover-overlay {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.3);
 }
 /* shopping bag ends */
 

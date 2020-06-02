@@ -10,6 +10,7 @@ import CancalImg from "./../../assets/Images/cancal blue.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import { authHeader } from "../../helpers/authHeader";
+import StoreMyTicketStatus from "./StoreMyTicketStatus";
 
 class storeMyTicketList extends Component {
   constructor(props) {
@@ -20,17 +21,28 @@ class storeMyTicketList extends Component {
       SearchTicketData: [],
       ActiveTabId: 101,
       loading: false,
-      byNewCount:0,
-      byOpenCount:0,
-      byResolvedCount:0,
+      byNewCount: 0,
+      byOpenCount: 0,
+      byResolvedCount: 0,
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedTicketStatus: 0,
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      TicketStatusData: StoreMyTicketStatus(),
     };
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   componentDidMount() {
     this.handleGetStoreTicketGridData();
     this.handleGetStoreTicketTabCount();
+    this.handleGetCategoryList();
   }
 
+  //// --------------------------------API Call Start ----------------------------------
   /// handle Get Ticket Drid Data
   handleGetStoreTicketGridData() {
     let self = this;
@@ -65,8 +77,8 @@ class storeMyTicketList extends Component {
         console.log(data);
       });
   }
-/// handle Get header tab count 
-  handleGetStoreTicketTabCount(){
+  /// handle Get header tab count
+  handleGetStoreTicketTabCount() {
     let self = this;
     axios({
       method: "post",
@@ -79,9 +91,9 @@ class storeMyTicketList extends Component {
         let data = res.data.responseData;
         if (Msg === "Success") {
           self.setState({
-            byNewCount:data[0].ticketCount,
-            byOpenCount:data[1].ticketCount,
-            byResolvedCount:data[2].ticketCount,
+            byNewCount: data[0].ticketCount,
+            byOpenCount: data[1].ticketCount,
+            byResolvedCount: data[2].ticketCount,
           });
         } else {
           self.setState({
@@ -93,24 +105,166 @@ class storeMyTicketList extends Component {
         console.log(data);
       });
   }
-
+  /// handle Get Category Data for drop-down
+  handleGetCategoryList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatCategory",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            CategoryData: data,
+          });
+        } else {
+          self.setState({
+            CategoryData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Get Sub Category Data for drop-down
+  handleGetSubCategoryList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        categoryID: this.state.selectedCategory,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            SubCategoryData: data,
+          });
+        } else {
+          self.setState({
+            SubCategoryData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Get Issue Type list for drop-down
+  handleGetIssueTypeList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatIssueTypeBySubcategory",
+      headers: authHeader(),
+      params: {
+        subCategoryID: this.state.selectedSubCategory,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            IssueTypeData: data,
+          });
+        } else {
+          self.setState({
+            IssueTypeData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  //// --------------------------------API Call End ----------------------------------
   /// Handle Toggle Search
   HandleToggleSearch() {
-    // this.handleGetSaveSearchList();
     this.setState({ collapseSearch: !this.state.collapseSearch });
     // if (this.state.collapseSearch) {
     //   var paramdata = "";
-    //  if (this.state.headerActiveId === 101) {
+    //   if (this.state.ActiveTabId === 101) {
     //     paramdata = "New";
-    //   } else if (this.state.headerActiveId === 102) {
+    //   } else if (this.state.ActiveTabId === 102) {
     //     paramdata = "Open";
-    //   } else if (this.state.headerActiveId === 103) {
+    //   } else if (this.state.ActiveTabId === 103) {
     //     paramdata = "Resolved";
     //   }
-    // //   this.handleSearchTicket(paramdata);
     // }
   }
 
+  ////handle drop-down value change
+  handleDropdownValueChange(e) {
+    var name = e.target.name;
+    var value = e.target.value;
+    if (name === "selectedCategory") {
+      this.setState({
+        selectedCategory: value,
+        SubCategoryData: [],
+        IssueTypeData: [],
+      });
+      setTimeout(() => {
+        if (this.state.selectedCategory) {
+          this.handleGetSubCategoryList();
+        }
+      }, 500);
+    } else if (name === "selectedSubCategory") {
+      this.setState({
+        selectedSubCategory: value,
+        IssueTypeData: [],
+      });
+      setTimeout(() => {
+        if (this.state.selectedSubCategory) {
+          this.handleGetIssueTypeList();
+        }
+      }, 500);
+    } else if (name === "selectedIssueType") {
+      this.setState({
+        selectedIssueType: value,
+      });
+    } else if (name === "selectedTicketStatus") {
+      this.setState({
+        selectedTicketStatus: value,
+      });
+    }
+  }
+
+  handleTabChange(TabId) {
+    if (TabId === "New") {
+      this.setState({
+        ActiveTabId: 101,
+      });
+      setTimeout(() => {
+        this.handleGetStoreTicketGridData();
+      }, 100);
+    } else if (TabId === "Open") {
+      this.setState({
+        ActiveTabId: 102,
+      });
+      setTimeout(() => {
+        this.handleGetStoreTicketGridData();
+      }, 100);
+    } else if (TabId === "Resolved") {
+      this.setState({
+        ActiveTabId: 103,
+      });
+      setTimeout(() => {
+        this.handleGetStoreTicketGridData();
+      }, 100);
+    }
+  }
   render() {
     return (
       <div>
@@ -130,9 +284,9 @@ class storeMyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="New"
-                  //   onClick={() => {
-                  //     this.handleSearchTicket("New");
-                  //   }}
+                  onClick={() => {
+                    this.handleTabChange("New");
+                  }}
                 >
                   New:
                   <span className="myTciket-tab-span">
@@ -151,11 +305,11 @@ class storeMyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="Open"
-                  //   onClick={() => {
-                  //     this.handleSearchTicket("Open");
-                  //   }}
+                  onClick={() => {
+                    this.handleTabChange("Open");
+                  }}
                 >
-                  Open:{" "}
+                  Open:
                   <span className="myTciket-tab-span">
                     {this.state.byOpenCount < 9
                       ? "0" + this.state.byOpenCount
@@ -172,11 +326,11 @@ class storeMyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="Resolved"
-                  //   onClick={() => {
-                  //     this.handleSearchTicket("Resolved");
-                  //   }}
+                  onClick={() => {
+                    this.handleTabChange("Resolved");
+                  }}
                 >
-                  Resolved:{" "}
+                  Resolved:
                   <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
@@ -198,8 +352,7 @@ class storeMyTicketList extends Component {
                     className="table-cntr mt-3 mtictab table-responsive"
                     style={{ overflow: "initial" }}
                   >
-                    <a
-                      href="#!"
+                    <div
                       className="float-search"
                       onClick={this.HandleToggleSearch.bind(this)}
                     >
@@ -221,7 +374,7 @@ class storeMyTicketList extends Component {
                           alt="search-icon"
                         />
                       )}
-                    </a>
+                    </div>
                     <div>
                       <Collapse isOpen={this.state.collapseSearch}>
                         <Card>
@@ -268,11 +421,14 @@ class storeMyTicketList extends Component {
                                     <div className="row">
                                       <div className="col-md-3 col-sm-6">
                                         <select
-                                        //   value={this.state.selectedCategory}
-                                        //   onChange={this.setCategoryValue}
+                                          name="selectedCategory"
+                                          value={this.state.selectedCategory}
+                                          onChange={this.handleDropdownValueChange.bind(
+                                            this
+                                          )}
                                         >
                                           <option value={0}>Category</option>
-                                          {/* {this.state.CategoryData !== null &&
+                                          {this.state.CategoryData !== null &&
                                             this.state.CategoryData.map(
                                               (item, i) => (
                                                 <option
@@ -282,18 +438,21 @@ class storeMyTicketList extends Component {
                                                   {item.categoryName}
                                                 </option>
                                               )
-                                            )} */}
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
                                         <select
-                                        //   value={this.state.selectedSubCategory}
-                                        //   onChange={this.setSubCategoryValue}
+                                          name="selectedSubCategory"
+                                          value={this.state.selectedSubCategory}
+                                          onChange={this.handleDropdownValueChange.bind(
+                                            this
+                                          )}
                                         >
                                           <option value={0}>
                                             Sub Category
                                           </option>
-                                          {/* {this.state.SubCategoryData !==
+                                          {this.state.SubCategoryData !==
                                             null &&
                                             this.state.SubCategoryData.map(
                                               (item, i) => (
@@ -304,16 +463,19 @@ class storeMyTicketList extends Component {
                                                   {item.subCategoryName}
                                                 </option>
                                               )
-                                            )} */}
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
                                         <select
-                                        //   value={this.state.selectedIssueType}
-                                        //   onChange={this.setIssueTypeValue}
+                                          name="selectedIssueType"
+                                          value={this.state.selectedIssueType}
+                                          onChange={this.handleDropdownValueChange.bind(
+                                            this
+                                          )}
                                         >
                                           <option value="0">Issue Type</option>
-                                          {/* {this.state.IssueTypeData !== null &&
+                                          {this.state.IssueTypeData !== null &&
                                             this.state.IssueTypeData.map(
                                               (item, i) => (
                                                 <option
@@ -323,34 +485,34 @@ class storeMyTicketList extends Component {
                                                   {item.issueTypeName}
                                                 </option>
                                               )
-                                            )} */}
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
                                         <select
-                                        //   value={
-                                        //     this.state
-                                        //       .selectedTicketStatusByCategory
-                                        //   }
-                                        //   onChange={
-                                        //     this.handleTicketStatusByCategory
-                                        //   }
+                                          name="selectedTicketStatus"
+                                          value={
+                                            this.state.selectedTicketStatus
+                                          }
+                                          onChange={this.handleDropdownValueChange.bind(
+                                            this
+                                          )}
                                         >
                                           <option value="0">
                                             Ticket Status
                                           </option>
-                                          {/* {this.state.TicketStatusData !==
+                                          {this.state.TicketStatusData !==
                                             null &&
                                             this.state.TicketStatusData.map(
-                                              (item, i) => (
+                                              (item, s) => (
                                                 <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
+                                                  key={s}
+                                                  value={item.statusID}
                                                 >
-                                                  {item.ticketStatusName}
+                                                  {item.statusName}
                                                 </option>
                                               )
-                                            )} */}
+                                            )}
                                         </select>
                                       </div>
                                     </div>

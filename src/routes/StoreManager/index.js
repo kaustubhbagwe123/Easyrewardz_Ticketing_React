@@ -29,6 +29,9 @@ import StoreCampaign from "../Campaign/StoreCampaign";
 import HomeShopSetting from "./../Settings/Store/HomeShopSetting";
 import ChatSettings from "./../Settings/Store/ChatSettings";
 import CardAssets from "./../Settings/Store/CardAssets";
+import OrderSetting from "./../Settings/Store/OrderSetting";
+// import LanguageSelection from "./Component/Store/LanguageSelection";
+// import LanguageSelection from "./../../Component/Store/LanguageSelection";
 import storeMyTicket from "./storeMyTicket";
 import storeMyTicketList from "./storeMyTicketList";
 import Orders from "./Orders";
@@ -148,6 +151,11 @@ export class StoreApp extends Component {
           component={ChatSettings}
         />
         <Route exact path={`${match.url}/cardassets`} component={CardAssets} />
+        <Route
+          exact
+          path={`${match.url}/ordersetting`}
+          component={OrderSetting}
+        />
         <Route exact path={`${match.url}/orders`} component={Orders} />
         <NotificationContainer />
       </StoreLayout>

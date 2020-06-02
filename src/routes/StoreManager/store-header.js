@@ -24,8 +24,7 @@ import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import SendUp from "./../../assets/Images/send-up.png";
-import DummyFace1 from "./../../assets/Images/dummy-face-1.png";
-
+import DownWhiteImg from "./../../assets/Images/down-white.png";
 import DashboardIco from "./../../assets/Images/store-black.png";
 import TaskIco from "./../../assets/Images/ticket.png";
 import ClaimIco from "./../../assets/Images/icon9.svg";
@@ -34,8 +33,6 @@ import AppointmentIco from "./../../assets/Images/appointments.svg";
 import OrdersIco from "./../../assets/Images/order.png";
 import TodoIco from "./../../assets/Images/ticket.png";
 import Logout from "./../../assets/Images/logout.png";
-
-import DummyFace2 from "./../../assets/Images/dummy-face-2.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/mobile-back.svg";
 import { Link, withRouter } from "react-router-dom";
@@ -79,6 +76,7 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
+import Dropzone from "react-dropzone";
 
 const { Option } = Select;
 
@@ -175,6 +173,7 @@ class Header extends Component {
       tempmessageSuggestionData: [],
       translateLanguage: {},
       storeCode: "",
+      actionBtn: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -225,13 +224,7 @@ class Header extends Component {
         1
       );
       this.handleGetNotigfication();
-
-      // setInterval(() => {
       this.handleGetChatNotificationCount();
-      // console.clear();
-      // }, 10000);
-
-      this.handleGetOngoingChat("");
     }
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -542,10 +535,13 @@ class Header extends Component {
             percentLog,
             workTime: data.workTimeInPercentage,
             workTimeHours: data.totalWorkingTime,
-            programCode: data.programCode,
-            storeCode: data.storeCode,
+            programCode: data.programCode ? data.programCode : "",
+            storeCode: data.storeCode ? data.storeCode : "",
           });
-          self.handleCreateSocketConnection(data.programCode, data.storeCode);
+          if (data.programCode !== "" && data.storeCode !== "") {
+            self.handleCreateSocketConnection(data.programCode, data.storeCode);
+          }
+
           // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
@@ -686,13 +682,13 @@ class Header extends Component {
     });
 
     this.handleGetNewChat();
-    this.handleGetOngoingChat("isRead");
+    this.handleGetOngoingChat();
     this.handleGetStoreAgentDetailsById(this.state.AgentID);
     this.handleGetAgentList();
   }
 
   ////handleGet Ongoing Chat
-  async handleGetOngoingChat(value, event) {
+  async handleGetOngoingChat(event) {
     let self = this;
     var search = "";
     if (event !== undefined) {
@@ -713,10 +709,6 @@ class Header extends Component {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
-          // if (self.state.chatId > 0) {
-          //   ongoingChatsData.filter(x=>x.chatID===self.state.chatId)[0].messageCount=0
-          // }
-          debugger;
           self.setState({
             ongoingChatsData,
           });
@@ -731,7 +723,7 @@ class Header extends Component {
 
   handleClearChatSearch = async () => {
     await this.setState({ searchChat: "" });
-    this.handleGetOngoingChat("isRead");
+    this.handleGetOngoingChat();
   };
 
   ////handle Get New Chat
@@ -776,7 +768,7 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.handleGetOngoingChat("isRead");
+          self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
           self.handleGetChatNotificationCount();
         } else {
@@ -788,21 +780,7 @@ class Header extends Component {
   }
   handleUpdateCustomerChatStatus(id, mobileNo, programCode) {
     let self = this;
-    // socket.on("connect", () => {
-    //   socket.send("hi");
-    //   socket.on("91" + mobileNo + programCode.toLowerCase(), function(data) {
-    //     console.log("Message Received");
-    //     debugger;
-    //     if ("91" + self.state.mobileNo === data[3]) {
-    //       self.handleGetChatNotificationCount();
-    //       // self.handleGetOngoingChat("isRead");
-    //       self.handleGetChatMessagesList(self.state.chatId);
-    //     } else {
-    //       self.handleGetChatNotificationCount();
-    //       // self.handleGetOngoingChat("isRead");
-    //     }
-    //   });
-    // });
+
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/UpdateCustomerChatStatus",
@@ -818,7 +796,7 @@ class Header extends Component {
           self.setState({
             chatId: 0,
           });
-          self.handleGetOngoingChat("");
+          self.handleGetOngoingChat();
 
           self.handleGetNewChat();
         } else {
@@ -902,7 +880,7 @@ class Header extends Component {
               suggestionModalMob: false,
             });
             self.handleGetChatMessagesList(self.state.chatId);
-            self.handleGetOngoingChat("isRead");
+            self.handleGetOngoingChat();
             self.handleSendMessageToCustomer(
               messagecontent,
               0,
@@ -1699,7 +1677,7 @@ class Header extends Component {
   handleChangeAgentDropdown(e) {
     this.setState({ sAgentId: e });
     setTimeout(() => {
-      this.handleGetOngoingChat("isRead");
+      this.handleGetOngoingChat();
     }, 10);
   }
 
@@ -1752,54 +1730,81 @@ class Header extends Component {
 
     socket.on("connect", () => {
       socket.send("hi");
-      socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
-        data
-      ) {
-        debugger;
-        if (self.state.storeCode.toLowerCase() === data[5]) {
-          var isMobileNoExist = self.state.ongoingChatsData.filter(
-            (x) => x.mobileNo === data[3].substring(2)
-          );
-          if (isMobileNoExist.length > 0) {
-            if ("91" + self.state.mobileNo === data[3]) {
-              // self.handleGetChatNotificationCount();
-              // self.handleGetOngoingChat();
-              var chatId = 0;
-              if (self.state.ongoingChatsData.length > 0) {
-                chatId = self.state.ongoingChatsData.filter(
-                  (x) => x.mobileNo === self.state.mobileNo
-                )[0].chatID;
+      if (programCode !== "" && programCode !== "") {
+        socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
+          data
+        ) {
+          debugger;
+          if (self.state.storeCode !== "" && data[5] !== "") {
+            if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
+              var isMobileNoExist = self.state.ongoingChatsData.filter(
+                (x) => x.mobileNo === data[3].substring(2)
+              );
+              if (isMobileNoExist.length > 0) {
+                if ("91" + self.state.mobileNo === data[3]) {
+                  // self.handleGetChatNotificationCount();
+                  // self.handleGetOngoingChat();
+                  var chatId = 0;
+                  if (self.state.ongoingChatsData.length > 0) {
+                    chatId = self.state.ongoingChatsData.filter(
+                      (x) => x.mobileNo === self.state.mobileNo
+                    )[0].chatID;
+                  }
+                  self.handleMakeAsReadOnGoingChat(chatId);
+                  // self.handleGetChatMessagesList(chatId);
+                } else {
+                  self.handleGetOngoingChat();
+                  self.handleGetNewChat();
+                  var messageCount = 0;
+                  messageCount = self.state.ongoingChatsData.filter(
+                    (x) => x.mobileNo === data[3].substring(2)
+                  )[0].messageCount;
+                  if (messageCount === 0) {
+                    self.setState({
+                      chatMessageCount: self.state.chatMessageCount + 1,
+                    });
+                  }
+                }
+              } else {
+                self.handleGetNewChat();
               }
-              self.handleMakeAsReadOnGoingChat(chatId);
-              // self.handleGetChatMessagesList(chatId);
-            } else {
-              self.handleGetChatNotificationCount();
-              self.handleGetOngoingChat();
-              self.handleGetNewChat();
             }
-          } else {
-            self.handleGetNewChat();
           }
-        }
-      });
+        });
+      }
     });
   }
 
-  handleInsertCardImageUpload() {
+  handleInsertCardImageUpload(itemcode, e) {
+    debugger;
     var formData = new FormData();
-    formData.append("ItemID", "");
-    formData.append("ImageUrl ", "");
+    formData.append("ItemID", itemcode);
+    formData.append("ImageUrl ", e);
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/InsertCardImageUpload",
       headers: authHeader(),
       data: formData,
     })
-      .then(function(response) {})
+      .then(function(response) {
+        debugger;
+        var messgae = response.data.message;
+        var responseData = response.data.responseData;
+        if (messgae === "Success") {
+        }
+      })
       .catch((response) => {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
+  ////handle open action modal pop up
+  handleActionOpen = () => {
+    this.setState({ actionBtn: false });
+  };
+  ////handle close action modal pop up
+  handleActionClose = () => {
+    this.setState({ actionBtn: true });
+  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -1811,10 +1816,16 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            <div className="er bell-icon">
-              {/* <label className="er-label">ER</label> */}
-              <img src={BellIcon} alt="bell icon" />
-            </div>
+            {config.isHomeShope ? (
+              <div className="er bell-icon">
+                <img src={BellIcon} alt="bell icon" />
+              </div>
+            ) : (
+              <div className="er">
+                <label className="er-label">ER</label>
+              </div>
+            )}
+
             <div className="hamb-menu">
               <img
                 src={Hamb}
@@ -2346,7 +2357,7 @@ class Header extends Component {
             <div className="row">
               <div className="col-lg-4 p-0">
                 <div className="chatbot-left">
-                  <div class="chat-cntr">
+                  <div className="chat-cntr">
                     <input
                       type="text"
                       className="search-customerChatSrch"
@@ -2363,7 +2374,7 @@ class Header extends Component {
                       //   this
                       // )}
                       // onKeyPress={this.enterPressed.bind(this)}
-                      onChange={this.handleGetOngoingChat.bind(this, "")}
+                      onChange={this.handleGetOngoingChat.bind(this)}
                     />
                     <span
                       // onClick={this.handleSearchChatItemDetails.bind(
@@ -2862,7 +2873,37 @@ class Header extends Component {
                                   ")"}
                             </a>
                           </li>
+                          <li>
+                            <button
+                              type="button"
+                              className={"btn-store-resolved"}
+                              onClick={this.handleActionOpen.bind(this)}
+                            >
+                              <label className="myticket-submit-solve-button-text">
+                                Action
+                              </label>
+                              <img
+                                src={DownWhiteImg}
+                                alt="down-icon"
+                                className="down-white"
+                              />
+                            </button>
+                          </li>
                         </ul>
+                        <button
+                          type="button"
+                          className={"btn-store-resolved"}
+                          onClick={this.handleActionOpen.bind(this)}
+                        >
+                          <label className="myticket-submit-solve-button-text">
+                            Action
+                          </label>
+                          <img
+                            src={DownWhiteImg}
+                            alt="down-icon"
+                            className="down-white"
+                          />
+                        </button>
                       </div>
                       <div className="tab-content chattabtitle">
                         <div
@@ -3304,14 +3345,7 @@ class Header extends Component {
                                       ? this.state.searchCardData.map(
                                           (item, i) => {
                                             return (
-                                              <div
-                                                className="col-md-6"
-                                                key={i}
-                                                onClick={this.handleSelectCard.bind(
-                                                  this,
-                                                  item.itemID
-                                                )}
-                                              >
+                                              <div className="col-md-6" key={i}>
                                                 {item.itemID ===
                                                 this.state.selectedCard ? (
                                                   <div className="selectdot">
@@ -3339,23 +3373,53 @@ class Header extends Component {
                                                           alignSelf: "center",
                                                         }}
                                                       >
-                                                        <img
-                                                          className="chat-product-img"
-                                                          src={item.imageURL}
-                                                          alt="Product Image"
-                                                          title={
-                                                            item.productName
-                                                          }
-                                                        />
-                                                        <span className="addimg">
-                                                          <input
-                                                            type="image"
-                                                            alt="Add Image"
-                                                            src={addimg}
+                                                        {item.imageURL !==
+                                                        "" ? (
+                                                          <img
+                                                            className="chat-product-img"
+                                                            src={item.imageURL}
+                                                            alt="Product Image"
+                                                            title={
+                                                              item.productName
+                                                            }
                                                           />
-                                                        </span>
+                                                        ) : (
+                                                          <Dropzone
+                                                            onDrop={this.handleInsertCardImageUpload.bind(
+                                                              this,
+                                                              item.uniqueItemCode
+                                                            )}
+                                                          >
+                                                            {({
+                                                              getRootProps,
+                                                              getInputProps,
+                                                            }) => (
+                                                              <div
+                                                                {...getRootProps()}
+                                                              >
+                                                                <input
+                                                                  {...getInputProps()}
+                                                                  className="file-upload d-none"
+                                                                />
+                                                                <span className="addimg">
+                                                                  <input
+                                                                    type="image"
+                                                                    alt="Add Image"
+                                                                    src={addimg}
+                                                                  />
+                                                                </span>
+                                                              </div>
+                                                            )}
+                                                          </Dropzone>
+                                                        )}
                                                       </div>
-                                                      <div className="col-md-8 bkcprdt">
+                                                      <div
+                                                        className="col-md-8 bkcprdt"
+                                                        onClick={this.handleSelectCard.bind(
+                                                          this,
+                                                          item.itemID
+                                                        )}
+                                                      >
                                                         <div>
                                                           <label className="chat-product-name">
                                                             {item.productName}
@@ -5200,6 +5264,29 @@ class Header extends Component {
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+        </Modal>
+        {/* -----------------------Action Modal----------------- */}
+        <Modal
+          open={this.state.actionBtn}
+          onClose={this.handleActionClose.bind(this)}
+          closeIconId="close"
+          modalId="SubmitReopn-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="store-hdrtMdal">
+            <div className="row">
+              <label className={"modal-lbl"}>Close Chat</label>
+            </div>
+            <div className="row">
+              <label className={"modal-lbl"}>Hold Chat</label>
+            </div>
+            <div className="row">
+              <label className={"modal-lbl"}>Ban Visitor</label>
+            </div>
+            <div className="row">
+              <label className={"modal-lbl"}>Create Ticket</label>
             </div>
           </div>
         </Modal>
