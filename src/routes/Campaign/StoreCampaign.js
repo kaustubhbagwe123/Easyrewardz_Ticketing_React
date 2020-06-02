@@ -28,7 +28,7 @@ import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
 import ReactHtmlParser from "react-html-parser";
 // import Pagination from "./CampaignPagination";
-
+ 
 class StoreCampaign extends Component {
   constructor(props) {
     super(props);
@@ -1418,9 +1418,11 @@ class StoreCampaign extends Component {
       <div className="custom-tableak">
         <div className="table-cntr store">
           <Table
+            
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
+                
                 title: "Campaign Name",
                 dataIndex: "campaignName",
                 className: "camp-status-header camp-status-header-cust-name",
@@ -1470,8 +1472,10 @@ class StoreCampaign extends Component {
               {
                 title: "Customers",
                 dataIndex: "customerCount",
+                
               },
               {
+                
                 title: "Campaign Script",
                 dataIndex: "campaignScript",
                 className: "table-coloum-hide",
@@ -1529,11 +1533,13 @@ class StoreCampaign extends Component {
                 },
               },
               {
+                
                 title: "Campaign Period",
                 dataIndex: "campaingPeriod",
                 className: "table-coloum-hide",
               },
               {
+                
                 title: "Status",
                 dataIndex: "status",
                 className: "camp-status-header camp-status-header-statusFilter",
@@ -1614,6 +1620,7 @@ class StoreCampaign extends Component {
               },
               {
                 title: "Actions",
+                
                 render: (row, item) => {
                   return (
                     <Popover
@@ -1681,12 +1688,14 @@ class StoreCampaign extends Component {
               return (
                 <div>
                   <Table
+                    
                     dataSource={this.state.CampChildTableData.filter(
                       (x) => x.campaignScriptID === row.campaignID
                     )}
                     className="midalResponseAction"
                     columns={[
                       {
+                        
                         title: "Customer Name",
                         className:
                           "camp-status-header camp-status-header-cust-name",
@@ -1747,11 +1756,13 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
+                        
                         title: "Date",
                         dataIndex: "campaignDate",
                         className: "table-coloum-hide",
                       },
                       {
+                        
                         title: "Response",
                         className: "table-coloum-hide",
                         render: (row, item) => {
@@ -1781,6 +1792,7 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
+                        
                         title: "Status",
                         dataIndex: "statusName",
                         className: "camp-status-header",
@@ -1801,9 +1813,9 @@ class StoreCampaign extends Component {
                                 </label>
                               ) : item.statusID === 104 ? (
                                 <label className="table-btnlabel followUpBtnBlue">
-                                {item.statusName}
-                              </label>
-                              ):null}
+                                  {item.statusName}
+                                </label>
+                              ) : null}
                             </div>
                           );
                         },
