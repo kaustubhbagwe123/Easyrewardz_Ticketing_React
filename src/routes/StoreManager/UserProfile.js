@@ -40,10 +40,9 @@ class UserProfile extends Component {
     this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
     this.handleDeleteProfilePic = this.handleDeleteProfilePic.bind(this);
     this.redirectToChangePassword = this.redirectToChangePassword.bind(this);
+    this.handleCRMRole = this.handleCRMRole.bind(this);
   }
   componentDidMount() {
-    // debugger;
-    console.log(transferData);
     this.handleGetUserProfileData();
     this.handleGetDesignationList();
   }
@@ -54,7 +53,6 @@ class UserProfile extends Component {
     this.setState({ open: false });
   }
   fileUpload(e) {
-    debugger;
     var allFiles = [];
     var selectedFiles = e.target.files;
     allFiles.push(selectedFiles[0]);
@@ -74,15 +72,12 @@ class UserProfile extends Component {
     e.preventDefault();
   };
   setUserData = (e) => {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
   };
 
   handleGetDesignationList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -90,7 +85,6 @@ class UserProfile extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let designationdata = res.data.responseData;
         let status = res.data.message;
         if (status === "Success") {
@@ -105,7 +99,6 @@ class UserProfile extends Component {
   }
 
   setGetProfileData = (data) => {
-    debugger;
     let self = this;
     var userData = data[0];
     this.state.selectedUserID = userData.userId;
@@ -134,8 +127,6 @@ class UserProfile extends Component {
   };
 
   handleGetUserProfileData() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -143,7 +134,6 @@ class UserProfile extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
@@ -163,8 +153,6 @@ class UserProfile extends Component {
   }
 
   handleDeleteProfilePic() {
-    debugger;
-
     let self = this;
     self.setState({
       loading: true,
@@ -175,7 +163,6 @@ class UserProfile extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         if (status === "Success") {
           var image = self.state.selectedProfilePicture.split("/");
@@ -199,7 +186,6 @@ class UserProfile extends Component {
   }
 
   handleEditUserProfile() {
-    debugger;
     if (
       // this.state.fileName.length > 0 &&
       // this.state.selectedFirstName.length > 0 &&
@@ -230,15 +216,15 @@ class UserProfile extends Component {
         data: formData,
       })
         .then(function(res) {
-          debugger;
           let msg = res.data.message;
           let data = res.data.responseData;
           if (msg === "Success") {
             NotificationManager.success("Profile updated successfully.");
             transferData.sendProfilePic(data.profilePath);
-            setTimeout(function() {
-              self.props.history.push("/store/campaign");
-            }, 1000);
+            self.handleCRMRole();
+            // setTimeout(function() {
+            //   self.props.history.push("/store/campaign");
+            // }, 1000);
           }
         })
         .catch((data) => {
@@ -257,11 +243,89 @@ class UserProfile extends Component {
   }
 
   redirectToChangePassword() {
-    debugger;
-
     setTimeout(function() {
       this.props.history.push("/changePassword");
     }, 400);
+  }
+
+  handleCRMRole() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let msg = res.data.message;
+        let data = res.data.responseData.modules;
+        if (msg === "Success") {
+          if (data !== null) {
+            for (var i = 0; i <= data.length; i++) {
+              if (i === data.length) {
+                NotificationManager.error(
+                  "You don't have any sufficient page access. Please contact administrator for access.",
+                  "",
+                  2000
+                );
+                self.setState({
+                  loading: false,
+                });
+              } else if (
+                data[i].moduleName === "Dashboard" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/storedashboard");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Tasks" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/StoreTask");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Claim" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/claim");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Campaign" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/campaign");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Appointment" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/appointment");
+                }, 400);
+                return;
+              } else if (
+                data[i].moduleName === "Settings" &&
+                data[i].modulestatus === true
+              ) {
+                setTimeout(function() {
+                  self.props.history.push("/store/campaign");
+                }, 400);
+                return;
+              }
+            }
+          }
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   render() {

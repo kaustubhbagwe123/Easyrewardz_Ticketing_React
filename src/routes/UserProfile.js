@@ -6,10 +6,8 @@ import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import { authHeader } from "./../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
-import {transferData} from "./../helpers/transferData";
-import {
-  NotificationManager
-} from "react-notifications";
+import { transferData } from "./../helpers/transferData";
+import { NotificationManager } from "react-notifications";
 import { Link } from "react-router-dom";
 
 class UserProfile extends Component {
@@ -35,17 +33,17 @@ class UserProfile extends Component {
       EmailIDCompulsion: "",
       DesignationCompulsion: "",
       imgFlag: "",
-      loading: true
+      loading: true,
     };
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleEditUserProfile = this.handleEditUserProfile.bind(this);
     this.handleGetUserProfileData = this.handleGetUserProfileData.bind(this);
     this.handleDeleteProfilePic = this.handleDeleteProfilePic.bind(this);
-    this.redirectToChangePassword=this.redirectToChangePassword.bind(this);
+    this.redirectToChangePassword = this.redirectToChangePassword.bind(this);
   }
   componentDidMount() {
     // debugger;
-   console.log(transferData);
+    console.log(transferData);
     this.handleGetUserProfileData();
     this.handleGetDesignationList();
   }
@@ -62,23 +60,23 @@ class UserProfile extends Component {
     allFiles.push(selectedFiles[0]);
     this.setState({
       //fileName: e.target.files[0].name
-      fileName: allFiles
+      fileName: allFiles,
     });
   }
-  fileDrop = e => {
+  fileDrop = (e) => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
-  setUserData = e => {
+  setUserData = (e) => {
     debugger;
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -89,7 +87,7 @@ class UserProfile extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
@@ -97,16 +95,16 @@ class UserProfile extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.setState({
-            DesignationData: designationdata
+            DesignationData: designationdata,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  setGetProfileData = data => {
+  setGetProfileData = (data) => {
     debugger;
     let self = this;
     var userData = data[0];
@@ -117,8 +115,8 @@ class UserProfile extends Component {
     this.state.selectedEmailID = userData.emailId;
     this.state.selectedDesignation = userData.designationID;
     this.state.selectedProfilePicture = userData.profilePicture;
-    var image=this.state.selectedProfilePicture.split("/");
-    var imgFlag=image[image.length-1];
+    var image = this.state.selectedProfilePicture.split("/");
+    var imgFlag = image[image.length - 1];
     // var array=[];
     // array.push({name:img})
 
@@ -130,7 +128,7 @@ class UserProfile extends Component {
       selectedEmailID: userData.emailId,
       selectedDesignation: userData.designationID,
       imgFlag,
-      loading: false
+      loading: false,
       //fileName:array
     });
   };
@@ -142,26 +140,24 @@ class UserProfile extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserProfileDetail",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
-           
-
           self.setState({
-            ProfileData: userdata
+            ProfileData: userdata,
           });
           self.setGetProfileData(userdata);
         } else {
           self.setState({
-            ProfileData: []
+            ProfileData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -171,33 +167,33 @@ class UserProfile extends Component {
 
     let self = this;
     self.setState({
-      loading: true
+      loading: true,
     });
     axios({
       method: "post",
       url: config.apiUrl + "/User/DeleteUserProfile",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         debugger;
         var status = res.data.message;
         if (status === "Success") {
-          var image=self.state.selectedProfilePicture.split("/");
-          image[image.length-1] = "";
-          var newImg = image.join('/');
+          var image = self.state.selectedProfilePicture.split("/");
+          image[image.length - 1] = "";
+          var newImg = image.join("/");
           self.setState({
             selectedProfilePicture: newImg,
             imgFlag: "",
-            loading: false
+            loading: false,
           });
-          transferData.sendProfilePic('');
+          transferData.sendProfilePic("");
         } else {
           self.setState({
-            loading: false
+            loading: false,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -205,7 +201,6 @@ class UserProfile extends Component {
   handleEditUserProfile() {
     debugger;
     if (
-     
       // this.state.fileName.length > 0 &&
       // this.state.selectedFirstName.length > 0 &&
       // this.state.selectedLastName.length > 0 &&
@@ -220,7 +215,7 @@ class UserProfile extends Component {
         LastName: this.state.selectedLastName,
         MobileNo: this.state.selectedMobile,
         EmailId: this.state.selectedEmailID,
-        DesignationID: this.state.selectedDesignation
+        DesignationID: this.state.selectedDesignation,
       };
       const formData = new FormData();
 
@@ -231,7 +226,7 @@ class UserProfile extends Component {
         method: "post",
         url: config.apiUrl + "/User/UpdateUserProfileDetails",
         headers: authHeader(),
-        data: formData
+        data: formData,
       })
         .then(function(res) {
           debugger;
@@ -245,7 +240,7 @@ class UserProfile extends Component {
             }, 1000);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -260,23 +255,24 @@ class UserProfile extends Component {
     }
   }
 
-  redirectToChangePassword(){
+  redirectToChangePassword() {
     debugger;
-    
+
     setTimeout(function() {
       this.props.history.push("/changePassword");
     }, 400);
   }
-  
 
   render() {
     return (
       <Fragment>
         {/* <NotificationContainer /> */}
         <div className="container-fluid">
-          {this.state.loading && <div className="loader-icon-cntr-ovrlay">
-            <div className="loader-icon"></div>
-          </div>}
+          {this.state.loading && (
+            <div className="loader-icon-cntr-ovrlay">
+              <div className="loader-icon"></div>
+            </div>
+          )}
           <div className="profile-settings-cntr">
             <div className="row">
               <div className="col-md-12">
@@ -323,7 +319,8 @@ class UserProfile extends Component {
                           {/* <div className="file-icon">
                         <img src="{FileUpload}" alt="file-upload" />
                       </div> */}
-                          {this.state.imgFlag === "" ? 'Upload' : 'Change'} Photo
+                          {this.state.imgFlag === "" ? "Upload" : "Change"}{" "}
+                          Photo
                         </label>
                         {/* <label
                           htmlFor="file-upload"
@@ -347,11 +344,15 @@ class UserProfile extends Component {
                           </div>
                         )}
                       </div>
-                      {this.state.imgFlag !== "" && <label onClick={this.handleDeleteProfilePic} className="uploadtextprofile1"
+                      {this.state.imgFlag !== "" && (
+                        <label
+                          onClick={this.handleDeleteProfilePic}
+                          className="uploadtextprofile1"
                           // onChange={this.fileUpload.bind(this)}
                         >
                           Delete Photo
-                      </label>}
+                        </label>
+                      )}
                       {this.state.fileName.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.fileNameCompulsion}
@@ -473,12 +474,12 @@ class UserProfile extends Component {
                       </button>
                     </div>
                   </div>
-                  <div className="userChangePW" 
-                  //onClick={this.redirectToChangePassword}
+                  <div
+                    className="userChangePW"
+                    //onClick={this.redirectToChangePassword}
                   >
-                     <Link to="/changePassword">Change Password</Link>
-                    
-                    </div>
+                    <Link to="/changePassword">Change Password</Link>
+                  </div>
 
                   {/* <div className="row">
                     <div className="col-md-12" style={{ textAlign: "center" }}>
@@ -543,7 +544,7 @@ class UserProfile extends Component {
                         </button>
                       </div>
                     </div>
-                   
+
                     {/* <img
                     src={CancelImg}
                     alt="cancelImg"
