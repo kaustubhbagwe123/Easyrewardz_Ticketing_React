@@ -9847,7 +9847,7 @@ table tr th:last-child {
 }
 .addimg input {
   width: 100%;
-  display: none;
+  
 }
 
 @media (min-width: 768px) {
