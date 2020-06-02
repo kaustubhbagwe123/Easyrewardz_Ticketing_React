@@ -121,6 +121,7 @@ class Orders extends Component {
           Items: "6",
           Amount: "Rs 9,294",
           Status: "Ready to Ship",
+          Partner: "Blue Dart",
           selfPickUp: true,
           Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
           Action: "Payment Done",
@@ -136,6 +137,7 @@ class Orders extends Component {
           Amount: "Rs 9,294",
           Status: "Order Sync Pending",
           selfPickUp: false,
+          Partner: "Blue Dart",
           Address: "",
           Action: "Payment Pending",
         },
@@ -754,7 +756,220 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shipment-tab"
           >
-            3
+            <div className="table-cntr store">
+              <Table
+                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                columns={[
+                  {
+                    title: "Invoice no.",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p>{item.InvoiceNo}</p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Items",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p>{item.Items}</p>
+                          <Popover
+                            content={
+                              <Table
+                                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                columns={[
+                                  {
+                                    title: "Item ID",
+                                    dataIndex: "ItemID",
+                                  },
+                                  {
+                                    title: "Item Name",
+                                    dataIndex: "ItemName",
+                                    width: 150,
+                                  },
+                                  {
+                                    title: "Item Price",
+                                    dataIndex: "ItemPrice",
+                                  },
+                                  {
+                                    title: "Quantity",
+                                    dataIndex: "Quantity",
+                                  },
+                                  {
+                                    title: "AWB. No",
+                                    dataIndex: "AWBNo",
+                                  },
+                                ]}
+                                scroll={{ y: 240 }}
+                                pagination={false}
+                                dataSource={this.state.itemPopupDate}
+                              />
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover-table order-popover order-popover-table-big"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderHamb} className="order-hamb" />
+                          </Popover>
+                        </div>
+                      );
+                    },
+                    width: 100,
+                  },
+                  {
+                    title: "Customer",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.CustomerName},</p>
+                          <p className="order-small-font">
+                            {item.CustomerNumber}
+                          </p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Shipping address",
+                    render: (row, item) => {
+                      return (
+                        <p className="order-small-font">
+                          {item.Address === "" ? "—NIL—" : item.Address}
+                        </p>
+                      );
+                    },
+                    className: "white-space-init",
+                  },
+                  {
+                    title: "Delivery type",
+                    render: (row, item) => {
+                      return (
+                        <p
+                          className={
+                            item.Deliverytype === "Store Delivery"
+                              ? "order-clr-green"
+                              : "order-clr-blue"
+                          }
+                        >
+                          {item.Deliverytype}
+                        </p>
+                      );
+                    },
+                  },
+                  {
+                    title: "Status",
+                    className: "camp-status-header camp-status-header-statusFilter",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p className="deliv-status">{item.Status}</p>
+                        </div>
+                      );
+                    },
+                    filterDropdown: (data, row) => {
+                      return (
+                        <div className="campaign-status-drpdwn">
+                          <ul>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Campall-status"
+                                className="ch1"
+                                // onChange={this.handleCheckCampAllStatus.bind(this)}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="CampallStatus"
+                              />
+                              <label htmlFor="Campall-status">
+                                <span className="ch1-text">
+                                Delivered
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="New100"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={100}
+                              />
+                              <label htmlFor="New100">
+                                <span className="ch1-text">
+                                RTO
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress101"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress101">
+                                <span className="ch1-text">
+                                Self Picked
+                                </span>
+                              </label>
+                            </li>
+                          </ul>
+                          <div className="dv-status">
+                            <button className="btn-apply-status">Apply</button>
+                            <button className="btn-cancel-status">Cancel</button>
+                          </div>
+                        </div>
+                      );
+                    },
+                    filterDropdownVisible: this.state.filterOrderDeliveredStatus,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterOrderDeliveredStatus: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    ),
+                    width: 200,
+                  },
+                  {
+                    title: "Partner",
+                    dataIndex: "Partner",
+                    width: 150,
+                  },
+                  {
+                    title: "Action",
+                    render: (row, item) => {
+                      return (
+                        <button
+                          className={
+                            item.Action === "Payment Done"
+                              ? "butn order-grid-butn order-grid-butn-green"
+                              : "butn order-grid-butn"
+                          }
+                        >
+                          {item.Action}
+                        </button>
+                      );
+                    },
+                  },
+                ]}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                showSizeChanger={true}
+                onShowSizeChange={true}
+                dataSource={this.state.orderGridData}
+              />
+            </div>
           </div>
           <div
             className="tab-pane fade"
