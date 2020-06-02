@@ -887,9 +887,8 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className=
-                          {item.ReferenceNo!==""?"delibutn deliv-grid-butn":"pickedbutn deliv-grid-butn"}>
-                            {item.ReferenceNo!==""?item.ReferenceNo:"Picked"}
+                          <button className="btn-ref deliv-grid-butn">
+                            {item.ReferenceNo!==""?item.ReferenceNo:"Enter POD"}
                           </button>
                         </div>
                       );
@@ -900,12 +899,8 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className=
-                          {item.Status==="Delivered"?"delibutn deliv-grid-butn":
-                           item.Status==="RTO"?"markasbutn deliv-grid-butn":
-                           "pickedbutn deliv-grid-butn"}>
-                            {item.Status==="Delivered"?"Delivered":
-                            item.Status==="RTO"?"Mark As Delivered":"Picked"}
+                          <button className="btn-proc deliv-grid-butn">
+                          Proceed
                           </button>
                         </div>
                       );
