@@ -152,6 +152,26 @@ class Orders extends Component {
           Status: "Self Picked",
         },
       ],
+      shipmentAssignedGridData: [
+        {
+          AWSNo: "889667123",
+          InvoiceNo: "981812345",
+          CourierPartner: "Blue Dart",
+          ReferenceNo: "BD12345"
+        },
+        {
+          AWSNo: "889667123",
+          InvoiceNo: "981812345",
+          CourierPartner: "Blue Dart",
+          ReferenceNo: "BD12345"
+        },
+        {
+          AWSNo: "889667123",
+          InvoiceNo: "981812345",
+          CourierPartner: "Blue Dart",
+          ReferenceNo: ""
+        }
+      ],
       filterOrderDeliveredStatus: false
     };
   }
@@ -724,7 +744,7 @@ class Orders extends Component {
                           </ul>
                           <div className="dv-status">
                             <button className="btn-apply-status">Apply</button>
-                            <button>Cancel</button>
+                            <button className="btn-cancel-status">Cancel</button>
                           </div>
                         </div>
                       );
@@ -768,7 +788,59 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shipment-assigned-tab"
           >
-            5
+            <div className="table-cntr store">
+              <Table
+                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                columns={[
+                  {
+                    title: "AWS No.",
+                    dataIndex: "AWSNo"
+                  },
+                  {
+                    title: "Invoice No.",
+                    dataIndex: "InvoiceNo"
+                  },
+                  {
+                    title: "Courier Partner",
+                    dataIndex: "CourierPartner"
+                  },
+                  {
+                    title: "Reference No.",
+                    dataIndex: "ReferenceNo",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex">
+                          <button className=
+                          {item.ReferenceNo!==""?"delibutn deliv-grid-butn":"pickedbutn deliv-grid-butn"}>
+                            {item.ReferenceNo!==""?item.ReferenceNo:"Picked"}
+                          </button>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Action",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex">
+                          <button className=
+                          {item.Status==="Delivered"?"delibutn deliv-grid-butn":
+                           item.Status==="RTO"?"markasbutn deliv-grid-butn":
+                           "pickedbutn deliv-grid-butn"}>
+                            {item.Status==="Delivered"?"Delivered":
+                            item.Status==="RTO"?"Mark As Delivered":"Picked"}
+                          </button>
+                        </div>
+                      );
+                    },
+                  },
+                ]}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                showSizeChanger={true}
+                onShowSizeChange={true}
+                dataSource={this.state.shipmentAssignedGridData}
+              />
+            </div>
           </div>
         </div>
       </Fragment>
