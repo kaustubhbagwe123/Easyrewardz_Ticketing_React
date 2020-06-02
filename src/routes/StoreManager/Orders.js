@@ -388,7 +388,138 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            4
+            <div className="table-cntr store">
+              <Table
+                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                columns={[
+                  {
+                    title: "Invoice no.",
+                    dataIndex: "ShoppingBagNo",
+                  },
+                  {
+                    title: "Customer",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.CustomerName},</p>
+                          <p className="order-small-font">
+                            {item.CustomerNumber}
+                          </p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Items",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p>{item.Items}</p>
+                          <Popover
+                            content={
+                              <Table
+                                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                columns={[
+                                  {
+                                    title: "Item ID",
+                                    dataIndex: "ItemID",
+                                  },
+                                  {
+                                    title: "Item Name",
+                                    dataIndex: "ItemName",
+                                    width: 150,
+                                  },
+                                  {
+                                    title: "Item Price",
+                                    dataIndex: "ItemPrice",
+                                  },
+                                  {
+                                    title: "Quantity",
+                                    dataIndex: "Quantity",
+                                  },
+                                ]}
+                                scroll={{ y: 240 }}
+                                pagination={false}
+                                dataSource={this.state.itemPopupDate}
+                              />
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover-table order-popover"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderHamb} className="order-hamb" />
+                          </Popover>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Date",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.Date}</p>
+                          <p className="order-small-font">{item.Time}</p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Status",
+                    // title: () => {
+                    //   return (
+                    //     <div>
+                    //       Status
+                    //       <Popover content={<p>Hello</p>} trigger="click">
+                    //         <img src={OrderInfo} className="order-info" />
+                    //       </Popover>
+                    //     </div>
+                    //   );
+                    // },
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p
+                            className={
+                              item.Status === "Cancelled"
+                                ? "order-clr-pink"
+                                : ""
+                            }
+                          >
+                            {item.Status}
+                          </p>
+                          {item.Status === "Cancelled" ? (
+                            <Popover content={<p>Hello</p>} trigger="click">
+                              <img src={OrderInfo} className="order-info" />
+                            </Popover>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Action",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex">
+                          <button className="delibutn deliv-grid-butn">
+                            Delivered
+                          </button>
+                        </div>
+                      );
+                    },
+                  },
+                ]}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                showSizeChanger={true}
+                onShowSizeChange={true}
+                dataSource={this.state.shoppingBagGridData}
+              />
+            </div>
           </div>
           <div
             className="tab-pane fade"

@@ -168,6 +168,17 @@
   > .ant-popover-arrow {
   top: 3px;
 }
+
+.deliv-grid-butn{ 
+  border-radius: 3px;
+  width: 142px;
+  height: 31px;
+}
+.delibutn{
+  background-color: #25A874;
+  border: 1px solid #25A874;
+  color: #fff;
+}
 /* shopping bag ends */
 
 /* chetan css ends */
