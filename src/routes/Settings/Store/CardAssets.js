@@ -102,7 +102,7 @@ class CardAssets extends Component {
     this.setState({ imageModal: true, imagePath });
   }
   render() {
-    const TranslationContext = this.state.translateLanguage.default;
+    //const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="custom-tableak cardasscus">
