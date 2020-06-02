@@ -1858,7 +1858,8 @@ textarea:focus {
   outline: none;
 } */
 a:focus,
-a:hover:focus, button:focus {
+a:hover:focus,
+button:focus {
   outline: 1.5px #7aacfe solid;
   /* outline: 1.5px #e5efff solid; */
 }
@@ -9847,7 +9848,6 @@ table tr th:last-child {
 }
 .addimg input {
   width: 100%;
-  
 }
 
 @media (min-width: 768px) {
