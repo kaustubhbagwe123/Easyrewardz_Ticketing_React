@@ -169,6 +169,23 @@
   top: 3px;
 }
 
+
+.order-popover-overlay {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* shopping bag ends */
+
+/* chetan css ends */
+
+/* Delivered Start */
+
 .deliv-grid-butn{ 
   border-radius: 3px;
   width: 142px;
@@ -187,15 +204,6 @@
   background-color: #61A9FD;
   border: 1px solid #61A9FD;
 }
-.order-popover-overlay {
-  position: fixed;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9;
-  background: rgba(0, 0, 0, 0.3);
-}
 .deliv-status{
   color: #2561A8;
   font-family: Lato;
@@ -205,6 +213,36 @@
   width: 58px;
   text-align: left;
 }
-/* shopping bag ends */
+.btn-apply-status{
+  background-color: #2561A8;
+  border-radius: 2px;
+  min-width: 73px;
+  height: 29px;
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 12px;
+  text-align: center;
+  margin-right: 9px;
+}
 
-/* chetan css ends */
+.btn-cancel-status{
+  background-color: #FFFFFF;
+  border: 0.7px solid #2561A8;
+  border-radius: 2px;
+  min-width: 73px;
+  height: 29px;
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
+}
+
+.dv-status{
+  margin-top: 15px;
+}
+
+/* Delivered End */

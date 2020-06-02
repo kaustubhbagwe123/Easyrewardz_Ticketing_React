@@ -152,6 +152,7 @@ class Orders extends Component {
           Status: "Self Picked",
         },
       ],
+      filterOrderDeliveredStatus: false
     };
   }
 
@@ -659,16 +660,7 @@ class Orders extends Component {
                   },
                   {
                     title: "Status",
-                    // title: () => {
-                    //   return (
-                    //     <div>
-                    //       Status
-                    //       <Popover content={<p>Hello</p>} trigger="click">
-                    //         <img src={OrderInfo} className="order-info" />
-                    //       </Popover>
-                    //     </div>
-                    //   );
-                    // },
+                    className: "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
@@ -676,6 +668,75 @@ class Orders extends Component {
                         </div>
                       );
                     },
+                    filterDropdown: (data, row) => {
+                      return (
+                        <div className="campaign-status-drpdwn">
+                          <ul>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Campall-status"
+                                className="ch1"
+                                // onChange={this.handleCheckCampAllStatus.bind(this)}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="CampallStatus"
+                              />
+                              <label htmlFor="Campall-status">
+                                <span className="ch1-text">
+                                Delivered
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="New100"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={100}
+                              />
+                              <label htmlFor="New100">
+                                <span className="ch1-text">
+                                RTO
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress101"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress101">
+                                <span className="ch1-text">
+                                Self Picked
+                                </span>
+                              </label>
+                            </li>
+                          </ul>
+                          <div className="dv-status">
+                            <button className="btn-apply-status">Apply</button>
+                            <button>Cancel</button>
+                          </div>
+                        </div>
+                      );
+                    },
+                    filterDropdownVisible: this.state.filterOrderDeliveredStatus,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterOrderDeliveredStatus: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    )
                   },
                   {
                     title: "Action",
