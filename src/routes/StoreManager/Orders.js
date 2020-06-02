@@ -100,35 +100,58 @@ class Orders extends Component {
         },
       ],
       orderPopoverOverlay: false,
+      orderGridData: [
+        {
+          InvoiceNo: "12017768",
+          Date: "25 April 2020",
+          Time: "11:45 AM",
+          CustomerName: "Sandeep",
+          CustomerNumber: "+91 9717419325",
+          Items: "6",
+          Amount: "Rs 9,294",
+          Status: "Ready to Ship",
+          Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+        },
+        {
+          InvoiceNo: "12017890",
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
+          CustomerNumber: "+91 9717419325",
+          Items: "12",
+          Status: "Order Sync Pending",
+          Address: "",
+        },
+      ],
       deliveredGridData: [
         {
-          InvoiceNo: "12017768", 
+          InvoiceNo: "12017768",
           CustomerName: "Sandeep",
           CustomerNumber: "+91 9717419325",
           Items: "6",
           Date: "25 April 2020",
           Time: "11:45 AM",
-          Status: "Delivered"
+          Status: "Delivered",
         },
         {
-          InvoiceNo: "12017768", 
+          InvoiceNo: "12017768",
           CustomerName: "Naman",
           CustomerNumber: "+91 9717419325",
           Items: "6",
           Date: "25 April 2020",
           Time: "11:45 AM",
-          Status: "RTO"
+          Status: "RTO",
         },
         {
-          InvoiceNo: "12017768", 
+          InvoiceNo: "12017768",
           CustomerName: "Sandeep",
           CustomerNumber: "+91 9717419325",
           Items: "6",
-          Date: "25 April 2020",  
+          Date: "25 April 2020",
           Time: "11:45 AM",
-          Status: "Self Picked"
-        }
-      ]
+          Status: "Self Picked",
+        },
+      ],
     };
   }
 
@@ -404,7 +427,143 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            2
+            <div className="table-cntr store">
+              <Table
+                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                columns={[
+                  {
+                    title: "Invoice no.",
+                    dataIndex: "InvoiceNo",
+                  },
+                  {
+                    title: "Date",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.Date}</p>
+                          <p className="order-small-font">{item.Time}</p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Customer",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.CustomerName},</p>
+                          <p className="order-small-font">
+                            {item.CustomerNumber}
+                          </p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Items",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p>{item.Items}</p>
+                          <Popover
+                            content={
+                              <Table
+                                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                columns={[
+                                  {
+                                    title: "Item ID",
+                                    dataIndex: "ItemID",
+                                  },
+                                  {
+                                    title: "Item Name",
+                                    dataIndex: "ItemName",
+                                    width: 150,
+                                  },
+                                  {
+                                    title: "Item Price",
+                                    dataIndex: "ItemPrice",
+                                  },
+                                  {
+                                    title: "Quantity",
+                                    dataIndex: "Quantity",
+                                  },
+                                ]}
+                                scroll={{ y: 240 }}
+                                pagination={false}
+                                dataSource={this.state.itemPopupDate}
+                              />
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover-table order-popover"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderHamb} className="order-hamb" />
+                          </Popover>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Amount",
+                    dataIndex: "Amount",
+                  },
+                  {
+                    title: "Status",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <p
+                            className={
+                              item.Status === "Cancelled"
+                                ? "order-clr-pink"
+                                : ""
+                            }
+                          >
+                            {item.Status}
+                          </p>
+                          {item.Status === "Cancelled" ? (
+                            <Popover content={<p>Hello</p>} trigger="click">
+                              <img src={OrderInfo} className="order-info" />
+                            </Popover>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Shipping address",
+                    render: (row, item) => {
+                      return (
+                        <p className="order-small-font">
+                          {item.Address === "" ? "—NIL—" : item.Address}
+                        </p>
+                      );
+                    },
+                    className: "white-space-init",
+                  },
+                  {
+                    title: "Action",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex">
+                          <button className="butn order-grid-butn">
+                            Convert to Order
+                          </button>
+                        </div>
+                      );
+                    },
+                  },
+                ]}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                showSizeChanger={true}
+                onShowSizeChange={true}
+                dataSource={this.state.orderGridData}
+              />
+            </div>
           </div>
           <div
             className="tab-pane fade"
@@ -513,11 +672,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p
-                            className="deliv-status"
-                          >
-                            {item.Status}
-                          </p>
+                          <p className="deliv-status">{item.Status}</p>
                         </div>
                       );
                     },
