@@ -188,6 +188,15 @@
   z-index: 9;
   background: rgba(0, 0, 0, 0.3);
 }
+.deliv-status{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15.6px;
+  width: 58px;
+  text-align: left;
+}
 /* shopping bag ends */
 
 /* chetan css ends */
