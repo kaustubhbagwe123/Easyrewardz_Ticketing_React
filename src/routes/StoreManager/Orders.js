@@ -174,22 +174,22 @@ class Orders extends Component {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345"
+          ReferenceNo: "BD12345",
         },
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345"
+          ReferenceNo: "BD12345",
         },
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: ""
-        }
+          ReferenceNo: "",
+        },
       ],
-      filterOrderDeliveredStatus: false
+      filterOrderDeliveredStatus: false,
     };
   }
 
@@ -617,6 +617,8 @@ class Orders extends Component {
                   },
                   {
                     title: "Status",
+                    className:
+                      "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
                         <>
@@ -627,6 +629,72 @@ class Orders extends Component {
                         </>
                       );
                     },
+                    filterDropdown: (data, row) => {
+                      return (
+                        <div className="campaign-status-drpdwn">
+                          <ul>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Campall-status"
+                                className="ch1"
+                                // onChange={this.handleCheckCampAllStatus.bind(this)}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="CampallStatus"
+                              />
+                              <label htmlFor="Campall-status">
+                                <span className="ch1-text">Delivered</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="New100"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={100}
+                              />
+                              <label htmlFor="New100">
+                                <span className="ch1-text">RTO</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress101"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress101">
+                                <span className="ch1-text">Self Picked</span>
+                              </label>
+                            </li>
+                          </ul>
+                          <div className="dv-status">
+                            <button className="btn-apply-status">Apply</button>
+                            <button className="btn-cancel-status">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    },
+                    filterDropdownVisible: this.state
+                      .filterOrderDeliveredStatus,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterOrderDeliveredStatus: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    ),
                   },
                   {
                     title: "Shipping address",
@@ -757,7 +825,8 @@ class Orders extends Component {
                   },
                   {
                     title: "Status",
-                    className: "camp-status-header camp-status-header-statusFilter",
+                    className:
+                      "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
@@ -779,9 +848,7 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">
-                                Delivered
-                                </span>
+                                <span className="ch1-text">Delivered</span>
                               </label>
                             </li>
                             <li>
@@ -796,9 +863,7 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">
-                                RTO
-                                </span>
+                                <span className="ch1-text">RTO</span>
                               </label>
                             </li>
                             <li>
@@ -813,39 +878,48 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress101">
-                                <span className="ch1-text">
-                                Self Picked
-                                </span>
+                                <span className="ch1-text">Self Picked</span>
                               </label>
                             </li>
                           </ul>
                           <div className="dv-status">
                             <button className="btn-apply-status">Apply</button>
-                            <button className="btn-cancel-status">Cancel</button>
+                            <button className="btn-cancel-status">
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       );
                     },
-                    filterDropdownVisible: this.state.filterOrderDeliveredStatus,
+                    filterDropdownVisible: this.state
+                      .filterOrderDeliveredStatus,
                     onFilterDropdownVisibleChange: (visible) =>
                       this.setState({ filterOrderDeliveredStatus: visible }),
                     filterIcon: (filtered) => (
                       <span
                         style={{ color: filtered ? "#1890ff" : undefined }}
                       ></span>
-                    )
+                    ),
                   },
                   {
                     title: "Action",
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className=
-                          {item.Status==="Delivered"?"delibutn deliv-grid-butn":
-                           item.Status==="RTO"?"markasbutn deliv-grid-butn":
-                           "pickedbutn deliv-grid-butn"}>
-                            {item.Status==="Delivered"?"Delivered":
-                            item.Status==="RTO"?"Mark As Delivered":"Picked"}
+                          <button
+                            className={
+                              item.Status === "Delivered"
+                                ? "delibutn deliv-grid-butn"
+                                : item.Status === "RTO"
+                                ? "markasbutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
+                            }
+                          >
+                            {item.Status === "Delivered"
+                              ? "Delivered"
+                              : item.Status === "RTO"
+                              ? "Mark As Delivered"
+                              : "Picked"}
                           </button>
                         </div>
                       );
@@ -871,15 +945,15 @@ class Orders extends Component {
                 columns={[
                   {
                     title: "AWS No.",
-                    dataIndex: "AWSNo"
+                    dataIndex: "AWSNo",
                   },
                   {
                     title: "Invoice No.",
-                    dataIndex: "InvoiceNo"
+                    dataIndex: "InvoiceNo",
                   },
                   {
                     title: "Courier Partner",
-                    dataIndex: "CourierPartner"
+                    dataIndex: "CourierPartner",
                   },
                   {
                     title: "Reference No.",
@@ -887,9 +961,16 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className=
-                          {item.ReferenceNo!==""?"delibutn deliv-grid-butn":"pickedbutn deliv-grid-butn"}>
-                            {item.ReferenceNo!==""?item.ReferenceNo:"Picked"}
+                          <button
+                            className={
+                              item.ReferenceNo !== ""
+                                ? "delibutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
+                            }
+                          >
+                            {item.ReferenceNo !== ""
+                              ? item.ReferenceNo
+                              : "Picked"}
                           </button>
                         </div>
                       );
@@ -900,12 +981,20 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className=
-                          {item.Status==="Delivered"?"delibutn deliv-grid-butn":
-                           item.Status==="RTO"?"markasbutn deliv-grid-butn":
-                           "pickedbutn deliv-grid-butn"}>
-                            {item.Status==="Delivered"?"Delivered":
-                            item.Status==="RTO"?"Mark As Delivered":"Picked"}
+                          <button
+                            className={
+                              item.Status === "Delivered"
+                                ? "delibutn deliv-grid-butn"
+                                : item.Status === "RTO"
+                                ? "markasbutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
+                            }
+                          >
+                            {item.Status === "Delivered"
+                              ? "Delivered"
+                              : item.Status === "RTO"
+                              ? "Mark As Delivered"
+                              : "Picked"}
                           </button>
                         </div>
                       );
