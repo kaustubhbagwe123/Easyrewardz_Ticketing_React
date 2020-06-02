@@ -170,16 +170,6 @@
   top: 3px;
 }
 
-.deliv-grid-butn {
-  border-radius: 3px;
-  width: 142px;
-  height: 31px;
-}
-.delibutn {
-  background-color: #25a874;
-  border: 1px solid #25a874;
-  color: #fff;
-}
 .order-popover-overlay {
   position: fixed;
   bottom: 0;
@@ -188,6 +178,31 @@
   right: 0;
   z-index: 9;
   background: rgba(0, 0, 0, 0.3);
+}
+
+/* shopping bag ends */
+
+/* chetan css ends */
+
+/* Delivered Start */
+
+.deliv-grid-butn {
+  border-radius: 3px;
+  width: 142px;
+  height: 31px;
+  color: #fff;
+}
+.delibutn {
+  background-color: #25a874;
+  border: 1px solid #25a874;
+}
+.markasbutn {
+  background-color: #2561a8;
+  border: 1px solid #2561a8;
+}
+.pickedbutn {
+  background-color: #61a9fd;
+  border: 1px solid #61a9fd;
 }
 .deliv-status {
   color: #2561a8;
@@ -198,7 +213,38 @@
   width: 58px;
   text-align: left;
 }
-/* shopping bag ends */
+.btn-apply-status {
+  background-color: #2561a8;
+  border-radius: 2px;
+  min-width: 73px;
+  height: 29px;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 12px;
+  text-align: center;
+  margin-right: 9px;
+}
+.btn-cancel-status {
+  background-color: #ffffff;
+  border: 0.7px solid #2561a8;
+  border-radius: 2px;
+  min-width: 73px;
+  height: 29px;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
+}
+
+.dv-status {
+  margin-top: 15px;
+}
+
+/* Delivered End */
 
 /* order starts */
 .invoice-icon-cntr {
