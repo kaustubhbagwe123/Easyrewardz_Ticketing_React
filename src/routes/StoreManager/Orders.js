@@ -6,6 +6,8 @@ import ReactTable from "react-table";
 import OrderHamb from "./../../assets/Images/order-hamb.png";
 import OrderSearch from "./../../assets/Images/order-search.png";
 import OrderInfo from "./../../assets/Images/order-info.png";
+import OrderShopingBlack from "./../../assets/Images/order-shoping-black.png";
+import OrderBag from "./../../assets/Images/order-bag.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -55,54 +57,63 @@ class Orders extends Component {
           ItemName: "Blue Casual shoes",
           ItemPrice: "1299",
           Quantity: "02",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123556",
           ItemName: "Black belt",
           ItemPrice: "1500",
           Quantity: "01",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123557",
           ItemName: "Sneakers",
           ItemPrice: "899",
           Quantity: "01",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123558",
           ItemName: "Brown Bag",
           ItemPrice: "699",
           Quantity: "01",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123456",
           ItemName: "Blue Casual shoes",
           ItemPrice: "1299",
           Quantity: "02",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123556",
           ItemName: "Black belt",
           ItemPrice: "1500",
           Quantity: "01",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123557",
           ItemName: "Sneakers",
           ItemPrice: "899",
           Quantity: "01",
+          AWBNo: "44566778",
         },
         {
           ItemID: "123558",
           ItemName: "Brown Bag",
           ItemPrice: "699",
           Quantity: "01",
+          AWBNo: "44566778",
         },
       ],
       orderPopoverOverlay: false,
       orderGridData: [
         {
           InvoiceNo: "12017768",
+          InvoiceNoIcon: true,
           Date: "25 April 2020",
           Time: "11:45 AM",
           CustomerName: "Sandeep",
@@ -110,17 +121,23 @@ class Orders extends Component {
           Items: "6",
           Amount: "Rs 9,294",
           Status: "Ready to Ship",
+          selfPickUp: true,
           Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+          Action: "Payment Done",
         },
         {
           InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
           Date: "24 May 2020",
           Time: "12:05 AM",
           CustomerName: "Rahul",
           CustomerNumber: "+91 9717419325",
           Items: "12",
+          Amount: "Rs 9,294",
           Status: "Order Sync Pending",
+          selfPickUp: false,
           Address: "",
+          Action: "Payment Pending",
         },
       ],
       deliveredGridData: [
@@ -454,7 +471,69 @@ class Orders extends Component {
                 columns={[
                   {
                     title: "Invoice no.",
-                    dataIndex: "InvoiceNo",
+                    render: (row, item) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <div className="invoice-icon-cntr">
+                            <img
+                              src={
+                                item.InvoiceNoIcon
+                                  ? OrderShopingBlack
+                                  : OrderBag
+                              }
+                              className={
+                                item.InvoiceNoIcon
+                                  ? "order-shoping"
+                                  : "order-bag"
+                              }
+                            />
+                          </div>
+                          <p>{item.InvoiceNo}</p>
+                          <Popover
+                            content={
+                              <>
+                                <p className="shopping-num-invoice">
+                                  Shopping bag No: <span>{item.InvoiceNo}</span>
+                                </p>
+                                <Table
+                                  className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                  columns={[
+                                    {
+                                      title: "Item ID",
+                                      dataIndex: "ItemID",
+                                    },
+                                    {
+                                      title: "Item Name",
+                                      dataIndex: "ItemName",
+                                      width: 150,
+                                    },
+                                    {
+                                      title: "Item Price",
+                                      dataIndex: "ItemPrice",
+                                    },
+                                    {
+                                      title: "Quantity",
+                                      dataIndex: "Quantity",
+                                    },
+                                  ]}
+                                  scroll={{ y: 240 }}
+                                  pagination={false}
+                                  dataSource={this.state.itemPopupDate}
+                                />
+                              </>
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover-table order-popover order-popover-invoice"
+                            placement="bottomLeft"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderInfo} className="order-info" />
+                          </Popover>
+                        </div>
+                      );
+                    },
                   },
                   {
                     title: "Date",
@@ -508,6 +587,10 @@ class Orders extends Component {
                                     title: "Quantity",
                                     dataIndex: "Quantity",
                                   },
+                                  {
+                                    title: "AWB. No",
+                                    dataIndex: "AWBNo",
+                                  },
                                 ]}
                                 scroll={{ y: 240 }}
                                 pagination={false}
@@ -515,7 +598,7 @@ class Orders extends Component {
                               />
                             }
                             trigger="click"
-                            overlayClassName="order-popover-table order-popover"
+                            overlayClassName="order-popover-table order-popover order-popover-table-big"
                             onVisibleChange={(visible) =>
                               this.setState({ orderPopoverOverlay: visible })
                             }
@@ -525,33 +608,23 @@ class Orders extends Component {
                         </div>
                       );
                     },
+                    width: 100,
                   },
                   {
                     title: "Amount",
                     dataIndex: "Amount",
+                    width: 150,
                   },
                   {
                     title: "Status",
                     render: (row, item) => {
                       return (
-                        <div className="d-flex align-items-center">
-                          <p
-                            className={
-                              item.Status === "Cancelled"
-                                ? "order-clr-pink"
-                                : ""
-                            }
-                          >
-                            {item.Status}
-                          </p>
-                          {item.Status === "Cancelled" ? (
-                            <Popover content={<p>Hello</p>} trigger="click">
-                              <img src={OrderInfo} className="order-info" />
-                            </Popover>
-                          ) : (
-                            ""
+                        <>
+                          <p className="order-clr-blue">{item.Status}</p>
+                          {item.selfPickUp && (
+                            <p className="order-clr-orange">(Self Pickup)</p>
                           )}
-                        </div>
+                        </>
                       );
                     },
                   },
@@ -570,11 +643,15 @@ class Orders extends Component {
                     title: "Action",
                     render: (row, item) => {
                       return (
-                        <div className="d-flex">
-                          <button className="butn order-grid-butn">
-                            Convert to Order
-                          </button>
-                        </div>
+                        <button
+                          className={
+                            item.Action === "Payment Done"
+                              ? "butn order-grid-butn order-grid-butn-green"
+                              : "butn order-grid-butn"
+                          }
+                        >
+                          {item.Action}
+                        </button>
                       );
                     },
                   },
