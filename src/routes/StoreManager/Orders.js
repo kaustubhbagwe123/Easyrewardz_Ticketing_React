@@ -898,11 +898,12 @@ class Orders extends Component {
                     title: "Action",
                     render: (row, item) => {
                       return (
+                        item.ReferenceNo===""?(
                         <div className="d-flex">
                           <button className="btn-proc deliv-grid-butn">
                           Proceed
                           </button>
-                        </div>
+                        </div>):null
                       );
                     },
                   },
