@@ -621,7 +621,7 @@ class Orders extends Component {
                   {
                     title: "Status",
                     className:
-                      "camp-status-header camp-status-header-statusFilter",
+                      "camp-status-header camp-status-header-statusFilter order-status-header",
                     render: (row, item) => {
                       return (
                         <>
@@ -863,7 +863,8 @@ class Orders extends Component {
                   },
                   {
                     title: "Status",
-                    className: "camp-status-header camp-status-header-statusFilter",
+                    className:
+                      "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
@@ -885,9 +886,7 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">
-                                Delivered
-                                </span>
+                                <span className="ch1-text">Delivered</span>
                               </label>
                             </li>
                             <li>
@@ -902,9 +901,7 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">
-                                RTO
-                                </span>
+                                <span className="ch1-text">RTO</span>
                               </label>
                             </li>
                             <li>
@@ -919,20 +916,21 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress101">
-                                <span className="ch1-text">
-                                Self Picked
-                                </span>
+                                <span className="ch1-text">Self Picked</span>
                               </label>
                             </li>
                           </ul>
                           <div className="dv-status">
                             <button className="btn-apply-status">Apply</button>
-                            <button className="btn-cancel-status">Cancel</button>
+                            <button className="btn-cancel-status">
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       );
                     },
-                    filterDropdownVisible: this.state.filterOrderDeliveredStatus,
+                    filterDropdownVisible: this.state
+                      .filterOrderDeliveredStatus,
                     onFilterDropdownVisibleChange: (visible) =>
                       this.setState({ filterOrderDeliveredStatus: visible }),
                     filterIcon: (filtered) => (

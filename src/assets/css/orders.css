@@ -313,6 +313,18 @@
 .order-status-drpdwn {
   padding: 15px 25px 25px;
 }
+.order-status-header .ant-table-filter-icon::before {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid #4a4a4a;
+  transform: none;
+}
+.order-status-header .ant-table-filter-icon {
+  width: 8px !important;
+  left: 60px;
+}
 /* order ends */
 
 /* chetan css ends */
