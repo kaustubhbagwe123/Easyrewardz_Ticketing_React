@@ -7621,9 +7621,9 @@ table tr th:last-child {
   -webkit-transform: translateX(-50%) rotate(45deg);
   -ms-transform: translateX(-50%) rotate(45deg);
   transform: translateX(-50%) rotate(45deg);
-  width: 20px !important;
-  height: 20px !important;
-  margin-top: -5px !important;
+  width: 20px;
+  height: 20px;
+  margin-top: -5px;
   background: white !important;
 }
 /* Tooltip css End by Shlok In Edit Button */
