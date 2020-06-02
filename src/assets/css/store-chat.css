@@ -1469,7 +1469,7 @@ p {
 .storeaget-chat-ctn {
   background-color: #ebebeb;
   border-radius: 4px;
-  width: 42px;
+  width: 35px;
   height: 22px;
   color: #989898;
   font-family: Lato;
@@ -1477,7 +1477,7 @@ p {
   display: inline-block;
   margin-right: 10px;
   padding: 1px;
-  
+  flex: 0 0 35px;
   text-align: center;
 }
 .agentchatdrop-down {

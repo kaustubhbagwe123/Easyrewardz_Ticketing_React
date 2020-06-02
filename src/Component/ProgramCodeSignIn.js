@@ -28,10 +28,10 @@ class ProgramCodeSignIn extends Component {
     if (this.validator.allValid()) {
       const{programCode}=this.state;
       var encProgramCode=encryption(programCode, "enc");
-      let X_Authorized_Domainname = encryption('https://multitenancyshopster.dcdev.brainvire.net', "enc");
+      // let X_Authorized_Domainname = encryption('https://multitenancyshopster.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption('https://erbelltktstable.dcdev.brainvire.net', "enc");
-    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
+     let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
       let X_Authorized_Programcode = encProgramCode;
      
       axios({

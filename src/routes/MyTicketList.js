@@ -5585,7 +5585,7 @@ class MyTicketList extends Component {
                                     </p>
                                     <a
                                       href="#!"
-                                      className="blue-clr fs-14 a-mar"
+                                      className="blue-clr fs-14"
                                       onClick={this.clearSearch}
                                     >
                                       CLEAR SEARCH
@@ -5593,7 +5593,7 @@ class MyTicketList extends Component {
                                     &nbsp; &nbsp; &nbsp;
                                     <a
                                       href="#!"
-                                      className="blue-clr fs-14 a-mar"
+                                      className="blue-clr fs-14"
                                       onClick={this.setSortCheckStatus.bind(
                                         this,
                                         "all"

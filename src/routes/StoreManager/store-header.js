@@ -8,7 +8,6 @@ import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import Hambw from "./../../assets/Images/hambw.png";
 import SuggSearch from "./../../assets/Images/sugg-search.png";
-import CancelIcon from "./../../assets/Images/cancel.png";
 import addimg from "./../../assets/Images/addimg.png";
 import CancelIconW from "./../../assets/Images/cancel-white.png";
 import Dots from "./../../assets/Images/dotsw.png";
@@ -19,6 +18,8 @@ import CampaignLogo from "./../../assets/Images/campaign.svg";
 import CampaignLogoBlue from "./../../assets/Images/campaign.svg";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
+import OrderLogoBlue from "./../../assets/Images/order-icon-blue.png";
+import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
@@ -172,7 +173,7 @@ class Header extends Component {
       tempmessageSuggestionData: [],
       translateLanguage: {},
       storeCode: "",
-      actionBtn:false
+      actionBtn: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -318,6 +319,16 @@ class Header extends Component {
       activeClass:
         page === "Appointment" ? "active single-menu" : "single-menu",
     };
+    var myTicketList = {
+      data: "myTicketList",
+      urls: "myTicketList",
+      logoBlack: TicketLogo,
+      logoBlue: TicketLogoBlue,
+      imgAlt: "campaign icon",
+      imgClass: "campaign-icon",
+      activeClass:
+        page === "myTicketList" ? "active single-menu" : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -345,6 +356,11 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(appointment);
+        } else if (
+          data[i].moduleName === "myTicketList" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(myTicketList);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -374,9 +390,9 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
-          setTimeout(() => {
-            transferData.sendReport(this.state.reportAccess);
-          }, 100);
+          // setTimeout(() => {
+          //   transferData.sendReport(this.state.reportAccess);
+          // }, 100);
         }
       }
     }
@@ -1781,11 +1797,11 @@ class Header extends Component {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
-////handle open action modal pop up
+  ////handle open action modal pop up
   handleActionOpen = () => {
     this.setState({ actionBtn: false });
   };
-////handle close action modal pop up
+  ////handle close action modal pop up
   handleActionClose = () => {
     this.setState({ actionBtn: true });
   };
@@ -1800,10 +1816,16 @@ class Header extends Component {
           style={{ background: "white" }}
         >
           <div className="d-flex">
-            <div className="er bell-icon">
-              {/* <label className="er-label">ER</label> */}
-              <img src={BellIcon} alt="bell icon" />
-            </div>
+            {config.isHomeShope ? (
+              <div className="er bell-icon">
+                <img src={BellIcon} alt="bell icon" />
+              </div>
+            ) : (
+              <div className="er">
+                <label className="er-label">ER</label>
+              </div>
+            )}
+
             <div className="hamb-menu">
               <img
                 src={Hamb}
@@ -1834,6 +1856,22 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
+              <Link to="orders" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={OrderLogoBlack}
+                    alt="order icon"
+                    className="dashboardImg1"
+                  />
+                  <img
+                    src={OrderLogoBlue}
+                    alt="order icon"
+                    className="order-blue"
+                    style={{ display: "none" }}
+                  />
+                </div>
+                <label className="cusheade">Orders</label>
+              </Link>
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
@@ -3335,45 +3373,45 @@ class Header extends Component {
                                                           alignSelf: "center",
                                                         }}
                                                       >
-                                                        {/* {item.imageURL!==""? */}
-                                                        {/* <img
-                                                          className="chat-product-img"
-                                                          src={item.imageURL}
-                                                          alt="Product Image"
-                                                          title={
-                                                            item.productName
-                                                          }
-                                                        />: */}
-
-                                                        <Dropzone
-                                                          onDrop={this.handleInsertCardImageUpload.bind(
-                                                            this,
-                                                            item.uniqueItemCode
-                                                          )}
-                                                        >
-                                                          {({
-                                                            getRootProps,
-                                                            getInputProps,
-                                                          }) => (
-                                                            <div
-                                                              {...getRootProps()}
-                                                            >
-                                                              <input
-                                                                {...getInputProps()}
-                                                                className="file-upload d-none"
-                                                              />
-                                                              <span className="addimg">
+                                                        {item.imageURL !==
+                                                        "" ? (
+                                                          <img
+                                                            className="chat-product-img"
+                                                            src={item.imageURL}
+                                                            alt="Product Image"
+                                                            title={
+                                                              item.productName
+                                                            }
+                                                          />
+                                                        ) : (
+                                                          <Dropzone
+                                                            onDrop={this.handleInsertCardImageUpload.bind(
+                                                              this,
+                                                              item.uniqueItemCode
+                                                            )}
+                                                          >
+                                                            {({
+                                                              getRootProps,
+                                                              getInputProps,
+                                                            }) => (
+                                                              <div
+                                                                {...getRootProps()}
+                                                              >
                                                                 <input
-                                                                  type="image"
-                                                                  alt="Add Image"
-                                                                  src={addimg}
+                                                                  {...getInputProps()}
+                                                                  className="file-upload d-none"
                                                                 />
-                                                              </span>
-                                                            </div>
-                                                          )}
-                                                        </Dropzone>
-
-                                                        {/* } */}
+                                                                <span className="addimg">
+                                                                  <input
+                                                                    type="image"
+                                                                    alt="Add Image"
+                                                                    src={addimg}
+                                                                  />
+                                                                </span>
+                                                              </div>
+                                                            )}
+                                                          </Dropzone>
+                                                        )}
                                                       </div>
                                                       <div
                                                         className="col-md-8 bkcprdt"
