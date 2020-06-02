@@ -360,7 +360,20 @@
       "selectedslot":"चयनित स्लॉट",
       "amount":"रकम",
       "noofpeople":"लोगों की नहीं",
-      "myhistoricalchat":"मेरी इतिहास चैट"
+      "myhistoricalchat":"मेरी इतिहास चैट",
+      "crmrole":"सी आर एम भूमिका",
+      "taskcreationon":"टास्क क्रिएशन ऑन",
+      "claimwithtask":"कार्य के साथ दावा करें",
+      "enterlinkedtaskid":"लिंक्ड टास्क आईडी दर्ज करें",
+      "attachmentsettings":"लगाव सेटिंग्स",
+      "cardqrcode":"कार्ड + क्यूआर कोड",
+      "cardbarcode":"कार्ड + बारकोड",
+      "editslotsettings":"संपादित करें स्लॉट सेटिंग",
+      "maximumcapacity":"अधिकतम योग्यता",
+      "editcampaignscript":"अभियान स्क्रिप्ट संपादित करें",
+      "scriptdetails":"स्क्रिप्ट विवरण",
+      "claim":"दावा",
+      "editpriorty":"प्राथमिकता संपादित करें"
     
    
    
@@ -508,7 +521,11 @@
       "ongoingchats":"चल रहे चैट",
       "norecordsfound":"कोई रिकॉर्ड नहीं मिला",
       "bot":"बीओटी",
-      "areyousureandwanttosend":"क्या आप सुनिश्चित हैं और भेजना चाहते हैं"
+      "areyousureandwanttosend":"क्या आप सुनिश्चित हैं और भेजना चाहते हैं",
+      "pleaseentervalidmobilenumber":"कृपया मान्य मोबाइल नंबर दर्ज करें",
+      "pleaseentervalidemailid":"कृपया मान्य ईमेल आईडी दर्ज करें",
+      "modules":"मॉड्यूल"
+     
       
       
     },
@@ -619,7 +636,8 @@
       "card":"कार्ड",
       "recommendedlist":"विस्तृत सूची",
       "schedulevisit":"अनुसूची देखें",
-      "generatepaymentlink":"सामान्य भुगतान लिंक"
+      "generatepaymentlink":"सामान्य भुगतान लिंक",
+      "assetapproval":"संपत्ति की मंजूरी"
     },
     "span":{
       "status": "स्थिति",
@@ -818,7 +836,12 @@
       "hopethishelppleaserateus":"आशा है कि यह मदद, हमें दर कृपया",
       "hopethishelppleaserateusonenewcomment":"इस मदद की उम्मीद है, कृपया हमें दर (१ नई टिप्पणी)",
       "noslotaddedforthisstore":"इस स्टोर के लिए कोई स्लॉट नहीं जोड़ा गया है",
-      "claimsubcat":"उप बिल्ली का दावा करें"
+      "claimsubcat":"उप बिल्ली का दावा करें",
+      "priortyname":"प्राथमिकता नाम",
+      "prioritystatus":"प्राथमिकता की स्थिति",
+      "starttime":"समय शुरू",
+      "endtime":"अंतिम समय",
+      "to":"से"
      
       
 
@@ -967,7 +990,8 @@
       "billno":"बील संख्या",
       "amount":"रकम",
       "store":"दुकान",
-      "date":"तारीख"
+      "date":"तारीख",
+      "alerttype":"अलर्ट प्रकार"
     },
     "h3": {
       "bulkupload":"सामूहिक अपलोड",
@@ -978,7 +1002,10 @@
       "sharedsuccessfully":"सफलतापूर्वक साझा किया गया",
       "appointmentconfiguration":"आवेदन संरचना",
       "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन",
-      "storechatwindow":"चैट विंडो स्टोर करें"
+      "storechatwindow":"चैट विंडो स्टोर करें",
+      "campaignchannel":"अभियान चैनल",
+      "slotsettings":"स्लॉट सेटिंग्स",
+      "languagesettings":"भाषा सेटिंग"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
@@ -991,7 +1018,9 @@
       "visitcount":"काउंट पर जाएं",
       "keyinsights":"महत्वपूर्ण अंतर्दृष्टि",
       "sharecampaignvia":"साझा करें अभियान वाया",
-      "choosechannel":"चैनल चुनें"
+      "choosechannel":"चैनल चुनें",
+      "storedetails":"विवरण स्टोर करें",
+      "mappedcliamcategory":"मैप्ड क्लियाम श्रेणी"
 
     },
     "checkbox": {
@@ -1045,7 +1074,9 @@
       "claimscategorymaster":"दावा श्रेणी के मास्टर",
       "homeshopsetting":"घर की दुकान की स्थापना",
       "slatemplatedepartment":"SLA टेम्पलेट-विभाग",
-      "all":"सब"
+      "all":"सब",
+      "fileuploadlogs":"फ़ाइल अपलोड लॉग"
+
     },
     "mybutton": {
       "edit":"संपादित करें"
@@ -1062,7 +1093,17 @@
       "twohundred":"२००",
       "ninetyfive":"९५",
       "onehundredfive":"१०५",
-      "scheduledateto":"को शेड्यूल डेट"
+      "scheduledateto":"को शेड्यूल डेट",
+      "mobileno":"मोबाइल न",
+      "emailid":"ईमेल आईडी",
+      "crmrole":"सी आर एम भूमिका",
+      "brand":"ब्रांड",
+      "claimcategory":"दावा श्रेणी",
+      "claimsubcategory":"उप श्रेणी का दावा करें",
+      "claimissuetype":"दावा जारी करने का प्रकार",
+      "createdby":"के द्वारा बनाई गई",
+      "createddate":"रचना तिथि",
+      "reporteedesignation":"रिपोर्टी पदनाम"
     },
     "option":{
       "active":"सक्रिय",
@@ -1130,7 +1171,14 @@
       "department":"विभाग",
       "cancel":"इसे रद्द करें",
       "visited":"का दौरा किया",
-      "notvisited":"दौरा नहीं किया"
+      "notvisited":"दौरा नहीं किया",
+      "selectall":"सभी का चयन करे",
+      "selectsize":"माप चुनिये",
+      "fileformat":"फाइल प्रारूप",
+      "sec":"सेकंड",
+      "selectlanguage":"भाषा का चयन करें",
+      "storecode":"स्टोर कोड",
+      "storetimings":"स्टोर टाइमिंग"
     },
     "radio":{
         "email":"ईमेल",
@@ -1156,7 +1204,9 @@
       "needtochangemyshippingaddress":"मेरा शिपिंग पता बदलने की आवश्यकता है",
       "defectivearticle":"दोषपूर्ण लेख",
       "nraman":"एन रामपाल",
-      "twelvemarcheighty":"१२ मार्च २०१८"
+      "twelvemarcheighty":"१२ मार्च २०१८",
+      "maxclickallowesonanychannelcta":"मैक्स। किसी भी चैनल CTA पर अनुमति दी गई क्लिक करें",
+      "otptimeconfiguration":"OTP समय विन्यास"
       
 
     },
@@ -1166,7 +1216,18 @@
       "search":"खोज",
       "searchitemidarticleskuid":"आइटम आईडी खोजें/लेख/SKU आईडी",
       "searchorderid":"खोज क्रम आईडी",
-      "enterdesignationname":"पदनाम नाम दर्ज करें"
+      "enterdesignationname":"पदनाम नाम दर्ज करें",
+      "enterpriorityname":"प्राथमिकता नाम दर्ज करें",
+      "enterrolename":"भूमिका का नाम दर्ज करें",
+      "enterusername":"उपयोगकर्ता नाम दर्ज करें",
+      "entermobilenumber":"मोबाइल नंबर दर्ज करें",
+      "enteremailid":"ईमेल आईडी दर्ज करें",
+      "select":"चुनें",
+      "entertaskidslashtitle":"कार्य आईडी / शीर्षक दर्ज करें",
+      "enterlinkedticketid":"लिंक्ड टिकट आईडी दर्ज करें",
+      "enterclaimid":"दावा आईडी दर्ज करें",
+      "creationdate":"रचना तिथि",
+      "providername":"प्रदाता का नाम"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1194,5 +1255,16 @@
     },
     "content":{
       "howmanydaystoshowchathistory":"चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"
+    },
+    "header":{
+      "communicationmode":"संचार मोड",
+      "actions":"कार्रवाई",
+      "slotno":"स्लॉट नं",
+      "storecode":"स्टोर कोड",
+      "timeslot":"टाइम स्लॉट",
+      "order":"गण",
+      "createdname":"बनाया हुआ नाम",
+      "languagename":"भाषा का नाम",
+      "status":"स्थिति"
     }
   }

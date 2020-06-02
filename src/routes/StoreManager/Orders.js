@@ -123,6 +123,35 @@ class Orders extends Component {
           Address: "",
         },
       ],
+      deliveredGridData: [
+        {
+          InvoiceNo: "12017768",
+          CustomerName: "Sandeep",
+          CustomerNumber: "+91 9717419325",
+          Items: "6",
+          Date: "25 April 2020",
+          Time: "11:45 AM",
+          Status: "Delivered",
+        },
+        {
+          InvoiceNo: "12017768",
+          CustomerName: "Naman",
+          CustomerNumber: "+91 9717419325",
+          Items: "6",
+          Date: "25 April 2020",
+          Time: "11:45 AM",
+          Status: "RTO",
+        },
+        {
+          InvoiceNo: "12017768",
+          CustomerName: "Sandeep",
+          CustomerNumber: "+91 9717419325",
+          Items: "6",
+          Date: "25 April 2020",
+          Time: "11:45 AM",
+          Status: "Self Picked",
+        },
+      ],
     };
   }
 
@@ -556,7 +585,7 @@ class Orders extends Component {
                 columns={[
                   {
                     title: "Invoice no.",
-                    dataIndex: "ShoppingBagNo",
+                    dataIndex: "InvoiceNo",
                   },
                   {
                     title: "Customer",
@@ -643,22 +672,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p
-                            className={
-                              item.Status === "Cancelled"
-                                ? "order-clr-pink"
-                                : ""
-                            }
-                          >
-                            {item.Status}
-                          </p>
-                          {item.Status === "Cancelled" ? (
-                            <Popover content={<p>Hello</p>} trigger="click">
-                              <img src={OrderInfo} className="order-info" />
-                            </Popover>
-                          ) : (
-                            ""
-                          )}
+                          <p className="deliv-status">{item.Status}</p>
                         </div>
                       );
                     },
@@ -679,7 +693,7 @@ class Orders extends Component {
                 pagination={{ defaultPageSize: 10, showSizeChanger: true }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
-                dataSource={this.state.shoppingBagGridData}
+                dataSource={this.state.deliveredGridData}
               />
             </div>
           </div>

@@ -10,6 +10,8 @@ import axios from "axios";
 import config from "./../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from '../../../translations/hindi';
+import * as translationMA from '../../../translations/marathi';
 
 class HomeShopSetting extends Component {
     constructor(props) {
@@ -21,13 +23,26 @@ class HomeShopSetting extends Component {
             brandID: "",
             brandData: [],
             storeCode: "",
-            StoreCodeData: []
+            StoreCodeData: [],
+            translateLanguage: {}
         }
     }
 
     componentDidMount() {
         this.handleGetBrandData();
         this.handleGetStoreAgentListData();
+
+        if(window.localStorage.getItem("translateLanguage") === "hindi"){
+            this.state.translateLanguage = translationHI
+           }
+           else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+             this.state.translateLanguage = translationMA
+           }
+           else{
+             this.state.translateLanguage = {}
+           }
+
+
       }
 
     handleFilterCollapse() {
@@ -178,11 +193,13 @@ class HomeShopSetting extends Component {
       };
 
     render() {
+        const TranslationContext = this.state.translateLanguage.default;
         return (
             <React.Fragment>
                 <div className="container-fluid setting-title setting-breadcrumb">
                     <Link to="/store/settings" className="header-path">
-                        Settings
+                        
+                {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
                 </Link>
                     <span>&gt;</span>
                     <Link
@@ -192,11 +209,13 @@ class HomeShopSetting extends Component {
                         }}
                         className="header-path"
                     >
-                        Store
+                        {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+                        
                 </Link>
                     <span>&gt;</span>
                     <Link to={Demo.BLANK_LINK} className="active header-path">
-                        Home Shop Setting
+                        
+                        {TranslationContext!==undefined?TranslationContext.link.homeshopsetting:"Home Shop Setting"}
                 </Link>
 
 
@@ -271,7 +290,8 @@ class HomeShopSetting extends Component {
                                                                             style={{ margin: "10px", width: "180px" }}
                                                                             onClick={this. handleGetStoreAgentListData.bind(this)}
                                                                         >
-                                                                            VIEW SEARCH
+                                                                           {TranslationContext!==undefined?TranslationContext.button.viewsearch:"VIEW SEARCH"}
+                                                                            
                                                                         </button>
                                                                     </div>
                                                                 </ul>
@@ -303,7 +323,7 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Sr No. <FontAwesomeIcon icon={faCaretDown} />
+                                                          {TranslationContext!==undefined?TranslationContext.span.srno:"Sr No."}   <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
                                                     accessor: "agentID",
@@ -314,7 +334,7 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Agent Name <FontAwesomeIcon icon={faCaretDown} />
+                                                             {TranslationContext!==undefined?TranslationContext.span.agentname:"Agent Name"}  <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
                                                     accessor: "agentName",
@@ -323,7 +343,7 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Email ID <FontAwesomeIcon icon={faCaretDown} />
+                                                            {TranslationContext!==undefined?TranslationContext.span.emailid:"Email ID"} <FontAwesomeIcon icon={faCaretDown} />
                                                         </span>
                                                     ),
                                                     accessor: "emailID",
@@ -332,7 +352,7 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Suggestion
+                                                            {TranslationContext!==undefined?TranslationContext.span.suggestion:"Suggestion"}
                                                         </span>
                                                     ),
                                                     accessor: "suggestion",
@@ -362,7 +382,7 @@ class HomeShopSetting extends Component {
                                                 {
                                                     Header: (
                                                         <span>
-                                                            Free Text
+                                                           {TranslationContext!==undefined?TranslationContext.span.freetext:"Free Text"} 
                                                         </span>
                                                     ),
                                                     accessor: "freeText",

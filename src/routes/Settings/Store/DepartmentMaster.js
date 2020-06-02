@@ -27,6 +27,8 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { CSVLink } from "react-csv";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
@@ -103,6 +105,7 @@ class DepartmentMaster extends Component {
       showDepartment: false,
       showFuncation: false,
       departmentId: 0,
+      translateLanguage: {}
     };
     this.handleGetDepartmentGridData = this.handleGetDepartmentGridData.bind(
       this
@@ -120,6 +123,17 @@ class DepartmentMaster extends Component {
     this.handleGetBrandData();
     // this.handleGetDepartmentList();
     this.handleGetDepartmentGridData();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   ////handle Brand change
@@ -1763,12 +1777,13 @@ class DepartmentMaster extends Component {
     //     {item.funcationName}
     //   </Option>
     // ));
-
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1778,11 +1793,13 @@ class DepartmentMaster extends Component {
             }}
             className="header-path"
           >
-            Store
+            
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Department Master
+            
+            {TranslationContext!==undefined?TranslationContext.link.departmentmaster:"Department Master"}
           </Link>
         </div>
 
@@ -1807,7 +1824,9 @@ class DepartmentMaster extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                    {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -1817,7 +1836,9 @@ class DepartmentMaster extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+                    {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY A TO Z"}
+                    </p>
                   </div>
                 </div>
                 <a
@@ -1829,10 +1850,13 @@ class DepartmentMaster extends Component {
                   }}
                   onClick={this.handleClearSearch.bind(this)}
                 >
-                  clear search
+                  {TranslationContext!==undefined?TranslationContext.p.clearsearch:"clear search"}
+                  
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -2046,10 +2070,10 @@ class DepartmentMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
-                              "Brand Name"
+                              TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"
                             )}
                           >
-                            Brand Name{" "}
+                            {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}{" "}
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2075,10 +2099,11 @@ class DepartmentMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "storeCode",
-                              "Store Code"
+                              TranslationContext!==undefined?TranslationContext.span.storecode:"Store Code"
                             )}
                           >
-                            Store Code
+                            {TranslationContext!==undefined?TranslationContext.span.storecode:"Store Code"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2104,10 +2129,11 @@ class DepartmentMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
-                              "Department Name"
+                              TranslationContext!==undefined?TranslationContext.span.departmentname:"Department Name"
                             )}
                           >
-                            Department Name
+                            {TranslationContext!==undefined?TranslationContext.span.departmentname:"Department Name"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2133,10 +2159,11 @@ class DepartmentMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "functionName",
-                              "Function"
+                              TranslationContext!==undefined?TranslationContext.span.function:"Function"
                             )}
                           >
-                            Function
+                            {TranslationContext!==undefined?TranslationContext.span.function:"Function"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2162,10 +2189,11 @@ class DepartmentMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
                             )}
                           >
-                            Created By
+                             {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2191,10 +2219,11 @@ class DepartmentMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
-                              "Status"
+                              TranslationContext!==undefined?TranslationContext.span.status:"Status"
                             )}
                           >
-                            Status
+                            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2209,7 +2238,9 @@ class DepartmentMaster extends Component {
                         accessor: "status",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                          {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
+                        </span>,
                         accessor: "actiondept",
                         sortable: false,
                         Cell: (row) => {
@@ -2224,14 +2255,17 @@ class DepartmentMaster extends Component {
                                     </div>
                                     <div>
                                       <p className="font-weight-bold blak-clr">
-                                        Delete file?
+                                        
+                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                       </p>
                                       <p className="mt-1 fs-12">
-                                        Are you sure you want to delete this
-                                        file?
+                                        
+                                    {TranslationContext!==undefined?TranslationContext.p.deletefile:"Are you sure you want to delete this file"}?
                                       </p>
                                       <div className="del-can">
-                                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                        <a href={Demo.BLANK_LINK}>
+                                        {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                        </a>
                                         <button
                                           className="butn"
                                           onClick={this.handleDeleteDepartmentData.bind(
@@ -2239,7 +2273,8 @@ class DepartmentMaster extends Component {
                                             ids
                                           )}
                                         >
-                                          Delete
+                                          {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                          
                                         </button>
                                       </div>
                                     </div>
@@ -2263,7 +2298,8 @@ class DepartmentMaster extends Component {
                                   row.original
                                 )}
                               >
-                                EDIT
+                                {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                
                               </button>
                             </div>
                           );
@@ -2316,9 +2352,13 @@ class DepartmentMaster extends Component {
               </div>
               <div className="col-md-4">
                 <div className="right-sect-div right-sect-collapse">
-                  <h3>CREATE DEPARTMENT</h3>
+                  <h3>
+                  {TranslationContext!==undefined?TranslationContext.h3.createdepartment:"CREATE DEPARTMENT"}
+                  </h3>
                   <div className="div-cntr">
-                    <label>Brand</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
+                    </label>
                     <Select
                       getOptionLabel={(option) => option.brandName}
                       getOptionValue={(option) => option.brandID}
@@ -2339,7 +2379,9 @@ class DepartmentMaster extends Component {
                     )}
                   </div>
                   <div className="div-cntr">
-                    <label>Store Code</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
+                    </label>
                     <Select
                       getOptionLabel={(option) => option.storeCode}
                       getOptionValue={(option) => option.storeID}
@@ -2360,7 +2402,9 @@ class DepartmentMaster extends Component {
                     )}
                   </div>
                   <div className="div-cntr">
-                    <label>Department</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.department:"Department"}
+                    </label>
                     <Aselect
                       showSearch={true}
                       value={this.state.list1Value}
@@ -2387,7 +2431,7 @@ class DepartmentMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleDepartmentAdd.bind(this)}
                       >
-                        + ADD NEW
+                        +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.list1Value === "" && (
@@ -2431,7 +2475,9 @@ class DepartmentMaster extends Component {
                     />
                   </div>
                   <div className="div-cntr">
-                    <label>Function</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.function:"Function"}
+                    </label>
 
                     <Aselect
                       showSearch={true}
@@ -2459,7 +2505,7 @@ class DepartmentMaster extends Component {
                         style={{ marginTop: "-55px" }}
                         onClick={this.handleToggleFuncationAdd.bind(this)}
                       >
-                        + ADD NEW
+                        +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.functionStatus === true ? (
@@ -2468,7 +2514,7 @@ class DepartmentMaster extends Component {
                         style={{ marginTop: "-53px" }}
                         onClick={this.handletoggleFunctionChange.bind(this)}
                       >
-                        + ADD NEW
+                        +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.listFunction === "" && (
@@ -2536,15 +2582,19 @@ class DepartmentMaster extends Component {
                       className="butn"
                       onClick={this.handleCreateDepartment.bind(this)}
                     >
-                      ADD
+                    {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
                     </button>
                   </div>
                 </div>
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
-                    <h3 className="pb-0">Bulk Upload</h3>
+                    <h3 className="pb-0">
+                    {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                    </h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                      {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                      </p>
                       <CSVLink
                         filename={"Department.csv"}
                         data={config.departmentTemplate}
@@ -2564,8 +2614,10 @@ class DepartmentMaster extends Component {
                           <div className="file-icon">
                             <img src={FileUpload} alt="file-upload" />
                           </div>
-                          <span className={"fileupload-span"}>Add File</span> or
-                          Drop File here
+                          <span className={"fileupload-span"}>
+                          {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
+                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
+                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                         </div>
                       )}
                     </Dropzone>
@@ -2595,18 +2647,21 @@ class DepartmentMaster extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}                                    
+                                    </a>
                                   <button
                                     className="butn"
                                     onClick={this.DeleteBulkUploadFile}
                                   >
-                                    Delete
+                                     {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                   </button>
                                 </div>
                               </div>
@@ -2625,11 +2680,14 @@ class DepartmentMaster extends Component {
                               className="file-retry"
                               onClick={this.handleBulkUpload.bind(this)}
                             >
-                              Retry
+                                {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
+                              
                             </span>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed">
+                            {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}
+                            </span>
                           </div>
                         </div>
                       ) : null}
@@ -2656,7 +2714,8 @@ class DepartmentMaster extends Component {
                     className="butn"
                     onClick={this.handleBulkUpload.bind(this)}
                   >
-                    ADD
+                    {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+                    
                   </button>
                 </div>
               </div>
@@ -2666,16 +2725,22 @@ class DepartmentMaster extends Component {
                 modalId="departmenteditmodal"
               >
                 <div className="edtpadding">
-                  <label className="popover-header-text">Edit Department</label>
+                  <label className="popover-header-text">
+                  {TranslationContext!==undefined?TranslationContext.label.editdepartment:"Edit Department"}
+                  </label>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Brand</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="brandID"
                       value={this.state.editDepartment.brandID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                      </option>
                       {this.state.brandData !== null &&
                         this.state.brandData.map((item, i) => (
                           <option
@@ -2694,14 +2759,18 @@ class DepartmentMaster extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Store Code</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="storeID"
                       value={this.state.editDepartment.storeID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                      </option>
                       {this.state.StoreCode !== null &&
                         this.state.StoreCode.map((item, j) => (
                           <option
@@ -2720,14 +2789,18 @@ class DepartmentMaster extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Department</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.department:"Department"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="departmentID"
                       value={this.state.editDepartment.departmentID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                      </option>
                       {this.state.departmentData !== null &&
                         this.state.departmentData.map((item, j) => (
                           <option
@@ -2774,14 +2847,18 @@ class DepartmentMaster extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Function</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.function:"Function"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="functionID"
                       value={this.state.editDepartment.functionID}
                       onChange={this.handleModalEditData}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>
+                      {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                      </option>
                       {this.state.functionData !== null &&
                         this.state.functionData.map((item, j) => (
                           <option
@@ -2800,7 +2877,9 @@ class DepartmentMaster extends Component {
                     )}
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Status</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                    </label>
                     <select
                       className="store-create-select"
                       name="status"
@@ -2811,8 +2890,12 @@ class DepartmentMaster extends Component {
                       }
                       onChange={this.handleModalEditData}
                     >
-                      <option value="Active">Active</option>
-                      <option value="Inactive">InActive</option>
+                      <option value="Active">
+                      {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                      </option>
+                      <option value="Inactive">
+                      {TranslationContext!==undefined?TranslationContext.option.inactive:"InActive"}
+                      </option>
                     </select>
                   </div>
                   <br />
@@ -2821,7 +2904,8 @@ class DepartmentMaster extends Component {
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >
-                      CANCEL
+                      {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                      
                     </a>
                     <button
                       className="pop-over-button"
@@ -2837,7 +2921,8 @@ class DepartmentMaster extends Component {
                       ) : (
                         ""
                       )}
-                      SAVE
+                      
+                      {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
                     </button>
                   </div>
                 </div>

@@ -12,6 +12,8 @@ import config from "./../../../helpers/config";
 import Modal from "react-bootstrap/Modal";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
+import * as translationHI from './../../../translations/hindi';
+import * as translationMA from './../../../translations/marathi';
 
 class StoreFileUploadLogs extends Component {
   constructor(props) {
@@ -38,6 +40,7 @@ class StoreFileUploadLogs extends Component {
       screatedDateFilterCheckbox: "",
       sfileUploadStatusFilterCheckbox: "",
       isATOZ: true,
+      translateLanguage: {}
     };
 
     this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
@@ -47,6 +50,17 @@ class StoreFileUploadLogs extends Component {
 
   componentDidMount() {
     this.handleGetFileUploadLog();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   downloadDefaultReport = (csvFile) => {
@@ -744,14 +758,18 @@ class StoreFileUploadLogs extends Component {
   }
 
   render() {
+
+    const TranslationContext = this.state.translateLanguage.default;
+
     const columnsTickFileUpload = [
       {
         Header: (
           <span
             className={this.state.sortHeader === "Type" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "fileType", "Type")}
+            onClick={this.StatusOpenModel.bind(this, "fileType",TranslationContext!==undefined?TranslationContext.span.type:"Type")}
           >
-            Type
+            {TranslationContext!==undefined?TranslationContext.span.type:"Type"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Type"
@@ -768,9 +786,10 @@ class StoreFileUploadLogs extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Name" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "fileName", "Name")}
+            onClick={this.StatusOpenModel.bind(this, "fileName", TranslationContext!==undefined?TranslationContext.span.name:"Name")}
           >
-            File Name
+            {TranslationContext!==undefined?TranslationContext.span.filename:"File Name"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Name"
@@ -787,9 +806,10 @@ class StoreFileUploadLogs extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Date" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "createdDate", "Date")}
+            onClick={this.StatusOpenModel.bind(this, "createdDate", TranslationContext!==undefined?TranslationContext.span.date:"Date")}
           >
-            Date
+            {TranslationContext!==undefined?TranslationContext.span.date:"Date"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Date"
@@ -813,21 +833,21 @@ class StoreFileUploadLogs extends Component {
                       <div>
                         <b>
                           <p className="title">
-                            Created By: {row.original.createdBy}
+                          {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
                           </p>
                         </b>
                         <p className="sub-title">
-                          Created Date: {row.original.createdDate}
+                        {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}: {row.original.createdDate}
                         </p>
                       </div>
                       <div>
                         <b>
                           <p className="title">
-                            Updated By: {row.original.modifiedBy}
+                          {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}: {row.original.modifiedBy}
                           </p>
                         </b>
                         <p className="sub-title">
-                          Updated Date: {row.original.modifiedDate}
+                        {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}: {row.original.modifiedDate}
                         </p>
                       </div>
                     </>
@@ -856,7 +876,7 @@ class StoreFileUploadLogs extends Component {
               "Status"
             )}
           >
-            Status
+            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ === false && this.state.sortHeader === "Status"
@@ -870,7 +890,9 @@ class StoreFileUploadLogs extends Component {
         accessor: "fileUploadStatus",
       },
       {
-        Header: <span>Error File</span>,
+        Header: <span>
+          {TranslationContext!==undefined?TranslationContext.span.errorfile:"Error File"}
+        </span>,
         accessor: "Erroor",
         Cell: (row) =>
           row.original.fileUploadStatus === "Completed" &&
@@ -883,13 +905,16 @@ class StoreFileUploadLogs extends Component {
                   row.original.errorFilePath
                 )}
               >
-                DOWNLOAD
+                 {TranslationContext!==undefined?TranslationContext.button.download:"DOWNLOAD"}
+                
               </button>
             </div>
           ),
       },
       {
-        Header: <span>Success File</span>,
+        Header: <span>
+           {TranslationContext!==undefined?TranslationContext.span.successfile:"Success File"}
+        </span>,
         accessor: "success",
         Cell: (row) =>
           row.original.fileUploadStatus === "Completed" &&
@@ -902,7 +927,7 @@ class StoreFileUploadLogs extends Component {
                   row.original.successFilePath
                 )}
               >
-                DOWNLOAD
+                  {TranslationContext!==undefined?TranslationContext.button.download:"DOWNLOAD"}
               </button>
             </div>
           ),
@@ -913,7 +938,8 @@ class StoreFileUploadLogs extends Component {
       <div className="mainDivPadding">
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            
           </Link>
           <span>&gt;</span>
           <Link
@@ -923,11 +949,13 @@ class StoreFileUploadLogs extends Component {
             }}
             className="header-path"
           >
-            Store
+             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            File Upload Logs
+            
+            {TranslationContext!==undefined?TranslationContext.link.fileuploadlogs:"File Upload Logs"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -950,7 +978,10 @@ class StoreFileUploadLogs extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -960,7 +991,9 @@ class StoreFileUploadLogs extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -973,10 +1006,13 @@ class StoreFileUploadLogs extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                  {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
