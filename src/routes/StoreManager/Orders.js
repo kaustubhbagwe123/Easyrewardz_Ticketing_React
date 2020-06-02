@@ -527,8 +527,12 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className="delibutn deliv-grid-butn">
-                            Delivered
+                          <button className=
+                          {item.Status==="Delivered"?"delibutn deliv-grid-butn":
+                           item.Status==="RTO"?"markasbutn deliv-grid-butn":
+                           "pickedbutn deliv-grid-butn"}>
+                            {item.Status==="Delivered"?"Delivered":
+                            item.Status==="RTO"?"Mark As Delivered":"Picked"}
                           </button>
                         </div>
                       );

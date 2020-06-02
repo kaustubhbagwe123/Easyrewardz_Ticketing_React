@@ -173,11 +173,19 @@
   border-radius: 3px;
   width: 142px;
   height: 31px;
+  color: #fff;
 }
 .delibutn{
   background-color: #25A874;
   border: 1px solid #25A874;
-  color: #fff;
+}
+.markasbutn{
+  background-color: #2561A8;
+  border: 1px solid #2561A8;
+}
+.pickedbutn{
+  background-color: #61A9FD;
+  border: 1px solid #61A9FD;
 }
 .order-popover-overlay {
   position: fixed;
