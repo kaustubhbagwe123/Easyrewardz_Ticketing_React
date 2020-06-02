@@ -27,6 +27,8 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 
 class SlaTemplateDepartment extends Component {
   constructor(props) {
@@ -87,6 +89,7 @@ class SlaTemplateDepartment extends Component {
       sisSLAActiveFilterCheckbox: "",
       regexp: /^[0-9\b]+$/,
       isATOZ: true,
+      translateLanguage: {}
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -101,6 +104,17 @@ class SlaTemplateDepartment extends Component {
     this.handleGetSLATemplateGrid();
     this.handleGetSLAFunctionName();
     this.handleGetPriorityList();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   sortStatusAtoZ() {
@@ -1233,11 +1247,13 @@ class SlaTemplateDepartment extends Component {
     });
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            
           </Link>
           <span>&gt;</span>
           <Link
@@ -1247,11 +1263,12 @@ class SlaTemplateDepartment extends Component {
             }}
             className="header-path"
           >
-            Store
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            SLA Template-Department
+          {TranslationContext!==undefined?TranslationContext.link.slatemplatedepartment:"SLA Template-Department"}
+            
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1274,7 +1291,10 @@ class SlaTemplateDepartment extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1284,7 +1304,10 @@ class SlaTemplateDepartment extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1296,10 +1319,13 @@ class SlaTemplateDepartment extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1440,10 +1466,11 @@ class SlaTemplateDepartment extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "functionName",
-                              "Function Name"
+                              TranslationContext!==undefined?TranslationContext.span.functionname:"Function Name"
                             )}
                           >
-                            Function Name
+                             {TranslationContext!==undefined?TranslationContext.span.functionname:"Function Name"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1458,7 +1485,9 @@ class SlaTemplateDepartment extends Component {
                         accessor: "functionName",
                       },
                       {
-                        Header: <span>Priority Type</span>,
+                        Header: <span>
+                          {TranslationContext!==undefined?TranslationContext.span.prioritytype:"Priority Type"}
+                        </span>,
                         sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
@@ -1483,18 +1512,22 @@ class SlaTemplateDepartment extends Component {
                                       <div className="general-popover created-popover">
                                         <div>
                                           <label className="slatargettext-1">
-                                            SLA TARGETS
+                                           
+                                            {TranslationContext!==undefined?TranslationContext.label.slatargets:"SLA TARGETS"}
                                           </label>
                                         </div>
                                         <div>
                                           <label className="createhead-text-1">
-                                            Priority
+                                            
+                                            {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
                                           </label>
                                           <label className="createhead-text-1">
                                             %SLA
+                                           
                                           </label>
                                           <label className="createhead-text-1">
-                                            Resolve
+                                            
+                                            {TranslationContext!==undefined?TranslationContext.label.resolve:"Resolve"}
                                           </label>
                                         </div>
                                         {slaTarget !== null &&
@@ -1543,10 +1576,11 @@ class SlaTemplateDepartment extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
                             )}
                           >
-                            Created By
+                            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1571,23 +1605,23 @@ class SlaTemplateDepartment extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                            {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                           {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                           {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:{" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                           {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated Date"}:{" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1619,10 +1653,11 @@ class SlaTemplateDepartment extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isSLAActive",
-                              "Status"
+                              TranslationContext!==undefined?TranslationContext.span.status:"Status"
                             )}
                           >
-                            Status
+                             {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1636,7 +1671,9 @@ class SlaTemplateDepartment extends Component {
                         accessor: "isSLAActive",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                          {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
+                        </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           return (
@@ -1650,14 +1687,16 @@ class SlaTemplateDepartment extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteSLA.bind(
@@ -1665,7 +1704,7 @@ class SlaTemplateDepartment extends Component {
                                               row.original.slaid
                                             )}
                                           >
-                                            Delete
+                                              {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1690,7 +1729,7 @@ class SlaTemplateDepartment extends Component {
                                   )}
                                 >
                                   <label className="Table-action-edit-button-text">
-                                    EDIT
+                                  {TranslationContext!==undefined?TranslationContext.label.edit:"EDIT"}
                                   </label>
                                 </button>
                               </span>
@@ -1709,10 +1748,14 @@ class SlaTemplateDepartment extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="Create-store-text">CREATE SLA</label>
+                    <label className="Create-store-text">
+                    {TranslationContext!==undefined?TranslationContext.label.createsla:"CREATE SLA"}
+                    </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
-                        <label className="reports-to">Function Type</label>
+                        <label className="reports-to">
+                        {TranslationContext!==undefined?TranslationContext.label.functiontype:"Function Type"}
+                        </label>
                         <div className="dropdown">
                           <button
                             className="btn issuesladrop"
@@ -1720,7 +1763,8 @@ class SlaTemplateDepartment extends Component {
                             id="issueTypeValue"
                             onClick={this.handleSlaButton}
                           >
-                            Select
+                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            
                             <span className="caret"></span>
                           </button>
                           {this.state.indiSla === "" && (
@@ -1740,7 +1784,7 @@ class SlaTemplateDepartment extends Component {
                                 <input
                                   type="text"
                                   className="searchf"
-                                  placeholder="Search"
+                                  placeholder={TranslationContext!==undefined?TranslationContext.placeholder.search:"Search"}
                                   maxLength={25}
                                   name="store_code"
                                   onChange={this.handleSearchSla}
@@ -1760,14 +1804,16 @@ class SlaTemplateDepartment extends Component {
                                     <label
                                       onClick={this.selectAllSLA.bind(this)}
                                     >
-                                      Select All
+                                      
+                                      {TranslationContext!==undefined?TranslationContext.label.selectall:"Select All"}
                                     </label>
                                   </li>
                                   <li>
                                     <label
                                       onClick={this.selectNoSLA.bind(this)}
                                     >
-                                      Clear
+                                      {TranslationContext!==undefined?TranslationContext.label.clear:"Clear"}
+                                      
                                     </label>
                                   </li>
                                 </ul>
@@ -1816,7 +1862,8 @@ class SlaTemplateDepartment extends Component {
                                     className="cancel"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Cancel
+                                     {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                                    
                                   </button>
                                 </li>
                                 <li style={{ float: "right" }}>
@@ -1824,7 +1871,8 @@ class SlaTemplateDepartment extends Component {
                                     className="done"
                                     onClick={this.handleSlaButton}
                                   >
-                                    Done
+                                    
+                                    {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
                                   </button>
                                 </li>
                               </ul>
@@ -1835,9 +1883,15 @@ class SlaTemplateDepartment extends Component {
                     </div>
 
                     <div className="slatargetRow-3 ma">
-                      <label className="createhead-text-new-1">Priority</label>
-                      <label className="createhead-text-5">% SLA</label>
-                      <label className="createhead-text-6">Resolve</label>
+                      <label className="createhead-text-new-1">
+                      {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+                      </label>
+                      <label className="createhead-text-5"> 
+                      %{TranslationContext!==undefined?TranslationContext.label.sla:"SLA"}
+                      </label>
+                      <label className="createhead-text-6">
+                      {TranslationContext!==undefined?TranslationContext.label.resolve:"Resolve"}
+                      </label>
                     </div>
                     {this.state.finalData !== null &&
                       this.state.finalData.map((item, i) => (
@@ -1908,14 +1962,20 @@ class SlaTemplateDepartment extends Component {
 
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Status</label>
+                        <label className="reports-to">
+                        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                        </label>
                         <select
                           className="store-create-select"
                           value={this.state.SlaIsActive}
                           onChange={this.handleSlaIsActive}
                         >
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
+                          <option value="true">
+                          {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                          </option>
+                          <option value="false">
+                          {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -1925,7 +1985,8 @@ class SlaTemplateDepartment extends Component {
                         type="button"
                         onClick={this.handleCreateSlaTemplate.bind(this)}
                       >
-                        ADD
+                        {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+                        
                       </button>
                     </div>
                   </div>
@@ -1934,9 +1995,14 @@ class SlaTemplateDepartment extends Component {
                 <div className="">
                   <div className="right-sect-div">
                     <div className="d-flex justify-content-between align-items-center pb-2">
-                      <h3 className="pb-0">Bulk Upload</h3>
+                      <h3 className="pb-0">
+                      {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                      </h3>
                       <div className="down-excel">
-                        <p>Template</p>
+                        <p>
+                        {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                          
+                          </p>
                         <CSVLink
                           filename={"SLA.csv"}
                           data={config.storeSlaTemplate}
@@ -1969,8 +2035,10 @@ class SlaTemplateDepartment extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>{" "}
-                            or Drop File here
+                            <span className={"fileupload-span"}>
+                            {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}</span>{" "}
+                            {TranslationContext!==undefined?TranslationContext.div.or:"or"}
+                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                           </div>
                         )}
                       </Dropzone>
@@ -2000,18 +2068,23 @@ class SlaTemplateDepartment extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                  {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}>
+                                    {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                      
+                                      </a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                      {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                    
                                     </button>
                                   </div>
                                 </div>
@@ -2033,11 +2106,13 @@ class SlaTemplateDepartment extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                Retry
+                                {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-failed">
+                              {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}
+                                </span>
                             </div>
                           </div>
                         ) : null}
@@ -2067,7 +2142,7 @@ class SlaTemplateDepartment extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                          {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
                     </button>
                     <br />
                   </div>

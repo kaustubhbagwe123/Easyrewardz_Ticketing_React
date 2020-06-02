@@ -30,6 +30,8 @@ import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 
 class Alerts extends Component {
   constructor(props) {
@@ -149,6 +151,7 @@ class Alerts extends Component {
       viewSMSCustomer: false,
       viewNotifInternal: false,
       viewNotifTicketing: false,
+      translateLanguage: {}
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -168,6 +171,17 @@ class Alerts extends Component {
     this.handleGetAlert();
     this.handleAlertData();
     this.handleGetAgentList();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+     
   }
 
   handlePlaceholderList(alertId) {
@@ -2087,11 +2101,13 @@ class Alerts extends Component {
     });
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -2101,11 +2117,13 @@ class Alerts extends Component {
             }}
             className="header-path"
           >
-            Store
+             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Alerts
+            
+            {TranslationContext!==undefined?TranslationContext.link.alerts:"Alerts"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -2128,7 +2146,10 @@ class Alerts extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -2138,7 +2159,10 @@ class Alerts extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -2150,10 +2174,14 @@ class Alerts extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                  {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+               
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -2178,7 +2206,9 @@ class Alerts extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">ALL
+                      {TranslationContext!==undefined?TranslationContext.span.all:"ALL"}
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumn === "alertTypeName"
@@ -2290,10 +2320,11 @@ class Alerts extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "alertTypeName",
-                              "AlertType"
+                              TranslationContext!==undefined?TranslationContext.span.alerttype:"Alert Type"
                             )}
                           >
-                            Alert Type
+                        {TranslationContext!==undefined?TranslationContext.span.alerttype:"Alert Type"}
+                          
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2308,7 +2339,7 @@ class Alerts extends Component {
                         accessor: "alertTypeName",
                       },
                       {
-                        Header: "Communication Mode",
+                        Header:  TranslationContext!==undefined?TranslationContext.header.communicationmode:"Communication Mode",
                         accessor: "modeOfCommunication",
                         className: "communication-labelHeader",
                         sortable: false,
@@ -2348,10 +2379,11 @@ class Alerts extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"
                             )}
                           >
-                            Created by
+                                {TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2374,23 +2406,23 @@ class Alerts extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                          {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                        {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                          {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:{" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                        {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:{" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -2419,10 +2451,11 @@ class Alerts extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isAlertActive",
-                              "Status"
+                              TranslationContext!==undefined?TranslationContext.span.status:"Status"
                             )}
                           >
-                            Status
+                            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -2437,7 +2470,7 @@ class Alerts extends Component {
                         accessor: "isAlertActive",
                       },
                       {
-                        Header: "Actions",
+                        Header:  TranslationContext!==undefined?TranslationContext.header.actions:"Actions",
                         // accessor: "action",
                         sortable: false,
                         Cell: (row) => {
@@ -2453,14 +2486,14 @@ class Alerts extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                          
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}> {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
                                           <button
                                             className="butn"
                                             onClick={this.deleteAlert.bind(
@@ -2468,7 +2501,7 @@ class Alerts extends Component {
                                               row.original.alertID
                                             )}
                                           >
-                                            Delete
+                                             {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -2496,7 +2529,8 @@ class Alerts extends Component {
                                       row.original
                                     )}
                                   >
-                                    EDIT
+                                     {TranslationContext!==undefined?TranslationContext.label.edit:"EDIT"}
+                                    
                                   </label>
                                 </button>
                               </span>
@@ -2553,9 +2587,14 @@ class Alerts extends Component {
               </div>
               <div className="col-md-4">
                 <div className="right-sect-div">
-                  <h3>Create ALERTS</h3>
+                  <h3>
+
+                  {TranslationContext!==undefined?TranslationContext.h3.createalerts:"Create ALERTS"}
+                  </h3>
                   <div className="div-cntr">
-                    <label>Alert Type</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.alerttype:"Alert Type"}
+                    </label>
 
                     <select
                       className="add-select-category"
@@ -2563,7 +2602,9 @@ class Alerts extends Component {
                       value={this.state.selectedAlertType}
                       onChange={this.setDataOnChangeAlert}
                     >
-                      <option value={0}>Select Alert</option>
+                      <option value={0}>
+                      {TranslationContext!==undefined?TranslationContext.option.selectalert:"Select Alert"}
+                      </option>
                       {this.state.alertData !== null &&
                         this.state.alertData.map((item, i) => (
                           <option key={i} value={item.alertID}>
@@ -2582,7 +2623,9 @@ class Alerts extends Component {
                       </p>
                     )}
                   </div>
-                  <h4>Communication Mode</h4>
+                  <h4>
+                  {TranslationContext!==undefined?TranslationContext.h4.communicationmode:"Communication Mode"}
+                  </h4>
                   {this.state.selectedEmailCustomer === false &&
                     this.state.selectedEmailInternal === false &&
                     this.state.selectedEmailStore === false &&
@@ -2594,7 +2637,9 @@ class Alerts extends Component {
                       </p>
                     )}
                   <div className="div-cntr">
-                    <label>Email</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.email:"Email"}
+                    </label>
                     <br />
                     <Checkbox
                       className="cre-str-alrt"
@@ -2602,7 +2647,8 @@ class Alerts extends Component {
                       value="emailCust"
                       checked={this.state.viewEmailCustomer}
                     >
-                      Customer
+                        {TranslationContext!==undefined?TranslationContext.checkbox.customer:"Customer"}
+                      
                     </Checkbox>
                     <Checkbox
                       className="cre-str-alrt"
@@ -2610,7 +2656,8 @@ class Alerts extends Component {
                       value="emailInt"
                       checked={this.state.viewEmailInternal}
                     >
-                      Internal
+                        {TranslationContext!==undefined?TranslationContext.checkbox.internal:"Internal"}
+                      
                     </Checkbox>
                     <Checkbox
                       className="cre-str-alrt"
@@ -2618,11 +2665,14 @@ class Alerts extends Component {
                       value="emailTicketing"
                       checked={this.state.viewEmailStore}
                     >
-                      Ticketing
+                       {TranslationContext!==undefined?TranslationContext.checkbox.ticketing:"Ticketing"}
+                      
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>SMS</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.sms:"SMS"}
+                    </label>
                     <br />
                     <Checkbox
                       className="cre-str-alrt"
@@ -2630,11 +2680,15 @@ class Alerts extends Component {
                       value="smsCust"
                       checked={this.state.viewSMSCustomer}
                     >
-                      Customer
+                       {TranslationContext!==undefined?TranslationContext.checkbox.customer:"Customer"}
+                      
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>Notification</label>
+                    <label>
+
+                    {TranslationContext!==undefined?TranslationContext.label.notification:"Notification"}
+                    </label>
                     <br />
                     <Checkbox
                       className="cre-str-alrt"
@@ -2642,7 +2696,8 @@ class Alerts extends Component {
                       value="notiInt"
                       checked={this.state.viewNotifInternal}
                     >
-                      Internal
+                        {TranslationContext!==undefined?TranslationContext.checkbox.internal:"Internal"}
+                      
                     </Checkbox>
                     <Checkbox
                       className="cre-str-alrt"
@@ -2650,19 +2705,26 @@ class Alerts extends Component {
                       value="notiTicketing"
                       checked={this.state.viewNotifTicketing}
                     >
-                      Ticketing
+                       {TranslationContext!==undefined?TranslationContext.checkbox.ticketing:"Ticketing"}
+                      
                     </Checkbox>
                   </div>
                   <div className="div-cntr">
-                    <label>Status</label>
+                    <label>
+                    {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                    </label>
                     <select
                       name="selectedStatus"
                       value={this.state.selectedStatus}
                       onChange={this.setDataOnChangeAlert}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
+                      <option value="true">
+                      {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                      </option>
+                      <option value="false">
+                      {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                      </option>
                     </select>
                     {this.state.selectedStatus === "" && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
@@ -2674,7 +2736,8 @@ class Alerts extends Component {
                     className="butn"
                     onClick={this.handleAddAlertTabsOpen}
                   >
-                    Next
+                    {TranslationContext!==undefined?TranslationContext.button.next:"Next"}
+                    
                   </button>
                   <Modal
                     size="lg"
@@ -2685,7 +2748,7 @@ class Alerts extends Component {
                     <Modal.Header>
                       <div className="setting-tabs alert-tabs">
                         <h5 className="alert-desc">
-                          Alert Type :{" "}
+                          {TranslationContext!==undefined?TranslationContext.h5.alerttype:"Alert Type"}:{" "}
                           {this.state.isEdit
                             ? this.state.alertEdit.AlertTypeName
                             : this.state.selectedAlertTypeName}
@@ -2708,7 +2771,8 @@ class Alerts extends Component {
                                 aria-controls="email-tab"
                                 aria-selected="true"
                               >
-                                Email
+                                {TranslationContext!==undefined?TranslationContext.a.email:"Email"}
+                                
                               </a>
                             </li>
                           )}
@@ -2724,7 +2788,8 @@ class Alerts extends Component {
                                 aria-controls="sms-tab"
                                 aria-selected="false"
                               >
-                                SMS
+                                 {TranslationContext!==undefined?TranslationContext.a.sms:"SMS"}
+                                
                               </a>
                             </li>
                           )}
@@ -2740,7 +2805,8 @@ class Alerts extends Component {
                                 aria-controls="notification-tab"
                                 aria-selected="false"
                               >
-                                Notification
+                                   {TranslationContext!==undefined?TranslationContext.a.notification:"Notification"}
+                                
                               </a>
                             </li>
                           )}
@@ -2781,7 +2847,8 @@ class Alerts extends Component {
                                       aria-controls="customer-tab"
                                       aria-selected="true"
                                     >
-                                      Customer
+                                        {TranslationContext!==undefined?TranslationContext.a.customer:"Customer"}
+                                      
                                     </a>
                                   </li>
                                 )}
@@ -2796,7 +2863,8 @@ class Alerts extends Component {
                                       aria-controls="Internal-tab"
                                       aria-selected="false"
                                     >
-                                      Internal
+                                  {TranslationContext!==undefined?TranslationContext.a.internal:"Internal"}
+                                      
                                     </a>
                                   </li>
                                 )}
@@ -2811,7 +2879,8 @@ class Alerts extends Component {
                                       aria-controls="ticket-tab"
                                       aria-selected="false"
                                     >
-                                      Ticketing
+                                         {TranslationContext!==undefined?TranslationContext.a.ticketing:"Ticketing"}
+                                      
                                     </a>
                                   </li>
                                 )}
@@ -2826,7 +2895,8 @@ class Alerts extends Component {
                                 aria-labelledby="customer-tab"
                               >
                                 <label className="alert-main-popuplbl">
-                                  Compose your Email
+                                {TranslationContext!==undefined?TranslationContext.label.composeyouremail:"Compose your Email"}
+                                  
                                 </label>
                                 <div
                                   style={{ display: "none" }}
@@ -2834,7 +2904,8 @@ class Alerts extends Component {
                                 >
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
-                                      Subject
+                                    {TranslationContext!==undefined?TranslationContext.label.subject:"Subject"}
+                                      
                                     </label>
                                     <div className="col-sm">
                                       <input
@@ -2890,7 +2961,8 @@ class Alerts extends Component {
                                 aria-labelledby="Internal-tab"
                               >
                                 <label className="alert-main-popuplbl">
-                                  Compose your Email
+                                {TranslationContext!==undefined?TranslationContext.label.composeyouremail:"Compose your Email"}
+                                 
                                 </label>
                                 <div
                                   style={{ display: "none" }}
@@ -2898,7 +2970,8 @@ class Alerts extends Component {
                                 >
                                   <div className="form-group row">
                                     <label className="label-color-alert col-sm-auto">
-                                      Subject
+                                      
+                                      {TranslationContext!==undefined?TranslationContext.label.subject:"Subject"}
                                     </label>
                                     <div className="col-sm">
                                       <input
@@ -2953,7 +3026,8 @@ class Alerts extends Component {
                                 aria-labelledby="ticket-tab"
                               >
                                 <label className="alert-main-popuplbl">
-                                  Compose your Email
+                                {TranslationContext!==undefined?TranslationContext.label.composeyouremail:"Compose your Email"}
+                                  
                                 </label>
                                 <div className="div-padding-alert">
                                   <div
@@ -2961,7 +3035,7 @@ class Alerts extends Component {
                                     className="form-group row"
                                   >
                                     <label className="label-color-alert col-sm-auto">
-                                      Subject
+                                    {TranslationContext!==undefined?TranslationContext.label.subject:"Subject"}
                                     </label>
                                     <div className="col-sm">
                                       <input
@@ -3018,7 +3092,8 @@ class Alerts extends Component {
                         >
                           <div className="sms-mainLabel alert-p1">
                             <label className="alert-main-popuplbl">
-                              Compose your SMS
+                            {TranslationContext!==undefined?TranslationContext.label.composeyoursms:" Compose your SMS"}
+                             
                             </label>
                             <textarea
                               rows="10"
@@ -3056,7 +3131,8 @@ class Alerts extends Component {
                                       aria-controls="Internal-noti-tab"
                                       aria-selected="false"
                                     >
-                                      Internal
+                                       {TranslationContext!==undefined?TranslationContext.a.internal:"Internal"}
+                                      
                                     </a>
                                   </li>
                                 )}
@@ -3071,7 +3147,8 @@ class Alerts extends Component {
                                       aria-controls="ticket-noti-tab"
                                       aria-selected="false"
                                     >
-                                      Ticketing
+                                      {TranslationContext!==undefined?TranslationContext.a.ticketing:"Ticketing"}
+                                      
                                     </a>
                                   </li>
                                 )}
@@ -3088,7 +3165,8 @@ class Alerts extends Component {
                                 <div className="sms-mainLabel alert-p1">
                                   <div className="noti-plchldr-cntr">
                                     <label className="alert-main-popuplbl">
-                                      Compose your Notification
+                                    {TranslationContext!==undefined?TranslationContext.label.composeyournotification:" Compose your Notification"}
+                                     
                                     </label>
                                   </div>
                                   <textarea
@@ -3123,7 +3201,8 @@ class Alerts extends Component {
                                 <div className="sms-mainLabel alert-p1">
                                   <div className="noti-plchldr-cntr">
                                     <label className="alert-main-popuplbl">
-                                      Compose your Notification
+                                    {TranslationContext!==undefined?TranslationContext.label.composeyournotification:" Compose your Notification"}
+                                     
                                     </label>
                                   </div>
                                   <textarea
@@ -3176,7 +3255,9 @@ class Alerts extends Component {
                             ) : (
                               ""
                             )}
-                            SAVE
+                            {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
+                                     
+                            
                           </button>
                         </div>
                       </div>
@@ -3188,9 +3269,12 @@ class Alerts extends Component {
                     style={{ display: "none" }}
                     className="d-flex justify-content-between align-items-center pb-2"
                   >
-                    <h3 className="pb-0">Bulk Upload1</h3>
+                    <h3 className="pb-0">{TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}1?</h3>
                     <div className="down-excel">
-                      <p>Template</p>
+                      <p>
+                      {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                                          
+                      </p>
                       <a href={Demo.BLANK_LINK}>
                         <img src={DownExcel} alt="download icon" />
                       </a>
@@ -3211,7 +3295,10 @@ class Alerts extends Component {
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
                     </div>
-                    <span>Add File</span> or Drop File here
+                    <span>
+                    {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
+                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
+                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                   </label>
                   {this.state.fileN.length === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3238,18 +3325,19 @@ class Alerts extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
                                   <button
                                     className="butn"
                                     onClick={this.handleDeleteBulkupload}
                                   >
-                                    Delete
+                                    {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                   </button>
                                 </div>
                               </div>
@@ -3271,11 +3359,11 @@ class Alerts extends Component {
                               className="file-retry"
                               // onClick={this.hanldeAddBulkUpload.bind(this)}
                             >
-                              Retry
+                               {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
                             </a>
                           </div>
                           <div>
-                            <span className="file-failed">Failed</span>
+                            <span className="file-failed"> {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}</span>
                           </div>
                         </div>
                       ) : null}
@@ -3307,7 +3395,7 @@ class Alerts extends Component {
                   >
                     ADD
                   </button> */}
-                  <button className="butn">ADD</button>
+                  <button className="butn"> {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}</button>
                 </div>
               </div>
             </div>
@@ -3320,11 +3408,16 @@ class Alerts extends Component {
         >
           <div className="edtpadding right-sect-div">
             <div className="">
-              <label className="popover-header-text">EDIT ALERTS</label>
+              <label className="popover-header-text">
+                
+                {TranslationContext!==undefined?TranslationContext.label.editalerts:"EDIT ALERTS"}
+                </label>
             </div>
 
             <div className="div-cntr">
-              <label>Alert Type</label>
+              <label>
+              {TranslationContext!==undefined?TranslationContext.label.alerttype:"Alert Type"}
+              </label>
 
               <select
                 className="add-select-category disabled-input"
@@ -3333,7 +3426,10 @@ class Alerts extends Component {
                 onChange={this.editAlertModalData.bind(this)}
                 disabled
               >
-                <option>Select Alert</option>
+                <option>
+
+                {TranslationContext!==undefined?TranslationContext.option.selectalert:"Select Alert"}
+                </option>
                 {this.state.alertData !== null &&
                   this.state.alertData.map((item, i) => (
                     <option key={i} value={item.alertID}>
@@ -3347,7 +3443,9 @@ class Alerts extends Component {
                 </p>
               )}
             </div>
-            <h4>Communication Mode</h4>
+            <h4>
+            {TranslationContext!==undefined?TranslationContext.h4.communicationmode:"Communication Mode"}
+            </h4>
             {this.state.emailCust === false &&
               this.state.emailTicketing === false &&
               this.state.notiTicketing === false &&
@@ -3359,70 +3457,88 @@ class Alerts extends Component {
                 </p>
               )}
             <div className="div-cntr">
-              <label>Email</label>
+              <label>
+              {TranslationContext!==undefined?TranslationContext.label.email:"Email"}
+              </label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailCust}
                 value="emailCust"
               >
-                Customer
+               {TranslationContext!==undefined?TranslationContext.checkbox.customer:"Customer"} 
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailInt}
                 value="emailInt"
               >
-                Internal
+                   {TranslationContext!==undefined?TranslationContext.checkbox.internal:"Internal"} 
+                
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.emailTicketing}
                 value="emailTicketing"
               >
-                Ticketing
+                 {TranslationContext!==undefined?TranslationContext.checkbox.ticketing:"Ticketing"} 
+                
               </Checkbox>
             </div>
             <div className="div-cntr">
-              <label>SMS</label>
+              <label>
+              {TranslationContext!==undefined?TranslationContext.label.sms:"SMS"} 
+              </label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.smsCust}
                 value="smsCust"
               >
-                Customer
+
+                {TranslationContext!==undefined?TranslationContext.checkbox.customer:"Customer"} 
               </Checkbox>
             </div>
             <div className="div-cntr">
-              <label>Notification</label>
+              <label>
+              {TranslationContext!==undefined?TranslationContext.label.notification:"Notification"} 
+                </label>
               <br />
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.notiInt}
                 value="notiInt"
               >
-                Internal
+                  {TranslationContext!==undefined?TranslationContext.checkbox.internal:"Internal"}
+
+                
               </Checkbox>
               <Checkbox
                 onChange={this.handleAlertTabs.bind(this, "")}
                 checked={this.state.notiTicketing}
                 value="notiTicketing"
               >
-                Ticketing
+                  {TranslationContext!==undefined?TranslationContext.checkbox.ticketing:"Ticketing"} 
+                
               </Checkbox>
             </div>
 
             <div className="div-cntr">
-              <label>Status</label>
+              <label>
+              {TranslationContext!==undefined?TranslationContext.label.status:"Status"} 
+              </label>
               <select
                 name="alertIsActive"
                 value={this.state.alertEdit.alertIsActive}
                 onChange={this.editAlertModalData.bind(this)}
               >
                 {/* <option value="">Select</option> */}
-                <option value={"Active"}>Active</option>
-                <option value={"InActive"}>Inactive</option>
+                <option value={"Active"}>
+                {TranslationContext!==undefined?TranslationContext.option.active:"Active"} 
+                </option>
+                <option value={"InActive"}>
+                {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                </option>
               </select>
               {this.state.selectedStatus === "" && (
                 <p style={{ color: "red", marginBottom: "0px" }}>
@@ -3434,13 +3550,15 @@ class Alerts extends Component {
             <br />
             <div className="text-center">
               <span className="pop-over-cancle" onClick={this.handleEditModal}>
-                CANCEL
+              {TranslationContext!==undefined?TranslationContext.span.cancel:"CANCEL"} 
+                
               </span>
               <button
                 className="pop-over-button FlNone"
                 onClick={this.handleOpenAdd.bind(this)}
               >
-                SAVE
+                    {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"} 
+                
               </button>
             </div>
           </div>

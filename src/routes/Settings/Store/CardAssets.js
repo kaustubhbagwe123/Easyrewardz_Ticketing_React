@@ -8,6 +8,8 @@ import config from "../../../helpers/config";
 import { authHeader } from "../../../helpers/authHeader";
 import { Table } from "antd";
 import Bata from "./../../../assets/Images/Bata2.jpg";
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 // import InfoIcon from "../../assets/Images/info-icon.png";
 class CardAssets extends Component {
   constructor(props) {
@@ -22,6 +24,7 @@ class CardAssets extends Component {
           storeCode: "Store1",
           storeName: "Store ABC",
           StoreAddress: "Store Address",
+         
         },
       ],
       uploadLogData: [
@@ -50,10 +53,24 @@ class CardAssets extends Component {
           status: "Rejected",
         },
       ],
+      translateLanguage: {}
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
+  }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="custom-tableak cardasscus">
@@ -68,7 +85,8 @@ class CardAssets extends Component {
                 aria-controls="asset-approval"
                 aria-selected="true"
               >
-                Asset Approval
+             {TranslationContext!==undefined?TranslationContext.a.assetapproval:"Asset Approval"}
+                
               </a>
             </li>
             <li className="nav-item">

@@ -1898,18 +1898,21 @@ class ItemMaster extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                  Delete file?
+                                {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                 </p>
                                 <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
+                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                  </a>
                                   <button
                                     className="butn"
                                     onClick={this.DeleteBulkUploadFile}
                                   >
-                                    Delete
+                                     {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                    
                                   </button>
                                 </div>
                               </div>

@@ -26,6 +26,8 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import Dropzone from "react-dropzone";
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 
 class StoreCRMRole extends Component {
   constructor(props) {
@@ -82,6 +84,7 @@ class StoreCRMRole extends Component {
       isortA: false,
       isATOZ: true,
       crmData: [],
+      translateLanguage: {}
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -92,6 +95,17 @@ class StoreCRMRole extends Component {
     this.handleGetCRMGridData();
     this.handleModulesDefault();
     this.handleGetStoreCrmModule();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
   handleTabChange(index) {
     this.setState({
@@ -1010,11 +1024,13 @@ class StoreCRMRole extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1024,11 +1040,13 @@ class StoreCRMRole extends Component {
             }}
             className="header-path"
           >
-            Store
+              {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            CRM Roles
+            
+            {TranslationContext!==undefined?TranslationContext.link.crmroles:"CRM Roles"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1052,7 +1070,9 @@ class StoreCRMRole extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY A TO Z</p>
+                    <p>
+                    {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    </p>
                   </div>
                   <div className="d-flex">
                     <a
@@ -1062,7 +1082,10 @@ class StoreCRMRole extends Component {
                     >
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
-                    <p>SORT BY Z TO A</p>
+                    <p>
+
+                    {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    </p>
                   </div>
                 </div>
                 <a
@@ -1074,10 +1097,14 @@ class StoreCRMRole extends Component {
                   }}
                   onClick={this.handleClearSearch.bind(this)}
                 >
-                  clear search
+                   {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                  
                 </a>
                 <div className="filter-type">
-                  <p>FILTER BY TYPE</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.a.filterbytype:"FILTER BY TYPE"}
+                  </p>
                   <input
                     type="text"
                     style={{ display: "block" }}
@@ -1213,10 +1240,11 @@ class StoreCRMRole extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "roleName",
-                              "Role Name"
+                              TranslationContext!==undefined?TranslationContext.span.rolename:"Role Name"
                             )}
                           >
-                            Role Name
+                             {TranslationContext!==undefined?TranslationContext.span.rolename:"Role Name"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1277,10 +1305,11 @@ class StoreCRMRole extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              "Created By"
+                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
                             )}
                           >
-                            Created By
+                            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1305,23 +1334,23 @@ class StoreCRMRole extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {row.original.createdBy}
+                                          {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                        {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
                                           {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By:{" "}
+                                          {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:{" "}
                                             {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                        {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:{" "}
                                           {row.original.modifiedDate}
                                         </p>
                                       </div>
@@ -1352,10 +1381,11 @@ class StoreCRMRole extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isRoleActive",
-                              "Status"
+                              TranslationContext!==undefined?TranslationContext.span.status:"Status"
                             )}
                           >
-                            Status
+                             {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                            
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1370,7 +1400,9 @@ class StoreCRMRole extends Component {
                         accessor: "isRoleActive",
                       },
                       {
-                        Header: <span>Actions</span>,
+                        Header: <span>
+                           {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
+                        </span>,
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1385,14 +1417,18 @@ class StoreCRMRole extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                          
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                          
+                                            
+                                            </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteCrmRole.bind(
@@ -1400,7 +1436,8 @@ class StoreCRMRole extends Component {
                                               row.original.crmRoleID
                                             )}
                                           >
-                                            Delete
+                                             {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                          
                                           </button>
                                         </div>
                                       </div>
@@ -1425,7 +1462,9 @@ class StoreCRMRole extends Component {
                                     row.original
                                   )}
                                 >
-                                  EDIT
+                                  
+                                  {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                          
                                 </button>
                               </span>
                             </>
@@ -1481,13 +1520,17 @@ class StoreCRMRole extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="create-department">CREATE CRM ROLE</label>
+                    <label className="create-department">
+                    {TranslationContext!==undefined?TranslationContext.label.createcrmrole:"CREATE CRM ROLE"}
+                    </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Role Name</label>
+                      <label className="designation-name">
+                      {TranslationContext!==undefined?TranslationContext.label.rolename:"Role Name"}
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder="Enter Role Name"
+                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterrolename:"Enter Role Name"}
                         maxLength={25}
                         name="RoleName"
                         value={this.state.RoleName}
@@ -1535,13 +1578,17 @@ class StoreCRMRole extends Component {
                       ))}
 
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">
+                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                      </label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.RoleisActive}
                         onChange={this.handleRoleisActive}
                       >
-                        <option value="0">select</option>
+                        <option value="0">
+                        {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+                        </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -1563,7 +1610,8 @@ class StoreCRMRole extends Component {
                           "add"
                         )}
                       >
-                        ADD ROLE
+                           {TranslationContext!==undefined?TranslationContext.button.addrole:"ADD ROLE"}
+                      
                       </button>
                     </div>
                   </div>
@@ -1573,9 +1621,14 @@ class StoreCRMRole extends Component {
                   <div className="right-sect-div">
                     <br />
                     <div className="d-flex justify-content-between align-items-center pb-2">
-                      <h3 className="pb-0">Bulk Upload</h3>
+                      <h3 className="pb-0">
+                      {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                      </h3>
                       <div className="down-excel">
-                        <p>Template</p>
+                        <p>
+
+                        {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                        </p>
                         <CSVLink
                           filename={"CRM.csv"}
                           data={config.crmRoleTemplate}
@@ -1599,8 +1652,10 @@ class StoreCRMRole extends Component {
                             <div className="file-icon">
                               <img src={FileUpload} alt="file-upload" />
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>
-                            or Drop File here
+                            <span className={"fileupload-span"}>
+                              {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
+                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
+                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
                           </div>
                         )}
                       </Dropzone>
@@ -1630,18 +1685,19 @@ class StoreCRMRole extends Component {
                                 </div>
                                 <div>
                                   <p className="font-weight-bold blak-clr">
-                                    Delete file?
+                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                   </p>
                                   <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
+                                  {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                  
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a href={Demo.BLANK_LINK}>  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
                                     <button
                                       className="butn"
                                       onClick={this.handleDeleteBulkupload}
                                     >
-                                      Delete
+                                        {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                     </button>
                                   </div>
                                 </div>
@@ -1663,11 +1719,11 @@ class StoreCRMRole extends Component {
                                 className="file-retry"
                                 onClick={this.hanldeAddBulkUpload.bind(this)}
                               >
-                                Retry
+                                   {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
                               </a>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-failed">{TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}</span>
                             </div>
                           </div>
                         ) : null}
@@ -1697,7 +1753,7 @@ class StoreCRMRole extends Component {
                       className="butn"
                       onClick={this.hanldeAddBulkUpload.bind(this)}
                     >
-                      ADD
+                       {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
                     </button>
                     <br />
                   </div>
@@ -1710,14 +1766,18 @@ class StoreCRMRole extends Component {
               >
                 <div className="edtpadding">
                   <div className="">
-                    <label className="popover-header-text">EDIT CRM ROLE</label>
+                    <label className="popover-header-text">
+                    {TranslationContext!==undefined?TranslationContext.label.editcrmrole:"EDIT CRM ROLE"}
+                    </label>
                   </div>
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Role Name</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.rolename:"Role Name"}
+                    </label>
                     <input
                       type="text"
                       className="txt-edit-popover"
-                      placeholder="Enter Role Name"
+                      placeholder= {TranslationContext!==undefined?TranslationContext.label.enterrolename:"Enter Role Name"}
                       maxLength={25}
                       name="editRoleName"
                       value={this.state.editRoleName}
@@ -1758,7 +1818,9 @@ class StoreCRMRole extends Component {
                       </div>
                     ))}
                   <div className="pop-over-div">
-                    <label className="edit-label-1">Status</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                    </label>
                     <select
                       id="inputStatus"
                       className="edit-dropDwon dropdown-setting"
@@ -1766,8 +1828,12 @@ class StoreCRMRole extends Component {
                       name="status"
                       onChange={this.handleModaleDataChange.bind(this)}
                     >
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
+                      <option value="Active">
+                      {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                      </option>
+                      <option value="Inactive">
+                      {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                      </option>
                     </select>
                   </div>
                   <br />
@@ -1776,7 +1842,8 @@ class StoreCRMRole extends Component {
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >
-                      CANCEL
+                       {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                      
                     </a>
                     <button
                       className="pop-over-button FlNone"
@@ -1797,7 +1864,8 @@ class StoreCRMRole extends Component {
                         ) : (
                           ""
                         )}
-                        SAVE
+                        
+                        {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
                       </label>
                     </button>
                   </div>

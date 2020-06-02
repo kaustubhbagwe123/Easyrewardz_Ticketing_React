@@ -25,6 +25,9 @@ import matchSorter from "match-sorter";
 // import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import TimeSlotdropdown from "./TimeSlotDropdown";
+
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -118,6 +121,7 @@ class StoreModule extends Component {
       selectLanguage: 0,
       languageValidation: "",
       languageGridData: [],
+      translateLanguage: {}
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -144,6 +148,17 @@ class StoreModule extends Component {
     this.handleGetstoreCodeData();
     this.handleGetLanguageDropdownlist();
     this.handleGetLanguageGridData();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   fileUpload = (file) => {
@@ -1754,11 +1769,13 @@ class StoreModule extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            
           </Link>
           <span>&gt;</span>
           <Link
@@ -1768,11 +1785,13 @@ class StoreModule extends Component {
             }}
             className="header-path"
           >
-            Store
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Modules
+          {TranslationContext!==undefined?TranslationContext.link.modules:"Modules"}
+            
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1795,7 +1814,9 @@ class StoreModule extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1805,7 +1826,10 @@ class StoreModule extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1813,10 +1837,13 @@ class StoreModule extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                clear search
+                 {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1942,17 +1969,22 @@ class StoreModule extends Component {
                     <div className="row">
                       <div className="col-md-4 chatallowed">
                         <label className="claimtab-lbl">
-                          Attachment Settings
+                        {TranslationContext!==undefined?TranslationContext.label.attachmentsettings:"Attachment Settings"}
+                          
                         </label>
                         <label className="claimTab-DDl">
-                          Maximum Attachment Size
+                          
+
+                          {TranslationContext!==undefined?TranslationContext.label.maximumattachmentsize:"Maximum Attachment Size"}
                         </label>
                         <select
                           name="selectedMaxAttachSize"
                           value={this.state.selectedMaxAttachSize}
                           onChange={this.setClaimTabData}
                         >
-                          <option value={0}>Select Size</option>
+                          <option value={0}>
+                          {TranslationContext!==undefined?TranslationContext.option.selectsize:"Select Size"}
+                          </option>
                           {this.state.maxAttachSize !== null &&
                             this.state.maxAttachSize.map((item, i) => (
                               <option key={i} value={item.numb}>
@@ -1969,7 +2001,9 @@ class StoreModule extends Component {
                     </div>
                     <div className="row claim-mgn">
                       <div className="col-md-3 chatallowed">
-                        <label className="claimTab-DDl">File Format</label>
+                        <label className="claimTab-DDl">
+                        {TranslationContext!==undefined?TranslationContext.label.fileformat:"File Format"}
+                        </label>
                         <select
                           name="selectedFileFormat"
                           value={this.state.selectedFileFormat}

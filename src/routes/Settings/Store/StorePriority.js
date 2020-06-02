@@ -12,6 +12,8 @@ import config from "./../../../helpers/config";
 import { Link } from "react-router-dom";
 import { authHeader } from "./../../../helpers/authHeader";
 import activeStatus from "./../../activeStatus";
+import * as translationHI from './../../../translations/hindi';
+import * as translationMA from './../../../translations/marathi';
 import {
   NotificationContainer,
   NotificationManager,
@@ -24,6 +26,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import matchSorter from "match-sorter";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+
 
 let dragingIndex = -1;
 
@@ -172,6 +175,7 @@ class CreatePriority extends Component {
       isexist: "",
       editIsExist: "",
       isEditBtn: true,
+      translateLanguage: {}
     };
     this.toggleEditModal = this.toggleEditModal.bind(this);
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
@@ -183,6 +187,17 @@ class CreatePriority extends Component {
   };
   componentDidMount() {
     this.handleGetPriorityList();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   ////handle check prority
@@ -1334,11 +1349,12 @@ class CreatePriority extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1348,11 +1364,11 @@ class CreatePriority extends Component {
             }}
             className="header-path"
           >
-            Store
+            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            Priority
+             {TranslationContext!==undefined?TranslationContext.link.priority:"Priority"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1375,7 +1391,9 @@ class CreatePriority extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -1385,7 +1403,10 @@ class CreatePriority extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -1397,10 +1418,13 @@ class CreatePriority extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -1602,7 +1626,8 @@ class CreatePriority extends Component {
                                 "Priorty Name"
                               )}
                             >
-                              Priorty Name
+                              {TranslationContext!==undefined?TranslationContext.span.priortyname:"Priorty Name"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1628,7 +1653,7 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyName",
-                                    sortHeader: "Priorty Name",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.priortyname:"Priorty Name",
                                   });
                                 } else {
                                   this.setState({
@@ -1638,7 +1663,7 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyName",
-                                    sortHeader: "Priorty Name",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.priortyname:"Priorty Name",
                                   });
                                 }
                               },
@@ -1659,7 +1684,8 @@ class CreatePriority extends Component {
                                 "Created By Name"
                               )}
                             >
-                              Created By
+                              {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1686,7 +1712,7 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "createdBy",
-                                    sortHeader: "Created By Name",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createdby:"Created By",
                                   });
                                 } else {
                                   this.setState({
@@ -1695,7 +1721,7 @@ class CreatePriority extends Component {
                                     spriortyStatusFilterCheckbox: "",
                                     StatusModel: true,
                                     sortColumn: "createdBy",
-                                    sortHeader: "Created By Name",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createdby:"Created By",
                                   });
                                 }
                               },
@@ -1712,22 +1738,22 @@ class CreatePriority extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Created By: {record.createdByName}
+                                            {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {record.createdByName}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Created Date:{" "}
+                                          {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
                                           {record.createdDateFormated}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            Updated By: {record.modifiedByName}
+                                            {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}: {record.modifiedByName}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          Updated Date:{" "}
+                                         {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:{" "}
                                           {record.modifiedDateFormated}
                                         </p>
                                       </div>
@@ -1761,7 +1787,7 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "createdDate",
-                                    sortHeader: "Created Date",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createddate:"Created Date",
                                   });
                                 } else {
                                   this.setState({
@@ -1771,7 +1797,7 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "createdDate",
-                                    sortHeader: "Created Date",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.createddate:"Created Date",
                                   });
                                 }
                               },
@@ -1793,7 +1819,7 @@ class CreatePriority extends Component {
                                 "Created Date"
                               )}
                             >
-                              Created Date
+                              {TranslationContext!==undefined?TranslationContext.span.createddate:"Created Date"}
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1822,7 +1848,7 @@ class CreatePriority extends Component {
                                   this.setState({
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: "Priorty Status",
+                                    sortHeader:TranslationContext!==undefined?TranslationContext.span.prioritystatus:"Priorty Status",
                                   });
                                 } else {
                                   this.setState({
@@ -1832,7 +1858,7 @@ class CreatePriority extends Component {
 
                                     StatusModel: true,
                                     sortColumn: "priortyStatus",
-                                    sortHeader: "Priorty Status",
+                                    sortHeader: TranslationContext!==undefined?TranslationContext.span.prioritystatus:"Priorty Status",
                                   });
                                 }
                               },
@@ -1854,7 +1880,8 @@ class CreatePriority extends Component {
                                 "Priorty Status"
                               )}
                             >
-                              Priorty Status
+                              {TranslationContext!==undefined?TranslationContext.span.prioritystatus:"Priorty Status"}
+                              
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -1867,7 +1894,7 @@ class CreatePriority extends Component {
                           ),
                         },
                         {
-                          title: "Action",
+                          title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                           dataIndex: "priorityID",
                           key: "priorityID",
                           headerSort: false,
@@ -1885,11 +1912,10 @@ class CreatePriority extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          Delete file?
+                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                          Are you sure you want to delete this
-                                          file?
+                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Are you sure you want to delete this file"}?
                                         </p>
                                         <div className="del-can">
                                           <a
@@ -1899,7 +1925,7 @@ class CreatePriority extends Component {
                                                 .click();
                                             }}
                                           >
-                                            CANCEL
+                                            {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
                                           </a>
                                           <button
                                             className="butn"
@@ -1908,7 +1934,7 @@ class CreatePriority extends Component {
                                               record.priorityID
                                             )}
                                           >
-                                            Delete
+                                            {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1932,7 +1958,7 @@ class CreatePriority extends Component {
                                     record
                                   )}
                                 >
-                                  EDIT
+                                   {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
                                 </button>
                               </span>
                             );
@@ -1957,14 +1983,17 @@ class CreatePriority extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department" id="createId">
-                      CREATE PRIORITY
+                    {TranslationContext!==undefined?TranslationContext.label.createpriority:"CREATE PRIORITY"}
+                     
                     </label>
                     <div className="div-padding-1">
-                      <label className="designation-name">Priority Name</label>
+                      <label className="designation-name">
+                     
+                      </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder="Enter Priority Name"
+                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpriorityname:"Enter Priority Name"}
                         maxLength={25}
                         name="priority_name"
                         value={this.state.priority_name}
@@ -1983,13 +2012,17 @@ class CreatePriority extends Component {
                       )}
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Status</label>
+                      <label className="reports-to">
+                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                      </label>
                       <select
                         className="form-control dropdown-setting"
                         value={this.state.selectedActiveStatus}
                         onChange={this.handleActiveStatus}
                       >
-                        <option value="0">select</option>
+                        <option value="0">
+                        {TranslationContext!==undefined?TranslationContext.option.select:"select"}  
+                        </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, i) => (
                             <option key={i} value={item.ActiveID}>
@@ -2019,7 +2052,8 @@ class CreatePriority extends Component {
                         ) : (
                           ""
                         )}
-                        ADD
+                        
+                        {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
                       </button>
                     </div>
                   </div>
