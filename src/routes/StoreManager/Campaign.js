@@ -676,8 +676,8 @@ class Campaign extends Component {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
-            // strCampStatus = "All";
-            strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+            strCampStatus = "All";
+            // strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     } else {
@@ -719,13 +719,20 @@ class Campaign extends Component {
   }
   /// handle Search Campaign Status
   handleSearchCampaigStatus() {
+    debugger
     let self = this;
+    var filterIds = "";
+    if (this.state.strCampStatus !== "") {
+      filterIds = this.state.strCampStatus;
+    } else {
+      filterIds = "All";
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomerByStatus",
       headers: authHeader(),
       params: {
-        statusID: this.state.strCampStatus,
+        statusID: filterIds,
       },
     })
       .then(function(res) {
