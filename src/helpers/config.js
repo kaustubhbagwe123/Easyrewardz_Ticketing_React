@@ -244,10 +244,10 @@ let config = {
     ["Issue1", "Medium", "30", "2", "Day", "Active"],
     ["Issue1", "Low", "30", "2", "Day", "Active"],
   ],
-  // apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
+  //apiUrl: 'https://api-shopsterqa.ercx.co/Api',  /// -------HomeShopClient API----------
    //apiUrl: "https://ertktapihomeshop.dcdev.brainvire.net/Api", /// -------HomeShop API---------
-  //apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
-  // apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
+  apiUrl: "https://multitenancyshopsterapi.dcdev.brainvire.net/Api", /// -------HomeShopMultiTenant API---------
+  //apiUrl: "http://ertktapistore.dcdev.brainvire.net/Api", ///----Store API--------
   //apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   //apiUrl: 'http://stage-bellapi.ercx.co/Api'    /// ----- Client API -------
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'

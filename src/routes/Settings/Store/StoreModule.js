@@ -1986,7 +1986,8 @@ class StoreModule extends Component {
                       aria-controls="Module-Claim-Tab"
                       aria-selected="true"
                     >
-                      Claim
+                       {TranslationContext!==undefined?TranslationContext.a.claim:"Claim"}
+                      
                     </a>
                   </li>
                   <li className={config.isHomeShope ? "nav-item displayNn":"nav-item"}>
@@ -1998,7 +1999,8 @@ class StoreModule extends Component {
                       aria-controls="Module-CampaignScript-Tab"
                       aria-selected="false"
                     >
-                      Campaign Script
+                        {TranslationContext!==undefined?TranslationContext.a.campaignscript:"Campaign Script"}
+                      
                     </a>
                   </li>
                   <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
@@ -2010,7 +2012,8 @@ class StoreModule extends Component {
                       aria-controls="Module-CampaignChannel-Tab"
                       aria-selected="false"
                     >
-                      Campaign Channel
+                      {TranslationContext!==undefined?TranslationContext.a.campaignchannel:"campaignchannel"}
+                      
                     </a>
                   </li>
                   <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
@@ -2022,7 +2025,8 @@ class StoreModule extends Component {
                       aria-controls="Module-AppointmentConfig-Tab"
                       aria-selected="false"
                     >
-                      Appointment Configuration
+                        {TranslationContext!==undefined?TranslationContext.a.appointmentconfiguration:"appointmentconfiguration"}
+                      
                     </a>
                   </li>
                   <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
@@ -2034,7 +2038,8 @@ class StoreModule extends Component {
                       aria-controls="Module-BroadcastConfig-Tab"
                       aria-selected="false"
                     >
-                      Broadcast Configuration
+                         {TranslationContext!==undefined?TranslationContext.a.broadcastconfiguration:"broadcastconfiguration"}
+                     
                     </a>
                   </li>
                   <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
@@ -2046,7 +2051,8 @@ class StoreModule extends Component {
                       aria-controls="Module-SlotSetting-Tab"
                       aria-selected="false"
                     >
-                      Slot Settings
+                         {TranslationContext!==undefined?TranslationContext.a.slotsettings:"Slot Settings"}
+                      
                     </a>
                   </li>
                   <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
@@ -2058,7 +2064,8 @@ class StoreModule extends Component {
                       aria-controls="Module-LanguageSetting-Tab"
                       aria-selected="false"
                     >
-                      Language Settings
+                         {TranslationContext!==undefined?TranslationContext.a.languagesettings:"Language Settings"}
+                      
                     </a>
                   </li>
                 </ul>
@@ -2727,12 +2734,15 @@ class StoreModule extends Component {
                           <div className="row">
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
-                                <h3>CAMPAIGN CHANNEL</h3>
+                                <h3>
+                                {TranslationContext!==undefined?TranslationContext.h3.campaignchannel:"CAMPAIGN CHANNEL"}
+                                </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        SMS
+                                      {TranslationContext!==undefined?TranslationContext.label.sms:"SMS"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2784,7 +2794,8 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Whatsapp
+                                      {TranslationContext!==undefined?TranslationContext.label.whatsapp:"Whatsapp"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2807,7 +2818,8 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Chatbot
+                                      {TranslationContext!==undefined?TranslationContext.label.chatbot:"Chatbot"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2829,7 +2841,8 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Email
+                                      {TranslationContext!==undefined?TranslationContext.label.email:"Email"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2853,7 +2866,8 @@ class StoreModule extends Component {
                                 <table className="cmpaign-channel-table">
                                   <tr>
                                     <td>
-                                      Max. click allowed on any channel CTA
+                                    {TranslationContext!==undefined?TranslationContext.td.maxclickallowesonanychannelcta:"Max. click allowed on any channel CTA"}
+                                      
                                     </td>
                                     <td>
                                       <input
@@ -2884,7 +2898,10 @@ class StoreModule extends Component {
                                     <td>Click</td>
                                   </tr>
                                   <tr>
-                                    <td>Click will be enabled after</td>
+                                    <td>
+                                    {TranslationContext!==undefined?TranslationContext.td.clickwillbeenabledafter:"Click will be enabled after"}
+                                      
+                                    </td>
                                     <td>
                                       <input
                                         type="text"
@@ -2922,8 +2939,12 @@ class StoreModule extends Component {
                                           this
                                         )}
                                       >
-                                        <option value="M">Min</option>
-                                        <option value="H">Hr</option>
+                                        <option value="M">
+                                        {TranslationContext!==undefined?TranslationContext.option.min:"Min"}
+                                        </option>
+                                        <option value="H">
+                                        {TranslationContext!==undefined?TranslationContext.option.hr:"Hr"}
+                                        </option>
                                       </select>
                                     </td>
                                   </tr>
@@ -2935,7 +2956,8 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                  UPDATE
+                                    {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
+                                  
                                 </button>
                               </div>
                             </div>
