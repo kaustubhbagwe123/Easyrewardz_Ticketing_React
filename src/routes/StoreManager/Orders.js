@@ -20,6 +20,8 @@ import ClaimStatus from "../../routes/ClaimStatus";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import "./../../assets/css/orders.css";
+import Pagination from "react-pagination-js";
+import "react-pagination-js/dist/styles.css";
 
 class Orders extends Component {
   constructor(props) {
@@ -1102,7 +1104,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            <div className="table-cntr store">
+            <div className="table-cntr store dv-delivered">
               <Table
                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                 columns={[
@@ -1175,7 +1177,7 @@ class Orders extends Component {
                       return (
                         <div>
                           <p>{item.date}</p>
-                          <p className="order-small-font">{item.Time}</p>
+                          <p className="order-small-font">{item.time}</p>
                         </div>
                       );
                     },
@@ -1284,11 +1286,32 @@ class Orders extends Component {
                     },
                   },
                 ]}
-                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                pagination={false}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.deliveredGridData}
               />
+              <Pagination
+                    currentPage={this.state.childCurrentPage}
+                    totalSize={this.state.childTotalGridRecord}
+                    // totalSize={row.customerCount}
+                    sizePerPage={this.state.ChildPostsPerPage}
+                    changeCurrentPage={this.PaginationOnChange}
+                    theme="bootstrap"
+                  />
+                  <div className="position-relative">
+                    <div className="item-selection Camp-pagination">
+                      <select
+                        value={this.state.ChildPostsPerPage}
+                        onChange={this.handlePageItemchange}
+                      >
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={30}>30</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
             </div>
           </div>
           <div
