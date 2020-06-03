@@ -326,15 +326,15 @@ class Header extends Component {
       activeClass:
         page === "Appointment" ? "active single-menu" : "single-menu",
     };
-    var myTicketList = {
-      data: "myTicketList",
+    var myTicket = {
+      data: "MyTicket",
       urls: "myTicketList",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
-      imgAlt: "campaign icon",
-      imgClass: "campaign-icon",
+      imgAlt: "ticket icon",
+      imgClass: "myTicket",
       activeClass:
-        page === "myTicketList" ? "active single-menu" : "single-menu",
+        page === "MyTicket" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -364,10 +364,10 @@ class Header extends Component {
         ) {
           accessdata.push(appointment);
         } else if (
-          data[i].moduleName === "myTicketList" &&
+          data[i].moduleName === "MyTicket" &&
           data[i].modulestatus === true
         ) {
-          accessdata.push(myTicketList);
+          accessdata.push(myTicket);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -1851,7 +1851,7 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
-              <Link to="orders" className="single-menu">
+              {/* <Link to="orders" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={OrderLogoBlack}
@@ -1866,7 +1866,7 @@ class Header extends Component {
                   />
                 </div>
                 <label className="cusheade">Orders</label>
-              </Link>
+              </Link> */}
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img

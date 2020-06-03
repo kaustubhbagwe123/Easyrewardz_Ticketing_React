@@ -73,7 +73,8 @@ class StoreTask extends Component {
       isViewSerach: false,
       isATOZ: true,
       itemData: [],
-      translateLanguage: {}
+      translateLanguage: {},
+      
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);

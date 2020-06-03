@@ -1,33 +1,32 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Tabs, Tab } from "react-bootstrap-tabs";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-// import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import DelBlack from "./../../../assets/Images/del-black.png";
-// import DownExcel from "./../../../assets/Images/csv.png";
-// import FileUpload from "./../../../assets/Images/file.png";
+import DelBlack from "./../../../assets/Images/del-black.png";
+import DownExcel from "./../../../assets/Images/csv.png";
+import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-// import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-// import Correct from "./../../../assets/Images/correct.png";
+import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
-// import { CSVLink } from "react-csv";
-// import Dropzone from "react-dropzone";
+import { CSVLink } from "react-csv";
+import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import TimeSlotdropdown from "./TimeSlotDropdown";
-// import { UncontrolledPopover, PopoverBody } from "reactstrap";
-// import { ProgressBar } from "react-bootstrap";
-// import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { ProgressBar } from "react-bootstrap";
+import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
 class StoreModule extends Component {
   constructor(props) {
@@ -1946,13 +1945,101 @@ class StoreModule extends Component {
         <div className="Store-paddmodule storeModule">
           <div className="module-tabs">
             <section>
-              <Tabs
-                onSelect={(index, label) =>
-                  this.setState({ selTab: label, indiCampaign: "" })
-                }
-                selected={this.state.selTab}
-              >
-                <Tab label="Claim">
+              <div>
+                <ul className="nav nav-tabs" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      data-toggle="tab"
+                      href="#Module-Claim-Tab"
+                      role="tab"
+                      aria-controls="Module-Claim-Tab"
+                      aria-selected="true"
+                    >
+                      Claim
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item displayNn":"nav-item"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-CampaignScript-Tab"
+                      role="tab"
+                      aria-controls="Module-CampaignScript-Tab"
+                      aria-selected="false"
+                    >
+                      Campaign Script
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-CampaignChannel-Tab"
+                      role="tab"
+                      aria-controls="Module-CampaignChannel-Tab"
+                      aria-selected="false"
+                    >
+                      Campaign Channel
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-AppointmentConfig-Tab"
+                      role="tab"
+                      aria-controls="Module-AppointmentConfig-Tab"
+                      aria-selected="false"
+                    >
+                      Appointment Configuration
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-BroadcastConfig-Tab"
+                      role="tab"
+                      aria-controls="Module-BroadcastConfig-Tab"
+                      aria-selected="false"
+                    >
+                      Broadcast Configuration
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-SlotSetting-Tab"
+                      role="tab"
+                      aria-controls="Module-SlotSetting-Tab"
+                      aria-selected="false"
+                    >
+                      Slot Settings
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-LanguageSetting-Tab"
+                      role="tab"
+                      aria-controls="Module-LanguageSetting-Tab"
+                      aria-selected="false"
+                    >
+                      Language Settings
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="tab-content p-0">
+                <div
+                  className="tab-pane fade show active"
+                  id="Module-Claim-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-Claim-Tab"
+                >
                   <div style={{ height: "100vh" }} className="chatallowedStore">
                     <div className="row">
                       <div className="col-md-4 chatallowed">
@@ -2024,9 +2111,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                {/* <Tab label="Campaign Script" style={{ display: "none" }}>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-CampaignScript-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-CampaignScript-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-8">
                         <div className="table-cntr table-height alertsTable align-table">
@@ -2583,240 +2675,245 @@ class StoreModule extends Component {
                     className={this.state.campaignOvrlayShow ? "show" : ""}
                     onClick={this.handleCampaignButton}
                   />
-                </Tab> */}
-                
-                  <Tab label="Campaign Channel">
-                    <div className="store-mdl backNone">
-                      <div className="row">
-                        <div className="col-md-12">
-                          <div style={{ background: "white" }}>
-                            <div className="row">
-                              <div className="col-md-5 m-auto">
-                                <div className="right-sect-div">
-                                  <h3>CAMPAIGN CHANNEL</h3>
-                                  <div className="module-switch-cntr">
-                                    <div className="module-switch">
-                                      <div className="switch switch-primary">
-                                        <label className="storeRole-name-text m-0">
-                                          SMS
-                                        </label>
-                                        <input
-                                          type="checkbox"
-                                          id="ckSmsCamp1"
-                                          name="allModules"
-                                          checked={
-                                            this.state.campaignChannelData
-                                              .smsFlag
-                                          }
-                                          onChange={this.CampChannelSmsFlageOnchange.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label
-                                          htmlFor="ckSmsCamp1"
-                                          className="cr cr-float-auto"
-                                        ></label>
-                                      </div>
-                                    </div>
-                                    {this.state.campaignChannelData.smsFlag ? (
-                                      <div className="cusinput">
-                                        <input
-                                          type="text"
-                                          name="providerName"
-                                          autoComplete="off"
-                                          placeholder="Provider name"
-                                          maxLength={15}
-                                          value={
-                                            this.state.campaignChannelData
-                                              .providerName
-                                          }
-                                          onChange={this.CampCannelOnChange.bind(
-                                            this
-                                          )}
-                                        />
-                                        {this.state.campaignChannelData
-                                          .providerName === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.campProviderValidation}
-                                          </p>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-CampaignChannel-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-CampaignChannel-Tab"
+                >
+                  <div className="backNone">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div style={{ background: "white" }}>
+                          <div className="row">
+                            <div className="col-md-5 m-auto">
+                              <div className="right-sect-div">
+                                <h3>CAMPAIGN CHANNEL</h3>
+                                <div className="module-switch-cntr">
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        SMS
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckSmsCamp1"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.smsFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
                                         )}
-                                      </div>
-                                    ) : null}
-
-                                    <div className="module-switch">
-                                      <div className="switch switch-primary">
-                                        <label className="storeRole-name-text m-0">
-                                          Whatsapp
-                                        </label>
-                                        <input
-                                          type="checkbox"
-                                          id="ckWhatCamp2"
-                                          name="allModules"
-                                          checked={
-                                            this.state.campaignChannelData
-                                              .messengerFlag
-                                          }
-                                          onChange={this.CampChannelSmsFlageOnchange.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label
-                                          htmlFor="ckWhatCamp2"
-                                          className="cr cr-float-auto"
-                                        ></label>
-                                      </div>
-                                    </div>
-                                    <div className="module-switch">
-                                      <div className="switch switch-primary">
-                                        <label className="storeRole-name-text m-0">
-                                          Chatbot
-                                        </label>
-                                        <input
-                                          type="checkbox"
-                                          id="ckChatCamp3"
-                                          name="allModules"
-                                          checked={
-                                            this.state.campaignChannelData
-                                              .botFlag
-                                          }
-                                          onChange={this.CampChannelSmsFlageOnchange.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label
-                                          htmlFor="ckChatCamp3"
-                                          className="cr cr-float-auto"
-                                        ></label>
-                                      </div>
-                                    </div>
-                                    <div className="module-switch">
-                                      <div className="switch switch-primary">
-                                        <label className="storeRole-name-text m-0">
-                                          Email
-                                        </label>
-                                        <input
-                                          type="checkbox"
-                                          id="ckEmailCamp4"
-                                          name="allModules"
-                                          checked={
-                                            this.state.campaignChannelData
-                                              .emailFlag
-                                          }
-                                          onChange={this.CampChannelSmsFlageOnchange.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label
-                                          htmlFor="ckEmailCamp4"
-                                          className="cr cr-float-auto"
-                                        ></label>
-                                      </div>
+                                      />
+                                      <label
+                                        htmlFor="ckSmsCamp1"
+                                        className="cr cr-float-auto"
+                                      ></label>
                                     </div>
                                   </div>
-                                  <table className="cmpaign-channel-table">
-                                    <tr>
-                                      <td>
-                                        Max. click allowed on any channel CTA
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="text"
-                                          name="maxClickAllowed"
-                                          value={
-                                            this.state.campaignChannelData
-                                              .maxClickAllowed
-                                          }
-                                          autoComplete="off"
-                                          maxLength={2}
-                                          onChange={this.CampCannelOnChange.bind(
-                                            this
-                                          )}
-                                        />
-                                        {this.state.campaignChannelData
-                                          .maxClickAllowed === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.maxClickValidation}
-                                          </p>
+                                  {this.state.campaignChannelData.smsFlag ? (
+                                    <div className="cusinput">
+                                      <input
+                                        type="text"
+                                        name="providerName"
+                                        autoComplete="off"
+                                        placeholder="Provider name"
+                                        maxLength={15}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .providerName
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
                                         )}
-                                      </td>
-                                      <td>Click</td>
-                                    </tr>
-                                    <tr>
-                                      <td>Click will be enabled after</td>
-                                      <td>
-                                        <input
-                                          type="text"
-                                          name="enableClickAfterValue"
-                                          autoComplete="off"
-                                          maxLength={2}
-                                          value={
-                                            this.state.campaignChannelData
-                                              .enableClickAfterValue
-                                          }
-                                          onChange={this.CampCannelOnChange.bind(
-                                            this
-                                          )}
-                                        />
-                                        {this.state.campaignChannelData
-                                          .enableClickAfterValue === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.enabledAfterValidation}
-                                          </p>
-                                        )}
-                                      </td>
-                                      <td>
-                                        <select
-                                          value={
-                                            this.state.campaignChannelData
-                                              .enableClickAfterDuration
-                                          }
-                                          name="enableClickAfterDuration"
-                                          onChange={this.CampCannelOnChange.bind(
-                                            this
-                                          )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .providerName === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
                                         >
-                                          <option value="M">Min</option>
-                                          <option value="H">Hr</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                  </table>
-                                  <button
-                                    className="Schedulenext1 w-100 mb-0 mt-4"
-                                    type="button"
-                                    onClick={this.handleCheckCampaignValidation.bind(
-                                      this
-                                    )}
-                                  >
-                                    UPDATE
-                                  </button>
+                                          {this.state.campProviderValidation}
+                                        </p>
+                                      )}
+                                    </div>
+                                  ) : null}
+
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Whatsapp
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckWhatCamp2"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .messengerFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckWhatCamp2"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Chatbot
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckChatCamp3"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData.botFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckChatCamp3"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0">
+                                        Email
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckEmailCamp4"
+                                        name="allModules"
+                                        checked={
+                                          this.state.campaignChannelData
+                                            .emailFlag
+                                        }
+                                        onChange={this.CampChannelSmsFlageOnchange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckEmailCamp4"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
                                 </div>
+                                <table className="cmpaign-channel-table">
+                                  <tr>
+                                    <td>
+                                      Max. click allowed on any channel CTA
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="maxClickAllowed"
+                                        value={
+                                          this.state.campaignChannelData
+                                            .maxClickAllowed
+                                        }
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .maxClickAllowed === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.maxClickValidation}
+                                        </p>
+                                      )}
+                                    </td>
+                                    <td>Click</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Click will be enabled after</td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterValue
+                                        }
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {this.state.campaignChannelData
+                                        .enableClickAfterValue === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )}
+                                    </td>
+                                    <td>
+                                      <select
+                                        value={
+                                          this.state.campaignChannelData
+                                            .enableClickAfterDuration
+                                        }
+                                        name="enableClickAfterDuration"
+                                        onChange={this.CampCannelOnChange.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="M">Min</option>
+                                        <option value="H">Hr</option>
+                                      </select>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <button
+                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  type="button"
+                                  onClick={this.handleCheckCampaignValidation.bind(
+                                    this
+                                  )}
+                                >
+                                  UPDATE
+                                </button>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </Tab>
-               
-
-                <Tab label="Appointment Configuration">
-                  <div className="store-mdl backNone">
+                  </div>
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-AppointmentConfig-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-AppointmentConfig-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -2924,7 +3021,6 @@ class StoreModule extends Component {
                                     <td>
                                       <input
                                         type="text"
-                                        // name="enableClickAfterValue"
                                         autoComplete="off"
                                         maxLength={2}
                                         // value={
@@ -2935,20 +3031,6 @@ class StoreModule extends Component {
                                         //   this
                                         // )}
                                       />
-                                      {/* {this.state.BroadCastConfigData
-                                        .enableClickAfterValue === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {
-                                            this.state
-                                              .broadCastEnabledAfterValid
-                                          }
-                                        </p>
-                                      )} */}
                                     </td>
                                     <td>
                                       <select
@@ -2984,9 +3066,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label="Broadcast Configuration">
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-BroadcastConfig-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-BroadcastConfig-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -3190,9 +3277,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label="Slot Settings">
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-SlotSetting-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-SlotSetting-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -3463,9 +3555,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label="Language Settings">
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-LanguageSetting-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-LanguageSetting-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -3638,8 +3735,8 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-              </Tabs>
+                </div>
+              </div>
             </section>
             {/* edit slot starts */}
             <Modal

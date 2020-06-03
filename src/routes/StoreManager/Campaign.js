@@ -40,6 +40,8 @@ class Campaign extends Component {
       isTiketDetails: "",
       loading: false,
       translateLanguage: {},
+      CampaignStatusFilter: false,
+      strCampStatus: "",
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
     this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
@@ -661,6 +663,89 @@ class Campaign extends Component {
       }
     }
   };
+
+  /// handle Campaign status filter for all select
+  handleCheckCampAllStatus(event) {
+    debugger;
+    this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    var strCampStatus = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("CampallStatus");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            // strCampStatus = "All";
+            strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strCampStatus = "";
+    }
+    this.setState({
+      CampaignStatusFilter: false,
+      strCampStatus,
+    });
+    setTimeout(() => {
+      this.handleSearchCampaigStatus();
+    }, 50);
+  }
+
+  /// handle Campaign status filter for individual select
+  handleCheckCampIndividualStatus() {
+    var checkboxes = document.getElementsByName("CampallStatus");
+    var strCampStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      CampaignStatusFilter: false,
+      strCampStatus,
+    });
+    setTimeout(() => {
+      this.handleSearchCampaigStatus();
+    }, 50);
+  }
+  /// handle Search Campaign Status
+  handleSearchCampaigStatus() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreTask/GetStoreCampaignCustomerByStatus",
+      headers: authHeader(),
+      params: {
+        statusID: this.state.strCampStatus,
+      },
+    })
+      .then(function(res) {
+        debugger
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            campaignGridData: data,
+          });
+        } else {
+          self.setState({
+            campaignGridData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -671,23 +756,38 @@ class Campaign extends Component {
             className="components-table-demo-nested antd-table-campaign-padd antd-table-campaign custom-antd-table"
             columns={[
               {
-                title:TranslationContext!==undefined?TranslationContext.title.campaignname:"Campaign Name",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignname
+                    : "Campaign Name",
                 dataIndex: "campaignName",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.contact:"Contacts",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.contact
+                    : "Contacts",
                 dataIndex: "contactCount",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.campaignscript:"Campaign Script",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignscript
+                    : "Campaign Script",
                 dataIndex: "campaignScript",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.campaignenddate:"Campaign End Date",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignenddate
+                    : "Campaign End Date",
                 dataIndex: "campaignEndDate",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.campaignstatus:"Campaign Status",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignstatus
+                    : "Campaign Status",
                 render: (row) => {
                   return (
                     <button
@@ -699,9 +799,10 @@ class Campaign extends Component {
                       )}
                     >
                       <label className="hdrcloselabel">
-                        
-                        {TranslationContext!==undefined?TranslationContext.label.close:"Close"}
-                        </label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.close
+                          : "Close"}
+                      </label>
                     </button>
                   );
                 },
@@ -709,7 +810,10 @@ class Campaign extends Component {
                   this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Actions",
                 // dataIndex: "orderPricePaid"
               },
             ]}
@@ -719,7 +823,10 @@ class Campaign extends Component {
                   dataSource={row.storeCampaignCustomerList}
                   columns={[
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.customername
+                          : "Customer Name",
                       // dataIndex: "orderMasterID",
                       render: (row, item) => {
                         return (
@@ -733,11 +840,17 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.date
+                          : "Date",
                       dataIndex: "campaignTypeDate",
                     },
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.status
+                          : "Status",
                       // dataIndex: "articleName"
                       render: (row, item) => {
                         return (
@@ -764,8 +877,9 @@ class Campaign extends Component {
                                   "contactBtnGreen" + item.campaignCustomerID
                                 }
                               >
-                                {TranslationContext!==undefined?TranslationContext.label.contacted:"Contacted"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.contacted
+                                  : "Contacted"}
                               </label>
                             </div>
                             <div className="position-relative">
@@ -798,8 +912,9 @@ class Campaign extends Component {
                                   "notConnectedBtnRed" + item.campaignCustomerID
                                 }
                               >
-                                {TranslationContext!==undefined?TranslationContext.label.notcontacted:"Not Contacted"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.notcontacted
+                                  : "Not Contacted"}
                               </label>
                             </div>
                             <div>
@@ -826,16 +941,100 @@ class Campaign extends Component {
                                   "followUpBtnYellow" + item.campaignCustomerID
                                 }
                               >
-                                {TranslationContext!==undefined?TranslationContext.label.followup:"Follow Up"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.followup
+                                  : "Follow Up"}
                               </label>
                             </div>
                           </div>
                         );
                       },
+                      className:
+                        "camp-status-header camp-status-header-statusFilter",
+                      filterDropdown: (data, row) => {
+                        return (
+                          <div className="campaign-status-drpdwn">
+                            <ul>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="Campall-status"
+                                  className="ch1"
+                                  onChange={this.handleCheckCampAllStatus.bind(
+                                    this
+                                  )}
+                                  checked={this.state.CheckBoxAllStatus}
+                                  name="CampallStatus"
+                                />
+                                <label htmlFor="Campall-status">
+                                  <span className="ch1-text">All</span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="New100"
+                                  className="ch1"
+                                  onChange={this.handleCheckCampIndividualStatus.bind(
+                                    this
+                                  )}
+                                  name="CampallStatus"
+                                  attrIds={100}
+                                />
+                                <label htmlFor="New100">
+                                  <span className="ch1-text">Contacted</span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="Inproress101"
+                                  className="ch1"
+                                  onChange={this.handleCheckCampIndividualStatus.bind(
+                                    this
+                                  )}
+                                  name="CampallStatus"
+                                  attrIds={101}
+                                />
+                                <label htmlFor="Inproress101">
+                                  <span className="ch1-text">
+                                    Not Contacted
+                                  </span>
+                                </label>
+                              </li>
+                              <li>
+                                <input
+                                  type="checkbox"
+                                  id="Close102"
+                                  className="ch1"
+                                  onChange={this.handleCheckCampIndividualStatus.bind(
+                                    this
+                                  )}
+                                  name="CampallStatus"
+                                  attrIds={102}
+                                />
+                                <label htmlFor="Close102">
+                                  <span className="ch1-text">Follow Up</span>
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
+                        );
+                      },
+                      filterDropdownVisible: this.state.CampaignStatusFilter,
+                      onFilterDropdownVisibleChange: (visible) =>
+                        this.setState({ CampaignStatusFilter: visible }),
+                      filterIcon: (filtered) => (
+                        <span
+                          style={{ color: filtered ? "#1890ff" : undefined }}
+                        ></span>
+                      ),
                     },
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.response:"Response",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.response
+                          : "Response",
                       render: (row, item) => {
                         return (
                           <div
@@ -874,7 +1073,10 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.callrecheduledto:"Call Recheduled To" ,
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.callrecheduledto
+                          : "Call Recheduled To",
                       // dataIndex: "pricePaid"
                       render: (row, item) => {
                         return (
@@ -921,7 +1123,10 @@ class Campaign extends Component {
                       },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.actions
+                          : "Actions",
                       render: (row, item) => {
                         return (
                           <div className="d-flex">
@@ -961,7 +1166,9 @@ class Campaign extends Component {
                                 )}
                               >
                                 <label className="saveLabel">
-                                {TranslationContext!==undefined?TranslationContext.label.save:"Save"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.save
+                                    : "Save"}
                                 </label>
                               </button>
                             </div>
@@ -972,6 +1179,7 @@ class Campaign extends Component {
                                   ? ""
                                   : "disabled-input"
                               }
+                              style={{display:"none"}}
                             >
                               <button
                                 className={
@@ -988,8 +1196,9 @@ class Campaign extends Component {
                                 )}
                               >
                                 <label className="raise-ticketLbl">
-                                  
-                                  {TranslationContext!==undefined?TranslationContext.label.raiseticket:"Raise Ticket"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.raiseticket
+                                    : "Raise Ticket"}
                                 </label>
                               </button>
                             </div>
