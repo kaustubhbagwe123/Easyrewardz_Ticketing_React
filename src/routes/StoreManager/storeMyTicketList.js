@@ -11,11 +11,11 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
-import Twitter from "./../../assets/Images/twitter.png";
-import HeadPhone3 from "./../../assets/Images/headphone3.png";
-import MailImg from "./../../assets/Images/msg.png";
-import FacebookImg from "./../../assets/Images/facebook.png";
-import Chat from "./../../assets/Images/chat.png";
+// import Twitter from "./../../assets/Images/twitter.png";
+// import HeadPhone3 from "./../../assets/Images/headphone3.png";
+// import MailImg from "./../../assets/Images/msg.png";
+// import FacebookImg from "./../../assets/Images/facebook.png";
+// import Chat from "./../../assets/Images/chat.png";
 class storeMyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +38,8 @@ class storeMyTicketList extends Component {
       TicketStatusData: StoreMyTicketStatus(),
       ticketIds: "",
       cSelectedRow: {},
-      ticketDetailID:0
+      ticketDetailID: 0,
+      TicketSearchCount: 0,
     };
     this.handleTabChange = this.handleTabChange.bind(this);
   }
@@ -192,34 +193,58 @@ class storeMyTicketList extends Component {
         console.log(data);
       });
   }
+
+  /// Handle Ticket Search Function
+  handleTicketSearch() {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatTicketsOnSearch",
+      headers: authHeader(),
+      data: {
+        CategoryId: parseInt(this.state.selectedCategory),
+        SubCategoryId: parseInt(this.state.selectedSubCategory),
+        IssueTypeId: parseInt(this.state.selectedIssueType),
+        TicketStatusID: parseInt(this.state.selectedTicketStatus),
+      },
+    })
+      .then(function(res) {
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            SearchTicketData: data,
+            TicketSearchCount: data.length,
+          });
+        } else {
+          self.setState({
+            SearchTicketData: [],
+            TicketSearchCount: 0,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   //// --------------------------------API Call End ----------------------------------
   /// Handle Toggle Search
   HandleToggleSearch() {
     this.setState({ collapseSearch: !this.state.collapseSearch });
-    // if (this.state.collapseSearch) {
-    //   var paramdata = "";
-    //   if (this.state.ActiveTabId === 101) {
-    //     paramdata = "New";
-    //   } else if (this.state.ActiveTabId === 102) {
-    //     paramdata = "Open";
-    //   } else if (this.state.ActiveTabId === 103) {
-    //     paramdata = "Resolved";
-    //   }
-    // }
   }
   HandleRowClickPage = (rowInfo, column) => {
     if ((rowInfo, column)) {
       return {
-        onClick: e => {
+        onClick: (e) => {
           let Id = column.original["ticketID"];
           let self = this;
           self.setState({
-            ticketDetailID: Id
+            ticketDetailID: Id,
           });
           setTimeout(function() {
             self.props.history.push({
               pathname: "myTicket",
-              ticketDetailID: Id
+              ticketDetailID: Id,
             });
           }, 1000);
         },
@@ -322,7 +347,7 @@ class storeMyTicketList extends Component {
       ticketIds: strIds,
     });
   };
-/// handle perticular select check box
+  /// handle perticular select check box
   handelCheckBoxCheckedChange = async (ticketID) => {
     var checkboxes = document.getElementsByName("ListCheckbox");
     var strIds = "";
@@ -342,6 +367,21 @@ class storeMyTicketList extends Component {
       ticketIds: strIds,
     });
   };
+  /// handle Clear search function
+  handleClearSearchData() {
+    this.setState({
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedTicketStatus: 0,
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      TicketSearchCount: 0,
+    });
+    this.handleGetStoreTicketGridData();
+  }
+
   render() {
     return (
       <div>
@@ -479,7 +519,7 @@ class storeMyTicketList extends Component {
                                   <button
                                     type="button"
                                     className="btn-inv"
-                                    // onClick={this.ViewSearchData.bind(this, 0)}
+                                    onClick={this.handleTicketSearch.bind(this)}
                                   >
                                     View Search
                                   </button>
@@ -600,21 +640,21 @@ class storeMyTicketList extends Component {
                                   <div className="col-auto d-flex align-items-center">
                                     <p className="font-weight-bold mr-3">
                                       <span className="blue-clr">
-                                        {/* {this.state.resultCount < 10
-                                          ? "0" + this.state.resultCount
-                                          : this.state.resultCount} */}
-                                        00 &nbsp;
+                                        {this.state.TicketSearchCount < 10
+                                          ? "0" + this.state.TicketSearchCount
+                                          : this.state.TicketSearchCount}
+                                        &nbsp;
                                       </span>
                                       Results
                                     </p>
-                                    <a
-                                      href="#!"
+                                    <label
                                       className="blue-clr fs-14"
-                                      //   onClick={this.clearSearch}
+                                      onClick={this.handleClearSearchData.bind(
+                                        this
+                                      )}
                                     >
                                       CLEAR SEARCH
-                                    </a>
-                                    &nbsp; &nbsp; &nbsp;
+                                    </label>
                                   </div>
                                 </div>
                               </div>
@@ -774,7 +814,7 @@ class storeMyTicketList extends Component {
                                         </label>
                                       </span>
                                     );
-                                  } 
+                                  }
                                 },
                               },
                               {
