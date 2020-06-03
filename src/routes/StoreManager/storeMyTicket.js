@@ -1,19 +1,335 @@
 import React, { Component } from "react";
 import HeadphoneImg from "./../../assets/Images/headphone.png";
+import axios from "axios";
+import { authHeader } from "../../helpers/authHeader";
+import config from "./../../helpers/config";
 import LoadingImg from "./../../assets/Images/loading.png";
 import Headphone2Img from "./../../assets/Images/headphone2.png";
 import DownImg from "./../../assets/Images/down.png";
 import EyeImg from "./../../assets/Images/eye.png";
 import BillInvoiceImg from "./../../assets/Images/bill-Invoice.png";
+import CancelImg from "./../../assets/Images/cancel.png";
 import StoreIcon from "./../../assets/Images/store.png";
+import { NotificationManager } from "react-notifications";
+import StoreMyTicketStatus from "./StoreMyTicketStatus";
+import moment from "moment";
+import Modal from "react-responsive-modal";
+import ReactTable from "react-table";
 
 class storeMyTicket extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      Notesdetails: [],
+      NoteAddComment: "",
+      AddNoteValidation: "",
+      ticket_Id: 0,
+      NotesCount: 0,
+      ticketDetailsData: {},
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      TicketStatusData: StoreMyTicketStatus(),
+      historicalTicket: false,
+      historicalDetails: [],
+    };
+  }
+  componentDidMount() {
+    if (this.props.location.ticketDetailID) {
+      var ticketId = this.props.location.ticketDetailID;
+      this.setState({ ticket_Id: ticketId });
+      this.handleGetNoteCommentData(ticketId);
+      this.handleGetTicketDetails(ticketId);
+      this.handleGetCategoryList();
+    } else {
+      this.props.history.push("myTicketList");
+    }
   }
 
+  /// ---------------------API call start---------------------------------
+  /// handle Get Category Data for drop-down
+  handleGetCategoryList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatCategory",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            CategoryData: data,
+          });
+        } else {
+          self.setState({
+            CategoryData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Get Sub Category Data for drop-down
+  handleGetSubCategoryList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        categoryID: this.state.ticketDetailsData.categoryID,
+      },
+    })
+      .then(function(res) {
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            SubCategoryData: data,
+          });
+        } else {
+          self.setState({
+            SubCategoryData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Get Issue Type list for drop-down
+  handleGetIssueTypeList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatIssueTypeBySubcategory",
+      headers: authHeader(),
+      params: {
+        subCategoryID: this.state.ticketDetailsData.subCategoryID,
+      },
+    })
+      .then(function(res) {
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            IssueTypeData: data,
+          });
+        } else {
+          self.setState({
+            IssueTypeData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  ///handle Get ticket details data
+  handleGetTicketDetails(TID) {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatTicketsByID",
+      headers: authHeader(),
+      params: {
+        ticketID: TID,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            ticketDetailsData: data,
+          });
+
+          setTimeout(() => {
+            self.handleGetCategoryList();
+            self.handleGetSubCategoryList();
+            self.handleGetIssueTypeList();
+          }, 100);
+        } else {
+          self.setState({
+            ticketDetailsData: {},
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// Handle Add Note comment
+  handleNoteAddComments() {
+    let self = this;
+    if (this.state.NoteAddComment.length > 0) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSChatTicketing/AddChatTicketNotes",
+        headers: authHeader(),
+        params: {
+          ticketID: this.state.ticket_Id,
+          comment: this.state.NoteAddComment,
+        },
+      })
+        .then(function(res) {
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            var TID = self.state.ticket_Id;
+            self.handleGetNoteCommentData(TID);
+            self.setState({
+              NoteAddComment: "",
+              AddNoteValidation: "",
+            });
+            NotificationManager.success("Comment added successfully.");
+          } else {
+            NotificationManager.error("Comment not added.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      this.setState({
+        AddNoteValidation: "Please Enter Comment.",
+      });
+    }
+  }
+  /// handle Get Note comment data
+  handleGetNoteCommentData(TID) {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatTicketNotes",
+      headers: authHeader(),
+      params: {
+        ticketID: TID,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          self.setState({
+            Notesdetails: data,
+            NotesCount: data.length,
+          });
+        } else {
+          self.setState({
+            Notesdetails: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Update ticket function
+  handleUpdateTicketDetails() {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/UpdateChatTicketStatus",
+      headers: authHeader(),
+      params: {
+        ticketID: this.state.ticketDetailsData.ticketID,
+        statusID: this.state.ticketDetailsData.ticketStatus,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let data = res.data.responseData;
+        if (Msg === "Success") {
+          NotificationManager.success("Ticket Updated successfully.");
+          self.handleGetTicketDetails(self.state.ticketDetailsData.ticketID);
+        } else {
+          NotificationManager.error("Ticket Not Updated.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle get Ticket Historical function
+  handleGetHistoricalData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSChatTicketing/GetChatTicketHistory",
+      headers: authHeader(),
+      params: {
+        ticketID: this.state.ticketDetailsData.ticketID,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.status;
+        let data = res.data.responseData;
+        if (status === true) {
+          self.setState({ historicalDetails: data, historicalTicket: true });
+        } else {
+          self.setState({ historicalDetails: [], historicalTicket: true });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// ---------------------API call End-----------------------------------
+  handleNoteOnChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+  HistoricalModalClose() {
+    this.setState({
+      historicalTicket: false,
+    });
+  }
+
+  /// drop-down value change
+  handleDropDownChange = (e) => {
+    let name = e.target.name;
+    let Value = e.target.value;
+    var data = this.state.ticketDetailsData;
+    if (name === "ticketStatus") {
+      data[name] = Value;
+      this.setState({
+        ticketDetailsData: data,
+      });
+    } else if (name === "categoryID") {
+      data[name] = Value;
+      this.setState({
+        ticketDetailsData: data,
+        SubCategoryData: [],
+        IssueTypeData: [],
+      });
+      setTimeout(() => {
+        this.handleGetSubCategoryList();
+      }, 100);
+    } else if (name === "subCategoryID") {
+      data[name] = Value;
+      this.setState({
+        ticketDetailsData: data,
+        IssueTypeData: [],
+      });
+      setTimeout(() => {
+        this.handleGetIssueTypeList();
+      }, 100);
+    } else if (name === "issueTypeID") {
+      data[name] = Value;
+      this.setState({
+        ticketDetailsData: data,
+      });
+    }
+  };
   render() {
     return (
       <div>
@@ -23,31 +339,76 @@ class storeMyTicket extends Component {
               <div className="col-12 col-xs-4 col-sm-4 col-md-3">
                 <img src={HeadphoneImg} alt="headphone" className="headphone" />
                 <label className="id-abc-1234">
-                  ID - 1<span className="updated-2-d-ago">1 Day ago</span>
+                  ID - {this.state.ticketDetailsData.ticketID}
+                  <span className="updated-2-d-ago">
+                    {this.state.ticketDetailsData.createdDate}
+                  </span>
                 </label>
-                <a
-                  href="#!"
+                <div
                   className="loading-rectangle-cntr"
-                  //   onClick={this.handleGetHistoricalData.bind(this)}
+                  onClick={this.handleGetHistoricalData.bind(this)}
                 >
                   <img
                     src={LoadingImg}
                     alt="Loading"
                     className="loading-rectangle m-0"
                     title="Ticket Historical"
-                    // onClick={this.handleGetHistoricalData.bind(this)}
                   />
-                </a>
+                </div>
               </div>
-
-              <div
-                className="col-12 col-xs-8 col-sm-8 col-md-9"
-                // className={
-                //   this.state.isKB
-                //     ? "col-12 col-xs-8 col-sm-8 col-md-9 iskbticket"
-                //     : "col-12 col-xs-8 col-sm-8 col-md-9"
-                // }
-              >
+              <div className="historical-model">
+                <Modal
+                  open={this.state.historicalTicket}
+                  onClose={this.HistoricalModalClose.bind(this)}
+                  closeIconId="sdsg"
+                  modalId="Historical-popup"
+                  overlayId="logout-ovrly"
+                  classNames={{ modal: "historical-popup" }}
+                >
+                  <label className="lblHistorical">Ticket Historical</label>
+                  <img
+                    src={CancelImg}
+                    alt="cancelImg"
+                    className="cancalImg"
+                    onClick={this.HistoricalModalClose.bind(this)}
+                  />
+                  <div className="tic-history tic-his varunoverflow">
+                    <ReactTable
+                      data={this.state.historicalDetails}
+                      columns={[
+                        {
+                          Header: <span>Name</span>,
+                          accessor: "name",
+                          width: 150,
+                        },
+                        {
+                          Header: <span>Action</span>,
+                          accessor: "action",
+                        },
+                        {
+                          Header: <span>Time & Date</span>,
+                          accessor: "dateandTime",
+                          width: 200,
+                          Cell: (row) => {
+                            var date = row.original["dateandTime"];
+                            return (
+                              <span>
+                                {moment(date).format("M/D/YYYY")} &nbsp;
+                                {moment(date).format("HH:mm A")}
+                              </span>
+                            );
+                          },
+                        },
+                      ]}
+                      resizable={false}
+                      defaultPageSize={10}
+                      showPagination={false}
+                      minRows={2}
+                    />
+                  </div>
+                </Modal>
+              </div>
+              <div className="col-12 col-xs-8 col-sm-8 col-md-9">
                 <div
                   style={{ float: "right", marginTop: "0px" }}
                   //   className={this.state.isKB ? "iskbticket" : ""}
@@ -67,19 +428,14 @@ class storeMyTicket extends Component {
                       className="naman-r"
                       // onClick={this.HandlelabelModalOpen.bind(this)}
                     >
-                      {/* {ticketDetailsData.username} */}SMB159
+                      {this.state.ticketDetailsData.assignTo}
                     </label>
                     <img src={DownImg} alt="down" className="down-header" />
                   </a>
                   <button
                     type="button"
                     className="myticket-submit-solve-button"
-                    // className={
-                    //   this.state.isKB
-                    //     ? "myticket-submit-solve-button iskbticket"
-                    //     : "myticket-submit-solve-button"
-                    // }
-                    // onClick={this.handleSubmitTicket.bind(this)}
+                    onClick={this.handleUpdateTicketDetails.bind(this)}
                   >
                     SUBMIT
                   </button>
@@ -96,7 +452,7 @@ class storeMyTicket extends Component {
                   <label className="mobile-number">Mobile Number</label>
                   <br />
                   <label className="mobile-no">
-                    {/* {ticketDetailsData.customerPhoneNumber} */} 7400022455
+                    {this.state.ticketDetailsData.customerMobileNumber}
                   </label>
 
                   <img
@@ -120,160 +476,74 @@ class storeMyTicket extends Component {
                 <div className="mid-sec mid-secnew">
                   <div className="row mob-pad">
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                      <div
-                        className="form-group"
-                        //    className={
-                        //       statusValidate
-                        //         ? "form-group"
-                        //         : "form-group disabled-link"
-                        //     }
-                      >
+                      <div className="form-group">
                         <label className="label-4">Status</label>
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          //   className={
-                          //     this.state.isKB
-                          //       ? "rectangle-9 select-category-placeholder iskbticket"
-                          //       : "rectangle-9 select-category-placeholder"
-                          //   }
-                          //   value={this.state.selectetedParameters.ticketStatusID}
-                          //   onChange={this.handleDropDownChange}
-                          name="ticketStatusID"
+                          value={this.state.ticketDetailsData.ticketStatus}
+                          onChange={this.handleDropDownChange}
+                          name="ticketStatus"
                         >
                           <option>Ticket Status</option>
-                          {/* {this.state.TicketStatusData !== null &&
-                            this.state.TicketStatusData.map((item, i) => (
-                              <option key={i} value={item.ticketStatusID}>
-                                {item.ticketStatusName}
+                          {this.state.TicketStatusData !== null &&
+                            this.state.TicketStatusData.map((item, s) => (
+                              <option key={s} value={item.statusID}>
+                                {item.statusName}
                               </option>
-                            ))} */}
+                            ))}
                         </select>
                       </div>
                     </div>
 
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      {/* <div className="form-group"> */}
-                      <div
-                        className="form-group"
-                        // className={
-                        //   this.state.role_Name === "Supervisor"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link" &&
-                        //       this.state.role_Name === "Admin"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link"
-                        // }
-                      >
+                      <div className="form-group disabled-link">
                         <label className="label-4">Priority</label>
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          //   className={
-                          //     this.state.isKB
-                          //       ? "rectangle-9 select-category-placeholder iskbticket"
-                          //       : "rectangle-9 select-category-placeholder"
-                          //   }
-                          //   value={this.state.selectetedParameters.priorityID}
-                          //   onChange={this.handleDropDownChange}
-                          name="priorityID"
+                          value={this.state.ticketDetailsData.priority}
+                          // onChange={this.handleDropDownChange}
+                          // name="priority"
                         >
-                          <option>Priority</option>
-                          {/* {this.state.TicketPriorityData !== null &&
-                            this.state.TicketPriorityData.map((item, i) => {
-                              if (
-                                this.state.isSystemGenerated == false &&
-                                item.priortyName === "Auto"
-                              ) {
-                                return null;
-                              } else if (
-                                this.state.isSystemGenerated == true &&
-                                item.priortyName === "Auto"
-                              ) {
-                                return (
-                                  <option key={i} value={item.priorityID}>
-                                    {item.priortyName}
-                                  </option>
-                                );
-                              } else {
-                                return (
-                                  <option key={i} value={item.priorityID}>
-                                    {item.priortyName}
-                                  </option>
-                                );
-                              }
-                            })} */}
+                          <option
+                            className="select-category-placeholder"
+                            value={this.state.ticketDetailsData.priority}
+                          >
+                            {this.state.ticketDetailsData.priority}
+                          </option>
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      {/* <div className="form-group"> */}
-                      <div
-                        className="form-group"
-                        // className={
-                        //   this.state.role_Name === "Supervisor"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link" &&
-                        //       this.state.role_Name === "Admin"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link"
-                        // }
-                      >
+                      <div className="form-group disabled-link">
                         <label className="label-4">Brand</label>
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          //   className={
-                          //     this.state.isKB
-                          //       ? "rectangle-9 select-category-placeholder iskbticket"
-                          //       : "rectangle-9 select-category-placeholder"
-                          //   }
-                          //   value={this.state.selectetedParameters.brandID}
-                          //   onChange={this.handleDropDownChange}
-                          name="brandID"
+                          value={this.state.ticketDetailsData.brand}
+                          // onChange={this.handleDropDownChange}
+                          // name="brand"
                         >
-                          <option className="select-category-placeholder">
-                            Select Brand
+                          <option
+                            className="select-category-placeholder"
+                            value={this.state.ticketDetailsData.brand}
+                          >
+                            {this.state.ticketDetailsData.brand}
                           </option>
-                          {/* {this.state.BrandData !== null &&
-                            this.state.BrandData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.brandID}
-                                className="select-category-placeholder"
-                              >
-                                {item.brandName}
-                              </option>
-                            ))} */}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                      {/* <div className="form-group"> */}
-                      <div
-                        className="form-group"
-                        // className={
-                        //   this.state.role_Name === "Supervisor"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link" &&
-                        //       this.state.role_Name === "Admin"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link"
-                        // }
-                      >
+                      <div className="form-group disabled-link">
                         <label className="label-4">Category</label>
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          //   className={
-                          //     this.state.isKB
-                          //       ? "rectangle-9 select-category-placeholder iskbticket"
-                          //       : "rectangle-9 select-category-placeholder"
-                          //   }
-                          //   value={this.state.selectetedParameters.categoryID}
-                          //   onChange={this.handleDropDownChange}
+                          value={this.state.ticketDetailsData.categoryID}
                           name="categoryID"
+                          onChange={this.handleDropDownChange}
                         >
                           <option className="select-category-placeholder">
                             Select Category
                           </option>
-                          {/* {this.state.CategoryData !== null &&
+                          {this.state.CategoryData !== null &&
                             this.state.CategoryData.map((item, i) => (
                               <option
                                 key={i}
@@ -282,39 +552,23 @@ class storeMyTicket extends Component {
                               >
                                 {item.categoryName}
                               </option>
-                            ))} */}
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      {/* <div className="form-group"> */}
-                      <div
-                        className="form-group"
-                        // className={
-                        //   this.state.role_Name === "Supervisor"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link" &&
-                        //       this.state.role_Name === "Admin"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link"
-                        // }
-                      >
+                      <div className="form-group disabled-link">
                         <label className="label-4">Sub Category</label>
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          //   className={
-                          //     this.state.isKB
-                          //       ? "rectangle-9 select-category-placeholder iskbticket"
-                          //       : "rectangle-9 select-category-placeholder"
-                          //   }
-                          //   value={this.state.selectetedParameters.subCategoryID}
-                          //   onChange={this.handleDropDownChange}
+                          value={this.state.ticketDetailsData.subCategoryID}
+                          onChange={this.handleDropDownChange}
                           name="subCategoryID"
                         >
                           <option className="select-category-placeholder">
                             Select Sub Category
                           </option>
-                          {/* {this.state.SubCategoryData !== null &&
+                          {this.state.SubCategoryData !== null &&
                             this.state.SubCategoryData.map((item, i) => (
                               <option
                                 key={i}
@@ -323,40 +577,23 @@ class storeMyTicket extends Component {
                               >
                                 {item.subCategoryName}
                               </option>
-                            ))} */}
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      {/* <div className="form-group"> */}
-                      <div
-                        className="form-group"
-                        // className={
-                        //   this.state.role_Name === "Supervisor"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link" &&
-                        //       this.state.role_Name === "Admin"
-                        //     ? "form-group"
-                        //     : "form-group disabled-link"
-                        // }
-                      >
+                      <div className="form-group disabled-link">
                         <label className="label-4">Issue Type</label>
-
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          //   className={
-                          //     this.state.isKB
-                          //       ? "rectangle-9 select-category-placeholder iskbticket"
-                          //       : "rectangle-9 select-category-placeholder"
-                          //   }
-                          //   value={this.state.selectetedParameters.issueTypeID}
-                          //   onChange={this.handleDropDownChange}
+                          value={this.state.ticketDetailsData.issueTypeID}
+                          onChange={this.handleDropDownChange}
                           name="issueTypeID"
                         >
                           <option className="select-sub-category-placeholder">
                             Select Issue Type
                           </option>
-                          {/* {this.state.IssueTypeData !== null &&
+                          {this.state.IssueTypeData !== null &&
                             this.state.IssueTypeData.map((item, i) => (
                               <option
                                 key={i}
@@ -365,7 +602,7 @@ class storeMyTicket extends Component {
                               >
                                 {item.issueTypeName}
                               </option>
-                            ))} */}
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -382,8 +619,7 @@ class storeMyTicket extends Component {
             </div>
             <div className="row" style={{ marginTop: "0" }}>
               <label className="storelabel-3 mb-0">
-                {/* {ticketDetailsData.ticketTitle} */}
-                Customer Ticket Title
+                {this.state.ticketDetailsData.ticketTitle}
               </label>
             </div>
             <div className="row mt-3">
@@ -391,14 +627,18 @@ class storeMyTicket extends Component {
             </div>
             <div className="row" style={{ marginTop: "0" }}>
               <label className="label-3 pb-0">
-                {/* {ticketDetailsData.ticketdescription} */}Customer Ticket
-                Details
+                {this.state.ticketDetailsData.ticketDescription}
               </label>
             </div>
           </div>
           <div className="row">
             <div className="col-md-4" style={{ top: "20px" }}>
-              <label className="storeTickeTtl mb-0">Notes: 01</label>
+              <label className="storeTickeTtl mb-0">
+                Notes:
+                {this.state.NotesCount < 9
+                  ? "0" + this.state.NotesCount
+                  : this.state.NotesCount}
+              </label>
             </div>
           </div>
           <div className="row" style={{ marginTop: "20px" }}>
@@ -408,91 +648,64 @@ class storeMyTicket extends Component {
             >
               <textarea
                 className="Add-Notes-textarea"
-                //   className={
-                //     this.state.isKB
-                //       ? "Add-Notes-textarea iskbticket"
-                //       : "Add-Notes-textarea"
-                //   }
                 placeholder="Add Notes"
                 name="NoteAddComment"
-                //   value={this.state.NoteAddComment}
-                //   onChange={this.handleNoteOnChange}
+                value={this.state.NoteAddComment}
+                onChange={this.handleNoteOnChange}
               ></textarea>
-              {/* {this.state.NoteAddComment.length === 0 && (
-                  <p
-                    style={{
-                      color: "red",
-                      marginBottom: "0px",
-                    }}
-                  >
-                    {this.state.notesCommentCompulsion}
-                  </p>
-                )} */}
+              {this.state.NoteAddComment.length === 0 && (
+                <p
+                  style={{
+                    color: "red",
+                    marginBottom: "0px",
+                  }}
+                >
+                  {this.state.AddNoteValidation}
+                </p>
+              )}
               <button
                 type="button"
                 className="notesbtn notesbtn-text"
-                //   className={
-                //     this.state.isKB
-                //       ? "notesbtn notesbtn-text iskbticket"
-                //       : "notesbtn notesbtn-text"
-                //   }
-                //   onClick={this.handleNoteAddComments.bind(this)}
+                onClick={this.handleNoteAddComments.bind(this)}
                 style={{ marginTop: "5px" }}
               >
                 ADD COMMENT
               </button>
             </div>
 
-            <div className="col-12 col-xs-12 col-sm-8 my-ticket-notes" style={{top:"18px"}}>
-              {/* {this.state.Notesdetails !== null &&
-                  this.state.Notesdetails.map((item, i) => (
-                    <div className="row my-ticket-notes-row" key={i}>
-                      <div className="col-md-1">
-                        <div className="oval-5-1-new">
-                          <img
-                            src={StoreIcon}
-                            style={{ padding: "5px" }}
-                            alt="store-icon"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-11">
-                        <div className="row my-ticket-notes-created">
-                          <label className="varun-nagpal">
-                            {item.createdByName}
-                          </label>
-                        </div>
-                        <div className="row my-ticket-notes-created">
-                          <label className="hi-diwakar-i-really tab">
-                            {item.note}
-                          </label>
-                        </div>
+            <div
+              className="col-12 col-xs-12 col-sm-8 my-ticket-notes"
+              style={{ top: "18px" }}
+            >
+              {this.state.Notesdetails !== null &&
+                this.state.Notesdetails.map((item, i) => (
+                  <div className="row my-ticket-notes-row" key={i}>
+                    <div className="col-md-1">
+                      <div className="oval-5-1-new">
+                        <img
+                          src={StoreIcon}
+                          style={{ padding: "5px" }}
+                          alt="store-icon"
+                        />
                       </div>
                     </div>
-                  ))} */}
-              <div className="row my-ticket-notes-row">
-                <div className="col-md-1">
-                  <div className="oval-5-1-new">
-                    <img
-                      src={StoreIcon}
-                      style={{ padding: "5px" }}
-                      alt="store-icon"
-                    />
+                    <div className="col-md-11">
+                      <div className="row my-ticket-notes-created">
+                        <label className="varun-nagpal">
+                          {item.name}{" "}
+                          <span class="addTask-time-ago">
+                            {item.commentDate}
+                          </span>
+                        </label>
+                      </div>
+                      <div className="row my-ticket-notes-created">
+                        <label className="hi-diwakar-i-really tab">
+                          {item.comment}
+                        </label>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="col-md-11">
-                  <div className="row my-ticket-notes-created">
-                    <label className="varun-nagpal">
-                      {/* {item.createdByName} */} Admin Admin
-                    </label>
-                  </div>
-                  <div className="row my-ticket-notes-created">
-                    <label className="hi-diwakar-i-really tab">
-                      {/* {item.note} */} Test Notes
-                    </label>
-                  </div>
-                </div>
-              </div>
+                ))}
             </div>
           </div>
         </div>
