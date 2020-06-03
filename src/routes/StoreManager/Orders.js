@@ -144,35 +144,7 @@ class Orders extends Component {
           Action: "Payment Pending",
         },
       ],
-      deliveredGridData: [
-        {
-          InvoiceNo: "12017768",
-          CustomerName: "Sandeep",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "Delivered",
-        },
-        {
-          InvoiceNo: "12017768",
-          CustomerName: "Naman",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "RTO",
-        },
-        {
-          InvoiceNo: "12017768",
-          CustomerName: "Sandeep",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "Self Picked",
-        },
-      ],
+      deliveredGridData: [],
       shipmentAssignedGridData: [
         {
           AWSNo: "889667123",
@@ -202,6 +174,39 @@ class Orders extends Component {
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
     };
+  }
+
+  componentDidMount() {
+    this.handleGetOrderDeliveredData();
+  }
+
+  handleGetOrderDeliveredData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
+      headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: 1,
+        PageSize: 10,
+        FilterStatus: ""
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            deliveredGridData: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -1100,16 +1105,16 @@ class Orders extends Component {
                 columns={[
                   {
                     title: "Invoice no.",
-                    dataIndex: "InvoiceNo",
+                    dataIndex: "invoiceNo",
                   },
                   {
                     title: "Customer",
                     render: (row, item) => {
                       return (
                         <div>
-                          <p>{item.CustomerName},</p>
+                          <p>{item.customerName},</p>
                           <p className="order-small-font">
-                            {item.CustomerNumber}
+                            {item.mobileNumber}
                           </p>
                         </div>
                       );
@@ -1120,7 +1125,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p>{item.Items}</p>
+                          <p>{item.orderDeliveredItems.length}</p>
                           <Popover
                             content={
                               <Table
@@ -1128,25 +1133,25 @@ class Orders extends Component {
                                 columns={[
                                   {
                                     title: "Item ID",
-                                    dataIndex: "ItemID",
+                                    dataIndex: "itemID",
                                   },
                                   {
                                     title: "Item Name",
-                                    dataIndex: "ItemName",
+                                    dataIndex: "itemName",
                                     width: 150,
                                   },
                                   {
                                     title: "Item Price",
-                                    dataIndex: "ItemPrice",
+                                    dataIndex: "itemPrice",
                                   },
                                   {
                                     title: "Quantity",
-                                    dataIndex: "Quantity",
+                                    dataIndex: "quantity",
                                   },
                                 ]}
                                 scroll={{ y: 240 }}
                                 pagination={false}
-                                dataSource={this.state.itemPopupDate}
+                                dataSource={item.orderDeliveredItems}
                               />
                             }
                             trigger="click"
@@ -1166,7 +1171,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div>
-                          <p>{item.Date}</p>
+                          <p>{item.date}</p>
                           <p className="order-small-font">{item.Time}</p>
                         </div>
                       );
@@ -1179,7 +1184,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p className="deliv-status">{item.Status}</p>
+                          <p className="deliv-status">{item.statusName}</p>
                         </div>
                       );
                     },
@@ -1257,18 +1262,19 @@ class Orders extends Component {
                         <div className="d-flex">
                           <button
                             className={
-                              item.Status === "Delivered"
+                              item.actionTypeName === "Delivered"
                                 ? "delibutn deliv-grid-butn"
-                                : item.Status === "RTO"
+                                : item.actionTypeName === "Mark As Delivered"
                                   ? "markasbutn deliv-grid-butn"
                                   : "pickedbutn deliv-grid-butn"
                             }
                           >
-                            {item.Status === "Delivered"
+                            {item.actionTypeName}
+                            {/* {item.statusName === "Delivered"
                               ? "Delivered"
-                              : item.Status === "RTO"
+                              : item.statusName === "RTO"
                                 ? "Mark As Delivered"
-                                : "Picked"}
+                                : "Picked"} */}
                           </button>
                         </div>
                       );
