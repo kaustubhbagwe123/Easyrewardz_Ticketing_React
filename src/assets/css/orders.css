@@ -220,7 +220,7 @@
   height: 29px;
   color: #ffffff;
   font-family: Lato;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 400;
   line-height: 12px;
   text-align: center;
@@ -244,16 +244,16 @@
   margin-top: 15px;
 }
 
-.btn-ref{
-  background-color: #FFFFFF;
-  border: 1px solid #2561A8;
-  color: #2561A8;
+.btn-ref {
+  background-color: #ffffff;
+  border: 1px solid #2561a8;
+  color: #2561a8;
 }
 
-.btn-proc{
-  background-color: #2561A8;
-  border: 1px solid #2561A8;
-  color: #FFFFFF;
+.btn-proc {
+  background-color: #2561a8;
+  border: 1px solid #2561a8;
+  color: #ffffff;
 }
 
 /* Delivered End */
@@ -309,6 +309,21 @@
 .order-grid-butn-yellow {
   background: #f3bc17;
   border-color: #f3bc17;
+}
+.order-status-drpdwn {
+  padding: 15px 25px 25px;
+}
+.order-status-header .ant-table-filter-icon::before {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid #4a4a4a;
+  transform: none;
+}
+.order-status-header .ant-table-filter-icon {
+  width: 8px !important;
+  left: 60px;
 }
 /* order ends */
 
