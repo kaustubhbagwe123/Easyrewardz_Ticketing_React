@@ -482,6 +482,7 @@ a {
   position: relative;
   top: -15px;
   margin-left: 10px;
+  cursor: pointer;
 }
 .oval-55 {
   background-color: #f8e71c;
