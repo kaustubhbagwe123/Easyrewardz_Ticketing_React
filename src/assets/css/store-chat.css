@@ -1484,3 +1484,26 @@ p {
   margin-left: 27px;
   width: 50%;
 }
+
+.chatactionbtn {
+  float: right;
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 0px;
+}
+#actionmodalId {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 125px;
+  margin-top: 55px;
+  display: inline-block;
+}
+
+.actionmodallbl{
+  color: #000;
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 7px;
+}
