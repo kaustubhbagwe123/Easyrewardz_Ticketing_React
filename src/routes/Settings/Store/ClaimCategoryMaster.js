@@ -3278,7 +3278,8 @@ class ClaimCategoryMaster extends Component {
               <br />
               <div className="text-center">
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
-                  CANCEL
+                {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                  
                 </a>
 
                 <button

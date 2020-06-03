@@ -2217,6 +2217,7 @@ class StoreTask extends Component {
             <button
               className="butn"
               onClick={this.handleChagneAddTask.bind(this)}
+              style={{display:"none"}}
             >
                {TranslationContext!==undefined?TranslationContext.button.addtask:"Add Task"}
               

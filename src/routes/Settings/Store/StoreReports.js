@@ -29,6 +29,8 @@ import moment from "moment";
 import ClaimStatus from "../../../routes/ClaimStatus";
 import matchSorter from "match-sorter";
 import Sorting from "./../../../assets/Images/sorting.png";
+import * as translationHI from './../../../translations/hindi'
+import * as translationMA from './../../../translations/marathi'
 class StoreReports extends Component {
   constructor(props) {
     super(props);
@@ -192,6 +194,7 @@ class StoreReports extends Component {
       screatedByFilterCheckbox: "",
       sreportStatusFilterCheckbox: "",
       isortA: false,
+      translateLanguage: {}
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -227,6 +230,15 @@ class StoreReports extends Component {
     this.handleGetStoreReports();
     this.handleGetUser();
     this.handleGetCampaignName();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   applyCallback = async (startDate, endDate) => {
@@ -3055,6 +3067,7 @@ class StoreReports extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const datareport = this.state.storeReportData;
 
     const columnsreport = [
@@ -3062,9 +3075,10 @@ class StoreReports extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Name" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "reportName", "Name")}
+            onClick={this.StatusOpenModel.bind(this, "reportName",TranslationContext!==undefined?TranslationContext.span.name:"Name")}
           >
-            Name
+            {TranslationContext!==undefined?TranslationContext.span.name:"Name"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false && this.state.sortHeader === "Name"
@@ -3086,10 +3100,11 @@ class StoreReports extends Component {
             onClick={this.StatusOpenModel.bind(
               this,
               "scheduleStatus",
-              "Schedule Status"
+              TranslationContext!==undefined?TranslationContext.span.schedulestatus:"Schedule Status"
             )}
           >
-            Schedule Status
+             {TranslationContext!==undefined?TranslationContext.span.schedulestatus:"Schedule Status"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false &&
@@ -3109,9 +3124,10 @@ class StoreReports extends Component {
             className={
               this.state.sortHeader === "Created by" ? "sort-column" : ""
             }
-            onClick={this.StatusOpenModel.bind(this, "createdBy", "Created by")}
+            onClick={this.StatusOpenModel.bind(this, "createdBy", TranslationContext!==undefined?TranslationContext.span.createdby:"Created by")}
           >
-            Created by
+            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false &&
@@ -3136,21 +3152,21 @@ class StoreReports extends Component {
                       <div>
                         <b>
                           <p className="title">
-                            Created By: {row.original["createdBy"]}
+                          {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original["createdBy"]}
                           </p>
                         </b>
                         <p className="sub-title">
-                          Created Date: {row.original["createdDate"]}
+                        {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}: {row.original["createdDate"]}
                         </p>
                       </div>
                       <div>
                         <b>
                           <p className="title">
-                            Updated By: {row.original["modifiedBy"]}
+                          {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}: {row.original["modifiedBy"]}
                           </p>
                         </b>
                         <p className="sub-title">
-                          Updated Date: {row.original["modifiedDate"]}
+                        {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}: {row.original["modifiedDate"]}
                         </p>
                       </div>
                     </>
@@ -3173,9 +3189,10 @@ class StoreReports extends Component {
         Header: (
           <span
             className={this.state.sortHeader === "Status" ? "sort-column" : ""}
-            onClick={this.StatusOpenModel.bind(this, "reportStatus", "Status")}
+            onClick={this.StatusOpenModel.bind(this, "reportStatus", TranslationContext!==undefined?TranslationContext.span.status:"Status")}
           >
-            Status
+            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+            
             <FontAwesomeIcon
               icon={
                 this.state.isATOZ == false && this.state.sortHeader === "Status"
@@ -3189,7 +3206,10 @@ class StoreReports extends Component {
         accessor: "reportStatus",
       },
       {
-        Header: <span>Actions</span>,
+        Header: <span>
+
+       {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
+        </span>,
         sortable: false,
         accessor: "actionReport",
         Cell: (row) => (
@@ -3215,12 +3235,15 @@ class StoreReports extends Component {
                       <img src={DelBigIcon} alt="del-icon" />
                     </div>
                     <div>
-                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                      <p className="font-weight-bold blak-clr">
+                      {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                        </p>
                       <p className="mt-1 fs-12">
-                        Are you sure you want to delete this file?
+                      {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                          
                       </p>
                       <div className="del-can">
-                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                        <a href={Demo.BLANK_LINK}> {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
                         <button
                           className="butn"
                           onClick={this.handleDeleteStoreReports.bind(
@@ -3228,7 +3251,7 @@ class StoreReports extends Component {
                             row.original["reportID"]
                           )}
                         >
-                          Delete
+                           {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
                         </button>
                       </div>
                     </div>
@@ -3246,7 +3269,7 @@ class StoreReports extends Component {
                 id="p-edit-pop-2"
                 onClick={this.handleEditReport.bind(this, row.original)}
               >
-                EDIT
+                {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
               </button>
             </div>
           </div>
@@ -3259,17 +3282,19 @@ class StoreReports extends Component {
           <img src={DelBigIcon} alt="del-icon" />
         </div>
         <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="font-weight-bold blak-clr">{TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?</p>
           <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
+          {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
+                                          
           </p>
           <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <a href={Demo.BLANK_LINK}> {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
             <button
               className="butn"
               onClick={this.handleDeleteStoreReports.bind(this)}
             >
-              Delete
+              {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                          
             </button>
           </div>
         </div>
@@ -3314,7 +3339,10 @@ class StoreReports extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                                          
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -3324,7 +3352,9 @@ class StoreReports extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <a
@@ -3336,10 +3366,13 @@ class StoreReports extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                clear search
+                  {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
+                
               </a>
               <div className="filter-type">
-                <p>FILTER BY TYPE</p>
+                <p>
+                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                </p>
                 <input
                   type="text"
                   style={{ display: "block" }}
@@ -3482,7 +3515,8 @@ class StoreReports extends Component {
         </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            
           </Link>
           <span>&gt;</span>
           <Link
@@ -3492,11 +3526,13 @@ class StoreReports extends Component {
             }}
             className="header-path"
           >
-            Store
+             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Reports
+            
+            {TranslationContext!==undefined?TranslationContext.link.reports:"Reports"}
           </Link>
           <div className="reportbutton">
             <div className="addplus">
@@ -3505,7 +3541,7 @@ class StoreReports extends Component {
                 className="addplusbtnReport"
                 onClick={this.handleAddReportOpen}
               >
-                + Add
+                + {TranslationContext!==undefined?TranslationContext.button.add:"Add"} 
               </button>
             </div>
           </div>
@@ -3577,7 +3613,8 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    Task
+                    {TranslationContext!==undefined?TranslationContext.a.task:"Task"}
+                    
                   </a>
                 </li>
                 <li
@@ -3594,7 +3631,8 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    Claim
+                      {TranslationContext!==undefined?TranslationContext.a.claim:"Claim"}
+                    
                   </a>
                 </li>
                 <li
@@ -3611,7 +3649,8 @@ class StoreReports extends Component {
                     aria-selected="false"
                     style={{ pointerEvents: "none" }}
                   >
-                    Campaign
+                     {TranslationContext!==undefined?TranslationContext.a.campaign:"Campaign"}
+                    
                   </a>
                 </li>
               </ul>
@@ -3633,11 +3672,13 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task ID/ Title</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.taskidslashtitle:"Task ID/ Title"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
-                        placeholder="Enter Task ID/ Title"
+                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.entertaskidslashtitle:"Enter Task ID/ Title"}
                         maxLength={11}
                         name="taskIdTitle"
                         value={this.state.taskIdTitle}
@@ -3645,7 +3686,10 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Department</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.department:"Department"}
+
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -3653,7 +3697,8 @@ class StoreReports extends Component {
                           id="departmentNameValue"
                           onClick={this.handleDepartmentButton}
                         >
-                          Select
+                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -3682,14 +3727,16 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                     {TranslationContext!==undefined?TranslationContext.option.selectall:"Select All"}
+                                    
                                   </label>
                                 </li>
                                 <li>
                                   <label
                                     onClick={this.selectNoDepartment.bind(this)}
                                   >
-                                    Clear
+                                    {TranslationContext!==undefined?TranslationContext.label.clear:"Clear"}
+                                    
                                   </label>
                                 </li>
                               </ul>
@@ -3743,7 +3790,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task Creation On</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.taskcreationon:"Task Creation On"}
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.taskCreateDate}
@@ -3752,7 +3801,7 @@ class StoreReports extends Component {
                             this,
                             "taskCreateDate"
                           )}
-                          placeholderText="Creation Date"
+                          placeholderText={TranslationContext!==undefined?TranslationContext.placeholder.creationdate:"Creation Date"}
                           showMonthDropdown
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
@@ -3762,7 +3811,10 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task Status</label>
+                      <label>
+
+                      {TranslationContext!==undefined?TranslationContext.label.taskstatus:"Task Status"}
+                      </label>
                       <div className="normal-dropdown">
                         <Select
                           getOptionLabel={(option) => option.taskStatusName}
@@ -3778,7 +3830,10 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Function</label>
+                      <label>
+
+                      {TranslationContext!==undefined?TranslationContext.label.function:"Function"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -3786,7 +3841,8 @@ class StoreReports extends Component {
                           id="functionNameValue"
                           onClick={this.handleFunctionButton}
                         >
-                          Select
+                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -3813,14 +3869,16 @@ class StoreReports extends Component {
                                   <label
                                     onClick={this.selectAllFunction.bind(this)}
                                   >
-                                    Select All
+                                     {TranslationContext!==undefined?TranslationContext.label.selectall:"Select All"}
+                                    
                                   </label>
                                 </li>
                                 <li>
                                   <label
                                     onClick={this.selectNoFunction.bind(this)}
                                   >
-                                    Clear
+                                     {TranslationContext!==undefined?TranslationContext.label.clear:"Clear"}
+                                    
                                   </label>
                                 </li>
                               </ul>
@@ -3872,7 +3930,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Created by</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.createdby:"Created by"}
+                      </label>
                       <select
                         name="taskCreatedBy"
                         value={this.state.taskCreatedBy}
@@ -3892,11 +3952,13 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Linked Ticket ID</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.linkedticketid:"Linked Ticket ID"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
-                        placeholder="Enter Linked Ticket ID"
+                        placeholder=  {TranslationContext!==undefined?TranslationContext.placeholder.enterlinkedticketid:"Enter Linked Ticket ID"}
                         maxLength={11}
                         name="taskLinkedTicketId"
                         value={this.state.taskLinkedTicketId}
@@ -3904,7 +3966,9 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Priority</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -3912,7 +3976,8 @@ class StoreReports extends Component {
                           id="priorityNameValue"
                           onClick={this.handlePriorityButton}
                         >
-                          Select
+                           {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -3939,14 +4004,16 @@ class StoreReports extends Component {
                                   <label
                                     onClick={this.selectAllPriority.bind(this)}
                                   >
-                                    Select All
+                                      {TranslationContext!==undefined?TranslationContext.label.selectall:"Select All"}
+                                   
                                   </label>
                                 </li>
                                 <li>
                                   <label
                                     onClick={this.selectNoPriority.bind(this)}
                                   >
-                                    Clear
+                                    {TranslationContext!==undefined?TranslationContext.label.clear:"Clear"}
+                                    
                                   </label>
                                 </li>
                               </ul>
@@ -3998,14 +4065,18 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Assigned To</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.assignedto:"Assigned To"}
+                      </label>
                       <select
                         name="taskAssignedTo"
                         value={this.state.taskAssignedTo}
                         onChange={this.handleOnChangeData}
                       >
                         {this.state.userData.length > 0 && (
-                          <option value="0">All</option>
+                          <option value="0">
+                            {TranslationContext!==undefined?TranslationContext.option.all:"All"}
+                          </option>
                         )}
                         {this.state.userData !== null &&
                           this.state.userData.map((item, i) => (
@@ -4018,36 +4089,51 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task With Tickets</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.taskwithtickets:"Task With Tickets"}
+                      </label>
                       <select
                         name="taskWithTickets"
                         value={this.state.taskWithTickets}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {TranslationContext!==undefined?TranslationContext.option.no:"No"}
+                        </option>
+                        <option value="yes">
+                        {TranslationContext!==undefined?TranslationContext.option.yes:"Yes"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Task With Claim</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.taskwithclaim:"Task With Claim"}
+
+                      </label>
                       <select
                         name="taskWithClaim"
                         value={this.state.taskWithClaim}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {TranslationContext!==undefined?TranslationContext.option.no:"No"}
+                        </option>
+                        <option value="yes">
+                        {TranslationContext!==undefined?TranslationContext.option.yes:"Yes"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim ID</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimid:"Claim ID"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
                         maxLength={11}
                         name="taskClaimId"
                         value={this.state.taskClaimId}
-                        placeholder="Enter Claim ID"
+                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterclaimid:"Enter Claim ID"}
                         onChange={this.handleOnChangeData}
                       />
                     </div>
@@ -4059,7 +4145,8 @@ class StoreReports extends Component {
                         type="submit"
                         onClick={this.handleNextPopupOpen.bind(this, 1)}
                       >
-                        NEXT
+                          {TranslationContext!==undefined?TranslationContext.button.next:"NEXT"}
+                        
                       </button>
                     </div>
                   </div>
@@ -4075,19 +4162,23 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim ID</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimid:"Claim ID"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
                         maxLength={11}
                         name="claimClaimId"
                         value={this.state.claimClaimId}
-                        placeholder="Enter Claim ID"
+                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterclaimid:"Enter Claim ID"}
                         onChange={this.handleOnChangeData}
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Category</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimcategory:"Claim Category"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4095,7 +4186,8 @@ class StoreReports extends Component {
                           id="claimCategoryNameValue"
                           onClick={this.handleClaimCategoryButton}
                         >
-                          Select
+                              {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          
                           <span className="caret"></span>
                         </button>
                         {/* {this.state.indiDepartment === "" && (
@@ -4124,7 +4216,8 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    {TranslationContext!==undefined?TranslationContext.option.selectall:"Select All"}
+                                    
                                   </label>
                                 </li>
                                 <li>
@@ -4133,7 +4226,8 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Clear
+                                       {TranslationContext!==undefined?TranslationContext.label.clear:"Clear"}
+                                    
                                   </label>
                                 </li>
                               </ul>
@@ -4189,7 +4283,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Creation On</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimcreationon:"Claim Creation On"}
+                      </label>
                       <div className="ticketreportdat">
                         <DatePicker
                           selected={this.state.claimCreateDate}
@@ -4198,7 +4294,7 @@ class StoreReports extends Component {
                             this,
                             "claimCreateDate"
                           )}
-                          placeholderText="Creation Date"
+                          placeholderText= {TranslationContext!==undefined?TranslationContext.placeholder.creationdate:"Creation Date"}
                           showMonthDropdown
                           showYearDropdown
                         />
@@ -4244,7 +4340,8 @@ class StoreReports extends Component {
                                       this
                                     )}
                                   >
-                                    Select All
+                                    {TranslationContext!==undefined?TranslationContext.placeholder.selectall:"Select All"}
+                                    
                                   </label>
                                 </li>
                                 <li>
@@ -4309,7 +4406,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Sub Category</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimsubcategory:"Claim Sub Category"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4413,7 +4512,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Created by</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.createdby:"Created by"}
+                      </label>
                       <select
                         name="claimCreatedBy"
                         value={this.state.claimCreatedBy}
@@ -4432,11 +4533,13 @@ class StoreReports extends Component {
 
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Linked Ticket ID</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.linkedticketid:"Linked Ticket ID"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
-                        placeholder="Enter Linked Ticket ID"
+                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterlinkedticketid:"Enter Linked Ticket ID"}
                         maxLength={11}
                         name="claimLinkedTicketId"
                         value={this.state.claimLinkedTicketId}
@@ -4444,7 +4547,9 @@ class StoreReports extends Component {
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim Issue Type</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimissuetype:"Claim Issue Type"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4548,7 +4653,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Assigned To</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.assignedto:"Assigned To"}
+                      </label>
                       <select
                         name="claimAssignedTo"
                         value={this.state.claimAssignedTo}
@@ -4568,36 +4675,51 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim With Tickets</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimwithtickets:"Claim With Tickets"}
+                      </label>
                       <select
                         name="claimWithTickets"
                         value={this.state.claimWithTickets}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {TranslationContext!==undefined?TranslationContext.option.no:"No"}
+                        </option>
+                        <option value="yes">
+                        {TranslationContext!==undefined?TranslationContext.option.yes:"Yes"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Claim With Task</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.claimwithtask:"Claim With Task"}
+                      </label>
                       <select
                         name="claimWithTask"
                         value={this.state.claimWithTask}
                         onChange={this.handleOnChangeData}
                       >
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
+                        <option value="no">
+                        {TranslationContext!==undefined?TranslationContext.option.no:"No"}
+                        </option>
+                        <option value="yes">
+                        {TranslationContext!==undefined?TranslationContext.option.yes:"Yes"}
+                        </option>
                       </select>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Linked Task ID</label>
+                      <label>
+
+                      {TranslationContext!==undefined?TranslationContext.label.linkedtaskid:"Linked Task ID"}
+                      </label>
                       <input
                         className="no-bg"
                         type="text"
                         maxLength={11}
                         name="linkedTaskId"
                         value={this.state.linkedTaskId}
-                        placeholder="Enter Linked Task ID"
+                        placeholder={TranslationContext!==undefined?TranslationContext.label.enterlinkedtaskid:"Enter Linked Task ID"}
                         onChange={this.handleOnChangeData}
                       />
                     </div>
@@ -4610,7 +4732,8 @@ class StoreReports extends Component {
                         // onClick={this.handleNextPopupOpen}
                         onClick={this.handleNextPopupOpen.bind(this, 2)}
                       >
-                        NEXT
+                        {TranslationContext!==undefined?TranslationContext.button.next:" NEXT"}
+                       
                       </button>
                     </div>
                   </div>
@@ -4626,7 +4749,9 @@ class StoreReports extends Component {
                 <div className="container reportpad">
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Campaign Name</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.campaignname:"Campaign Name"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4728,7 +4853,9 @@ class StoreReports extends Component {
                       </div>
                     </div>
                     <div className="col-md-4 ticketstrReport">
-                      <label>Campaign Assigned To</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.campaignassignedto:"Campaign Assigned To"}
+                      </label>
                       <select
                         name="campaignAssignedTo"
                         value={this.state.campaignAssignedTo}
@@ -4745,7 +4872,9 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4">
                       <div className=" ticketstrReport">
-                        <label>Campaign End Date</label>
+                        <label>
+                        {TranslationContext!==undefined?TranslationContext.label.campaignenddate:"Campaign End Date"}
+                        </label>
                       </div>
                       <div className="ticketreportdat campaign-end-date">
                         <DatePickerComponenet
@@ -4757,7 +4886,9 @@ class StoreReports extends Component {
                   </div>
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
-                      <label>Campaign Status</label>
+                      <label>
+                      {TranslationContext!==undefined?TranslationContext.label.campaignstatus:"Campaign Status"}
+                      </label>
                       <div className="dropdown issuetype-cusdrp">
                         <button
                           className="btn issuesladrop mb-0"
@@ -4871,7 +5002,8 @@ class StoreReports extends Component {
                         onClick={this.handleNextPopupOpen.bind(this, 3)}
                         // onClick={this.handleChangeTab.bind(this,2)}
                       >
-                        NEXT
+                        {TranslationContext!==undefined?TranslationContext.button.next:"NEXT"}
+                        
                       </button>
                     </div>
                   </div>
@@ -4888,7 +5020,9 @@ class StoreReports extends Component {
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
-                <label className="reportdetail">Enter Report Details</label>
+                <label className="reportdetail">
+                {TranslationContext!==undefined?TranslationContext.label.enterreportdetails:"Enter Report Details"}
+                </label>
                 <img
                   src={CancelImg}
                   alt="CancelImg"
@@ -4899,7 +5033,9 @@ class StoreReports extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="store-totalresultcircle">
-                    <label className="totalresult">Total Result</label>
+                    <label className="totalresult">
+                    {TranslationContext!==undefined?TranslationContext.label.totalresult:"Total Result"}
+                    </label>
                     <span className="totalresultnumber">
                       {this.state.totalResult}
                     </span>
@@ -4907,7 +5043,9 @@ class StoreReports extends Component {
                 </div>
                 <div className="col-md-6 rname">
                   <div className="ranmetext">
-                    <label className="renametext">Report Name</label>
+                    <label className="renametext">
+                    {TranslationContext!==undefined?TranslationContext.label.reportname:"Report Name"}
+                    </label>
                     <input
                       className="no-bg"
                       type="text"
@@ -4923,12 +5061,14 @@ class StoreReports extends Component {
                       className="Schedulenext"
                       onClick={this.ScheduleOpenModel}
                     >
-                      SCHEDULE
+                        {TranslationContext!==undefined?TranslationContext.button.schedule:"SCHEDULE"}
+                      
                     </button>
                   </div>
                   <div className="buttonschdulesave1">
                     <button className="Schedulenext1" onClick={this.handleSave}>
-                      SAVE
+                      
+                      {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
                     </button>
                   </div>
                 </div>
@@ -4946,7 +5086,9 @@ class StoreReports extends Component {
           >
             <div>
               <label>
-                <b>Schedule date to</b>
+                <b>
+                {TranslationContext!==undefined?TranslationContext.b.scheduledateto:"Schedule date to"}
+                </b>
               </label>
               <div>
                 <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -4982,7 +5124,9 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 230 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Every</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.every:"Every"}
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -4999,7 +5143,9 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 231 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Every</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.every:"Every"}
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5007,7 +5153,9 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfWeek}
                         onChange={this.handleWeekly}
                       />
-                      <label className="every1">Week on</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.every:"Week on"}
+                      </label>
                     </span>
                     <div
                       style={{
@@ -5019,49 +5167,56 @@ class StoreReports extends Component {
                         value="Mon"
                         id="Mon"
                       >
-                        Mon
+                         {TranslationContext!==undefined?TranslationContext.checkbox.mon:"Mon"}
+                        
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Tue"
                         id="Tue"
                       >
-                        Tue
+                         {TranslationContext!==undefined?TranslationContext.checkbox.tue:"Tue"}
+                        
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Wed"
                         id="Wed"
                       >
-                        Wed
+                         {TranslationContext!==undefined?TranslationContext.checkbox.wed:"Wed"}
+                        
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Thu"
                         id="Thu"
                       >
-                        Thu
+                           {TranslationContext!==undefined?TranslationContext.checkbox.thu:"Thu"}
+                       
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Fri"
                         id="Fri"
                       >
-                        Fri
+                           {TranslationContext!==undefined?TranslationContext.checkbox.fri:"Fri"}
+                        
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Sat"
                         id="Sat"
                       >
-                        Sat
+                            {TranslationContext!==undefined?TranslationContext.checkbox.sat:"Sat"}
+                        
                       </Checkbox>
                       <Checkbox
                         onChange={this.handleWeeklyDays}
                         value="Sun"
                         id="Sun"
                       >
-                        Sun
+                          {TranslationContext!==undefined?TranslationContext.checkbox.sun:"Sun"}
+                        
                       </Checkbox>
                     </div>
                   </div>
@@ -5070,7 +5225,9 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 232 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Day</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.day:"Day"}
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5078,7 +5235,9 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfDaysForMonth}
                         onChange={this.handleDaysForMonth}
                       />
-                      <label className="every1">of every</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.ofevery:"of every"}
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5086,7 +5245,9 @@ class StoreReports extends Component {
                         value={this.state.selectedNoOfMonthForMonth}
                         onChange={this.handleMonthForMonth}
                       />
-                      <label className="every1">months</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.months:"months"}
+                      </label>
                     </span>
                   </div>
                 ) : null}
@@ -5094,7 +5255,9 @@ class StoreReports extends Component {
                 this.state.selectScheduleDate === 233 ? (
                   <div className="ScheduleDate-to">
                     <span>
-                      <label className="every1">Every</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.every:"Every"}
+                      </label>
                       <input
                         type="text"
                         className="Every"
@@ -5102,7 +5265,9 @@ class StoreReports extends Component {
                         onChange={this.handleMonthForWeek}
                         value={this.state.selectedNoOfMonthForWeek}
                       />
-                      <label className="every1">month on the</label>
+                      <label className="every1">
+                      {TranslationContext!==undefined?TranslationContext.label.monthonthe:"month on the"}
+                      </label>
                     </span>
                     <div className="row mt-3">
                       <div className="col-md-6">
@@ -5112,9 +5277,15 @@ class StoreReports extends Component {
                           onChange={this.handleWeekForWeek}
                           value={this.state.selectedNoOfWeekForWeek}
                         >
-                          <option value="0">Select</option>
-                          <option value="2">Second</option>
-                          <option value="4">Four</option>
+                          <option value="0">Select
+                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          </option>
+                          <option value="2">
+                          {TranslationContext!==undefined?TranslationContext.option.second:"Second"}
+                          </option>
+                          <option value="4">
+                          {TranslationContext!==undefined?TranslationContext.option.four:"Four"}
+                          </option>
                         </select>
                       </div>
                       <div className="col-md-6">
@@ -5148,7 +5319,8 @@ class StoreReports extends Component {
                           lineHeight: "40px",
                         }}
                       >
-                        on
+                           {TranslationContext!==undefined?TranslationContext.label.on:"on"}
+                        
                       </label>
                       <div className="col-md-7">
                         <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -5189,7 +5361,8 @@ class StoreReports extends Component {
                             lineHeight: "40px",
                           }}
                         >
-                          on the
+                           {TranslationContext!==undefined?TranslationContext.label.onthe:"on the"}
+                         
                         </label>
                         <div className="col-md-7">
                           <select
@@ -5198,9 +5371,15 @@ class StoreReports extends Component {
                             onChange={this.handleWeekForYear}
                             value={this.state.selectedNoOfWeekForYear}
                           >
-                            <option value="0">Select</option>
-                            <option value="2">Second</option>
-                            <option value="4">Four</option>
+                            <option value="0">Select
+                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          </option>
+                          <option value="2">
+                          {TranslationContext!==undefined?TranslationContext.option.second:"Second"}
+                          </option>
+                          <option value="4">
+                          {TranslationContext!==undefined?TranslationContext.option.four:"Four"}
+                          </option>
                           </select>
                         </div>
                       </div>
@@ -5283,12 +5462,15 @@ class StoreReports extends Component {
                     className="scheduleBtn"
                     onClick={this.handleInsertReport.bind(this)}
                   >
-                    <label className="addLable">SCHEDULE</label>
+                    <label className="addLable">
+                    {TranslationContext!==undefined?TranslationContext.label.schedule:"SCHEDULE"}
+                    </label>
                   </button>
                 </div>
                 <div onClick={this.ScheduleCloseModel}>
                   <button type="button" className="scheduleBtncancel">
-                    CANCEL
+                  {TranslationContext!==undefined?TranslationContext.button.cancel:"CANCEL"}
+                    
                   </button>
                 </div>
               </div>
