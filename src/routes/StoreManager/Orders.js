@@ -142,6 +142,54 @@ class Orders extends Component {
           Action: "Payment Pending",
         },
       ],
+       ShipmentGridData: [
+        {
+          InvoiceNo: "12017768",
+          InvoiceNoIcon: true,
+          Date: "25 April 2020",
+          Time: "11:45 AM",
+          CustomerName: "Sandeep",
+          CustomerNumber: "+91 9717419325",
+          Items: "6",
+          DeliveryTyper: "Store Delivery",
+          Status: "Shipment Assigned",
+          Partner: "Blue Dart",
+          selfPickUp: true,
+          Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+          Action: "Shipment Created",
+        },
+        {
+          InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
+          CustomerNumber: "+91 9717419325",
+          Items: "12",
+          DeliveryTyper: "Store Delivery",
+          Status: "Assigned Shipment ",
+          selfPickUp: false,
+          Partner: "Blue Dart",
+          Address: "",
+          Action: "Create Shipment",
+        },
+        {
+          InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
+          CustomerNumber: "+91 9717419325",
+          Items: "12",
+          DeliveryTyper: "Store Delivery",
+          Status: "",
+          selfPickUp: false,
+          Partner: "Blue Dart",
+          Address: "",
+          Action: "Pickup Pending",
+        },
+      ],
+
       deliveredGridData: [
         {
           InvoiceNo: "12017768",
@@ -193,6 +241,7 @@ class Orders extends Component {
       ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
+      filterShipmentStatus:false
     };
   }
 
@@ -621,7 +670,7 @@ class Orders extends Component {
                   {
                     title: "Status",
                     className:
-                      "camp-status-header camp-status-header-statusFilter order-status-header",
+                      "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
                         <>
@@ -757,7 +806,7 @@ class Orders extends Component {
             aria-labelledby="shipment-tab"
           >
             <div className="table-cntr store">
-              <Table
+               <Table
                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                 columns={[
                   {
@@ -766,6 +815,19 @@ class Orders extends Component {
                       return (
                         <div className="d-flex align-items-center">
                           <p>{item.InvoiceNo}</p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Customer",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.CustomerName},</p>
+                          <p className="order-small-font">
+                            {item.CustomerNumber}
+                          </p>
                         </div>
                       );
                     },
@@ -822,19 +884,6 @@ class Orders extends Component {
                     width: 100,
                   },
                   {
-                    title: "Customer",
-                    render: (row, item) => {
-                      return (
-                        <div>
-                          <p>{item.CustomerName},</p>
-                          <p className="order-small-font">
-                            {item.CustomerNumber}
-                          </p>
-                        </div>
-                      );
-                    },
-                  },
-                  {
                     title: "Shipping address",
                     render: (row, item) => {
                       return (
@@ -843,23 +892,13 @@ class Orders extends Component {
                         </p>
                       );
                     },
+                    width: 250,
                     className: "white-space-init",
                   },
                   {
-                    title: "Delivery type",
-                    render: (row, item) => {
-                      return (
-                        <p
-                          className={
-                            item.Deliverytype === "Store Delivery"
-                              ? "order-clr-green"
-                              : "order-clr-blue"
-                          }
-                        >
-                          {item.Deliverytype}
-                        </p>
-                      );
-                    },
+                    title: "Delivery Type",
+                    dataIndex: "DeliveryTyper",
+                    width: 150,
                   },
                   {
                     title: "Status",
@@ -867,9 +906,12 @@ class Orders extends Component {
                       "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
-                        <div className="d-flex align-items-center">
-                          <p className="deliv-status">{item.Status}</p>
-                        </div>
+                        <>
+                          <p className="order-clr-blue">{item.Status}</p>
+                          {item.selfPickUp && (
+                            <p className="order-clr-orange">(Self Pickup)</p>
+                          )}
+                        </>
                       );
                     },
                     filterDropdown: (data, row) => {
@@ -886,7 +928,7 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">Delivered</span>
+                                <span className="ch1-text">Ready to Ship</span>
                               </label>
                             </li>
                             <li>
@@ -901,7 +943,7 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">RTO</span>
+                                <span className="ch1-text">Fresh</span>
                               </label>
                             </li>
                             <li>
@@ -916,7 +958,24 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress101">
-                                <span className="ch1-text">Self Picked</span>
+                                <span className="ch1-text">
+                                  Order Sync Pending
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress102"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress102">
+                                <span className="ch1-text">Complete</span>
                               </label>
                             </li>
                           </ul>
@@ -929,16 +988,14 @@ class Orders extends Component {
                         </div>
                       );
                     },
-                    filterDropdownVisible: this.state
-                      .filterOrderDeliveredStatus,
+                    filterDropdownVisible: this.state.filterShipmentStatus,
                     onFilterDropdownVisibleChange: (visible) =>
-                      this.setState({ filterOrderDeliveredStatus: visible }),
+                      this.setState({ filterShipmentStatus: visible }),
                     filterIcon: (filtered) => (
                       <span
                         style={{ color: filtered ? "#1890ff" : undefined }}
                       ></span>
                     ),
-                    width: 200,
                   },
                   {
                     title: "Partner",
@@ -957,6 +1014,12 @@ class Orders extends Component {
                           }
                         >
                           {item.Action}
+                          <Popover
+                            content={
+                              <p>hi</p>
+                            }
+                          >
+                          </Popover>
                         </button>
                       );
                     },
@@ -965,7 +1028,7 @@ class Orders extends Component {
                 pagination={{ defaultPageSize: 10, showSizeChanger: true }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
-                dataSource={this.state.orderGridData}
+                dataSource={this.state.ShipmentGridData}
               />
             </div>
           </div>
