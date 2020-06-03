@@ -252,7 +252,8 @@ class Orders extends Component {
       ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
-      filterShipmentStatus:false
+      filterShipmentStatus:false,
+      totalCount: 0
     };
   }
 
@@ -280,7 +281,8 @@ class Orders extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            deliveredGridData: data,
+            deliveredGridData: data.orderDelivereds,
+            totalCount: data.totalCount
           });
         }
       })
@@ -1385,7 +1387,7 @@ class Orders extends Component {
               />
               <Pagination
                     currentPage={this.state.childCurrentPage}
-                    totalSize={this.state.childTotalGridRecord}
+                    totalSize={this.state.totalCount}
                     // totalSize={row.customerCount}
                     sizePerPage={this.state.ChildPostsPerPage}
                     changeCurrentPage={this.PaginationOnChange}
