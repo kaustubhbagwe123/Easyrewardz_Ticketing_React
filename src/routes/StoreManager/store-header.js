@@ -1856,7 +1856,7 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
-              {/* <Link to="orders" className="single-menu">
+              <Link to="orders" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={OrderLogoBlack}
@@ -1871,7 +1871,7 @@ class Header extends Component {
                   />
                 </div>
                 <label className="cusheade">Orders</label>
-              </Link> */}
+              </Link>
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
