@@ -2012,7 +2012,7 @@ class StoreModule extends Component {
                       aria-controls="Module-CampaignChannel-Tab"
                       aria-selected="false"
                     >
-                      {TranslationContext!==undefined?TranslationContext.a.campaignchannel:"campaignchannel"}
+                      {TranslationContext!==undefined?TranslationContext.a.campaignchannel:"Campaign Channel"}
                       
                     </a>
                   </li>
@@ -2025,7 +2025,7 @@ class StoreModule extends Component {
                       aria-controls="Module-AppointmentConfig-Tab"
                       aria-selected="false"
                     >
-                        {TranslationContext!==undefined?TranslationContext.a.appointmentconfiguration:"appointmentconfiguration"}
+                        {TranslationContext!==undefined?TranslationContext.a.appointmentconfiguration:"Appointment Configuration"}
                       
                     </a>
                   </li>
@@ -2038,7 +2038,7 @@ class StoreModule extends Component {
                       aria-controls="Module-BroadcastConfig-Tab"
                       aria-selected="false"
                     >
-                         {TranslationContext!==undefined?TranslationContext.a.broadcastconfiguration:"broadcastconfiguration"}
+                         {TranslationContext!==undefined?TranslationContext.a.broadcastconfiguration:"Broadcast Configuration"}
                      
                     </a>
                   </li>
