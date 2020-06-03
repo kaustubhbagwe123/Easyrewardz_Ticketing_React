@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Table, Popover } from "antd";
+import { Table, Popover, Popconfirm } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
@@ -8,6 +8,8 @@ import OrderSearch from "./../../assets/Images/order-search.png";
 import OrderInfo from "./../../assets/Images/order-info.png";
 import OrderShopingBlack from "./../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../assets/Images/order-bag.png";
+import CreditCard from "./../../assets/Images/credit-card.png";
+import NoPayment from "./../../assets/Images/no-payment.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -142,7 +144,7 @@ class Orders extends Component {
           Action: "Payment Pending",
         },
       ],
-       ShipmentGridData: [
+      ShipmentGridData: [
         {
           InvoiceNo: "12017768",
           InvoiceNoIcon: true,
@@ -190,35 +192,36 @@ class Orders extends Component {
         },
       ],
 
-      deliveredGridData: [
-        {
-          InvoiceNo: "12017768",
-          CustomerName: "Sandeep",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "Delivered",
-        },
-        {
-          InvoiceNo: "12017768",
-          CustomerName: "Naman",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "RTO",
-        },
-        {
-          InvoiceNo: "12017768",
-          CustomerName: "Sandeep",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "Self Picked",
-        },
-      ],
+      // deliveredGridData: [
+      //   {
+      //     InvoiceNo: "12017768",
+      //     CustomerName: "Sandeep",
+      //     CustomerNumber: "+91 9717419325",
+      //     Items: "6",
+      //     Date: "25 April 2020",
+      //     Time: "11:45 AM",
+      //     Status: "Delivered",
+      //   },
+      //   {
+      //     InvoiceNo: "12017768",
+      //     CustomerName: "Naman",
+      //     CustomerNumber: "+91 9717419325",
+      //     Items: "6",
+      //     Date: "25 April 2020",
+      //     Time: "11:45 AM",
+      //     Status: "RTO",
+      //   },
+      //   {
+      //     InvoiceNo: "12017768",
+      //     CustomerName: "Sandeep",
+      //     CustomerNumber: "+91 9717419325",
+      //     Items: "6",
+      //     Date: "25 April 2020",
+      //     Time: "11:45 AM",
+      //     Status: "Self Picked",
+      //   },
+      // ],
+      deliveredGridData: [],
       shipmentAssignedGridData: [
         {
           AWSNo: "889667123",
@@ -238,11 +241,50 @@ class Orders extends Component {
           CourierPartner: "Blue Dart",
           ReferenceNo: "",
         },
+        {
+          AWSNo: "NIL",
+          InvoiceNo: "981812345",
+          CourierPartner: "Store",
+          ReferenceNo: "",
+        },
       ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
       filterShipmentStatus:false
     };
+  }
+
+  componentDidMount() {
+    this.handleGetOrderDeliveredData();
+  }
+
+  handleGetOrderDeliveredData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
+      headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: 1,
+        PageSize: 10,
+        FilterStatus: ""
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            deliveredGridData: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -768,9 +810,67 @@ class Orders extends Component {
                     title: "Shipping address",
                     render: (row, item) => {
                       return (
-                        <p className="order-small-font">
-                          {item.Address === "" ? "—NIL—" : item.Address}
-                        </p>
+                        <>
+                          <p
+                            className={
+                              item.Address === ""
+                                ? "order-small-font d-inline-block"
+                                : "order-small-font"
+                            }
+                          >
+                            {item.Address === "" ? "—NIL—" : item.Address}
+                          </p>
+                          {item.Address === "" && (
+                            <Popconfirm
+                              title={
+                                <>
+                                  <div className="popover-input-cntr">
+                                    <div>
+                                      <p>Address</p>
+                                      <textarea placeholder="Enter Address"></textarea>
+                                    </div>
+                                  </div>
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="store-deli"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="store-deli">
+                                        Store Delivery
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-picked"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="self-picked">
+                                        Self Picked up
+                                      </label>
+                                    </div>
+                                  </div>
+                                </>
+                              }
+                              overlayClassName="order-popover order-popover-butns order-popover-address"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                              icon={false}
+                              okText="Save Address"
+                            >
+                              <p
+                                style={{ cursor: "pointer" }}
+                                className="order-small-font d-inline-block order-clr-blue ml-1"
+                              >
+                                (ADDRESS PENDING)
+                              </p>
+                            </Popconfirm>
+                          )}
+                        </>
                       );
                     },
                     className: "white-space-init",
@@ -779,20 +879,76 @@ class Orders extends Component {
                     title: "Action",
                     render: (row, item) => {
                       return (
-                        <button
-                          className={
-                            item.Action === "Payment Done"
-                              ? "butn order-grid-butn order-grid-butn-green"
-                              : "butn order-grid-butn"
-                          }
-                        >
-                          {item.Action}
-                        </button>
+                        <div>
+                          {item.Action === "Payment Done" && (
+                            <Popover
+                              content={
+                                <div className="order-tab-popover">
+                                  <div className="pay-done">
+                                    <p>Mode of Payment:</p>
+                                    <span>Online</span>
+                                  </div>
+                                  <div className="pay-done">
+                                    <p>Total Amount:</p>
+                                    <span>Rs. 9,294</span>
+                                  </div>
+                                  <div className="pay-done">
+                                    <p>Payment via :</p>
+                                    <span>
+                                      <img
+                                        src={CreditCard}
+                                        alt="credit card icon"
+                                        className="credit-card-icon"
+                                      />
+                                      Credit Card
+                                    </span>
+                                  </div>
+                                </div>
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover order-popover-butns"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <button className="butn order-grid-butn order-grid-butn-green">
+                                {item.Action}
+                              </button>
+                            </Popover>
+                          )}
+                          {item.Action === "Payment Pending" && (
+                            <Popconfirm
+                              title={
+                                <div className="order-tab-popover">
+                                  <div className="no-pay">
+                                    <img src={NoPayment} alt="no payment" />
+                                  </div>
+                                  <p>Payment not completed yet</p>
+                                </div>
+                              }
+                              overlayClassName="order-popover order-popover-butns order-popover-no-pay"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                              icon={false}
+                              okText="Sent Link Again"
+                            >
+                              <button className="butn order-grid-butn">
+                                {item.Action}
+                              </button>
+                            </Popconfirm>
+                          )}
+                        </div>
                       );
                     },
                   },
                 ]}
-                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                pagination={{
+                  defaultPageSize: 10,
+                  showSizeChanger: true,
+                }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.orderGridData}
@@ -1044,16 +1200,16 @@ class Orders extends Component {
                 columns={[
                   {
                     title: "Invoice no.",
-                    dataIndex: "InvoiceNo",
+                    dataIndex: "invoiceNo",
                   },
                   {
                     title: "Customer",
                     render: (row, item) => {
                       return (
                         <div>
-                          <p>{item.CustomerName},</p>
+                          <p>{item.customerName},</p>
                           <p className="order-small-font">
-                            {item.CustomerNumber}
+                            {item.mobileNumber}
                           </p>
                         </div>
                       );
@@ -1064,7 +1220,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p>{item.Items}</p>
+                          <p>{item.orderDeliveredItems.length}</p>
                           <Popover
                             content={
                               <Table
@@ -1072,25 +1228,25 @@ class Orders extends Component {
                                 columns={[
                                   {
                                     title: "Item ID",
-                                    dataIndex: "ItemID",
+                                    dataIndex: "itemID",
                                   },
                                   {
                                     title: "Item Name",
-                                    dataIndex: "ItemName",
+                                    dataIndex: "itemName",
                                     width: 150,
                                   },
                                   {
                                     title: "Item Price",
-                                    dataIndex: "ItemPrice",
+                                    dataIndex: "itemPrice",
                                   },
                                   {
                                     title: "Quantity",
-                                    dataIndex: "Quantity",
+                                    dataIndex: "quantity",
                                   },
                                 ]}
                                 scroll={{ y: 240 }}
                                 pagination={false}
-                                dataSource={this.state.itemPopupDate}
+                                dataSource={item.orderDeliveredItems}
                               />
                             }
                             trigger="click"
@@ -1110,7 +1266,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div>
-                          <p>{item.Date}</p>
+                          <p>{item.date}</p>
                           <p className="order-small-font">{item.Time}</p>
                         </div>
                       );
@@ -1123,7 +1279,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p className="deliv-status">{item.Status}</p>
+                          <p className="deliv-status">{item.statusName}</p>
                         </div>
                       );
                     },
@@ -1201,18 +1357,19 @@ class Orders extends Component {
                         <div className="d-flex">
                           <button
                             className={
-                              item.Status === "Delivered"
+                              item.actionTypeName === "Delivered"
                                 ? "delibutn deliv-grid-butn"
-                                : item.Status === "RTO"
-                                ? "markasbutn deliv-grid-butn"
-                                : "pickedbutn deliv-grid-butn"
+                                : item.actionTypeName === "Mark As Delivered"
+                                  ? "markasbutn deliv-grid-butn"
+                                  : "pickedbutn deliv-grid-butn"
                             }
                           >
-                            {item.Status === "Delivered"
+                            {item.actionTypeName}
+                            {/* {item.statusName === "Delivered"
                               ? "Delivered"
-                              : item.Status === "RTO"
-                              ? "Mark As Delivered"
-                              : "Picked"}
+                              : item.statusName === "RTO"
+                                ? "Mark As Delivered"
+                                : "Picked"} */}
                           </button>
                         </div>
                       );
@@ -1254,11 +1411,56 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className="btn-ref deliv-grid-butn">
-                            {item.ReferenceNo !== ""
-                              ? item.ReferenceNo
-                              : "Enter POD"}
-                          </button>
+                          {item.AWSNo !== "NIL" ? (
+                            item.ReferenceNo !== "" ? (
+                              <button className="btn-ref deliv-grid-butn">
+                                {item.ReferenceNo}
+                              </button>
+                            ) : (
+                              <button className="btn-ref deliv-grid-butn">
+                                Enter POD
+                              </button>
+                            )
+                          ) : (
+                            <Popover
+                              content={
+                                <Table
+                                  className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                  columns={[
+                                    {
+                                      title: "Item ID",
+                                      dataIndex: "ItemID",
+                                    },
+                                    {
+                                      title: "Item Name",
+                                      dataIndex: "ItemName",
+                                      width: 150,
+                                    },
+                                    {
+                                      title: "Item Price",
+                                      dataIndex: "ItemPrice",
+                                    },
+                                    {
+                                      title: "Quantity",
+                                      dataIndex: "Quantity",
+                                    },
+                                  ]}
+                                  scroll={{ y: 240 }}
+                                  pagination={false}
+                                  dataSource={this.state.itemPopupDate}
+                                />
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover-table order-popover"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <button className="btn-ref deliv-grid-butn">
+                                "Staff Details"
+                              </button>
+                            </Popover>
+                          )}
                         </div>
                       );
                     },

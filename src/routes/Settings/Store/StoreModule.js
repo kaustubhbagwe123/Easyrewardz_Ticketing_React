@@ -1,30 +1,32 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Demo from "../../../store/Hashtag";
-import { Tabs, Tab } from "react-bootstrap-tabs";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-// import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import DelBlack from "./../../../assets/Images/del-black.png";
-// import DownExcel from "./../../../assets/Images/csv.png";
-// import FileUpload from "./../../../assets/Images/file.png";
+import DelBlack from "./../../../assets/Images/del-black.png";
+import DownExcel from "./../../../assets/Images/csv.png";
+import FileUpload from "./../../../assets/Images/file.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-// import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-// import Correct from "./../../../assets/Images/correct.png";
+import Correct from "./../../../assets/Images/correct.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
-// import { CSVLink } from "react-csv";
-// import Dropzone from "react-dropzone";
+import { CSVLink } from "react-csv";
+import Dropzone from "react-dropzone";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import TimeSlotdropdown from "./TimeSlotDropdown";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { ProgressBar } from "react-bootstrap";
+import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
 import * as translationHI from './../../../translations/hindi'
 import * as translationMA from './../../../translations/marathi'
@@ -1973,13 +1975,108 @@ class StoreModule extends Component {
         <div className="Store-paddmodule storeModule">
           <div className="module-tabs">
             <section>
-              <Tabs
-                onSelect={(index, label) =>
-                  this.setState({ selTab: label, indiCampaign: "" })
-                }
-                selected={this.state.selTab}
-              >
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.claim:"Claim"}>
+              <div>
+                <ul className="nav nav-tabs" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      data-toggle="tab"
+                      href="#Module-Claim-Tab"
+                      role="tab"
+                      aria-controls="Module-Claim-Tab"
+                      aria-selected="true"
+                    >
+                       {TranslationContext!==undefined?TranslationContext.a.claim:"Claim"}
+                      
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item displayNn":"nav-item"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-CampaignScript-Tab"
+                      role="tab"
+                      aria-controls="Module-CampaignScript-Tab"
+                      aria-selected="false"
+                    >
+                        {TranslationContext!==undefined?TranslationContext.a.campaignscript:"Campaign Script"}
+                      
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-CampaignChannel-Tab"
+                      role="tab"
+                      aria-controls="Module-CampaignChannel-Tab"
+                      aria-selected="false"
+                    >
+                      {TranslationContext!==undefined?TranslationContext.a.campaignchannel:"Campaign Channel"}
+                      
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-AppointmentConfig-Tab"
+                      role="tab"
+                      aria-controls="Module-AppointmentConfig-Tab"
+                      aria-selected="false"
+                    >
+                        {TranslationContext!==undefined?TranslationContext.a.appointmentconfiguration:"Appointment Configuration"}
+                      
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-BroadcastConfig-Tab"
+                      role="tab"
+                      aria-controls="Module-BroadcastConfig-Tab"
+                      aria-selected="false"
+                    >
+                         {TranslationContext!==undefined?TranslationContext.a.broadcastconfiguration:"Broadcast Configuration"}
+                     
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-SlotSetting-Tab"
+                      role="tab"
+                      aria-controls="Module-SlotSetting-Tab"
+                      aria-selected="false"
+                    >
+                         {TranslationContext!==undefined?TranslationContext.a.slotsettings:"Slot Settings"}
+                      
+                    </a>
+                  </li>
+                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                    <a
+                      className="nav-link"
+                      data-toggle="tab"
+                      href="#Module-LanguageSetting-Tab"
+                      role="tab"
+                      aria-controls="Module-LanguageSetting-Tab"
+                      aria-selected="false"
+                    >
+                         {TranslationContext!==undefined?TranslationContext.a.languagesettings:"Language Settings"}
+                      
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="tab-content p-0">
+                <div
+                  className="tab-pane fade show active"
+                  id="Module-Claim-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-Claim-Tab"
+                >
                   <div style={{ height: "100vh" }} className="chatallowedStore">
                     <div className="row">
                       <div className="col-md-4 chatallowed">
@@ -2059,9 +2156,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                {/* <Tab label="Campaign Script" style={{ display: "none" }}>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-CampaignScript-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-CampaignScript-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-8">
                         <div className="table-cntr table-height alertsTable align-table">
@@ -2618,9 +2720,14 @@ class StoreModule extends Component {
                     className={this.state.campaignOvrlayShow ? "show" : ""}
                     onClick={this.handleCampaignButton}
                   />
-                </Tab> */}
-                <Tab label= {TranslationContext!==undefined?TranslationContext.h3.campaignchannel:"CAMPAIGN CHANNEL"}>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-CampaignChannel-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-CampaignChannel-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -2660,7 +2767,7 @@ class StoreModule extends Component {
                                         type="text"
                                         name="providerName"
                                         autoComplete="off"
-                                        placeholder=  {TranslationContext!==undefined?TranslationContext.placeholder.providername:"Provider name"}
+                                        placeholder="Provider name"
                                         maxLength={15}
                                         value={
                                           this.state.campaignChannelData
@@ -2672,23 +2779,23 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .providerName === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.campProviderValidation}
-                                          </p>
-                                        )}
-                                      </div>
-                                    ) : null}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.campProviderValidation}
+                                        </p>
+                                      )}
+                                    </div>
+                                  ) : null}
 
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
                                       {TranslationContext!==undefined?TranslationContext.label.whatsapp:"Whatsapp"}
-                                       
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2778,22 +2885,22 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .maxClickAllowed === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.maxClickValidation}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.maxClickValidation}
+                                        </p>
+                                      )}
                                     </td>
-                                    <td>{TranslationContext!==undefined?TranslationContext.td.click:"Click"}
-                                      </td>
+                                    <td>Click</td>
                                   </tr>
                                   <tr>
                                     <td>
                                     {TranslationContext!==undefined?TranslationContext.td.clickwillbeenabledafter:"Click will be enabled after"}
+                                      
                                     </td>
                                     <td>
                                       <input
@@ -2811,15 +2918,15 @@ class StoreModule extends Component {
                                       />
                                       {this.state.campaignChannelData
                                         .enableClickAfterValue === "" && (
-                                          <p
-                                            style={{
-                                              color: "red",
-                                              marginBottom: "0px",
-                                            }}
-                                          >
-                                            {this.state.enabledAfterValidation}
-                                          </p>
-                                        )}
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )}
                                     </td>
                                     <td>
                                       <select
@@ -2849,7 +2956,7 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                  {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
+                                    {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
                                   
                                 </button>
                               </div>
@@ -2859,9 +2966,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label= {TranslationContext!==undefined?TranslationContext.h3.appointmentconfiguration:"Appointment Configuration"}>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-AppointmentConfig-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-AppointmentConfig-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -2981,7 +3093,6 @@ class StoreModule extends Component {
                                     <td>
                                       <input
                                         type="text"
-                                        // name="enableClickAfterValue"
                                         autoComplete="off"
                                         maxLength={2}
                                         // value={
@@ -2992,20 +3103,6 @@ class StoreModule extends Component {
                                         //   this
                                         // )}
                                       />
-                                      {/* {this.state.BroadCastConfigData
-                                        .enableClickAfterValue === "" && (
-                                        <p
-                                          style={{
-                                            color: "red",
-                                            marginBottom: "0px",
-                                          }}
-                                        >
-                                          {
-                                            this.state
-                                              .broadCastEnabledAfterValid
-                                          }
-                                        </p>
-                                      )} */}
                                     </td>
                                     <td>
                                       <select
@@ -3049,9 +3146,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label={TranslationContext!==undefined?TranslationContext.h3.broadcastconfiguration:"Broadcast Configuration" }>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-BroadcastConfig-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-BroadcastConfig-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -3263,9 +3365,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label= {TranslationContext!==undefined?TranslationContext.h3.slotsettings:"Slot Settings"}>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-SlotSetting-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-SlotSetting-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -3543,9 +3650,14 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-                <Tab label= {TranslationContext!==undefined?TranslationContext.h3.languagesettings:"Language Settings"}>
-                  <div className="store-mdl backNone">
+                </div>
+                <div
+                  className="tab-pane fade"
+                  id="Module-LanguageSetting-Tab"
+                  role="tabpanel"
+                  aria-labelledby="Module-LanguageSetting-Tab"
+                >
+                  <div className="backNone">
                     <div className="row">
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
@@ -3724,8 +3836,8 @@ class StoreModule extends Component {
                       </div>
                     </div>
                   </div>
-                </Tab>
-              </Tabs>
+                </div>
+              </div>
             </section>
             {/* edit slot starts */}
             <Modal

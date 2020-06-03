@@ -319,15 +319,15 @@ class Header extends Component {
       activeClass:
         page === "Appointment" ? "active single-menu" : "single-menu",
     };
-    var myTicketList = {
-      data: "myTicketList",
+    var myTicket = {
+      data: "MyTicket",
       urls: "myTicketList",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
-      imgAlt: "campaign icon",
-      imgClass: "campaign-icon",
+      imgAlt: "ticket icon",
+      imgClass: "myTicket",
       activeClass:
-        page === "myTicketList" ? "active single-menu" : "single-menu",
+        page === "MyTicket" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -357,10 +357,10 @@ class Header extends Component {
         ) {
           accessdata.push(appointment);
         } else if (
-          data[i].moduleName === "myTicketList" &&
+          data[i].moduleName === "MyTicket" &&
           data[i].modulestatus === true
         ) {
-          accessdata.push(myTicketList);
+          accessdata.push(myTicket);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -1799,11 +1799,11 @@ class Header extends Component {
   }
   ////handle open action modal pop up
   handleActionOpen = () => {
-    this.setState({ actionBtn: false });
+    this.setState({ actionBtn: true });
   };
   ////handle close action modal pop up
   handleActionClose = () => {
-    this.setState({ actionBtn: true });
+    this.setState({ actionBtn: false });
   };
 
   render() {
@@ -2836,8 +2836,12 @@ class Header extends Component {
                 <div className="chatbot-right">
                   {this.state.isHistoricalChat !== true ? (
                     <div className="row" style={{ margin: "0" }}>
-                      <div className="chatdivtitle">
-                        <ul className="nav nav-tabs" role="tablist">
+                      <div className="chatdivtitle" style={{ padding: "5px" }}>
+                        <ul
+                          className="nav nav-tabs"
+                          role="tablist"
+                          style={{ width: "50%", display: "inline-block" }}
+                        >
                           {this.state.customerName && (
                             <li className="nav-item">
                               <a
@@ -2873,26 +2877,10 @@ class Header extends Component {
                                   ")"}
                             </a>
                           </li>
-                          <li>
-                            <button
-                              type="button"
-                              className={"btn-store-resolved"}
-                              onClick={this.handleActionOpen.bind(this)}
-                            >
-                              <label className="myticket-submit-solve-button-text">
-                                Action
-                              </label>
-                              <img
-                                src={DownWhiteImg}
-                                alt="down-icon"
-                                className="down-white"
-                              />
-                            </button>
-                          </li>
                         </ul>
-                        <button
+                        {/* <button
                           type="button"
-                          className={"btn-store-resolved"}
+                          className="btn-store-resolved chatactionbtn"
                           onClick={this.handleActionOpen.bind(this)}
                         >
                           <label className="myticket-submit-solve-button-text">
@@ -2903,7 +2891,7 @@ class Header extends Component {
                             alt="down-icon"
                             className="down-white"
                           />
-                        </button>
+                        </button> */}
                       </div>
                       <div className="tab-content chattabtitle">
                         <div
@@ -5272,21 +5260,21 @@ class Header extends Component {
           open={this.state.actionBtn}
           onClose={this.handleActionClose.bind(this)}
           closeIconId="close"
-          modalId="SubmitReopn-popup"
+          modalId="actionmodalId"
           overlayId="logout-ovrly"
         >
           <div className="store-hdrtMdal">
             <div className="row">
-              <label className={"modal-lbl"}>Close Chat</label>
+              <label className={"actionmodallbl"}>Close Chat</label>
             </div>
             <div className="row">
-              <label className={"modal-lbl"}>Hold Chat</label>
+              <label className={"actionmodallbl"}>Hold Chat</label>
             </div>
             <div className="row">
-              <label className={"modal-lbl"}>Ban Visitor</label>
+              <label className={"actionmodallbl"}>Ban Visitor</label>
             </div>
             <div className="row">
-              <label className={"modal-lbl"}>Create Ticket</label>
+              <label className={"actionmodallbl"}>Create Ticket</label>
             </div>
           </div>
         </Modal>

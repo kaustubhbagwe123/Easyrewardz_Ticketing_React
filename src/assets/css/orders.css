@@ -325,6 +325,155 @@
   width: 8px !important;
   left: 60px;
 }
+.order-popover-butns .ant-popover-inner-content {
+  padding: 20px 30px;
+}
+.order-popover-butns .ant-popover-inner {
+  border-radius: 8px;
+}
+.order-tab-popover p {
+  font-size: 12px;
+  color: #4a4a4a;
+  font-weight: 700;
+}
+.order-tab-popover span {
+  font-size: 12px;
+  color: #4a4a4a;
+}
+.pay-done {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.4);
+  padding: 11px 0;
+}
+.pay-done p {
+  min-width: 170px;
+}
+.order-tab-popover .pay-done:first-child {
+  padding-top: 0;
+}
+.order-tab-popover .pay-done:last-child {
+  border: 0;
+  padding-bottom: 0;
+}
+.credit-card-icon {
+  width: 20px;
+  margin-right: 7px;
+}
+.ant-popover-message-title,
+.ant-popover-message {
+  padding: 0;
+}
+.no-pay {
+  width: 50px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.no-pay img {
+  width: 100%;
+}
+.order-popover-no-pay .ant-popover-inner-content {
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 270px;
+}
+.order-popover-no-pay .order-tab-popover {
+  text-align: center;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.4);
+  padding-bottom: 5px;
+}
+.order-popover-no-pay .ant-popover-buttons button:first-child {
+  display: none;
+}
+.order-popover-butns .ant-popover-buttons button:first-child {
+  width: 90px;
+  border-radius: 5px;
+  height: 35px;
+  font-size: 13px;
+  border: 1px solid #2561a8;
+  text-shadow: none;
+  box-shadow: none;
+  color: #2561a8;
+}
+.order-popover-butns .ant-popover-buttons button:last-child {
+  width: 150px;
+  background-color: #2561a8;
+  border-radius: 5px;
+  height: 35px;
+  font-size: 13px;
+  border: 0;
+  text-shadow: none;
+  box-shadow: none;
+}
+.order-popover-butns .ant-popover-buttons {
+  margin-top: 20px;
+}
+.order-popover-no-pay .ant-popover-buttons {
+  text-align: center;
+}
+.order-popover-no-pay .ant-popover-buttons button:last-child {
+  margin-left: 0;
+}
+.order-popover-butns p {
+  color: #4a4a4a;
+  font-weight: 700;
+}
+.order-popover-butns textarea,
+.order-popover-butns input {
+  color: #4a4a4a;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 12px 16px;
+  background: #ecf2f4;
+  border-radius: 4px;
+  border: 0;
+  width: 100%;
+  margin: 10px 0;
+}
+.order-popover-butns textarea {
+  height: 100px;
+  resize: none;
+}
+.order-popover-butns textarea::placeholder,
+.order-popover-butns input::placeholder {
+  padding: 0;
+  font-size: 12px;
+  color: #4a4a4a;
+}
+.popover-input-cntr div:last-child textarea,
+.popover-input-cntr div:last-child input {
+  margin-bottom: 0;
+}
+.order-popover-address .ant-popover-inner {
+  width: 400px;
+}
+.popover-radio-cntr label {
+  color: #4a4a4a;
+}
+.popover-radio-cntr input + label::before {
+  content: "";
+  background: url("./../Images/radio-unchecked.png") no-repeat center left;
+  background-size: 15px;
+  width: 15px;
+  display: inline-block;
+  height: 16px;
+  transform: translateY(3px);
+  margin-right: 7px;
+}
+.popover-radio-cntr input:checked + label::before {
+  background-image: url("./../Images/radio-checked.png");
+}
+.popover-radio-cntr {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.popover-radio-cntr > div {
+  margin-right: 25px;
+}
+.popover-radio-cntr > div:last-child {
+  margin-right: 0px;
+}
 /* order ends */
 
 /* chetan css ends */
