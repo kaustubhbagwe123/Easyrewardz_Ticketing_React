@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Table, Popover } from "antd";
+import { Table, Popover, Popconfirm } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
@@ -8,6 +8,8 @@ import OrderSearch from "./../../assets/Images/order-search.png";
 import OrderInfo from "./../../assets/Images/order-info.png";
 import OrderShopingBlack from "./../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../assets/Images/order-bag.png";
+import CreditCard from "./../../assets/Images/credit-card.png";
+import NoPayment from "./../../assets/Images/no-payment.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -719,9 +721,67 @@ class Orders extends Component {
                     title: "Shipping address",
                     render: (row, item) => {
                       return (
-                        <p className="order-small-font">
-                          {item.Address === "" ? "—NIL—" : item.Address}
-                        </p>
+                        <>
+                          <p
+                            className={
+                              item.Address === ""
+                                ? "order-small-font d-inline-block"
+                                : "order-small-font"
+                            }
+                          >
+                            {item.Address === "" ? "—NIL—" : item.Address}
+                          </p>
+                          {item.Address === "" && (
+                            <Popconfirm
+                              title={
+                                <>
+                                  <div className="popover-input-cntr">
+                                    <div>
+                                      <p>Address</p>
+                                      <textarea placeholder="Enter Address"></textarea>
+                                    </div>
+                                  </div>
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="store-deli"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="store-deli">
+                                        Store Delivery
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-picked"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="self-picked">
+                                        Self Picked up
+                                      </label>
+                                    </div>
+                                  </div>
+                                </>
+                              }
+                              overlayClassName="order-popover order-popover-butns order-popover-address"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                              icon={false}
+                              okText="Save Address"
+                            >
+                              <p
+                                style={{ cursor: "pointer" }}
+                                className="order-small-font d-inline-block order-clr-blue ml-1"
+                              >
+                                (ADDRESS PENDING)
+                              </p>
+                            </Popconfirm>
+                          )}
+                        </>
                       );
                     },
                     className: "white-space-init",
@@ -730,15 +790,68 @@ class Orders extends Component {
                     title: "Action",
                     render: (row, item) => {
                       return (
-                        <button
-                          className={
-                            item.Action === "Payment Done"
-                              ? "butn order-grid-butn order-grid-butn-green"
-                              : "butn order-grid-butn"
-                          }
-                        >
-                          {item.Action}
-                        </button>
+                        <div>
+                          {item.Action === "Payment Done" && (
+                            <Popover
+                              content={
+                                <div className="order-tab-popover">
+                                  <div className="pay-done">
+                                    <p>Mode of Payment:</p>
+                                    <span>Online</span>
+                                  </div>
+                                  <div className="pay-done">
+                                    <p>Total Amount:</p>
+                                    <span>Rs. 9,294</span>
+                                  </div>
+                                  <div className="pay-done">
+                                    <p>Payment via :</p>
+                                    <span>
+                                      <img
+                                        src={CreditCard}
+                                        alt="credit card icon"
+                                        className="credit-card-icon"
+                                      />
+                                      Credit Card
+                                    </span>
+                                  </div>
+                                </div>
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover order-popover-butns"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <button className="butn order-grid-butn order-grid-butn-green">
+                                {item.Action}
+                              </button>
+                            </Popover>
+                          )}
+                          {item.Action === "Payment Pending" && (
+                            <Popconfirm
+                              title={
+                                <div className="order-tab-popover">
+                                  <div className="no-pay">
+                                    <img src={NoPayment} alt="no payment" />
+                                  </div>
+                                  <p>Payment not completed yet</p>
+                                </div>
+                              }
+                              overlayClassName="order-popover order-popover-butns order-popover-no-pay"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                              icon={false}
+                              okText="Sent Link Again"
+                            >
+                              <button className="butn order-grid-butn">
+                                {item.Action}
+                              </button>
+                            </Popconfirm>
+                          )}
+                        </div>
                       );
                     },
                   },
