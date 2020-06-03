@@ -640,7 +640,13 @@
       "schedulevisit":"अनुसूची देखें",
       "generatepaymentlink":"सामान्य भुगतान लिंक",
       "assetapproval":"संपत्ति की मंजूरी",
-      "uploadlogs":"लॉग अपलोड करें"
+      "uploadlogs":"लॉग अपलोड करें",
+      "campaignchannel":"अभियान चैनल",
+      "appointmentconfiguration":"आवेदन संरचना",
+      "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन",
+      "slotsettings":"स्लॉट सेटिंग्स",
+      "languagesettings":"भाषा सेटिंग",
+      "campaignscript":"अभियान स्क्रिप्ट"
     },
     "span":{
       "status": "स्थिति",

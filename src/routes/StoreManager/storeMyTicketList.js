@@ -11,7 +11,11 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
-
+import Twitter from "./../../assets/Images/twitter.png";
+import HeadPhone3 from "./../../assets/Images/headphone3.png";
+import MailImg from "./../../assets/Images/msg.png";
+import FacebookImg from "./../../assets/Images/facebook.png";
+import Chat from "./../../assets/Images/chat.png";
 class storeMyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +36,9 @@ class storeMyTicketList extends Component {
       SubCategoryData: [],
       IssueTypeData: [],
       TicketStatusData: StoreMyTicketStatus(),
+      ticketIds: "",
+      cSelectedRow: {},
+      ticketDetailID:0
     };
     this.handleTabChange = this.handleTabChange.bind(this);
   }
@@ -58,7 +65,6 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -114,7 +120,6 @@ class storeMyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -143,7 +148,6 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -172,7 +176,6 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -204,7 +207,26 @@ class storeMyTicketList extends Component {
     //   }
     // }
   }
-
+  HandleRowClickPage = (rowInfo, column) => {
+    if ((rowInfo, column)) {
+      return {
+        onClick: e => {
+          let Id = column.original["ticketID"];
+          let self = this;
+          self.setState({
+            ticketDetailID: Id
+          });
+          setTimeout(function() {
+            self.props.history.push({
+              pathname: "myTicket",
+              ticketDetailID: Id
+            });
+          }, 1000);
+        },
+      };
+    }
+    return {};
+  };
   ////handle drop-down value change
   handleDropdownValueChange(e) {
     var name = e.target.name;
@@ -240,7 +262,7 @@ class storeMyTicketList extends Component {
       });
     }
   }
-
+  /// handle Tab change
   handleTabChange(TabId) {
     if (TabId === "New") {
       this.setState({
@@ -265,6 +287,61 @@ class storeMyTicketList extends Component {
       }, 100);
     }
   }
+  /// Check all checkbox
+  checkAllCheckbox = async (event) => {
+    var obj = this.state.cSelectedRow;
+    var strIds = "";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("ListCheckbox");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strIds += checkboxes[i].getAttribute("attrIds") + ",";
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = true;
+          }
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+            obj[this.state.SearchTicketData[i].ticketID] = false;
+          }
+        }
+      }
+      strIds = "";
+    }
+    this.setState({
+      cSelectedRow: obj,
+    });
+    await this.setState({
+      ticketIds: strIds,
+    });
+  };
+/// handle perticular select check box
+  handelCheckBoxCheckedChange = async (ticketID) => {
+    var checkboxes = document.getElementsByName("ListCheckbox");
+    var strIds = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    const newSelected = Object.assign({}, this.state.cSelectedRow);
+    newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
+
+    await this.setState({
+      cSelectedRow: ticketID ? newSelected : false,
+      ticketIds: strIds,
+    });
+  };
   render() {
     return (
       <div>
@@ -393,7 +470,6 @@ class storeMyTicketList extends Component {
                                       role="tab"
                                       aria-controls="category-tab"
                                       aria-selected="false"
-                                      //   onClick={this.handleAdvSearchFlag}
                                     >
                                       By Category
                                     </a>
@@ -566,9 +642,9 @@ class storeMyTicketList extends Component {
                                           type="checkbox"
                                           id="fil-aball"
                                           name="ListCheckbox"
-                                          //   onChange={this.checkAllCheckbox.bind(
-                                          //     this
-                                          //   )}
+                                          onChange={this.checkAllCheckbox.bind(
+                                            this
+                                          )}
                                         />
                                         <label
                                           htmlFor="fil-aball"
@@ -581,87 +657,85 @@ class storeMyTicketList extends Component {
                                   </span>
                                 ),
                                 accessor: "ticketID",
-                                // Cell: (row) => {
-                                //   return (
-                                //     <span
-                                //       onClick={(e) => this.clickCheckbox(e)}
-                                //     >
-                                //       <div className="filter-type pink1 pinkmyticket">
-                                //         <div className="filter-checkbox pink2 pinkmargin">
-                                //           <input
-                                //             type="checkbox"
-                                //             id={"i" + row.original.ticketID}
-                                //             name="ListCheckbox"
-                                //             checked={
-                                //               this.state.cSelectedRow[
-                                //                 row.original.ticketID
-                                //               ]
-                                //             }
-                                //             attrIds={row.original.ticketID}
-                                //             onChange={() =>
-                                //               this.handelCheckBoxCheckedChange(
-                                //                 row.original.ticketID
-                                //               )
-                                //             }
-                                //           />
-                                //           <label
-                                //             htmlFor={
-                                //               "i" + row.original.ticketID
-                                //             }
-                                //           >
-                                //             {row.original.ticketSourceType ===
-                                //             "Calls" ? (
-                                //               <img
-                                //                 src={HeadPhone3}
-                                //                 alt="HeadPhone"
-                                //                 className="headPhone3"
-                                //                 title="Calls"
-                                //               />
-                                //             ) : row.original
-                                //                 .ticketSourceType ===
-                                //               "Mails" ? (
-                                //               <img
-                                //                 src={MailImg}
-                                //                 alt="HeadPhone"
-                                //                 className="headPhone3"
-                                //                 title="Mails"
-                                //               />
-                                //             ) : row.original
-                                //                 .ticketSourceType ===
-                                //               "Facebook" ? (
-                                //               <img
-                                //                 src={FacebookImg}
-                                //                 alt="HeadPhone"
-                                //                 className="headPhone3"
-                                //                 title="Facebook"
-                                //               />
-                                //             ) : row.original
-                                //                 .ticketSourceType ===
-                                //               "ChatBot" ? (
-                                //               <img
-                                //                 src={Chat}
-                                //                 alt="HeadPhone"
-                                //                 className="headPhone3"
-                                //                 title="ChatBot"
-                                //               />
-                                //             ) : row.original
-                                //                 .ticketSourceType ===
-                                //               "Twitter" ? (
-                                //               <img
-                                //                 src={Twitter}
-                                //                 alt="HeadPhone"
-                                //                 className="headPhone3 black-twitter"
-                                //                 title="Twitter"
-                                //               />
-                                //             ) : null}
+                                Cell: (row) => {
+                                  return (
+                                    <span>
+                                      <div className="filter-type pink1 pinkmyticket">
+                                        <div className="filter-checkbox pink2 pinkmargin">
+                                          <input
+                                            type="checkbox"
+                                            id={"i" + row.original.ticketID}
+                                            name="ListCheckbox"
+                                            checked={
+                                              this.state.cSelectedRow[
+                                                row.original.ticketID
+                                              ]
+                                            }
+                                            attrIds={row.original.ticketID}
+                                            onChange={() =>
+                                              this.handelCheckBoxCheckedChange(
+                                                row.original.ticketID
+                                              )
+                                            }
+                                          />
+                                          <label
+                                            htmlFor={
+                                              "i" + row.original.ticketID
+                                            }
+                                          >
+                                            {/* {row.original.ticketSourceType ===
+                                            "Calls" ? (
+                                              <img
+                                                src={HeadPhone3}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="Calls"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Mails" ? (
+                                              <img
+                                                src={MailImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="Mails"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Facebook" ? (
+                                              <img
+                                                src={FacebookImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="Facebook"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "ChatBot" ? (
+                                              <img
+                                                src={Chat}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                                title="ChatBot"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Twitter" ? (
+                                              <img
+                                                src={Twitter}
+                                                alt="HeadPhone"
+                                                className="headPhone3 black-twitter"
+                                                title="Twitter"
+                                              />
+                                            ) : null} */}
 
-                                //             {row.original.ticketID}
-                                //           </label>
-                                //         </div>
-                                //       </div>
-                                //     </span>
-                                //   );
-                                // },
+                                            {row.original.ticketID}
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </span>
+                                  );
+                                },
                               },
                               {
                                 Header: (
@@ -700,25 +774,7 @@ class storeMyTicketList extends Component {
                                         </label>
                                       </span>
                                     );
-                                  } else if (
-                                    row.original.ticketStatus === "Solved"
-                                  ) {
-                                    return (
-                                      <span className="table-b table-green-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else {
-                                    return (
-                                      <span className="table-b table-green-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  }
+                                  } 
                                 },
                               },
                               {
@@ -848,7 +904,7 @@ class storeMyTicketList extends Component {
                             resizable={false}
                             defaultPageSize={10}
                             showPagination={true}
-                            // getTrProps={this.HandleRowClickPage}
+                            getTrProps={this.HandleRowClickPage}
                             minRows={2}
                           />
                         </div>

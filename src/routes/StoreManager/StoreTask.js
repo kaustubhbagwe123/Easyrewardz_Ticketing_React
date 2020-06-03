@@ -73,7 +73,8 @@ class StoreTask extends Component {
       isViewSerach: false,
       isATOZ: true,
       itemData: [],
-      translateLanguage: {}
+      translateLanguage: {},
+      
     };
     this.handleGetTaskData = this.handleGetTaskData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -2216,6 +2217,7 @@ class StoreTask extends Component {
             <button
               className="butn"
               onClick={this.handleChagneAddTask.bind(this)}
+              style={{display:"none"}}
             >
                {TranslationContext!==undefined?TranslationContext.button.addtask:"Add Task"}
               
