@@ -178,26 +178,26 @@ class Orders extends Component {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345"
+          ReferenceNo: "BD12345",
         },
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345"
+          ReferenceNo: "BD12345",
         },
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: ""
+          ReferenceNo: "",
         },
         {
           AWSNo: "NIL",
           InvoiceNo: "981812345",
           CourierPartner: "Store",
-          ReferenceNo: ""
-        }
+          ReferenceNo: "",
+        },
       ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
@@ -392,8 +392,8 @@ class Orders extends Component {
                               <img src={OrderInfo} className="order-info" />
                             </Popover>
                           ) : (
-                              ""
-                            )}
+                            ""
+                          )}
                         </div>
                       );
                     },
@@ -422,15 +422,15 @@ class Orders extends Component {
                           {item.PickupDate === "" && item.PickupTime === "" ? (
                             <p className="order-clr-blue">—NIL—</p>
                           ) : (
-                              <>
-                                <p className="order-clr-blue">
-                                  {item.PickupDate},
+                            <>
+                              <p className="order-clr-blue">
+                                {item.PickupDate},
                               </p>
-                                <p className="order-clr-blue order-more-small-font">
-                                  {item.PickupTime}
-                                </p>
-                              </>
-                            )}
+                              <p className="order-clr-blue order-more-small-font">
+                                {item.PickupTime}
+                              </p>
+                            </>
+                          )}
                         </div>
                       );
                     },
@@ -862,7 +862,10 @@ class Orders extends Component {
                     },
                   },
                 ]}
-                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                pagination={{
+                  defaultPageSize: 10,
+                  showSizeChanger: true,
+                }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.orderGridData}
@@ -1260,15 +1263,15 @@ class Orders extends Component {
                               item.Status === "Delivered"
                                 ? "delibutn deliv-grid-butn"
                                 : item.Status === "RTO"
-                                  ? "markasbutn deliv-grid-butn"
-                                  : "pickedbutn deliv-grid-butn"
+                                ? "markasbutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
                             }
                           >
                             {item.Status === "Delivered"
                               ? "Delivered"
                               : item.Status === "RTO"
-                                ? "Mark As Delivered"
-                                : "Picked"}
+                              ? "Mark As Delivered"
+                              : "Picked"}
                           </button>
                         </div>
                       );
@@ -1310,55 +1313,56 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-
-                          {item.AWSNo !== "NIL" ?
-                            (item.ReferenceNo !== ""
-                              ? (<button className="btn-ref deliv-grid-butn">
+                          {item.AWSNo !== "NIL" ? (
+                            item.ReferenceNo !== "" ? (
+                              <button className="btn-ref deliv-grid-butn">
                                 {item.ReferenceNo}
-                              </button>)
-                              : (<button className="btn-ref deliv-grid-butn">
-                              Enter POD
-                            </button>)) : (
-                              <Popover
-                                content={
-                                  <Table
-                                    className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                                    columns={[
-                                      {
-                                        title: "Item ID",
-                                        dataIndex: "ItemID",
-                                      },
-                                      {
-                                        title: "Item Name",
-                                        dataIndex: "ItemName",
-                                        width: 150,
-                                      },
-                                      {
-                                        title: "Item Price",
-                                        dataIndex: "ItemPrice",
-                                      },
-                                      {
-                                        title: "Quantity",
-                                        dataIndex: "Quantity",
-                                      },
-                                    ]}
-                                    scroll={{ y: 240 }}
-                                    pagination={false}
-                                    dataSource={this.state.itemPopupDate}
-                                  />
-                                }
-                                trigger="click"
-                                overlayClassName="order-popover-table order-popover"
-                                onVisibleChange={(visible) =>
-                                  this.setState({ orderPopoverOverlay: visible })
-                                }
-                              >
-                                <button className="btn-ref deliv-grid-butn">
-                                  "Staff Details"
-                                </button>
-                              </Popover>
-                            )}
-
+                              </button>
+                            ) : (
+                              <button className="btn-ref deliv-grid-butn">
+                                Enter POD
+                              </button>
+                            )
+                          ) : (
+                            <Popover
+                              content={
+                                <Table
+                                  className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                  columns={[
+                                    {
+                                      title: "Item ID",
+                                      dataIndex: "ItemID",
+                                    },
+                                    {
+                                      title: "Item Name",
+                                      dataIndex: "ItemName",
+                                      width: 150,
+                                    },
+                                    {
+                                      title: "Item Price",
+                                      dataIndex: "ItemPrice",
+                                    },
+                                    {
+                                      title: "Quantity",
+                                      dataIndex: "Quantity",
+                                    },
+                                  ]}
+                                  scroll={{ y: 240 }}
+                                  pagination={false}
+                                  dataSource={this.state.itemPopupDate}
+                                />
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover-table order-popover"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <button className="btn-ref deliv-grid-butn">
+                                "Staff Details"
+                              </button>
+                            </Popover>
+                          )}
                         </div>
                       );
                     },
