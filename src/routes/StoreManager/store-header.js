@@ -77,6 +77,7 @@ import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
 import Dropzone from "react-dropzone";
+import { NotificationManager } from "react-notifications";
 
 const { Option } = Select;
 
@@ -753,10 +754,10 @@ class Header extends Component {
       });
   }
   ////handle Make As Read On Going Chat
-  handleMakeAsReadOnGoingChat(id) {
+  async handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/MarkAsReadOnGoingChat",
       headers: authHeader(),
@@ -770,7 +771,6 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
-          self.handleGetChatNotificationCount();
         } else {
         }
       })
@@ -1778,19 +1778,23 @@ class Header extends Component {
   handleInsertCardImageUpload(itemcode, e) {
     debugger;
     var formData = new FormData();
-    formData.append("ItemID", itemcode);
-    formData.append("ImageUrl ", e);
+    // formData.append("ItemID", itemcode);
+    // formData.append("ImageUrl ", e);
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/InsertCardImageUpload",
       headers: authHeader(),
-      data: formData,
+      // data: formData,
+      params: { ItemID: itemcode, ImageUrl: "" },
     })
       .then(function(response) {
         debugger;
         var messgae = response.data.message;
         var responseData = response.data.responseData;
         if (messgae === "Success") {
+          NotificationManager.success("Add image successfully.");
+        } else {
+          NotificationManager.success("Not add image successfully.");
         }
       })
       .catch((response) => {
