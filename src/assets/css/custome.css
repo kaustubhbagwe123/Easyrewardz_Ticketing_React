@@ -12106,6 +12106,7 @@ table tr th:last-child {
   height: 42px;
   text-align: left;
   font-weight: bold;
+  cursor: pointer;
 }
 .languagebox .langbtn.active {
   background-color: #2561a8;
@@ -12115,6 +12116,7 @@ table tr th:last-child {
   margin-top: 10px;
   text-transform: uppercase;
   color: rgb(36, 110, 195);
+  cursor: pointer;
 }
 .ant-drawer-content-wrapper {
   width: 230px !important;

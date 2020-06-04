@@ -486,7 +486,7 @@ class ChatSettings extends Component {
                           <div className="col-md-5 m-auto">
                             <div className="right-sect-div">
                               <h3>CARD ITEM CONFIGURATION</h3>
-                              <div className="cmpaign-channel-table slot-setting-options">
+                              {/* <div className="cmpaign-channel-table slot-setting-options">
                                 <div className="w-100">
                                   <input
                                     type="text"
@@ -552,6 +552,7 @@ class ChatSettings extends Component {
                                   ""
                                 )}
                               </button>
+                              */}
                               {this.state.cardConfigData !== null &&
                                 this.state.cardConfigData.map((item, i) => (
                                   <div
