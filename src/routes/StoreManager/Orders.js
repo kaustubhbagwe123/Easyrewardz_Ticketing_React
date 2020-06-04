@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Table, Popover, Popconfirm } from "antd";
+import { Table, Popover, Popconfirm, Select } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
@@ -291,13 +291,95 @@ class Orders extends Component {
       });
   }
 
+  changeOrderDropdown() {
+    debugger;
+    const orderDropdownValues = document.querySelectorAll(
+      ".order-mobile-dropdown-menu .nav-link"
+    );
+    for (const value of orderDropdownValues) {
+      value.classList.remove("active");
+    }
+  }
+
   render() {
+    const { Option } = Select;
     return (
       <Fragment>
         {this.state.orderPopoverOverlay && (
           <div className="order-popover-overlay"></div>
         )}
         <div className="store-task-tabs orders-tabs-outer">
+          <Select
+            defaultValue="shopping-bag"
+            className="order-mobile-dropdown"
+            // open={true}
+            dropdownClassName="order-mobile-dropdown-menu"
+            onSelect={this.changeOrderDropdown.bind(this)}
+            onDropdownVisibleChange={(open) =>
+              this.setState({ orderPopoverOverlay: open })
+            }
+          >
+            <Option value="shopping-bag">
+              <a
+                className="nav-link active"
+                data-toggle="tab"
+                href="#shopping-bag-tab"
+                role="tab"
+                aria-controls="shopping-bag-tab"
+                aria-selected="true"
+              >
+                Shopping Bag
+              </a>
+            </Option>
+            <Option value="order">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#order-tab"
+                role="tab"
+                aria-controls="order-tab"
+                aria-selected="false"
+              >
+                Order
+              </a>
+            </Option>
+            <Option value="shipment">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#shipment-tab"
+                role="tab"
+                aria-controls="shipment-tab"
+                aria-selected="false"
+              >
+                Shipment
+              </a>
+            </Option>
+            <Option value="delivered">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#delivered-tab"
+                role="tab"
+                aria-controls="delivered-tab"
+                aria-selected="false"
+              >
+                Delivered
+              </a>
+            </Option>
+            <Option value="shipment-assigned">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#shipment-assigned-tab"
+                role="tab"
+                aria-controls="shipment-assigned-tab"
+                aria-selected="false"
+              >
+                Shipment Assigned
+              </a>
+            </Option>
+          </Select>
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
               <a
@@ -643,6 +725,7 @@ class Orders extends Component {
                         </div>
                       );
                     },
+                    className: "order-desktop",
                   },
                   {
                     title: "Customer",
@@ -656,6 +739,7 @@ class Orders extends Component {
                         </div>
                       );
                     },
+                    className: "order-desktop",
                   },
                   {
                     title: "Items",
@@ -712,11 +796,12 @@ class Orders extends Component {
                     title: "Amount",
                     dataIndex: "Amount",
                     width: 150,
+                    className: "order-desktop",
                   },
                   {
                     title: "Status",
                     className:
-                      "camp-status-header camp-status-header-statusFilter order-status-header",
+                      "camp-status-header camp-status-header-statusFilter order-status-header order-desktop",
                     render: (row, item) => {
                       return (
                         <>
@@ -877,7 +962,7 @@ class Orders extends Component {
                         </>
                       );
                     },
-                    className: "white-space-init",
+                    className: "white-space-init order-desktop",
                   },
                   {
                     title: "Action",
@@ -953,9 +1038,104 @@ class Orders extends Component {
                   defaultPageSize: 10,
                   showSizeChanger: true,
                 }}
+                expandedRowRender={(row) => {
+                  return (
+                    <div className="order-expanded-cntr">
+                      <div className="row">
+                        <div className="col-6">
+                          <p className="order-expanded-title">Customer</p>
+                          <p>{row.CustomerName},</p>
+                          <p className="order-small-font">
+                            {row.CustomerNumber}
+                          </p>
+                        </div>
+                        <div className="col-6">
+                          <p className="order-expanded-title">Status</p>
+                          <p className="order-clr-blue">{row.Status}</p>
+                          {row.selfPickUp && (
+                            <p className="order-clr-orange">(Self Pickup)</p>
+                          )}
+                        </div>
+                        <div className="col-6">
+                          <p className="order-expanded-title">Amount</p>
+                          <p>{row.Amount}</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="order-expanded-title">Date</p>
+                          <p>{row.Date}</p>
+                          <p className="order-small-font">{row.Time}</p>
+                        </div>
+                        <div className="col-12">
+                          <p className="order-expanded-title">
+                            Shipping Address
+                          </p>
+                          <p
+                            className={
+                              row.Address === "" ? "d-inline-block" : ""
+                            }
+                          >
+                            {row.Address === "" ? "—NIL—" : row.Address}
+                          </p>
+                          {row.Address === "" && (
+                            <Popconfirm
+                              title={
+                                <>
+                                  <div className="popover-input-cntr">
+                                    <div>
+                                      <p>Address</p>
+                                      <textarea placeholder="Enter Address"></textarea>
+                                    </div>
+                                  </div>
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="store-deli"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="store-deli">
+                                        Store Delivery
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-picked"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="self-picked">
+                                        Self Picked up
+                                      </label>
+                                    </div>
+                                  </div>
+                                </>
+                              }
+                              overlayClassName="order-popover order-popover-butns order-popover-address"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                              icon={false}
+                              okText="Save Address"
+                            >
+                              <p
+                                style={{ cursor: "pointer" }}
+                                className="order-small-font d-inline-block order-clr-blue ml-1"
+                              >
+                                (ADDRESS PENDING)
+                              </p>
+                            </Popconfirm>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.orderGridData}
+                expandIconColumnIndex={7}
+                expandIconAsCell={false}
               />
             </div>
           </div>
