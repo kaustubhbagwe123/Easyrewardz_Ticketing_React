@@ -1214,7 +1214,7 @@ class Campaign extends Component {
                       },
                     },
                   ]}
-                  pagination={false}
+                  pagination={true}
                 />
               );
             }}

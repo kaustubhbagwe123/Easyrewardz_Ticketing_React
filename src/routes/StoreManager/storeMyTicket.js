@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import HeadphoneImg from "./../../assets/Images/headphone.png";
 import axios from "axios";
 import { authHeader } from "../../helpers/authHeader";
@@ -33,6 +33,7 @@ class storeMyTicket extends Component {
       TicketStatusData: StoreMyTicketStatus(),
       historicalTicket: false,
       historicalDetails: [],
+      loading: false,
     };
   }
   componentDidMount() {
@@ -132,6 +133,7 @@ class storeMyTicket extends Component {
   ///handle Get ticket details data
   handleGetTicketDetails(TID) {
     var self = this;
+    this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/HSChatTicketing/GetChatTicketsByID",
@@ -147,6 +149,7 @@ class storeMyTicket extends Component {
         if (Msg === "Success") {
           self.setState({
             ticketDetailsData: data,
+            loading: false,
           });
 
           setTimeout(() => {
@@ -157,6 +160,7 @@ class storeMyTicket extends Component {
         } else {
           self.setState({
             ticketDetailsData: {},
+            loading: false,
           });
         }
       })
@@ -332,384 +336,409 @@ class storeMyTicket extends Component {
   };
   render() {
     return (
-      <div>
-        <div className="head-header">
-          <div className="head-header-1">
-            <div className="row">
-              <div className="col-12 col-xs-4 col-sm-4 col-md-3">
-                <img src={HeadphoneImg} alt="headphone" className="headphone" />
-                <label className="id-abc-1234">
-                  ID - {this.state.ticketDetailsData.ticketID}
-                  <span className="updated-2-d-ago">
-                    {this.state.ticketDetailsData.createdDate}
-                  </span>
-                </label>
-                <div
-                  className="loading-rectangle-cntr"
-                  onClick={this.handleGetHistoricalData.bind(this)}
-                >
-                  <img
-                    src={LoadingImg}
-                    alt="Loading"
-                    className="loading-rectangle m-0"
-                    title="Ticket Historical"
-                  />
-                </div>
-              </div>
-              <div className="historical-model">
-                <Modal
-                  open={this.state.historicalTicket}
-                  onClose={this.HistoricalModalClose.bind(this)}
-                  closeIconId="sdsg"
-                  modalId="Historical-popup"
-                  overlayId="logout-ovrly"
-                  classNames={{ modal: "historical-popup" }}
-                >
-                  <label className="lblHistorical">Ticket Historical</label>
-                  <img
-                    src={CancelImg}
-                    alt="cancelImg"
-                    className="cancalImg"
-                    onClick={this.HistoricalModalClose.bind(this)}
-                  />
-                  <div className="tic-history tic-his varunoverflow">
-                    <ReactTable
-                      data={this.state.historicalDetails}
-                      columns={[
-                        {
-                          Header: <span>Name</span>,
-                          accessor: "name",
-                          width: 150,
-                        },
-                        {
-                          Header: <span>Action</span>,
-                          accessor: "action",
-                        },
-                        {
-                          Header: <span>Time & Date</span>,
-                          accessor: "dateandTime",
-                          width: 200,
-                          Cell: (row) => {
-                            var date = row.original["dateandTime"];
-                            return (
-                              <span>
-                                {moment(date).format("M/D/YYYY")} &nbsp;
-                                {moment(date).format("HH:mm A")}
-                              </span>
-                            );
-                          },
-                        },
-                      ]}
-                      resizable={false}
-                      defaultPageSize={10}
-                      showPagination={false}
-                      minRows={2}
-                    />
-                  </div>
-                </Modal>
-              </div>
-              <div className="col-12 col-xs-8 col-sm-8 col-md-9">
-                <div
-                  style={{ float: "right", marginTop: "0px" }}
-                  //   className={this.state.isKB ? "iskbticket" : ""}
-                >
-                  <a
-                    href="#!"
-                    className="d-inline-block"
-                    // onClick={this.HandlelabelModalOpen.bind(this)}
-                  >
+      <Fragment>
+        {this.state.loading === true ? (
+          <div className="loader-icon"></div>
+        ) : (
+          <div>
+            <div className="head-header">
+              <div className="head-header-1">
+                <div className="row">
+                  <div className="col-12 col-xs-4 col-sm-4 col-md-3">
                     <img
-                      src={Headphone2Img}
+                      src={HeadphoneImg}
                       alt="headphone"
-                      className="oval-55"
-                      title="Agent List"
+                      className="headphone"
                     />
-                    <label
-                      className="naman-r"
-                      // onClick={this.HandlelabelModalOpen.bind(this)}
-                    >
-                      {this.state.ticketDetailsData.assignTo}
+                    <label className="id-abc-1234">
+                      ID - {this.state.ticketDetailsData.ticketID}
+                      <span className="updated-2-d-ago">
+                        {this.state.ticketDetailsData.createdDate}
+                      </span>
                     </label>
-                    <img src={DownImg} alt="down" className="down-header" />
-                  </a>
-                  <button
-                    type="button"
-                    className="myticket-submit-solve-button"
-                    onClick={this.handleUpdateTicketDetails.bind(this)}
-                  >
-                    SUBMIT
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card-rectangle">
-          <div className="rectangle-box">
-            <div className="row">
-              <div className="col-md-3">
-                <div style={{ padding: "15px" }}>
-                  <label className="mobile-number">Mobile Number</label>
-                  <br />
-                  <label className="mobile-no">
-                    {this.state.ticketDetailsData.customerMobileNumber}
-                  </label>
-
-                  <img
-                    src={EyeImg}
-                    alt="eye"
-                    className="eyeImg1"
-                    title="Customer Profile"
-                    // onClick={this.HandleProfileModalOpen.bind(this)}
-                  />
-
-                  <img
-                    src={BillInvoiceImg}
-                    alt="eye"
-                    className="billImg"
-                    title="Historical Order"
-                    // onClick={this.handleBillImgModalOpen.bind(this)}
-                  />
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="mid-sec mid-secnew">
-                  <div className="row mob-pad">
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                      <div className="form-group">
-                        <label className="label-4">Status</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.ticketDetailsData.ticketStatus}
-                          onChange={this.handleDropDownChange}
-                          name="ticketStatus"
-                        >
-                          <option>Ticket Status</option>
-                          {this.state.TicketStatusData !== null &&
-                            this.state.TicketStatusData.map((item, s) => (
-                              <option key={s} value={item.statusID}>
-                                {item.statusName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group disabled-link">
-                        <label className="label-4">Priority</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.ticketDetailsData.priority}
-                          // onChange={this.handleDropDownChange}
-                          // name="priority"
-                        >
-                          <option
-                            className="select-category-placeholder"
-                            value={this.state.ticketDetailsData.priority}
-                          >
-                            {this.state.ticketDetailsData.priority}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group disabled-link">
-                        <label className="label-4">Brand</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.ticketDetailsData.brand}
-                          // onChange={this.handleDropDownChange}
-                          // name="brand"
-                        >
-                          <option
-                            className="select-category-placeholder"
-                            value={this.state.ticketDetailsData.brand}
-                          >
-                            {this.state.ticketDetailsData.brand}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                      <div className="form-group disabled-link">
-                        <label className="label-4">Category</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.ticketDetailsData.categoryID}
-                          name="categoryID"
-                          onChange={this.handleDropDownChange}
-                        >
-                          <option className="select-category-placeholder">
-                            Select Category
-                          </option>
-                          {this.state.CategoryData !== null &&
-                            this.state.CategoryData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.categoryID}
-                                className="select-category-placeholder"
-                              >
-                                {item.categoryName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group disabled-link">
-                        <label className="label-4">Sub Category</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.ticketDetailsData.subCategoryID}
-                          onChange={this.handleDropDownChange}
-                          name="subCategoryID"
-                        >
-                          <option className="select-category-placeholder">
-                            Select Sub Category
-                          </option>
-                          {this.state.SubCategoryData !== null &&
-                            this.state.SubCategoryData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.subCategoryID}
-                                className="select-category-placeholder"
-                              >
-                                {item.subCategoryName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group disabled-link">
-                        <label className="label-4">Issue Type</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.ticketDetailsData.issueTypeID}
-                          onChange={this.handleDropDownChange}
-                          name="issueTypeID"
-                        >
-                          <option className="select-sub-category-placeholder">
-                            Select Issue Type
-                          </option>
-                          {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                                className="select-category-placeholder"
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
+                    <div
+                      className="loading-rectangle-cntr"
+                      onClick={this.handleGetHistoricalData.bind(this)}
+                    >
+                      <img
+                        src={LoadingImg}
+                        alt="Loading"
+                        className="loading-rectangle m-0"
+                        title="Ticket Historical"
+                      />
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style={{ padding: "15px", background: "#fff" }}>
-          <div className="rectangle-3 text-editor">
-            <div className="row mt-2">
-              <label className="ticket-title-where mb-0">Ticket Title:</label>
-            </div>
-            <div className="row" style={{ marginTop: "0" }}>
-              <label className="storelabel-3 mb-0">
-                {this.state.ticketDetailsData.ticketTitle}
-              </label>
-            </div>
-            <div className="row mt-3">
-              <label className="ticket-title-where mb-0">Ticket Details:</label>
-            </div>
-            <div className="row" style={{ marginTop: "0" }}>
-              <label className="label-3 pb-0">
-                {this.state.ticketDetailsData.ticketDescription}
-              </label>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4" style={{ top: "20px" }}>
-              <label className="storeTickeTtl mb-0">
-                Notes:
-                {this.state.NotesCount < 9
-                  ? "0" + this.state.NotesCount
-                  : this.state.NotesCount}
-              </label>
-            </div>
-          </div>
-          <div className="row" style={{ marginTop: "20px" }}>
-            <div
-              className="col-12 col-xs-12 col-sm-4"
-              style={{ marginTop: "20px" }}
-            >
-              <textarea
-                className="Add-Notes-textarea"
-                placeholder="Add Notes"
-                name="NoteAddComment"
-                value={this.state.NoteAddComment}
-                onChange={this.handleNoteOnChange}
-              ></textarea>
-              {this.state.NoteAddComment.length === 0 && (
-                <p
-                  style={{
-                    color: "red",
-                    marginBottom: "0px",
-                  }}
-                >
-                  {this.state.AddNoteValidation}
-                </p>
-              )}
-              <button
-                type="button"
-                className="notesbtn notesbtn-text"
-                onClick={this.handleNoteAddComments.bind(this)}
-                style={{ marginTop: "5px" }}
-              >
-                ADD COMMENT
-              </button>
-            </div>
-
-            <div
-              className="col-12 col-xs-12 col-sm-8 my-ticket-notes"
-              style={{ top: "18px" }}
-            >
-              {this.state.Notesdetails !== null &&
-                this.state.Notesdetails.map((item, i) => (
-                  <div className="row my-ticket-notes-row" key={i}>
-                    <div className="col-md-1">
-                      <div className="oval-5-1-new">
-                        <img
-                          src={StoreIcon}
-                          style={{ padding: "5px" }}
-                          alt="store-icon"
+                  <div className="historical-model">
+                    <Modal
+                      open={this.state.historicalTicket}
+                      onClose={this.HistoricalModalClose.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                      classNames={{ modal: "historical-popup" }}
+                    >
+                      <label className="lblHistorical">Ticket Historical</label>
+                      <img
+                        src={CancelImg}
+                        alt="cancelImg"
+                        className="cancalImg"
+                        onClick={this.HistoricalModalClose.bind(this)}
+                      />
+                      <div className="tic-history tic-his varunoverflow">
+                        <ReactTable
+                          data={this.state.historicalDetails}
+                          columns={[
+                            {
+                              Header: <span>Name</span>,
+                              accessor: "name",
+                              width: 150,
+                            },
+                            {
+                              Header: <span>Action</span>,
+                              accessor: "action",
+                            },
+                            {
+                              Header: <span>Time & Date</span>,
+                              accessor: "dateandTime",
+                              width: 200,
+                              Cell: (row) => {
+                                var date = row.original["dateandTime"];
+                                return (
+                                  <span>
+                                    {moment(date).format("M/D/YYYY")} &nbsp;
+                                    {moment(date).format("HH:mm A")}
+                                  </span>
+                                );
+                              },
+                            },
+                          ]}
+                          resizable={false}
+                          defaultPageSize={10}
+                          showPagination={false}
+                          minRows={2}
                         />
                       </div>
+                    </Modal>
+                  </div>
+                  <div className="col-12 col-xs-8 col-sm-8 col-md-9">
+                    <div
+                      style={{ float: "right", marginTop: "0px" }}
+                      //   className={this.state.isKB ? "iskbticket" : ""}
+                    >
+                      
+                        <img
+                          src={Headphone2Img}
+                          alt="headphone"
+                          className="oval-55"
+                          title="Agent List"
+                        />
+                        <label
+                          className="naman-r"
+                          // onClick={this.HandlelabelModalOpen.bind(this)}
+                        >
+                          {this.state.ticketDetailsData.assignTo}
+                        </label>
+                        <img
+                          src={DownImg}
+                          alt="down"
+                          className="down-header"
+                          style={{ display: "none" }}
+                        />
+                      
+                      <button
+                        type="button"
+                        className="myticket-submit-solve-button"
+                        onClick={this.handleUpdateTicketDetails.bind(this)}
+                      >
+                        SUBMIT
+                      </button>
                     </div>
-                    <div className="col-md-11">
-                      <div className="row my-ticket-notes-created">
-                        <label className="varun-nagpal">
-                          {item.name}{" "}
-                          <span class="addTask-time-ago">
-                            {item.commentDate}
-                          </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-rectangle">
+              <div className="rectangle-box">
+                <div className="row">
+                  <div className="col-md-4">
+                    <div style={{ padding: "15px", paddingLeft: "30px" }}>
+                      <div>
+                        <label className="mobile-number">Customer Name</label>
+                        <br />
+                        <label className="mobile-no">
+                          {this.state.ticketDetailsData.customerName}
                         </label>
                       </div>
-                      <div className="row my-ticket-notes-created">
-                        <label className="hi-diwakar-i-really tab">
-                          {item.comment}
+                      <div className="m-t-15">
+                        <label className="mobile-number">Mobile Number</label>
+                        <br />
+                        <label className="mobile-no">
+                          {this.state.ticketDetailsData.customerMobileNumber}
                         </label>
+                      </div>
+                      <img
+                        src={EyeImg}
+                        alt="eye"
+                        className="eyeImg1"
+                        title="Customer Profile"
+                        style={{ display: "none" }}
+                        // onClick={this.HandleProfileModalOpen.bind(this)}
+                      />
+
+                      <img
+                        src={BillInvoiceImg}
+                        alt="eye"
+                        className="billImg"
+                        title="Historical Order"
+                        style={{ display: "none" }}
+                        // onClick={this.handleBillImgModalOpen.bind(this)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-8">
+                    <div className="mid-sec mid-secnew">
+                      <div className="row mob-pad">
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div className="form-group">
+                            <label className="label-4">Status</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.ticketDetailsData.ticketStatus}
+                              onChange={this.handleDropDownChange}
+                              name="ticketStatus"
+                            >
+                              <option>Ticket Status</option>
+                              {this.state.TicketStatusData !== null &&
+                                this.state.TicketStatusData.map((item, s) => (
+                                  <option key={s} value={item.statusID}>
+                                    {item.statusName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group disabled-link">
+                            <label className="label-4">Priority</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.ticketDetailsData.priority}
+                              // onChange={this.handleDropDownChange}
+                              // name="priority"
+                            >
+                              <option
+                                className="select-category-placeholder"
+                                value={this.state.ticketDetailsData.priority}
+                              >
+                                {this.state.ticketDetailsData.priority}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group disabled-link">
+                            <label className="label-4">Brand</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.ticketDetailsData.brand}
+                              // onChange={this.handleDropDownChange}
+                              // name="brand"
+                            >
+                              <option
+                                className="select-category-placeholder"
+                                value={this.state.ticketDetailsData.brand}
+                              >
+                                {this.state.ticketDetailsData.brand}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div className="form-group disabled-link">
+                            <label className="label-4">Category</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.ticketDetailsData.categoryID}
+                              name="categoryID"
+                              onChange={this.handleDropDownChange}
+                            >
+                              <option className="select-category-placeholder">
+                                Select Category
+                              </option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.categoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group disabled-link">
+                            <label className="label-4">Sub Category</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.ticketDetailsData.subCategoryID}
+                              onChange={this.handleDropDownChange}
+                              name="subCategoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Sub Category
+                              </option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.subCategoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group disabled-link">
+                            <label className="label-4">Issue Type</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.ticketDetailsData.issueTypeID}
+                              onChange={this.handleDropDownChange}
+                              name="issueTypeID"
+                            >
+                              <option className="select-sub-category-placeholder">
+                                Select Issue Type
+                              </option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.issueTypeID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                ))}
+                </div>
+              </div>
+            </div>
+            <div style={{ padding: "15px", background: "#fff" }}>
+              <div className="rectangle-3 text-editor">
+                <div className="row mt-2">
+                  <label className="ticket-title-where mb-0">
+                    Ticket Title:
+                  </label>
+                </div>
+                <div className="row" style={{ marginTop: "0" }}>
+                  <label className="storelabel-3 mb-0">
+                    {this.state.ticketDetailsData.ticketTitle}
+                  </label>
+                </div>
+                <div className="row mt-3">
+                  <label className="ticket-title-where mb-0">
+                    Ticket Details:
+                  </label>
+                </div>
+                <div className="row" style={{ marginTop: "0" }}>
+                  <label className="label-3 pb-0">
+                    {this.state.ticketDetailsData.ticketDescription}
+                  </label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-4" style={{ top: "20px" }}>
+                  <label className="storeTickeTtl mb-0">
+                    Notes:
+                    {this.state.NotesCount < 9
+                      ? "0" + this.state.NotesCount
+                      : this.state.NotesCount}
+                  </label>
+                </div>
+              </div>
+              <div className="row" style={{ marginTop: "20px" }}>
+                <div
+                  className="col-12 col-xs-12 col-sm-4"
+                  style={{ marginTop: "20px" }}
+                >
+                  <textarea
+                    className="Add-Notes-textarea"
+                    placeholder="Add Notes"
+                    name="NoteAddComment"
+                    value={this.state.NoteAddComment}
+                    onChange={this.handleNoteOnChange}
+                  ></textarea>
+                  {this.state.NoteAddComment.length === 0 && (
+                    <p
+                      style={{
+                        color: "red",
+                        marginBottom: "0px",
+                      }}
+                    >
+                      {this.state.AddNoteValidation}
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    className="notesbtn notesbtn-text"
+                    onClick={this.handleNoteAddComments.bind(this)}
+                    style={{ marginTop: "5px" }}
+                  >
+                    ADD COMMENT
+                  </button>
+                </div>
+
+                <div
+                  className="col-12 col-xs-12 col-sm-8 my-ticket-notes"
+                  style={{ top: "18px" }}
+                >
+                  {this.state.Notesdetails !== null &&
+                    this.state.Notesdetails.map((item, i) => (
+                      <div className="row my-ticket-notes-row" key={i}>
+                        <div className="col-md-1">
+                          <div className="oval-5-1-new">
+                            <img
+                              src={StoreIcon}
+                              style={{ padding: "5px" }}
+                              alt="store-icon"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-11">
+                          <div className="row my-ticket-notes-created">
+                            <label className="varun-nagpal">
+                              {item.name}{" "}
+                              <span class="addTask-time-ago">
+                                {item.commentDate}
+                              </span>
+                            </label>
+                          </div>
+                          <div className="row my-ticket-notes-created">
+                            <label className="hi-diwakar-i-really tab">
+                              {item.comment}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        )}
+      </Fragment>
     );
   }
 }
