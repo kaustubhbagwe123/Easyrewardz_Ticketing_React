@@ -11,21 +11,12 @@ class OrderSetting extends Component {
   constructor(props) {
     super(props);
 
-<<<<<<< HEAD
         this.state = {
            moduleConfigData: {},
            orderConfigData: {},
            selTab: "Module Configuration"
         }
     }
-=======
-    this.state = {
-      moduleConfigData: {},
-      orderConfigData: {},
-      selTab: "Module",
-    };
-  }
->>>>>>> 349ce249228bf727dde5cb003b674980142a8d57
 
   componentDidMount() {
     this.handleGetModuleConfigData();
@@ -166,218 +157,6 @@ class OrderSetting extends Component {
     this.setState({ orderConfigData: this.state.orderConfigData });
   };
 
-<<<<<<< HEAD
-    render() {
-        return (
-            <Fragment>
-                <div className="container-fluid setting-title setting-breadcrumb">
-                    <Link to="/store/settings" className="header-path">
-                        Settings
-                    </Link>
-                    <span>&gt;</span>
-                    <Link
-                        to={{
-                            pathname: "/store/settings",
-                            tabName: "store-tab",
-                        }}
-                        className="header-path"
-                    >
-                        Store
-                    </Link>
-                    <span>&gt;</span>
-                    <Link to={Demo.BLANK_LINK} className="active header-path">
-                        Order Settings
-                    </Link>
-                </div>
-                <div className="Store-paddmodule storeModule">
-                    <div className="module-tabs">
-                        <section>
-                            <Tabs
-                              onSelect={(index, label) =>
-                                this.setState({ selTab: label })
-                              }
-                              selected={this.state.selTab}
-                            >
-                                <Tab label="Module Configuration">
-                                    <div className="store-mdl backNone">
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <div style={{ background: "white" }}>
-                                                    <div className="row">
-                                                        <div className="col-md-5 m-auto">
-                                                            <div className="right-sect-div">
-                                                                <h3>MODULE CONFIGURATION</h3>
-                                                                <div className="module-switch-cntr">
-                                                                    <div className="module-switch">
-                                                                        <div className="switch switch-primary">
-                                                                            <label className="storeRole-name-text m-0">
-                                                                                Shopping Bag
-                                                                            </label>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                id="ckModconfigShoppBag"
-                                                                                name="allModules"
-                                                                                checked={
-                                                                                    this.state.moduleConfigData
-                                                                                        .shoppingBag
-                                                                                }
-                                                                                onChange={this.ModuleConfigFlagChange.bind(
-                                                                                    this
-                                                                                )}
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="ckModconfigShoppBag"
-                                                                                className="cr cr-float-auto"
-                                                                            ></label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="module-switch">
-                                                                        <div className="switch switch-primary">
-                                                                            <label className="storeRole-name-text m-0">
-                                                                                Payment
-                                                                            </label>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                id="ckModconfigPayment"
-                                                                                name="allModules"
-                                                                                checked={
-                                                                                    this.state.moduleConfigData
-                                                                                        .payment
-                                                                                }
-                                                                                onChange={this.ModuleConfigFlagChange.bind(
-                                                                                    this
-                                                                                )}
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="ckModconfigPayment"
-                                                                                className="cr cr-float-auto"
-                                                                            ></label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="module-switch">
-                                                                        <div className="switch switch-primary">
-                                                                            <label className="storeRole-name-text m-0">
-                                                                                Shipment
-                                                                            </label>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                id="ckModconfigShipment"
-                                                                                name="allModules"
-                                                                                checked={
-                                                                                    this.state.moduleConfigData
-                                                                                        .shipment
-                                                                                }
-                                                                                onChange={this.ModuleConfigFlagChange.bind(
-                                                                                    this
-                                                                                )}
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="ckModconfigShipment"
-                                                                                className="cr cr-float-auto"
-                                                                            ></label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <button
-                                                                    className="Schedulenext1 w-100 mb-0 mt-4"
-                                                                    type="button"
-                                                                    onClick={this.handleUpdateModConfigData.bind(this)}
-                                                                >
-                                                                    UPDATE
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Tab>
-                                <Tab label="Order Configuration">
-                                    <div className="store-mdl backNone">
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <div style={{ background: "white" }}>
-                                                    <div className="row">
-                                                        <div className="col-md-5 m-auto">
-                                                            <div className="right-sect-div">
-                                                                <h3>ORDER CONFIGURATION</h3>
-                                                                <div className="module-switch-cntr">
-                                                                    <div className="module-switch">
-                                                                        <div className="switch switch-primary">
-                                                                            <label className="storeRole-name-text m-0">
-                                                                                Integrated System
-                                                                            </label>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                id="ckOrdconfigIntegSys"
-                                                                                name="allModules"
-                                                                                checked={
-                                                                                    this.state.orderConfigData.integratedSystem
-                                                                                }
-                                                                                onChange={this.OrderConfigFlagChange.bind(this)}
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="ckOrdconfigIntegSys"
-                                                                                className="cr cr-float-auto"
-                                                                            ></label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="module-switch">
-                                                                        <div className="switch switch-primary">
-                                                                            <label className="storeRole-name-text m-0">
-                                                                                Payment
-                                                                            </label>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                id="ckOrdconfigPayment"
-                                                                                name="allModules"
-                                                                                checked={
-                                                                                    this.state.orderConfigData.payment
-                                                                                }
-                                                                                onChange={this.OrderConfigFlagChange.bind(this)}
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="ckOrdconfigPayment"
-                                                                                className="cr cr-float-auto"
-                                                                            ></label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="module-switch">
-                                                                        <div className="switch switch-primary">
-                                                                            <label className="storeRole-name-text m-0">
-                                                                                Shipment
-                                                                            </label>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                id="ckOrdconfigShipment"
-                                                                                name="allModules"
-                                                                                checked={
-                                                                                    this.state.orderConfigData.shipment
-                                                                                }
-                                                                                onChange={this.OrderConfigFlagChange.bind(this)}
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="ckOrdconfigShipment"
-                                                                                className="cr cr-float-auto"
-                                                                            ></label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <button
-                                                                    className="Schedulenext1 w-100 mb-0 mt-4"
-                                                                    type="button"
-                                                                    onClick={this.handleUpdateOrderConfigData.bind(this)}
-                                                                >
-                                                                    UPDATE
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-=======
   render() {
     return (
       <Fragment>
@@ -482,7 +261,6 @@ class OrderSetting extends Component {
                                         htmlFor="ckModconfigShipment"
                                         className="cr cr-float-auto"
                                       ></label>
->>>>>>> 349ce249228bf727dde5cb003b674980142a8d57
                                     </div>
                                   </div>
                                 </div>

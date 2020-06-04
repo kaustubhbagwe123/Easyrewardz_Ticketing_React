@@ -256,17 +256,14 @@ class Orders extends Component {
       filterOrderStatus: false,
       filterShipmentStatus: false,
       totalCount: 0,
-<<<<<<< HEAD
       currentPage: 1,
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
       assignCurrentPage: 1,
       assignPostsPerPage: 10,
-      shipmentAssignedGridData: []
-=======
+      shipmentAssignedGridData: [],
       ShipmentMdlbtn: false,
->>>>>>> 349ce249228bf727dde5cb003b674980142a8d57
     };
   }
 
@@ -1872,49 +1869,6 @@ class Orders extends Component {
                                 {item.ReferenceNo}
                               </button>
                             ) : (
-<<<<<<< HEAD
-                                <button className="btn-ref deliv-grid-butn">
-                                  Enter POD
-                                </button>
-                              )
-                          ) : (
-                              <Popover
-                                content={
-                                  <Table
-                                    className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                                    columns={[
-                                      {
-                                        title: "Item ID",
-                                        dataIndex: "ItemID",
-                                      },
-                                      {
-                                        title: "Item Name",
-                                        dataIndex: "ItemName",
-                                        width: 150,
-                                      },
-                                      {
-                                        title: "Item Price",
-                                        dataIndex: "ItemPrice",
-                                      },
-                                      {
-                                        title: "Quantity",
-                                        dataIndex: "Quantity",
-                                      },
-                                    ]}
-                                    scroll={{ y: 240 }}
-                                    pagination={false}
-                                    dataSource={this.state.itemPopupDate}
-                                  />
-                                }
-                                trigger="click"
-                                overlayClassName="order-popover-table order-popover"
-                                onVisibleChange={(visible) =>
-                                  this.setState({ orderPopoverOverlay: visible })
-                                }
-                              >
-                                <button className="btn-ref deliv-grid-butn">
-                                  "Staff Details"
-=======
                               <button className="btn-ref deliv-grid-butn">
                                 <input
                                   type="text"
@@ -1961,7 +1915,6 @@ class Orders extends Component {
                             >
                               <button className="btn-ref deliv-grid-butn">
                                 Staff Details
->>>>>>> 349ce249228bf727dde5cb003b674980142a8d57
                               </button>
                               </Popover>
                             )}
