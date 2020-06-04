@@ -677,7 +677,7 @@ class Campaign extends Component {
           checkboxes[i].checked = true;
           if (checkboxes[i].getAttribute("attrIds") !== null)
             strCampStatus = "All";
-            // strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
+          // strCampStatus += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     } else {
@@ -719,7 +719,7 @@ class Campaign extends Component {
   }
   /// handle Search Campaign Status
   handleSearchCampaigStatus() {
-    debugger
+    debugger;
     let self = this;
     var filterIds = "";
     if (this.state.strCampStatus !== "") {
@@ -736,7 +736,7 @@ class Campaign extends Component {
       },
     })
       .then(function(res) {
-        debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -813,8 +813,7 @@ class Campaign extends Component {
                     </button>
                   );
                 },
-                className:
-                  this.state.rowExpandedCount === 0 ? "d-block" : "d-none",
+                className: this.state.rowExpandedCount === 0 ? "" : "d-none",
               },
               {
                 title:
@@ -1186,7 +1185,7 @@ class Campaign extends Component {
                                   ? ""
                                   : "disabled-input"
                               }
-                              style={{display:"none"}}
+                              style={{ display: "none" }}
                             >
                               <button
                                 className={
@@ -1214,7 +1213,9 @@ class Campaign extends Component {
                       },
                     },
                   ]}
-                  pagination={false}
+                  pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                  showSizeChanger={true}
+                  onShowSizeChange={true}
                 />
               );
             }}

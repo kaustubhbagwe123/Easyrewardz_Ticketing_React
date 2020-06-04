@@ -1,6 +1,9 @@
 /* chetan css starts */
 
 /* order tabs starts */
+.order-mobile-dropdown {
+  display: none;
+}
 .orders-tabs-outer .nav-tabs .nav-link {
   font-weight: 400;
   padding: 0;
@@ -55,6 +58,9 @@
   font-weight: 400 !important;
   white-space: nowrap;
   height: 60px;
+}
+.order-popover-table .antd-table-order .ant-table-tbody > tr > td {
+  white-space: initial;
 }
 .custom-antd-table.antd-table-campaign.antd-table-order
   .ant-table-thead
@@ -267,7 +273,8 @@
   border: none;
 }
 
-.dv-delivered .react-pagination-js-bootstrap .page, .dv-delivered .react-pagination-js-bootstrap .pageElli {
+.dv-delivered .react-pagination-js-bootstrap .page,
+.dv-delivered .react-pagination-js-bootstrap .pageElli {
   line-height: 25px !important;
   color: #333;
 }
@@ -500,6 +507,306 @@
 .popover-radio-cntr > div:last-child {
   margin-right: 0px;
 }
+.antd-table-order .ant-table-row-expand-icon {
+  display: none;
+}
+.order-popover-table .ant-table-thead > tr > th:nth-child(2),
+.order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
+  width: 150px !important;
+}
 /* order ends */
 
 /* chetan css ends */
+
+/* responsive starts */
+
+@media all and (max-width: 576px) {
+  /* chetan css starts */
+
+  /* order starts */
+  .order-search,
+  .orders-tabs-outer ul,
+  .order-desktop {
+    display: none;
+  }
+  .order-mobile-dropdown {
+    width: 160px;
+    display: block;
+  }
+  .order-mobile-dropdown-menu .nav-link {
+    font-size: 13px;
+    color: #000;
+    padding: 9px 0;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.4);
+    font-weight: 400;
+  }
+  .order-mobile-dropdown-menu .nav-link.active {
+    color: #2561a8;
+  }
+  .order-mobile-dropdown-menu .ant-select-dropdown-menu-item-selected,
+  .order-mobile-dropdown-menu
+    .ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled),
+  .order-mobile-dropdown-menu
+    .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
+    background-color: #fff;
+  }
+  .order-mobile-dropdown-menu
+    .ant-select-dropdown-menu-item:last-child
+    .nav-link {
+    border-bottom: 0;
+  }
+  .order-mobile-dropdown-menu .ant-select-dropdown-menu-item:last-child {
+    background: #fff !important;
+  }
+  .order-mobile-dropdown-menu .ant-select-dropdown-menu-item {
+    padding: 0 13px !important;
+  }
+  .order-mobile-dropdown .nav-link {
+    font-weight: 700;
+    font-size: 14px;
+    color: #2561a8;
+    padding: 0;
+    padding-right: 2px;
+    margin: 10px 0;
+  }
+  .order-mobile-dropdown .nav-link::after {
+    content: "";
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2.5px;
+    transform: rotate(45deg);
+    margin-left: 10px;
+    margin-bottom: 2px;
+  }
+  .order-mobile-dropdown .ant-select-selection__rendered {
+    margin: 0 !important;
+  }
+  .order-mobile-dropdown .ant-select-selection {
+    border: 0 !important;
+    box-shadow: none;
+    background: #f5f8f9;
+  }
+  .order-mobile-dropdown-menu .ant-select-dropdown-menu {
+    /* padding: 0; */
+    border-radius: 5px;
+  }
+  .order-mobile-dropdown-menu {
+    border-radius: 5px;
+  }
+  .order-mobile-dropdown-menu::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 10px solid #fff;
+    position: absolute;
+    bottom: 100%;
+    left: 25px;
+  }
+  .orders-tabs-outer {
+    padding: 4px 15px;
+    background: #f5f8f9;
+  }
+  .order-mobile-dropdown-menu .ant-select-dropdown-menu-item-active .nav-link {
+    color: #2561a8;
+  }
+  .orders-tab-cont {
+    padding: 0;
+    padding-bottom: 15px;
+  }
+  .custom-antd-table.antd-table-campaign.antd-table-order
+    .ant-table-thead
+    > tr
+    > th {
+    padding: 5px 5px !important;
+    height: 30px;
+  }
+  .antd-table-order .ant-table-tbody > tr > td {
+    padding: 15px 5px !important;
+  }
+  .antd-table-order .ant-table-row-expand-icon {
+    display: block;
+  }
+  .antd-table-order .ant-table-thead > tr:first-child > th:first-child {
+    border-top-left-radius: 0px;
+    padding-left: 15px !important;
+  }
+  .antd-table-order .ant-table-thead > tr:first-child > th:last-child {
+    border-top-right-radius: 0px;
+    padding-right: 15px !important;
+  }
+  .orders-tab-cont .table-cntr,
+  .antd-table-order .ant-table table {
+    border-radius: 0;
+  }
+  .antd-table-order-mobile .ant-table-tbody > tr > td:last-child {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    padding-right: 15px !important;
+  }
+  .antd-table-order .ant-table-tbody > tr > td:first-child {
+    padding-left: 15px !important;
+  }
+  .antd-table-order .ant-table-row-collapsed::after,
+  .antd-table-order .ant-table-row-expanded::after {
+    position: static;
+    transform: none;
+    display: inline-block;
+    margin-top: -5px;
+    margin-left: 6px;
+    background-size: 28px 28px;
+    width: 28px;
+    height: 28px;
+  }
+  .order-expanded-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .order-expanded-cntr {
+    padding: 12px 15px;
+    color: #4a4a4a;
+    background: #fff;
+    white-space: initial;
+  }
+  .order-expanded-cntr .row div {
+    margin-bottom: 17px;
+  }
+  .order-expanded-cntr .row div:last-child {
+    margin-bottom: 5px;
+  }
+  .order-small-font {
+    font-size: 12px;
+  }
+  .order-popover-table .ant-popover-inner,
+  .order-popover-table .ant-popover-inner-content {
+    width: 100%;
+  }
+  .order-popover-invoice .ant-popover-content {
+    margin-left: 0;
+  }
+  .order-popover-table .ant-popover-content {
+    margin: 0 10px;
+  }
+  .order-popover-invoice.ant-popover-placement-bottomLeft
+    > .ant-popover-content
+    > .ant-popover-arrow,
+  .order-popover-invoice.ant-popover-placement-topLeft
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    left: 109px;
+  }
+  .shopping-num-invoice span {
+    margin-left: 0;
+  }
+  .order-popover-table .ant-table-thead > tr > th {
+    height: 50px !important;
+  }
+  .order-popover-table
+    .custom-antd-table.antd-table-order
+    .ant-table-tbody
+    > tr
+    > td {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  /* order ends */
+
+  /* chetan css ends */
+}
+
+@media all and (max-width: 400px) {
+  /* chetan css starts */
+
+  /* order starts */
+  .order-popover-table .ant-table-thead > tr > th:nth-child(2),
+  .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
+    width: auto !important;
+  }
+  .pay-done p {
+    min-width: 120px;
+  }
+  /* chetan css ends */
+
+  /* order ends */
+}
+
+@media all and (max-width: 359px) {
+  /* chetan css starts */
+
+  /* order starts */
+  .antd-table-order .ant-table-thead > tr:first-child > th:first-child,
+  .antd-table-order .ant-table-tbody > tr > td:first-child {
+    padding-left: 10px !important;
+  }
+  .antd-table-order .ant-table-thead > tr:first-child > th:last-child,
+  .antd-table-order .ant-table-tbody > tr > td:last-child {
+    padding-right: 10px !important;
+  }
+  .antd-table-order .ant-table-tbody > tr > td {
+    font-size: 12px;
+  }
+  .order-grid-butn {
+    min-width: 105px;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    font-size: 12px;
+  }
+  .invoice-icon-cntr {
+    width: 17px;
+  }
+  .order-shoping {
+    width: 17px;
+  }
+  .order-bag {
+    width: 13px;
+  }
+  .order-info {
+    width: 14px;
+  }
+  .order-hamb {
+    width: 18px;
+  }
+  .antd-table-order .ant-table-row-collapsed::after,
+  .antd-table-order .ant-table-row-expanded::after {
+    background-size: 22px 22px;
+    width: 22px;
+    height: 22px;
+    margin-top: -2px;
+  }
+  .orders-tabs-outer {
+    padding: 4px 10px;
+  }
+  .order-small-font {
+    font-size: 11px;
+  }
+  .order-expanded-title {
+    margin-bottom: 2px;
+  }
+  .order-expanded-cntr .row div {
+    margin-bottom: 12px;
+  }
+  .order-expanded-cntr .row div:last-child {
+    margin-bottom: 0px;
+  }
+  .order-expanded-cntr {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .order-popover-invoice.ant-popover-placement-bottomLeft
+    > .ant-popover-content
+    > .ant-popover-arrow,
+  .order-popover-invoice.ant-popover-placement-topLeft
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    left: 96px;
+  }
+  /* order ends */
+
+  /* chetan css ends */
+}
+
+/* responsive ends */

@@ -23,20 +23,20 @@ class StoreProgramCode extends Component {
 
   hanleChange(e) {
     e.preventDefault();
-    debugger
+    debugger;
     let self = this;
     if (this.validator.allValid()) {
       const { programCode } = this.state;
       var encProgramCode = encryption(programCode, "enc");
-      // let X_Authorized_Domainname = encryption(
-      //   "https://multitenancyshopster.dcdev.brainvire.net",
-      //   "enc"
-      // );
+      let X_Authorized_Domainname = encryption(
+        "https://multitenancyshopster.dcdev.brainvire.net",
+        "enc"
+      );
       // let X_Authorized_Domainname = encryption(
       //   "http://erbelltktstore.dcdev.brainvire.net",
       //   "enc"
       // );
-     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       let X_Authorized_Programcode = encProgramCode;
 
       // validate program code
@@ -47,7 +47,7 @@ class StoreProgramCode extends Component {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "X-Authorized-Programcode": X_Authorized_Programcode,
-          "X-Authorized-Domainname": X_Authorized_Domainname, 
+          "X-Authorized-Domainname": X_Authorized_Domainname,
         },
       })
         .then(function(res) {
@@ -60,9 +60,11 @@ class StoreProgramCode extends Component {
                 encProgramCode: encProgramCode,
               });
             }, 500);
-            
+
             self.setState({
-              encProgramCode: { programCode: encProgramCode },
+              encProgramCode: {
+                programCode: encProgramCode,
+              },
             });
           } else {
             NotificationManager.error(

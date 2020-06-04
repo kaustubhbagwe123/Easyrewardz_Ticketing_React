@@ -18,8 +18,12 @@ class LanguageSelection extends Component {
     super(props);
 
     this.state = {
-      language: ""
+      language: "",
+      languageData: [],
     };
+  }
+  componentDidMount() {
+    this.handleGetSelectedLanguageDetails();
   }
 
   handleCRMRole() {
@@ -104,26 +108,20 @@ class LanguageSelection extends Component {
       });
   }
 
- 
   handleContinue() {
     let language = this.state.language;
-    if (language === 'hindi') {
+    if (language === "hindi") {
       window.localStorage.setItem("translateLanguage", language);
-    }
-    else if(language === 'marathi'){
+    } else if (language === "marathi") {
       window.localStorage.setItem("translateLanguage", language);
-    }
-    else if(language === 'punjabi'){
+    } else if (language === "punjabi") {
       window.localStorage.setItem("translateLanguage", language);
-    }
-    else if(language === 'gujrati'){
+    } else if (language === "gujrati") {
       window.localStorage.setItem("translateLanguage", language);
-    }
-    else if(language === 'telugu'){
+    } else if (language === "telugu") {
       window.localStorage.setItem("translateLanguage", language);
-    }
-    else{
-      this.state.translateLanguage = {}
+    } else {
+      this.state.translateLanguage = {};
     }
     this.handleCRMRole();
   }
@@ -131,9 +129,38 @@ class LanguageSelection extends Component {
     this.handleCRMRole();
   }
 
-  handleOnChange(e){
+  handleOnChange(e) {
     debugger;
-    this.setState({language: e.target.value});
+    this.setState({ language: e.target.value });
+  }
+
+  handleGetSelectedLanguageDetails() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/StoreCampaign/GetSelectedLanguageDetails",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        var languageData = [];
+        if (message === "Success" && responseData) {
+          for (let i = 0; i < responseData.length; i++) {
+            if (responseData[i].isActive) {
+              languageData.push(responseData[i]);
+            }
+          }
+          self.setState({ languageData });
+        } else {
+          self.setState({ languageData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetSelectedLanguageDetails");
+      });
   }
 
   render() {
@@ -156,15 +183,43 @@ class LanguageSelection extends Component {
               >
                 Choose Language
               </label>
-              <div className="languagebox"
-              onClick={this.handleOnChange.bind(this)}
+              <div
+                className="languagebox"
+                onClick={this.handleOnChange.bind(this)}
               >
-                <button class="langbtn active" value="">English</button>
-                <button class="langbtn" value="hindi">हिन्दी</button>
-                <button class="langbtn" value="marathi">मराठी</button>
-                <button class="langbtn" value="punjabi">ਪੰਜਾਬੀ</button>
-                <button class="langbtn" value="gujrati">ગુજરાતી</button>
-                <button class="langbtn" value="telugu">తెలుగు</button>
+                {this.state.languageData !== null
+                  ? this.state.languageData.map((item, i) => {
+                      return (
+                        <button
+                          class={
+                            item.language.split(" ")[0].toLowerCase() ===
+                            this.state.language
+                              ? "langbtn active"
+                              : "langbtn"
+                          }
+                          value={item.language.split(" ")[0].toLowerCase()}
+                        >
+                          {item.language}
+                        </button>
+                      );
+                    })
+                  : null}
+
+                {/* <button class="langbtn" value="hindi">
+                  हिन्दी
+                </button>
+                <button class="langbtn" value="marathi">
+                  मराठी
+                </button>
+                <button class="langbtn" value="punjabi">
+                  ਪੰਜਾਬੀ
+                </button>
+                <button class="langbtn" value="gujrati">
+                  ગુજરાતી
+                </button>
+                <button class="langbtn" value="telugu">
+                  తెలుగు
+                </button> */}
               </div>
               <button
                 type="submit"

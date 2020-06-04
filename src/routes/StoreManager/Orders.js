@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Table, Popover, Popconfirm } from "antd";
+import { Table, Popover, Popconfirm, Select } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
@@ -10,6 +10,7 @@ import OrderShopingBlack from "./../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../assets/Images/order-bag.png";
 import CreditCard from "./../../assets/Images/credit-card.png";
 import NoPayment from "./../../assets/Images/no-payment.png";
+import CancelImg from "./../../assets/Images/cancel.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -22,6 +23,7 @@ import moment from "moment";
 import "./../../assets/css/orders.css";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import Modal from "react-responsive-modal";
 
 class Orders extends Component {
   constructor(props) {
@@ -254,6 +256,7 @@ class Orders extends Component {
       filterOrderStatus: false,
       filterShipmentStatus: false,
       totalCount: 0,
+<<<<<<< HEAD
       currentPage: 1,
       postsPerPage: 10,
       statusFilterData: [],
@@ -261,6 +264,9 @@ class Orders extends Component {
       assignCurrentPage: 1,
       assignPostsPerPage: 10,
       shipmentAssignedGridData: []
+=======
+      ShipmentMdlbtn: false,
+>>>>>>> 349ce249228bf727dde5cb003b674980142a8d57
     };
   }
 
@@ -400,6 +406,26 @@ class Orders extends Component {
         console.log(data);
       });
   }
+  handleShipmentModalOpen() {
+    this.setState({
+      ShipmentMdlbtn: true,
+    });
+  }
+  handleShipmentModalClose() {
+    this.setState({
+      ShipmentMdlbtn: false,
+    });
+  }
+
+  changeOrderDropdown() {
+    debugger;
+    const orderDropdownValues = document.querySelectorAll(
+      ".order-mobile-dropdown-menu .nav-link"
+    );
+    for (const value of orderDropdownValues) {
+      value.classList.remove("active");
+    }
+  }
 
   AssignedPaginationOnChange = async (numPage) => {
     debugger;
@@ -419,12 +445,84 @@ class Orders extends Component {
   };
 
   render() {
+    const { Option } = Select;
     return (
       <Fragment>
         {this.state.orderPopoverOverlay && (
           <div className="order-popover-overlay"></div>
         )}
         <div className="store-task-tabs orders-tabs-outer">
+          <Select
+            defaultValue="shopping-bag"
+            className="order-mobile-dropdown"
+            // open={true}
+            dropdownClassName="order-mobile-dropdown-menu"
+            onSelect={this.changeOrderDropdown.bind(this)}
+            onDropdownVisibleChange={(open) =>
+              this.setState({ orderPopoverOverlay: open })
+            }
+          >
+            <Option value="shopping-bag">
+              <a
+                className="nav-link active"
+                data-toggle="tab"
+                href="#shopping-bag-tab"
+                role="tab"
+                aria-controls="shopping-bag-tab"
+                aria-selected="true"
+              >
+                Shopping Bag
+              </a>
+            </Option>
+            <Option value="order">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#order-tab"
+                role="tab"
+                aria-controls="order-tab"
+                aria-selected="false"
+              >
+                Order
+              </a>
+            </Option>
+            <Option value="shipment">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#shipment-tab"
+                role="tab"
+                aria-controls="shipment-tab"
+                aria-selected="false"
+              >
+                Shipment
+              </a>
+            </Option>
+            <Option value="delivered">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#delivered-tab"
+                role="tab"
+                aria-controls="delivered-tab"
+                aria-selected="false"
+              >
+                Delivered
+              </a>
+            </Option>
+            <Option value="shipment-assigned">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#shipment-assigned-tab"
+                role="tab"
+                aria-controls="shipment-assigned-tab"
+                aria-selected="false"
+              >
+                Shipment Assigned
+              </a>
+            </Option>
+          </Select>
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
               <a
@@ -694,7 +792,7 @@ class Orders extends Component {
           >
             <div className="table-cntr store">
               <Table
-                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
                 columns={[
                   {
                     title: "Invoice no.",
@@ -732,7 +830,6 @@ class Orders extends Component {
                                     {
                                       title: "Item Name",
                                       dataIndex: "ItemName",
-                                      width: 150,
                                     },
                                     {
                                       title: "Item Price",
@@ -772,6 +869,7 @@ class Orders extends Component {
                         </div>
                       );
                     },
+                    className: "order-desktop",
                   },
                   {
                     title: "Customer",
@@ -785,6 +883,7 @@ class Orders extends Component {
                         </div>
                       );
                     },
+                    className: "order-desktop",
                   },
                   {
                     title: "Items",
@@ -841,11 +940,12 @@ class Orders extends Component {
                     title: "Amount",
                     dataIndex: "Amount",
                     width: 150,
+                    className: "order-desktop",
                   },
                   {
                     title: "Status",
                     className:
-                      "camp-status-header camp-status-header-statusFilter order-status-header",
+                      "camp-status-header camp-status-header-statusFilter order-status-header order-desktop",
                     render: (row, item) => {
                       return (
                         <>
@@ -1006,7 +1106,7 @@ class Orders extends Component {
                         </>
                       );
                     },
-                    className: "white-space-init",
+                    className: "white-space-init order-desktop",
                   },
                   {
                     title: "Action",
@@ -1082,9 +1182,104 @@ class Orders extends Component {
                   defaultPageSize: 10,
                   showSizeChanger: true,
                 }}
+                expandedRowRender={(row) => {
+                  return (
+                    <div className="order-expanded-cntr">
+                      <div className="row">
+                        <div className="col-6">
+                          <p className="order-expanded-title">Customer</p>
+                          <p>{row.CustomerName},</p>
+                          <p className="order-small-font">
+                            {row.CustomerNumber}
+                          </p>
+                        </div>
+                        <div className="col-6">
+                          <p className="order-expanded-title">Status</p>
+                          <p className="order-clr-blue">{row.Status}</p>
+                          {row.selfPickUp && (
+                            <p className="order-clr-orange">(Self Pickup)</p>
+                          )}
+                        </div>
+                        <div className="col-6">
+                          <p className="order-expanded-title">Amount</p>
+                          <p>{row.Amount}</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="order-expanded-title">Date</p>
+                          <p>{row.Date}</p>
+                          <p className="order-small-font">{row.Time}</p>
+                        </div>
+                        <div className="col-12">
+                          <p className="order-expanded-title">
+                            Shipping Address
+                          </p>
+                          <p
+                            className={
+                              row.Address === "" ? "d-inline-block" : ""
+                            }
+                          >
+                            {row.Address === "" ? "—NIL—" : row.Address}
+                          </p>
+                          {row.Address === "" && (
+                            <Popconfirm
+                              title={
+                                <>
+                                  <div className="popover-input-cntr">
+                                    <div>
+                                      <p>Address</p>
+                                      <textarea placeholder="Enter Address"></textarea>
+                                    </div>
+                                  </div>
+                                  <div className="popover-radio-cntr">
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="store-deli"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="store-deli">
+                                        Store Delivery
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <input
+                                        type="radio"
+                                        id="self-picked"
+                                        name="address-options"
+                                      />
+                                      <label htmlFor="self-picked">
+                                        Self Picked up
+                                      </label>
+                                    </div>
+                                  </div>
+                                </>
+                              }
+                              overlayClassName="order-popover order-popover-butns order-popover-address"
+                              placement="bottomRight"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                              icon={false}
+                              okText="Save Address"
+                            >
+                              <p
+                                style={{ cursor: "pointer" }}
+                                className="order-small-font d-inline-block order-clr-blue ml-1"
+                              >
+                                (ADDRESS PENDING)
+                              </p>
+                            </Popconfirm>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.orderGridData}
+                expandIconColumnIndex={7}
+                expandIconAsCell={false}
               />
             </div>
           </div>
@@ -1217,7 +1412,9 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">Ready to Ship</span>
+                                <span className="ch1-text">
+                                  Shipment Assigned
+                                </span>
                               </label>
                             </li>
                             <li>
@@ -1232,7 +1429,9 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">Fresh</span>
+                                <span className="ch1-text">
+                                  Assign Shipment
+                                </span>
                               </label>
                             </li>
                             <li>
@@ -1248,7 +1447,7 @@ class Orders extends Component {
                               />
                               <label htmlFor="Inproress101">
                                 <span className="ch1-text">
-                                  Order Sync Pending
+                                  Shipment Delivered
                                 </span>
                               </label>
                             </li>
@@ -1264,7 +1463,9 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress102">
-                                <span className="ch1-text">Complete</span>
+                                <span className="ch1-text">
+                                  Shipment Pickedup
+                                </span>
                               </label>
                             </li>
                           </ul>
@@ -1295,16 +1496,92 @@ class Orders extends Component {
                     title: "Action",
                     render: (row, item) => {
                       return (
-                        <button
-                          className={
-                            item.Action === "Payment Done"
-                              ? "butn order-grid-butn order-grid-butn-green"
-                              : "butn order-grid-butn"
-                          }
-                        >
-                          {item.Action}
-                          <Popover content={<p>hi</p>}></Popover>
-                        </button>
+                        <div>
+                          {item.Action === "Pickup Pending" ? (
+                            <>
+                              <Popover
+                                overlayClassName="pickuppendingcustom"
+                                content={
+                                  <div className="pickuppending-table">
+                                    <table>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Pickup Date:</label>
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                            />
+                                          </td>
+                                          <td>
+                                            <label>Pickup Time:</label>
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                            />
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <label>Pickup Done</label>
+                                            <button
+                                              type="button"
+                                              className="popbtn"
+                                            >
+                                              Yes
+                                            </button>
+                                          </td>
+                                          <td>
+                                            <label
+                                              style={{ visibility: "hidden" }}
+                                            >
+                                              Pickup Done
+                                            </label>
+                                            <button
+                                              type="button"
+                                              className="popbtnno"
+                                            >
+                                              No
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                }
+                                trigger="click"
+                                overlayClassName="order-popover order-popover-butns"
+                                placement="bottomRight"
+                                // onVisibleChange={(visible) =>
+                                //   this.setState({ orderPopoverOverlay: visible })
+                                // }
+                              >
+                                <button
+                                  className={
+                                    item.Action === "Payment Done"
+                                      ? "butn order-grid-butn order-grid-butn-green"
+                                      : "butn order-grid-butn"
+                                  }
+                                >
+                                  {item.Action}
+                                  <Popover content={<p>hi</p>}></Popover>
+                                </button>
+                              </Popover>
+                            </>
+                          ) : (
+                            <button
+                              className={
+                                item.Action === "Payment Done"
+                                  ? "butn order-grid-butn order-grid-butn-green"
+                                  : "butn order-grid-butn"
+                              }
+                              type="button"
+                              onClick={this.handleShipmentModalOpen.bind(this)}
+                            >
+                              {item.Action}
+                            </button>
+                          )}
+                        </div>
                       );
                     },
                   },
@@ -1314,6 +1591,54 @@ class Orders extends Component {
                 onShowSizeChange={true}
                 dataSource={this.state.ShipmentGridData}
               />
+              <Modal
+                open={this.state.ShipmentMdlbtn}
+                onClose={this.handleShipmentModalClose.bind(this)}
+                center
+                modalId="article-popup"
+                overlayId="logout-ovrly"
+              >
+                <label className="heading">Article Mapping</label>
+                <img
+                  src={CancelImg}
+                  alt="cancelImg"
+                  className="cancalImg"
+                  onClick={this.handleShipmentModalClose.bind(this)}
+                />
+                <hr />
+                <div className="article-body">
+                  <span>
+                    Item id shown below mapped to this Order <b>334335</b> only.
+                    <br />
+                    Select any item id, you want to send for shipment.
+                  </span>
+                  <Table
+                    className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                    columns={[
+                      {
+                        title: "Item ID",
+                        dataIndex: "itemID",
+                      },
+                      {
+                        title: "Item Name",
+                        dataIndex: "itemName",
+                        width: 150,
+                      },
+                      {
+                        title: "Item Price",
+                        dataIndex: "itemPrice",
+                      },
+                      {
+                        title: "Quantity",
+                        dataIndex: "quantity",
+                      },
+                    ]}
+                    scroll={{ y: 240 }}
+                    pagination={false}
+                    // dataSource={item.orderDeliveredItems}
+                  />
+                </div>
+              </Modal>
             </div>
           </div>
           <div
@@ -1547,6 +1872,7 @@ class Orders extends Component {
                                 {item.ReferenceNo}
                               </button>
                             ) : (
+<<<<<<< HEAD
                                 <button className="btn-ref deliv-grid-butn">
                                   Enter POD
                                 </button>
@@ -1588,6 +1914,54 @@ class Orders extends Component {
                               >
                                 <button className="btn-ref deliv-grid-butn">
                                   "Staff Details"
+=======
+                              <button className="btn-ref deliv-grid-butn">
+                                <input
+                                  type="text"
+                                  className="enterpod"
+                                  placeholder="Enter POD"
+                                />
+                              </button>
+                            )
+                          ) : (
+                            <Popover
+                              content={
+                                <div className="staffdetailspopup">
+                                  <label>Store Name</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Store Name"
+                                  />
+                                  <label>Staff Name</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Staff Name"
+                                  />
+                                  <label>Mobile No.</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Mobile No."
+                                  />
+                                  <button type="button" className="popbtnno">
+                                    Cancel
+                                  </button>
+                                  <button type="button" className="popbtn">
+                                    Done
+                                  </button>
+                                </div>
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover-table order-popover"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <button className="btn-ref deliv-grid-butn">
+                                Staff Details
+>>>>>>> 349ce249228bf727dde5cb003b674980142a8d57
                               </button>
                               </Popover>
                             )}

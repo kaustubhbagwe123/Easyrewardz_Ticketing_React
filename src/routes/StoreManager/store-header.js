@@ -660,7 +660,7 @@ class Header extends Component {
 
   ////handle chat modal close
   handleChatModalClose() {
-    this.setState({ chatModal: false });
+    this.setState({ chatModal: false, searchCardData: [], searchItem: "" });
   }
   ////handle chat modal open
   handleChatModalOpen() {
@@ -2881,7 +2881,7 @@ class Header extends Component {
                             </a>
                           </li>
                         </ul>
-                        {/* <button
+                        <button
                           type="button"
                           className="btn-store-resolved chatactionbtn"
                           onClick={this.handleActionOpen.bind(this)}
@@ -2894,7 +2894,7 @@ class Header extends Component {
                             alt="down-icon"
                             className="down-white"
                           />
-                        </button> */}
+                        </button>
                       </div>
                       <div className="tab-content chattabtitle">
                         <div
@@ -3411,11 +3411,13 @@ class Header extends Component {
                                                           item.itemID
                                                         )}
                                                       >
-                                                        <div>
-                                                          <label className="chat-product-name">
-                                                            {item.productName}
-                                                          </label>
-                                                        </div>
+                                                        {item.productName ? (
+                                                          <div>
+                                                            <label className="chat-product-name">
+                                                              {item.productName}
+                                                            </label>
+                                                          </div>
+                                                        ) : null}
                                                         <div>
                                                           {item.brandName !==
                                                             "" &&
@@ -4387,7 +4389,7 @@ class Header extends Component {
                                                           src={addimg}
                                                         />
                                                       </span> */}
-                                                      {/* {item.imageURL !== "" ? (
+                                                      {item.imageURL !== "" ? (
                                                         <img
                                                           className="chat-product-img"
                                                           src={item.imageURL}
@@ -4396,7 +4398,7 @@ class Header extends Component {
                                                             item.productName
                                                           }
                                                         />
-                                                      ) : ( */}
+                                                      ) : (
                                                         <Dropzone
                                                           onDrop={this.handleInsertCardImageUpload.bind(
                                                             this,
@@ -4424,12 +4426,14 @@ class Header extends Component {
                                                             </div>
                                                           )}
                                                         </Dropzone>
-                                                      {/* )} */}
+                                                      )}
                                                     </div>
                                                     <div className="bkcprdt">
-                                                      <label className="chat-product-name">
-                                                        {item.productName}
-                                                      </label>
+                                                      {item.productName ? (
+                                                        <label className="chat-product-name">
+                                                          {item.productName}
+                                                        </label>
+                                                      ) : null}
                                                       {item.brandName !== "" &&
                                                       item.brandName !==
                                                         null ? (
