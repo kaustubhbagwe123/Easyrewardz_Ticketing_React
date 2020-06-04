@@ -327,8 +327,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass:
-        page === "MyTicket" ? "active single-menu" : "single-menu",
+      activeClass: page === "MyTicket" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -4375,7 +4374,7 @@ class Header extends Component {
                                                   ) : null}
                                                   <div className="mobile-card-cntr">
                                                     <div className="mobile-card-img">
-                                                      <img
+                                                      {/* <img
                                                         className="chat-product-img"
                                                         src={item.imageURL}
                                                         alt="Product Image"
@@ -4387,7 +4386,45 @@ class Header extends Component {
                                                           alt="Add Image"
                                                           src={addimg}
                                                         />
-                                                      </span>
+                                                      </span> */}
+                                                      {/* {item.imageURL !== "" ? (
+                                                        <img
+                                                          className="chat-product-img"
+                                                          src={item.imageURL}
+                                                          alt="Product Image"
+                                                          title={
+                                                            item.productName
+                                                          }
+                                                        />
+                                                      ) : ( */}
+                                                        <Dropzone
+                                                          onDrop={this.handleInsertCardImageUpload.bind(
+                                                            this,
+                                                            item.uniqueItemCode
+                                                          )}
+                                                        >
+                                                          {({
+                                                            getRootProps,
+                                                            getInputProps,
+                                                          }) => (
+                                                            <div
+                                                              {...getRootProps()}
+                                                            >
+                                                              <input
+                                                                {...getInputProps()}
+                                                                className="file-upload d-none"
+                                                              />
+                                                              <span className="addimg">
+                                                                <input
+                                                                  type="image"
+                                                                  alt="Add Image"
+                                                                  src={addimg}
+                                                                />
+                                                              </span>
+                                                            </div>
+                                                          )}
+                                                        </Dropzone>
+                                                      {/* )} */}
                                                     </div>
                                                     <div className="bkcprdt">
                                                       <label className="chat-product-name">

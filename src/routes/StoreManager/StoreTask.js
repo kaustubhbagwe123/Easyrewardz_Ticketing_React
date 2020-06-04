@@ -536,7 +536,7 @@ class StoreTask extends Component {
         debugger;
         var message = response.data.message;
         var data = response.data.responseData;
-        if (message == "Success" && data.length > 0) {
+        if (message === "Success" && data.length > 0) {
           self.setState({
             isloading: false,
             taskByTicketData: data,
@@ -821,7 +821,7 @@ class StoreTask extends Component {
       .then(function(response) {
         var message = response.data.message;
         var userData = response.data.responseData;
-        if (message == "Success" && userData) {
+        if (message === "Success" && userData) {
           self.setState({ userData });
         } else {
           self.setState({ userData });
@@ -2047,7 +2047,7 @@ class StoreTask extends Component {
   handleOnChange(e) {
     debugger;
     const { name, value } = e.target;
-    if (this.state.tabIndex == 1) {
+    if (this.state.tabIndex === 1) {
       this.state.raiseSearchData[name] = value;
       this.setState({ raiseSearchData: this.state.raiseSearchData });
       if (name === "functionID") {
@@ -2069,14 +2069,14 @@ class StoreTask extends Component {
         this.handleGetFuncationByDepartmentId();
       }
     }
-    if (this.state.tabIndex == 2) {
+    if (this.state.tabIndex === 2) {
       this.state.assignSearchData[name] = value;
       this.setState({ assignSearchData: this.state.assignSearchData });
       if (name === "Department") {
         this.handleGetFuncationByDepartmentId();
       }
     }
-    if (this.state.tabIndex == 3) {
+    if (this.state.tabIndex === 3) {
       this.state.ticketSearchData[name] = value;
       this.setState({ ticketSearchData: this.state.ticketSearchData });
       if (name === "functionID") {
@@ -2101,17 +2101,17 @@ class StoreTask extends Component {
   }
   SearchCreationOn = async (startDate) => {
     debugger;
-    if (this.state.tabIndex == 1) {
+    if (this.state.tabIndex === 1) {
       this.state.raiseSearchData["CreatedOnFrom"] = startDate[0];
       this.state.raiseSearchData["CreatedOnTo"] = startDate[1];
       this.setState({ raiseSearchData: this.state.raiseSearchData });
     }
-    if (this.state.tabIndex == 2) {
+    if (this.state.tabIndex === 2) {
       this.state.assignSearchData["CreatedOnFrom"] = startDate[0];
       this.state.assignSearchData["CreatedOnTo"] = startDate[1];
       this.setState({ assignSearchData: this.state.assignSearchData });
     }
-    if (this.state.tabIndex == 3) {
+    if (this.state.tabIndex === 3) {
       this.state.ticketSearchData["CreatedOnFrom"] = startDate[0];
       this.state.ticketSearchData["CreatedOnTo"] = startDate[1];
       this.setState({ ticketSearchData: this.state.ticketSearchData });
@@ -2484,7 +2484,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader ==="Status"
                                     ? faCaretUp
                                     : faCaretDown
@@ -2540,7 +2540,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.department:"Department"} {" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Department"
                                     ? faCaretUp
                                     : faCaretDown
@@ -2594,7 +2594,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Store Name"
                                     ? faCaretUp
                                     : faCaretDown
@@ -2650,7 +2650,7 @@ class StoreTask extends Component {
                                {TranslationContext!==undefined?TranslationContext.span.priority:"Priority"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Priority"
                                     ? faCaretUp
                                     : faCaretDown
@@ -2681,7 +2681,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Creation On"
                                     ? faCaretUp
                                     : faCaretDown
@@ -2774,7 +2774,7 @@ class StoreTask extends Component {
                               
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Assign to"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3041,7 +3041,7 @@ class StoreTask extends Component {
                               
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Status"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3097,7 +3097,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.department:"Department"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Department"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3151,7 +3151,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Created by"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3179,7 +3179,7 @@ class StoreTask extends Component {
                                {TranslationContext!==undefined?TranslationContext.span.priority:"Priority"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Priority"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3208,7 +3208,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.storename:"Store Name"}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Store Name"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3262,7 +3262,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Creation On"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3580,7 +3580,7 @@ class StoreTask extends Component {
                                   </select>
                                 </div>
 
-                                {this.state.ticketSearchData["taskwithClaim"] ==
+                                {this.state.ticketSearchData["taskwithClaim"] ===
                                 "Yes" ? (
                                   <div className="col-md-3">
                                     <input
@@ -3598,7 +3598,7 @@ class StoreTask extends Component {
                                 ) : null}
                                 {this.state.ticketSearchData[
                                   "taskwithTicket"
-                                ] == "Yes" ? (
+                                ] === "Yes" ? (
                                   <div className="col-md-3">
                                     <input
                                       className="no-bg"
@@ -3675,7 +3675,7 @@ class StoreTask extends Component {
                               
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Status"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3730,7 +3730,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.department:"Department"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Department"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3784,7 +3784,7 @@ class StoreTask extends Component {
                              {TranslationContext!==undefined?TranslationContext.span.createdby:"Created by"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Created by"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3813,7 +3813,7 @@ class StoreTask extends Component {
                               
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Store Name"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3867,7 +3867,7 @@ class StoreTask extends Component {
                               {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}{" "}
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Creation On"
                                     ? faCaretUp
                                     : faCaretDown
@@ -3957,7 +3957,7 @@ class StoreTask extends Component {
                               
                               <FontAwesomeIcon
                                 icon={
-                                  this.state.isATOZ == false &&
+                                  this.state.isATOZ === false &&
                                   this.state.sortHeader === "Assign to"
                                     ? faCaretUp
                                     : faCaretDown

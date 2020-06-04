@@ -14,7 +14,7 @@ class OrderSetting extends Component {
         this.state = {
            moduleConfigData: {},
            orderConfigData: {},
-           selTab: "Module"
+           selTab: "Module Configuration"
         }
     }
 
@@ -164,7 +164,7 @@ class OrderSetting extends Component {
                     </Link>
                     <span>&gt;</span>
                     <Link to={Demo.BLANK_LINK} className="active header-path">
-                        Order
+                        Order Settings
                     </Link>
                 </div>
                 <div className="Store-paddmodule storeModule">
@@ -176,7 +176,7 @@ class OrderSetting extends Component {
                               }
                               selected={this.state.selTab}
                             >
-                                <Tab label="Module">
+                                <Tab label="Module Configuration">
                                     <div className="store-mdl backNone">
                                         <div className="row">
                                             <div className="col-md-12">
@@ -271,7 +271,7 @@ class OrderSetting extends Component {
                                         </div>
                                     </div>
                                 </Tab>
-                                <Tab label="Order">
+                                <Tab label="Order Configuration">
                                     <div className="store-mdl backNone">
                                         <div className="row">
                                             <div className="col-md-12">
