@@ -1,6 +1,6 @@
 let config = {
   apiUrl: "https://localhost:44357/api",
-  isHomeShope:false, /// make false when give Homeshop build for client
+  isHomeShope:true, /// make false when give Homeshop build for client
 
   //// -----------------------[Ticketing bulkupload code]--------------------------------------------
   hierarchyTemplate: [
@@ -253,7 +253,7 @@ let config = {
   // apiUrl: 'https://ertktapistable.dcdev.brainvire.net/Api'
   // socketUrl: "http://ndjs.shopster.live/api/sendreply",      /// ------Client Socket--------
   // socketUrl: "wss://bvsocketserver.dcdev.brainvire.net",
-   socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
+   //socketUrl: "https://bvsocketservermts.dcdev.brainvire.net", /// -------Socket MultiTenant URL---------
   // socketUrl:"http://localhost:4000/"
 };
 
