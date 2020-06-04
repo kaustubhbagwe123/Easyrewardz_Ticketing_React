@@ -253,7 +253,10 @@ class Orders extends Component {
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
       filterShipmentStatus:false,
-      totalCount: 0
+      totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      statusFilterData: []
     };
   }
 
@@ -264,14 +267,15 @@ class Orders extends Component {
   handleGetOrderDeliveredData() {
     debugger;
     let self = this;
+    var pageNumber = this.state.currentPage;
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
       headers: authHeader(),
       data: {
         SearchText: "",
-        PageNo: 1,
-        PageSize: 10,
+        PageNo: pageNumber,
+        PageSize: this.state.postsPerPage,
         FilterStatus: ""
       },
     })
@@ -283,6 +287,50 @@ class Orders extends Component {
           self.setState({
             deliveredGridData: data.orderDelivereds,
             totalCount: data.totalCount
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  PaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      currentPage: numPage,
+    });
+    
+    this.handleGetOrderDeliveredData();
+  };
+
+  handlePageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+    });
+
+    this.handleGetOrderDeliveredData();
+  };
+
+  handleGetOrderStatusFilterData(pageID) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
+      headers: authHeader(),
+      params: {
+        pageID: pageID
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            statusFilterData: data
           });
         }
       })
@@ -335,7 +383,9 @@ class Orders extends Component {
                 Shipment
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item"
+            onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
+            >
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -1291,49 +1341,25 @@ class Orders extends Component {
                       return (
                         <div className="campaign-status-drpdwn">
                           <ul>
-                            <li>
-                              <input
-                                type="checkbox"
-                                id="Campall-status"
-                                className="ch1"
-                                // onChange={this.handleCheckCampAllStatus.bind(this)}
-                                // checked={this.state.CheckBoxAllStatus}
-                                name="CampallStatus"
-                              />
-                              <label htmlFor="Campall-status">
-                                <span className="ch1-text">Delivered</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input
-                                type="checkbox"
-                                id="New100"
-                                className="ch1"
-                                // onChange={this.handleCheckCampIndividualStatus.bind(
-                                //   this
-                                // )}
-                                name="CampallStatus"
-                                attrIds={100}
-                              />
-                              <label htmlFor="New100">
-                                <span className="ch1-text">RTO</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input
-                                type="checkbox"
-                                id="Inproress101"
-                                className="ch1"
-                                // onChange={this.handleCheckCampIndividualStatus.bind(
-                                //   this
-                                // )}
-                                name="CampallStatus"
-                                attrIds={101}
-                              />
-                              <label htmlFor="Inproress101">
-                                <span className="ch1-text">Self Picked</span>
-                              </label>
-                            </li>
+                          {this.state.statusFilterData !== null &&
+                            this.state.statusFilterData.map(
+                              (item, b) => (
+                                <li>
+                                  <input
+                                    type="checkbox"
+                                    id="Campall-status"
+                                    className="ch1"
+                                    // onChange={this.handleCheckCampAllStatus.bind(this)}
+                                    // checked={this.state.CheckBoxAllStatus}
+                                    name="CampallStatus"
+                                  />
+                                  <label htmlFor="Campall-status">
+                                    <span className="ch1-text">{item.statusName}</span>
+                                  </label>
+                                </li>
+
+                              )
+                            )}
                           </ul>
                           <div className="dv-status">
                             <button className="btn-apply-status">Apply</button>
@@ -1386,17 +1412,17 @@ class Orders extends Component {
                 dataSource={this.state.deliveredGridData}
               />
               <Pagination
-                    currentPage={this.state.childCurrentPage}
+                    currentPage={this.state.currentPage}
                     totalSize={this.state.totalCount}
                     // totalSize={row.customerCount}
-                    sizePerPage={this.state.ChildPostsPerPage}
+                    sizePerPage={this.state.postsPerPage}
                     changeCurrentPage={this.PaginationOnChange}
                     theme="bootstrap"
                   />
                   <div className="position-relative">
                     <div className="item-selection Camp-pagination">
                       <select
-                        value={this.state.ChildPostsPerPage}
+                        value={this.state.postsPerPage}
                         onChange={this.handlePageItemchange}
                       >
                         <option value={10}>10</option>
