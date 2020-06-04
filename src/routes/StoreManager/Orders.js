@@ -647,7 +647,7 @@ class Orders extends Component {
           >
             <div className="table-cntr store">
               <Table
-                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
                 columns={[
                   {
                     title: "Invoice no.",
@@ -685,7 +685,6 @@ class Orders extends Component {
                                     {
                                       title: "Item Name",
                                       dataIndex: "ItemName",
-                                      width: 150,
                                     },
                                     {
                                       title: "Item Price",

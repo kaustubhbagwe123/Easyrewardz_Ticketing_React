@@ -59,6 +59,9 @@
   white-space: nowrap;
   height: 60px;
 }
+.order-popover-table .antd-table-order .ant-table-tbody > tr > td {
+  white-space: initial;
+}
 .custom-antd-table.antd-table-campaign.antd-table-order
   .ant-table-thead
   > tr
@@ -507,6 +510,10 @@
 .antd-table-order .ant-table-row-expand-icon {
   display: none;
 }
+.order-popover-table .ant-table-thead > tr > th:nth-child(2),
+.order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
+  width: 150px !important;
+}
 /* order ends */
 
 /* chetan css ends */
@@ -634,7 +641,7 @@
   .antd-table-order .ant-table table {
     border-radius: 0;
   }
-  .antd-table-order .ant-table-tbody > tr > td:last-child {
+  .antd-table-order-mobile .ant-table-tbody > tr > td:last-child {
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
@@ -674,9 +681,57 @@
   .order-small-font {
     font-size: 12px;
   }
+  .order-popover-table .ant-popover-inner,
+  .order-popover-table .ant-popover-inner-content {
+    width: 100%;
+  }
+  .order-popover-invoice .ant-popover-content {
+    margin-left: 0;
+  }
+  .order-popover-table .ant-popover-content {
+    margin: 0 10px;
+  }
+  .order-popover-invoice.ant-popover-placement-bottomLeft
+    > .ant-popover-content
+    > .ant-popover-arrow,
+  .order-popover-invoice.ant-popover-placement-topLeft
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    left: 109px;
+  }
+  .shopping-num-invoice span {
+    margin-left: 0;
+  }
+  .order-popover-table .ant-table-thead > tr > th {
+    height: 50px !important;
+  }
+  .order-popover-table
+    .custom-antd-table.antd-table-order
+    .ant-table-tbody
+    > tr
+    > td {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
   /* order ends */
 
   /* chetan css ends */
+}
+
+@media all and (max-width: 400px) {
+  /* chetan css starts */
+
+  /* order starts */
+  .order-popover-table .ant-table-thead > tr > th:nth-child(2),
+  .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
+    width: auto !important;
+  }
+  .pay-done p {
+    min-width: 120px;
+  }
+  /* chetan css ends */
+
+  /* order ends */
 }
 
 @media all and (max-width: 359px) {
@@ -740,6 +795,14 @@
   .order-expanded-cntr {
     padding-right: 10px;
     padding-left: 10px;
+  }
+  .order-popover-invoice.ant-popover-placement-bottomLeft
+    > .ant-popover-content
+    > .ant-popover-arrow,
+  .order-popover-invoice.ant-popover-placement-topLeft
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    left: 96px;
   }
   /* order ends */
 
