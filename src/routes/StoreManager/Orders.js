@@ -10,6 +10,7 @@ import OrderShopingBlack from "./../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../assets/Images/order-bag.png";
 import CreditCard from "./../../assets/Images/credit-card.png";
 import NoPayment from "./../../assets/Images/no-payment.png";
+import CancelImg from "./../../assets/Images/cancel.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -22,6 +23,7 @@ import moment from "moment";
 import "./../../assets/css/orders.css";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import Modal from "react-responsive-modal";
 
 class Orders extends Component {
   constructor(props) {
@@ -254,6 +256,7 @@ class Orders extends Component {
       filterOrderStatus: false,
       filterShipmentStatus: false,
       totalCount: 0,
+      ShipmentMdlbtn: false,
     };
   }
 
@@ -289,6 +292,16 @@ class Orders extends Component {
       .catch((data) => {
         console.log(data);
       });
+  }
+  handleShipmentModalOpen() {
+    this.setState({
+      ShipmentMdlbtn: true,
+    });
+  }
+  handleShipmentModalClose() {
+    this.setState({
+      ShipmentMdlbtn: false,
+    });
   }
 
   changeOrderDropdown() {
@@ -1267,7 +1280,9 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">Ready to Ship</span>
+                                <span className="ch1-text">
+                                  Shipment Assigned
+                                </span>
                               </label>
                             </li>
                             <li>
@@ -1282,7 +1297,9 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">Fresh</span>
+                                <span className="ch1-text">
+                                  Assign Shipment
+                                </span>
                               </label>
                             </li>
                             <li>
@@ -1298,7 +1315,7 @@ class Orders extends Component {
                               />
                               <label htmlFor="Inproress101">
                                 <span className="ch1-text">
-                                  Order Sync Pending
+                                  Shipment Delivered
                                 </span>
                               </label>
                             </li>
@@ -1314,7 +1331,9 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress102">
-                                <span className="ch1-text">Complete</span>
+                                <span className="ch1-text">
+                                  Shipment Pickedup
+                                </span>
                               </label>
                             </li>
                           </ul>
@@ -1345,16 +1364,92 @@ class Orders extends Component {
                     title: "Action",
                     render: (row, item) => {
                       return (
-                        <button
-                          className={
-                            item.Action === "Payment Done"
-                              ? "butn order-grid-butn order-grid-butn-green"
-                              : "butn order-grid-butn"
-                          }
-                        >
-                          {item.Action}
-                          <Popover content={<p>hi</p>}></Popover>
-                        </button>
+                        <div>
+                          {item.Action === "Pickup Pending" ? (
+                            <>
+                              <Popover
+                                overlayClassName="pickuppendingcustom"
+                                content={
+                                  <div className="pickuppending-table">
+                                    <table>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <label>Pickup Date:</label>
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                            />
+                                          </td>
+                                          <td>
+                                            <label>Pickup Time:</label>
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                            />
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <label>Pickup Done</label>
+                                            <button
+                                              type="button"
+                                              className="popbtn"
+                                            >
+                                              Yes
+                                            </button>
+                                          </td>
+                                          <td>
+                                            <label
+                                              style={{ visibility: "hidden" }}
+                                            >
+                                              Pickup Done
+                                            </label>
+                                            <button
+                                              type="button"
+                                              className="popbtnno"
+                                            >
+                                              No
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                }
+                                trigger="click"
+                                overlayClassName="order-popover order-popover-butns"
+                                placement="bottomRight"
+                                // onVisibleChange={(visible) =>
+                                //   this.setState({ orderPopoverOverlay: visible })
+                                // }
+                              >
+                                <button
+                                  className={
+                                    item.Action === "Payment Done"
+                                      ? "butn order-grid-butn order-grid-butn-green"
+                                      : "butn order-grid-butn"
+                                  }
+                                >
+                                  {item.Action}
+                                  <Popover content={<p>hi</p>}></Popover>
+                                </button>
+                              </Popover>
+                            </>
+                          ) : (
+                            <button
+                              className={
+                                item.Action === "Payment Done"
+                                  ? "butn order-grid-butn order-grid-butn-green"
+                                  : "butn order-grid-butn"
+                              }
+                              type="button"
+                              onClick={this.handleShipmentModalOpen.bind(this)}
+                            >
+                              {item.Action}
+                            </button>
+                          )}
+                        </div>
                       );
                     },
                   },
@@ -1364,6 +1459,54 @@ class Orders extends Component {
                 onShowSizeChange={true}
                 dataSource={this.state.ShipmentGridData}
               />
+              <Modal
+                open={this.state.ShipmentMdlbtn}
+                onClose={this.handleShipmentModalClose.bind(this)}
+                center
+                modalId="article-popup"
+                overlayId="logout-ovrly"
+              >
+                <label className="heading">Article Mapping</label>
+                <img
+                  src={CancelImg}
+                  alt="cancelImg"
+                  className="cancalImg"
+                  onClick={this.handleShipmentModalClose.bind(this)}
+                />
+                <hr />
+                <div className="article-body">
+                  <span>
+                    Item id shown below mapped to this Order <b>334335</b> only.
+                    <br />
+                    Select any item id, you want to send for shipment.
+                  </span>
+                  <Table
+                    className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                    columns={[
+                      {
+                        title: "Item ID",
+                        dataIndex: "itemID",
+                      },
+                      {
+                        title: "Item Name",
+                        dataIndex: "itemName",
+                        width: 150,
+                      },
+                      {
+                        title: "Item Price",
+                        dataIndex: "itemPrice",
+                      },
+                      {
+                        title: "Quantity",
+                        dataIndex: "quantity",
+                      },
+                    ]}
+                    scroll={{ y: 240 }}
+                    pagination={false}
+                    // dataSource={item.orderDeliveredItems}
+                  />
+                </div>
+              </Modal>
             </div>
           </div>
           <div
@@ -1617,37 +1760,42 @@ class Orders extends Component {
                               </button>
                             ) : (
                               <button className="btn-ref deliv-grid-butn">
-                                Enter POD
+                                <input
+                                  type="text"
+                                  className="enterpod"
+                                  placeholder="Enter POD"
+                                />
                               </button>
                             )
                           ) : (
                             <Popover
                               content={
-                                <Table
-                                  className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                                  columns={[
-                                    {
-                                      title: "Item ID",
-                                      dataIndex: "ItemID",
-                                    },
-                                    {
-                                      title: "Item Name",
-                                      dataIndex: "ItemName",
-                                      width: 150,
-                                    },
-                                    {
-                                      title: "Item Price",
-                                      dataIndex: "ItemPrice",
-                                    },
-                                    {
-                                      title: "Quantity",
-                                      dataIndex: "Quantity",
-                                    },
-                                  ]}
-                                  scroll={{ y: 240 }}
-                                  pagination={false}
-                                  dataSource={this.state.itemPopupDate}
-                                />
+                                <div className="staffdetailspopup">
+                                  <label>Store Name</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Store Name"
+                                  />
+                                  <label>Staff Name</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Staff Name"
+                                  />
+                                  <label>Mobile No.</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Mobile No."
+                                  />
+                                  <button type="button" className="popbtnno">
+                                    Cancel
+                                  </button>
+                                  <button type="button" className="popbtn">
+                                    Done
+                                  </button>
+                                </div>
                               }
                               trigger="click"
                               overlayClassName="order-popover-table order-popover"
@@ -1656,7 +1804,7 @@ class Orders extends Component {
                               }
                             >
                               <button className="btn-ref deliv-grid-butn">
-                                "Staff Details"
+                                Staff Details
                               </button>
                             </Popover>
                           )}

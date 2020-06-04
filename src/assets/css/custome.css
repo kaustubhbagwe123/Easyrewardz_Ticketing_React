@@ -9850,6 +9850,96 @@ table tr th:last-child {
 .addimg input {
   width: 100%;
 }
+.pickuppending-table td {
+    padding: 10px 10px;
+}
+.pickuppending-table tr {
+  border-bottom: none;
+}
+.pickuppending-table label {
+  display: block;
+  margin-bottom: 10px;
+}
+.pickuppendingcustom .ant-popover-inner-content {
+  padding: 10px;
+  width: 200px;
+}
+.pickuppending-table .popbtn {
+  background-color: #2561a8;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+.pickuppending-table .popbtnno {
+  background-color: #fff;
+  color: #2561a8;
+    border: 1px solid #2561a8;
+    font-size: 14px;
+    padding: 8px 25px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.pickuppending-table .form-control {
+  margin: 0 !important;
+}
+#article-popup {
+  width: 800px;
+  border-radius: 10px;
+}
+#article-popup .heading {
+  margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+}
+.article-body span {
+  text-align: center;
+  display: block;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+.staffdetailspopup {
+  padding: 20px 30px;
+}
+.staffdetailspopup .popbtn {
+  background-color: #2561a8;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.staffdetailspopup .popbtnno {
+  background-color: #fff;
+  color: #2561a8;
+    border: 1px solid #2561a8;
+    font-size: 14px;
+    padding: 8px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.staffdetailspopup label {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+.staffdetailspopup .form-control {
+  border: none;
+  margin-bottom: 15px;
+}
+.enterpod {
+  border: none;
+  width: 125px;
+}
+.enterpod::placeholder {
+  color: #2561a8;
+  text-align: center;
+  font-weight: normal;
+}
 
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
