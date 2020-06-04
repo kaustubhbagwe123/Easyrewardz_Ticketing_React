@@ -20,6 +20,8 @@ import ClaimStatus from "../../routes/ClaimStatus";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import "./../../assets/css/orders.css";
+import Pagination from "react-pagination-js";
+import "react-pagination-js/dist/styles.css";
 
 class Orders extends Component {
   constructor(props) {
@@ -144,64 +146,149 @@ class Orders extends Component {
           Action: "Payment Pending",
         },
       ],
-      deliveredGridData: [
+      ShipmentGridData: [
         {
           InvoiceNo: "12017768",
+          InvoiceNoIcon: true,
+          Date: "25 April 2020",
+          Time: "11:45 AM",
           CustomerName: "Sandeep",
           CustomerNumber: "+91 9717419325",
           Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "Delivered",
+          DeliveryTyper: "Store Delivery",
+          Status: "Shipment Assigned",
+          Partner: "Blue Dart",
+          selfPickUp: true,
+          Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+          Action: "Shipment Created",
         },
         {
-          InvoiceNo: "12017768",
-          CustomerName: "Naman",
+          InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
           CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "RTO",
+          Items: "12",
+          DeliveryTyper: "Store Delivery",
+          Status: "Assigned Shipment ",
+          selfPickUp: false,
+          Partner: "Blue Dart",
+          Address: "",
+          Action: "Create Shipment",
         },
         {
-          InvoiceNo: "12017768",
-          CustomerName: "Sandeep",
+          InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
           CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          Status: "Self Picked",
+          Items: "12",
+          DeliveryTyper: "Store Delivery",
+          Status: "",
+          selfPickUp: false,
+          Partner: "Blue Dart",
+          Address: "",
+          Action: "Pickup Pending",
         },
       ],
+
+      // deliveredGridData: [
+      //   {
+      //     InvoiceNo: "12017768",
+      //     CustomerName: "Sandeep",
+      //     CustomerNumber: "+91 9717419325",
+      //     Items: "6",
+      //     Date: "25 April 2020",
+      //     Time: "11:45 AM",
+      //     Status: "Delivered",
+      //   },
+      //   {
+      //     InvoiceNo: "12017768",
+      //     CustomerName: "Naman",
+      //     CustomerNumber: "+91 9717419325",
+      //     Items: "6",
+      //     Date: "25 April 2020",
+      //     Time: "11:45 AM",
+      //     Status: "RTO",
+      //   },
+      //   {
+      //     InvoiceNo: "12017768",
+      //     CustomerName: "Sandeep",
+      //     CustomerNumber: "+91 9717419325",
+      //     Items: "6",
+      //     Date: "25 April 2020",
+      //     Time: "11:45 AM",
+      //     Status: "Self Picked",
+      //   },
+      // ],
+      deliveredGridData: [],
       shipmentAssignedGridData: [
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345"
+          ReferenceNo: "BD12345",
         },
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345"
+          ReferenceNo: "BD12345",
         },
         {
           AWSNo: "889667123",
           InvoiceNo: "981812345",
           CourierPartner: "Blue Dart",
-          ReferenceNo: ""
+          ReferenceNo: "",
         },
         {
           AWSNo: "NIL",
           InvoiceNo: "981812345",
           CourierPartner: "Store",
-          ReferenceNo: ""
-        }
+          ReferenceNo: "",
+        },
       ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
+      filterShipmentStatus: false,
+      totalCount: 0,
     };
+  }
+
+  componentDidMount() {
+    this.handleGetOrderDeliveredData();
+  }
+
+  handleGetOrderDeliveredData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
+      headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: 1,
+        PageSize: 10,
+        FilterStatus: "",
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            deliveredGridData: data.orderDelivereds,
+            totalCount: data.totalCount,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -392,8 +479,8 @@ class Orders extends Component {
                               <img src={OrderInfo} className="order-info" />
                             </Popover>
                           ) : (
-                              ""
-                            )}
+                            ""
+                          )}
                         </div>
                       );
                     },
@@ -422,15 +509,15 @@ class Orders extends Component {
                           {item.PickupDate === "" && item.PickupTime === "" ? (
                             <p className="order-clr-blue">—NIL—</p>
                           ) : (
-                              <>
-                                <p className="order-clr-blue">
-                                  {item.PickupDate},
+                            <>
+                              <p className="order-clr-blue">
+                                {item.PickupDate},
                               </p>
-                                <p className="order-clr-blue order-more-small-font">
-                                  {item.PickupTime}
-                                </p>
-                              </>
-                            )}
+                              <p className="order-clr-blue order-more-small-font">
+                                {item.PickupTime}
+                              </p>
+                            </>
+                          )}
                         </div>
                       );
                     },
@@ -862,7 +949,10 @@ class Orders extends Component {
                     },
                   },
                 ]}
-                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                pagination={{
+                  defaultPageSize: 10,
+                  showSizeChanger: true,
+                }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.orderGridData}
@@ -885,6 +975,19 @@ class Orders extends Component {
                       return (
                         <div className="d-flex align-items-center">
                           <p>{item.InvoiceNo}</p>
+                        </div>
+                      );
+                    },
+                  },
+                  {
+                    title: "Customer",
+                    render: (row, item) => {
+                      return (
+                        <div>
+                          <p>{item.CustomerName},</p>
+                          <p className="order-small-font">
+                            {item.CustomerNumber}
+                          </p>
                         </div>
                       );
                     },
@@ -941,19 +1044,6 @@ class Orders extends Component {
                     width: 100,
                   },
                   {
-                    title: "Customer",
-                    render: (row, item) => {
-                      return (
-                        <div>
-                          <p>{item.CustomerName},</p>
-                          <p className="order-small-font">
-                            {item.CustomerNumber}
-                          </p>
-                        </div>
-                      );
-                    },
-                  },
-                  {
                     title: "Shipping address",
                     render: (row, item) => {
                       return (
@@ -962,23 +1052,13 @@ class Orders extends Component {
                         </p>
                       );
                     },
+                    width: 250,
                     className: "white-space-init",
                   },
                   {
-                    title: "Delivery type",
-                    render: (row, item) => {
-                      return (
-                        <p
-                          className={
-                            item.Deliverytype === "Store Delivery"
-                              ? "order-clr-green"
-                              : "order-clr-blue"
-                          }
-                        >
-                          {item.Deliverytype}
-                        </p>
-                      );
-                    },
+                    title: "Delivery Type",
+                    dataIndex: "DeliveryTyper",
+                    width: 150,
                   },
                   {
                     title: "Status",
@@ -986,9 +1066,12 @@ class Orders extends Component {
                       "camp-status-header camp-status-header-statusFilter",
                     render: (row, item) => {
                       return (
-                        <div className="d-flex align-items-center">
-                          <p className="deliv-status">{item.Status}</p>
-                        </div>
+                        <>
+                          <p className="order-clr-blue">{item.Status}</p>
+                          {item.selfPickUp && (
+                            <p className="order-clr-orange">(Self Pickup)</p>
+                          )}
+                        </>
                       );
                     },
                     filterDropdown: (data, row) => {
@@ -1005,7 +1088,7 @@ class Orders extends Component {
                                 name="CampallStatus"
                               />
                               <label htmlFor="Campall-status">
-                                <span className="ch1-text">Delivered</span>
+                                <span className="ch1-text">Ready to Ship</span>
                               </label>
                             </li>
                             <li>
@@ -1020,7 +1103,7 @@ class Orders extends Component {
                                 attrIds={100}
                               />
                               <label htmlFor="New100">
-                                <span className="ch1-text">RTO</span>
+                                <span className="ch1-text">Fresh</span>
                               </label>
                             </li>
                             <li>
@@ -1035,7 +1118,24 @@ class Orders extends Component {
                                 attrIds={101}
                               />
                               <label htmlFor="Inproress101">
-                                <span className="ch1-text">Self Picked</span>
+                                <span className="ch1-text">
+                                  Order Sync Pending
+                                </span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Inproress102"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={101}
+                              />
+                              <label htmlFor="Inproress102">
+                                <span className="ch1-text">Complete</span>
                               </label>
                             </li>
                           </ul>
@@ -1048,16 +1148,14 @@ class Orders extends Component {
                         </div>
                       );
                     },
-                    filterDropdownVisible: this.state
-                      .filterOrderDeliveredStatus,
+                    filterDropdownVisible: this.state.filterShipmentStatus,
                     onFilterDropdownVisibleChange: (visible) =>
-                      this.setState({ filterOrderDeliveredStatus: visible }),
+                      this.setState({ filterShipmentStatus: visible }),
                     filterIcon: (filtered) => (
                       <span
                         style={{ color: filtered ? "#1890ff" : undefined }}
                       ></span>
                     ),
-                    width: 200,
                   },
                   {
                     title: "Partner",
@@ -1076,6 +1174,7 @@ class Orders extends Component {
                           }
                         >
                           {item.Action}
+                          <Popover content={<p>hi</p>}></Popover>
                         </button>
                       );
                     },
@@ -1084,7 +1183,7 @@ class Orders extends Component {
                 pagination={{ defaultPageSize: 10, showSizeChanger: true }}
                 showSizeChanger={true}
                 onShowSizeChange={true}
-                dataSource={this.state.orderGridData}
+                dataSource={this.state.ShipmentGridData}
               />
             </div>
           </div>
@@ -1094,22 +1193,22 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            <div className="table-cntr store">
+            <div className="table-cntr store dv-delivered">
               <Table
                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                 columns={[
                   {
                     title: "Invoice no.",
-                    dataIndex: "InvoiceNo",
+                    dataIndex: "invoiceNo",
                   },
                   {
                     title: "Customer",
                     render: (row, item) => {
                       return (
                         <div>
-                          <p>{item.CustomerName},</p>
+                          <p>{item.customerName},</p>
                           <p className="order-small-font">
-                            {item.CustomerNumber}
+                            {item.mobileNumber}
                           </p>
                         </div>
                       );
@@ -1120,7 +1219,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p>{item.Items}</p>
+                          <p>{item.orderDeliveredItems.length}</p>
                           <Popover
                             content={
                               <Table
@@ -1128,25 +1227,25 @@ class Orders extends Component {
                                 columns={[
                                   {
                                     title: "Item ID",
-                                    dataIndex: "ItemID",
+                                    dataIndex: "itemID",
                                   },
                                   {
                                     title: "Item Name",
-                                    dataIndex: "ItemName",
+                                    dataIndex: "itemName",
                                     width: 150,
                                   },
                                   {
                                     title: "Item Price",
-                                    dataIndex: "ItemPrice",
+                                    dataIndex: "itemPrice",
                                   },
                                   {
                                     title: "Quantity",
-                                    dataIndex: "Quantity",
+                                    dataIndex: "quantity",
                                   },
                                 ]}
                                 scroll={{ y: 240 }}
                                 pagination={false}
-                                dataSource={this.state.itemPopupDate}
+                                dataSource={item.orderDeliveredItems}
                               />
                             }
                             trigger="click"
@@ -1166,8 +1265,8 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div>
-                          <p>{item.Date}</p>
-                          <p className="order-small-font">{item.Time}</p>
+                          <p>{item.date}</p>
+                          <p className="order-small-font">{item.time}</p>
                         </div>
                       );
                     },
@@ -1179,7 +1278,7 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
-                          <p className="deliv-status">{item.Status}</p>
+                          <p className="deliv-status">{item.statusName}</p>
                         </div>
                       );
                     },
@@ -1257,29 +1356,51 @@ class Orders extends Component {
                         <div className="d-flex">
                           <button
                             className={
-                              item.Status === "Delivered"
+                              item.actionTypeName === "Delivered"
                                 ? "delibutn deliv-grid-butn"
-                                : item.Status === "RTO"
-                                  ? "markasbutn deliv-grid-butn"
-                                  : "pickedbutn deliv-grid-butn"
+                                : item.actionTypeName === "Mark As Delivered"
+                                ? "markasbutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
                             }
                           >
-                            {item.Status === "Delivered"
+                            {item.actionTypeName}
+                            {/* {item.statusName === "Delivered"
                               ? "Delivered"
-                              : item.Status === "RTO"
+                              : item.statusName === "RTO"
                                 ? "Mark As Delivered"
-                                : "Picked"}
+                                : "Picked"} */}
                           </button>
                         </div>
                       );
                     },
                   },
                 ]}
-                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                pagination={false}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.deliveredGridData}
               />
+              <Pagination
+                currentPage={this.state.childCurrentPage}
+                totalSize={this.state.totalCount}
+                // totalSize={row.customerCount}
+                sizePerPage={this.state.ChildPostsPerPage}
+                changeCurrentPage={this.PaginationOnChange}
+                theme="bootstrap"
+              />
+              <div className="position-relative">
+                <div className="item-selection Camp-pagination">
+                  <select
+                    value={this.state.ChildPostsPerPage}
+                    onChange={this.handlePageItemchange}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -1310,55 +1431,56 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-
-                          {item.AWSNo !== "NIL" ?
-                            (item.ReferenceNo !== ""
-                              ? (<button className="btn-ref deliv-grid-butn">
+                          {item.AWSNo !== "NIL" ? (
+                            item.ReferenceNo !== "" ? (
+                              <button className="btn-ref deliv-grid-butn">
                                 {item.ReferenceNo}
-                              </button>)
-                              : (<button className="btn-ref deliv-grid-butn">
-                              Enter POD
-                            </button>)) : (
-                              <Popover
-                                content={
-                                  <Table
-                                    className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                                    columns={[
-                                      {
-                                        title: "Item ID",
-                                        dataIndex: "ItemID",
-                                      },
-                                      {
-                                        title: "Item Name",
-                                        dataIndex: "ItemName",
-                                        width: 150,
-                                      },
-                                      {
-                                        title: "Item Price",
-                                        dataIndex: "ItemPrice",
-                                      },
-                                      {
-                                        title: "Quantity",
-                                        dataIndex: "Quantity",
-                                      },
-                                    ]}
-                                    scroll={{ y: 240 }}
-                                    pagination={false}
-                                    dataSource={this.state.itemPopupDate}
-                                  />
-                                }
-                                trigger="click"
-                                overlayClassName="order-popover-table order-popover"
-                                onVisibleChange={(visible) =>
-                                  this.setState({ orderPopoverOverlay: visible })
-                                }
-                              >
-                                <button className="btn-ref deliv-grid-butn">
-                                  "Staff Details"
-                                </button>
-                              </Popover>
-                            )}
-
+                              </button>
+                            ) : (
+                              <button className="btn-ref deliv-grid-butn">
+                                Enter POD
+                              </button>
+                            )
+                          ) : (
+                            <Popover
+                              content={
+                                <Table
+                                  className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                  columns={[
+                                    {
+                                      title: "Item ID",
+                                      dataIndex: "ItemID",
+                                    },
+                                    {
+                                      title: "Item Name",
+                                      dataIndex: "ItemName",
+                                      width: 150,
+                                    },
+                                    {
+                                      title: "Item Price",
+                                      dataIndex: "ItemPrice",
+                                    },
+                                    {
+                                      title: "Quantity",
+                                      dataIndex: "Quantity",
+                                    },
+                                  ]}
+                                  scroll={{ y: 240 }}
+                                  pagination={false}
+                                  dataSource={this.state.itemPopupDate}
+                                />
+                              }
+                              trigger="click"
+                              overlayClassName="order-popover-table order-popover"
+                              onVisibleChange={(visible) =>
+                                this.setState({ orderPopoverOverlay: visible })
+                              }
+                            >
+                              <button className="btn-ref deliv-grid-butn">
+                                "Staff Details"
+                              </button>
+                            </Popover>
+                          )}
                         </div>
                       );
                     },

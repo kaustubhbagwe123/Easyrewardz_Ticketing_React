@@ -3474,7 +3474,6 @@
 .progress-sect {
   display: inherit;
 }
-
 .depatselect .ant-select-search--inline .ant-select-search__field {
   padding: 0;
   margin: 0;
@@ -3528,4 +3527,18 @@
 .chat-storemng {
   color: #eb4d4b;
   font-weight: bold !important;
+}
+
+.chat-tabslst .tab-content{
+  padding: 0 !important;
+}
+
+.chattab-card{
+  width: 100%;
+    padding: 15px 15px;
+    margin-left: 0;
+    margin-right: 0;
+}
+.chatsettingload{
+  margin-left: 10px !important;
 }
