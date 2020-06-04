@@ -9,8 +9,8 @@ import "antd/dist/antd.css";
 import { NotificationManager } from "react-notifications";
 import Modal from "react-bootstrap/Modal";
 import CancelImg from "./../../../assets/Images/cancel.png";
-import * as translationHI from './../../../translations/hindi'
-import * as translationMA from './../../../translations/marathi'
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 
 // import InfoIcon from "../../assets/Images/info-icon.png";
 class CardAssets extends Component {
@@ -22,20 +22,18 @@ class CardAssets extends Component {
       loading: false,
       imageModal: false,
       imagePath: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
   componentDidMount() {
     this.handleGetCardImageUploadlog(1);
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   ////handle get card image upload log
   handleGetCardImageUploadlog(listFor) {
@@ -100,16 +98,17 @@ class CardAssets extends Component {
             NotificationManager.success("Image rejected successfully.");
           }
         }
+        self.handleGetCardImageUploadlog(1);
       })
       .catch((response) => {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
-////handle image modal pop up close
+  ////handle image modal pop up close
   handleImageCloseModal = () => {
-    this.setState({ imageModal: false ,imagePath:""});
+    this.setState({ imageModal: false, imagePath: "" });
   };
-////handle image modal pop up open
+  ////handle image modal pop up open
   handleImageOpenModal(imagePath) {
     this.setState({ imageModal: true, imagePath });
   }
@@ -134,8 +133,9 @@ class CardAssets extends Component {
                   onClick={this.handleGetCardImageUploadlog.bind(this, 1)}
                   style={{ outline: "none" }}
                 >
-                  
-                  {TranslationContext!==undefined?TranslationContext.a.assetapproval:"Asset Approval"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.assetapproval
+                    : "Asset Approval"}
                 </a>
               </li>
               <li className="nav-item">
@@ -149,8 +149,9 @@ class CardAssets extends Component {
                   onClick={this.handleGetCardImageUploadlog.bind(this, 2)}
                   style={{ outline: "none" }}
                 >
-                  {TranslationContext!==undefined?TranslationContext.a.uploadlogs:"Upload Logs"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.uploadlogs
+                    : "Upload Logs"}
                 </a>
               </li>
             </ul>
@@ -169,7 +170,10 @@ class CardAssets extends Component {
                   className="components-table-demo-nested antd-table-campaign custom-antd-table"
                   columns={[
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.image:"Image",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.image
+                          : "Image",
                       dataIndex: "imageURL",
                       render: (row, rowdata) => {
                         return (
@@ -188,11 +192,28 @@ class CardAssets extends Component {
                       },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.imteidskuid:"ImteID/SKU ID",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.imteidskuid
+                          : "ItemID/SKU ID",
                       dataIndex: "itemID",
+                      render: (row, rowdata) => {
+                        return (
+                          <>
+                            {
+                              <label title="ItemID/SKU ID">
+                                {rowdata.itemID}
+                              </label>
+                            }
+                          </>
+                        );
+                      },
                     },
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.uploadedby:"Uploaded By",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.uploadedby
+                          : "Uploaded By",
                       dataIndex: "createdByName",
                       render: (row, rowdata) => {
                         return (
@@ -219,8 +240,10 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.uploadeddata:"Uploaded Data"}
-                                       
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .uploadeddata
+                                          : "Uploaded Data"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.createdDate}
@@ -239,8 +262,9 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
-                                       
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.storecode
+                                          : "Store Code"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeCode}
@@ -259,8 +283,9 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                        {TranslationContext!==undefined?TranslationContext.label.storename:"Store Name"}
-                                       
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.storename
+                                          : "Store Name"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeName}
@@ -273,8 +298,10 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.storeaddress:"Store Address"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .storeaddress
+                                          : "Store Address"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeAddress}
@@ -296,7 +323,10 @@ class CardAssets extends Component {
                       },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.actions
+                          : "Action",
                       render: (row, rowdata) => {
                         return (
                           <>
@@ -310,8 +340,9 @@ class CardAssets extends Component {
                                   true
                                 )}
                               >
-                                 {TranslationContext!==undefined?TranslationContext.button.addtolibrary:"Add to Library"}
-                               
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.addtolibrary
+                                  : "Add to Library"}
                               </button>
                               <button
                                 className="btnred"
@@ -322,8 +353,9 @@ class CardAssets extends Component {
                                   false
                                 )}
                               >
-                                  {TranslationContext!==undefined?TranslationContext.button.reject:"Reject"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.reject
+                                  : "Reject"}
                               </button>
                             </div>
                           </>
@@ -349,7 +381,10 @@ class CardAssets extends Component {
                   className="components-table-demo-nested antd-table-campaign custom-antd-table"
                   columns={[
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.image:"Image",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.image
+                          : "Image",
                       dataIndex: "imageURL",
                       render: (row, rowdata) => {
                         return (
@@ -368,11 +403,28 @@ class CardAssets extends Component {
                       },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.imteidskuid:"ImteID/SKU ID",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.imteidskuid
+                          : "ItemID/SKU ID",
                       dataIndex: "itemID",
+                      render: (row, rowdata) => {
+                        return (
+                          <>
+                            {
+                              <label title="ItemID/SKU ID">
+                                {rowdata.itemID}
+                              </label>
+                            }
+                          </>
+                        );
+                      },
                     },
                     {
-                      title:TranslationContext!==undefined?TranslationContext.title.uploadedby:"Uploaded By",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.uploadedby
+                          : "Uploaded By",
                       dataIndex: "createdByName",
                       render: (row, rowdata) => {
                         return (
@@ -399,8 +451,10 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                         {TranslationContext!==undefined?TranslationContext.label.uploadeddata:"Uploaded Data"}
-                                       
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .uploadeddata
+                                          : "Uploaded Data"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.createdDate}
@@ -419,8 +473,9 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.storecode
+                                          : "Store Code"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeCode}
@@ -439,8 +494,9 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.storename:"Store Name"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.storename
+                                          : "Store Name"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeName}
@@ -453,8 +509,10 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.storeaddress:"Store Address"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .storeaddress
+                                          : "Store Address"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeAddress}
@@ -477,7 +535,10 @@ class CardAssets extends Component {
                     },
 
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.approvedby:"Approved By",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.approvedby
+                          : "Approved By",
                       dataIndex: "modifyByName",
                       render: (row, rowdata) => {
                         return (
@@ -504,8 +565,10 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                           {TranslationContext!==undefined?TranslationContext.label.rejecteddata:"Rejected Data"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .rejecteddata
+                                          : "Rejected Data"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.modifyDate}
@@ -524,8 +587,9 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                        {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.storecode
+                                          : "Store Code"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeCode}
@@ -544,8 +608,9 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                          {TranslationContext!==undefined?TranslationContext.label.storename:"Store Name"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.storename
+                                          : "Store Name"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeName}
@@ -558,8 +623,10 @@ class CardAssets extends Component {
                                           fontWeight: "bold",
                                         }}
                                       >
-                                        {TranslationContext!==undefined?TranslationContext.label.storeaddress:"Store Address"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .storeaddress
+                                          : "Store Address"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.storeAddress}
@@ -581,7 +648,10 @@ class CardAssets extends Component {
                       },
                     },
                     {
-                      title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                      title:
+                        TranslationContext !== undefined
+                          ? TranslationContext.title.status
+                          : "Status",
                       render: (row, rowdata) => {
                         return (
                           <>
@@ -624,7 +694,13 @@ class CardAssets extends Component {
               style={{ margin: "10px" }}
               onClick={this.handleImageCloseModal.bind(this)}
             />
-            <img src={this.state.imagePath} alt={"product-img"} />
+          </div>
+          <div style={{ padding: "20px", width: "100%" }}>
+            <img
+              src={this.state.imagePath}
+              alt={"product-img"}
+              style={{ width: "100%" }}
+            />
           </div>
         </Modal>
       </React.Fragment>

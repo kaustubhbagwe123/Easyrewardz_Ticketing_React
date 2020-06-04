@@ -77,6 +77,7 @@ import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
 import Dropzone from "react-dropzone";
+import { NotificationManager } from "react-notifications";
 
 const { Option } = Select;
 
@@ -326,8 +327,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass:
-        page === "MyTicket" ? "active single-menu" : "single-menu",
+      activeClass: page === "MyTicket" ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -660,7 +660,7 @@ class Header extends Component {
 
   ////handle chat modal close
   handleChatModalClose() {
-    this.setState({ chatModal: false });
+    this.setState({ chatModal: false, searchCardData: [], searchItem: "" });
   }
   ////handle chat modal open
   handleChatModalOpen() {
@@ -753,10 +753,10 @@ class Header extends Component {
       });
   }
   ////handle Make As Read On Going Chat
-  handleMakeAsReadOnGoingChat(id) {
+  async handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
-    axios({
+    await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/MarkAsReadOnGoingChat",
       headers: authHeader(),
@@ -770,7 +770,6 @@ class Header extends Component {
         if (message === "Success" && responseData) {
           self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
-          self.handleGetChatNotificationCount();
         } else {
         }
       })
@@ -1778,19 +1777,23 @@ class Header extends Component {
   handleInsertCardImageUpload(itemcode, e) {
     debugger;
     var formData = new FormData();
-    formData.append("ItemID", itemcode);
-    formData.append("ImageUrl ", e);
+    // formData.append("ItemID", itemcode);
+    // formData.append("ImageUrl ", e);
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/InsertCardImageUpload",
       headers: authHeader(),
-      data: formData,
+      // data: formData,
+      params: { ItemID: itemcode, ImageUrl: "" },
     })
       .then(function(response) {
         debugger;
         var messgae = response.data.message;
         var responseData = response.data.responseData;
         if (messgae === "Success") {
+          NotificationManager.success("Add image successfully.");
+        } else {
+          NotificationManager.success("Not add image successfully.");
         }
       })
       .catch((response) => {
@@ -2878,7 +2881,7 @@ class Header extends Component {
                             </a>
                           </li>
                         </ul>
-                        {/* <button
+                        <button
                           type="button"
                           className="btn-store-resolved chatactionbtn"
                           onClick={this.handleActionOpen.bind(this)}
@@ -2891,7 +2894,7 @@ class Header extends Component {
                             alt="down-icon"
                             className="down-white"
                           />
-                        </button> */}
+                        </button>
                       </div>
                       <div className="tab-content chattabtitle">
                         <div
@@ -3408,11 +3411,13 @@ class Header extends Component {
                                                           item.itemID
                                                         )}
                                                       >
-                                                        <div>
-                                                          <label className="chat-product-name">
-                                                            {item.productName}
-                                                          </label>
-                                                        </div>
+                                                        {item.productName ? (
+                                                          <div>
+                                                            <label className="chat-product-name">
+                                                              {item.productName}
+                                                            </label>
+                                                          </div>
+                                                        ) : null}
                                                         <div>
                                                           {item.brandName !==
                                                             "" &&
@@ -4371,7 +4376,7 @@ class Header extends Component {
                                                   ) : null}
                                                   <div className="mobile-card-cntr">
                                                     <div className="mobile-card-img">
-                                                      <img
+                                                      {/* <img
                                                         className="chat-product-img"
                                                         src={item.imageURL}
                                                         alt="Product Image"
@@ -4383,12 +4388,52 @@ class Header extends Component {
                                                           alt="Add Image"
                                                           src={addimg}
                                                         />
-                                                      </span>
+                                                      </span> */}
+                                                      {item.imageURL !== "" ? (
+                                                        <img
+                                                          className="chat-product-img"
+                                                          src={item.imageURL}
+                                                          alt="Product Image"
+                                                          title={
+                                                            item.productName
+                                                          }
+                                                        />
+                                                      ) : (
+                                                        <Dropzone
+                                                          onDrop={this.handleInsertCardImageUpload.bind(
+                                                            this,
+                                                            item.uniqueItemCode
+                                                          )}
+                                                        >
+                                                          {({
+                                                            getRootProps,
+                                                            getInputProps,
+                                                          }) => (
+                                                            <div
+                                                              {...getRootProps()}
+                                                            >
+                                                              <input
+                                                                {...getInputProps()}
+                                                                className="file-upload d-none"
+                                                              />
+                                                              <span className="addimg">
+                                                                <input
+                                                                  type="image"
+                                                                  alt="Add Image"
+                                                                  src={addimg}
+                                                                />
+                                                              </span>
+                                                            </div>
+                                                          )}
+                                                        </Dropzone>
+                                                      )}
                                                     </div>
                                                     <div className="bkcprdt">
-                                                      <label className="chat-product-name">
-                                                        {item.productName}
-                                                      </label>
+                                                      {item.productName ? (
+                                                        <label className="chat-product-name">
+                                                          {item.productName}
+                                                        </label>
+                                                      ) : null}
                                                       {item.brandName !== "" &&
                                                       item.brandName !==
                                                         null ? (
