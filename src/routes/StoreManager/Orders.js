@@ -252,8 +252,8 @@ class Orders extends Component {
       ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
-      filterShipmentStatus:false,
-      totalCount: 0
+      filterShipmentStatus: false,
+      totalCount: 0,
     };
   }
 
@@ -272,17 +272,17 @@ class Orders extends Component {
         SearchText: "",
         PageNo: 1,
         PageSize: 10,
-        FilterStatus: ""
+        FilterStatus: "",
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
             deliveredGridData: data.orderDelivereds,
-            totalCount: data.totalCount
+            totalCount: data.totalCount,
           });
         }
       })
@@ -716,7 +716,7 @@ class Orders extends Component {
                   {
                     title: "Status",
                     className:
-                      "camp-status-header camp-status-header-statusFilter",
+                      "camp-status-header camp-status-header-statusFilter order-status-header",
                     render: (row, item) => {
                       return (
                         <>
@@ -966,7 +966,7 @@ class Orders extends Component {
             aria-labelledby="shipment-tab"
           >
             <div className="table-cntr store">
-               <Table
+              <Table
                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                 columns={[
                   {
@@ -1174,12 +1174,7 @@ class Orders extends Component {
                           }
                         >
                           {item.Action}
-                          <Popover
-                            content={
-                              <p>hi</p>
-                            }
-                          >
-                          </Popover>
+                          <Popover content={<p>hi</p>}></Popover>
                         </button>
                       );
                     },
@@ -1364,8 +1359,8 @@ class Orders extends Component {
                               item.actionTypeName === "Delivered"
                                 ? "delibutn deliv-grid-butn"
                                 : item.actionTypeName === "Mark As Delivered"
-                                  ? "markasbutn deliv-grid-butn"
-                                  : "pickedbutn deliv-grid-butn"
+                                ? "markasbutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
                             }
                           >
                             {item.actionTypeName}
@@ -1386,26 +1381,26 @@ class Orders extends Component {
                 dataSource={this.state.deliveredGridData}
               />
               <Pagination
-                    currentPage={this.state.childCurrentPage}
-                    totalSize={this.state.totalCount}
-                    // totalSize={row.customerCount}
-                    sizePerPage={this.state.ChildPostsPerPage}
-                    changeCurrentPage={this.PaginationOnChange}
-                    theme="bootstrap"
-                  />
-                  <div className="position-relative">
-                    <div className="item-selection Camp-pagination">
-                      <select
-                        value={this.state.ChildPostsPerPage}
-                        onChange={this.handlePageItemchange}
-                      >
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={30}>30</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
+                currentPage={this.state.childCurrentPage}
+                totalSize={this.state.totalCount}
+                // totalSize={row.customerCount}
+                sizePerPage={this.state.ChildPostsPerPage}
+                changeCurrentPage={this.PaginationOnChange}
+                theme="bootstrap"
+              />
+              <div className="position-relative">
+                <div className="item-selection Camp-pagination">
+                  <select
+                    value={this.state.ChildPostsPerPage}
+                    onChange={this.handlePageItemchange}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
+              </div>
             </div>
           </div>
           <div
