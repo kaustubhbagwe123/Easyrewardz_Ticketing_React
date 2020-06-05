@@ -8,6 +8,9 @@ import OrderInfo from "./../../../assets/Images/order-info.png";
 import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../../assets/Images/order-bag.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
+import CancelImg from "./../../../assets/Images/cancel.png";
+import StepZilla from "react-stepzilla";
+import CardTick from "./../../../assets/Images/card-tick.png";
 import OrderDel from "./../../../assets/Images/order-del.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
@@ -17,32 +20,51 @@ class ShipmentTab extends Component {
     super(props);
 
     this.state = {
-      shoppingBagGridData: [
+      ShipmentGridData: [
         {
-          ShoppingBagNo: "12017768",
+          InvoiceNo: "12017768",
+          InvoiceNoIcon: true,
           Date: "25 April 2020",
           Time: "11:45 AM",
           CustomerName: "Sandeep",
           CustomerNumber: "+91 9717419325",
           Items: "6",
-          Status: "New",
-          Deliverytype: "Store Delivery",
-          PickupDate: "",
-          PickupTime: "",
+          DeliveryTyper: "Store Delivery",
+          Status: "Shipment Assigned",
+          Partner: "Blue Dart",
+          selfPickUp: true,
           Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
+          Action: "Shipment Created",
         },
         {
-          ShoppingBagNo: "12017890",
+          InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
           Date: "24 May 2020",
           Time: "12:05 AM",
           CustomerName: "Rahul",
           CustomerNumber: "+91 9717419325",
           Items: "12",
-          Status: "Cancelled",
-          Deliverytype: "Self Picked Up",
-          PickupDate: "12 May",
-          PickupTime: "11:30 am",
+          DeliveryTyper: "Store Delivery",
+          Status: "Assigned Shipment ",
+          selfPickUp: false,
+          Partner: "Blue Dart",
           Address: "",
+          Action: "Create Shipment",
+        },
+        {
+          InvoiceNo: "12017890",
+          InvoiceNoIcon: false,
+          Date: "24 May 2020",
+          Time: "12:05 AM",
+          CustomerName: "Rahul",
+          CustomerNumber: "+91 9717419325",
+          Items: "12",
+          DeliveryTyper: "Store Delivery",
+          Status: "",
+          selfPickUp: false,
+          Partner: "Blue Dart",
+          Address: "",
+          Action: "Pickup Pending",
         },
       ],
       itemPopupDate: [
@@ -103,10 +125,21 @@ class ShipmentTab extends Component {
           AWBNo: "44566778",
         },
       ],
-      filterShoppingStatus: false,
+      filterShipmentStatus: false,
       orderPopoverOverlay: false,
-      filterShoppingDeliveryType: false,
+      ShipmentMdlbtn: false,
     };
+  }
+
+  handleShipmentModalOpen() {
+    this.setState({
+      ShipmentMdlbtn: true,
+    });
+  }
+  handleShipmentModalClose() {
+    this.setState({
+      ShipmentMdlbtn: false,
+    });
   }
 
   render() {
@@ -120,16 +153,11 @@ class ShipmentTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: "Shopping Bag No.",
-                dataIndex: "ShoppingBagNo",
-              },
-              {
-                title: "Date",
+                title: "Invoice no.",
                 render: (row, item) => {
                   return (
-                    <div>
-                      <p>{item.Date}</p>
-                      <p className="order-small-font">{item.Time}</p>
+                    <div className="d-flex align-items-center">
+                      <p>{item.InvoiceNo}</p>
                     </div>
                   );
                 },
@@ -173,6 +201,10 @@ class ShipmentTab extends Component {
                                 title: "Quantity",
                                 dataIndex: "Quantity",
                               },
+                              {
+                                title: "AWB. No",
+                                dataIndex: "AWBNo",
+                              },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
@@ -180,7 +212,7 @@ class ShipmentTab extends Component {
                           />
                         }
                         trigger="click"
-                        overlayClassName="order-popover-table order-popover"
+                        overlayClassName="order-popover-table order-popover order-popover-table-big"
                         onVisibleChange={(visible) =>
                           this.setState({ orderPopoverOverlay: visible })
                         }
@@ -190,168 +222,10 @@ class ShipmentTab extends Component {
                     </div>
                   );
                 },
+                width: 100,
               },
               {
-                title: "Status",
-                className:
-                  "camp-status-header camp-status-header-statusFilter order-status-header",
-                render: (row, item) => {
-                  return (
-                    <div className="d-flex align-items-center">
-                      <p
-                        className={
-                          item.Status === "Cancelled" ? "order-clr-pink" : ""
-                        }
-                      >
-                        {item.Status}
-                      </p>
-                      {item.Status === "Cancelled" ? (
-                        <Popover content={<p>Hello</p>} trigger="click">
-                          <img src={OrderInfo} className="order-info" />
-                        </Popover>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  );
-                },
-                filterDropdown: (data, row) => {
-                  return (
-                    <div className="campaign-status-drpdwn">
-                      <ul>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Campall-status"
-                            className="ch1"
-                            // onChange={this.handleCheckCampAllStatus.bind(this)}
-                            // checked={this.state.CheckBoxAllStatus}
-                            name="CampallStatus"
-                          />
-                          <label htmlFor="Campall-status">
-                            <span className="ch1-text">New</span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="New100"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={100}
-                          />
-                          <label htmlFor="New100">
-                            <span className="ch1-text">Cancelled</span>
-                          </label>
-                        </li>
-                      </ul>
-                      <div className="dv-status">
-                        <button className="btn-apply-status">Apply</button>
-                        <button className="btn-cancel-status">Cancel</button>
-                      </div>
-                    </div>
-                  );
-                },
-                filterDropdownVisible: this.state.filterShoppingStatus,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterShoppingStatus: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-              },
-              {
-                title: "Delivery type",
-                className:
-                  "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header",
-                render: (row, item) => {
-                  return (
-                    <p
-                      className={
-                        item.Deliverytype === "Store Delivery"
-                          ? "order-clr-green"
-                          : "order-clr-blue"
-                      }
-                    >
-                      {item.Deliverytype}
-                    </p>
-                  );
-                },
-                filterDropdown: (data, row) => {
-                  return (
-                    <div className="campaign-status-drpdwn">
-                      <ul>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Campall-status"
-                            className="ch1"
-                            // onChange={this.handleCheckCampAllStatus.bind(this)}
-                            // checked={this.state.CheckBoxAllStatus}
-                            name="CampallStatus"
-                          />
-                          <label htmlFor="Campall-status">
-                            <span className="ch1-text">Store Delivery</span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="New100"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={100}
-                          />
-                          <label htmlFor="New100">
-                            <span className="ch1-text">Self Picked Up</span>
-                          </label>
-                        </li>
-                      </ul>
-                      <div className="dv-status">
-                        <button className="btn-apply-status">Apply</button>
-                        <button className="btn-cancel-status">Cancel</button>
-                      </div>
-                    </div>
-                  );
-                },
-                filterDropdownVisible: this.state.filterShoppingDeliveryType,
-                onFilterDropdownVisibleChange: (visible) =>
-                  this.setState({ filterShoppingDeliveryType: visible }),
-                filterIcon: (filtered) => (
-                  <span
-                    style={{ color: filtered ? "#1890ff" : undefined }}
-                  ></span>
-                ),
-              },
-              {
-                title: "Pickup Date & Time",
-                render: (row, item) => {
-                  return (
-                    <div>
-                      {item.PickupDate === "" && item.PickupTime === "" ? (
-                        <p className="order-clr-blue">—NIL—</p>
-                      ) : (
-                        <>
-                          <p className="order-clr-blue">{item.PickupDate},</p>
-                          <p className="order-clr-blue order-more-small-font">
-                            {item.PickupTime}
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  );
-                },
-                className: "pick-up-date",
-              },
-              {
-                title: "Address",
+                title: "Shipping address",
                 render: (row, item) => {
                   return (
                     <p className="order-small-font">
@@ -359,66 +233,198 @@ class ShipmentTab extends Component {
                     </p>
                   );
                 },
+                width: 250,
                 className: "white-space-init",
+              },
+              {
+                title: "Delivery Type",
+                dataIndex: "DeliveryTyper",
+                width: 150,
+              },
+              {
+                title: "Status",
+                className: "camp-status-header camp-status-header-statusFilter",
+                render: (row, item) => {
+                  return (
+                    <>
+                      <p className="order-clr-blue">{item.Status}</p>
+                      {item.selfPickUp && (
+                        <p className="order-clr-orange">(Self Pickup)</p>
+                      )}
+                    </>
+                  );
+                },
+                filterDropdown: (data, row) => {
+                  return (
+                    <div className="campaign-status-drpdwn">
+                      <ul>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="Campall-status"
+                            className="ch1"
+                            // onChange={this.handleCheckCampAllStatus.bind(this)}
+                            // checked={this.state.CheckBoxAllStatus}
+                            name="CampallStatus"
+                          />
+                          <label htmlFor="Campall-status">
+                            <span className="ch1-text">Shipment Assigned</span>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="New100"
+                            className="ch1"
+                            // onChange={this.handleCheckCampIndividualStatus.bind(
+                            //   this
+                            // )}
+                            name="CampallStatus"
+                            attrIds={100}
+                          />
+                          <label htmlFor="New100">
+                            <span className="ch1-text">Assign Shipment</span>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="Inproress101"
+                            className="ch1"
+                            // onChange={this.handleCheckCampIndividualStatus.bind(
+                            //   this
+                            // )}
+                            name="CampallStatus"
+                            attrIds={101}
+                          />
+                          <label htmlFor="Inproress101">
+                            <span className="ch1-text">Shipment Delivered</span>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="checkbox"
+                            id="Inproress102"
+                            className="ch1"
+                            // onChange={this.handleCheckCampIndividualStatus.bind(
+                            //   this
+                            // )}
+                            name="CampallStatus"
+                            attrIds={101}
+                          />
+                          <label htmlFor="Inproress102">
+                            <span className="ch1-text">Shipment Pickedup</span>
+                          </label>
+                        </li>
+                      </ul>
+                      <div className="dv-status">
+                        <button className="btn-apply-status">Apply</button>
+                        <button className="btn-cancel-status">Cancel</button>
+                      </div>
+                    </div>
+                  );
+                },
+                filterDropdownVisible: this.state.filterShipmentStatus,
+                onFilterDropdownVisibleChange: (visible) =>
+                  this.setState({ filterShipmentStatus: visible }),
+                filterIcon: (filtered) => (
+                  <span
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                  ></span>
+                ),
+              },
+              {
+                title: "Partner",
+                dataIndex: "Partner",
+                width: 150,
               },
               {
                 title: "Action",
                 render: (row, item) => {
                   return (
-                    <div className="d-flex">
-                      <Popconfirm
-                        title={
-                          <>
-                            <div className="popover-input-cntr">
-                              <div>
-                                <p>Order Id</p>
-                                <input
-                                  type="text"
-                                  placeholder="Enter Order Id"
-                                />
+                    <div>
+                      {item.Action === "Pickup Pending" ? (
+                        <>
+                          <Popover
+                            overlayClassName="pickuppendingcustom"
+                            content={
+                              <div className="pickuppending-table">
+                                <table>
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <label>Pickup Date:</label>
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                        />
+                                      </td>
+                                      <td>
+                                        <label>Pickup Time:</label>
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                        />
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <label>Pickup Done</label>
+                                        <button
+                                          type="button"
+                                          className="popbtn"
+                                        >
+                                          Yes
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <label style={{ visibility: "hidden" }}>
+                                          Pickup Done
+                                        </label>
+                                        <button
+                                          type="button"
+                                          className="popbtnno"
+                                        >
+                                          No
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
-                              <div>
-                                <p>Amount</p>
-                                <input type="text" placeholder="Enter Amount" />
-                              </div>
-                            </div>
-                          </>
-                        }
-                        overlayClassName="order-popover order-popover-butns"
-                        placement="bottomRight"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                        icon={false}
-                        okText="Done"
-                      >
-                        <button className="butn order-grid-butn">
-                          Convert to Order
+                            }
+                            trigger="click"
+                            overlayClassName="order-popover order-popover-butns"
+                            placement="bottomRight"
+                            // onVisibleChange={(visible) =>
+                            //   this.setState({ orderPopoverOverlay: visible })
+                            // }
+                          >
+                            <button
+                              className={
+                                item.Action === "Payment Done"
+                                  ? "butn order-grid-butn order-grid-butn-green"
+                                  : "butn order-grid-butn"
+                              }
+                            >
+                              {item.Action}
+                              <Popover content={<p>hi</p>}></Popover>
+                            </button>
+                          </Popover>
+                        </>
+                      ) : (
+                        <button
+                          className={
+                            item.Action === "Payment Done"
+                              ? "butn order-grid-butn order-grid-butn-green"
+                              : "butn order-grid-butn"
+                          }
+                          type="button"
+                          onClick={this.handleShipmentModalOpen.bind(this)}
+                        >
+                          {item.Action}
                         </button>
-                      </Popconfirm>
-                      <Popconfirm
-                        title={
-                          <>
-                            <div className="popover-input-cntr">
-                              <div>
-                                <p>Comment</p>
-                                <textarea placeholder="Enter Comment"></textarea>
-                              </div>
-                            </div>
-                          </>
-                        }
-                        overlayClassName="order-popover order-popover-butns shopping-popover-delete"
-                        placement="bottomRight"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                        icon={false}
-                        okText="Remove"
-                      >
-                        <button className="butn order-grid-butn order-del-butn">
-                          <img src={OrderDel} alt="delete icon" />
-                        </button>
-                      </Popconfirm>
+                      )}
                     </div>
                   );
                 },
@@ -427,12 +433,115 @@ class ShipmentTab extends Component {
             pagination={{ defaultPageSize: 10, showSizeChanger: true }}
             showSizeChanger={true}
             onShowSizeChange={true}
-            dataSource={this.state.shoppingBagGridData}
+            dataSource={this.state.ShipmentGridData}
           />
+          <Modal
+            open={this.state.ShipmentMdlbtn}
+            onClose={this.handleShipmentModalClose.bind(this)}
+            center
+            modalId="article-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="">
+              <img
+                src={CancelImg}
+                alt="cancelImg"
+                className="cancalImg"
+                onClick={this.handleShipmentModalClose.bind(this)}
+              />
+              <input
+                type="checkbox"
+                style={{ position: "absolute", top: "48px", left: "40px" }}
+              />
+              <input
+                type="checkbox"
+                style={{ position: "absolute", top: "48px", left: "211px" }}
+              />
+              <div className="step-progress">
+                <StepZilla
+                  steps={steps}
+                  //startAtStep={3}
+                  stepsNavigation={false}
+                  backButtonText="Cancel"
+                  nextButtonText="Save / Next"
+                  onStepChange={this.handleChange}
+                />
+              </div>
+            </div>
+          </Modal>
         </div>
       </>
     );
   }
+}
+
+const steps = [
+  { name: "Article Mapping", component: <Step1 /> },
+  { name: "Airway Bill No", component: <Step2 /> },
+];
+
+function Step1(props) {
+  return (
+    <div>
+      <div className="tabs-content">
+        <form>
+          <div className="article-body">
+            <span>
+              Item id shown below mapped to this Order <b>334335</b> only.
+              <br />
+              Select any item id, you want to send for shipment.
+            </span>
+            <Table
+              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
+              columns={[
+                {
+                  title: "Item ID",
+                  dataIndex: "itemID",
+                },
+                {
+                  title: "Item Name",
+                  dataIndex: "itemName",
+                  width: 150,
+                },
+                {
+                  title: "Item Price",
+                  dataIndex: "itemPrice",
+                },
+                {
+                  title: "Quantity",
+                  dataIndex: "quantity",
+                },
+              ]}
+              scroll={{ y: 240 }}
+              pagination={false}
+              // dataSource={item.orderDeliveredItems}
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+function Step2(props) {
+  return (
+    <div>
+      <div className="tabs-content">
+        <form>
+          <div className="text-center airwaybox">
+            <div className="airwaycontent">
+              <img src={CardTick} alt="CardTick" className="cardtick" />
+              <h2>AWB No - 889676467</h2>
+              <p>Successfully mapped to</p>
+              <ul>
+                <li>Invoice No - 909676467</li>
+                <li>Item ID - 9096 7646 7990</li>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default ShipmentTab;
