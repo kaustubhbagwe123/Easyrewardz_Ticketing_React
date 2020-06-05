@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Select } from "antd";
-import Modal from "react-responsive-modal";
-import NoPayment from "./../../../assets/Images/no-payment.png";
-import CreditCard from "./../../../assets/Images/credit-card.png";
+import { Table, Popover, Popconfirm } from "antd";
 import OrderInfo from "./../../../assets/Images/order-info.png";
-import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
-import OrderBag from "./../../../assets/Images/order-bag.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import OrderDel from "./../../../assets/Images/order-del.png";
 import { authHeader } from "../../../helpers/authHeader";
@@ -206,7 +201,24 @@ class ShoppingBagTab extends Component {
                         {item.Status}
                       </p>
                       {item.Status === "Cancelled" ? (
-                        <Popover content={<p>Hello</p>} trigger="click">
+                        <Popover
+                          content={
+                            <div className="order-tab-popover">
+                              <div className="d-flex align-items-center justify-content-between">
+                                <p>12-05-2020</p>
+                                <p>SM-AJAY</p>
+                              </div>
+                              <p className="shopping-popover-cancel-info">
+                                Customer does not want to proceed Shopping Bag​
+                              </p>
+                            </div>
+                          }
+                          trigger="click"
+                          overlayClassName="order-popover shopping-popover-cancel"
+                          onVisibleChange={(visible) =>
+                            this.setState({ orderPopoverOverlay: visible })
+                          }
+                        >
                           <img src={OrderInfo} className="order-info" />
                         </Popover>
                       ) : (

@@ -200,6 +200,21 @@
 .shopping-delivery-header .ant-table-filter-icon {
   left: 98px !important;
 }
+.shopping-popover-cancel-info {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  margin-top: 7px;
+}
+.shopping-popover-cancel {
+  width: 280px;
+}
+.shopping-popover-cancel .ant-popover-inner-content {
+  padding-top: 15px;
+  padding-bottom: 20px;
+}
+.shopping-popover-cancel .ant-popover-inner {
+  border-radius: 8px;
+}
 /* shopping bag ends */
 
 /* chetan css ends */
