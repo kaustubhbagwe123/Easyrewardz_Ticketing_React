@@ -10,131 +10,105 @@ import OrderBag from "./../../../assets/Images/order-bag.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
+import Pagination from "react-pagination-js";
+import "react-pagination-js/dist/styles.css";
 
 class OrderTab extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      orderGridData: [
-        {
-          InvoiceNo: "12017768",
-          InvoiceNoIcon: true,
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          CustomerName: "Sandeep",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Amount: "Rs 9,294",
-          Status: "Ready to Ship",
-          Partner: "Blue Dart",
-          selfPickUp: true,
-          Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
-          Action: "Payment Done",
-        },
-        {
-          InvoiceNo: "12017890",
-          InvoiceNoIcon: false,
-          Date: "24 May 2020",
-          Time: "12:05 AM",
-          CustomerName: "Rahul",
-          CustomerNumber: "+91 9717419325",
-          Items: "12",
-          Amount: "Rs 9,294",
-          Status: "Order Sync Pending",
-          selfPickUp: false,
-          Partner: "Blue Dart",
-          Address: "",
-          Action: "Payment Pending",
-        },
-      ],
-      itemPopupDate: [
-        {
-          ItemID: "123456",
-          ItemName: "Blue Casual shoes",
-          ItemPrice: "1299",
-          Quantity: "02",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123556",
-          ItemName: "Black belt",
-          ItemPrice: "1500",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123557",
-          ItemName: "Sneakers",
-          ItemPrice: "899",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123558",
-          ItemName: "Brown Bag",
-          ItemPrice: "699",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123456",
-          ItemName: "Blue Casual shoes",
-          ItemPrice: "1299",
-          Quantity: "02",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123556",
-          ItemName: "Black belt",
-          ItemPrice: "1500",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123557",
-          ItemName: "Sneakers",
-          ItemPrice: "899",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123558",
-          ItemName: "Brown Bag",
-          ItemPrice: "699",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-      ],
+      orderGridData: [],
+      itemPopupDate: [],
       filterOrderStatus: false,
       orderPopoverOverlay: false,
-      
+      totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      statusFilterData: [],
+      strStatus: "",
     };
   }
 
   componentDidMount() {
-    // this.handleGetOrderTabGridData();
+    this.handleGetOrderTabGridData();
+    this.handleGetOrderStatusFilterData();
   }
 
-  handleGetOrderTabGridData() {
+  ////   -------------------API Function start-------------------------------
+  /// handle Get Order Tab Grid Data
+  handleGetOrderTabGridData(filter) {
+      debugger
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrdersDetails",
       headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: this.state.currentPage,
+        PageSize: this.state.postsPerPage,
+        FilterStatus: this.state.strStatus,
+      },
     })
       .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
+        if (filter === "filter") {
+          if (status === "Success") {
+            self.setState({
+              orderGridData: data.ordersList,
+              totalCount: data.totalCount,
+              filterOrderStatus: false,
+            });
+          } else {
+            self.setState({
+              orderGridData: [],
+              totalCount: 0,
+              filterOrderStatus: false,
+            });
+          }
+        } else {
+          if (status === "Success") {
+            self.setState({
+              orderGridData: data.ordersList,
+              totalCount: data.totalCount,
+            });
+          } else {
+            self.setState({
+              orderGridData: [],
+              totalCount: 0,
+            });
+          }
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleGetOrderStatusFilterData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
+      headers: authHeader(),
+      params: {
+        pageID: 2,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            orderGridData: data,
+            statusFilterData: data,
           });
         } else {
           self.setState({
-            orderGridData: [],
+            statusFilterData: [],
           });
         }
       })
@@ -143,13 +117,49 @@ class OrderTab extends Component {
       });
   }
 
+  ///-------------------API function end--------------------------------
+
+  ///handle pagination onchage
+  PaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      currentPage: numPage,
+    });
+
+    this.handleGetOrderTabGridData();
+  };
+  /// handle per page item change
+  handlePageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+    });
+
+    this.handleGetOrderTabGridData();
+  };
+  /// handle check individual status
+  handleCheckDeliIndividualStatus() {
+    debugger;
+    var checkboxes = document.getElementsByName("orderStatus");
+    var strStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strStatus,
+    });
+  }
   render() {
     return (
       <>
         {this.state.orderPopoverOverlay && (
           <div className="order-popover-overlay"></div>
         )}
-        <div className="table-cntr store">
+        <div className="table-cntr store dv-table-paging">
           <Table
             className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
@@ -161,55 +171,66 @@ class OrderTab extends Component {
                       <div className="invoice-icon-cntr">
                         <img
                           src={
-                            item.InvoiceNoIcon ? OrderShopingBlack : OrderBag
+                            item.isShoppingBagConverted
+                              ? OrderShopingBlack
+                              : OrderBag
                           }
                           className={
-                            item.InvoiceNoIcon ? "order-shoping" : "order-bag"
+                            item.isShoppingBagConverted
+                              ? "order-shoping"
+                              : "order-bag"
                           }
                         />
                       </div>
-                      <p>{item.InvoiceNo}</p>
-                      <Popover
-                        content={
-                          <>
-                            <p className="shopping-num-invoice">
-                              Shopping bag No: <span>{item.InvoiceNo}</span>
-                            </p>
-                            <Table
-                              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                              columns={[
-                                {
-                                  title: "Item ID",
-                                  dataIndex: "ItemID",
-                                },
-                                {
-                                  title: "Item Name",
-                                  dataIndex: "ItemName",
-                                },
-                                {
-                                  title: "Item Price",
-                                  dataIndex: "ItemPrice",
-                                },
-                                {
-                                  title: "Quantity",
-                                  dataIndex: "Quantity",
-                                },
-                              ]}
-                              scroll={{ y: 240 }}
-                              pagination={false}
-                              dataSource={this.state.itemPopupDate}
-                            />
-                          </>
-                        }
-                        trigger="click"
-                        overlayClassName="order-popover-table order-popover order-popover-invoice"
-                        placement="bottomLeft"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                      >
-                        <img src={OrderInfo} className="order-info" />
-                      </Popover>
+                      <p>{item.invoiceNo}</p>
+                      {item.isShoppingBagConverted === true && (
+                        <Popover
+                          content={
+                            <>
+                              <p className="shopping-num-invoice">
+                                Shopping bag No:{" "}
+                                <span>{item.shoppingBagNo}</span>
+                              </p>
+                              <Table
+                                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                columns={[
+                                  {
+                                    title: "Item ID",
+                                    dataIndex: "itemID",
+                                  },
+                                  {
+                                    title: "Item Name",
+                                    dataIndex: "itemName",
+                                  },
+                                  {
+                                    title: "Item Price",
+                                    dataIndex: "itemPrice",
+                                  },
+                                  {
+                                    title: "Quantity",
+                                    dataIndex: "quantity",
+                                  },
+                                ]}
+                                scroll={{ y: 240 }}
+                                pagination={false}
+                                dataSource={
+                                  item.shoppingBagItemList.length > 0
+                                    ? item.shoppingBagItemList
+                                    : []
+                                }
+                              />
+                            </>
+                          }
+                          trigger="click"
+                          overlayClassName="order-popover-table order-popover order-popover-invoice"
+                          placement="bottomLeft"
+                          onVisibleChange={(visible) =>
+                            this.setState({ orderPopoverOverlay: visible })
+                          }
+                        >
+                          <img src={OrderInfo} className="order-info" />
+                        </Popover>
+                      )}
                     </div>
                   );
                 },
@@ -219,8 +240,8 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      <p>{item.Date}</p>
-                      <p className="order-small-font">{item.Time}</p>
+                      <p>{item.date}</p>
+                      <p className="order-small-font">{item.time}</p>
                     </div>
                   );
                 },
@@ -231,8 +252,8 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      <p>{item.CustomerName},</p>
-                      <p className="order-small-font">{item.CustomerNumber}</p>
+                      <p>{item.customerName},</p>
+                      <p className="order-small-font">{item.mobileNumber}</p>
                     </div>
                   );
                 },
@@ -243,7 +264,8 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
-                      <p>{item.Items}</p>
+                      <p>{item.ordersItemList.length}</p>
+
                       <Popover
                         content={
                           <Table
@@ -251,29 +273,29 @@ class OrderTab extends Component {
                             columns={[
                               {
                                 title: "Item ID",
-                                dataIndex: "ItemID",
+                                dataIndex: "itemID",
                               },
                               {
                                 title: "Item Name",
-                                dataIndex: "ItemName",
+                                dataIndex: "itemName",
                                 width: 150,
                               },
                               {
                                 title: "Item Price",
-                                dataIndex: "ItemPrice",
+                                dataIndex: "itemPrice",
                               },
                               {
                                 title: "Quantity",
-                                dataIndex: "Quantity",
+                                dataIndex: "quantity",
                               },
-                              {
-                                title: "AWB. No",
-                                dataIndex: "AWBNo",
-                              },
+                              //   {
+                              //     title: "AWB. No",
+                              //     dataIndex: "AWBNo",
+                              //   },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
-                            dataSource={this.state.itemPopupDate}
+                            dataSource={item.ordersItemList}
                           />
                         }
                         trigger="click"
@@ -291,7 +313,7 @@ class OrderTab extends Component {
               },
               {
                 title: "Amount",
-                dataIndex: "Amount",
+                dataIndex: "amount",
                 width: 150,
                 className: "order-desktop",
               },
@@ -302,10 +324,10 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <>
-                      <p className="order-clr-blue">{item.Status}</p>
-                      {item.selfPickUp && (
+                      <p className="order-clr-blue">{item.statusName}</p>
+                      {/* {item.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
-                      )}
+                      )} */}
                     </>
                   );
                 },
@@ -313,67 +335,38 @@ class OrderTab extends Component {
                   return (
                     <div className="campaign-status-drpdwn">
                       <ul>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Campall-status"
-                            className="ch1"
-                            // onChange={this.handleCheckCampAllStatus.bind(this)}
-                            // checked={this.state.CheckBoxAllStatus}
-                            name="CampallStatus"
-                          />
-                          <label htmlFor="Campall-status">
-                            <span className="ch1-text">Ready to Ship</span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="New100"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={100}
-                          />
-                          <label htmlFor="New100">
-                            <span className="ch1-text">Fresh</span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Inproress101"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={101}
-                          />
-                          <label htmlFor="Inproress101">
-                            <span className="ch1-text">Order Sync Pending</span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Inproress102"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={101}
-                          />
-                          <label htmlFor="Inproress102">
-                            <span className="ch1-text">Complete</span>
-                          </label>
-                        </li>
+                        {this.state.statusFilterData !== null &&
+                          this.state.statusFilterData.map((item, b) => (
+                            <li>
+                              <input
+                                type="checkbox"
+                                id={"New" + item.statusID}
+                                className="ch1"
+                                onChange={this.handleCheckDeliIndividualStatus.bind(
+                                  this
+                                )}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="orderStatus"
+                                attrIds={item.statusID}
+                              />
+                              <label htmlFor={"New" + item.statusID}>
+                                <span className="ch1-text">
+                                  {item.statusName}
+                                </span>
+                              </label>
+                            </li>
+                          ))}
                       </ul>
                       <div className="dv-status">
-                        <button className="btn-apply-status">Apply</button>
+                        <button
+                          className="btn-apply-status"
+                          onClick={this.handleGetOrderTabGridData.bind(
+                            this,
+                            "filter"
+                          )}
+                        >
+                          Apply
+                        </button>
                         <button className="btn-cancel-status">Cancel</button>
                       </div>
                     </div>
@@ -395,14 +388,14 @@ class OrderTab extends Component {
                     <>
                       <p
                         className={
-                          item.Address === ""
+                          item.shippingAddress === "-NIL-"
                             ? "order-small-font d-inline-block"
                             : "order-small-font"
                         }
                       >
-                        {item.Address === "" ? "—NIL—" : item.Address}
+                        {item.shippingAddress}
                       </p>
-                      {item.Address === "" && (
+                      {item.shippingAddress === "-NIL-" && (
                         <Popconfirm
                           title={
                             <>
@@ -462,7 +455,7 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      {item.Action === "Payment Done" && (
+                      {item.actionTypeName === "Payment Details" && (
                         <Popover
                           content={
                             <div className="order-tab-popover">
@@ -472,7 +465,7 @@ class OrderTab extends Component {
                               </div>
                               <div className="pay-done">
                                 <p>Total Amount:</p>
-                                <span>Rs. 9,294</span>
+                                <span>{item.amount}</span>
                               </div>
                               <div className="pay-done">
                                 <p>Payment via :</p>
@@ -495,11 +488,11 @@ class OrderTab extends Component {
                           }
                         >
                           <button className="butn order-grid-butn order-grid-butn-green">
-                            {item.Action}
+                            {item.actionTypeName}
                           </button>
                         </Popover>
                       )}
-                      {item.Action === "Payment Pending" && (
+                      {item.actionTypeName === "Collect Payment" && (
                         <Popconfirm
                           title={
                             <div className="order-tab-popover">
@@ -518,7 +511,7 @@ class OrderTab extends Component {
                           okText="Sent Link Again"
                         >
                           <button className="butn order-grid-butn">
-                            {item.Action}
+                            {item.actionTypeName}
                           </button>
                         </Popconfirm>
                       )}
@@ -527,37 +520,44 @@ class OrderTab extends Component {
                 },
               },
             ]}
+            ///Mobile view
             expandedRowRender={(row) => {
               return (
                 <div className="order-expanded-cntr">
                   <div className="row">
                     <div className="col-6">
                       <p className="order-expanded-title">Customer</p>
-                      <p>{row.CustomerName},</p>
-                      <p className="order-small-font">{row.CustomerNumber}</p>
+                      <p>{row.customerName},</p>
+                      <p className="order-small-font">{row.customerName}</p>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">Status</p>
-                      <p className="order-clr-blue">{row.Status}</p>
-                      {row.selfPickUp && (
+                      <p className="order-clr-blue">{row.statusName}</p>
+                      {/* {row.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
-                      )}
+                      )} */}
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">Amount</p>
-                      <p>{row.Amount}</p>
+                      <p>{row.amount}</p>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">Date</p>
-                      <p>{row.Date}</p>
-                      <p className="order-small-font">{row.Time}</p>
+                      <p>{row.date}</p>
+                      <p className="order-small-font">{row.time}</p>
                     </div>
                     <div className="col-12">
                       <p className="order-expanded-title">Shipping Address</p>
-                      <p className={row.Address === "" ? "d-inline-block" : ""}>
-                        {row.Address === "" ? "—NIL—" : row.Address}
+                      <p
+                        className={
+                          row.shippingAddress === "-NIL-"
+                            ? "d-inline-block"
+                            : ""
+                        }
+                      >
+                        {row.shippingAddress}
                       </p>
-                      {row.Address === "" && (
+                      {row.shippingAddress === "" && (
                         <Popconfirm
                           title={
                             <>
@@ -617,6 +617,27 @@ class OrderTab extends Component {
             expandIconColumnIndex={7}
             expandIconAsCell={false}
           />
+          <Pagination
+            currentPage={this.state.currentPage}
+            totalSize={this.state.totalCount}
+            // totalSize={row.customerCount}
+            sizePerPage={this.state.postsPerPage}
+            changeCurrentPage={this.PaginationOnChange}
+            theme="bootstrap"
+          />
+          <div className="position-relative">
+            <div className="item-selection Camp-pagination">
+              <select
+                value={this.state.postsPerPage}
+                onChange={this.handlePageItemchange}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+              </select>
+              <p>Items per page</p>
+            </div>
+          </div>
         </div>
       </>
     );

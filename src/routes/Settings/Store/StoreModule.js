@@ -28,8 +28,8 @@ import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { ProgressBar } from "react-bootstrap";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 
-import * as translationHI from './../../../translations/hindi'
-import * as translationMA from './../../../translations/marathi'
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -123,7 +123,7 @@ class StoreModule extends Component {
       selectLanguage: 0,
       languageValidation: "",
       languageGridData: [],
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -151,16 +151,13 @@ class StoreModule extends Component {
     this.handleGetLanguageDropdownlist();
     this.handleGetLanguageGridData();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   fileUpload = (file) => {
@@ -881,6 +878,7 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
+          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -892,6 +890,11 @@ class StoreModule extends Component {
               scriptDetails: "",
               campaignCompulsion: "",
               scriptDetailsCompulsion: "",
+              addCampaignLoading: false,
+            });
+          } else {
+            NotificationManager.error("Campaign not saved.");
+            self.setState({
               addCampaignLoading: false,
             });
           }
@@ -1791,8 +1794,9 @@ class StoreModule extends Component {
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1802,13 +1806,15 @@ class StoreModule extends Component {
             }}
             className="header-path"
           >
-            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-          {TranslationContext!==undefined?TranslationContext.link.modules:"Modules"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.modules
+              : "Modules"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1832,7 +1838,9 @@ class StoreModule extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -1844,8 +1852,9 @@ class StoreModule extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -1854,12 +1863,15 @@ class StoreModule extends Component {
                 style={{ margin: "0 25px", textDecoration: "underline" }}
                 onClick={this.setSortCheckStatus.bind(this, "all")}
               >
-                 {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -1986,11 +1998,16 @@ class StoreModule extends Component {
                       aria-controls="Module-Claim-Tab"
                       aria-selected="true"
                     >
-                       {TranslationContext!==undefined?TranslationContext.a.claim:"Claim"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.claim
+                        : "Claim"}
                     </a>
                   </li>
-                  <li className={config.isHomeShope ? "nav-item displayNn":"nav-item"}>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item displayNn" : "nav-item"
+                    }
+                  >
                     <a
                       className="nav-link"
                       data-toggle="tab"
@@ -1999,11 +2016,16 @@ class StoreModule extends Component {
                       aria-controls="Module-CampaignScript-Tab"
                       aria-selected="false"
                     >
-                        {TranslationContext!==undefined?TranslationContext.a.campaignscript:"Campaign Script"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.campaignscript
+                        : "Campaign Script"}
                     </a>
                   </li>
-                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
                     <a
                       className="nav-link"
                       data-toggle="tab"
@@ -2012,11 +2034,16 @@ class StoreModule extends Component {
                       aria-controls="Module-CampaignChannel-Tab"
                       aria-selected="false"
                     >
-                      {TranslationContext!==undefined?TranslationContext.a.campaignchannel:"Campaign Channel"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.campaignchannel
+                        : "Campaign Channel"}
                     </a>
                   </li>
-                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
                     <a
                       className="nav-link"
                       data-toggle="tab"
@@ -2025,11 +2052,16 @@ class StoreModule extends Component {
                       aria-controls="Module-AppointmentConfig-Tab"
                       aria-selected="false"
                     >
-                        {TranslationContext!==undefined?TranslationContext.a.appointmentconfiguration:"Appointment Configuration"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.appointmentconfiguration
+                        : "Appointment Configuration"}
                     </a>
                   </li>
-                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
                     <a
                       className="nav-link"
                       data-toggle="tab"
@@ -2038,11 +2070,16 @@ class StoreModule extends Component {
                       aria-controls="Module-BroadcastConfig-Tab"
                       aria-selected="false"
                     >
-                         {TranslationContext!==undefined?TranslationContext.a.broadcastconfiguration:"Broadcast Configuration"}
-                     
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.broadcastconfiguration
+                        : "Broadcast Configuration"}
                     </a>
                   </li>
-                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
                     <a
                       className="nav-link"
                       data-toggle="tab"
@@ -2051,11 +2088,16 @@ class StoreModule extends Component {
                       aria-controls="Module-SlotSetting-Tab"
                       aria-selected="false"
                     >
-                         {TranslationContext!==undefined?TranslationContext.a.slotsettings:"Slot Settings"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.slotsettings
+                        : "Slot Settings"}
                     </a>
                   </li>
-                  <li className={config.isHomeShope ? "nav-item":"nav-item displayNn"}>
+                  <li
+                    className={
+                      config.isHomeShope ? "nav-item" : "nav-item displayNn"
+                    }
+                  >
                     <a
                       className="nav-link"
                       data-toggle="tab"
@@ -2064,8 +2106,9 @@ class StoreModule extends Component {
                       aria-controls="Module-LanguageSetting-Tab"
                       aria-selected="false"
                     >
-                         {TranslationContext!==undefined?TranslationContext.a.languagesettings:"Language Settings"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.languagesettings
+                        : "Language Settings"}
                     </a>
                   </li>
                 </ul>
@@ -2081,13 +2124,14 @@ class StoreModule extends Component {
                     <div className="row">
                       <div className="col-md-4 chatallowed">
                         <label className="claimtab-lbl">
-                        {TranslationContext!==undefined?TranslationContext.label.attachmentsettings:"Attachment Settings"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.attachmentsettings
+                            : "Attachment Settings"}
                         </label>
                         <label className="claimTab-DDl">
-                          
-
-                          {TranslationContext!==undefined?TranslationContext.label.maximumattachmentsize:"Maximum Attachment Size"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.maximumattachmentsize
+                            : "Maximum Attachment Size"}
                         </label>
                         <select
                           name="selectedMaxAttachSize"
@@ -2095,7 +2139,9 @@ class StoreModule extends Component {
                           onChange={this.setClaimTabData}
                         >
                           <option value={0}>
-                          {TranslationContext!==undefined?TranslationContext.option.selectsize:"Select Size"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.selectsize
+                              : "Select Size"}
                           </option>
                           {this.state.maxAttachSize !== null &&
                             this.state.maxAttachSize.map((item, i) => (
@@ -2114,7 +2160,9 @@ class StoreModule extends Component {
                     <div className="row claim-mgn">
                       <div className="col-md-3 chatallowed">
                         <label className="claimTab-DDl">
-                        {TranslationContext!==undefined?TranslationContext.label.fileformat:"File Format"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.fileformat
+                            : "File Format"}
                         </label>
                         <select
                           name="selectedFileFormat"
@@ -2147,10 +2195,11 @@ class StoreModule extends Component {
                                 spin
                               />
                             ) : (
-                                ""
-                              )}
-                               {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
-                            
+                              ""
+                            )}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "SAVE"}
                           </button>
                         </div>
                       </div>
@@ -2735,14 +2784,17 @@ class StoreModule extends Component {
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
                                 <h3>
-                                {TranslationContext!==undefined?TranslationContext.h3.campaignchannel:"CAMPAIGN CHANNEL"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3.campaignchannel
+                                    : "CAMPAIGN CHANNEL"}
                                 </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.sms:"SMS"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.sms
+                                          : "SMS"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2794,8 +2846,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.whatsapp:"Whatsapp"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.whatsapp
+                                          : "Whatsapp"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2818,8 +2871,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.chatbot:"Chatbot"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.chatbot
+                                          : "Chatbot"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2841,8 +2895,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.email:"Email"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.email
+                                          : "Email"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -2866,8 +2921,10 @@ class StoreModule extends Component {
                                 <table className="cmpaign-channel-table">
                                   <tr>
                                     <td>
-                                    {TranslationContext!==undefined?TranslationContext.td.maxclickallowesonanychannelcta:"Max. click allowed on any channel CTA"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .maxclickallowesonanychannelcta
+                                        : "Max. click allowed on any channel CTA"}
                                     </td>
                                     <td>
                                       <input
@@ -2899,8 +2956,10 @@ class StoreModule extends Component {
                                   </tr>
                                   <tr>
                                     <td>
-                                    {TranslationContext!==undefined?TranslationContext.td.clickwillbeenabledafter:"Click will be enabled after"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .clickwillbeenabledafter
+                                        : "Click will be enabled after"}
                                     </td>
                                     <td>
                                       <input
@@ -2940,10 +2999,14 @@ class StoreModule extends Component {
                                         )}
                                       >
                                         <option value="M">
-                                        {TranslationContext!==undefined?TranslationContext.option.min:"Min"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.min
+                                            : "Min"}
                                         </option>
                                         <option value="H">
-                                        {TranslationContext!==undefined?TranslationContext.option.hr:"Hr"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.hr
+                                            : "Hr"}
                                         </option>
                                       </select>
                                     </td>
@@ -2956,8 +3019,9 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                    {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
                                 </button>
                               </div>
                             </div>
@@ -2981,16 +3045,18 @@ class StoreModule extends Component {
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
                                 <h3>
-                                {TranslationContext!==undefined?TranslationContext.h3.appointmentconfiguration:"APPOINTMENT CONFIGURATION"}
-
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3
+                                        .appointmentconfiguration
+                                    : "APPOINTMENT CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.generateotp:"Generate OTP"}
-
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.generateotp
+                                          : "Generate OTP"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3013,8 +3079,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.cardqrcode:"Card + QR Code"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.cardqrcode
+                                          : "Card + QR Code"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3037,8 +3104,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.cardbarcode:"Card + Barcode"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.cardbarcode
+                                          : "Card + Barcode"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3062,9 +3130,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.onlycard:"Only Card"}
-                                        
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.onlycard
+                                          : "Only Card"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3087,8 +3155,10 @@ class StoreModule extends Component {
                                 <table className="cmpaign-channel-table">
                                   <tr>
                                     <td>
-                                    {TranslationContext!==undefined?TranslationContext.td.otptimeconfiguration:"OTP Time Configuration"}
-
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .otptimeconfiguration
+                                        : "OTP Time Configuration"}
                                     </td>
                                     <td>
                                       <input
@@ -3116,14 +3186,19 @@ class StoreModule extends Component {
                                       // )}
                                       >
                                         <option value="S">
-                                        {TranslationContext!==undefined?TranslationContext.option.sec:"Sec"}
-
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.sec
+                                            : "Sec"}
                                         </option>
                                         <option value="M">
-                                        {TranslationContext!==undefined?TranslationContext.option.min:"Min"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.min
+                                            : "Min"}
                                         </option>
                                         <option value="H">
-                                        {TranslationContext!==undefined?TranslationContext.option.hr:"Hr"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.hr
+                                            : "Hr"}
                                         </option>
                                       </select>
                                     </td>
@@ -3136,8 +3211,9 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                   {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
                                 </button>
                               </div>
                             </div>
@@ -3161,14 +3237,18 @@ class StoreModule extends Component {
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
                                 <h3>
-                                {TranslationContext!==undefined?TranslationContext.h3.broadcastconfiguration:"BROADCAST CONFIGURATION"}
-
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3
+                                        .broadcastconfiguration
+                                    : "BROADCAST CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.sms:"SMS"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.sms
+                                          : "SMS"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3192,7 +3272,12 @@ class StoreModule extends Component {
                                           type="text"
                                           name="providerName"
                                           autoComplete="off"
-                                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.providername:"Provider name"}
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
+                                                  .providername
+                                              : "Provider name"
+                                          }
                                           maxLength={15}
                                           value={
                                             this.state.BroadCastConfigData
@@ -3219,7 +3304,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.whatsapp:"Whatsapp"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.whatsapp
+                                          : "Whatsapp"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3242,7 +3329,9 @@ class StoreModule extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.email:"Email"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.email
+                                          : "Email"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -3266,8 +3355,10 @@ class StoreModule extends Component {
                                 <table className="cmpaign-channel-table">
                                   <tr>
                                     <td>
-                                    {TranslationContext!==undefined?TranslationContext.td.maxclickallowesonanychannelcta:"Max. click allowed on any channel CTA"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .maxclickallowesonanychannelcta
+                                        : "Max. click allowed on any channel CTA"}
                                     </td>
                                     <td>
                                       <input
@@ -3295,10 +3386,20 @@ class StoreModule extends Component {
                                         </p>
                                       )}
                                     </td>
-                                    <td>{TranslationContext!==undefined?TranslationContext.td.click:"Click"}</td>
+                                    <td>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td.click
+                                        : "Click"}
+                                    </td>
                                   </tr>
                                   <tr>
-                                    <td>   {TranslationContext!==undefined?TranslationContext.td.clickwillbeenabledafter:"Click will be enabled after"}</td>
+                                    <td>
+                                      {" "}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .clickwillbeenabledafter
+                                        : "Click will be enabled after"}
+                                    </td>
                                     <td>
                                       <input
                                         type="text"
@@ -3339,11 +3440,15 @@ class StoreModule extends Component {
                                           this
                                         )}
                                       >
-                                         <option value="M">
-                                        {TranslationContext!==undefined?TranslationContext.option.min:"Min"}
+                                        <option value="M">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.min
+                                            : "Min"}
                                         </option>
                                         <option value="H">
-                                        {TranslationContext!==undefined?TranslationContext.option.hr:"Hr"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.hr
+                                            : "Hr"}
                                         </option>
                                       </select>
                                     </td>
@@ -3356,7 +3461,9 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                    {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
                                 </button>
                               </div>
                             </div>
@@ -3380,13 +3487,19 @@ class StoreModule extends Component {
                             <div className="col-md-6 m-auto">
                               <div className="right-sect-div">
                                 <h3>
-                                {TranslationContext!==undefined?TranslationContext.h3.slotsettings:"SLOT SETTINGS"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3.slotsettings
+                                    : "SLOT SETTINGS"}
                                 </h3>
-                                <span style={{paddingLeft: "145px"}}>
-                                {TranslationContext!==undefined?TranslationContext.span.starttime:"Start Time"}
+                                <span style={{ paddingLeft: "145px" }}>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.starttime
+                                    : "Start Time"}
                                 </span>
-                                <span style={{paddingLeft: "58px"}}>
-                                {TranslationContext!==undefined?TranslationContext.span.endtime:"End Time"}
+                                <span style={{ paddingLeft: "58px" }}>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.endtime
+                                    : "End Time"}
                                 </span>
                                 <div className="cmpaign-channel-table slot-setting-options">
                                   <div>
@@ -3446,14 +3559,14 @@ class StoreModule extends Component {
                                         value={this.state.selectAmPm1}
                                         onChange={this.handleDrop_downOnchange}
                                       >
-                                        <option value="AM">AM
-                                        
-                                        </option>
+                                        <option value="AM">AM</option>
                                         <option value="PM">PM</option>
                                       </select>
                                     </div>
                                     <span className="slot-to">
-                                    {TranslationContext!==undefined?TranslationContext.span.to:"TO"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span.to
+                                        : "TO"}
                                     </span>
                                     <div className="d-flex">
                                       <select
@@ -3535,8 +3648,9 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                    {TranslationContext!==undefined?TranslationContext.button.submit:"SUBMIT"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.submit
+                                    : "SUBMIT"}
                                 </button>
                               </div>
                             </div>
@@ -3547,32 +3661,50 @@ class StoreModule extends Component {
                                 data={this.state.TimeSlotGridData}
                                 columns={[
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.slotno:"Slot No",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.slotno
+                                        : "Slot No",
                                     sortable: false,
                                     accessor: "slotId",
                                   },
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.storecode:"Store Code",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.storecode
+                                        : "Store Code",
                                     accessor: "storeCode",
                                     sortable: false,
                                   },
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.timeslot:"Time Slot",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.timeslot
+                                        : "Time Slot",
                                     accessor: "timeSlot",
                                     sortable: false,
                                   },
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.order:"Order",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.order
+                                        : "Order",
                                     accessor: "orderNumber",
                                     sortable: false,
                                   },
                                   {
-                                    Header:TranslationContext!==undefined?TranslationContext.header.createdname:"Created Name",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.createdname
+                                        : "Created Name",
                                     accessor: "createdByName",
                                     sortable: false,
                                   },
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.actions:"Actions",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.actions
+                                        : "Actions",
                                     sortable: false,
                                     Cell: (row) => {
                                       var ids = row.original["slotId"];
@@ -3590,15 +3722,28 @@ class StoreModule extends Component {
                                                   </div>
                                                   <div>
                                                     <p className="font-weight-bold blak-clr">
-                                                    {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .deletefile
+                                                        : "Delete file"}
+                                                      ?
                                                     </p>
                                                     <p className="mt-1 fs-12">
-                                                    {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                          
+                                                      {TranslationContext !==
+                                                      undefined
+                                                        ? TranslationContext.p
+                                                            .areyousureyouwanttodeletethisfile
+                                                        : "Are you sure you want to delete this file"}
+                                                      ?
                                                     </p>
                                                     <div className="del-can">
                                                       <a href={Demo.BLANK_LINK}>
-                                                      {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext.a
+                                                              .cancel
+                                                          : "CANCEL"}
                                                       </a>
                                                       <button
                                                         className="butn"
@@ -3607,7 +3752,11 @@ class StoreModule extends Component {
                                                           row.original.slotId
                                                         )}
                                                       >
-                                                            {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                                        {TranslationContext !==
+                                                        undefined
+                                                          ? TranslationContext
+                                                              .button.delete
+                                                          : "Delete"}
                                                       </button>
                                                     </div>
                                                   </div>
@@ -3631,7 +3780,9 @@ class StoreModule extends Component {
                                                 row.original
                                               )}
                                             >
-                                               {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button.edit
+                                                : "EDIT"}
                                             </button>
                                           </span>
                                         </>
@@ -3665,8 +3816,9 @@ class StoreModule extends Component {
                             <div className="col-md-4 m-auto">
                               <div className="right-sect-div">
                                 <h3>
-
-                                {TranslationContext!==undefined?TranslationContext.h3.languagesettings:"LANGUAGE SETTINGS"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3.languagesettings
+                                    : "LANGUAGE SETTINGS"}
                                 </h3>
                                 <div className="cmpaign-channel-table slot-setting-options">
                                   <div className="w-100">
@@ -3676,7 +3828,10 @@ class StoreModule extends Component {
                                       onChange={this.handleDrop_downOnchange}
                                     >
                                       <option value={0}>
-                                      {TranslationContext!==undefined?TranslationContext.option.selectlanguage:"Select Language"}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option
+                                              .selectlanguage
+                                          : "Select Language"}
                                       </option>
                                       {this.state.languageData !== null &&
                                         this.state.languageData.map(
@@ -3711,8 +3866,9 @@ class StoreModule extends Component {
                                     this
                                   )}
                                 >
-                                    {TranslationContext!==undefined?TranslationContext.button.submit:"SUBMIT"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.submit
+                                    : "SUBMIT"}
                                 </button>
                               </div>
                             </div>
@@ -3723,12 +3879,18 @@ class StoreModule extends Component {
                                 data={this.state.languageGridData}
                                 columns={[
                                   {
-                                    Header:TranslationContext!==undefined?TranslationContext.header.languagename:"Language Name",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.languagename
+                                        : "Language Name",
                                     accessor: "language",
                                     sortable: false,
                                   },
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.status:"Status",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.status
+                                        : "Status",
                                     accessor: "isActive",
                                     sortable: false,
                                     Cell: (row) => {
@@ -3744,7 +3906,10 @@ class StoreModule extends Component {
                                     },
                                   },
                                   {
-                                    Header: TranslationContext!==undefined?TranslationContext.header.actions:"Actions",
+                                    Header:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.actions
+                                        : "Actions",
                                     sortable: false,
                                     Cell: (row) => {
                                       var ids = row.original["slotId"];
@@ -3848,14 +4013,17 @@ class StoreModule extends Component {
               <div className="edtpadding">
                 <div className="">
                   <label className="popover-header-text">
-                  {TranslationContext!==undefined?TranslationContext.label.editslotsettings:"EDIT SLOT SETTINGS"}
-                    
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.editslotsettings
+                      : "EDIT SLOT SETTINGS"}
                   </label>
                 </div>
                 <div className="pop-over-div edit-slot">
                   <div className="cmpaign-channel-table slot-setting-options right-sect-div">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.storecode
+                        : "Store Code"}
                     </label>
                     <div>
                       <select
@@ -3864,7 +4032,9 @@ class StoreModule extends Component {
                         onChange={this.handleEditDrop_downOnchange}
                       >
                         <option value={0}>
-                        {TranslationContext!==undefined?TranslationContext.option.storecode:"Store code"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.storecode
+                            : "Store code"}
                         </option>
                         {this.state.storeCodeData !== null &&
                           this.state.storeCodeData.map((item, s) => (
@@ -3889,7 +4059,9 @@ class StoreModule extends Component {
                       )}
                     </div>
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.option.storetimings:"Store Timings"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.option.storetimings
+                        : "Store Timings"}
                     </label>
                     <div className="slot-timings">
                       <div className="d-flex">
@@ -3963,7 +4135,9 @@ class StoreModule extends Component {
                       </p>
                     )}
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.maximumcapacity:"Maximum Capacity"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.maximumcapacity
+                        : "Maximum Capacity"}
                     </label>
                     <input
                       type="text"
@@ -3992,15 +4166,18 @@ class StoreModule extends Component {
                     className="pop-over-cancle"
                     onClick={this.closeSlotEditModal}
                   >
-                     {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                    
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.cancel
+                      : "CANCEL"}
                   </a>
                   <button
                     className="pop-over-button FlNone"
                     onClick={this.handleUpdateTimeSlotData.bind(this)}
                   >
                     <label className="pop-over-btnsave-text">
-                    {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.save
+                        : "SAVE"}
                     </label>
                   </button>
                 </div>
@@ -4016,13 +4193,16 @@ class StoreModule extends Component {
               <div className="edtpadding">
                 <div className="">
                   <label className="popover-header-text">
-                    
-                    {TranslationContext!==undefined?TranslationContext.label.editcampaignscript:"EDIT CAMPAIGN SCRIPT"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.editcampaignscript
+                      : "EDIT CAMPAIGN SCRIPT"}
                   </label>
                 </div>
                 <div className=" pop-over-div">
-                  <label className="pop-over-lbl-text"> 
-                  {TranslationContext!==undefined?TranslationContext.label.campaignname:"Campaign Name"}
+                  <label className="pop-over-lbl-text">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.campaignname
+                      : "Campaign Name"}
                   </label>
                   <select
                     className="pop-over-select w-100 disabled-input"
@@ -4042,7 +4222,9 @@ class StoreModule extends Component {
                 </div>
                 <div className="div-cntr">
                   <label className="pop-over-lbl-text">
-                  {TranslationContext!==undefined?TranslationContext.label.scriptdetails:"Script Details"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.scriptdetails
+                      : "Script Details"}
                   </label>
                   <textarea
                     className="stort-textArea"
@@ -4064,8 +4246,9 @@ class StoreModule extends Component {
                     className="pop-over-cancle"
                     onClick={this.handleEditModal}
                   >
-                    {TranslationContext!==undefined?TranslationContext.span.cancel:"CANCEL"}
-                    
+                    {TranslationContext !== undefined
+                      ? TranslationContext.span.cancel
+                      : "CANCEL"}
                   </span>
                   <button
                     className="pop-over-button FlNone"
@@ -4079,10 +4262,11 @@ class StoreModule extends Component {
                         spin
                       />
                     ) : (
-                        ""
-                      )}
-                       {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
-                    
+                      ""
+                    )}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.save
+                      : "SAVE"}
                   </button>
                 </div>
               </div>
@@ -4094,8 +4278,9 @@ class StoreModule extends Component {
             >
               <div className="edtpadding">
                 <label className="popover-header-text">
-                {TranslationContext!==undefined?TranslationContext.label.editcampaignsetting:"EDIT CAMPAIGN SETTING"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.editcampaignsetting
+                    : "EDIT CAMPAIGN SETTING"}
                 </label>
                 <div className="module-switch-cntr">
                   <div className="module-switch">
@@ -4111,8 +4296,9 @@ class StoreModule extends Component {
                   <div className="module-switch">
                     <div className="switch switch-primary">
                       <label className="storeRole-name-text m-0">
-                      {TranslationContext!==undefined?TranslationContext.label.whatsapp:"Whatsapp"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.whatsapp
+                          : "Whatsapp"}
                       </label>
                       <input type="checkbox" id="new2" name="allModules" />
                       <label
@@ -4124,7 +4310,9 @@ class StoreModule extends Component {
                   <div className="module-switch">
                     <div className="switch switch-primary">
                       <label className="storeRole-name-text m-0">
-                      {TranslationContext!==undefined?TranslationContext.label.chatbot:"Chatbot"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.chatbot
+                          : "Chatbot"}
                       </label>
                       <input type="checkbox" id="new3" name="allModules" />
                       <label
@@ -4136,7 +4324,9 @@ class StoreModule extends Component {
                   <div className="module-switch">
                     <div className="switch switch-primary">
                       <label className="storeRole-name-text m-0">
-                      {TranslationContext!==undefined?TranslationContext.label.email:"Email"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.email
+                          : "Email"}
                       </label>
                       <input type="checkbox" id="new4" name="allModules" />
                       <label

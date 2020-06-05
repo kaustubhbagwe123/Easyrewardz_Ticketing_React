@@ -145,7 +145,7 @@ class Orders extends Component {
                 Shopping Bag
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" >
               <a
                 className="nav-link"
                 data-toggle="tab"
