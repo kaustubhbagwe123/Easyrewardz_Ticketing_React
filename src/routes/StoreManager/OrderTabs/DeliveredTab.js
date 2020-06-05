@@ -7,6 +7,7 @@ import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
+import { NotificationManager } from "react-notifications";
 
 class DeliveredTab extends Component {
   constructor(props) {
@@ -120,6 +121,29 @@ class DeliveredTab extends Component {
       strStatus,
     });
   }
+
+  handleUpdateMarkAsDelivered(orderId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateMarkAsDelivered",
+      headers: authHeader(),
+      params: {
+        orderID: orderId,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetOrderDeliveredData();
+          NotificationManager.success("Record Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     return (
       <>
@@ -264,22 +288,22 @@ class DeliveredTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex">
-                      <button
-                        className={
-                          item.actionTypeName === "Delivered"
-                            ? "delibutn deliv-grid-butn"
-                            : item.actionTypeName === "Mark As Delivered"
-                            ? "markasbutn deliv-grid-butn"
-                            : "pickedbutn deliv-grid-butn"
-                        }
-                      >
+                      {item.actionTypeName === "Delivered"?(
+                      <button className="delibutn deliv-grid-butn">
                         {item.actionTypeName}
-                        {/* {item.statusName === "Delivered"
-                              ? "Delivered"
-                              : item.statusName === "RTO"
-                                ? "Mark As Delivered"
-                                : "Picked"} */}
                       </button>
+                      ):item.actionTypeName === "Mark As Delivered"?
+                      (
+                        <button className="markasbutn deliv-grid-butn"
+                         onClick={this.handleUpdateMarkAsDelivered.bind(this,item.id)}
+                        >
+                          {item.actionTypeName}                      
+                        </button>
+                        ):(
+                          <button className="pickedbutn deliv-grid-butn">
+                            {item.actionTypeName}                           
+                          </button>
+                        )}
                     </div>
                   );
                 },
