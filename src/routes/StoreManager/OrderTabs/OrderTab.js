@@ -108,6 +108,7 @@ class OrderTab extends Component {
           ],
       filterOrderStatus: false,
       orderPopoverOverlay: false,
+      
     };
   }
 

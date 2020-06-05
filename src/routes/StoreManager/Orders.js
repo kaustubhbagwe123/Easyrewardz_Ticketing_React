@@ -27,6 +27,7 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Modal from "react-responsive-modal";
 import OrderTab from "./OrderTabs/OrderTab";
+import DeliveredTab from "./OrderTabs/DeliveredTab";
 
 class Orders extends Component {
   constructor(props) {
@@ -565,7 +566,7 @@ class Orders extends Component {
             </li>
             <li
               className="nav-item"
-              onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
+              // onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
             >
               <a
                 className="nav-link"
@@ -939,7 +940,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-           <OrderTab />
+            <OrderTab />
           </div>
           <div
             className="tab-pane fade"
@@ -1291,200 +1292,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            <div className="table-cntr store dv-table-paging">
-              <Table
-                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                columns={[
-                  {
-                    title: "Invoice no.",
-                    dataIndex: "invoiceNo",
-                  },
-                  {
-                    title: "Customer",
-                    render: (row, item) => {
-                      return (
-                        <div>
-                          <p>{item.customerName},</p>
-                          <p className="order-small-font">
-                            {item.mobileNumber}
-                          </p>
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    title: "Items",
-                    render: (row, item) => {
-                      return (
-                        <div className="d-flex align-items-center">
-                          <p>{item.orderDeliveredItems.length}</p>
-                          <Popover
-                            content={
-                              <Table
-                                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                                columns={[
-                                  {
-                                    title: "Item ID",
-                                    dataIndex: "itemID",
-                                  },
-                                  {
-                                    title: "Item Name",
-                                    dataIndex: "itemName",
-                                    width: 150,
-                                  },
-                                  {
-                                    title: "Item Price",
-                                    dataIndex: "itemPrice",
-                                  },
-                                  {
-                                    title: "Quantity",
-                                    dataIndex: "quantity",
-                                  },
-                                ]}
-                                scroll={{ y: 240 }}
-                                pagination={false}
-                                dataSource={item.orderDeliveredItems}
-                              />
-                            }
-                            trigger="click"
-                            overlayClassName="order-popover-table order-popover"
-                            onVisibleChange={(visible) =>
-                              this.setState({ orderPopoverOverlay: visible })
-                            }
-                          >
-                            <img src={OrderHamb} className="order-hamb" />
-                          </Popover>
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    title: "Date",
-                    render: (row, item) => {
-                      return (
-                        <div>
-                          <p>{item.date}</p>
-                          <p className="order-small-font">{item.time}</p>
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    title: "Status",
-                    className:
-                      "camp-status-header camp-status-header-statusFilter",
-                    render: (row, item) => {
-                      return (
-                        <div className="d-flex align-items-center">
-                          <p className="deliv-status">{item.statusName}</p>
-                        </div>
-                      );
-                    },
-                    filterDropdown: (data, row) => {
-                      return (
-                        <div className="campaign-status-drpdwn">
-                          <ul>
-                            {this.state.statusFilterData !== null &&
-                              this.state.statusFilterData.map((item, b) => (
-                                <li>
-                                  <input
-                                    type="checkbox"
-                                    id={"New" + item.statusID}
-                                    className="ch1"
-                                    onChange={this.handleCheckDeliIndividualStatus.bind(
-                                      this
-                                    )}
-                                    // checked={this.state.CheckBoxAllStatus}
-                                    name="DeliveredStatus"
-                                    attrIds={item.statusID}
-                                  />
-                                  <label htmlFor={"New" + item.statusID}>
-                                    <span className="ch1-text">
-                                      {item.statusName}
-                                    </span>
-                                  </label>
-                                </li>
-                              ))}
-                          </ul>
-                          <div className="dv-status">
-                            <button
-                              className="btn-apply-status"
-                              onClick={this.handleGetOrderDeliveredData.bind(
-                                this
-                              )}
-                            >
-                              Apply
-                            </button>
-                            <button className="btn-cancel-status">
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    },
-                    filterDropdownVisible: this.state
-                      .filterOrderDeliveredStatus,
-                    onFilterDropdownVisibleChange: (visible) =>
-                      this.setState({ filterOrderDeliveredStatus: visible }),
-                    filterIcon: (filtered) => (
-                      <span
-                        style={{ color: filtered ? "#1890ff" : undefined }}
-                      ></span>
-                    ),
-                  },
-                  {
-                    title: "Action",
-                    render: (row, item) => {
-                      return (
-                        <div className="d-flex">
-                          <button
-                            className={
-                              item.actionTypeName === "Delivered"
-                                ? "delibutn deliv-grid-butn"
-                                : item.actionTypeName === "Mark As Delivered"
-                                ? "markasbutn deliv-grid-butn"
-                                : "pickedbutn deliv-grid-butn"
-                            }
-                          >
-                            {item.actionTypeName}
-                            {/* {item.statusName === "Delivered"
-                              ? "Delivered"
-                              : item.statusName === "RTO"
-                                ? "Mark As Delivered"
-                                : "Picked"} */}
-                          </button>
-                        </div>
-                      );
-                    },
-                  },
-                ]}
-                pagination={false}
-                showSizeChanger={true}
-                onShowSizeChange={true}
-                dataSource={this.state.deliveredGridData}
-              />
-              <Pagination
-                currentPage={this.state.currentPage}
-                totalSize={this.state.totalCount}
-                // totalSize={row.customerCount}
-                sizePerPage={this.state.postsPerPage}
-                changeCurrentPage={this.PaginationOnChange}
-                theme="bootstrap"
-              />
-              <div className="position-relative">
-                <div className="item-selection Camp-pagination">
-                  <select
-                    value={this.state.postsPerPage}
-                    onChange={this.handlePageItemchange}
-                  >
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={30}>30</option>
-                  </select>
-                  <p>Items per page</p>
-                </div>
-              </div>
-            </div>
+            <DeliveredTab />
           </div>
           <div
             className="tab-pane fade"
@@ -1515,7 +1323,8 @@ class Orders extends Component {
                       return (
                         <div className="d-flex">
                           {item.awbNo !== "" ? (
-                            item.referenceNo !== "" && item.isProceed === true ? (
+                            item.referenceNo !== "" &&
+                            item.isProceed === true ? (
                               <button className="btn-ref deliv-grid-butn">
                                 {item.referenceNo}
                               </button>
