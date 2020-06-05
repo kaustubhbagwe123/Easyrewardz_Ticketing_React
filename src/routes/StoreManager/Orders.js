@@ -29,6 +29,7 @@ import Modal from "react-responsive-modal";
 import OrderTab from "./OrderTabs/OrderTab";
 import DeliveredTab from "./OrderTabs/DeliveredTab";
 import ShoppingBagTab from "./OrderTabs/ShoppingBagTab";
+import ShipmentAssignedTab from "./OrderTabs/ShipmentAssignedTab";
 
 class Orders extends Component {
   constructor(props) {
@@ -973,131 +974,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shipment-assigned-tab"
           >
-            <div className="table-cntr store dv-table-paging">
-              <Table
-                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                columns={[
-                  {
-                    title: "AWS No.",
-                    dataIndex: "awbNo",
-                  },
-                  {
-                    title: "Invoice No.",
-                    dataIndex: "invoiceNo",
-                  },
-                  {
-                    title: "Courier Partner",
-                    dataIndex: "courierPartner",
-                  },
-                  {
-                    title: "Reference No.",
-                    dataIndex: "referenceNo",
-                    render: (row, item) => {
-                      return (
-                        <div className="d-flex">
-                          {item.awbNo !== "" ? (
-                            item.referenceNo !== "" &&
-                            item.isProceed === true ? (
-                              <button className="btn-ref deliv-grid-butn">
-                                {item.referenceNo}
-                              </button>
-                            ) : (
-                              <button className="btn-ref deliv-grid-butn">
-                                <input
-                                  type="text"
-                                  className="enterpod"
-                                  placeholder="Enter POD"
-                                />
-                              </button>
-                            )
-                          ) : (
-                            <Popover
-                              content={
-                                <div className="staffdetailspopup">
-                                  <label>Store Name</label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Store Name"
-                                    value={item.storeName}
-                                  />
-                                  <label>Staff Name</label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Staff Name"
-                                    value={item.staffName}
-                                  />
-                                  <label>Mobile No.</label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Mobile No."
-                                    value={item.mobileNumber}
-                                  />
-                                  <button type="button" className="popbtnno">
-                                    Cancel
-                                  </button>
-                                  <button type="button" className="popbtn">
-                                    Done
-                                  </button>
-                                </div>
-                              }
-                              trigger="click"
-                              overlayClassName="order-popover-table order-popover"
-                              onVisibleChange={(visible) =>
-                                this.setState({ orderPopoverOverlay: visible })
-                              }
-                            >
-                              <button className="btn-ref deliv-grid-butn">
-                                Staff Details
-                              </button>
-                            </Popover>
-                          )}
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    title: "Action",
-                    render: (row, item) => {
-                      return item.referenceNo === "" ? (
-                        <div className="d-flex">
-                          <button className="btn-proc deliv-grid-butn">
-                            Proceed
-                          </button>
-                        </div>
-                      ) : null;
-                    },
-                  },
-                ]}
-                pagination={false}
-                showSizeChanger={true}
-                onShowSizeChange={true}
-                dataSource={this.state.shipmentAssignedGridData}
-              />
-              <Pagination
-                currentPage={this.state.assignCurrentPage}
-                totalSize={this.state.totalCount}
-                // totalSize={row.customerCount}
-                sizePerPage={this.state.assignPostsPerPage}
-                changeCurrentPage={this.AssignedPaginationOnChange}
-                theme="bootstrap"
-              />
-              <div className="position-relative">
-                <div className="item-selection Camp-pagination">
-                  <select
-                    value={this.state.assignPostsPerPage}
-                    onChange={this.handleAssignedPageItemchange}
-                  >
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={30}>30</option>
-                  </select>
-                  <p>Items per page</p>
-                </div>
-              </div>
-            </div>
+            <ShipmentAssignedTab />
           </div>
         </div>
       </Fragment>
