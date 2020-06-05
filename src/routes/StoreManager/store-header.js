@@ -205,6 +205,7 @@ class Header extends Component {
     });
   }
   setAccessUser(data) {
+    debugger;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
@@ -216,7 +217,9 @@ class Header extends Component {
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
       activeClass:
-        page === "storedashboard" ? "active single-menu" : "single-menu",
+        page.toLowerCase() === "storedashboard".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var task = {
       data: "Task",
@@ -225,7 +228,10 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "StoreTask".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var claim = {
       data: "Claim",
@@ -234,7 +240,10 @@ class Header extends Component {
       logoBlue: ClaimLogoBlue,
       imgAlt: "claim icon",
       imgClass: "claim-logo",
-      activeClass: page === "claim" ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "claim".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var campaign = {
       data: "Campaign",
@@ -243,7 +252,10 @@ class Header extends Component {
       logoBlue: CampaignLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
-      activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "campaign".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var appointment = {
       data: "Appointment",
@@ -253,7 +265,9 @@ class Header extends Component {
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
       activeClass:
-        page === "Appointment" ? "active single-menu" : "single-menu",
+        page.toLowerCase() === "Appointment".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -449,8 +463,8 @@ class Header extends Component {
             percentLog,
             workTime: data.workTimeInPercentage,
             workTimeHours: data.totalWorkingTime,
-            programCode: data.programCode?data.programCode:"",
-            storeCode: data.storeCode?data.storeCode:"",
+            programCode: data.programCode ? data.programCode : "",
+            storeCode: data.storeCode ? data.storeCode : "",
           });
           if (data.programCode !== "" && data.storeCode !== "") {
             self.handleCreateSocketConnection(data.programCode, data.storeCode);

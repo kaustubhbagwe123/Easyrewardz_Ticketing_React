@@ -1951,7 +1951,7 @@ class StoreCampaign extends Component {
                             >
                               <div className="date-time-resp">
                                 <DatePicker
-                                  id="startDate"
+                                  id={"startDate"+item.id}
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
@@ -2129,7 +2129,7 @@ class StoreCampaign extends Component {
                                   >
                                     <div className="date-time-resp">
                                       <DatePicker
-                                        id="startDate"
+                                        id={"startDate"+item.id}
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
