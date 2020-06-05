@@ -36,12 +36,16 @@ class ChatSettings extends Component {
       cardConfigStatus: "",
       isLoadingAdd: false,
       isLoadingUpdate: false,
+      isManual: false,
+      isAutoMatic: false,
+      approvalTypeData: [],
     };
   }
 
   componentDidMount() {
     this.handleGetChatSession();
     this.handleGetCardConfiguration();
+    this.handleGetCardImageApproval();
 
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -281,6 +285,79 @@ class ChatSettings extends Component {
       [name]: value,
     });
   };
+  handleTypeChange = (e) => {
+    debugger;
+    var id = e.target.id;
+
+    if (id === "Automatic") {
+      if (this.state.approvalTypeData[1].isEnabled) {
+        this.state.approvalTypeData[1].isEnabled = false;
+        this.state.approvalTypeData[0].isEnabled = true;
+      } else {
+        this.state.approvalTypeData[0].isEnabled = true;
+      }
+    } else {
+      if (this.state.approvalTypeData[0].isEnabled) {
+        this.state.approvalTypeData[0].isEnabled = false;
+        this.state.approvalTypeData[1].isEnabled = true;
+      } else {
+        this.state.approvalTypeData[1].isEnabled = true;
+      }
+    }
+    this.setState({ approvalTypeData: this.state.approvalTypeData });
+  };
+
+  ////handle get card =image approval
+  handleGetCardImageApproval() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetCardImageApproval",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ approvalTypeData: responseData });
+        } else {
+          self.setState({ approvalTypeData: [] });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageApproval");
+      });
+  }
+
+  ////handle update card image approval
+  handleUpdateCardImageApproval() {
+    let self = this;
+    var id = this.state.approvalTypeData.filter((x) => x.isEnabled === true)[0]
+      .id;
+    debugger;
+    this.setState({ isLoadingAdd: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/UpdateCardImageApproval",
+      headers: authHeader(),
+      params: { ID: id },
+    })
+      .then((response) => {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success") {
+          self.setState({ isLoadingAdd: false });
+          self.handleGetCardImageApproval();
+        } else {
+          self.setState({ isLoadingAdd: false });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetCardImageApproval");
+      });
+  }
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -595,7 +672,75 @@ class ChatSettings extends Component {
                                 UPDATE
                                 {this.state.isLoadingUpdate ? (
                                   <FontAwesomeIcon
-                                  className="circular-loader chatsettingload"
+                                    className="circular-loader chatsettingload"
+                                    icon={faCircleNotch}
+                                    spin
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label={"CARD ASSETS CONFIGURATION"}>
+                  <div className="row chattab-card">
+                    <div className="col-md-12">
+                      <div className="card" style={{ height: "auto" }}>
+                        <div className="row">
+                          <div className="col-md-5 m-auto">
+                            <div className="right-sect-div">
+                              <h3>CARD ASSETS CONFIGURATION</h3>
+                              <div className="module-switch crm-margin-div crm-padding-div">
+                                <div className="switch switch-primary d-inline m-r-10">
+                                  {this.state.approvalTypeData != null
+                                    ? this.state.approvalTypeData.map(
+                                        (item, i) => {
+                                          debugger;
+                                          return (
+                                            <div key={i}>
+                                              <label
+                                                className="storeRole-name-text"
+                                                style={{ width: "70%" }}
+                                              >
+                                                {item.approvalType}
+                                              </label>
+                                              <input
+                                                type="checkbox"
+                                                id={item.approvalType}
+                                                name="allModules"
+                                                checked={item.isEnabled}
+                                                onChange={this.handleTypeChange.bind(
+                                                  this
+                                                )}
+                                              />
+                                              <label
+                                                htmlFor={item.approvalType}
+                                                className="cr cr-float-auto"
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
+                                      )
+                                    : null}
+                                </div>
+                              </div>
+                              <button
+                                class="Schedulenext1 w-100 mb-0 mt-4"
+                                type="button"
+                                disabled={this.state.isLoadingAdd}
+                                onClick={this.handleUpdateCardImageApproval.bind(
+                                  this
+                                )}
+                              >
+                                SUBMIT
+                                {this.state.isLoadingAdd ? (
+                                  <FontAwesomeIcon
+                                    className="circular-loader chatsettingload"
                                     icon={faCircleNotch}
                                     spin
                                   />

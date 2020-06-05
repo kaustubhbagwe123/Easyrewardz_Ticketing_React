@@ -20,6 +20,9 @@ class StoreProgramCode extends Component {
     };
     this.validator = new SimpleReactValidator();
   }
+  componentDidMount() {
+    localStorage.clear();
+  }
 
   hanleChange(e) {
     e.preventDefault();

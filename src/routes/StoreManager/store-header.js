@@ -175,6 +175,7 @@ class Header extends Component {
       translateLanguage: {},
       storeCode: "",
       actionBtn: false,
+      isCustEndChat: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -275,7 +276,7 @@ class Header extends Component {
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
       activeClass:
-        page === "storedashboard" ? "active single-menu" : "single-menu",
+        page.toLowerCase() === "storedashboard".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var task = {
       data: "Task",
@@ -284,7 +285,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page === "StoreTask" ? "active single-menu" : "single-menu",
+      activeClass: page.toLowerCase() === "StoreTask".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var claim = {
       data: "Claim",
@@ -293,7 +294,7 @@ class Header extends Component {
       logoBlue: ClaimLogoBlue,
       imgAlt: "claim icon",
       imgClass: "claim-logo",
-      activeClass: page === "claim" ? "active single-menu" : "single-menu",
+      activeClass: page.toLowerCase() === "claim".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var campaign = {
       data:
@@ -305,7 +306,7 @@ class Header extends Component {
       logoBlue: CampaignLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
-      activeClass: page === "Campaign" ? "active single-menu" : "single-menu",
+      activeClass: page.toLowerCase() === "Campaign".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var appointment = {
       data:
@@ -318,7 +319,7 @@ class Header extends Component {
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
       activeClass:
-        page === "Appointment" ? "active single-menu" : "single-menu",
+        page.toLowerCase() === "Appointment".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var myTicket = {
       data: "MyTicket",
@@ -327,7 +328,7 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page === "MyTicket" ? "active single-menu" : "single-menu",
+      activeClass: page.toLowerCase() === "MyTicket".toLowerCase() ? "active single-menu" : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -590,6 +591,7 @@ class Header extends Component {
         if (status === true) {
           //NotificationManager.success(Msg);
           localStorage.clear();
+          
           window.location.href = "/";
         }
       })
@@ -1254,11 +1256,13 @@ class Header extends Component {
     mobileNo,
     customerId,
     ProgramCode,
-    StoreID
+    StoreID,
+    isCustEndChat
   ) => {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          isCustEndChat,
           storeID: StoreID,
           chatId: id,
           customerName: name,
@@ -1293,6 +1297,7 @@ class Header extends Component {
         this.handleGetChatMessagesList(id);
       } else {
         this.setState({
+          isCustEndChat,
           storeID: StoreID,
           chatId: id,
           customerName: name,
@@ -1739,11 +1744,13 @@ class Header extends Component {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
                 (x) => x.mobileNo === data[3].substring(2)
               );
+
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
                   // self.handleGetChatNotificationCount();
                   // self.handleGetOngoingChat();
                   var chatId = 0;
+                  self.setState({ isCustEndChat: data[6] });
                   if (self.state.ongoingChatsData.length > 0) {
                     chatId = self.state.ongoingChatsData.filter(
                       (x) => x.mobileNo === self.state.mobileNo
@@ -1808,10 +1815,37 @@ class Header extends Component {
   handleActionClose = () => {
     this.setState({ actionBtn: false });
   };
+  handleUpdateStoreManagerChatStatus(id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/UpdateStoreManagerChatStatus",
+      headers: authHeader(),
+      params: { ChatID: this.state.chatId, ChatStatusID: id },
+    })
+      .then((response) => {
+        debugger;
+        var message = response.data.message;
+        var responseData = response.data.responseData;
+        if (message === "Success" && responseData) {
+          self.setState({
+            customerName: "",
+            messageData: [],
+            isCustEndChat: false,
+          });
+          self.handleGetOngoingChat();
+          self.handleActionClose();
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleUpdateStoreManagerChatStatus");
+      });
+  }
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    console.log(this.state.isCustEndChat, "---------isCustEndChat");
     return (
       <React.Fragment>
         <div
@@ -2456,7 +2490,8 @@ class Header extends Component {
                               chat.mobileNo,
                               chat.customerID,
                               chat.programCode,
-                              chat.storeID
+                              chat.storeID,
+                              chat.isCustEndChat
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -2843,7 +2878,11 @@ class Header extends Component {
                         <ul
                           className="nav nav-tabs"
                           role="tablist"
-                          style={{ width: "50%", display: "inline-block" }}
+                          style={{
+                            width: "50%",
+                            display: "inline-block",
+                            border: "none",
+                          }}
                         >
                           {this.state.customerName && (
                             <li className="nav-item">
@@ -2881,20 +2920,22 @@ class Header extends Component {
                             </a>
                           </li>
                         </ul>
-                        <button
-                          type="button"
-                          className="btn-store-resolved chatactionbtn"
-                          onClick={this.handleActionOpen.bind(this)}
-                        >
-                          <label className="myticket-submit-solve-button-text">
-                            Action
-                          </label>
-                          <img
-                            src={DownWhiteImg}
-                            alt="down-icon"
-                            className="down-white"
-                          />
-                        </button>
+                        {this.state.customerName !== "" ? (
+                          <button
+                            type="button"
+                            className="btn-store-resolved chatactionbtn"
+                            onClick={this.handleActionOpen.bind(this)}
+                          >
+                            <label className="myticket-submit-solve-button-text">
+                              Action
+                            </label>
+                            <img
+                              src={DownWhiteImg}
+                              alt="down-icon"
+                              className="down-white"
+                            />
+                          </button>
+                        ) : null}
                       </div>
                       <div className="tab-content chattabtitle">
                         <div
@@ -2977,12 +3018,22 @@ class Header extends Component {
                                     })
                                   : null}
                               </div>
+                              {this.state.isCustEndChat &&
+                              this.state.customerName !== "" ? (
+                                <label className="endchatlbl">
+                                  Customer has end chat
+                                </label>
+                              ) : null}
                             </div>
                           ) : null}
                           <div
                             className="chatcontentdivtab chat-tabs-desktop"
                             style={{
                               height: !this.state.isDownbtn ? "80%" : "",
+                              pointerEvents:
+                                this.state.isCustEndChat === true
+                                  ? "none"
+                                  : "all",
                             }}
                           >
                             {this.state.customerName !== "" ? (
@@ -5310,9 +5361,19 @@ class Header extends Component {
         >
           <div className="store-hdrtMdal">
             <div className="row">
-              <label className={"actionmodallbl"}>Close Chat</label>
+              <label
+                className={"actionmodallbl"}
+                style={{
+                  cursor:
+                    this.state.isCustEndChat === false ? "no-drop" : "Pointer",
+                }}
+                disabled={this.state.isCustEndChat === false ? true : false}
+                onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
+              >
+                Close Chat
+              </label>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <label className={"actionmodallbl"}>Hold Chat</label>
             </div>
             <div className="row">
@@ -5320,7 +5381,7 @@ class Header extends Component {
             </div>
             <div className="row">
               <label className={"actionmodallbl"}>Create Ticket</label>
-            </div>
+            </div> */}
           </div>
         </Modal>
       </React.Fragment>

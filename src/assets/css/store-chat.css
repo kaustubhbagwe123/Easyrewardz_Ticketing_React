@@ -632,6 +632,7 @@ p {
 .chatcontentdivtab .tab-content {
   padding-top: 18px;
   padding-bottom: 0;
+  cursor: pointer;
 }
 .chatcontentdivtab .nav-tabs .nav-link.active {
   color: #fff;
@@ -1490,6 +1491,7 @@ p {
   display: inline-block;
   margin-right: 10px;
   margin-left: 0px;
+  outline: none;
 }
 #actionmodalId {
   border-radius: 8px;
@@ -1500,10 +1502,19 @@ p {
   display: inline-block;
 }
 
-.actionmodallbl{
+.actionmodallbl {
   color: #000;
   font-size: 15px;
   font-weight: 400;
   cursor: pointer;
   padding: 7px;
+}
+
+.endchatlbl {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #fff;
+  font-weight: bold;
+  background-color: #eb7372;
 }
