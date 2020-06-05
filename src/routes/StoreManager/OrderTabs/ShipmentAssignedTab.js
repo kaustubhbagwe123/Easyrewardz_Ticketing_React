@@ -14,6 +14,7 @@ class ShipmentAssignedTab extends Component {
 
     this.state = {
       shipmentAssignedGridData: [],
+
       totalCount: 0,
       assignCurrentPage: 1,
       assignPostsPerPage: 10,

@@ -16,6 +16,10 @@ class Orders extends Component {
     super(props);
     this.state = {
       orderPopoverOverlay: false,
+      orderTab1: true,
+      shipmentTab2: false,
+      deliverredTab3: false,
+      shipmentAssignTab4: false,
     };
   }
 
@@ -28,6 +32,26 @@ class Orders extends Component {
       value.classList.remove("active");
     }
   }
+  handleOrderTabOnChange = (tabName) => {
+    debugger
+    if (tabName === "orderTab") {
+      this.setState({
+        orderTab1: true,
+      });
+    } else if (tabName === "shipmentTab") {
+      this.setState({
+        shipmentTab2: true,
+      });
+    } else if (tabName === "deliveredTab") {
+      this.setState({
+        deliverredTab3: true,
+      });
+    } else if (tabName === "shipmentAssignTab") {
+      this.setState({
+        shipmentAssignTab4: true,
+      });
+    }
+  };
 
   render() {
     const { Option } = Select;
@@ -129,6 +153,7 @@ class Orders extends Component {
                 role="tab"
                 aria-controls="order-tab"
                 aria-selected="false"
+                // onClick={this.handleOrderTabOnChange("orderTab")}
               >
                 Order
               </a>
@@ -141,6 +166,7 @@ class Orders extends Component {
                 role="tab"
                 aria-controls="shipment-tab"
                 aria-selected="false"
+                // onClick={this.handleOrderTabOnChange("shipmentTab")}
               >
                 Shipment
               </a>
@@ -156,6 +182,7 @@ class Orders extends Component {
                 role="tab"
                 aria-controls="delivered-tab"
                 aria-selected="false"
+                // onClick={this.handleOrderTabOnChange("deliveredTab")}
               >
                 Delivered
               </a>
@@ -168,6 +195,7 @@ class Orders extends Component {
                 role="tab"
                 aria-controls="shipment-assigned-tab"
                 aria-selected="false"
+                // onClick={this.handleOrderTabOnChange("shipmentAssignTab")}
               >
                 Shipment Assigned
               </a>
