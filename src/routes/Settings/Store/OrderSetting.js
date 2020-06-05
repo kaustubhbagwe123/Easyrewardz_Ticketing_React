@@ -11,12 +11,12 @@ class OrderSetting extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      moduleConfigData: {},
-      orderConfigData: {},
-      selTab: "Module",
-    };
-  }
+        this.state = {
+           moduleConfigData: {},
+           orderConfigData: {},
+           selTab: "Module Configuration"
+        }
+    }
 
   componentDidMount() {
     this.handleGetModuleConfigData();

@@ -228,59 +228,68 @@ class Orders extends Component {
       //   },
       // ],
       deliveredGridData: [],
-      shipmentAssignedGridData: [
-        {
-          AWSNo: "889667123",
-          InvoiceNo: "981812345",
-          CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345",
-        },
-        {
-          AWSNo: "889667123",
-          InvoiceNo: "981812345",
-          CourierPartner: "Blue Dart",
-          ReferenceNo: "BD12345",
-        },
-        {
-          AWSNo: "889667123",
-          InvoiceNo: "981812345",
-          CourierPartner: "Blue Dart",
-          ReferenceNo: "",
-        },
-        {
-          AWSNo: "NIL",
-          InvoiceNo: "981812345",
-          CourierPartner: "Store",
-          ReferenceNo: "",
-        },
-      ],
+      // shipmentAssignedGridData: [
+      //   {
+      //     AWSNo: "889667123",
+      //     InvoiceNo: "981812345",
+      //     CourierPartner: "Blue Dart",
+      //     ReferenceNo: "BD12345",
+      //   },
+      //   {
+      //     AWSNo: "889667123",
+      //     InvoiceNo: "981812345",
+      //     CourierPartner: "Blue Dart",
+      //     ReferenceNo: "BD12345",
+      //   },
+      //   {
+      //     AWSNo: "889667123",
+      //     InvoiceNo: "981812345",
+      //     CourierPartner: "Blue Dart",
+      //     ReferenceNo: "",
+      //   },
+      //   {
+      //     AWSNo: "NIL",
+      //     InvoiceNo: "981812345",
+      //     CourierPartner: "Store",
+      //     ReferenceNo: "",
+      //   },
+      // ],
       filterOrderDeliveredStatus: false,
       filterOrderStatus: false,
       filterShipmentStatus: false,
       totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      statusFilterData: [],
+      strStatus: "",
+      assignCurrentPage: 1,
+      assignPostsPerPage: 10,
+      shipmentAssignedGridData: [],
       ShipmentMdlbtn: false,
     };
   }
 
   componentDidMount() {
     this.handleGetOrderDeliveredData();
+    this.handleGetShipmentAssignedData();
   }
 
   handleGetOrderDeliveredData() {
     debugger;
     let self = this;
+    var pageNumber = this.state.currentPage;
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
       headers: authHeader(),
       data: {
         SearchText: "",
-        PageNo: 1,
-        PageSize: 10,
-        FilterStatus: "",
+        PageNo: pageNumber,
+        PageSize: this.state.postsPerPage,
+        FilterStatus: this.state.strStatus
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -288,6 +297,107 @@ class Orders extends Component {
           self.setState({
             deliveredGridData: data.orderDelivereds,
             totalCount: data.totalCount,
+          });
+        }else{
+          self.setState({
+            deliveredGridData: [],
+            totalCount: 0,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  PaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      currentPage: numPage,
+    });
+
+    this.handleGetOrderDeliveredData();
+  };
+
+  handlePageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+    });
+
+    this.handleGetOrderDeliveredData();
+  };
+
+  handleGetOrderStatusFilterData(pageID) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
+      headers: authHeader(),
+      params: {
+        pageID: pageID
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            statusFilterData: data
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleCheckDeliIndividualStatus() {
+    debugger;
+    var checkboxes = document.getElementsByName("DeliveredStatus");
+    var strStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+          strStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strStatus
+    });
+  }
+
+  handleGetShipmentAssignedData() {
+    debugger;
+    let self = this;
+    var pageNumber = this.state.assignCurrentPage;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetShipmentAssignedDetails",
+      headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: pageNumber,
+        PageSize: this.state.assignPostsPerPage,
+        FilterReferenceNo: ""
+      },
+    }).then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            shipmentAssignedGridData: data.shipmentAssigned,
+            totalCount: data.totalCount,
+          });
+        }else{
+          self.setState({
+            shipmentAssignedGridData: [],
+            totalCount: 0,
           });
         }
       })
@@ -315,6 +425,23 @@ class Orders extends Component {
       value.classList.remove("active");
     }
   }
+
+  AssignedPaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      assignCurrentPage: numPage,
+    });
+
+    this.handleGetShipmentAssignedData();
+  };
+
+  handleAssignedPageItemchange = async (e) => {
+    await this.setState({
+      assignPostsPerPage: e.target.value,
+    });
+
+    this.handleGetShipmentAssignedData();
+  };
 
   render() {
     const { Option } = Select;
@@ -432,7 +559,9 @@ class Orders extends Component {
                 Shipment
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item"
+              onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
+            >
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -576,8 +705,8 @@ class Orders extends Component {
                               <img src={OrderInfo} className="order-info" />
                             </Popover>
                           ) : (
-                            ""
-                          )}
+                              ""
+                            )}
                         </div>
                       );
                     },
@@ -606,15 +735,15 @@ class Orders extends Component {
                           {item.PickupDate === "" && item.PickupTime === "" ? (
                             <p className="order-clr-blue">—NIL—</p>
                           ) : (
-                            <>
-                              <p className="order-clr-blue">
-                                {item.PickupDate},
+                              <>
+                                <p className="order-clr-blue">
+                                  {item.PickupDate},
                               </p>
-                              <p className="order-clr-blue order-more-small-font">
-                                {item.PickupTime}
-                              </p>
-                            </>
-                          )}
+                                <p className="order-clr-blue order-more-small-font">
+                                  {item.PickupTime}
+                                </p>
+                              </>
+                            )}
                         </div>
                       );
                     },
@@ -1590,52 +1719,33 @@ class Orders extends Component {
                       return (
                         <div className="campaign-status-drpdwn">
                           <ul>
-                            <li>
-                              <input
-                                type="checkbox"
-                                id="Campall-status"
-                                className="ch1"
-                                // onChange={this.handleCheckCampAllStatus.bind(this)}
-                                // checked={this.state.CheckBoxAllStatus}
-                                name="CampallStatus"
-                              />
-                              <label htmlFor="Campall-status">
-                                <span className="ch1-text">Delivered</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input
-                                type="checkbox"
-                                id="New100"
-                                className="ch1"
-                                // onChange={this.handleCheckCampIndividualStatus.bind(
-                                //   this
-                                // )}
-                                name="CampallStatus"
-                                attrIds={100}
-                              />
-                              <label htmlFor="New100">
-                                <span className="ch1-text">RTO</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input
-                                type="checkbox"
-                                id="Inproress101"
-                                className="ch1"
-                                // onChange={this.handleCheckCampIndividualStatus.bind(
-                                //   this
-                                // )}
-                                name="CampallStatus"
-                                attrIds={101}
-                              />
-                              <label htmlFor="Inproress101">
-                                <span className="ch1-text">Self Picked</span>
-                              </label>
-                            </li>
+                            {this.state.statusFilterData !== null &&
+                              this.state.statusFilterData.map(
+                                (item, b) => (
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id={"New"+item.statusID}
+                                      className="ch1"
+                                      onChange={this.handleCheckDeliIndividualStatus.bind(
+                                        this
+                                      )}
+                                      // checked={this.state.CheckBoxAllStatus}
+                                      name="DeliveredStatus"
+                                      attrIds={item.statusID}
+                                    />
+                                    <label htmlFor={"New"+item.statusID}>
+                                      <span className="ch1-text">{item.statusName}</span>
+                                    </label>
+                                  </li>
+
+                                )
+                              )}
                           </ul>
                           <div className="dv-status">
-                            <button className="btn-apply-status">Apply</button>
+                            <button className="btn-apply-status"
+                            onClick={this.handleGetOrderDeliveredData.bind(this)}
+                            >Apply</button>
                             <button className="btn-cancel-status">
                               Cancel
                             </button>
@@ -1663,8 +1773,8 @@ class Orders extends Component {
                               item.actionTypeName === "Delivered"
                                 ? "delibutn deliv-grid-butn"
                                 : item.actionTypeName === "Mark As Delivered"
-                                ? "markasbutn deliv-grid-butn"
-                                : "pickedbutn deliv-grid-butn"
+                                  ? "markasbutn deliv-grid-butn"
+                                  : "pickedbutn deliv-grid-butn"
                             }
                           >
                             {item.actionTypeName}
@@ -1685,17 +1795,17 @@ class Orders extends Component {
                 dataSource={this.state.deliveredGridData}
               />
               <Pagination
-                currentPage={this.state.childCurrentPage}
+                currentPage={this.state.currentPage}
                 totalSize={this.state.totalCount}
                 // totalSize={row.customerCount}
-                sizePerPage={this.state.ChildPostsPerPage}
+                sizePerPage={this.state.postsPerPage}
                 changeCurrentPage={this.PaginationOnChange}
                 theme="bootstrap"
               />
               <div className="position-relative">
                 <div className="item-selection Camp-pagination">
                   <select
-                    value={this.state.ChildPostsPerPage}
+                    value={this.state.postsPerPage}
                     onChange={this.handlePageItemchange}
                   >
                     <option value={10}>10</option>
@@ -1788,8 +1898,8 @@ class Orders extends Component {
                               <button className="btn-ref deliv-grid-butn">
                                 Staff Details
                               </button>
-                            </Popover>
-                          )}
+                              </Popover>
+                            )}
                         </div>
                       );
                     },
@@ -1807,11 +1917,32 @@ class Orders extends Component {
                     },
                   },
                 ]}
-                pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+                pagination={false}
                 showSizeChanger={true}
                 onShowSizeChange={true}
                 dataSource={this.state.shipmentAssignedGridData}
               />
+              <Pagination
+                currentPage={this.state.assignCurrentPage}
+                totalSize={this.state.totalCount}
+                // totalSize={row.customerCount}
+                sizePerPage={this.state.assignPostsPerPage}
+                changeCurrentPage={this.AssignedPaginationOnChange}
+                theme="bootstrap"
+              />
+              <div className="position-relative">
+                <div className="item-selection Camp-pagination">
+                  <select
+                    value={this.state.assignPostsPerPage}
+                    onChange={this.handleAssignedPageItemchange}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
