@@ -9940,6 +9940,106 @@ table tr th:last-child {
   text-align: center;
   font-weight: normal;
 }
+#article-popup .tabs-content {
+  padding: 20px;
+  margin: 0;
+}
+#article-popup .step-progress {
+  padding: 25px 0 0;
+}
+#article-popup .footer-buttons {
+  padding: 0 10px;
+}
+#article-popup .btn-prev {
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 14px;
+  border-color: #2561a8;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#article-popup .btn-next {
+  background-color: #fff;
+  color: #2561a8;
+  font-size: 14px;
+  border-color: #2561a8;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.airwaybox {
+  background-color: #F6F9FB;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  min-height: 300px;
+}
+.airwaycontent {
+  margin-top: 8%;
+}
+.airwaycontent .cardtick {
+  height: 50px;
+  margin-bottom: 15px;
+}
+.airwaycontent h2 {
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+.airwaycontent p {
+  font-size: 17px;
+  color: #999;
+  margin-bottom: 5px;
+}
+.airwaycontent ul {
+  border-top: 1px solid #ddd;
+  display: inline-block;
+}
+.airwaycontent ul li {
+  font-size: 18px;
+  color: #666;
+  padding-top: 5px;
+}
+.airwaycontent ul li:first-child {
+  margin-right: 30px;
+}
+#article-popup em {
+  display: none;
+}
+.progtrckr li {
+  margin-right: 50px;
+  padding-left: 20px;
+}
+#article-popup .progtrckr-done span {
+  color: #2561a8;
+  font-weight: bold;
+}
+#article-popup .progtrckr-doing span {
+  color: #2561a8;
+  font-weight: bold;
+}
+#article-popup .progtrckr {
+  margin: 20px;
+  border-bottom: 1px solid #ddd;
+  padding: 0;
+  padding-bottom: 12px;
+  margin-top: 0;
+}
+#article-popup .multi-step {
+  position: relative;
+}
+.progtrckr li:first-child {
+  position: relative;
+}
+.progtrckr li:first-child:before {
+  position: absolute;
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: #2561a8;
+  right: -46px;
+  top: 12px;
+}
+
 
 @media (min-width: 768px) {
   .storecards .col-sm-4 {

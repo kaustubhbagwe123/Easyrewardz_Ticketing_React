@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Table, Popover, Popconfirm, Select } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import StepZilla from "react-stepzilla";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import OrderHamb from "./../../assets/Images/order-hamb.png";
@@ -11,6 +12,7 @@ import OrderBag from "./../../assets/Images/order-bag.png";
 import CreditCard from "./../../assets/Images/credit-card.png";
 import NoPayment from "./../../assets/Images/no-payment.png";
 import CancelImg from "./../../assets/Images/cancel.png";
+import CardTick from "./../../assets/Images/card-tick.png";
 import Demo from "./../../store/Hashtag";
 import axios from "axios";
 import config from "../../helpers/config";
@@ -1466,45 +1468,25 @@ class Orders extends Component {
                 modalId="article-popup"
                 overlayId="logout-ovrly"
               >
-                <label className="heading">Article Mapping</label>
-                <img
-                  src={CancelImg}
-                  alt="cancelImg"
-                  className="cancalImg"
-                  onClick={this.handleShipmentModalClose.bind(this)}
-                />
-                <hr />
-                <div className="article-body">
-                  <span>
-                    Item id shown below mapped to this Order <b>334335</b> only.
-                    <br />
-                    Select any item id, you want to send for shipment.
-                  </span>
-                  <Table
-                    className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                    columns={[
-                      {
-                        title: "Item ID",
-                        dataIndex: "itemID",
-                      },
-                      {
-                        title: "Item Name",
-                        dataIndex: "itemName",
-                        width: 150,
-                      },
-                      {
-                        title: "Item Price",
-                        dataIndex: "itemPrice",
-                      },
-                      {
-                        title: "Quantity",
-                        dataIndex: "quantity",
-                      },
-                    ]}
-                    scroll={{ y: 240 }}
-                    pagination={false}
-                    // dataSource={item.orderDeliveredItems}
+                <div className="">
+                  <img
+                    src={CancelImg}
+                    alt="cancelImg"
+                    className="cancalImg"
+                    onClick={this.handleShipmentModalClose.bind(this)}
                   />
+                  <input type="checkbox" style={{position:"absolute",top:"48px",left: "40px"}}/>
+                  <input type="checkbox" style={{position:"absolute",top:"48px",left: "211px"}}/>
+                  <div className="step-progress">
+                    <StepZilla
+                      steps={steps}
+                      //startAtStep={3}
+                      stepsNavigation={false}
+                      backButtonText="Cancel"
+                      nextButtonText="Save / Next"
+                      onStepChange={this.handleChange}
+                    />
+                  </div>
                 </div>
               </Modal>
             </div>
@@ -1837,4 +1819,74 @@ class Orders extends Component {
     );
   }
 }
+
+const steps = [
+  { name: "Article Mapping", component: <Step1 /> },
+  { name: "Airway Bill No", component: <Step2 /> },
+];
+
+function Step1(props) {
+  return (
+    <div>
+      <div className="tabs-content">
+        <form>
+          <div className="article-body">
+            <span>
+              Item id shown below mapped to this Order <b>334335</b> only.
+              <br />
+              Select any item id, you want to send for shipment.
+            </span>
+            <Table
+              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
+              columns={[
+                {
+                  title: "Item ID",
+                  dataIndex: "itemID",
+                },
+                {
+                  title: "Item Name",
+                  dataIndex: "itemName",
+                  width: 150,
+                },
+                {
+                  title: "Item Price",
+                  dataIndex: "itemPrice",
+                },
+                {
+                  title: "Quantity",
+                  dataIndex: "quantity",
+                },
+              ]}
+              scroll={{ y: 240 }}
+              pagination={false}
+              // dataSource={item.orderDeliveredItems}
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+function Step2(props) {
+  return (
+    <div>
+      <div className="tabs-content">
+        <form>
+          <div className="text-center airwaybox">
+            <div className="airwaycontent">
+              <img src={CardTick} alt="CardTick" className="cardtick" />
+              <h2>AWB No - 889676467</h2>
+              <p>Successfully mapped to</p>
+              <ul>
+                <li>Invoice No - 909676467</li>
+                <li>Item ID - 9096 7646 7990</li>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default Orders;
