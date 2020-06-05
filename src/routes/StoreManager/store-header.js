@@ -5221,14 +5221,14 @@ class Header extends Component {
                                   width: "30%",
                                   render: (row, rowdata) => {
                                     return (
-                                      <>
+                                      <div className="d-flex">
                                         <p className="storeaget-chat-ctn">
                                           {rowdata.chatCount}
                                         </p>
                                         <p style={{ display: "inline-block" }}>
                                           {row}
                                         </p>
-                                      </>
+                                      </div>
                                     );
                                   },
                                 },
