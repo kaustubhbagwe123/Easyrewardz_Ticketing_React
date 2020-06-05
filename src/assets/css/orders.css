@@ -185,7 +185,21 @@
   z-index: 9;
   background: rgba(0, 0, 0, 0.3);
 }
-
+.shopping-popover-delete .ant-popover-inner {
+  position: relative;
+  left: 10px;
+}
+.shopping-popover-delete.ant-popover-placement-bottomRight
+  > .ant-popover-content
+  > .ant-popover-arrow,
+.shopping-popover-delete.ant-popover-placement-topRight
+  > .ant-popover-content
+  > .ant-popover-arrow {
+  right: 9px;
+}
+.shopping-delivery-header .ant-table-filter-icon {
+  left: 98px !important;
+}
 /* shopping bag ends */
 
 /* chetan css ends */
@@ -427,6 +441,7 @@
   text-shadow: none;
   box-shadow: none;
   color: #2561a8;
+  margin-left: 0;
 }
 .order-popover-butns .ant-popover-buttons button:last-child {
   width: 150px;
@@ -439,7 +454,7 @@
   box-shadow: none;
 }
 .order-popover-butns .ant-popover-buttons {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 .order-popover-no-pay .ant-popover-buttons {
   text-align: center;
@@ -461,11 +476,12 @@
   border-radius: 4px;
   border: 0;
   width: 100%;
-  margin: 10px 0;
+  margin: 10px 0 15px;
 }
 .order-popover-butns textarea {
-  height: 100px;
+  height: 130px;
   resize: none;
+  display: block;
 }
 .order-popover-butns textarea::placeholder,
 .order-popover-butns input::placeholder {

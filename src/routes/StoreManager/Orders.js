@@ -266,6 +266,8 @@ class Orders extends Component {
       assignPostsPerPage: 10,
       shipmentAssignedGridData: [],
       ShipmentMdlbtn: false,
+      filterShoppingStatus: false,
+      filterShoppingDeliveryType: false,
     };
   }
 
@@ -286,10 +288,10 @@ class Orders extends Component {
         SearchText: "",
         PageNo: pageNumber,
         PageSize: this.state.postsPerPage,
-        FilterStatus: this.state.strStatus
+        FilterStatus: this.state.strStatus,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -298,7 +300,7 @@ class Orders extends Component {
             deliveredGridData: data.orderDelivereds,
             totalCount: data.totalCount,
           });
-        }else{
+        } else {
           self.setState({
             deliveredGridData: [],
             totalCount: 0,
@@ -336,16 +338,16 @@ class Orders extends Component {
       url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
       headers: authHeader(),
       params: {
-        pageID: pageID
+        pageID: pageID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            statusFilterData: data
+            statusFilterData: data,
           });
         }
       })
@@ -362,12 +364,12 @@ class Orders extends Component {
       if (isNaN(i) === false) {
         if (checkboxes[i].checked === true) {
           if (checkboxes[i].getAttribute("attrIds") !== null)
-          strStatus += checkboxes[i].getAttribute("attrIds") + ",";
+            strStatus += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     }
     this.setState({
-      strStatus
+      strStatus,
     });
   }
 
@@ -383,9 +385,10 @@ class Orders extends Component {
         SearchText: "",
         PageNo: pageNumber,
         PageSize: this.state.assignPostsPerPage,
-        FilterReferenceNo: ""
+        FilterReferenceNo: "",
       },
-    }).then(function (res) {
+    })
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -394,7 +397,7 @@ class Orders extends Component {
             shipmentAssignedGridData: data.shipmentAssigned,
             totalCount: data.totalCount,
           });
-        }else{
+        } else {
           self.setState({
             shipmentAssignedGridData: [],
             totalCount: 0,
@@ -559,7 +562,8 @@ class Orders extends Component {
                 Shipment
               </a>
             </li>
-            <li className="nav-item"
+            <li
+              className="nav-item"
               onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
             >
               <a
@@ -678,16 +682,8 @@ class Orders extends Component {
                   },
                   {
                     title: "Status",
-                    // title: () => {
-                    //   return (
-                    //     <div>
-                    //       Status
-                    //       <Popover content={<p>Hello</p>} trigger="click">
-                    //         <img src={OrderInfo} className="order-info" />
-                    //       </Popover>
-                    //     </div>
-                    //   );
-                    // },
+                    className:
+                      "camp-status-header camp-status-header-statusFilter order-status-header",
                     render: (row, item) => {
                       return (
                         <div className="d-flex align-items-center">
@@ -705,14 +701,66 @@ class Orders extends Component {
                               <img src={OrderInfo} className="order-info" />
                             </Popover>
                           ) : (
-                              ""
-                            )}
+                            ""
+                          )}
                         </div>
                       );
                     },
+                    filterDropdown: (data, row) => {
+                      return (
+                        <div className="campaign-status-drpdwn">
+                          <ul>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Campall-status"
+                                className="ch1"
+                                // onChange={this.handleCheckCampAllStatus.bind(this)}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="CampallStatus"
+                              />
+                              <label htmlFor="Campall-status">
+                                <span className="ch1-text">New</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="New100"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={100}
+                              />
+                              <label htmlFor="New100">
+                                <span className="ch1-text">Cancelled</span>
+                              </label>
+                            </li>
+                          </ul>
+                          <div className="dv-status">
+                            <button className="btn-apply-status">Apply</button>
+                            <button className="btn-cancel-status">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    },
+                    filterDropdownVisible: this.state.filterShoppingStatus,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterShoppingStatus: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    ),
                   },
                   {
                     title: "Delivery type",
+                    className:
+                      "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header",
                     render: (row, item) => {
                       return (
                         <p
@@ -726,6 +774,57 @@ class Orders extends Component {
                         </p>
                       );
                     },
+                    filterDropdown: (data, row) => {
+                      return (
+                        <div className="campaign-status-drpdwn">
+                          <ul>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="Campall-status"
+                                className="ch1"
+                                // onChange={this.handleCheckCampAllStatus.bind(this)}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="CampallStatus"
+                              />
+                              <label htmlFor="Campall-status">
+                                <span className="ch1-text">Store Delivery</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input
+                                type="checkbox"
+                                id="New100"
+                                className="ch1"
+                                // onChange={this.handleCheckCampIndividualStatus.bind(
+                                //   this
+                                // )}
+                                name="CampallStatus"
+                                attrIds={100}
+                              />
+                              <label htmlFor="New100">
+                                <span className="ch1-text">Self Picked Up</span>
+                              </label>
+                            </li>
+                          </ul>
+                          <div className="dv-status">
+                            <button className="btn-apply-status">Apply</button>
+                            <button className="btn-cancel-status">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    },
+                    filterDropdownVisible: this.state
+                      .filterShoppingDeliveryType,
+                    onFilterDropdownVisibleChange: (visible) =>
+                      this.setState({ filterShoppingDeliveryType: visible }),
+                    filterIcon: (filtered) => (
+                      <span
+                        style={{ color: filtered ? "#1890ff" : undefined }}
+                      ></span>
+                    ),
                   },
                   {
                     title: "Pickup Date & Time",
@@ -735,15 +834,15 @@ class Orders extends Component {
                           {item.PickupDate === "" && item.PickupTime === "" ? (
                             <p className="order-clr-blue">—NIL—</p>
                           ) : (
-                              <>
-                                <p className="order-clr-blue">
-                                  {item.PickupDate},
+                            <>
+                              <p className="order-clr-blue">
+                                {item.PickupDate},
                               </p>
-                                <p className="order-clr-blue order-more-small-font">
-                                  {item.PickupTime}
-                                </p>
-                              </>
-                            )}
+                              <p className="order-clr-blue order-more-small-font">
+                                {item.PickupTime}
+                              </p>
+                            </>
+                          )}
                         </div>
                       );
                     },
@@ -765,12 +864,62 @@ class Orders extends Component {
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          <button className="butn order-grid-butn">
-                            Convert to Order
-                          </button>
-                          <button className="butn order-grid-butn order-del-butn">
-                            <img src={OrderDel} alt="delete icon" />
-                          </button>
+                          <Popconfirm
+                            title={
+                              <>
+                                <div className="popover-input-cntr">
+                                  <div>
+                                    <p>Order Id</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Order Id"
+                                    />
+                                  </div>
+                                  <div>
+                                    <p>Amount</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Amount"
+                                    />
+                                  </div>
+                                </div>
+                              </>
+                            }
+                            overlayClassName="order-popover order-popover-butns"
+                            placement="bottomRight"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                            icon={false}
+                            okText="Done"
+                          >
+                            <button className="butn order-grid-butn">
+                              Convert to Order
+                            </button>
+                          </Popconfirm>
+                          <Popconfirm
+                            title={
+                              <>
+                                <div className="popover-input-cntr">
+                                  <div>
+                                    <p>Comment</p>
+                                    <textarea placeholder="Enter Comment"></textarea>
+                                  </div>
+                                </div>
+                              </>
+                            }
+                            overlayClassName="order-popover order-popover-butns shopping-popover-delete"
+                            placement="bottomRight"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                            icon={false}
+                            okText="Remove"
+                          >
+                            <button className="butn order-grid-butn order-del-butn">
+                              <img src={OrderDel} alt="delete icon" />
+                            </button>
+                          </Popconfirm>
                         </div>
                       );
                     },
@@ -1604,8 +1753,14 @@ class Orders extends Component {
                     className="cancalImg"
                     onClick={this.handleShipmentModalClose.bind(this)}
                   />
-                  <input type="checkbox" style={{position:"absolute",top:"48px",left: "40px"}}/>
-                  <input type="checkbox" style={{position:"absolute",top:"48px",left: "211px"}}/>
+                  <input
+                    type="checkbox"
+                    style={{ position: "absolute", top: "48px", left: "40px" }}
+                  />
+                  <input
+                    type="checkbox"
+                    style={{ position: "absolute", top: "48px", left: "211px" }}
+                  />
                   <div className="step-progress">
                     <StepZilla
                       steps={steps}
@@ -1720,32 +1875,36 @@ class Orders extends Component {
                         <div className="campaign-status-drpdwn">
                           <ul>
                             {this.state.statusFilterData !== null &&
-                              this.state.statusFilterData.map(
-                                (item, b) => (
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id={"New"+item.statusID}
-                                      className="ch1"
-                                      onChange={this.handleCheckDeliIndividualStatus.bind(
-                                        this
-                                      )}
-                                      // checked={this.state.CheckBoxAllStatus}
-                                      name="DeliveredStatus"
-                                      attrIds={item.statusID}
-                                    />
-                                    <label htmlFor={"New"+item.statusID}>
-                                      <span className="ch1-text">{item.statusName}</span>
-                                    </label>
-                                  </li>
-
-                                )
-                              )}
+                              this.state.statusFilterData.map((item, b) => (
+                                <li>
+                                  <input
+                                    type="checkbox"
+                                    id={"New" + item.statusID}
+                                    className="ch1"
+                                    onChange={this.handleCheckDeliIndividualStatus.bind(
+                                      this
+                                    )}
+                                    // checked={this.state.CheckBoxAllStatus}
+                                    name="DeliveredStatus"
+                                    attrIds={item.statusID}
+                                  />
+                                  <label htmlFor={"New" + item.statusID}>
+                                    <span className="ch1-text">
+                                      {item.statusName}
+                                    </span>
+                                  </label>
+                                </li>
+                              ))}
                           </ul>
                           <div className="dv-status">
-                            <button className="btn-apply-status"
-                            onClick={this.handleGetOrderDeliveredData.bind(this)}
-                            >Apply</button>
+                            <button
+                              className="btn-apply-status"
+                              onClick={this.handleGetOrderDeliveredData.bind(
+                                this
+                              )}
+                            >
+                              Apply
+                            </button>
                             <button className="btn-cancel-status">
                               Cancel
                             </button>
@@ -1773,8 +1932,8 @@ class Orders extends Component {
                               item.actionTypeName === "Delivered"
                                 ? "delibutn deliv-grid-butn"
                                 : item.actionTypeName === "Mark As Delivered"
-                                  ? "markasbutn deliv-grid-butn"
-                                  : "pickedbutn deliv-grid-butn"
+                                ? "markasbutn deliv-grid-butn"
+                                : "pickedbutn deliv-grid-butn"
                             }
                           >
                             {item.actionTypeName}
@@ -1898,8 +2057,8 @@ class Orders extends Component {
                               <button className="btn-ref deliv-grid-butn">
                                 Staff Details
                               </button>
-                              </Popover>
-                            )}
+                            </Popover>
+                          )}
                         </div>
                       );
                     },
