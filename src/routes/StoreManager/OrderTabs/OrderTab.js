@@ -38,7 +38,7 @@ class OrderTab extends Component {
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
-      debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -404,8 +404,47 @@ class OrderTab extends Component {
                                   <p>Address</p>
                                   <textarea placeholder="Enter Address"></textarea>
                                 </div>
+                                <div>
+                                  <p>Landmark</p>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Landmark"
+                                  />
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <p>Pin Code</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Pin Code"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <p>City</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter City"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <p>State</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter State"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <p>Country</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Country"
+                                    />
+                                  </div>
+                                </div>
                               </div>
-                              <div className="popover-radio-cntr">
+                              {/* <div className="popover-radio-cntr">
                                 <div>
                                   <input
                                     type="radio"
@@ -426,7 +465,7 @@ class OrderTab extends Component {
                                     Self Picked up
                                   </label>
                                 </div>
-                              </div>
+                              </div> */}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
@@ -557,7 +596,7 @@ class OrderTab extends Component {
                       >
                         {row.shippingAddress}
                       </p>
-                      {row.shippingAddress === "" && (
+                      {row.shippingAddress === "-NIL-" && (
                         <Popconfirm
                           title={
                             <>
@@ -566,8 +605,47 @@ class OrderTab extends Component {
                                   <p>Address</p>
                                   <textarea placeholder="Enter Address"></textarea>
                                 </div>
+                                <div>
+                                  <p>Landmark</p>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Landmark"
+                                  />
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <p>Pin Code</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Pin Code"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <p>City</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter City"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <p>State</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter State"
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <p>Country</p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Country"
+                                    />
+                                  </div>
+                                </div>
                               </div>
-                              <div className="popover-radio-cntr">
+                              {/* <div className="popover-radio-cntr">
                                 <div>
                                   <input
                                     type="radio"
@@ -588,7 +666,7 @@ class OrderTab extends Component {
                                     Self Picked up
                                   </label>
                                 </div>
-                              </div>
+                              </div> */}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
