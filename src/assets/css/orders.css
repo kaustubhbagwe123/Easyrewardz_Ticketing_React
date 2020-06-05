@@ -262,24 +262,24 @@
   color: #ffffff;
 }
 
-.dv-delivered .react-pagination-js-bootstrap ul {
+.dv-table-paging .react-pagination-js-bootstrap ul {
   margin: auto;
   display: table;
   padding: 10px 0;
   box-shadow: none;
 }
 
-.dv-delivered .react-pagination-js-bootstrap ul li {
+.dv-table-paging .react-pagination-js-bootstrap ul li {
   border: none;
 }
 
-.dv-delivered .react-pagination-js-bootstrap .page,
-.dv-delivered .react-pagination-js-bootstrap .pageElli {
+.dv-table-paging .react-pagination-js-bootstrap .page,
+.dv-table-paging .react-pagination-js-bootstrap .pageElli {
   line-height: 25px !important;
   color: #333;
 }
 
-.dv-delivered .react-pagination-js-bootstrap .is-active {
+.dv-table-paging .react-pagination-js-bootstrap .is-active {
   float: left;
   padding: 0px 10px;
   line-height: 25px;

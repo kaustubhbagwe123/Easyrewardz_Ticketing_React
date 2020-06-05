@@ -1644,7 +1644,7 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            <div className="table-cntr store dv-delivered">
+            <div className="table-cntr store dv-table-paging">
               <Table
                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                 columns={[
@@ -1841,32 +1841,32 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="shipment-assigned-tab"
           >
-            <div className="table-cntr store">
+            <div className="table-cntr store dv-table-paging">
               <Table
                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                 columns={[
                   {
                     title: "AWS No.",
-                    dataIndex: "AWSNo",
+                    dataIndex: "awbNo",
                   },
                   {
                     title: "Invoice No.",
-                    dataIndex: "InvoiceNo",
+                    dataIndex: "invoiceNo",
                   },
                   {
                     title: "Courier Partner",
-                    dataIndex: "CourierPartner",
+                    dataIndex: "courierPartner",
                   },
                   {
                     title: "Reference No.",
-                    dataIndex: "ReferenceNo",
+                    dataIndex: "referenceNo",
                     render: (row, item) => {
                       return (
                         <div className="d-flex">
-                          {item.AWSNo !== "NIL" ? (
-                            item.ReferenceNo !== "" ? (
+                          {item.awbNo !== "" ? (
+                            item.referenceNo !== "" && item.isProceed === true ? (
                               <button className="btn-ref deliv-grid-butn">
-                                {item.ReferenceNo}
+                                {item.referenceNo}
                               </button>
                             ) : (
                               <button className="btn-ref deliv-grid-butn">
@@ -1886,18 +1886,21 @@ class Orders extends Component {
                                     type="text"
                                     className="form-control"
                                     placeholder="Enter Store Name"
+                                    value={item.storeName}
                                   />
                                   <label>Staff Name</label>
                                   <input
                                     type="text"
                                     className="form-control"
                                     placeholder="Enter Staff Name"
+                                    value={item.staffName}
                                   />
                                   <label>Mobile No.</label>
                                   <input
                                     type="text"
                                     className="form-control"
                                     placeholder="Enter Mobile No."
+                                    value={item.mobileNumber}
                                   />
                                   <button type="button" className="popbtnno">
                                     Cancel
@@ -1925,7 +1928,7 @@ class Orders extends Component {
                   {
                     title: "Action",
                     render: (row, item) => {
-                      return item.ReferenceNo === "" ? (
+                      return item.referenceNo === "" ? (
                         <div className="d-flex">
                           <button className="btn-proc deliv-grid-butn">
                             Proceed
