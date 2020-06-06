@@ -571,7 +571,7 @@ class ShoppingBagTab extends Component {
                                 <p>
                                 {TranslationContext!==undefined?TranslationContext.p.comment:"Comment"}
                                 </p>
-                                <textarea placeholder="Enter Comment"></textarea>
+                                <textarea placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercomment:"Enter Comment"}></textarea>
                               </div>
                             </div>
                           </>

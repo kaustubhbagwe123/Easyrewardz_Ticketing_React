@@ -530,7 +530,23 @@
       "orderid":"आदेश आईडी",
       "amount":"रकम",
       "comment":"टिप्पणी",
-      "itemsperpage":"आइटम प्रति पेज"
+      "itemsperpage":"आइटम प्रति पेज",
+      "city":"शहर",
+      "state":"राज्य",
+      "country":"देश",
+      "addresspending":"पता अपूर्ण",
+      "modeofpayment":"भुगतान का प्रकार",
+      "totalamount":"कुल रकम",
+      "paymentvia":"के माध्यम से भुगतान",
+      "paymentnotcompletedyet":"भुगतान अभी तक पूरा नहीं हुआ है",
+      "customer":"ग्राहक",
+      "status":"स्थिति",
+      "date":"तारीख",
+      "shippingaddress":"शिपिंग पता",
+      "address":"पता",
+      "landmark":"सीमा चिन्ह",
+      "pincode":"पिन कोड"
+     
      
       
       
@@ -859,7 +875,10 @@
       "endtime":"अंतिम समय",
       "to":"से",
       "storedelivery":"स्टोर डिलीवरी",
-      "selfpickedup":"सेल्फ पिकअप"
+      "selfpickedup":"सेल्फ पिकअप",
+      "online":"ऑनलाइन",
+      "creditcard":"क्रेडिट कार्ड"
+    
      
       
 
@@ -1250,7 +1269,13 @@
       "creationdate":"रचना तिथि",
       "providername":"प्रदाता का नाम",
       "enteramount":"राशी डालें",
-      "convertoorder":"आदेश में परिवर्तित करें"
+      "convertoorder":"आदेश में परिवर्तित करें",
+      "enterlandmark":"मील का पत्थर दर्ज करें",
+      "enterpincode":"पिन कोड दर्ज करें",
+      "entercity":"शहर में प्रवेश करें",
+      "entercountry":"देश में प्रवेश करें",
+      "entercomment":"टिप्पणी दर्ज करें",
+      "enterstate":"राज्य दर्ज करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1287,7 +1312,11 @@
       "itemprice":"सामान की क़ीमत",
       "quantity":"मात्रा",
       "pickupdateandtime":"पिकअप तारीख और समय",
-      "address":"पता"
+      "address":"पता",
+      "invoiceno":"चालान नंबर",
+      "landmark":"सीमा चिन्ह",
+      "amount":"रकम",
+      "shippingaddress":"शिपिंग पता"
 
     },
     "content":{
