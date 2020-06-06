@@ -31,6 +31,8 @@ class ShoppingBagTab extends Component {
       deliveryStrStatus: "",
       translateLanguage: {},
       ShopCancelComment: "",
+      invoiceNo: "",
+      amountNo: "",
     };
   }
 
@@ -194,7 +196,36 @@ class ShoppingBagTab extends Component {
         console.log(data);
       });
   }
-
+  handleConvertToOrder(ShopId) {
+    debugger
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/InsertOrderDetails",
+      headers: authHeader(),
+      data: {
+        ShoppingID: ShopId,
+        InvoiceNo: this.state.invoiceNo,
+        Amount: this.state.amountNo,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            invoiceNo: "",
+            amountNo: "",
+          });
+          NotificationManager.success("Success.");
+          self.handleGetShoppingBagGridData();
+        } else {
+          NotificationManager.error("Failed.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   ///-------------------API function end--------------------------------
 
   ///handle pagination onchage
@@ -611,6 +642,9 @@ class ShoppingBagTab extends Component {
                                 <input
                                   type="text"
                                   placeholder="Enter Order Id"
+                                  name="invoiceNo"
+                                  value={this.state.invoiceNo}
+                                  onChange={this.handleTextOnchage}
                                 />
                               </div>
                               <div>
@@ -626,8 +660,23 @@ class ShoppingBagTab extends Component {
                                       ? TranslationContext.placeholder.amount
                                       : "Enter Amount"
                                   }
+                                  name="amountNo"
+                                  value={this.state.amountNo}
+                                  onChange={this.handleTextOnchage}
                                 />
                               </div>
+                              <button className="btn-cancel-status">
+                                Cancel
+                              </button>
+                              <button
+                                className="btn-apply-status"
+                                onClick={this.handleConvertToOrder.bind(
+                                  this,
+                                  item.shoppingID
+                                )}
+                              >
+                                Done
+                              </button>
                             </div>
                           </>
                         }
@@ -637,7 +686,7 @@ class ShoppingBagTab extends Component {
                           this.setState({ orderPopoverOverlay: visible })
                         }
                         icon={false}
-                        okText="Done"
+                        // okText="Done"
                       >
                         <button className="butn order-grid-butn">
                           {TranslationContext !== undefined
@@ -656,7 +705,12 @@ class ShoppingBagTab extends Component {
                                     : "Comment"}
                                 </p>
                                 <textarea
-                                  placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercomment:"Enter Comment"}
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.placeholder
+                                          .entercomment
+                                      : "Enter Comment"
+                                  }
                                   value={this.state.ShopCancelComment}
                                   name="ShopCancelComment"
                                   onChange={this.handleTextOnchage}
