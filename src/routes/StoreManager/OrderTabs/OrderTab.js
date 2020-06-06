@@ -87,7 +87,7 @@ class OrderTab extends Component {
         console.log(data);
       });
   }
-
+/// handle Get Order status filter data
   handleGetOrderStatusFilterData() {
     debugger;
     let self = this;
@@ -337,7 +337,7 @@ class OrderTab extends Component {
                       <ul>
                         {this.state.statusFilterData !== null &&
                           this.state.statusFilterData.map((item, b) => (
-                            <li>
+                            <li key={b}>
                               <input
                                 type="checkbox"
                                 id={"New" + item.statusID}

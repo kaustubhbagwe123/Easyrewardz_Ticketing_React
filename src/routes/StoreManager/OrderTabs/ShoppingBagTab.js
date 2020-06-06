@@ -6,102 +6,148 @@ import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import OrderDel from "./../../../assets/Images/order-del.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
+import Pagination from "react-pagination-js";
+import "react-pagination-js/dist/styles.css";
 
 class ShoppingBagTab extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      shoppingBagGridData: [
-        {
-          ShoppingBagNo: "12017768",
-          Date: "25 April 2020",
-          Time: "11:45 AM",
-          CustomerName: "Sandeep",
-          CustomerNumber: "+91 9717419325",
-          Items: "6",
-          Status: "New",
-          Deliverytype: "Store Delivery",
-          PickupDate: "",
-          PickupTime: "",
-          Address: "131  Vindya Commercial Complex, Plot No- Sec , Cbd Belapur",
-        },
-        {
-          ShoppingBagNo: "12017890",
-          Date: "24 May 2020",
-          Time: "12:05 AM",
-          CustomerName: "Rahul",
-          CustomerNumber: "+91 9717419325",
-          Items: "12",
-          Status: "Cancelled",
-          Deliverytype: "Self Picked Up",
-          PickupDate: "12 May",
-          PickupTime: "11:30 am",
-          Address: "",
-        },
-      ],
-      itemPopupDate: [
-        {
-          ItemID: "123456",
-          ItemName: "Blue Casual shoes",
-          ItemPrice: "1299",
-          Quantity: "02",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123556",
-          ItemName: "Black belt",
-          ItemPrice: "1500",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123557",
-          ItemName: "Sneakers",
-          ItemPrice: "899",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123558",
-          ItemName: "Brown Bag",
-          ItemPrice: "699",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123456",
-          ItemName: "Blue Casual shoes",
-          ItemPrice: "1299",
-          Quantity: "02",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123556",
-          ItemName: "Black belt",
-          ItemPrice: "1500",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123557",
-          ItemName: "Sneakers",
-          ItemPrice: "899",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-        {
-          ItemID: "123558",
-          ItemName: "Brown Bag",
-          ItemPrice: "699",
-          Quantity: "01",
-          AWBNo: "44566778",
-        },
-      ],
+      shoppingBagGridData: [],
       filterShoppingStatus: false,
       orderPopoverOverlay: false,
       filterShoppingDeliveryType: false,
+      totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      statusFilterData: [],
+      strStatus: "",
     };
+  }
+
+  componentDidMount() {
+    this.handleGetShoppingBagGridData();
+    this.handleGetShoppingBagStatusFilterData();
+  }
+
+  ////   -------------------API Function start-------------------------------
+  /// handle Get Order Tab Grid Data
+  handleGetShoppingBagGridData(filter) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetShoppingBagDetails",
+      headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: this.state.currentPage,
+        PageSize: this.state.postsPerPage,
+        FilterStatus: this.state.strStatus,
+        FilterDelivery: "",
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (filter === "filter") {
+          if (status === "Success") {
+            self.setState({
+              shoppingBagGridData: data.shoppingBagList,
+              totalCount: data.totalShoppingBag,
+              filterOrderStatus: false,
+            });
+          } else {
+            self.setState({
+              shoppingBagGridData: [],
+              totalCount: 0,
+              filterOrderStatus: false,
+            });
+          }
+        } else {
+          if (status === "Success") {
+            self.setState({
+              shoppingBagGridData: data.shoppingBagList,
+              totalCount: data.totalCount,
+            });
+          } else {
+            self.setState({
+              shoppingBagGridData: [],
+              totalCount: 0,
+            });
+          }
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Get Shopping bag status filter
+  handleGetShoppingBagStatusFilterData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
+      headers: authHeader(),
+      params: {
+        pageID: 1,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            statusFilterData: data,
+          });
+        } else {
+          self.setState({
+            statusFilterData: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  ///-------------------API function end--------------------------------
+
+  ///handle pagination onchage
+  PaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      currentPage: numPage,
+    });
+
+    this.handleGetShoppingBagGridData();
+  };
+  /// handle per page item change
+  handlePageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+    });
+
+    this.handleGetShoppingBagGridData();
+  };
+  /// handle check individual status
+  handleCheckDeliIndividualStatus() {
+    debugger;
+    var checkboxes = document.getElementsByName("ShopBagStatus");
+    var strStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strStatus,
+    });
   }
 
   render() {
@@ -110,21 +156,21 @@ class ShoppingBagTab extends Component {
         {this.state.orderPopoverOverlay && (
           <div className="order-popover-overlay"></div>
         )}
-        <div className="table-cntr store">
+        <div className="table-cntr store dv-table-paging">
           <Table
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
                 title: "Shopping Bag No.",
-                dataIndex: "ShoppingBagNo",
+                dataIndex: "shoppingBagNo",
               },
               {
                 title: "Date",
                 render: (row, item) => {
                   return (
                     <div>
-                      <p>{item.Date}</p>
-                      <p className="order-small-font">{item.Time}</p>
+                      <p>{item.date}</p>
+                      <p className="order-small-font">{item.time}</p>
                     </div>
                   );
                 },
@@ -134,8 +180,8 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      <p>{item.CustomerName},</p>
-                      <p className="order-small-font">{item.CustomerNumber}</p>
+                      <p>{item.customerName},</p>
+                      <p className="order-small-font">{item.mobileNumber}</p>
                     </div>
                   );
                 },
@@ -145,7 +191,7 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
-                      <p>{item.Items}</p>
+                      <p>{item.shoppingBagItemList.length}</p>
                       <Popover
                         content={
                           <Table
@@ -153,25 +199,29 @@ class ShoppingBagTab extends Component {
                             columns={[
                               {
                                 title: "Item ID",
-                                dataIndex: "ItemID",
+                                dataIndex: "itemID",
                               },
                               {
                                 title: "Item Name",
-                                dataIndex: "ItemName",
+                                dataIndex: "itemName",
                                 width: 150,
                               },
                               {
                                 title: "Item Price",
-                                dataIndex: "ItemPrice",
+                                dataIndex: "itemPrice",
                               },
                               {
                                 title: "Quantity",
-                                dataIndex: "Quantity",
+                                dataIndex: "quantity",
                               },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
-                            dataSource={this.state.itemPopupDate}
+                            dataSource={
+                              item.shoppingBagItemList.length > 0
+                                ? item.shoppingBagItemList
+                                : []
+                            }
                           />
                         }
                         trigger="click"
@@ -195,21 +245,21 @@ class ShoppingBagTab extends Component {
                     <div className="d-flex align-items-center">
                       <p
                         className={
-                          item.Status === "Cancelled" ? "order-clr-pink" : ""
+                          item.statusName === "Cancelled" ? "order-clr-pink" : ""
                         }
                       >
-                        {item.Status}
+                        {item.statusName}
                       </p>
-                      {item.Status === "Cancelled" ? (
+                      {item.statusName === "Cancelled" ? (
                         <Popover
                           content={
                             <div className="order-tab-popover">
                               <div className="d-flex align-items-center justify-content-between">
-                                <p>12-05-2020</p>
-                                <p>SM-AJAY</p>
+                                <p>{item.canceledOn}</p>
+                                <p>{item.userName}</p>
                               </div>
                               <p className="shopping-popover-cancel-info">
-                                Customer does not want to proceed Shopping Bag​
+                               {item.canceledComment}
                               </p>
                             </div>
                           }
@@ -231,37 +281,38 @@ class ShoppingBagTab extends Component {
                   return (
                     <div className="campaign-status-drpdwn">
                       <ul>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Campall-status"
-                            className="ch1"
-                            // onChange={this.handleCheckCampAllStatus.bind(this)}
-                            // checked={this.state.CheckBoxAllStatus}
-                            name="CampallStatus"
-                          />
-                          <label htmlFor="Campall-status">
-                            <span className="ch1-text">New</span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="New100"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={100}
-                          />
-                          <label htmlFor="New100">
-                            <span className="ch1-text">Cancelled</span>
-                          </label>
-                        </li>
+                        {this.state.statusFilterData !== null &&
+                          this.state.statusFilterData.map((item, b) => (
+                            <li key={b}>
+                              <input
+                                type="checkbox"
+                                id={"New" + item.statusID}
+                                className="ch1"
+                                onChange={this.handleCheckDeliIndividualStatus.bind(
+                                  this
+                                )}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="orderStatus"
+                                attrIds={item.statusID}
+                              />
+                              <label htmlFor={"New" + item.statusID}>
+                                <span className="ch1-text">
+                                  {item.statusName}
+                                </span>
+                              </label>
+                            </li>
+                          ))}
                       </ul>
                       <div className="dv-status">
-                        <button className="btn-apply-status">Apply</button>
+                        <button
+                          className="btn-apply-status"
+                          onClick={this.handleGetShoppingBagGridData.bind(
+                            this,
+                            "filter"
+                          )}
+                        >
+                          Apply
+                        </button>
                         <button className="btn-cancel-status">Cancel</button>
                       </div>
                     </div>
@@ -284,12 +335,12 @@ class ShoppingBagTab extends Component {
                   return (
                     <p
                       className={
-                        item.Deliverytype === "Store Delivery"
+                        item.deliveryTypeName === "Store Delivery"
                           ? "order-clr-green"
                           : "order-clr-blue"
                       }
                     >
-                      {item.Deliverytype}
+                      {item.deliveryTypeName}
                     </p>
                   );
                 },
@@ -347,13 +398,13 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <div>
-                      {item.PickupDate === "" && item.PickupTime === "" ? (
-                        <p className="order-clr-blue">—NIL—</p>
+                      {item.pickupDate === "" && item.pickupTime === "" ? (
+                        <p className="order-clr-blue">-NIL-</p>
                       ) : (
                         <>
-                          <p className="order-clr-blue">{item.PickupDate},</p>
+                          <p className="order-clr-blue">{item.pickupDate},</p>
                           <p className="order-clr-blue order-more-small-font">
-                            {item.PickupTime}
+                            {item.pickupTime}
                           </p>
                         </>
                       )}
@@ -367,7 +418,7 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <p className="order-small-font">
-                      {item.Address === "" ? "—NIL—" : item.Address}
+                      {item.address === "" ? "-NIL-" : item.address}
                     </p>
                   );
                 },
@@ -436,11 +487,32 @@ class ShoppingBagTab extends Component {
                 },
               },
             ]}
-            pagination={{ defaultPageSize: 10, showSizeChanger: true }}
-            showSizeChanger={true}
-            onShowSizeChange={true}
+            pagination={false}
+            showSizeChanger={false}
+            onShowSizeChange={false}
             dataSource={this.state.shoppingBagGridData}
           />
+          <Pagination
+            currentPage={this.state.currentPage}
+            totalSize={this.state.totalCount}
+            // totalSize={row.customerCount}
+            sizePerPage={this.state.postsPerPage}
+            changeCurrentPage={this.PaginationOnChange}
+            theme="bootstrap"
+          />
+          <div className="position-relative">
+            <div className="item-selection Camp-pagination">
+              <select
+                value={this.state.postsPerPage}
+                onChange={this.handlePageItemchange}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+              </select>
+              <p>Items per page</p>
+            </div>
+          </div>
         </div>
       </>
     );
