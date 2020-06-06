@@ -7,6 +7,7 @@ import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
+import { NotificationManager } from "react-notifications";
 
 class ShipmentAssignedTab extends Component {
   constructor(props) {
@@ -14,11 +15,10 @@ class ShipmentAssignedTab extends Component {
 
     this.state = {
       shipmentAssignedGridData: [],
-
       totalCount: 0,
       assignCurrentPage: 1,
       assignPostsPerPage: 10,
-      orderPopoverOverlay: false,
+      orderPopoverOverlay: false
     };
   }
   componentDidMount() {
@@ -75,6 +75,77 @@ class ShipmentAssignedTab extends Component {
 
     this.handleGetShipmentAssignedData();
   };
+
+  handlechange(i,e) {
+    debugger;
+    let shipmentAssignedGridData = [...this.state.shipmentAssignedGridData];
+    shipmentAssignedGridData[i] = {
+      ...shipmentAssignedGridData[i],
+      [e.target.name]: e.target.value
+    };
+    this.setState({
+      shipmentAssignedGridData
+    });
+  }
+
+  handleUpdateShipmentAssignedData(row,IsProceed) {
+    debugger;
+    let self = this;
+    if(row.awbNo!=="" && row.courierPartner.toLowerCase()!=="store")
+    {
+      if(row.referenceNo === "")
+      {
+        NotificationManager.error("Please enter POD.");
+        return false;
+      }
+    }else{
+      if(row.storeName === "")
+      {
+        NotificationManager.error("Please enter store name.");
+        return false;
+      }
+
+      if(row.staffName === "")
+      {
+        NotificationManager.error("Please enter staff name.");
+        return false;
+      }
+
+      if(row.mobileNumber === "")
+      {
+        NotificationManager.error("Please enter mobile number.");
+        return false;
+      }
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateShipmentAssignedData",
+      headers: authHeader(),
+      data: {
+        ShipmentAWBID: row.shipmentAWBID,
+        ReferenceNo: row.referenceNo,
+        StoreName: row.storeName,
+        StaffName: row.staffName,
+        MobileNumber: row.mobileNumber,
+        IsProceed: IsProceed
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetShipmentAssignedData();
+          NotificationManager.success("Record Updated Successfully.");
+          self.setState({
+            orderPopoverOverlay: false
+          })
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     return (
       <>
@@ -86,7 +157,7 @@ class ShipmentAssignedTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: "AWS No.",
+                title: "AWB No.",
                 dataIndex: "awbNo",
               },
               {
@@ -100,7 +171,8 @@ class ShipmentAssignedTab extends Component {
               {
                 title: "Reference No.",
                 dataIndex: "referenceNo",
-                render: (row, item) => {
+                render: (row, item, index) => {
+                  debugger;
                   return (
                     <div className="d-flex">
                       {item.awbNo !== "" ? (
@@ -112,8 +184,10 @@ class ShipmentAssignedTab extends Component {
                           <button className="btn-ref deliv-grid-butn">
                             <input
                               type="text"
+                              name="referenceNo"
                               className="enterpod"
                               placeholder="Enter POD"
+                              onChange={this.handlechange.bind(this,index)}
                             />
                           </button>
                         )
@@ -124,30 +198,39 @@ class ShipmentAssignedTab extends Component {
                               <label>Store Name</label>
                               <input
                                 type="text"
+                                name="storeName"
                                 className="form-control"
                                 placeholder="Enter Store Name"
                                 value={item.storeName}
+                                onChange={this.handlechange.bind(this,index)}
                               />
                               <label>Staff Name</label>
                               <input
                                 type="text"
+                                name="staffName"
                                 className="form-control"
                                 placeholder="Enter Staff Name"
                                 value={item.staffName}
+                                onChange={this.handlechange.bind(this,index)}
                               />
                               <label>Mobile No.</label>
                               <input
-                                type="text"
+                                type="number"
+                                name="mobileNumber"
                                 className="form-control"
                                 placeholder="Enter Mobile No."
                                 value={item.mobileNumber}
+                                onChange={this.handlechange.bind(this,index)}
                               />
                               <button type="button" className="popbtnno">
                                 Cancel
                               </button>
-                              <button type="button" className="popbtn">
+                              {item.isProceed !== true ? (
+                              <button type="button" className="popbtn"
+                               onClick={this.handleUpdateShipmentAssignedData.bind(this,item,false)}
+                              >
                                 Done
-                              </button>
+                              </button>):null}
                             </div>
                           }
                           trigger="click"
@@ -168,9 +251,11 @@ class ShipmentAssignedTab extends Component {
               {
                 title: "Action",
                 render: (row, item) => {
-                  return item.referenceNo === "" ? (
+                  return item.isProceed !== true ? (
                     <div className="d-flex">
-                      <button className="btn-proc deliv-grid-butn">
+                      <button className="btn-proc deliv-grid-butn"
+                       onClick={this.handleUpdateShipmentAssignedData.bind(this,item,true)}
+                      >
                         Proceed
                       </button>
                     </div>

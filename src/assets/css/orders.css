@@ -127,24 +127,28 @@
 }
 .order-popover-table
   .ant-table-hide-scrollbar
-  + .ant-table-body::-webkit-scrollbar {
+  + .ant-table-body::-webkit-scrollbar,
+.order-popover-address .ant-popover-message::-webkit-scrollbar {
   width: 7px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
-  + .ant-table-body::-webkit-scrollbar-track {
+  + .ant-table-body::-webkit-scrollbar-track,
+.order-popover-address .ant-popover-message::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
-  + .ant-table-body::-webkit-scrollbar-thumb {
+  + .ant-table-body::-webkit-scrollbar-thumb,
+.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb {
   background: #cac8c8;
   border-radius: 10px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
-  + .ant-table-body::-webkit-scrollbar-thumb:hover {
+  + .ant-table-body::-webkit-scrollbar-thumb:hover,
+.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
 .order-popover .ant-popover-arrow {
@@ -497,6 +501,17 @@
   height: 130px;
   resize: none;
   display: block;
+}
+.order-popover-address textarea {
+  height: 70px;
+}
+.order-popover-address .ant-popover-message {
+  max-height: 200px;
+  overflow: hidden auto;
+  padding-right: 10px;
+}
+.order-popover-address .ant-popover-inner-content {
+  padding-right: 20px;
 }
 .order-popover-butns textarea::placeholder,
 .order-popover-butns input::placeholder {
