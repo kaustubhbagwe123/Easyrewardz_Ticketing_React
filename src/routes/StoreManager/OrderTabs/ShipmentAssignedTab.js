@@ -8,6 +8,8 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from '../../../translations/hindi';
+import * as translationMA from '../../../translations/marathi';
 
 class ShipmentAssignedTab extends Component {
   constructor(props) {
@@ -18,11 +20,21 @@ class ShipmentAssignedTab extends Component {
       totalCount: 0,
       assignCurrentPage: 1,
       assignPostsPerPage: 10,
-      orderPopoverOverlay: false
+      orderPopoverOverlay: false,
+      translateLanguage: {}
     };
   }
   componentDidMount() {
     this.handleGetShipmentAssignedData();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
   handleGetShipmentAssignedData() {
     debugger;
@@ -147,6 +159,7 @@ class ShipmentAssignedTab extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <>
         {this.state.orderPopoverOverlay && (
@@ -157,19 +170,19 @@ class ShipmentAssignedTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: "AWB No.",
+                title: TranslationContext!==undefined?TranslationContext.title.awbno:"AWB No.",
                 dataIndex: "awbNo",
               },
               {
-                title: "Invoice No.",
+                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice No.",
                 dataIndex: "invoiceNo",
               },
               {
-                title: "Courier Partner",
+                title: TranslationContext!==undefined?TranslationContext.title.courierpartner:"Courier Partner",
                 dataIndex: "courierPartner",
               },
               {
-                title: "Reference No.",
+                title: TranslationContext!==undefined?TranslationContext.title.referenceno:"Reference No.",
                 dataIndex: "referenceNo",
                 render: (row, item, index) => {
                   debugger;
@@ -186,7 +199,7 @@ class ShipmentAssignedTab extends Component {
                               type="text"
                               name="referenceNo"
                               className="enterpod"
-                              placeholder="Enter POD"
+                              placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterpod:"Enter POD"}
                               onChange={this.handlechange.bind(this,index)}
                             />
                           </button>
@@ -195,41 +208,50 @@ class ShipmentAssignedTab extends Component {
                         <Popover
                           content={
                             <div className="staffdetailspopup">
-                              <label>Store Name</label>
+                              <label>
+                              {TranslationContext!==undefined?TranslationContext.label.storename:"Store Name"}
+                              </label>
                               <input
                                 type="text"
                                 name="storeName"
                                 className="form-control"
-                                placeholder="Enter Store Name"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterstorename:"Enter Store Name"}
                                 value={item.storeName}
                                 onChange={this.handlechange.bind(this,index)}
                               />
-                              <label>Staff Name</label>
+                              <label>
+                              {TranslationContext!==undefined?TranslationContext.label.staffname:"Staff Name"}
+                              </label>
                               <input
                                 type="text"
                                 name="staffName"
                                 className="form-control"
-                                placeholder="Enter Staff Name"
+                                placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterstaffname:"Enter Staff Name"}
                                 value={item.staffName}
                                 onChange={this.handlechange.bind(this,index)}
                               />
-                              <label>Mobile No.</label>
+                              <label>
+
+                              {TranslationContext!==undefined?TranslationContext.label.mobileno:"Mobile No."}
+                              </label>
                               <input
                                 type="number"
                                 name="mobileNumber"
                                 className="form-control"
-                                placeholder="Enter Mobile No."
+                                placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.entermobileno:"Enter Mobile No."}
                                 value={item.mobileNumber}
                                 onChange={this.handlechange.bind(this,index)}
                               />
                               <button type="button" className="popbtnno">
-                                Cancel
+                              {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                                
                               </button>
                               {item.isProceed !== true ? (
                               <button type="button" className="popbtn"
                                onClick={this.handleUpdateShipmentAssignedData.bind(this,item,false)}
                               >
-                                Done
+                                 {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
+                                
                               </button>):null}
                             </div>
                           }
@@ -240,7 +262,8 @@ class ShipmentAssignedTab extends Component {
                           }
                         >
                           <button className="btn-ref deliv-grid-butn">
-                            Staff Details
+                          {TranslationContext!==undefined?TranslationContext.button.staffdetails:"Staff Details"}
+                            
                           </button>
                         </Popover>
                       )}
@@ -249,14 +272,15 @@ class ShipmentAssignedTab extends Component {
                 },
               },
               {
-                title: "Action",
+                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: (row, item) => {
                   return item.isProceed !== true ? (
                     <div className="d-flex">
                       <button className="btn-proc deliv-grid-butn"
                        onClick={this.handleUpdateShipmentAssignedData.bind(this,item,true)}
                       >
-                        Proceed
+                        {TranslationContext!==undefined?TranslationContext.button.proceed:"Proceed"}
+                        
                       </button>
                     </div>
                   ) : null;
@@ -286,7 +310,7 @@ class ShipmentAssignedTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>Items per page</p>
+              <p>{TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}</p>
             </div>
           </div>
         </div>

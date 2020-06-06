@@ -375,7 +375,12 @@
       "claim":"दावा",
       "editpriorty":"प्राथमिकता संपादित करें",
       "uploadeddata":"अपलोड किया गया डेटा",
-      "rejecteddata":"अस्वीकृत डेटा"
+      "rejecteddata":"अस्वीकृत डेटा",
+      "pickupdate":"तारीख ले लो",
+      "pickuptime":"समय लेने",
+      "pickupdone":"पिकअप हो गया",
+      "staffname":"स्टाफ का नाम",
+      "mobileno":"मोबाइल न"
     
    
    
@@ -545,7 +550,8 @@
       "shippingaddress":"शिपिंग पता",
       "address":"पता",
       "landmark":"सीमा चिन्ह",
-      "pincode":"पिन कोड"
+      "pincode":"पिन कोड",
+      "successfullymappedto":"सफलतापूर्वक मैप किया गया"
      
      
       
@@ -877,7 +883,10 @@
       "storedelivery":"स्टोर डिलीवरी",
       "selfpickedup":"सेल्फ पिकअप",
       "online":"ऑनलाइन",
-      "creditcard":"क्रेडिट कार्ड"
+      "creditcard":"क्रेडिट कार्ड",
+      "itemidshownbelowmappedtothisorder":"इस क्रम में मैप की गई आइटम आईडी को नीचे दिखाया गया है",
+      "only":"केवल।",
+      "selectanyitemidyouwanttosendforshipment":"किसी भी आइटम आईडी का चयन करें, जिसे आप शिपमेंट के लिए भेजना चाहते हैं।"
     
      
       
@@ -972,7 +981,9 @@
       "close":"बंद करे",
       "addtolibrary":"पुस्तकालय में जोड़ें",
       "reject":"अस्वीकार",
-      "apply":"लागू"
+      "apply":"लागू",
+      "staffdetails":"स्टाफ का विवरण",
+      "proceed":"बढ़ना"
       
      
      
@@ -1022,7 +1033,9 @@
       "sms":"एसएमएस",
       "email":"ईमेल",
       "sendviamessage":"वाया मैसेंजर भेजें",
-      "sendviabot":"वाया बॉट भेजें"
+      "sendviabot":"वाया बॉट भेजें",
+      "invoiceno":"चालान नंबर",
+      "itemid":"सामान आईडी"
     },
     "h5": {
       "knowledgebase":"ज्ञानधार",
@@ -1275,7 +1288,10 @@
       "entercity":"शहर में प्रवेश करें",
       "entercountry":"देश में प्रवेश करें",
       "entercomment":"टिप्पणी दर्ज करें",
-      "enterstate":"राज्य दर्ज करें"
+      "enterstate":"राज्य दर्ज करें",
+      "enterpod":"POD दर्ज करें",
+      "enterstorename":"स्टोर का नाम दर्ज करें",
+      "enterstaffname":"कर्मचारियों का नाम दर्ज करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1316,7 +1332,12 @@
       "invoiceno":"चालान नंबर",
       "landmark":"सीमा चिन्ह",
       "amount":"रकम",
-      "shippingaddress":"शिपिंग पता"
+      "shippingaddress":"शिपिंग पता",
+      "deliverytype":"वितरण के प्रकार",
+      "partner":"साथी",
+      "awbno":"AWB नंबर",
+      "courierpartner":"कुरियर पार्टनर",
+      "referenceno":"संदर्भ संख्या।"
 
     },
     "content":{

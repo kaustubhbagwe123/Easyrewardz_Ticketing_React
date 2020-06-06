@@ -8,6 +8,8 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from '../../../translations/hindi'
+import * as translationMA from '../../../translations/marathi'
 
 class DeliveredTab extends Component {
   constructor(props) {
@@ -22,11 +24,21 @@ class DeliveredTab extends Component {
       strStatus: "",
       statusFilterData: [],
       orderPopoverOverlay: false,
+      translateLanguage: {}
     };
   }
   componentDidMount() {
     this.handleGetOrderDeliveredData();
     this.handleGetOrderStatusFilterData(4);
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
   handleGetOrderDeliveredData() {
     debugger;
@@ -145,6 +157,7 @@ class DeliveredTab extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <>
         {this.state.orderPopoverOverlay && (
@@ -155,11 +168,11 @@ class DeliveredTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: "Invoice no.",
+                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice no.",
                 dataIndex: "invoiceNo",
               },
               {
-                title: "Customer",
+                title:TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -170,7 +183,7 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                title: "Items",
+                title: TranslationContext!==undefined?TranslationContext.title.items:"Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -181,20 +194,20 @@ class DeliveredTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: "Item ID",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: "Item Name",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title: "Item Price",
+                                title:TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: "Quantity",
+                                title:TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -216,7 +229,7 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                title: "Date",
+                title:TranslationContext!==undefined?TranslationContext.title.date:"Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -227,7 +240,7 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                title: "Status",
+                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
                 className: "camp-status-header camp-status-header-statusFilter",
                 render: (row, item) => {
                   return (
@@ -267,9 +280,9 @@ class DeliveredTab extends Component {
                           className="btn-apply-status"
                           onClick={this.handleGetOrderDeliveredData.bind(this)}
                         >
-                          Apply
+                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
                         </button>
-                        <button className="btn-cancel-status">Cancel</button>
+                        <button className="btn-cancel-status">{TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}</button>
                       </div>
                     </div>
                   );
@@ -284,7 +297,7 @@ class DeliveredTab extends Component {
                 ),
               },
               {
-                title: "Action",
+                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: (row, item) => {
                   return (
                     <div className="d-flex">
@@ -332,7 +345,7 @@ class DeliveredTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>Items per page</p>
+              <p>{TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}</p>
             </div>
           </div>
         </div>
