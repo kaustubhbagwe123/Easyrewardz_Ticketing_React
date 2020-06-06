@@ -27,6 +27,7 @@ class OrderTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
+      OrderTabLoading:false
     };
   }
 
@@ -40,6 +41,9 @@ class OrderTab extends Component {
   handleGetOrderTabGridData(filter) {
     debugger;
     let self = this;
+    this.setState({
+      OrderTabLoading: true,
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrdersDetails",
@@ -61,12 +65,14 @@ class OrderTab extends Component {
               orderGridData: data.ordersList,
               totalCount: data.totalCount,
               filterOrderStatus: false,
+              OrderTabLoading:false
             });
           } else {
             self.setState({
               orderGridData: [],
               totalCount: 0,
               filterOrderStatus: false,
+              OrderTabLoading:false
             });
           }
         } else {
@@ -74,11 +80,13 @@ class OrderTab extends Component {
             self.setState({
               orderGridData: data.ordersList,
               totalCount: data.totalCount,
+              OrderTabLoading:false
             });
           } else {
             self.setState({
               orderGridData: [],
               totalCount: 0,
+              OrderTabLoading:false
             });
           }
         }
@@ -694,6 +702,7 @@ class OrderTab extends Component {
             dataSource={this.state.orderGridData}
             expandIconColumnIndex={7}
             expandIconAsCell={false}
+            loading={this.state.OrderTabLoading}
           />
           <Pagination
             currentPage={this.state.currentPage}
