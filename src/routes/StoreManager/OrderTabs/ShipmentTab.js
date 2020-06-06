@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Select } from "antd";
+import { Table, Popover } from "antd";
 import Modal from "react-responsive-modal";
-import NoPayment from "./../../../assets/Images/no-payment.png";
-import CreditCard from "./../../../assets/Images/credit-card.png";
-import OrderInfo from "./../../../assets/Images/order-info.png";
-import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
-import OrderBag from "./../../../assets/Images/order-bag.png";
+// import NoPayment from "./../../../assets/Images/no-payment.png";
+// import CreditCard from "./../../../assets/Images/credit-card.png";
+// import OrderInfo from "./../../../assets/Images/order-info.png";
+// import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
+// import OrderBag from "./../../../assets/Images/order-bag.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
 import StepZilla from "react-stepzilla";
 import CardTick from "./../../../assets/Images/card-tick.png";
-import OrderDel from "./../../../assets/Images/order-del.png";
+// import OrderDel from "./../../../assets/Images/order-del.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import { NotificationManager } from "react-notifications";
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -119,6 +120,31 @@ class ShipmentTab extends Component {
           self.setState({
             statusFilterData: [],
           });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Update Date and Time
+  handleUpdateDateandTime(OrderId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/HSOrder/UpdateShipmentPickupPendingData",
+      headers: authHeader(),
+      params: {
+        OrderID: OrderId,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Success.");
+          self.handleGetShipmentTabGridData();
+        } else {
+          NotificationManager.error("Failed.");
         }
       })
       .catch((data) => {
@@ -357,6 +383,7 @@ class ShipmentTab extends Component {
                                         <input
                                           type="text"
                                           className="form-control"
+                                          value={item.pickupDate}
                                         />
                                       </td>
                                       <td>
@@ -364,6 +391,7 @@ class ShipmentTab extends Component {
                                         <input
                                           type="text"
                                           className="form-control"
+                                          value={item.pickupTime}
                                         />
                                       </td>
                                     </tr>
@@ -373,6 +401,10 @@ class ShipmentTab extends Component {
                                         <button
                                           type="button"
                                           className="popbtn"
+                                          onClick={this.handleUpdateDateandTime.bind(
+                                            this,
+                                            item.id
+                                          )}
                                         >
                                           Yes
                                         </button>
@@ -402,13 +434,12 @@ class ShipmentTab extends Component {
                           >
                             <button
                               className={
-                                item.actionTypeName === "Payment Done"
+                                item.actionTypeName === "Pickup Pending"
                                   ? "butn order-grid-butn order-grid-butn-green"
                                   : "butn order-grid-butn"
                               }
                             >
                               {item.actionTypeName}
-                              <Popover content={<p>hi</p>}></Popover>
                             </button>
                           </Popover>
                         </>
@@ -423,6 +454,7 @@ class ShipmentTab extends Component {
                           onClick={this.handleShipmentModalOpen.bind(this)}
                         >
                           {item.actionTypeName}
+                          <Popover content={<p>hi</p>}></Popover>
                         </button>
                       )}
                     </div>

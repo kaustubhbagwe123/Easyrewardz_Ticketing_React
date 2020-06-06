@@ -8,8 +8,9 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
-import * as translationHI from '../../../translations/hindi'
-import * as translationMA from '../../../translations/marathi'
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
+import { NotificationManager } from "react-notifications";
 
 class ShoppingBagTab extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class ShoppingBagTab extends Component {
       ShopBagLoading: false,
       DeliveryStatusFilter: [],
       deliveryStrStatus: "",
-      translateLanguage: {}
+      translateLanguage: {},
+      ShopCancelComment: "",
     };
   }
 
@@ -36,21 +38,18 @@ class ShoppingBagTab extends Component {
     this.handleGetShoppingBagGridData();
     this.handleGetShoppingBagStatusFilterData();
     this.handleGetShoppingBagDeliveryStatus();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetShoppingBagGridData(filter) {
-    debugger;
     let self = this;
     this.setState({
       ShopBagLoading: true,
@@ -149,7 +148,6 @@ class ShoppingBagTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -167,11 +165,40 @@ class ShoppingBagTab extends Component {
       });
   }
 
+  /// handle cancel and comment for Shopping bag
+  handleCancleAndCommnetShopBag(ShopId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateShipmentBagCancelData",
+      headers: authHeader(),
+      params: {
+        ShoppingID: ShopId,
+        CancelComment: this.state.ShopCancelComment,
+      },
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            ShopCancelComment: "",
+          });
+          NotificationManager.success("Success.");
+          self.handleGetShoppingBagGridData();
+        } else {
+          NotificationManager.error("Failed.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   ///-------------------API function end--------------------------------
 
   ///handle pagination onchage
   PaginationOnChange = async (numPage) => {
-    debugger;
     await this.setState({
       currentPage: numPage,
     });
@@ -230,6 +257,12 @@ class ShoppingBagTab extends Component {
       filterShoppingDeliveryType: false,
     });
   }
+  ///handle text onchange
+  handleTextOnchage = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -242,11 +275,17 @@ class ShoppingBagTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.shoppingbagno:"Shopping Bag No.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.shoppingbagno
+                    : "Shopping Bag No.",
                 dataIndex: "shoppingBagNo",
               },
               {
-                title:  TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.date
+                    : "Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -257,7 +296,10 @@ class ShoppingBagTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.customer
+                    : "Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -268,7 +310,10 @@ class ShoppingBagTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.items:"Items",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.items
+                    : "Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -279,20 +324,32 @@ class ShoppingBagTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title:  TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -318,7 +375,10 @@ class ShoppingBagTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.status
+                    : "Status",
                 className:
                   "camp-status-header camp-status-header-statusFilter order-status-header",
                 render: (row, item) => {
@@ -394,17 +454,17 @@ class ShoppingBagTab extends Component {
                             "filter"
                           )}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
-                          
-                        </button>
-                        <button className="btn-cancel-status">
-                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
                         </button>
                         <button
                           className="btn-cancel-status"
                           onClick={this.handleCloseStatusFilter.bind(this)}
                         >
-                          Cancel
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                       </div>
                     </div>
@@ -470,8 +530,9 @@ class ShoppingBagTab extends Component {
                             "filter"
                           )}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.viewsearch:"Apply"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.viewsearch
+                            : "Apply"}
                         </button>
                         <button
                           className="btn-cancel-status"
@@ -493,7 +554,10 @@ class ShoppingBagTab extends Component {
                 ),
               },
               {
-                title:  TranslationContext!==undefined?TranslationContext.title.pickupdateandtime:"Pickup Date & Time",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.pickupdateandtime
+                    : "Pickup Date & Time",
                 render: (row, item) => {
                   return (
                     <div>
@@ -513,7 +577,10 @@ class ShoppingBagTab extends Component {
                 className: "pick-up-date",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.pickupdateandtime:"Address",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.pickupdateandtime
+                    : "Address",
                 render: (row, item) => {
                   return (
                     <p className="order-small-font">
@@ -524,7 +591,10 @@ class ShoppingBagTab extends Component {
                 className: "white-space-init",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Action",
                 render: (row, item) => {
                   return (
                     <div className="d-flex">
@@ -534,7 +604,9 @@ class ShoppingBagTab extends Component {
                             <div className="popover-input-cntr">
                               <div>
                                 <p>
-                                {TranslationContext!==undefined?TranslationContext.p.orderid:"Order Id"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.orderid
+                                    : "Order Id"}
                                 </p>
                                 <input
                                   type="text"
@@ -543,9 +615,18 @@ class ShoppingBagTab extends Component {
                               </div>
                               <div>
                                 <p>
-                                {TranslationContext!==undefined?TranslationContext.p.amount:"Amount"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.amount
+                                    : "Amount"}
                                 </p>
-                                <input type="text" placeholder={TranslationContext!==undefined?TranslationContext.placeholder.amount:"Enter Amount"} />
+                                <input
+                                  type="text"
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.placeholder.amount
+                                      : "Enter Amount"
+                                  }
+                                />
                               </div>
                             </div>
                           </>
@@ -559,8 +640,9 @@ class ShoppingBagTab extends Component {
                         okText="Done"
                       >
                         <button className="butn order-grid-butn">
-                        {TranslationContext!==undefined?TranslationContext.button.convertoorder:"Convert to Order"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.convertoorder
+                            : "Convert to Order"}
                         </button>
                       </Popconfirm>
                       <Popconfirm
@@ -569,9 +651,29 @@ class ShoppingBagTab extends Component {
                             <div className="popover-input-cntr">
                               <div>
                                 <p>
-                                {TranslationContext!==undefined?TranslationContext.p.comment:"Comment"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.comment
+                                    : "Comment"}
                                 </p>
-                                <textarea placeholder="Enter Comment"></textarea>
+                                <textarea
+                                  placeholder="Enter Comment"
+                                  value={this.state.ShopCancelComment}
+                                  name="ShopCancelComment"
+                                  onChange={this.handleTextOnchage}
+                                ></textarea>
+
+                                <button className="btn-cancel-status">
+                                  Cancel
+                                </button>
+                                <button
+                                  className="btn-apply-status"
+                                  onClick={this.handleCancleAndCommnetShopBag.bind(
+                                    this,
+                                    item.shoppingID
+                                  )}
+                                >
+                                  Remove
+                                </button>
                               </div>
                             </div>
                           </>
@@ -582,7 +684,7 @@ class ShoppingBagTab extends Component {
                           this.setState({ orderPopoverOverlay: visible })
                         }
                         icon={false}
-                        okText="Remove"
+                        // okText="Remove"
                       >
                         <button className="butn order-grid-butn order-del-butn">
                           <img src={OrderDel} alt="delete icon" />
@@ -618,7 +720,9 @@ class ShoppingBagTab extends Component {
                 <option value={30}>30</option>
               </select>
               <p>
-              {TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.itemsperpage
+                  : "Items per page"}
               </p>
             </div>
           </div>
