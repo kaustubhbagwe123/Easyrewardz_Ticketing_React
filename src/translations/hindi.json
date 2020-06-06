@@ -380,7 +380,11 @@
       "pickuptime":"समय लेने",
       "pickupdone":"पिकअप हो गया",
       "staffname":"स्टाफ का नाम",
-      "mobileno":"मोबाइल न"
+      "mobileno":"मोबाइल न",
+      "shoppingbag":"शॉपिंग बैग",
+      "integratedsystem":"एकीकृत प्रणाली",
+      "payment":"भुगतान",
+      "shipment":"शिपमेंट"
     
    
    
@@ -1023,7 +1027,8 @@
       "blockedemailid":"ईमेल आईडी अवरुद्ध",
       "itemmaster":"आइटम मास्टर",
       "slatemplatedepartment":"SLA टेम्पलेट-विभाग",
-      "claimcategorymaster":"दावा श्रेणी मास्टर"
+      "claimcategorymaster":"दावा श्रेणी मास्टर",
+      "ordersetting":"आदेश सेटिंग"
     },
     "li": {
       "creationdetails": "निर्माण विवरण",
@@ -1058,7 +1063,8 @@
       "storechatwindow":"चैट विंडो स्टोर करें",
       "campaignchannel":"अभियान चैनल",
       "slotsettings":"स्लॉट सेटिंग्स",
-      "languagesettings":"भाषा सेटिंग"
+      "languagesettings":"भाषा सेटिंग",
+      "orderconfiguration":"आदेश विन्यास"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",

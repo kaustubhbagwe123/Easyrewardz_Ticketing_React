@@ -26,6 +26,7 @@ class Orders extends Component {
     };
   }
   componentDidMount() {
+    
     if(window.localStorage.getItem("translateLanguage") === "hindi"){
       this.state.translateLanguage = translationHI
      }
@@ -35,6 +36,7 @@ class Orders extends Component {
      else{
        this.state.translateLanguage = {}
      }
+
   }
 
   changeOrderDropdown() {
