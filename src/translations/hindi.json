@@ -526,7 +526,11 @@
       "areyousureandwanttosend":"क्या आप सुनिश्चित हैं और भेजना चाहते हैं",
       "pleaseentervalidmobilenumber":"कृपया मान्य मोबाइल नंबर दर्ज करें",
       "pleaseentervalidemailid":"कृपया मान्य ईमेल आईडी दर्ज करें",
-      "modules":"मॉड्यूल"
+      "modules":"मॉड्यूल",
+      "orderid":"आदेश आईडी",
+      "amount":"रकम",
+      "comment":"टिप्पणी",
+      "itemsperpage":"आइटम प्रति पेज"
      
       
       
@@ -646,7 +650,10 @@
       "broadcastconfiguration":"ब्राडकास्ट कंफिगरेशन",
       "slotsettings":"स्लॉट सेटिंग्स",
       "languagesettings":"भाषा सेटिंग",
-      "campaignscript":"अभियान स्क्रिप्ट"
+      "campaignscript":"अभियान स्क्रिप्ट",
+      "shoppingbag":"शॉपिंग बैग",
+      "order":"गण",
+      "shipment":"लदान"
     },
     "span":{
       "status": "स्थिति",
@@ -850,7 +857,9 @@
       "prioritystatus":"प्राथमिकता की स्थिति",
       "starttime":"समय शुरू",
       "endtime":"अंतिम समय",
-      "to":"से"
+      "to":"से",
+      "storedelivery":"स्टोर डिलीवरी",
+      "selfpickedup":"सेल्फ पिकअप"
      
       
 
@@ -943,7 +952,8 @@
       "sendpaymentlink":"भुगतान लिंक भेजें",
       "close":"बंद करे",
       "addtolibrary":"पुस्तकालय में जोड़ें",
-      "reject":"अस्वीकार"
+      "reject":"अस्वीकार",
+      "apply":"लागू"
       
      
      
@@ -1238,7 +1248,9 @@
       "enterlinkedticketid":"लिंक्ड टिकट आईडी दर्ज करें",
       "enterclaimid":"दावा आईडी दर्ज करें",
       "creationdate":"रचना तिथि",
-      "providername":"प्रदाता का नाम"
+      "providername":"प्रदाता का नाम",
+      "enteramount":"राशी डालें",
+      "convertoorder":"आदेश में परिवर्तित करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1266,7 +1278,17 @@
       "approvedby":"के द्वारा अनुमोदित",
       "uploadedby":"द्वारा डाली गई",
       "imteidskuid":"ImteID/SKU ID",
-      "image":"छवि"
+      "image":"छवि",
+      "shoppingbagno":"शॉपिंग बैग नं",
+      "customer":"ग्राहक",
+      "items":"आइटम",
+      "itemid":"सामान आईडी",
+      "itemname":"वस्तु का नाम",
+      "itemprice":"सामान की क़ीमत",
+      "quantity":"मात्रा",
+      "pickupdateandtime":"पिकअप तारीख और समय",
+      "address":"पता"
+
     },
     "content":{
       "howmanydaystoshowchathistory":"चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"

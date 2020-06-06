@@ -8,6 +8,8 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import * as translationHI from '../../../translations/hindi'
+import * as translationMA from '../../../translations/marathi'
 
 class ShoppingBagTab extends Component {
   constructor(props) {
@@ -23,12 +25,24 @@ class ShoppingBagTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
+      translateLanguage: {}
     };
   }
 
   componentDidMount() {
     this.handleGetShoppingBagGridData();
     this.handleGetShoppingBagStatusFilterData();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   ////   -------------------API Function start-------------------------------
@@ -151,6 +165,7 @@ class ShoppingBagTab extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <>
         {this.state.orderPopoverOverlay && (
@@ -161,11 +176,11 @@ class ShoppingBagTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: "Shopping Bag No.",
+                title: TranslationContext!==undefined?TranslationContext.title.shoppingbagno:"Shopping Bag No.",
                 dataIndex: "shoppingBagNo",
               },
               {
-                title: "Date",
+                title:  TranslationContext!==undefined?TranslationContext.title.date:"Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -176,7 +191,7 @@ class ShoppingBagTab extends Component {
                 },
               },
               {
-                title: "Customer",
+                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -187,7 +202,7 @@ class ShoppingBagTab extends Component {
                 },
               },
               {
-                title: "Items",
+                title: TranslationContext!==undefined?TranslationContext.title.items:"Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -198,20 +213,20 @@ class ShoppingBagTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: "Item ID",
+                                title:  TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: "Item Name",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title: "Item Price",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: "Quantity",
+                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -237,7 +252,7 @@ class ShoppingBagTab extends Component {
                 },
               },
               {
-                title: "Status",
+                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
                 className:
                   "camp-status-header camp-status-header-statusFilter order-status-header",
                 render: (row, item) => {
@@ -311,9 +326,12 @@ class ShoppingBagTab extends Component {
                             "filter"
                           )}
                         >
-                          Apply
+                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                          
                         </button>
-                        <button className="btn-cancel-status">Cancel</button>
+                        <button className="btn-cancel-status">
+                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                        </button>
                       </div>
                     </div>
                   );
@@ -358,7 +376,9 @@ class ShoppingBagTab extends Component {
                             name="CampallStatus"
                           />
                           <label htmlFor="Campall-status">
-                            <span className="ch1-text">Store Delivery</span>
+                            <span className="ch1-text">
+                            {TranslationContext!==undefined?TranslationContext.span.storedelivery:"Store Delivery"}
+                            </span>
                           </label>
                         </li>
                         <li>
@@ -373,13 +393,19 @@ class ShoppingBagTab extends Component {
                             attrIds={100}
                           />
                           <label htmlFor="New100">
-                            <span className="ch1-text">Self Picked Up</span>
+                            <span className="ch1-text">
+                            {TranslationContext!==undefined?TranslationContext.span.selfpickedup:"Self Picked Up"}
+                            </span>
                           </label>
                         </li>
                       </ul>
                       <div className="dv-status">
-                        <button className="btn-apply-status">Apply</button>
-                        <button className="btn-cancel-status">Cancel</button>
+                        <button className="btn-apply-status">
+                        {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                        </button>
+                        <button className="btn-cancel-status">
+                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                        </button>
                       </div>
                     </div>
                   );
@@ -394,7 +420,7 @@ class ShoppingBagTab extends Component {
                 ),
               },
               {
-                title: "Pickup Date & Time",
+                title:  TranslationContext!==undefined?TranslationContext.title.pickupdateandtime:"Pickup Date & Time",
                 render: (row, item) => {
                   return (
                     <div>
@@ -414,7 +440,7 @@ class ShoppingBagTab extends Component {
                 className: "pick-up-date",
               },
               {
-                title: "Address",
+                title:TranslationContext!==undefined?TranslationContext.title.pickupdateandtime:"Address",
                 render: (row, item) => {
                   return (
                     <p className="order-small-font">
@@ -425,7 +451,7 @@ class ShoppingBagTab extends Component {
                 className: "white-space-init",
               },
               {
-                title: "Action",
+                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: (row, item) => {
                   return (
                     <div className="d-flex">
@@ -434,15 +460,19 @@ class ShoppingBagTab extends Component {
                           <>
                             <div className="popover-input-cntr">
                               <div>
-                                <p>Order Id</p>
+                                <p>
+                                {TranslationContext!==undefined?TranslationContext.p.orderid:"Order Id"}
+                                </p>
                                 <input
                                   type="text"
                                   placeholder="Enter Order Id"
                                 />
                               </div>
                               <div>
-                                <p>Amount</p>
-                                <input type="text" placeholder="Enter Amount" />
+                                <p>
+                                {TranslationContext!==undefined?TranslationContext.p.amount:"Amount"}
+                                </p>
+                                <input type="text" placeholder={TranslationContext!==undefined?TranslationContext.placeholder.amount:"Enter Amount"} />
                               </div>
                             </div>
                           </>
@@ -456,7 +486,8 @@ class ShoppingBagTab extends Component {
                         okText="Done"
                       >
                         <button className="butn order-grid-butn">
-                          Convert to Order
+                        {TranslationContext!==undefined?TranslationContext.button.convertoorder:"Convert to Order"}
+                          
                         </button>
                       </Popconfirm>
                       <Popconfirm
@@ -464,7 +495,9 @@ class ShoppingBagTab extends Component {
                           <>
                             <div className="popover-input-cntr">
                               <div>
-                                <p>Comment</p>
+                                <p>
+                                {TranslationContext!==undefined?TranslationContext.p.comment:"Comment"}
+                                </p>
                                 <textarea placeholder="Enter Comment"></textarea>
                               </div>
                             </div>
@@ -510,7 +543,9 @@ class ShoppingBagTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>Items per page</p>
+              <p>
+              {TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}
+              </p>
             </div>
           </div>
         </div>

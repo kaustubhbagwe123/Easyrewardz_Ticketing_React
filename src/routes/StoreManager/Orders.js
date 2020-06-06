@@ -10,6 +10,8 @@ import DeliveredTab from "./OrderTabs/DeliveredTab";
 import ShoppingBagTab from "./OrderTabs/ShoppingBagTab";
 import ShipmentTab from "./OrderTabs/ShipmentTab";
 import ShipmentAssignedTab from "./OrderTabs/ShipmentAssignedTab";
+import * as translationHI from './../../translations/hindi';
+import * as translationMA from './../../translations/marathi';
 
 class Orders extends Component {
   constructor(props) {
@@ -20,7 +22,19 @@ class Orders extends Component {
       shipmentTab2: false,
       deliverredTab3: false,
       shipmentAssignTab4: false,
+      translateLanguage: {}
     };
+  }
+  componentDidMount() {
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   changeOrderDropdown() {
@@ -51,10 +65,13 @@ class Orders extends Component {
         shipmentAssignTab4: true,
       });
     }
+
   };
 
   render() {
+   
     const { Option } = Select;
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         {this.state.orderPopoverOverlay && (
@@ -80,7 +97,8 @@ class Orders extends Component {
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
               >
-                Shopping Bag
+                 {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
+                
               </a>
             </Option>
             <Option value="order">
@@ -92,7 +110,8 @@ class Orders extends Component {
                 aria-controls="order-tab"
                 aria-selected="false"
               >
-                Order
+                 {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
+                
               </a>
             </Option>
             <Option value="shipment">
@@ -104,7 +123,8 @@ class Orders extends Component {
                 aria-controls="shipment-tab"
                 aria-selected="false"
               >
-                Shipment
+              {TranslationContext!==undefined?TranslationContext.a.shipment:"Shipment"}
+                
               </a>
             </Option>
             <Option value="delivered">
