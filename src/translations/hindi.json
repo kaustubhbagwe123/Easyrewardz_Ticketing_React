@@ -375,7 +375,10 @@
       "claim":"दावा",
       "editpriorty":"प्राथमिकता संपादित करें",
       "uploadeddata":"अपलोड किया गया डेटा",
-      "rejecteddata":"अस्वीकृत डेटा"
+      "rejecteddata":"अस्वीकृत डेटा",
+      "pickupdate":"तारीख ले लो",
+      "pickuptime":"समय लेने",
+      "pickupdone":"पिकअप हो गया"
     
    
    
@@ -545,7 +548,8 @@
       "shippingaddress":"शिपिंग पता",
       "address":"पता",
       "landmark":"सीमा चिन्ह",
-      "pincode":"पिन कोड"
+      "pincode":"पिन कोड",
+      "successfullymappedto":"सफलतापूर्वक मैप किया गया"
      
      
       
@@ -877,7 +881,10 @@
       "storedelivery":"स्टोर डिलीवरी",
       "selfpickedup":"सेल्फ पिकअप",
       "online":"ऑनलाइन",
-      "creditcard":"क्रेडिट कार्ड"
+      "creditcard":"क्रेडिट कार्ड",
+      "itemidshownbelowmappedtothisorder":"इस क्रम में मैप की गई आइटम आईडी को नीचे दिखाया गया है",
+      "only":"केवल।",
+      "selectanyitemidyouwanttosendforshipment":"किसी भी आइटम आईडी का चयन करें, जिसे आप शिपमेंट के लिए भेजना चाहते हैं।"
     
      
       
@@ -1022,7 +1029,9 @@
       "sms":"एसएमएस",
       "email":"ईमेल",
       "sendviamessage":"वाया मैसेंजर भेजें",
-      "sendviabot":"वाया बॉट भेजें"
+      "sendviabot":"वाया बॉट भेजें",
+      "invoiceno":"चालान नंबर",
+      "itemid":"सामान आईडी"
     },
     "h5": {
       "knowledgebase":"ज्ञानधार",
@@ -1316,7 +1325,9 @@
       "invoiceno":"चालान नंबर",
       "landmark":"सीमा चिन्ह",
       "amount":"रकम",
-      "shippingaddress":"शिपिंग पता"
+      "shippingaddress":"शिपिंग पता",
+      "deliverytype":"वितरण के प्रकार",
+      "partner":"साथी"
 
     },
     "content":{
