@@ -656,7 +656,7 @@ class ShoppingBagTab extends Component {
                                     : "Comment"}
                                 </p>
                                 <textarea
-                                  placeholder="Enter Comment"
+                                  placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercomment:"Enter Comment"}
                                   value={this.state.ShopCancelComment}
                                   name="ShopCancelComment"
                                   onChange={this.handleTextOnchage}

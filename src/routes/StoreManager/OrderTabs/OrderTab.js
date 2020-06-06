@@ -12,6 +12,8 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
+import * as translationHI from '../../../translations/hindi'
+import * as translationMA from '../../../translations/marathi'
 
 class OrderTab extends Component {
   constructor(props) {
@@ -27,13 +29,24 @@ class OrderTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
-      OrderTabLoading:false
+      OrderTabLoading:false,
+      translateLanguage: {}
     };
   }
 
   componentDidMount() {
     this.handleGetOrderTabGridData();
     this.handleGetOrderStatusFilterData();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   ////   -------------------API Function start-------------------------------
@@ -161,6 +174,7 @@ class OrderTab extends Component {
     });
   }
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <>
         {this.state.orderPopoverOverlay && (
@@ -171,7 +185,7 @@ class OrderTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
-                title: "Invoice no.",
+                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice no.",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -202,19 +216,19 @@ class OrderTab extends Component {
                                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                                 columns={[
                                   {
-                                    title: "Item ID",
+                                    title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
                                     dataIndex: "itemID",
                                   },
                                   {
-                                    title: "Item Name",
+                                    title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
                                     dataIndex: "itemName",
                                   },
                                   {
-                                    title: "Item Price",
+                                    title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
                                     dataIndex: "itemPrice",
                                   },
                                   {
-                                    title: "Quantity",
+                                    title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
                                     dataIndex: "quantity",
                                   },
                                 ]}
@@ -243,7 +257,7 @@ class OrderTab extends Component {
                 },
               },
               {
-                title: "Date",
+                title: TranslationContext!==undefined?TranslationContext.title.date:"Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -255,7 +269,7 @@ class OrderTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: "Customer",
+                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -267,7 +281,7 @@ class OrderTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: "Items",
+                title:TranslationContext!==undefined?TranslationContext.title.items:"Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -279,20 +293,20 @@ class OrderTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: "Item ID",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: "Item Name",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title: "Item Price",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: "Quantity",
+                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
                                 dataIndex: "quantity",
                               },
                               //   {
@@ -319,13 +333,13 @@ class OrderTab extends Component {
                 width: 100,
               },
               {
-                title: "Amount",
+                title: TranslationContext!==undefined?TranslationContext.title.amount:"Amount",
                 dataIndex: "amount",
                 width: 150,
                 className: "order-desktop",
               },
               {
-                title: "Status",
+                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
                 className:
                   "camp-status-header camp-status-header-statusFilter order-status-header order-desktop",
                 render: (row, item) => {
@@ -372,9 +386,12 @@ class OrderTab extends Component {
                             "filter"
                           )}
                         >
-                          Apply
+                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                          
                         </button>
-                        <button className="btn-cancel-status">Cancel</button>
+                        <button className="btn-cancel-status">
+                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                        </button>
                       </div>
                     </div>
                   );
@@ -389,7 +406,7 @@ class OrderTab extends Component {
                 ),
               },
               {
-                title: "Shipping address",
+                title: TranslationContext!==undefined?TranslationContext.title.shippingaddress:"Shipping address",
                 render: (row, item) => {
                   return (
                     <>
@@ -408,45 +425,57 @@ class OrderTab extends Component {
                             <>
                               <div className="popover-input-cntr">
                                 <div>
-                                  <p>Address</p>
+                                  <p>
+                                  {TranslationContext!==undefined?TranslationContext.p.address:"Address"}
+                                  </p>
                                   <textarea placeholder="Enter Address"></textarea>
                                 </div>
                                 <div>
-                                  <p>Landmark</p>
+                                  <p>
+                                  {TranslationContext!==undefined?TranslationContext.p.landmark:"Landmark"}
+                                  </p>
                                   <input
                                     type="text"
-                                    placeholder="Enter Landmark"
+                                    placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterlandmark:"Enter Landmark"}
                                   />
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
-                                    <p>Pin Code</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.landmark:"Pin Code"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter Pin Code"
+                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpincode:"Enter Pin Code"}
                                     />
                                   </div>
                                   <div className="col-md-6">
-                                    <p>City</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.city:"City"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter City"
+                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercity:"Enter City"}
                                     />
                                   </div>
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
-                                    <p>State</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.state:"State"}
+                                    </p>
                                     <input
                                       type="text"
                                       placeholder="Enter State"
                                     />
                                   </div>
                                   <div className="col-md-6">
-                                    <p>Country</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.country:"Country"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter Country"
+                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercountry:"Enter Country"}
                                     />
                                   </div>
                                 </div>
@@ -487,7 +516,8 @@ class OrderTab extends Component {
                             style={{ cursor: "pointer" }}
                             className="order-small-font d-inline-block order-clr-blue ml-1"
                           >
-                            (ADDRESS PENDING)
+                            
+                            ({TranslationContext!==undefined?TranslationContext.p.addresspending:"ADDRESS PENDING"})
                           </p>
                         </Popconfirm>
                       )}
@@ -497,7 +527,7 @@ class OrderTab extends Component {
                 className: "white-space-init order-desktop",
               },
               {
-                title: "Action",
+                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: (row, item) => {
                   return (
                     <div>
@@ -506,22 +536,23 @@ class OrderTab extends Component {
                           content={
                             <div className="order-tab-popover">
                               <div className="pay-done">
-                                <p>Mode of Payment:</p>
-                                <span>Online</span>
+                                <p>{TranslationContext!==undefined?TranslationContext.p.modeofpayment:"Mode of Payment"}:</p>
+                                <span>{TranslationContext!==undefined?TranslationContext.span.online:"Online"}</span>
                               </div>
                               <div className="pay-done">
-                                <p>Total Amount:</p>
+                                <p>{TranslationContext!==undefined?TranslationContext.p.totalamount:"Total Amount"}:</p>
                                 <span>{item.amount}</span>
                               </div>
                               <div className="pay-done">
-                                <p>Payment via :</p>
+                                <p>{TranslationContext!==undefined?TranslationContext.p.paymentvia:"Payment via "}:</p>
                                 <span>
                                   <img
                                     src={CreditCard}
                                     alt="credit card icon"
                                     className="credit-card-icon"
                                   />
-                                  Credit Card
+                                  {TranslationContext!==undefined?TranslationContext.span.creditcard:"Credit Card"}
+                                  
                                 </span>
                               </div>
                             </div>
@@ -545,7 +576,10 @@ class OrderTab extends Component {
                               <div className="no-pay">
                                 <img src={NoPayment} alt="no payment" />
                               </div>
-                              <p>Payment not completed yet</p>
+                              <p>
+
+                              {TranslationContext!==undefined?TranslationContext.p.paymentnotcompletedyet:"Payment not completed yet"}
+                              </p>
                             </div>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-no-pay"
@@ -572,28 +606,38 @@ class OrderTab extends Component {
                 <div className="order-expanded-cntr">
                   <div className="row">
                     <div className="col-6">
-                      <p className="order-expanded-title">Customer</p>
+                      <p className="order-expanded-title">
+                      {TranslationContext!==undefined?TranslationContext.p.customer:"Customer"}
+                      </p>
                       <p>{row.customerName},</p>
                       <p className="order-small-font">{row.customerName}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Status</p>
+                      <p className="order-expanded-title">
+                      {TranslationContext!==undefined?TranslationContext.p.status:"Status"}
+                      </p>
                       <p className="order-clr-blue">{row.statusName}</p>
                       {/* {row.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
                       )} */}
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Amount</p>
+                      <p className="order-expanded-title">
+                      {TranslationContext!==undefined?TranslationContext.p.amount:"Amount"}
+                      </p>
                       <p>{row.amount}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Date</p>
+                      <p className="order-expanded-title">
+                      {TranslationContext!==undefined?TranslationContext.p.date:"Date"}
+                      </p>
                       <p>{row.date}</p>
                       <p className="order-small-font">{row.time}</p>
                     </div>
                     <div className="col-12">
-                      <p className="order-expanded-title">Shipping Address</p>
+                      <p className="order-expanded-title">
+                      {TranslationContext!==undefined?TranslationContext.p.shippingaddress:"Shipping Address"}
+                      </p>
                       <p
                         className={
                           row.shippingAddress === "-NIL-"
@@ -609,45 +653,58 @@ class OrderTab extends Component {
                             <>
                               <div className="popover-input-cntr">
                                 <div>
-                                  <p>Address</p>
+                                  <p>
+                                  {TranslationContext!==undefined?TranslationContext.p.address:"Address"}
+
+                                  </p>
                                   <textarea placeholder="Enter Address"></textarea>
                                 </div>
                                 <div>
-                                  <p>Landmark</p>
+                                  <p>
+                                  {TranslationContext!==undefined?TranslationContext.p.landmark:"Landmark"}
+                                  </p>
                                   <input
                                     type="text"
-                                    placeholder="Enter Landmark"
+                                    placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterlandmark:"Enter Landmark"}
                                   />
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
-                                    <p>Pin Code</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.pincode:"Pin Code"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter Pin Code"
+                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpincode:"Enter Pin Code"}
                                     />
                                   </div>
                                   <div className="col-md-6">
-                                    <p>City</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.city:"City"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter City"
+                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.entercity:"Enter City"}
                                     />
                                   </div>
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
-                                    <p>State</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.state:"State"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter State"
+                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterstate:"Enter State"}
                                     />
                                   </div>
                                   <div className="col-md-6">
-                                    <p>Country</p>
+                                    <p>
+                                    {TranslationContext!==undefined?TranslationContext.p.country:"Country"}
+                                    </p>
                                     <input
                                       type="text"
-                                      placeholder="Enter Country"
+                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.entercountry:"Enter Country"}
                                     />
                                   </div>
                                 </div>
@@ -688,7 +745,7 @@ class OrderTab extends Component {
                             style={{ cursor: "pointer" }}
                             className="order-small-font d-inline-block order-clr-blue ml-1"
                           >
-                            (ADDRESS PENDING)
+                            ( {TranslationContext!==undefined?TranslationContext.p.addresspending:"ADDRESS PENDING"})
                           </p>
                         </Popconfirm>
                       )}
@@ -721,7 +778,7 @@ class OrderTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>Items per page</p>
+              <p> {TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}</p>
             </div>
           </div>
         </div>
