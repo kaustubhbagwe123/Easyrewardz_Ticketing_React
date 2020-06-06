@@ -378,7 +378,9 @@
       "rejecteddata":"अस्वीकृत डेटा",
       "pickupdate":"तारीख ले लो",
       "pickuptime":"समय लेने",
-      "pickupdone":"पिकअप हो गया"
+      "pickupdone":"पिकअप हो गया",
+      "staffname":"स्टाफ का नाम",
+      "mobileno":"मोबाइल न"
     
    
    
@@ -979,7 +981,9 @@
       "close":"बंद करे",
       "addtolibrary":"पुस्तकालय में जोड़ें",
       "reject":"अस्वीकार",
-      "apply":"लागू"
+      "apply":"लागू",
+      "staffdetails":"स्टाफ का विवरण",
+      "proceed":"बढ़ना"
       
      
      
@@ -1284,7 +1288,10 @@
       "entercity":"शहर में प्रवेश करें",
       "entercountry":"देश में प्रवेश करें",
       "entercomment":"टिप्पणी दर्ज करें",
-      "enterstate":"राज्य दर्ज करें"
+      "enterstate":"राज्य दर्ज करें",
+      "enterpod":"POD दर्ज करें",
+      "enterstorename":"स्टोर का नाम दर्ज करें",
+      "enterstaffname":"कर्मचारियों का नाम दर्ज करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",
@@ -1327,7 +1334,10 @@
       "amount":"रकम",
       "shippingaddress":"शिपिंग पता",
       "deliverytype":"वितरण के प्रकार",
-      "partner":"साथी"
+      "partner":"साथी",
+      "awbno":"AWB नंबर",
+      "courierpartner":"कुरियर पार्टनर",
+      "referenceno":"संदर्भ संख्या।"
 
     },
     "content":{
