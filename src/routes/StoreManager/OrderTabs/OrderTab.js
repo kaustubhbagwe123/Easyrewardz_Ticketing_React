@@ -527,7 +527,7 @@ class OrderTab extends Component {
                 className: "white-space-init order-desktop",
               },
               {
-                title: "Action",
+                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: (row, item) => {
                   return (
                     <div>
