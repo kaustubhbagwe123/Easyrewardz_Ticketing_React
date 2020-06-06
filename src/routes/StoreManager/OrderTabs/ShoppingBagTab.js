@@ -28,6 +28,7 @@ class ShoppingBagTab extends Component {
       ShopBagLoading: false,
       DeliveryStatusFilter: [],
       deliveryStrStatus: "",
+      translateLanguage: {}
     };
   }
 
@@ -35,6 +36,15 @@ class ShoppingBagTab extends Component {
     this.handleGetShoppingBagGridData();
     this.handleGetShoppingBagStatusFilterData();
     this.handleGetShoppingBagDeliveryStatus();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   ////   -------------------API Function start-------------------------------
