@@ -470,7 +470,8 @@ class ShoppingBagTab extends Component {
                             "filter"
                           )}
                         >
-                          Apply
+                          {TranslationContext!==undefined?TranslationContext.button.viewsearch:"Apply"}
+                          
                         </button>
                         <button
                           className="btn-cancel-status"
