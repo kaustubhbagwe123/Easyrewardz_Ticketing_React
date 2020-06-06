@@ -129,7 +129,6 @@ class OrderTab extends Component {
 
   ///handle pagination onchage
   PaginationOnChange = async (numPage) => {
-    debugger;
     await this.setState({
       currentPage: numPage,
     });
