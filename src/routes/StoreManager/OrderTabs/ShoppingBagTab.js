@@ -25,24 +25,16 @@ class ShoppingBagTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
-      translateLanguage: {}
+      ShopBagLoading: false,
+      DeliveryStatusFilter: [],
+      deliveryStrStatus: "",
     };
   }
 
   componentDidMount() {
     this.handleGetShoppingBagGridData();
     this.handleGetShoppingBagStatusFilterData();
-
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    this.handleGetShoppingBagDeliveryStatus();
   }
 
   ////   -------------------API Function start-------------------------------
@@ -50,6 +42,9 @@ class ShoppingBagTab extends Component {
   handleGetShoppingBagGridData(filter) {
     debugger;
     let self = this;
+    this.setState({
+      ShopBagLoading: true,
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetShoppingBagDetails",
@@ -59,7 +54,7 @@ class ShoppingBagTab extends Component {
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
-        FilterDelivery: "",
+        FilterDelivery: this.state.deliveryStrStatus,
       },
     })
       .then(function(res) {
@@ -72,12 +67,16 @@ class ShoppingBagTab extends Component {
               shoppingBagGridData: data.shoppingBagList,
               totalCount: data.totalShoppingBag,
               filterOrderStatus: false,
+              filterShoppingDeliveryType: false,
+              ShopBagLoading: false,
             });
           } else {
             self.setState({
               shoppingBagGridData: [],
               totalCount: 0,
               filterOrderStatus: false,
+              filterShoppingDeliveryType: false,
+              ShopBagLoading: false,
             });
           }
         } else {
@@ -85,11 +84,13 @@ class ShoppingBagTab extends Component {
             self.setState({
               shoppingBagGridData: data.shoppingBagList,
               totalCount: data.totalCount,
+              ShopBagLoading: false,
             });
           } else {
             self.setState({
               shoppingBagGridData: [],
               totalCount: 0,
+              ShopBagLoading: false,
             });
           }
         }
@@ -126,6 +127,35 @@ class ShoppingBagTab extends Component {
         console.log(data);
       });
   }
+  /// handle Get Shopping bag delivery status filter
+  handleGetShoppingBagDeliveryStatus() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetShoppingBagDeliveryType",
+      headers: authHeader(),
+      params: {
+        pageID: 1,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            DeliveryStatusFilter: data,
+          });
+        } else {
+          self.setState({
+            DeliveryStatusFilter: [],
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
 
   ///-------------------API function end--------------------------------
 
@@ -147,8 +177,7 @@ class ShoppingBagTab extends Component {
     this.handleGetShoppingBagGridData();
   };
   /// handle check individual status
-  handleCheckDeliIndividualStatus() {
-    debugger;
+  handleCheckShopBagIndividualStatus() {
     var checkboxes = document.getElementsByName("ShopBagStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -163,7 +192,34 @@ class ShoppingBagTab extends Component {
       strStatus,
     });
   }
-
+  /// handle check individual Deliverystatus
+  handleCheckShopBagDeliveryStatus() {
+    var checkboxes = document.getElementsByName("shopBagDeliveryStatus");
+    var deliveryStrStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            deliveryStrStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      deliveryStrStatus,
+    });
+  }
+  /// close status filter
+  handleCloseStatusFilter() {
+    this.setState({
+      filterShoppingStatus: false,
+    });
+  }
+  /// close delivery filter
+  handleCloseDeliveryFilter() {
+    this.setState({
+      filterShoppingDeliveryType: false,
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -260,7 +316,9 @@ class ShoppingBagTab extends Component {
                     <div className="d-flex align-items-center">
                       <p
                         className={
-                          item.statusName === "Cancelled" ? "order-clr-pink" : ""
+                          item.statusName === "Cancelled"
+                            ? "order-clr-pink"
+                            : ""
                         }
                       >
                         {item.statusName}
@@ -274,7 +332,7 @@ class ShoppingBagTab extends Component {
                                 <p>{item.userName}</p>
                               </div>
                               <p className="shopping-popover-cancel-info">
-                               {item.canceledComment}
+                                {item.canceledComment}
                               </p>
                             </div>
                           }
@@ -303,11 +361,11 @@ class ShoppingBagTab extends Component {
                                 type="checkbox"
                                 id={"New" + item.statusID}
                                 className="ch1"
-                                onChange={this.handleCheckDeliIndividualStatus.bind(
+                                onChange={this.handleCheckShopBagIndividualStatus.bind(
                                   this
                                 )}
                                 // checked={this.state.CheckBoxAllStatus}
-                                name="orderStatus"
+                                name="ShopBagStatus"
                                 attrIds={item.statusID}
                               />
                               <label htmlFor={"New" + item.statusID}>
@@ -331,6 +389,12 @@ class ShoppingBagTab extends Component {
                         </button>
                         <button className="btn-cancel-status">
                         {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                        </button>
+                        <button
+                          className="btn-cancel-status"
+                          onClick={this.handleCloseStatusFilter.bind(this)}
+                        >
+                          Cancel
                         </button>
                       </div>
                     </div>
@@ -366,45 +430,43 @@ class ShoppingBagTab extends Component {
                   return (
                     <div className="campaign-status-drpdwn">
                       <ul>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="Campall-status"
-                            className="ch1"
-                            // onChange={this.handleCheckCampAllStatus.bind(this)}
-                            // checked={this.state.CheckBoxAllStatus}
-                            name="CampallStatus"
-                          />
-                          <label htmlFor="Campall-status">
-                            <span className="ch1-text">
-                            {TranslationContext!==undefined?TranslationContext.span.storedelivery:"Store Delivery"}
-                            </span>
-                          </label>
-                        </li>
-                        <li>
-                          <input
-                            type="checkbox"
-                            id="New100"
-                            className="ch1"
-                            // onChange={this.handleCheckCampIndividualStatus.bind(
-                            //   this
-                            // )}
-                            name="CampallStatus"
-                            attrIds={100}
-                          />
-                          <label htmlFor="New100">
-                            <span className="ch1-text">
-                            {TranslationContext!==undefined?TranslationContext.span.selfpickedup:"Self Picked Up"}
-                            </span>
-                          </label>
-                        </li>
+                        {this.state.DeliveryStatusFilter !== null &&
+                          this.state.DeliveryStatusFilter.map((item, d) => (
+                            <li key={d}>
+                              <input
+                                type="checkbox"
+                                id={"New" + item.deliveryTypeID}
+                                className="ch1"
+                                onChange={this.handleCheckShopBagDeliveryStatus.bind(
+                                  this
+                                )}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="shopBagDeliveryStatus"
+                                attrIds={item.deliveryTypeID}
+                              />
+                              <label htmlFor={"New" + item.deliveryTypeID}>
+                                <span className="ch1-text">
+                                  {item.deliveryTypeName}
+                                </span>
+                              </label>
+                            </li>
+                          ))}
                       </ul>
                       <div className="dv-status">
-                        <button className="btn-apply-status">
-                        {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                        <button
+                          className="btn-apply-status"
+                          onClick={this.handleGetShoppingBagGridData.bind(
+                            this,
+                            "filter"
+                          )}
+                        >
+                          Apply
                         </button>
-                        <button className="btn-cancel-status">
-                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                        <button
+                          className="btn-cancel-status"
+                          onClick={this.handleCloseDeliveryFilter.bind(this)}
+                        >
+                          Cancel
                         </button>
                       </div>
                     </div>
@@ -524,6 +586,7 @@ class ShoppingBagTab extends Component {
             showSizeChanger={false}
             onShowSizeChange={false}
             dataSource={this.state.shoppingBagGridData}
+            loading={this.state.ShopBagLoading}
           />
           <Pagination
             currentPage={this.state.currentPage}
