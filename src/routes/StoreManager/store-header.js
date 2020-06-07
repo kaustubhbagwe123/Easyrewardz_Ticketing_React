@@ -1907,7 +1907,9 @@ class Header extends Component {
                     style={{ display: "none" }}
                   />
                 </div>
-                <label className="cusheade">Orders</label>
+                <label className="cusheade">
+                {TranslationContext!==undefined?TranslationContext.label.orders:"Orders"}
+                </label>
               </Link>
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">

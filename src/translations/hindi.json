@@ -384,7 +384,10 @@
       "shoppingbag":"शॉपिंग बैग",
       "integratedsystem":"एकीकृत प्रणाली",
       "payment":"भुगतान",
-      "shipment":"शिपमेंट"
+      "shipment":"शिपमेंट",
+      "clearsearch":"स्पष्ट खोज",
+      "notes":"टिप्पणियाँ",
+      "orders":"आदेश"
     
    
    
@@ -555,7 +558,8 @@
       "address":"पता",
       "landmark":"सीमा चिन्ह",
       "pincode":"पिन कोड",
-      "successfullymappedto":"सफलतापूर्वक मैप किया गया"
+      "successfullymappedto":"सफलतापूर्वक मैप किया गया",
+      "updated":"अद्यतन"
      
      
       
@@ -988,7 +992,8 @@
       "apply":"लागू",
       "staffdetails":"स्टाफ का विवरण",
       "proceed":"बढ़ना",
-      "convertoorder":"आदेश में परिवर्तित करें"
+      "convertoorder":"आदेश में परिवर्तित करें",
+      "collectpayment":"भुगतान प्राप्त करें"
       
      
      
@@ -1239,7 +1244,13 @@
       "sec":"सेकंड",
       "selectlanguage":"भाषा का चयन करें",
       "storecode":"स्टोर कोड",
-      "storetimings":"स्टोर टाइमिंग"
+      "storetimings":"स्टोर टाइमिंग",
+      "category":"वर्ग",
+      "subcategory":"उप श्रेणी",
+      "issuetype":"समस्या का प्रकार",
+      "ticketstatus":"टिकट की स्थिति",
+      "selectcategory":"श्रेणी का चयन करें",
+      "selectissuetype":"समस्या का प्रकार चुनें"
     },
     "radio":{
         "email":"ईमेल",
@@ -1299,7 +1310,8 @@
       "enterstate":"राज्य दर्ज करें",
       "enterpod":"POD दर्ज करें",
       "enterstorename":"स्टोर का नाम दर्ज करें",
-      "enterstaffname":"कर्मचारियों का नाम दर्ज करें"
+      "enterstaffname":"कर्मचारियों का नाम दर्ज करें",
+      "addnotes":"नोट्स जोड़ें"
     },
     "title":{
       "campaignname":"अभियान का नाम",

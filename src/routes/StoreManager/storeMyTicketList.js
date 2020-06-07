@@ -11,6 +11,8 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
+import * as translationHI from '../../translations/hindi';
+import * as translationMA from '../../translations/marathi';
 // import Twitter from "./../../assets/Images/twitter.png";
 // import HeadPhone3 from "./../../assets/Images/headphone3.png";
 // import MailImg from "./../../assets/Images/msg.png";
@@ -40,6 +42,7 @@ class storeMyTicketList extends Component {
       cSelectedRow: {},
       ticketDetailID: 0,
       TicketSearchCount: 0,
+      translateLanguage: {}
     };
     this.handleTabChange = this.handleTabChange.bind(this);
   }
@@ -48,6 +51,17 @@ class storeMyTicketList extends Component {
     this.handleGetStoreTicketGridData();
     this.handleGetStoreTicketTabCount();
     this.handleGetCategoryList();
+
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
+
   }
 
   //// --------------------------------API Call Start ----------------------------------
@@ -384,6 +398,7 @@ class storeMyTicketList extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <div>
         <div className="myticketlist-header">
@@ -406,7 +421,7 @@ class storeMyTicketList extends Component {
                     this.handleTabChange("New");
                   }}
                 >
-                  New:
+                  {TranslationContext!==undefined?TranslationContext.a.new:"New"}:
                   <span className="myTciket-tab-span">
                     {this.state.byNewCount < 9
                       ? "0" + this.state.byNewCount
@@ -427,7 +442,7 @@ class storeMyTicketList extends Component {
                     this.handleTabChange("Open");
                   }}
                 >
-                  Open:
+                  {TranslationContext!==undefined?TranslationContext.a.open:"Open"}:
                   <span className="myTciket-tab-span">
                     {this.state.byOpenCount < 9
                       ? "0" + this.state.byOpenCount
@@ -448,7 +463,7 @@ class storeMyTicketList extends Component {
                     this.handleTabChange("Resolved");
                   }}
                 >
-                  Resolved:
+                   {TranslationContext!==undefined?TranslationContext.a.resolved:"Resolved"}:
                   <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
@@ -512,7 +527,8 @@ class storeMyTicketList extends Component {
                                       aria-controls="category-tab"
                                       aria-selected="false"
                                     >
-                                      By Category
+                                      {TranslationContext!==undefined?TranslationContext.a.bycategory:"By Category"}
+                                      
                                     </a>
                                   </li>
                                 </ul>
@@ -522,7 +538,8 @@ class storeMyTicketList extends Component {
                                     className="btn-inv"
                                     onClick={this.handleTicketSearch.bind(this)}
                                   >
-                                    View Search
+                                    {TranslationContext!==undefined?TranslationContext.button.viewsearch:"View Search"}
+                                    
                                   </button>
                                 </div>
                               </div>
@@ -544,7 +561,9 @@ class storeMyTicketList extends Component {
                                             this
                                           )}
                                         >
-                                          <option value={0}>Category</option>
+                                          <option value={0}>
+                                          {TranslationContext!==undefined?TranslationContext.option.category:"Category"}
+                                          </option>
                                           {this.state.CategoryData !== null &&
                                             this.state.CategoryData.map(
                                               (item, i) => (
@@ -567,7 +586,8 @@ class storeMyTicketList extends Component {
                                           )}
                                         >
                                           <option value={0}>
-                                            Sub Category
+                                          {TranslationContext!==undefined?TranslationContext.option.subcategory:"Sub Category"}
+                                            
                                           </option>
                                           {this.state.SubCategoryData !==
                                             null &&
@@ -591,7 +611,9 @@ class storeMyTicketList extends Component {
                                             this
                                           )}
                                         >
-                                          <option value="0">Issue Type</option>
+                                          <option value="0">
+                                          {TranslationContext!==undefined?TranslationContext.option.issuetype:"Issue Type"}
+                                          </option>
                                           {this.state.IssueTypeData !== null &&
                                             this.state.IssueTypeData.map(
                                               (item, i) => (
@@ -616,7 +638,8 @@ class storeMyTicketList extends Component {
                                           )}
                                         >
                                           <option value="0">
-                                            Ticket Status
+                                          {TranslationContext!==undefined?TranslationContext.option.ticketstatus:"Ticket Status"}
+                                            
                                           </option>
                                           {this.state.TicketStatusData !==
                                             null &&
@@ -646,7 +669,8 @@ class storeMyTicketList extends Component {
                                           : this.state.TicketSearchCount}
                                         &nbsp;
                                       </span>
-                                      Results
+                                      {TranslationContext!==undefined?TranslationContext.p.results:"Results"}
+                                      
                                     </p>
                                     <label
                                       className="blue-clr fs-14"
@@ -654,7 +678,8 @@ class storeMyTicketList extends Component {
                                         this
                                       )}
                                     >
-                                      CLEAR SEARCH
+                                       {TranslationContext!==undefined?TranslationContext.label.clearsearch:"CLEAR SEARCH"}
+                                      
                                     </label>
                                   </div>
                                 </div>
@@ -691,7 +716,8 @@ class storeMyTicketList extends Component {
                                           htmlFor="fil-aball"
                                           className="ticketid"
                                         >
-                                          ID
+                                          {TranslationContext!==undefined?TranslationContext.label.id:"ID"}
+                                          
                                         </label>
                                       </div>
                                     </div>
@@ -781,7 +807,8 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                    Status
+                                      {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
+                                    
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -819,13 +846,16 @@ class storeMyTicketList extends Component {
                                 },
                               },
                               {
-                                Header: <span>Subject</span>,
+                                Header: <span>
+                                   {TranslationContext!==undefined?TranslationContext.span.subject:"Subject"}
+                                </span>,
                                 accessor: "ticketTitle",
                               },
                               {
                                 Header: (
                                   <span>
-                                    Category
+                                     {TranslationContext!==undefined?TranslationContext.span.category:"Category"}
+                                    
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -841,15 +871,21 @@ class storeMyTicketList extends Component {
                                         <div className="dash-creation-popup-cntr">
                                           <ul className="dash-category-popup dashnewpopup">
                                             <li>
-                                              <p>Category</p>
+                                              <p>
+                                              {TranslationContext!==undefined?TranslationContext.p.category:"Category"}
+                                              </p>
                                               <p>{row.original.category}</p>
                                             </li>
                                             <li>
-                                              <p>Sub Category</p>
+                                              <p>
+                                              {TranslationContext!==undefined?TranslationContext.p.subcategory:"Sub Category"}
+                                              </p>
                                               <p>{row.original.subCategory}</p>
                                             </li>
                                             <li>
-                                              <p>Type</p>
+                                              <p>
+                                              {TranslationContext!==undefined?TranslationContext.p.type:"Type"}
+                                              </p>
                                               <p>{row.original.issueType}</p>
                                             </li>
                                           </ul>
@@ -869,7 +905,8 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                    Priority
+                                     {TranslationContext!==undefined?TranslationContext.span.priority:"Priority"}
+                                    
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -879,7 +916,8 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                    Assignee
+                                      {TranslationContext!==undefined?TranslationContext.span.assignee:"Assignee"}
+                                    
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -888,7 +926,8 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                    Creation On
+                                     {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}
+                                    
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -904,12 +943,14 @@ class storeMyTicketList extends Component {
                                           <div className="insertpop1">
                                             <ul className="dash-creation-popup">
                                               <li className="title">
-                                                Creation details
+                                              {TranslationContext!==undefined?TranslationContext.li.creationdetails:"Creation details"}
+                                                
                                               </li>
                                               <li>
                                                 <p>
                                                   {row.original.createdBy}
-                                                  &nbsp;Created
+                                                  &nbsp; {TranslationContext!==undefined?TranslationContext.p.created:"Created"}
+                                                
                                                 </p>
                                                 <p>
                                                   {row.original.createdDate}
@@ -919,7 +960,7 @@ class storeMyTicketList extends Component {
                                               <li>
                                                 <p>
                                                   {row.original.updatedBy}
-                                                  &nbsp;Updated
+                                                  &nbsp;{TranslationContext!==undefined?TranslationContext.p.updated:"Updated"}
                                                 </p>
                                                 <p>
                                                   {row.original.updatedDate}
