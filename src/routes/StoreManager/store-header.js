@@ -322,7 +322,9 @@ class Header extends Component {
         page.toLowerCase() === "Appointment".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var myTicket = {
-      data: "MyTicket",
+      data:this.state.translateLanguage.default !== undefined
+      ? this.state.translateLanguage.default.nav.myticket
+      : "MyTicket",
       urls: "myTicketList",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,

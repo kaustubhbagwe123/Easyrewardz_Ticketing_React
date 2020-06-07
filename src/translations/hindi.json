@@ -4,7 +4,8 @@
       "ticket": "मेरे टिकट",
       "knowledge": "ज्ञानधार",
       "campaign": "अभियान",
-      "appointment": "नियुक्ति"
+      "appointment": "नियुक्ति",
+      "myticket":"मेरा टिकट"
     },
     "label":{
       "er": "एर",
@@ -993,7 +994,8 @@
       "staffdetails":"स्टाफ का विवरण",
       "proceed":"बढ़ना",
       "convertoorder":"आदेश में परिवर्तित करें",
-      "collectpayment":"भुगतान प्राप्त करें"
+      "collectpayment":"भुगतान प्राप्त करें",
+      "remove":"हटाना"
       
      
      

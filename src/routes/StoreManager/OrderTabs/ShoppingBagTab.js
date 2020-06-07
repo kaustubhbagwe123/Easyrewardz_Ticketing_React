@@ -511,7 +511,7 @@ class ShoppingBagTab extends Component {
                 ),
               },
               {
-                title: "Delivery type",
+                title: TranslationContext!==undefined?TranslationContext.title.deliverytype:"Delivery type",
                 className:
                   "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header",
                 render: (row, item) => {
@@ -569,7 +569,8 @@ class ShoppingBagTab extends Component {
                           className="btn-cancel-status"
                           onClick={this.handleCloseDeliveryFilter.bind(this)}
                         >
-                          Cancel
+                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          
                         </button>
                       </div>
                     </div>
@@ -666,7 +667,8 @@ class ShoppingBagTab extends Component {
                                 />
                               </div>
                               <button className="btn-cancel-status">
-                                Cancel
+                              {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                                
                               </button>
                               <button
                                 className="btn-apply-status"
@@ -675,7 +677,8 @@ class ShoppingBagTab extends Component {
                                   item.shoppingID
                                 )}
                               >
-                                Done
+                                  {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
+                                
                               </button>
                             </div>
                           </>
@@ -717,7 +720,7 @@ class ShoppingBagTab extends Component {
                                 ></textarea>
 
                                 <button className="btn-cancel-status">
-                                  Cancel
+                                {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
                                 </button>
                                 <button
                                   className="btn-apply-status"
@@ -726,7 +729,8 @@ class ShoppingBagTab extends Component {
                                     item.shoppingID
                                   )}
                                 >
-                                  Remove
+                                    {TranslationContext!==undefined?TranslationContext.button.remove:"Remove"}
+                                  
                                 </button>
                               </div>
                             </div>
