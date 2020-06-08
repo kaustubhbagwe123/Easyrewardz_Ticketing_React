@@ -276,7 +276,9 @@ class Header extends Component {
       imgAlt: "dashboard icon",
       imgClass: "dashboardImg1",
       activeClass:
-        page.toLowerCase() === "storedashboard".toLowerCase() ? "active single-menu" : "single-menu",
+        page.toLowerCase() === "storedashboard".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var task = {
       data: "Task",
@@ -285,7 +287,10 @@ class Header extends Component {
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page.toLowerCase() === "StoreTask".toLowerCase() ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "StoreTask".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var claim = {
       data: "Claim",
@@ -294,7 +299,10 @@ class Header extends Component {
       logoBlue: ClaimLogoBlue,
       imgAlt: "claim icon",
       imgClass: "claim-logo",
-      activeClass: page.toLowerCase() === "claim".toLowerCase() ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "claim".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var campaign = {
       data:
@@ -306,7 +314,10 @@ class Header extends Component {
       logoBlue: CampaignLogoBlue,
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
-      activeClass: page.toLowerCase() === "Campaign".toLowerCase() ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "Campaign".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var appointment = {
       data:
@@ -319,18 +330,24 @@ class Header extends Component {
       imgAlt: "campaign icon",
       imgClass: "campaign-icon",
       activeClass:
-        page.toLowerCase() === "Appointment".toLowerCase() ? "active single-menu" : "single-menu",
+        page.toLowerCase() === "Appointment".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     var myTicket = {
-      data:this.state.translateLanguage.default !== undefined
-      ? this.state.translateLanguage.default.nav.myticket
-      : "MyTicket",
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.myticket
+          : "MyTicket",
       urls: "myTicketList",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
       imgAlt: "ticket icon",
       imgClass: "myTicket",
-      activeClass: page.toLowerCase() === "MyTicket".toLowerCase() ? "active single-menu" : "single-menu",
+      activeClass:
+        page.toLowerCase() === "MyTicket".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
     };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
@@ -593,7 +610,7 @@ class Header extends Component {
         if (status === true) {
           //NotificationManager.success(Msg);
           localStorage.clear();
-          
+
           window.location.href = "/";
         }
       })
@@ -772,8 +789,10 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
+          self.setState({ chatMessageCount: self.state.chatMessageCount - 1 });
           self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
+          self.handleGetChatNotificationCount();
         } else {
         }
       })
@@ -1910,7 +1929,9 @@ class Header extends Component {
                   />
                 </div>
                 <label className="cusheade">
-                {TranslationContext!==undefined?TranslationContext.label.orders:"Orders"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.orders
+                    : "Orders"}
                 </label>
               </Link>
               {/* <Link to="storedashboard" className="single-menu">
