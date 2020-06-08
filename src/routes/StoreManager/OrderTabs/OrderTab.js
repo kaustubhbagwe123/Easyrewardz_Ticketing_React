@@ -12,8 +12,8 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
-import * as translationHI from '../../../translations/hindi'
-import * as translationMA from '../../../translations/marathi'
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class OrderTab extends Component {
   constructor(props) {
@@ -29,24 +29,21 @@ class OrderTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
-      OrderTabLoading:false,
-      translateLanguage: {}
+      OrderTabLoading: false,
+      translateLanguage: {},
     };
   }
 
   componentDidMount() {
     this.handleGetOrderTabGridData();
     this.handleGetOrderStatusFilterData();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   ////   -------------------API Function start-------------------------------
@@ -78,14 +75,14 @@ class OrderTab extends Component {
               orderGridData: data.ordersList,
               totalCount: data.totalCount,
               filterOrderStatus: false,
-              OrderTabLoading:false
+              OrderTabLoading: false,
             });
           } else {
             self.setState({
               orderGridData: [],
               totalCount: 0,
               filterOrderStatus: false,
-              OrderTabLoading:false
+              OrderTabLoading: false,
             });
           }
         } else {
@@ -93,13 +90,13 @@ class OrderTab extends Component {
             self.setState({
               orderGridData: data.ordersList,
               totalCount: data.totalCount,
-              OrderTabLoading:false
+              OrderTabLoading: false,
             });
           } else {
             self.setState({
               orderGridData: [],
               totalCount: 0,
-              OrderTabLoading:false
+              OrderTabLoading: false,
             });
           }
         }
@@ -108,7 +105,7 @@ class OrderTab extends Component {
         console.log(data);
       });
   }
-/// handle Get Order status filter data
+  /// handle Get Order status filter data
   handleGetOrderStatusFilterData() {
     debugger;
     let self = this;
@@ -185,7 +182,10 @@ class OrderTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice no.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.invoiceno
+                    : "Invoice no.",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -216,19 +216,31 @@ class OrderTab extends Component {
                                 className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                                 columns={[
                                   {
-                                    title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.itemid
+                                        : "Item ID",
                                     dataIndex: "itemID",
                                   },
                                   {
-                                    title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.itemname
+                                        : "Item Name",
                                     dataIndex: "itemName",
                                   },
                                   {
-                                    title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.itemprice
+                                        : "Item Price",
                                     dataIndex: "itemPrice",
                                   },
                                   {
-                                    title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.quantity
+                                        : "Quantity",
                                     dataIndex: "quantity",
                                   },
                                 ]}
@@ -257,7 +269,10 @@ class OrderTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.date
+                    : "Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -269,7 +284,10 @@ class OrderTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.customer
+                    : "Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -281,7 +299,10 @@ class OrderTab extends Component {
                 className: "order-desktop",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.items:"Items",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.items
+                    : "Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -293,20 +314,32 @@ class OrderTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Quantity",
                                 dataIndex: "quantity",
                               },
                               //   {
@@ -333,13 +366,19 @@ class OrderTab extends Component {
                 width: 100,
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.amount:"Amount",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.amount
+                    : "Amount",
                 dataIndex: "amount",
                 width: 150,
                 className: "order-desktop",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.status
+                    : "Status",
                 className:
                   "camp-status-header camp-status-header-statusFilter order-status-header order-desktop",
                 render: (row, item) => {
@@ -386,11 +425,14 @@ class OrderTab extends Component {
                             "filter"
                           )}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
                         </button>
                         <button className="btn-cancel-status">
-                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                       </div>
                     </div>
@@ -406,7 +448,10 @@ class OrderTab extends Component {
                 ),
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.shippingaddress:"Shipping address",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.shippingaddress
+                    : "Shipping address",
                 render: (row, item) => {
                   return (
                     <>
@@ -426,43 +471,68 @@ class OrderTab extends Component {
                               <div className="popover-input-cntr">
                                 <div>
                                   <p>
-                                  {TranslationContext!==undefined?TranslationContext.p.address:"Address"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.address
+                                      : "Address"}
                                   </p>
                                   <textarea placeholder="Enter Address"></textarea>
                                 </div>
                                 <div>
                                   <p>
-                                  {TranslationContext!==undefined?TranslationContext.p.landmark:"Landmark"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.landmark
+                                      : "Landmark"}
                                   </p>
                                   <input
                                     type="text"
-                                    placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterlandmark:"Enter Landmark"}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.placeholder
+                                            .enterlandmark
+                                        : "Enter Landmark"
+                                    }
                                   />
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.landmark:"Pin Code"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.landmark
+                                        : "Pin Code"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpincode:"Enter Pin Code"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .enterpincode
+                                          : "Enter Pin Code"
+                                      }
                                     />
                                   </div>
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.city:"City"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.city
+                                        : "City"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercity:"Enter City"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .entercity
+                                          : "Enter City"
+                                      }
                                     />
                                   </div>
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.state:"State"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.state
+                                        : "State"}
                                     </p>
                                     <input
                                       type="text"
@@ -471,11 +541,18 @@ class OrderTab extends Component {
                                   </div>
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.country:"Country"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.country
+                                        : "Country"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercountry:"Enter Country"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .entercountry
+                                          : "Enter Country"
+                                      }
                                     />
                                   </div>
                                 </div>
@@ -516,8 +593,11 @@ class OrderTab extends Component {
                             style={{ cursor: "pointer" }}
                             className="order-small-font d-inline-block order-clr-blue ml-1"
                           >
-                            
-                            ({TranslationContext!==undefined?TranslationContext.p.addresspending:"ADDRESS PENDING"})
+                            (
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.addresspending
+                              : "ADDRESS PENDING"}
+                            )
                           </p>
                         </Popconfirm>
                       )}
@@ -527,7 +607,10 @@ class OrderTab extends Component {
                 className: "white-space-init order-desktop",
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Action",
                 render: (row, item) => {
                   return (
                     <div>
@@ -536,23 +619,43 @@ class OrderTab extends Component {
                           content={
                             <div className="order-tab-popover">
                               <div className="pay-done">
-                                <p>{TranslationContext!==undefined?TranslationContext.p.modeofpayment:"Mode of Payment"}:</p>
-                                <span>{TranslationContext!==undefined?TranslationContext.span.online:"Online"}</span>
+                                <p>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.modeofpayment
+                                    : "Mode of Payment"}
+                                  :
+                                </p>
+                                <span>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.online
+                                    : "Online"}
+                                </span>
                               </div>
                               <div className="pay-done">
-                                <p>{TranslationContext!==undefined?TranslationContext.p.totalamount:"Total Amount"}:</p>
+                                <p>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.totalamount
+                                    : "Total Amount"}
+                                  :
+                                </p>
                                 <span>{item.amount}</span>
                               </div>
                               <div className="pay-done">
-                                <p>{TranslationContext!==undefined?TranslationContext.p.paymentvia:"Payment via "}:</p>
+                                <p>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.paymentvia
+                                    : "Payment via "}
+                                  :
+                                </p>
                                 <span>
                                   <img
                                     src={CreditCard}
                                     alt="credit card icon"
                                     className="credit-card-icon"
                                   />
-                                  {TranslationContext!==undefined?TranslationContext.span.creditcard:"Credit Card"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.creditcard
+                                    : "Credit Card"}
                                 </span>
                               </div>
                             </div>
@@ -577,8 +680,9 @@ class OrderTab extends Component {
                                 <img src={NoPayment} alt="no payment" />
                               </div>
                               <p>
-
-                              {TranslationContext!==undefined?TranslationContext.p.paymentnotcompletedyet:"Payment not completed yet"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.paymentnotcompletedyet
+                                  : "Payment not completed yet"}
                               </p>
                             </div>
                           }
@@ -607,14 +711,18 @@ class OrderTab extends Component {
                   <div className="row">
                     <div className="col-6">
                       <p className="order-expanded-title">
-                      {TranslationContext!==undefined?TranslationContext.p.customer:"Customer"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.customer
+                          : "Customer"}
                       </p>
                       <p>{row.customerName},</p>
                       <p className="order-small-font">{row.customerName}</p>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
-                      {TranslationContext!==undefined?TranslationContext.p.status:"Status"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.status
+                          : "Status"}
                       </p>
                       <p className="order-clr-blue">{row.statusName}</p>
                       {/* {row.selfPickUp && (
@@ -623,20 +731,26 @@ class OrderTab extends Component {
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
-                      {TranslationContext!==undefined?TranslationContext.p.amount:"Amount"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.amount
+                          : "Amount"}
                       </p>
                       <p>{row.amount}</p>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
-                      {TranslationContext!==undefined?TranslationContext.p.date:"Date"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.date
+                          : "Date"}
                       </p>
                       <p>{row.date}</p>
                       <p className="order-small-font">{row.time}</p>
                     </div>
                     <div className="col-12">
                       <p className="order-expanded-title">
-                      {TranslationContext!==undefined?TranslationContext.p.shippingaddress:"Shipping Address"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.shippingaddress
+                          : "Shipping Address"}
                       </p>
                       <p
                         className={
@@ -654,57 +768,93 @@ class OrderTab extends Component {
                               <div className="popover-input-cntr">
                                 <div>
                                   <p>
-                                  {TranslationContext!==undefined?TranslationContext.p.address:"Address"}
-
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.address
+                                      : "Address"}
                                   </p>
                                   <textarea placeholder="Enter Address"></textarea>
                                 </div>
                                 <div>
                                   <p>
-                                  {TranslationContext!==undefined?TranslationContext.p.landmark:"Landmark"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.landmark
+                                      : "Landmark"}
                                   </p>
                                   <input
                                     type="text"
-                                    placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterlandmark:"Enter Landmark"}
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.placeholder
+                                            .enterlandmark
+                                        : "Enter Landmark"
+                                    }
                                   />
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.pincode:"Pin Code"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.pincode
+                                        : "Pin Code"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterpincode:"Enter Pin Code"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .enterpincode
+                                          : "Enter Pin Code"
+                                      }
                                     />
                                   </div>
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.city:"City"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.city
+                                        : "City"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.entercity:"Enter City"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .entercity
+                                          : "Enter City"
+                                      }
                                     />
                                   </div>
                                 </div>
                                 <div className="row">
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.state:"State"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.state
+                                        : "State"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterstate:"Enter State"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .enterstate
+                                          : "Enter State"
+                                      }
                                     />
                                   </div>
                                   <div className="col-md-6">
                                     <p>
-                                    {TranslationContext!==undefined?TranslationContext.p.country:"Country"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.country
+                                        : "Country"}
                                     </p>
                                     <input
                                       type="text"
-                                      placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.entercountry:"Enter Country"}
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .entercountry
+                                          : "Enter Country"
+                                      }
                                     />
                                   </div>
                                 </div>
@@ -745,7 +895,11 @@ class OrderTab extends Component {
                             style={{ cursor: "pointer" }}
                             className="order-small-font d-inline-block order-clr-blue ml-1"
                           >
-                            ( {TranslationContext!==undefined?TranslationContext.p.addresspending:"ADDRESS PENDING"})
+                            ({" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.addresspending
+                              : "ADDRESS PENDING"}
+                            )
                           </p>
                         </Popconfirm>
                       )}
@@ -778,7 +932,12 @@ class OrderTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p> {TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}</p>
+              <p>
+                {" "}
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.itemsperpage
+                  : "Items per page"}
+              </p>
             </div>
           </div>
         </div>

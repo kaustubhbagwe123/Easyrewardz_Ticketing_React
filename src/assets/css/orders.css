@@ -503,7 +503,7 @@
   display: block;
 }
 .order-popover-address textarea {
-  height: 70px;
+  height: 80px;
 }
 .order-popover-address .ant-popover-message {
   max-height: 200px;
@@ -523,9 +523,9 @@
 .popover-input-cntr div:last-child input {
   margin-bottom: 0;
 }
-.order-popover-address .ant-popover-inner {
+/* .order-popover-address .ant-popover-inner {
   width: 400px;
-}
+} */
 .popover-radio-cntr label {
   color: #4a4a4a;
 }
