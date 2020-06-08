@@ -225,7 +225,7 @@ class Orders extends Component {
             </li>
           </ul>
           <div className="order-search">
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder={TranslationContext!==undefined?TranslationContext.placeholder.searchdot:"Search..."} />
             <img src={OrderSearch} alt="search icon" />
           </div>
         </div>

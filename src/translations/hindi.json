@@ -1316,7 +1316,8 @@
       "enterpod":"POD दर्ज करें",
       "enterstorename":"स्टोर का नाम दर्ज करें",
       "enterstaffname":"कर्मचारियों का नाम दर्ज करें",
-      "addnotes":"नोट्स जोड़ें"
+      "addnotes":"नोट्स जोड़ें",
+      "searchdot":"खोज.."
     },
     "title":{
       "campaignname":"अभियान का नाम",
