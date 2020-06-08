@@ -138,7 +138,7 @@ class Orders extends Component {
                 aria-controls="delivered-tab"
                 aria-selected="false"
               >
-                Delivered
+                {TranslationContext!==undefined?TranslationContext.a.delivered:"Delivered"}
               </a>
             </Option>
             <Option value="shipment-assigned">
@@ -206,7 +206,7 @@ class Orders extends Component {
                 aria-selected="false"
                 // onClick={this.handleOrderTabOnChange("deliveredTab")}
               >
-                Delivered
+                  {TranslationContext!==undefined?TranslationContext.a.delivered:"Delivered"}
               </a>
             </li>
             <li className="nav-item">
@@ -219,7 +219,8 @@ class Orders extends Component {
                 aria-selected="false"
                 // onClick={this.handleOrderTabOnChange("shipmentAssignTab")}
               >
-                Shipment Assigned
+                 {TranslationContext!==undefined?TranslationContext.a.shipmentassigned:"Shipment Assigned"}
+                
               </a>
             </li>
           </ul>

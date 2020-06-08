@@ -685,7 +685,9 @@
       "campaignscript":"अभियान स्क्रिप्ट",
       "shoppingbag":"शॉपिंग बैग",
       "order":"गण",
-      "shipment":"लदान"
+      "shipment":"लदान",
+      "delivered":"वितरण",
+      "shipmentassigned":"शिपमेंट सौंपा गया"
     },
     "span":{
       "status": "स्थिति",
