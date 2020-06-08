@@ -349,9 +349,11 @@ class ChatSettings extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           self.setState({ isLoadingAdd: false });
+          NotificationManager.success("Update successfully!");
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
+          NotificationManager.error("Not update successfully!");
         }
       })
       .catch((response) => {

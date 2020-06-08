@@ -370,7 +370,7 @@ class OrderTab extends Component {
                                     ? TranslationContext.title.itemname
                                     : "Item Name",
                                 dataIndex: "itemName",
-                                width: 150,
+                                // width: 150,
                               },
                               {
                                 title:
@@ -378,6 +378,7 @@ class OrderTab extends Component {
                                     ? TranslationContext.title.itemprice
                                     : "Item Price",
                                 dataIndex: "itemPrice",
+                                className: "order-desktop",
                               },
                               {
                                 title:
@@ -385,11 +386,23 @@ class OrderTab extends Component {
                                     ? TranslationContext.title.quantity
                                     : "Quantity",
                                 dataIndex: "quantity",
+                                className: "order-desktop",
                               },
-                              //   {
-                              //     title: "AWB. No",
-                              //     dataIndex: "AWBNo",
-                              //   },
+                              {
+                                title: "Item Price/ Quantity",
+                                className: "order-mobile pick-up-date",
+                                render: (row, item) => {
+                                  return (
+                                    <p>
+                                      {item.itemPrice}/ {item.quantity}
+                                    </p>
+                                  );
+                                },
+                              },
+                              {
+                                title: "AWB. No",
+                                dataIndex: "itemID",
+                              },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
@@ -397,6 +410,7 @@ class OrderTab extends Component {
                           />
                         }
                         trigger="click"
+                        placement="bottom"
                         overlayClassName="order-popover-table order-popover order-popover-table-big"
                         onVisibleChange={(visible) =>
                           this.setState({ orderPopoverOverlay: visible })
@@ -946,7 +960,7 @@ class OrderTab extends Component {
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
-                          placement="bottomRight"
+                          placement="topLeft"
                           onVisibleChange={(visible) =>
                             this.setState({ orderPopoverOverlay: visible })
                           }
