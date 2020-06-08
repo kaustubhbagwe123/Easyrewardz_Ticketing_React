@@ -1866,7 +1866,7 @@ class Header extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    console.log(this.state.isCustEndChat, "---------isCustEndChat");
+    
     return (
       <React.Fragment>
         <div
