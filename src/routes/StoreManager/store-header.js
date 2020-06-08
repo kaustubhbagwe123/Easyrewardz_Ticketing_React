@@ -279,7 +279,9 @@ class Header extends Component {
         page.toLowerCase() === "storedashboard".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var task = {
-      data: "Task",
+      data:   this.state.translateLanguage.default !== undefined
+      ? this.state.translateLanguage.default.nav.task
+      : "Task",
       urls: "StoreTask",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
@@ -2109,7 +2111,8 @@ class Header extends Component {
                   className="logout"
                   onClick={this.handleLogoutMethod.bind(this)}
                 >
-                  LOGOUT
+                  {TranslationContext!==undefined?TranslationContext.button.logout:"LOGOUT"}
+                  
                 </button>
               </div>
             </div>
@@ -2118,37 +2121,44 @@ class Header extends Component {
                 <div className="logout-status" style={{ marginTop: "10px" }}>
                   <img src={StatusLogo} alt="status" />
                 </div>
-                <p className="logout-label chat-status">CHAT STATUS :</p>
+                <p className="logout-label chat-status">{TranslationContext!==undefined?TranslationContext.p.chatstatus:"CHAT STATUS"} :</p>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="online" />
                 <label htmlFor="online" className="logout-label">
-                  Online
+                {TranslationContext!==undefined?TranslationContext.label.online:"Online"}
+                  
                 </label>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="away" />
                 <label htmlFor="away" className="logout-label">
-                  Away
+                {TranslationContext!==undefined?TranslationContext.label.away:"Away"}
+                  
                 </label>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="offline" />
                 <label htmlFor="offline" className="logout-label">
-                  Offline
+                {TranslationContext!==undefined?TranslationContext.label.offline:"Offline"}
+                  
                 </label>
               </div>
             </div>
             <div className="d-block">
               <div className="d-flex justify-content-between">
                 <div>
-                  <p className="logout-label">Login Time</p>
+                  <p className="logout-label">
+                  {TranslationContext!==undefined?TranslationContext.p.logintime:"Login Time"}
+                  </p>
                   <p className="font-weight-bold" style={{ fontSize: "16px" }}>
                     {this.state.LoginTime}
                   </p>
                 </div>
                 <div>
-                  <p className="logout-label">Logout Time</p>
+                  <p className="logout-label">
+                  {TranslationContext!==undefined?TranslationContext.p.logouttime:"Logout Time"}
+                  </p>
                   <p
                     className="font-weight-bold"
                     style={{ fontSize: "16px", float: "right" }}
@@ -2173,7 +2183,9 @@ class Header extends Component {
             </div>
             <div>
               <div>
-                <p className="logout-label">SLA SCORE</p>
+                <p className="logout-label">
+                {TranslationContext!==undefined?TranslationContext.p.slascore:"SLA SCORE"}
+                </p>
                 <p className="font-weight-bold">{this.state.SLAScore}</p>
               </div>
               {/* <div>
@@ -2181,7 +2193,9 @@ class Header extends Component {
                 <p className="font-weight-bold">{this.state.CSatScore}</p>
               </div> */}
               <div>
-                <p className="logout-label">Avg Response time</p>
+                <p className="logout-label">
+                {TranslationContext!==undefined?TranslationContext.p.avgresponsetime:"Avg Response time"}
+                </p>
                 <p className="font-weight-bold">{this.state.AvgResponse}</p>
               </div>
             </div>
@@ -2279,7 +2293,8 @@ class Header extends Component {
                               : "text-disabled"
                           }
                         >
-                          VIEW
+                          {TranslationContext!==undefined?TranslationContext.div.view:"VIEW"}
+                          
                         </div>
                       </Popover>
                     </div>

@@ -71,9 +71,9 @@ class Orders extends Component {
   };
 
   render() {
-   
-    const { Option } = Select;
     const TranslationContext = this.state.translateLanguage.default;
+    const { Option } = Select;
+    
     return (
       <Fragment>
         {this.state.orderPopoverOverlay && (

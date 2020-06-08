@@ -5,7 +5,8 @@
       "knowledge": "ज्ञानधार",
       "campaign": "अभियान",
       "appointment": "नियुक्ति",
-      "myticket":"मेरा टिकट"
+      "myticket":"मेरा टिकट",
+      "task":"कार्य"
     },
     "label":{
       "er": "एर",
@@ -916,7 +917,7 @@
       "tickettodate":"टिकट टू डेट",
       "ticketsource":"टिकट स्रोत",
       "status":"स्थिति",
-      "view":"राय देखना",
+      "view":"राय",
       "ordropfilehere":"या फ़ाइल यहाँ छोड़ें",
       "sendviamessage":"वाया मैसेंजर भेजें",
       "sendviabot":"वाया बॉट भेजें",
