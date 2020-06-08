@@ -662,7 +662,8 @@ const steps = [
 ];
 
 function Step1(props) {
-  const TranslationContext = this.state.translateLanguage.default;
+  debugger;
+  const TranslationContext = this.props.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">
