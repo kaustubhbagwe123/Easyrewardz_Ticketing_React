@@ -5,7 +5,8 @@
       "knowledge": "ज्ञानधार",
       "campaign": "अभियान",
       "appointment": "नियुक्ति",
-      "myticket":"मेरा टिकट"
+      "myticket":"मेरा टिकट",
+      "task":"कार्य"
     },
     "label":{
       "er": "एर",
@@ -684,7 +685,9 @@
       "campaignscript":"अभियान स्क्रिप्ट",
       "shoppingbag":"शॉपिंग बैग",
       "order":"गण",
-      "shipment":"लदान"
+      "shipment":"लदान",
+      "delivered":"वितरण",
+      "shipmentassigned":"शिपमेंट सौंपा गया"
     },
     "span":{
       "status": "स्थिति",
@@ -916,7 +919,7 @@
       "tickettodate":"टिकट टू डेट",
       "ticketsource":"टिकट स्रोत",
       "status":"स्थिति",
-      "view":"राय देखना",
+      "view":"राय",
       "ordropfilehere":"या फ़ाइल यहाँ छोड़ें",
       "sendviamessage":"वाया मैसेंजर भेजें",
       "sendviabot":"वाया बॉट भेजें",
@@ -1313,7 +1316,8 @@
       "enterpod":"POD दर्ज करें",
       "enterstorename":"स्टोर का नाम दर्ज करें",
       "enterstaffname":"कर्मचारियों का नाम दर्ज करें",
-      "addnotes":"नोट्स जोड़ें"
+      "addnotes":"नोट्स जोड़ें",
+      "searchdot":"खोज.."
     },
     "title":{
       "campaignname":"अभियान का नाम",
