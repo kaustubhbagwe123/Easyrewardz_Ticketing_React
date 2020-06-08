@@ -25,7 +25,7 @@ class DeliveredTab extends Component {
       statusFilterData: [],
       orderPopoverOverlay: false,
       DeliveredLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
   componentDidMount() {
@@ -45,7 +45,7 @@ class DeliveredTab extends Component {
     var pageNumber = this.state.currentPage;
     this.setState({
       DeliveredLoading: true,
-      filterOrderDeliveredStatus: false
+      filterOrderDeliveredStatus: false,
     });
     axios({
       method: "post",
@@ -66,13 +66,13 @@ class DeliveredTab extends Component {
           self.setState({
             deliveredGridData: data.orderDelivereds,
             totalCount: data.totalCount,
-            DeliveredLoading: false
+            DeliveredLoading: false,
           });
         } else {
           self.setState({
             deliveredGridData: [],
             totalCount: 0,
-            DeliveredLoading: false
+            DeliveredLoading: false,
           });
         }
       })
@@ -196,7 +196,6 @@ class DeliveredTab extends Component {
                 },
               },
               {
-
                 title:
                   TranslationContext !== undefined
                     ? TranslationContext.title.items
@@ -273,12 +272,12 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                
                 title:
                   TranslationContext !== undefined
                     ? TranslationContext.title.status
                     : "Status",
-                className: "camp-status-header camp-status-header-statusFilter table-coloum-hide",
+                className:
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -321,10 +320,16 @@ class DeliveredTab extends Component {
                             ? TranslationContext.button.apply
                             : "Apply"}
                         </button>
-                        <button className="btn-cancel-status"
-                         onClick={() => this.setState({filterOrderDeliveredStatus: false})}
+                        <button
+                          className="btn-cancel-status"
+                          onClick={() =>
+                            this.setState({ filterOrderDeliveredStatus: false })
+                          }
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}</button>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
+                        </button>
                       </div>
                     </div>
                   );
@@ -374,23 +379,26 @@ class DeliveredTab extends Component {
               debugger;
               return (
                 <div className="innertabcollapse">
-                  <div className="row">
-                    <div>
-                      <label>Date</label>
-                      <label>{row.date}</label>
-                    </div>
-                    <div>
-                      <label>Customer Name</label>
-                      <label>
-                        <p>{row.customerName}</p>
-                        <p>{row.mobileNumber}</p>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label>Status</label>
-                      <label>{row.statusName}</label>
-                    </div>
+                  <div className="">
+                    <table className="table">
+                      <tr>
+                        <td>
+                          <label><b>Date</b></label>
+                          <label>{row.date}</label>
+                        </td>
+                        <td>
+                          <label><b>Customer Name</b></label>
+                          <label>
+                            <p>{row.customerName}</p>
+                            <p>{row.mobileNumber}</p>
+                          </label>
+                        </td>
+                        <td>
+                          <label><b>Status</b></label>
+                          <label>{row.statusName}</label>
+                        </td>
+                      </tr>
+                    </table>
                   </div>
                 </div>
               );

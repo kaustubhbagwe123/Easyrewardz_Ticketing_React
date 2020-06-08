@@ -3780,7 +3780,7 @@ table tr th:last-child {
 }
 .custom-antd-table .ant-table-expanded-row,
 .inner-custom-react-table .ReactTable {
-  background: #f8f8f8;
+  background: #fff;
 }
 .inner-custom-react-table .ReactTable {
   border-radius: 0 !important;
@@ -10039,7 +10039,23 @@ table tr th:last-child {
   right: -46px;
   top: 12px;
 }
-
+.innertabcollapse label {
+  display: block;
+}
+.innertabcollapse table td {
+  border-top: none;
+}
+.innertabcollapse label b {
+  font-weight: bold;
+  color: #333;
+  font-size: 12px;
+}
+#shipment-tab table td span {
+  display: inline;
+}
+#shipment-tab .antd-table-order .ant-table-row-expand-icon {
+  display: inline;
+}
 
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
