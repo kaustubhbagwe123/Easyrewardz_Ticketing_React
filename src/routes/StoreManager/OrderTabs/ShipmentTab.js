@@ -17,8 +17,8 @@ import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import { NotificationManager } from "react-notifications";
-import * as translationHI from '../../../translations/hindi'
-import * as translationMA from '../../../translations/marathi'
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -35,22 +35,20 @@ class ShipmentTab extends Component {
       postsPerPage: 10,
       statusFilterData: [],
       strStatus: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
 
   componentDidMount() {
     this.handleGetShipmentTabGridData();
     this.handleGetShipmentStatusFilterData();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   ///-----------------------API function Start--------------------------
@@ -223,7 +221,10 @@ class ShipmentTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice no.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.invoiceno
+                    : "Invoice no.",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -233,7 +234,10 @@ class ShipmentTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.customer
+                    : "Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -244,7 +248,10 @@ class ShipmentTab extends Component {
                 },
               },
               {
-                title:  TranslationContext!==undefined?TranslationContext.title.items:"Items",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.items
+                    : "Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -255,20 +262,32 @@ class ShipmentTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Quantity",
                                 dataIndex: "quantity",
                               },
                               // {
@@ -295,7 +314,10 @@ class ShipmentTab extends Component {
                 width: 100,
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.shippingaddress:"Shipping address",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.shippingaddress
+                    : "Shipping address",
                 render: (row, item) => {
                   return (
                     <p className="order-small-font">{item.shippingAddress}</p>
@@ -305,12 +327,18 @@ class ShipmentTab extends Component {
                 className: "white-space-init",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.deliverytype:"Delivery Type",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.deliverytype
+                    : "Delivery Type",
                 dataIndex: "deliveryTypeName",
                 width: 150,
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.status
+                    : "Status",
                 className: "camp-status-header camp-status-header-statusFilter",
                 render: (row, item) => {
                   return (
@@ -356,10 +384,14 @@ class ShipmentTab extends Component {
                             "filter"
                           )}
                         >
-                              {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
                         </button>
                         <button className="btn-cancel-status">
-                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                       </div>
                     </div>
@@ -375,12 +407,18 @@ class ShipmentTab extends Component {
                 ),
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.partner:"Partner",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.partner
+                    : "Partner",
                 dataIndex: "Partner",
                 width: 150,
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Action",
                 render: (row, item) => {
                   return (
                     <div>
@@ -394,7 +432,13 @@ class ShipmentTab extends Component {
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <label>{TranslationContext!==undefined?TranslationContext.label.pickupdate:"Pickup Date"}:</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .pickupdate
+                                            : "Pickup Date"}
+                                          :
+                                        </label>
                                         <input
                                           type="text"
                                           className="form-control"
@@ -402,7 +446,13 @@ class ShipmentTab extends Component {
                                         />
                                       </td>
                                       <td>
-                                        <label>{TranslationContext!==undefined?TranslationContext.label.pickuptime:"Pickup Time"}:</label>
+                                        <label>
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .pickuptime
+                                            : "Pickup Time"}
+                                          :
+                                        </label>
                                         <input
                                           type="text"
                                           className="form-control"
@@ -413,7 +463,10 @@ class ShipmentTab extends Component {
                                     <tr>
                                       <td>
                                         <label>
-                                        {TranslationContext!==undefined?TranslationContext.label.pickupdone:"Pickup Done"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .pickupdone
+                                            : "Pickup Done"}
                                         </label>
                                         <button
                                           type="button"
@@ -423,20 +476,25 @@ class ShipmentTab extends Component {
                                             item.id
                                           )}
                                         >
-                                            {TranslationContext!==undefined?TranslationContext.button.yes:"Yes"}
-                                          
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.yes
+                                            : "Yes"}
                                         </button>
                                       </td>
                                       <td>
                                         <label style={{ visibility: "hidden" }}>
-                                        {TranslationContext!==undefined?TranslationContext.label.pickupdone:"Pickup Done"}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label
+                                                .pickupdone
+                                            : "Pickup Done"}
                                         </label>
                                         <button
                                           type="button"
                                           className="popbtnno"
                                         >
-                                           {TranslationContext!==undefined?TranslationContext.button.no:"No"}
-                                          
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.no
+                                            : "No"}
                                         </button>
                                       </td>
                                     </tr>
@@ -505,7 +563,11 @@ class ShipmentTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>{TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}</p>
+              <p>
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.itemsperpage
+                  : "Items per page"}
+              </p>
             </div>
           </div>
           <Modal
@@ -553,38 +615,67 @@ const steps = [
   { name: "Airway Bill No", component: <Step2 /> },
 ];
 
+let dummy = {};
+
+if (window.localStorage.getItem("translateLanguage") === "hindi") {
+  dummy = translationHI;
+} else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+  dummy = translationMA;
+} else {
+  dummy = {};
+}
+
 function Step1(props) {
-  const TranslationContext = this.state.translateLanguage.default;
+  const TranslationContext = dummy.default;
   return (
     <div>
       <div className="tabs-content">
         <form>
           <div className="article-body">
             <span>
-              {TranslationContext!==undefined?TranslationContext.span.itemidshownbelowmappedtothisorder:"Item id shown below mapped to this Order"} 
-              <b>334335</b>{TranslationContext!==undefined?TranslationContext.span.only:"only."}
+              {TranslationContext !== undefined
+                ? TranslationContext.span.itemidshownbelowmappedtothisorder
+                : "Item id shown below mapped to this Order"}
+              <b>334335</b>
+              {TranslationContext !== undefined
+                ? TranslationContext.span.only
+                : "only."}
               <br />
-              {TranslationContext!==undefined?TranslationContext.span.selectanyitemidyouwanttosendforshipment:"Select any item id, you want to send for shipment."}
-              
+              {TranslationContext !== undefined
+                ? TranslationContext.span
+                    .selectanyitemidyouwanttosendforshipment
+                : "Select any item id, you want to send for shipment."}
             </span>
             <Table
               className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
               columns={[
                 {
-                  title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.itemid
+                      : "Item ID",
                   dataIndex: "itemID",
                 },
                 {
-                  title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.itemname
+                      : "Item Name",
                   dataIndex: "itemName",
                   width: 150,
                 },
                 {
-                  title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.itemprice
+                      : "Item Price",
                   dataIndex: "itemPrice",
                 },
                 {
-                  title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                  title:
+                    TranslationContext !== undefined
+                      ? TranslationContext.title.quantity
+                      : "Quantity",
                   dataIndex: "quantity",
                 },
               ]}
@@ -599,7 +690,7 @@ function Step1(props) {
   );
 }
 function Step2(props) {
-  const TranslationContext = this.state.translateLanguage.default;
+  const TranslationContext = dummy.default;
   return (
     <div>
       <div className="tabs-content">
@@ -608,10 +699,24 @@ function Step2(props) {
             <div className="airwaycontent">
               <img src={CardTick} alt="CardTick" className="cardtick" />
               <h2>AWB No - 889676467</h2>
-              <p>{TranslationContext!==undefined?TranslationContext.p.successfullymappedto:"Successfully mapped to"}</p>
+              <p>
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.successfullymappedto
+                  : "Successfully mapped to"}
+              </p>
               <ul>
-            <li>{TranslationContext!==undefined?TranslationContext.li.invoiceno:"Invoice no."} - 909676467</li>
-               <li>{TranslationContext!==undefined?TranslationContext.li.itemid:"Item ID"} - 9096 7646 7990</li>
+                <li>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.li.invoiceno
+                    : "Invoice no."}{" "}
+                  - 909676467
+                </li>
+                <li>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.li.itemid
+                    : "Item ID"}{" "}
+                  - 9096 7646 7990
+                </li>
               </ul>
             </div>
           </div>
