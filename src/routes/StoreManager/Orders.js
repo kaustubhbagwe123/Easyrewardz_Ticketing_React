@@ -26,6 +26,7 @@ class Orders extends Component {
     };
   }
   componentDidMount() {
+
     if(window.localStorage.getItem("translateLanguage") === "hindi"){
       this.state.translateLanguage = translationHI
      }
@@ -35,6 +36,7 @@ class Orders extends Component {
      else{
        this.state.translateLanguage = {}
      }
+
   }
 
   changeOrderDropdown() {
@@ -97,7 +99,7 @@ class Orders extends Component {
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
               >
-                 {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
+              {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
                 
               </a>
             </Option>
@@ -110,7 +112,7 @@ class Orders extends Component {
                 aria-controls="order-tab"
                 aria-selected="false"
               >
-                 {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
+              {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
                 
               </a>
             </Option>

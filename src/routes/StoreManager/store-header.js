@@ -322,7 +322,9 @@ class Header extends Component {
         page.toLowerCase() === "Appointment".toLowerCase() ? "active single-menu" : "single-menu",
     };
     var myTicket = {
-      data: "MyTicket",
+      data:this.state.translateLanguage.default !== undefined
+      ? this.state.translateLanguage.default.nav.myticket
+      : "MyTicket",
       urls: "myTicketList",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
@@ -1907,7 +1909,9 @@ class Header extends Component {
                     style={{ display: "none" }}
                   />
                 </div>
-                <label className="cusheade">Orders</label>
+                <label className="cusheade">
+                {TranslationContext!==undefined?TranslationContext.label.orders:"Orders"}
+                </label>
               </Link>
               {/* <Link to="storedashboard" className="single-menu">
                 <div className="header-icons-cntr">

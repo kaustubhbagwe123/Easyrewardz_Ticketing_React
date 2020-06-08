@@ -6,6 +6,8 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
+import * as translationHI from './../../../translations/hindi';
+import * as translationMA from './../../../translations/marathi';
 
 class OrderSetting extends Component {
   constructor(props) {
@@ -14,13 +16,23 @@ class OrderSetting extends Component {
         this.state = {
            moduleConfigData: {},
            orderConfigData: {},
-           selTab: "Module Configuration"
+           selTab: "Module Configuration",
+           translateLanguage: {}
         }
     }
 
   componentDidMount() {
     this.handleGetModuleConfigData();
     this.handleGetOrderConfigData();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   handleGetModuleConfigData() {
@@ -158,11 +170,13 @@ class OrderSetting extends Component {
   };
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            Settings
+          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            
           </Link>
           <span>&gt;</span>
           <Link
@@ -172,11 +186,13 @@ class OrderSetting extends Component {
             }}
             className="header-path"
           >
-            Store
+             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            Order
+          {TranslationContext!==undefined?TranslationContext.link.order:"Order"}
+            
           </Link>
         </div>
         <div className="Store-paddmodule storeModule">
@@ -281,7 +297,7 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab> */}
-                <Tab label="Order">
+                <Tab label={TranslationContext!==undefined?TranslationContext.label.order:"Order"}>
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -289,12 +305,15 @@ class OrderSetting extends Component {
                           <div className="row">
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
-                                <h3>ORDER CONFIGURATION</h3>
+                                <h3>
+                                {TranslationContext!==undefined?TranslationContext.h3.orderconfiguration:"ORDER CONFIGURATION"}
+                                </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Shopping Bag
+                                      {TranslationContext!==undefined?TranslationContext.label.shoppingbag:"Shopping Bag"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -316,7 +335,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Integrated System
+                                      {TranslationContext!==undefined?TranslationContext.label.integratedsystem:"Integrated System"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -339,7 +359,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Payment
+                                      {TranslationContext!==undefined?TranslationContext.label.payment:"Payment"}
+                                        
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -361,7 +383,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                        Shipment
+                                      {TranslationContext!==undefined?TranslationContext.label.shipment:"Shipment"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -388,7 +411,8 @@ class OrderSetting extends Component {
                                     this
                                   )}
                                 >
-                                  UPDATE
+                                      {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
+                                  
                                 </button>
                               </div>
                             </div>
