@@ -14,6 +14,7 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
+import { NotificationManager } from "react-notifications";
 
 class OrderTab extends Component {
   constructor(props) {
@@ -31,6 +32,12 @@ class OrderTab extends Component {
       strStatus: "",
       OrderTabLoading: false,
       translateLanguage: {},
+      shippingAddress: "",
+      landmark: "",
+      pincode: "",
+      city: "",
+      state: "",
+      country: ""
     };
   }
 
@@ -170,6 +177,43 @@ class OrderTab extends Component {
       strStatus,
     });
   }
+
+  handleUpdateAddressPending(orderId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateAddressPending",
+      headers: authHeader(),
+      data: {
+        OrderID: orderId,
+        ShipmentAddress: this.state.shippingAddress,
+        Landmark: this.state.landmark,
+        PinCode: this.state.pincode,
+        City: this.state.city,
+        State: this.state.state,
+        Country: this.state.country
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetOrderTabGridData();
+          NotificationManager.success("Record Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleTextOnchage = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -489,7 +533,10 @@ class OrderTab extends Component {
                                       ? TranslationContext.p.address
                                       : "Address"}
                                   </p>
-                                  <textarea placeholder="Enter Address"></textarea>
+                                  <textarea placeholder="Enter Address"
+                                   name="shippingAddress"
+                                   onChange={this.handleTextOnchage}
+                                  ></textarea>
                                 </div>
                                 <div>
                                   <p>
@@ -505,6 +552,8 @@ class OrderTab extends Component {
                                             .enterlandmark
                                         : "Enter Landmark"
                                     }
+                                    name="landmark"
+                                    onChange={this.handleTextOnchage}
                                   />
                                 </div>
                                 <div className="row">
@@ -522,6 +571,8 @@ class OrderTab extends Component {
                                               .enterpincode
                                           : "Enter Pin Code"
                                       }
+                                      name="pincode"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -538,6 +589,8 @@ class OrderTab extends Component {
                                               .entercity
                                           : "Enter City"
                                       }
+                                      name="city"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                 </div>
@@ -551,6 +604,8 @@ class OrderTab extends Component {
                                     <input
                                       type="text"
                                       placeholder="Enter State"
+                                      name="state"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -567,6 +622,8 @@ class OrderTab extends Component {
                                               .entercountry
                                           : "Enter Country"
                                       }
+                                      name="country"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                 </div>
@@ -602,6 +659,11 @@ class OrderTab extends Component {
                           }
                           icon={false}
                           okText="Save Address"
+                          onConfirm={this.handleUpdateAddressPending.bind(
+                            this,
+                            item.id
+                          )}
+                          cancelText="Cancel"
                         >
                           <p
                             style={{ cursor: "pointer" }}

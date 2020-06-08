@@ -1868,7 +1868,7 @@ class Header extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    console.log(this.state.isCustEndChat, "---------isCustEndChat");
+    
     return (
       <React.Fragment>
         <div
@@ -2478,7 +2478,7 @@ class Header extends Component {
                     </span>
                   </div>
                   <div className="chat-cntr">
-                    <p className="chats-heading">
+                    <p className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.ongoingchats
                         : "Ongoing Chats"}
@@ -2572,7 +2572,7 @@ class Header extends Component {
                     </div>
                   </div>
                   <div className="chat-cntr">
-                    <p className="chats-heading">
+                    <p className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.newchats
                         : "New Chats"}{" "}

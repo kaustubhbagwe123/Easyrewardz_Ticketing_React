@@ -8,8 +8,8 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { NotificationManager } from "react-notifications";
-import * as translationHI from '../../../translations/hindi'
-import * as translationMA from '../../../translations/marathi'
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class DeliveredTab extends Component {
   constructor(props) {
@@ -24,26 +24,29 @@ class DeliveredTab extends Component {
       strStatus: "",
       statusFilterData: [],
       orderPopoverOverlay: false,
+      DeliveredLoading: false,
       translateLanguage: {}
     };
   }
   componentDidMount() {
     this.handleGetOrderDeliveredData();
     this.handleGetOrderStatusFilterData(4);
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   handleGetOrderDeliveredData() {
     debugger;
     let self = this;
     var pageNumber = this.state.currentPage;
+    this.setState({
+      DeliveredLoading: true,
+      filterOrderDeliveredStatus: false
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
@@ -63,11 +66,13 @@ class DeliveredTab extends Component {
           self.setState({
             deliveredGridData: data.orderDelivereds,
             totalCount: data.totalCount,
+            DeliveredLoading: false
           });
         } else {
           self.setState({
             deliveredGridData: [],
             totalCount: 0,
+            DeliveredLoading: false
           });
         }
       })
@@ -168,11 +173,19 @@ class DeliveredTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice no.",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.invoiceno
+                    : "Invoice no.",
                 dataIndex: "invoiceNo",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
+                className: "table-coloum-hide",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.customer
+                    : "Customer",
+
                 render: (row, item) => {
                   return (
                     <div>
@@ -183,7 +196,11 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.items:"Items",
+
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.items
+                    : "Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -194,20 +211,32 @@ class DeliveredTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title:TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title:TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -229,7 +258,11 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                className: "table-coloum-hide",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.date
+                    : "Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -240,8 +273,12 @@ class DeliveredTab extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
-                className: "camp-status-header camp-status-header-statusFilter",
+                
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.status
+                    : "Status",
+                className: "camp-status-header camp-status-header-statusFilter table-coloum-hide",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -280,9 +317,14 @@ class DeliveredTab extends Component {
                           className="btn-apply-status"
                           onClick={this.handleGetOrderDeliveredData.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.apply
+                            : "Apply"}
                         </button>
-                        <button className="btn-cancel-status">{TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}</button>
+                        <button className="btn-cancel-status"
+                         onClick={() => this.setState({filterOrderDeliveredStatus: false})}
+                        >
+                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}</button>
                       </div>
                     </div>
                   );
@@ -297,35 +339,69 @@ class DeliveredTab extends Component {
                 ),
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.actions:"Action",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Action",
                 render: (row, item) => {
                   return (
                     <div className="d-flex">
-                      {item.actionTypeName === "Delivered"?(
-                      <button className="delibutn deliv-grid-butn">
-                        {item.actionTypeName}
-                      </button>
-                      ):item.actionTypeName === "Mark As Delivered"?
-                      (
-                        <button className="markasbutn deliv-grid-butn"
-                         onClick={this.handleUpdateMarkAsDelivered.bind(this,item.id)}
-                        >
-                          {item.actionTypeName}                      
+                      {item.actionTypeName === "Delivered" ? (
+                        <button className="delibutn deliv-grid-butn">
+                          {item.actionTypeName}
                         </button>
-                        ):(
-                          <button className="pickedbutn deliv-grid-butn">
-                            {item.actionTypeName}                           
-                          </button>
-                        )}
+                      ) : item.actionTypeName === "Mark As Delivered" ? (
+                        <button
+                          className="markasbutn deliv-grid-butn"
+                          onClick={this.handleUpdateMarkAsDelivered.bind(
+                            this,
+                            item.id
+                          )}
+                        >
+                          {item.actionTypeName}
+                        </button>
+                      ) : (
+                        <button className="pickedbutn deliv-grid-butn">
+                          {item.actionTypeName}
+                        </button>
+                      )}
                     </div>
                   );
                 },
               },
             ]}
+            expandedRowRender={(row, item) => {
+              debugger;
+              return (
+                <div className="innertabcollapse">
+                  <div className="row">
+                    <div>
+                      <label>Date</label>
+                      <label>{row.date}</label>
+                    </div>
+                    <div>
+                      <label>Customer Name</label>
+                      <label>
+                        <p>{row.customerName}</p>
+                        <p>{row.mobileNumber}</p>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>Status</label>
+                      <label>{row.statusName}</label>
+                    </div>
+                  </div>
+                </div>
+              );
+            }}
+            expandIconColumnIndex={5}
+            expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}
             onShowSizeChange={true}
             dataSource={this.state.deliveredGridData}
+            loading={this.state.DeliveredLoading}
           />
           <Pagination
             currentPage={this.state.currentPage}
@@ -345,7 +421,11 @@ class DeliveredTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>{TranslationContext!==undefined?TranslationContext.p.itemsperpage:"Items per page"}</p>
+              <p>
+                {TranslationContext !== undefined
+                  ? TranslationContext.p.itemsperpage
+                  : "Items per page"}
+              </p>
             </div>
           </div>
         </div>

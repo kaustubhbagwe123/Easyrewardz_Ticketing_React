@@ -225,6 +225,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
+
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -238,6 +239,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.customer
                     : "Customer",
+                className: "table-coloum-hide",
                 render: (row, item) => {
                   return (
                     <div>
@@ -324,13 +326,14 @@ class ShipmentTab extends Component {
                   );
                 },
                 width: 250,
-                className: "white-space-init",
+                className: "white-space-init table-coloum-hide",
               },
               {
                 title:
                   TranslationContext !== undefined
                     ? TranslationContext.title.deliverytype
                     : "Delivery Type",
+                className: "table-coloum-hide",
                 dataIndex: "deliveryTypeName",
                 width: 150,
               },
@@ -339,7 +342,8 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.status
                     : "Status",
-                className: "camp-status-header camp-status-header-statusFilter",
+                className:
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide",
                 render: (row, item) => {
                   return (
                     <>
@@ -412,6 +416,7 @@ class ShipmentTab extends Component {
                     ? TranslationContext.title.partner
                     : "Partner",
                 dataIndex: "Partner",
+                className: "table-coloum-hide",
                 width: 150,
               },
               {
@@ -539,6 +544,47 @@ class ShipmentTab extends Component {
                 },
               },
             ]}
+            //
+
+            expandedRowRender={(row, item) => {
+              return (
+                <div className="innertabcollapse">
+                  <div className="row">
+                    <div>
+                      <label>Customer Name</label>
+                      <label>
+                        <p>{row.customerName}</p>
+                        <p>{row.mobileNumber}</p>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>Shipping Address</label>
+                      <label>{row.shippingAddress}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Delivery Type</label>
+                      <label>{row.deliveryTypeName}</label>
+                    </div>
+
+                    <div>
+                      <label>Status</label>
+                      <label>{row.statusName}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Partner</label>
+                      <label>{row.Partner}</label>
+                    </div>
+                  </div>
+                </div>
+              );
+            }}
+            expandIconColumnIndex={7}
+            expandIconAsCell={false}
             pagination={false}
             showSizeChanger={false}
             onShowSizeChange={false}
