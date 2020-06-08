@@ -321,11 +321,6 @@ class DeliveredTab extends Component {
                             ? TranslationContext.button.apply
                             : "Apply"}
                         </button>
-                        <button className="btn-cancel-status">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "Cancel"}
-                        </button>
                         <button className="btn-cancel-status"
                          onClick={() => this.setState({filterOrderDeliveredStatus: false})}
                         >

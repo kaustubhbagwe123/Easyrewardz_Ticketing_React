@@ -283,13 +283,24 @@ class ShipmentAssignedTab extends Component {
                               <button type="button" className="popbtnno"
                               onClick={() => this.setState({orderPopoverOverlay: false})}
                               >
-                                Cancel
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.cancel
+                                  : "Cancel"}
                               </button>
                               {item.isProceed !== true ? (
-                              <button type="button" className="popbtn"
-                               onClick={this.handleUpdateShipmentAssignedData.bind(this,item,false)}
-                              >
-                                Done
+                                <button
+                                  type="button"
+                                  className="popbtn"
+                                  onClick={this.handleUpdateShipmentAssignedData.bind(
+                                    this,
+                                    item,
+                                    false
+                                  )}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.done
+                                    : "Done"}
+
                               </button>):null}
                             </div>
                           }
