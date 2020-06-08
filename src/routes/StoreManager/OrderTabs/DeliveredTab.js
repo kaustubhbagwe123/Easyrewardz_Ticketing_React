@@ -24,6 +24,7 @@ class DeliveredTab extends Component {
       strStatus: "",
       statusFilterData: [],
       orderPopoverOverlay: false,
+      DeliveredLoading: false,
       translateLanguage: {}
     };
   }
@@ -44,6 +45,10 @@ class DeliveredTab extends Component {
     debugger;
     let self = this;
     var pageNumber = this.state.currentPage;
+    this.setState({
+      DeliveredLoading: true,
+      filterOrderDeliveredStatus: false
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetOrderDeliveredDetails",
@@ -63,11 +68,13 @@ class DeliveredTab extends Component {
           self.setState({
             deliveredGridData: data.orderDelivereds,
             totalCount: data.totalCount,
+            DeliveredLoading: false
           });
         } else {
           self.setState({
             deliveredGridData: [],
             totalCount: 0,
+            DeliveredLoading: false
           });
         }
       })
@@ -282,7 +289,10 @@ class DeliveredTab extends Component {
                         >
                           {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
                         </button>
-                        <button className="btn-cancel-status">{TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}</button>
+                        <button className="btn-cancel-status"
+                         onClick={() => this.setState({filterOrderDeliveredStatus: false})}
+                        >
+                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}</button>
                       </div>
                     </div>
                   );
@@ -326,6 +336,7 @@ class DeliveredTab extends Component {
             showSizeChanger={true}
             onShowSizeChange={true}
             dataSource={this.state.deliveredGridData}
+            loading={this.state.DeliveredLoading}
           />
           <Pagination
             currentPage={this.state.currentPage}
