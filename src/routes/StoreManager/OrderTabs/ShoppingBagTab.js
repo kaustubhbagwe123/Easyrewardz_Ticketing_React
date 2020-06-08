@@ -197,7 +197,7 @@ class ShoppingBagTab extends Component {
       });
   }
   handleConvertToOrder(ShopId) {
-    debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -303,7 +303,7 @@ class ShoppingBagTab extends Component {
         )}
         <div className="table-cntr store dv-table-paging">
           <Table
-            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+            className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
                 title:
@@ -325,6 +325,7 @@ class ShoppingBagTab extends Component {
                     </div>
                   );
                 },
+                className: "order-desktop",
               },
               {
                 title:
@@ -339,6 +340,7 @@ class ShoppingBagTab extends Component {
                     </div>
                   );
                 },
+                className: "order-desktop",
               },
               {
                 title:
@@ -367,7 +369,6 @@ class ShoppingBagTab extends Component {
                                     ? TranslationContext.title.itemname
                                     : "Item Name",
                                 dataIndex: "itemName",
-                                width: 150,
                               },
                               {
                                 title:
@@ -394,7 +395,8 @@ class ShoppingBagTab extends Component {
                           />
                         }
                         trigger="click"
-                        overlayClassName="order-popover-table order-popover"
+                        placement="bottom"
+                        overlayClassName="order-popover-table order-popover shopping-bag-popover-item"
                         onVisibleChange={(visible) =>
                           this.setState({ orderPopoverOverlay: visible })
                         }
@@ -411,7 +413,7 @@ class ShoppingBagTab extends Component {
                     ? TranslationContext.title.status
                     : "Status",
                 className:
-                  "camp-status-header camp-status-header-statusFilter order-status-header",
+                  "camp-status-header camp-status-header-statusFilter order-status-header order-desktop",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -511,9 +513,12 @@ class ShoppingBagTab extends Component {
                 ),
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.deliverytype:"Delivery type",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.deliverytype
+                    : "Delivery type",
                 className:
-                  "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header",
+                  "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header order-desktop",
                 render: (row, item) => {
                   return (
                     <p
@@ -569,8 +574,9 @@ class ShoppingBagTab extends Component {
                           className="btn-cancel-status"
                           onClick={this.handleCloseDeliveryFilter.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                       </div>
                     </div>
@@ -606,7 +612,7 @@ class ShoppingBagTab extends Component {
                     </div>
                   );
                 },
-                className: "pick-up-date",
+                className: "pick-up-date order-desktop",
               },
               {
                 title:
@@ -620,7 +626,7 @@ class ShoppingBagTab extends Component {
                     </p>
                   );
                 },
-                className: "white-space-init",
+                className: "white-space-init order-desktop",
               },
               {
                 title:
@@ -666,9 +672,10 @@ class ShoppingBagTab extends Component {
                                   onChange={this.handleTextOnchage}
                                 />
                               </div>
-                              <button className="btn-cancel-status">
-                              {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                                
+                              {/* <button className="btn-cancel-status">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.cancel
+                                  : "Cancel"}
                               </button>
                               <button
                                 className="btn-apply-status"
@@ -677,9 +684,10 @@ class ShoppingBagTab extends Component {
                                   item.shoppingID
                                 )}
                               >
-                                  {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
-                                
-                              </button>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.done
+                                  : "Done"}
+                              </button> */}
                             </div>
                           </>
                         }
@@ -719,8 +727,10 @@ class ShoppingBagTab extends Component {
                                   onChange={this.handleTextOnchage}
                                 ></textarea>
 
-                                <button className="btn-cancel-status">
-                                {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                                {/* <button className="btn-cancel-status">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.cancel
+                                    : "Cancel"}
                                 </button>
                                 <button
                                   className="btn-apply-status"
@@ -729,9 +739,10 @@ class ShoppingBagTab extends Component {
                                     item.shoppingID
                                   )}
                                 >
-                                    {TranslationContext!==undefined?TranslationContext.button.remove:"Remove"}
-                                  
-                                </button>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.remove
+                                    : "Remove"}
+                                </button> */}
                               </div>
                             </div>
                           </>
@@ -753,6 +764,98 @@ class ShoppingBagTab extends Component {
                 },
               },
             ]}
+            ///Mobile view
+            expandedRowRender={(row) => {
+              return (
+                <div className="order-expanded-cntr">
+                  <div className="row">
+                    <div className="col-6">
+                      <p className="order-expanded-title">Customer</p>
+                      <p>{row.customerName},</p>
+                      <p className="order-small-font">{row.mobileNumber}</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Status</p>
+                      <div className="d-flex align-items-center">
+                        <p
+                          className={
+                            row.statusName === "Cancelled"
+                              ? "order-clr-pink"
+                              : ""
+                          }
+                        >
+                          {row.statusName}
+                        </p>
+                        {row.statusName === "Cancelled" ? (
+                          <Popover
+                            content={
+                              <div className="order-tab-popover">
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <p>{row.canceledOn}</p>
+                                  <p>{row.userName}</p>
+                                </div>
+                                <p className="shopping-popover-cancel-info">
+                                  {row.canceledComment}
+                                </p>
+                              </div>
+                            }
+                            trigger="click"
+                            placement="bottomLeft"
+                            arrowPointAtCenter
+                            overlayClassName="order-popover shopping-popover-cancel"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderInfo} className="order-info" />
+                          </Popover>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">
+                        Pickup Date &amp; Time
+                      </p>
+                      {row.pickupDate === "" && row.pickupTime === "" ? (
+                        <p className="order-clr-blue">-NIL-</p>
+                      ) : (
+                        <>
+                          <p className="order-clr-blue">{row.pickupDate},</p>
+                          <p className="order-clr-blue order-small-font">
+                            {row.pickupTime}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Delivery Type</p>
+                      <p
+                        className={
+                          row.deliveryTypeName === "Store Delivery"
+                            ? "order-clr-green"
+                            : "order-clr-blue"
+                        }
+                      >
+                        {row.deliveryTypeName}
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Address</p>
+                      <p>{row.address === "" ? "-NIL-" : row.address}</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Date</p>
+                      <p>{row.date}</p>
+                      <p className="order-small-font">{row.time}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            }}
+            expandIconColumnIndex={8}
+            expandIconAsCell={false}
             pagination={false}
             showSizeChanger={false}
             onShowSizeChange={false}
