@@ -663,8 +663,18 @@ const steps = [
   { name: "Airway Bill No", component: <Step2 /> },
 ];
 
+let dummy = {};
+
+if (window.localStorage.getItem("translateLanguage") === "hindi") {
+  dummy = translationHI;
+} else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+  dummy = translationMA;
+} else {
+  dummy = {};
+}
+
 function Step1(props) {
-  const TranslationContext = this.state.translateLanguage.default;
+  const TranslationContext = dummy.default;
   return (
     <div>
       <div className="tabs-content">
@@ -728,7 +738,7 @@ function Step1(props) {
   );
 }
 function Step2(props) {
-  const TranslationContext = this.state.translateLanguage.default;
+  const TranslationContext = dummy.default;
   return (
     <div>
       <div className="tabs-content">
