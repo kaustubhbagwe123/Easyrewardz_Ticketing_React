@@ -5,14 +5,13 @@ import OrderSearch from "./../../assets/Images/order-search.png";
 // import config from "../../helpers/config";
 // import { authHeader } from "../../helpers/authHeader";
 import "./../../assets/css/orders.css";
-import * as translationHI from './../../translations/hindi';
-import * as translationMA from './../../translations/marathi';
+import * as translationHI from "./../../translations/hindi";
+import * as translationMA from "./../../translations/marathi";
 import OrderTab from "./OrderTabs/OrderTab";
 import DeliveredTab from "./OrderTabs/DeliveredTab";
 import ShoppingBagTab from "./OrderTabs/ShoppingBagTab";
 import ShipmentTab from "./OrderTabs/ShipmentTab";
 import ShipmentAssignedTab from "./OrderTabs/ShipmentAssignedTab";
-
 
 class Orders extends Component {
   constructor(props) {
@@ -23,20 +22,17 @@ class Orders extends Component {
       shipmentTab2: false,
       deliverredTab3: false,
       shipmentAssignTab4: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
   componentWillMount() {
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   changeOrderDropdown() {
@@ -49,7 +45,7 @@ class Orders extends Component {
     }
   }
   handleOrderTabOnChange = (tabName) => {
-    debugger
+    debugger;
     if (tabName === "orderTab") {
       this.setState({
         orderTab1: true,
@@ -67,13 +63,12 @@ class Orders extends Component {
         shipmentAssignTab4: true,
       });
     }
-
   };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const { Option } = Select;
-    
+
     return (
       <Fragment>
         {this.state.orderPopoverOverlay && (
@@ -99,8 +94,9 @@ class Orders extends Component {
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
               >
-              {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shoppingbag
+                  : "Shopping Bag"}
               </a>
             </Option>
             <Option value="order">
@@ -112,8 +108,9 @@ class Orders extends Component {
                 aria-controls="order-tab"
                 aria-selected="false"
               >
-              {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.order
+                  : "Order"}
               </a>
             </Option>
             <Option value="shipment">
@@ -125,8 +122,9 @@ class Orders extends Component {
                 aria-controls="shipment-tab"
                 aria-selected="false"
               >
-              {TranslationContext!==undefined?TranslationContext.a.shipment:"Shipment"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shipment
+                  : "Shipment"}
               </a>
             </Option>
             <Option value="delivered">
@@ -138,7 +136,9 @@ class Orders extends Component {
                 aria-controls="delivered-tab"
                 aria-selected="false"
               >
-                {TranslationContext!==undefined?TranslationContext.a.delivered:"Delivered"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.delivered
+                  : "Delivered"}
               </a>
             </Option>
             <Option value="shipment-assigned">
@@ -164,10 +164,12 @@ class Orders extends Component {
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
               >
-                {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shoppingbag
+                  : "Shopping Bag"}
               </a>
             </li>
-            <li className="nav-item" >
+            <li className="nav-item">
               <a
                 className="nav-link"
                 data-toggle="tab"
@@ -177,7 +179,9 @@ class Orders extends Component {
                 aria-selected="false"
                 // onClick={this.handleOrderTabOnChange("orderTab")}
               >
-                {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.order
+                  : "Order"}
               </a>
             </li>
             <li className="nav-item">
@@ -190,7 +194,9 @@ class Orders extends Component {
                 aria-selected="false"
                 // onClick={this.handleOrderTabOnChange("shipmentTab")}
               >
-                {TranslationContext!==undefined?TranslationContext.a.shipment:"Shipment"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shipment
+                  : "Shipment"}
               </a>
             </li>
             <li
@@ -206,7 +212,9 @@ class Orders extends Component {
                 aria-selected="false"
                 // onClick={this.handleOrderTabOnChange("deliveredTab")}
               >
-                  {TranslationContext!==undefined?TranslationContext.a.delivered:"Delivered"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.delivered
+                  : "Delivered"}
               </a>
             </li>
             <li className="nav-item">
@@ -219,13 +227,21 @@ class Orders extends Component {
                 aria-selected="false"
                 // onClick={this.handleOrderTabOnChange("shipmentAssignTab")}
               >
-                 {TranslationContext!==undefined?TranslationContext.a.shipmentassigned:"Shipment Assigned"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shipmentassigned
+                  : "Shipment Assigned"}
               </a>
             </li>
           </ul>
           <div className="order-search">
-            <input type="text" placeholder={TranslationContext!==undefined?TranslationContext.placeholder.searchdot:"Search..."} />
+            <input
+              type="text"
+              placeholder={
+                TranslationContext !== undefined
+                  ? TranslationContext.placeholder.searchdot
+                  : "Search..."
+              }
+            />
             <img src={OrderSearch} alt="search icon" />
           </div>
         </div>

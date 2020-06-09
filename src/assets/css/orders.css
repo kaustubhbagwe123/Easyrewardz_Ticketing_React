@@ -279,7 +279,32 @@
   line-height: 13px;
   text-align: center;
 }
-
+.btn-shipment-popup {
+  background-color: #ffffff;
+  border: 1px solid #2561a8;
+  border-radius: 3px;
+  min-width: 83px;
+  height: 35px;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
+}
+.btn-shipment-saveNext {
+  background-color: #2561a8;
+  border-radius: 3px;
+  min-width: 165px;
+  height: 36px;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 12px;
+  text-align: center;
+  margin-right: 10px;
+}
 .dv-status {
   margin-top: 15px;
 }
