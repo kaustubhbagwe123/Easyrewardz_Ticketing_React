@@ -727,7 +727,7 @@ class ShipmentTab extends Component {
                       className={
                         this.state.createdShoppingTabs
                           ? "nav-link disabled-link"
-                          : "nav-link active disabled-link"
+                          : "nav-link nav-line active disabled-link"
                       }
                       data-toggle="tab"
                       href="#article-Map-tab"
@@ -735,6 +735,7 @@ class ShipmentTab extends Component {
                       aria-controls="article-Map-tab"
                       aria-selected="true"
                     >
+                    <input type="checkbox" className="arti-check"/>
                       Article Mapping
                     </a>
                   </li>
@@ -751,6 +752,7 @@ class ShipmentTab extends Component {
                       aria-controls="airwayBill-tab"
                       aria-selected="false"
                     >
+                    <input type="checkbox" className="arti-check"/>
                       Airway Bill No
                     </a>
                   </li>
@@ -770,7 +772,7 @@ class ShipmentTab extends Component {
                     <div className="tabs-content">
                       <form>
                         <div className="article-body">
-                          <span>
+                          <span style={{marginBottom: "30px"}}>
                             {TranslationContext !== undefined
                               ? TranslationContext.span
                                   .itemidshownbelowmappedtothisorder
@@ -825,8 +827,8 @@ class ShipmentTab extends Component {
                           />
                         </div>
                         <div className="dv-status">
-                          <button className="btn-shipment-popup">Cancel</button>
-                          <button
+                          <button className="btn-shipment-popup" style={{marginRight:"10px"}}>Cancel</button>
+                          <button style={{marginRight:"0px"}}
                             className="btn-shipment-saveNext"
                             onClick={this.handleCreateShipmentAWB.bind(this)}
                           >
@@ -876,6 +878,15 @@ class ShipmentTab extends Component {
                               </li>
                             </ul>
                           </div>
+                        </div>
+                        <div className="dv-status">
+                          <button className="btn-shipment-popup" style={{marginRight:"10px"}}>Cancel</button>
+                          <button style={{marginRight:"0px"}}
+                            className="btn-shipment-saveNext"
+                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                          >
+                            Save &amp; Next
+                          </button>
                         </div>
                       </form>
                     </div>
