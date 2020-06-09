@@ -176,6 +176,7 @@ class Header extends Component {
       storeCode: "",
       actionBtn: false,
       isCustEndChat: false,
+      mainTabSelect: 1,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -709,6 +710,7 @@ class Header extends Component {
     this.handleGetOngoingChat();
     this.handleGetStoreAgentDetailsById(this.state.AgentID);
     this.handleGetAgentList();
+    this.handleGetChatNotificationCount();
   }
 
   ////handleGet Ongoing Chat
@@ -1287,6 +1289,7 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          mainTabSelect: 1,
           isCustEndChat,
           storeID: StoreID,
           chatId: id,
@@ -1322,6 +1325,7 @@ class Header extends Component {
         this.handleGetChatMessagesList(id);
       } else {
         this.setState({
+          mainTabSelect: 1,
           isCustEndChat,
           storeID: StoreID,
           chatId: id,
@@ -1698,6 +1702,7 @@ class Header extends Component {
   ////handle change main tabs
   handleMainTabChange(e) {
     debugger;
+    this.setState({ mainTabSelect: e });
     if (e === 2) {
       this.handleGetAgentRecentChat();
     }
@@ -1796,8 +1801,10 @@ class Header extends Component {
                     });
                   }
                 }
+                self.handleGetChatNotificationCount();
               } else {
                 self.handleGetNewChat();
+                self.handleGetChatNotificationCount();
               }
             }
           }
@@ -1825,7 +1832,7 @@ class Header extends Component {
         if (messgae === "Success") {
           NotificationManager.success("Add image successfully.");
         } else {
-          NotificationManager.success("Not add image successfully.");
+          NotificationManager.error("Not add image successfully.");
         }
       })
       .catch((response) => {
@@ -1870,7 +1877,7 @@ class Header extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    console.log(this.state.mainTabSelect, "---mainTabSelect");
     return (
       <React.Fragment>
         <div
@@ -2752,7 +2759,7 @@ class Header extends Component {
                     role="tabpanel"
                     aria-labelledby="ongoing-chat-tab"
                   >
-                    <div>
+                    <div className="showArrow">
                       <p
                         className="mobile-chat-header"
                         style={{ display: "inline-block" }}
@@ -2944,10 +2951,14 @@ class Header extends Component {
                             border: "none",
                           }}
                         >
-                          {this.state.customerName && (
+                          {this.state.customerName ? (
                             <li className="nav-item">
                               <a
-                                className={"nav-link active chattitletab"}
+                                className={
+                                  this.state.mainTabSelect === 1
+                                    ? "nav-link active chattitletab"
+                                    : "nav-link chattitletab"
+                                }
                                 data-toggle="tab"
                                 href="#current-chat"
                                 role="tab"
@@ -2959,10 +2970,14 @@ class Header extends Component {
                                 {this.state.customerName}
                               </a>
                             </li>
-                          )}
+                          ) : null}
                           <li className="nav-item">
                             <a
-                              className="nav-link chattitletab"
+                              className={
+                                this.state.mainTabSelect === 2
+                                  ? "nav-link active chattitletab"
+                                  : "nav-link chattitletab"
+                              }
                               data-toggle="tab"
                               href="#recent-chat"
                               role="tab"
@@ -2999,7 +3014,11 @@ class Header extends Component {
                       </div>
                       <div className="tab-content chattabtitle">
                         <div
-                          className="tab-pane fade show active"
+                          className={
+                            this.state.mainTabSelect === 1
+                              ? "tab-pane fade show active"
+                              : "tab-pane fade"
+                          }
                           id="current-chat"
                           role="tabpanel"
                           aria-labelledby="current-chat"
@@ -5294,7 +5313,11 @@ class Header extends Component {
                           </div>
                         </div>
                         <div
-                          className="tab-pane fade"
+                          className={
+                            this.state.mainTabSelect === 2
+                              ? "tab-pane fade show active"
+                              : "tab-pane fade"
+                          }
                           id="recent-chat"
                           role="tabpanel"
                           aria-labelledby="recent-chat"
