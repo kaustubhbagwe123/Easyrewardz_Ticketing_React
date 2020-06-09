@@ -425,7 +425,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
-                    className:"action-w",
+                className: "action-w",
                 render: (row, item) => {
                   return (
                     <div className="pickuppendingcustom">
@@ -632,11 +632,13 @@ class ShipmentTab extends Component {
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
               <input
-                type="checkbox" className="cus-checkbox"
+                type="checkbox"
+                className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "40px" }}
               />
               <input
-                type="checkbox" className="cus-checkbox"
+                type="checkbox"
+                className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "211px" }}
               />
               <div className="step-progress">
