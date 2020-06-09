@@ -673,7 +673,6 @@ class ShipmentTab extends Component {
                 className="cancalImg"
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
-
               <div className="step-progress">
                 <ul className="nav nav-tabs" role="tablist">
                   <li className="nav-item">
