@@ -28,8 +28,8 @@ import { CSVLink } from "react-csv";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
 import { encryption } from "../../../helpers/encryption.js";
-import * as translationHI from '../../../translations/hindi'
-import * as translationMA from '../../../translations/marathi'
+import * as translationHI from "../../../translations/hindi";
+import * as translationMA from "../../../translations/marathi";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -163,7 +163,7 @@ class StoreUsers extends Component {
       EditmappedcrmRoleID: "",
       EditmappedisActive: "",
       isATOZ: true,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -206,16 +206,13 @@ class StoreUsers extends Component {
     this.handleGetCRMRole();
     this.handleGetStoreUserGridData();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   // fileUpload = e => {
@@ -2899,7 +2896,7 @@ class StoreUsers extends Component {
     }
   }
   handleSendMail(user_Id) {
-    debugger
+    debugger;
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
     var _token = window.localStorage.getItem("token");
     axios({
@@ -2966,7 +2963,6 @@ class StoreUsers extends Component {
   handleUpdateUser() {
     debugger;
     var inputParam = {};
-
     if (
       /// -----------Store Detail Validation-------------------
       this.state.userEdit.brandID > 0 &&
@@ -3038,7 +3034,7 @@ class StoreUsers extends Component {
       inputParam.IsStoreUser = 1;
       inputParam.DepartmentID = this.state.userEdit.departmentID;
 
-      inputParam.DesignationID = this.state.userEdit.reporteeDesignationID;
+      inputParam.DesignationID = this.state.userEdit.designationID;
       inputParam.ReporteeID = this.state.userEdit.reporteeID;
       inputParam.UserName = this.state.userEdit.userName;
       inputParam.EmailID = this.state.userEdit.emailID;
@@ -3202,7 +3198,9 @@ class StoreUsers extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -3214,7 +3212,9 @@ class StoreUsers extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -3227,13 +3227,15 @@ class StoreUsers extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                  {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -3483,8 +3485,9 @@ class StoreUsers extends Component {
             </div>
           </Modal>
           <Link to="/store/settings" className="header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -3494,13 +3497,15 @@ class StoreUsers extends Component {
             }}
             className="header-path"
           >
-             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.usermaster:"User Master"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.usermaster
+              : "User Master"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -3523,11 +3528,15 @@ class StoreUsers extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
-                              TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.brandname
+                                : "Brand Name"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.brandname
+                              : "Brand Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3553,11 +3562,15 @@ class StoreUsers extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "storeCode",
-                              TranslationContext!==undefined?TranslationContext.span.storecode:" Store Code"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.storecode
+                                : " Store Code"
                             )}
                           >
-                              {TranslationContext!==undefined?TranslationContext.span.storecode:" Store Code"}
-                           
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.storecode
+                              : " Store Code"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3583,11 +3596,15 @@ class StoreUsers extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "userName",
-                              TranslationContext!==undefined?TranslationContext.span.username:"User Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.username
+                                : "User Name"
                             )}
                           >
-                              {TranslationContext!==undefined?TranslationContext.span.username:"User Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.username
+                              : "User Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3611,55 +3628,113 @@ class StoreUsers extends Component {
                                     <div>
                                       <div>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.mobileno:"Mobile No"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.mobileno
+                                              : "Mobile No"}
+                                            :{" "}
+                                          </b>
                                           {row.original.mobileNo}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.emailid:"Email ID"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.emailid
+                                              : "Email ID"}
+                                            :{" "}
+                                          </b>
                                           {row.original.emailID}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.crmrole:"CRM Role"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.crmrole
+                                              : "CRM Role"}
+                                            :{" "}
+                                          </b>
                                           {row.original.roleName}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.barnd:"Brand"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.barnd
+                                              : "Brand"}
+                                            :{" "}
+                                          </b>
                                           {row.original.mappedBrand}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.claimcategory:"Claim Category"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b
+                                                  .claimcategory
+                                              : "Claim Category"}
+                                            :{" "}
+                                          </b>
                                           {row.original.categoryCount.length > 0
                                             ? row.original.categoryCount
                                             : row.original.mappedCategory}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.claimsubcategory:"Claim Sub-Category"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b
+                                                  .claimsubcategory
+                                              : "Claim Sub-Category"}
+                                            :{" "}
+                                          </b>
                                           {row.original.subCategoryCount
                                             .length > 0
                                             ? row.original.subCategoryCount
                                             : row.original.mappedSubCategory}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.claimissuetype:"Claim Issue Type"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b
+                                                  .claimissuetype
+                                              : "Claim Issue Type"}
+                                            :{" "}
+                                          </b>
                                           {row.original.issueTypeCount.length >
                                           0
                                             ? row.original.issueTypeCount
                                             : row.original.mappedIssuetype}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.createdby:"Created By"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.createdby
+                                              : "Created By"}
+                                            :{" "}
+                                          </b>
                                           {row.original.createdBy}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.createddate:"Created Date"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.createddate
+                                              : "Created Date"}
+                                            :{" "}
+                                          </b>
                                           {row.original.createdDate}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.updatedby:"Updated By"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.updatedby
+                                              : "Updated By"}
+                                            :{" "}
+                                          </b>
                                           {row.original.updatedBy}
                                         </p>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.updateddate:"Updated Date"}: </b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b.updateddate
+                                              : "Updated Date"}
+                                            :{" "}
+                                          </b>
                                           {row.original.updatedDate}
                                         </p>
                                       </div>
@@ -3691,11 +3766,15 @@ class StoreUsers extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
-                              TranslationContext!==undefined?TranslationContext.span.userdesignation:"User Designation"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.userdesignation
+                                : "User Designation"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.userdesignation:"User Designation"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.userdesignation
+                              : "User Designation"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3724,8 +3803,10 @@ class StoreUsers extends Component {
                               "Reportee Name"
                             )}
                           >
-                             {TranslationContext!==undefined?TranslationContext.span.reporteename:"Reportee Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.reporteename
+                              : "Reportee Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3749,7 +3830,13 @@ class StoreUsers extends Component {
                                     <div>
                                       <div>
                                         <p className="title">
-                                          <b>{TranslationContext!==undefined?TranslationContext.b.reporteedesignation:"Reportee Designation"}:</b>
+                                          <b>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.b
+                                                  .reporteedesignation
+                                              : "Reportee Designation"}
+                                            :
+                                          </b>
                                           {row.original.reporteeDesignation}
                                         </p>
                                       </div>
@@ -3781,11 +3868,15 @@ class StoreUsers extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
-                              TranslationContext!==undefined?TranslationContext.span.department:"Department"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.department
+                                : "Department"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.department:"Department"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.department
+                              : "Department"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3811,11 +3902,15 @@ class StoreUsers extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "mappedFunctions",
-                              TranslationContext!==undefined?TranslationContext.span.function:"Function"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.function
+                                : "Function"
                             )}
                           >
-                              {TranslationContext!==undefined?TranslationContext.span.function:"Function"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.function
+                              : "Function"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -3830,10 +3925,13 @@ class StoreUsers extends Component {
                         accessor: "mappedFunctions",
                       },
                       {
-                        Header: <span>
-
-                         {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
-                        </span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "userID",
                         minWidth: 120,
                         sortable: false,
@@ -3853,14 +3951,25 @@ class StoreUsers extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file"}
+                                          ?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}> {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
+                                          <a href={Demo.BLANK_LINK}>
+                                            {" "}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteStoreUser.bind(
@@ -3868,7 +3977,9 @@ class StoreUsers extends Component {
                                               row.original.userID
                                             )}
                                           >
-                                             {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -3892,7 +4003,9 @@ class StoreUsers extends Component {
                                   )}
                                   // onClick={() => this.opneUserEditModal()}
                                 >
-                                   {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.edit
+                                    : "EDIT"}
                                 </button>
                               </span>
                             </>
@@ -3949,8 +4062,9 @@ class StoreUsers extends Component {
               <div className="col-md-4 cus-drp">
                 <div className="right-sect-div right-sect-collapse">
                   <h3>
-
-                  {TranslationContext!==undefined?TranslationContext.h3.createusers:"Create Users"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.h3.createusers
+                      : "Create Users"}
                   </h3>
                   <div className="collapse-cntr">
                     <a
@@ -3961,13 +4075,16 @@ class StoreUsers extends Component {
                       aria-expanded="true"
                       aria-controls="personal-details"
                     >
-                        {TranslationContext!==undefined?TranslationContext.a.storedetails:" Store Details"}
-                     
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.storedetails
+                        : " Store Details"}
                     </a>
                     <div className="multi-collapse show" id="personal-details">
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.barnd:"Brand"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.barnd
+                            : "Brand"}
                         </label>
                         <select
                           className={
@@ -3981,8 +4098,9 @@ class StoreUsers extends Component {
                           onChange={this.handleBrandAndStoreChange}
                         >
                           <option>
-
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.brandData !== null &&
                             this.state.brandData.map((item, i) => (
@@ -4003,7 +4121,9 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.storecode
+                            : "Store Code"}
                         </label>
                         <select
                           className={
@@ -4017,7 +4137,9 @@ class StoreUsers extends Component {
                           onChange={this.handleBrandAndStoreChange}
                         >
                           <option>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.storeCodeData !== null &&
                             this.state.storeCodeData.map((item, s) => (
@@ -4042,8 +4164,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.editStoreMethod.bind(this)}
                           >
-                            {TranslationContext!==undefined?TranslationContext.button.edit:"Edit"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.edit
+                              : "Edit"}
                           </button>
                         </div>
                       ) : this.state.buttonStoreToggle === true ? (
@@ -4054,7 +4177,13 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleUpdateStoreDetails.bind(this)}
                           >
-                            {TranslationContext!==undefined?TranslationContext.button.update:"Update"} &amp;{TranslationContext!==undefined?TranslationContext.button.next:"Next"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.update
+                              : "Update"}{" "}
+                            &amp;
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.next
+                              : "Next"}
                           </button>
                         </div>
                       ) : (
@@ -4063,8 +4192,13 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSaveStoreDetails.bind(this)}
                           >
-                              {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"} &amp;{TranslationContext!==undefined?TranslationContext.button.next:"Next"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "SAVE"}{" "}
+                            &amp;
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.next
+                              : "Next"}
                           </button>
                         </div>
                       )}
@@ -4079,9 +4213,9 @@ class StoreUsers extends Component {
                       aria-expanded="false"
                       aria-controls="personal-details"
                     >
-                       {TranslationContext!==undefined?TranslationContext.a.personaldetails:"Personal Details"}
-                            
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.personaldetails
+                        : "Personal Details"}
                     </a>
                     <div
                       className="collapse multi-collapse"
@@ -4089,11 +4223,17 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.username:"User Name"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.username
+                            : "User Name"}
                         </label>
                         <input
                           type="text"
-                          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterusername:"Enter User Name"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.enterusername
+                              : "Enter User Name"
+                          }
                           maxLength={25}
                           autoComplete="off"
                           readOnly={this.state.personalReadOnly}
@@ -4112,11 +4252,17 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.mobilenumber:"Mobile Number"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.mobilenumber
+                            : "Mobile Number"}
                         </label>
                         <input
                           type="text"
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entermobilenumber:"Enter Mobile Number"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.entermobilenumber
+                              : "Enter Mobile Number"
+                          }
                           maxLength={10}
                           readOnly={this.state.personalReadOnly}
                           className={
@@ -4129,7 +4275,11 @@ class StoreUsers extends Component {
                         />
                         {this.state.phoneFlag === false && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                           {TranslationContext!==undefined?TranslationContext.p.pleaseentervalidmobilenumber:"Please enter valid Mobile Number"}.
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p
+                                  .pleaseentervalidmobilenumber
+                              : "Please enter valid Mobile Number"}
+                            .
                           </p>
                         )}
                         {this.state.mobile_no.length === 0 && (
@@ -4140,11 +4290,17 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.p.emailid:"Email ID"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.emailid
+                            : "Email ID"}
                         </label>
                         <input
                           type="text"
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enteremailid:"Enter Email ID"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.enteremailid
+                              : "Enter Email ID"
+                          }
                           maxLength={100}
                           readOnly={this.state.personalReadOnly}
                           className={
@@ -4157,7 +4313,9 @@ class StoreUsers extends Component {
                         />
                         {this.state.emailFlag === false && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {TranslationContext!==undefined?TranslationContext.p.pleaseentervalidemailid:"Please enter valid Email Id."}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.pleaseentervalidemailid
+                              : "Please enter valid Email Id."}
                           </p>
                         )}
                         {this.state.email_Id.length === 0 && (
@@ -4176,8 +4334,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.editPersonalMethod.bind(this)}
                           >
-                             {TranslationContext!==undefined?TranslationContext.button.edit:"Edit"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.edit
+                              : "Edit"}
                           </button>
                         </div>
                       ) : this.state.btnPersonalToggle === true ? (
@@ -4190,7 +4349,13 @@ class StoreUsers extends Component {
                               this
                             )}
                           >
-                              {TranslationContext!==undefined?TranslationContext.button.update:"Update"} &amp; {TranslationContext!==undefined?TranslationContext.button.next:"Next"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.update
+                              : "Update"}{" "}
+                            &amp;{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.next
+                              : "Next"}
                           </button>
                         </div>
                       ) : (
@@ -4199,8 +4364,13 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSavePersonalDetails.bind(this)}
                           >
-                            {TranslationContext!==undefined?TranslationContext.button.update:"Update"} &amp; {TranslationContext!==undefined?TranslationContext.button.next:"Next"}
-                           
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.update
+                              : "Update"}{" "}
+                            &amp;{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.next
+                              : "Next"}
                           </button>
                         </div>
                       )}
@@ -4215,8 +4385,9 @@ class StoreUsers extends Component {
                       aria-expanded="false"
                       aria-controls="profile-Details"
                     >
-                  {TranslationContext!==undefined?TranslationContext.a.profiledetails:"Profile Details"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.profiledetails
+                        : "Profile Details"}
                     </a>
                     <div
                       className="collapse multi-collapse"
@@ -4224,8 +4395,9 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>
-
-                        {TranslationContext!==undefined?TranslationContext.label.department:"Department"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.department
+                            : "Department"}
                         </label>
                         <select
                           className={
@@ -4239,7 +4411,9 @@ class StoreUsers extends Component {
                           onChange={this.handleDepartmentOnChange}
                         >
                           <option>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.departmentData !== null &&
                             this.state.departmentData.map((item, d) => (
@@ -4260,7 +4434,9 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.function:"Function"} 
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.function
+                            : "Function"}
                         </label>
                         <Select
                           getOptionLabel={(option) => option.funcationName}
@@ -4282,7 +4458,9 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.userdesignation:"User Designation"} 
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.userdesignation
+                            : "User Designation"}
                         </label>
                         <select
                           className={
@@ -4296,7 +4474,9 @@ class StoreUsers extends Component {
                           onChange={this.handleDropDownOnChange}
                         >
                           <option>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"} 
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.userDesignationData !== null &&
                             this.state.userDesignationData.map((item, d) => (
@@ -4317,7 +4497,9 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.reporteedesignation:"Reportee Designation"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.reporteedesignation
+                            : "Reportee Designation"}
                         </label>
                         <select
                           className={
@@ -4331,7 +4513,9 @@ class StoreUsers extends Component {
                           onChange={this.handleDropDownOnChange}
                         >
                           <option>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.reportDesignation !== null &&
                             this.state.reportDesignation.map((item, d) => (
@@ -4347,7 +4531,9 @@ class StoreUsers extends Component {
                           {this.state.reportDesignation.length === 0 && (
                             // this.state.selectReportDesignation &&
                             <option value="-1">
-                            {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.root
+                                : "Root"}
                             </option>
                           )}
                         </select>
@@ -4359,7 +4545,9 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.reportto:"Report To"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.reportto
+                            : "Report To"}
                         </label>
                         <select
                           className={
@@ -4373,7 +4561,9 @@ class StoreUsers extends Component {
                           onChange={this.handleDropDownOnChange}
                         >
                           <option>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.reportToData !== null &&
                             this.state.reportToData.map((item, d) => (
@@ -4388,7 +4578,9 @@ class StoreUsers extends Component {
                           {this.state.reportToData.length === 0 && (
                             // this.state.selectReportTo &&
                             <option value="-1">
-                             {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.root
+                                : "Root"}
                             </option>
                           )}
                         </select>
@@ -4404,8 +4596,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.editProfileMethod.bind(this)}
                           >
-                            {TranslationContext!==undefined?TranslationContext.button.edit:"Edit"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.edit
+                              : "Edit"}
                           </button>
                         </div>
                       ) : this.state.btnProfileToggle === true ? (
@@ -4416,7 +4609,13 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleUpdateProfileDetails.bind(this)}
                           >
-                             {TranslationContext!==undefined?TranslationContext.button.update:"Update"} &amp; {TranslationContext!==undefined?TranslationContext.button.next:"Next"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.update
+                              : "Update"}{" "}
+                            &amp;{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.next
+                              : "Next"}
                           </button>
                         </div>
                       ) : (
@@ -4425,8 +4624,13 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSaveProfileDetails.bind(this)}
                           >
-                            {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"} &amp; {TranslationContext!==undefined?TranslationContext.button.next:"Next"}
-                           
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.save
+                              : "SAVE"}{" "}
+                            &amp;{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.next
+                              : "Next"}
                           </button>
                         </div>
                       )}
@@ -4441,8 +4645,9 @@ class StoreUsers extends Component {
                       aria-expanded="false"
                       aria-controls="mapped-category"
                     >
-                      {TranslationContext!==undefined?TranslationContext.a.mappedclaimcategory:"Mapped Claim Category"}
-                     
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.mappedclaimcategory
+                        : "Mapped Claim Category"}
                     </a>
                     <div
                       className="collapse multi-collapse"
@@ -4450,15 +4655,19 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>
-
-                        {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
-                     
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.brand
+                            : "Brand"}
                         </label>
                         <Select
                           getOptionLabel={(option) => option.brandName}
                           getOptionValue={(option) => option.brandID}
                           options={this.state.brandData}
-                          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.select
+                              : "Select"
+                          }
                           closeMenuOnSelect={false}
                           name="selectedClaimBrand"
                           onChange={this.handleMultiBrandonChange.bind(this)}
@@ -4473,13 +4682,19 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.categories:"Categories"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.categories
+                            : "Categories"}
                         </label>
                         <Select
                           getOptionLabel={(option) => option.categoryName}
                           getOptionValue={(option) => option.categoryID}
                           options={this.state.claimCategoryData}
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.select
+                              : "Select"
+                          }
                           closeMenuOnSelect={false}
                           name="selectedClaimCategory"
                           onChange={this.handleMultiCategoryonChange.bind(this)}
@@ -4494,13 +4709,19 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.subcategories:"Sub Categories"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.subcategories
+                            : "Sub Categories"}
                         </label>
                         <Select
                           getOptionLabel={(option) => option.subCategoryName}
                           getOptionValue={(option) => option.subCategoryID}
                           options={this.state.claimSubCategoryData}
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.select
+                              : "Select"
+                          }
                           closeMenuOnSelect={false}
                           name="selectedClaimSubCategory"
                           onChange={this.handleMultiSubCategoryonChange.bind(
@@ -4517,14 +4738,19 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-
-                        {TranslationContext!==undefined?TranslationContext.label.issuetype:"Issue Type"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.issuetype
+                            : "Issue Type"}
                         </label>
                         <Select
                           getOptionLabel={(option) => option.issueTypeName}
                           getOptionValue={(option) => option.issueTypeID}
                           options={this.state.claimIssueTypeData}
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.select
+                              : "Select"
+                          }
                           closeMenuOnSelect={false}
                           name="selectedClaimIssueType"
                           onChange={this.handleMultiIssueTypeonChange.bind(
@@ -4541,7 +4767,9 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>
-                        {TranslationContext!==undefined?TranslationContext.label.claimapprover:"Claim Approver"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimapprover
+                            : "Claim Approver"}
                         </label>
                         <select
                           name="selectClaimApprover"
@@ -4550,13 +4778,19 @@ class StoreUsers extends Component {
                           className="store-create-select"
                         >
                           <option>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           <option value={"yes"}>
-                          {TranslationContext!==undefined?TranslationContext.option.yes:"Yes"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.yes
+                              : "Yes"}
                           </option>
                           <option value={"no"}>
-                          {TranslationContext!==undefined?TranslationContext.option.no:"No"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.no
+                              : "No"}
                           </option>
                         </select>
                         {this.state.selectClaimApprover.length === 0 && (
@@ -4568,7 +4802,9 @@ class StoreUsers extends Component {
                       <div className="mapped-cate-extra">
                         <div className="div-cntr">
                           <label>
-                          {TranslationContext!==undefined?TranslationContext.label.crmrole:"CRM Role"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.crmrole
+                              : "CRM Role"}
                           </label>
                           <select
                             className="store-create-select"
@@ -4577,8 +4813,9 @@ class StoreUsers extends Component {
                             onChange={this.handleDropDownOnChange}
                           >
                             <option>
-
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.CrmRoleData !== null &&
                               this.state.CrmRoleData.map((item, d) => (
@@ -4599,8 +4836,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label>
-
-                          {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.status
+                              : "Status"}
                           </label>
                           <select
                             name="selectStatus"
@@ -4609,7 +4847,9 @@ class StoreUsers extends Component {
                             className="store-create-select"
                           >
                             <option>
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.activeData !== null &&
                               this.state.activeData.map((item, j) => (
@@ -4631,8 +4871,9 @@ class StoreUsers extends Component {
                           type="button"
                           onClick={this.handleFinalSaveUserData.bind(this)}
                         >
-                           {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.add
+                            : "ADD"}
                         </button>
                       </div>
                     </div>
@@ -4641,10 +4882,17 @@ class StoreUsers extends Component {
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
                     <h3 className="pb-0">
-                    {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.h3.bulkupload
+                        : "Bulk Upload"}
                     </h3>
                     <div className="down-excel">
-                      <p> {TranslationContext!==undefined?TranslationContext.p.template:"Template"}</p>
+                      <p>
+                        {" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.template
+                          : "Template"}
+                      </p>
                       <CSVLink
                         filename={"User.csv"}
                         data={config.storeUserTemplate}
@@ -4665,9 +4913,16 @@ class StoreUsers extends Component {
                             <img src={FileUpload} alt="file-upload" />
                           </div>
                           <span className={"fileupload-span"}>
-                          {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
-                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
-                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.addfile
+                              : "Add File"}
+                          </span>{" "}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.or
+                            : "or"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.dropfilehere
+                            : "Drop File here"}
                         </div>
                       )}
                     </Dropzone>
@@ -4697,19 +4952,32 @@ class StoreUsers extends Component {
                               </div>
                               <div>
                                 <p className="font-weight-bold blak-clr">
-                                {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.deletefile
+                                    : "Delete file"}
+                                  ?
                                 </p>
                                 <p className="mt-1 fs-12">
-                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p
+                                        .areyousureyouwanttodeletethisfile
+                                    : "Are you sure you want to delete this file"}
+                                  ?
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}> {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
+                                  <a href={Demo.BLANK_LINK}>
+                                    {" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.a.cancel
+                                      : "CANCEL"}
+                                  </a>
                                   <button
                                     className="butn"
                                     onClick={this.DeleteBulkUploadFile}
                                   >
-                                     {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.delete
+                                      : "Delete"}
                                   </button>
                                 </div>
                               </div>
@@ -4730,11 +4998,18 @@ class StoreUsers extends Component {
                               className="file-retry"
                               onClick={this.handleBulkUpload.bind(this)}
                             >
-                                {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.retry
+                                : "Retry"}
                             </span>
                           </div>
                           <div>
-                            <span className="file-failed"> {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}</span>
+                            <span className="file-failed">
+                              {" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.failed
+                                : "Failed"}
+                            </span>
                           </div>
                         </div>
                       ) : null}
@@ -4761,7 +5036,9 @@ class StoreUsers extends Component {
                     className="butn"
                     onClick={this.handleBulkUpload.bind(this)}
                   >
-                      {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.add
+                      : "ADD"}
                   </button>
                 </div>
               </div>
@@ -4779,12 +5056,16 @@ class StoreUsers extends Component {
                   <Tab label="Store Details">
                     <div>
                       <h4 style={{ textAlign: "center" }}>
-                      {TranslationContext!==undefined?TranslationContext.h4.storedetails:"Store Details"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h4.storedetails
+                          : "Store Details"}
                       </h4>
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.brand
+                              : "Brand"}
                           </label>
                           <select
                             className="store-create-select"
@@ -4793,7 +5074,9 @@ class StoreUsers extends Component {
                             onChange={this.handleEditOnchange}
                           >
                             <option value="0">
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.brandData !== null &&
                               this.state.brandData.map((item, i) => (
@@ -4814,7 +5097,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.storecode:"Store Code"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.storecode
+                              : "Store Code"}
                           </label>
                           <select
                             className="store-create-select"
@@ -4852,16 +5137,18 @@ class StoreUsers extends Component {
                           className="pop-over-cancle canblue"
                           onClick={this.closeEditModals.bind(this)}
                         >
-                           {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
                         </a>
                         <button
                           className="Save-Use"
                           onClick={this.HandlecheckStoreDetails.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.next:"NEXT"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.next
+                            : "NEXT"}
                         </button>
                       </div>
                     </div>
@@ -4869,16 +5156,24 @@ class StoreUsers extends Component {
                   <Tab label="Personal Details">
                     <div>
                       <h4 style={{ textAlign: "center" }}>
-                      {TranslationContext!==undefined?TranslationContext.h4.personaldetails:"Personal Details"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h4.personaldetails
+                          : "Personal Details"}
                       </h4>
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.username:"User Name"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.username
+                              : "User Name"}
                           </label>
                           <input
                             type="text"
-                            placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enterusername:"Enter User Name"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.enterusername
+                                : "Enter User Name"
+                            }
                             maxLength={25}
                             autoComplete="off"
                             name="userName"
@@ -4893,7 +5188,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.mobilenumber:"Mobile Number"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.mobilenumber
+                              : "Mobile Number"}
                           </label>
                           <input
                             type="text"
@@ -4906,7 +5203,11 @@ class StoreUsers extends Component {
                           />
                           {this.state.EditphoneFlag === false && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                               {TranslationContext!==undefined?TranslationContext.p.pleaseentervalidmobilenumber:"Please enter valid Mobile Number"}.
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p
+                                    .pleaseentervalidmobilenumber
+                                : "Please enter valid Mobile Number"}
+                              .
                             </p>
                           )}
                           {this.state.userEdit.mobileNo === "" && (
@@ -4917,11 +5218,17 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.emailid:"Email ID"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.emailid
+                              : "Email ID"}
                           </label>
                           <input
                             type="text"
-                            placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.enteremailid:"Enter Email ID"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.enteremailid
+                                : "Enter Email ID"
+                            }
                             maxLength={100}
                             name="emailID"
                             value={this.state.userEdit.emailID}
@@ -4930,7 +5237,10 @@ class StoreUsers extends Component {
                           />
                           {this.state.EditemailFlag === false && (
                             <p style={{ color: "red", marginBottom: "0px" }}>
-                              {TranslationContext!==undefined?TranslationContext.p.pleaseentervalidemailid:"Please enter valid Email Id"}.
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.pleaseentervalidemailid
+                                : "Please enter valid Email Id"}
+                              .
                             </p>
                           )}
                           {this.state.userEdit.emailID === "" && (
@@ -4951,17 +5261,18 @@ class StoreUsers extends Component {
                           className="pop-over-cancle canblue"
                           onClick={this.closeEditModals.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
                         </a>
                         <button
                           className="Save-Use"
                           onClick={this.handleCheckPersonalDetails.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
-                           {TranslationContext!==undefined?TranslationContext.button.next:"NEXT"}
-                          
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.next
+                            : "NEXT"}
                         </button>
                       </div>
                     </div>
@@ -4969,12 +5280,16 @@ class StoreUsers extends Component {
                   <Tab label="Profile Details">
                     <div>
                       <h4 style={{ textAlign: "center" }}>
-                      {TranslationContext!==undefined?TranslationContext.h4.profiledetails:"Profile Details"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h4.profiledetails
+                          : "Profile Details"}
                       </h4>
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.department:"Department"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.department
+                              : "Department"}
                           </label>
                           <select
                             className="store-create-select"
@@ -4986,7 +5301,9 @@ class StoreUsers extends Component {
                             )}
                           >
                             <option value="0">
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.departmentData !== null &&
                               this.state.departmentData.map((item, d) => (
@@ -5011,7 +5328,11 @@ class StoreUsers extends Component {
                             getOptionLabel={(option) => option.funcationName}
                             getOptionValue={(option) => option.functionID}
                             options={this.state.functionData}
-                            placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.select
+                                : "Select"
+                            }
                             closeMenuOnSelect={false}
                             name="editFuncation"
                             onChange={this.handleEditFunctionOnChange.bind(
@@ -5028,8 +5349,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.userdesignation:"User Designation"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.userdesignation
+                              : "User Designation"}
                           </label>
                           <select
                             className="store-create-select"
@@ -5041,7 +5363,9 @@ class StoreUsers extends Component {
                             )}
                           >
                             <option value="0">
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.userDesignationData !== null &&
                               this.state.userDesignationData.map((item, d) => (
@@ -5062,8 +5386,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.reporteedesignation:"Reportee Designation"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.reporteedesignation
+                              : "Reportee Designation"}
                           </label>
                           <select
                             className="store-create-select"
@@ -5075,7 +5400,9 @@ class StoreUsers extends Component {
                             )}
                           >
                             <option value="0">
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.reportDesignation !== null &&
                               this.state.reportDesignation.map((item, d) => (
@@ -5090,7 +5417,9 @@ class StoreUsers extends Component {
                             {this.state.reportDesignation.length === 0 && (
                               // this.state.selectedDesignation &&
                               <option value="-1">
-                              {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.root
+                                  : "Root"}
                               </option>
                             )}
                           </select>
@@ -5102,7 +5431,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.reportto:"Report To"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.reportto
+                              : "Report To"}
                           </label>
                           <select
                             className="store-create-select"
@@ -5111,7 +5442,9 @@ class StoreUsers extends Component {
                             onChange={this.handleEditReportOnchange}
                           >
                             <option value="0">
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             {this.state.reportToData !== null &&
                               this.state.reportToData.map((item, d) => (
@@ -5126,7 +5459,9 @@ class StoreUsers extends Component {
                             {this.state.reportToData.length === 0 && (
                               // this.state.selectedDesignation &&
                               <option value="-1">
-                               {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.root
+                                  : "Root"}
                               </option>
                             )}
                           </select>
@@ -5148,16 +5483,18 @@ class StoreUsers extends Component {
                           className="pop-over-cancle canblue"
                           onClick={this.closeEditModals.bind(this)}
                         >
-                           {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
                         </a>
                         <button
                           className="Save-Use"
                           onClick={this.handleChangeProfileTab.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.next:"NEXT"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.next
+                            : "NEXT"}
                         </button>
                       </div>
                     </div>
@@ -5165,19 +5502,26 @@ class StoreUsers extends Component {
                   <Tab label="Mapped Cliam Category">
                     <div>
                       <h4 style={{ textAlign: "center" }}>
-                       
-                        {TranslationContext!==undefined?TranslationContext.h4.mappedcliamcategory:" Mapped Cliam Category"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h4.mappedcliamcategory
+                          : " Mapped Cliam Category"}
                       </h4>
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.brand
+                              : "Brand"}
                           </label>
                           <Select
                             getOptionLabel={(option) => option.brandName}
                             getOptionValue={(option) => option.brandID}
                             options={this.state.brandData}
-                            placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.select
+                                : "Select"
+                            }
                             closeMenuOnSelect={false}
                             name="editBrand"
                             onChange={this.handleMultiEditBrandonChange.bind(
@@ -5195,13 +5539,19 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.categories:"Categories"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.categories
+                              : "Categories"}
                           </label>
                           <Select
                             getOptionLabel={(option) => option.categoryName}
                             getOptionValue={(option) => option.categoryID}
                             options={this.state.claimCategoryData}
-                            placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.select
+                                : "Select"
+                            }
                             closeMenuOnSelect={false}
                             name="editCategory"
                             value={this.state.editCategory}
@@ -5218,13 +5568,19 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.subcategories:"Sub Categories"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.subcategories
+                              : "Sub Categories"}
                           </label>
                           <Select
                             getOptionLabel={(option) => option.subCategoryName}
                             getOptionValue={(option) => option.subCategoryID}
                             options={this.state.claimSubCategoryData}
-                            placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.select
+                                : "Select"
+                            }
                             closeMenuOnSelect={false}
                             name="editsubcategory"
                             onChange={this.handleMultiEditSubCategoryonChange.bind(
@@ -5241,13 +5597,19 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr cus-drp">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.issuetype:"Issue Type"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.issuetype
+                              : "Issue Type"}
                           </label>
                           <Select
                             getOptionLabel={(option) => option.issueTypeName}
                             getOptionValue={(option) => option.issueTypeID}
                             options={this.state.claimIssueTypeData}
-                            placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                            placeholder={
+                              TranslationContext !== undefined
+                                ? TranslationContext.placeholder.select
+                                : "Select"
+                            }
                             closeMenuOnSelect={false}
                             name="editissuetype"
                             onChange={this.handleMultiEditIssueTypeonChange.bind(
@@ -5264,7 +5626,9 @@ class StoreUsers extends Component {
                         </div>
                         <div className="div-cntr">
                           <label className="edit-label-1">
-                          {TranslationContext!==undefined?TranslationContext.label.claimapprover:"Claim Approver"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.claimapprover
+                              : "Claim Approver"}
                           </label>
                           <select
                             value={this.state.userEdit.isClaimApprover}
@@ -5272,13 +5636,19 @@ class StoreUsers extends Component {
                             onChange={this.handleChagenMapping.bind(this)}
                           >
                             <option value={0}>
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.select
+                                : "Select"}
                             </option>
                             <option value={true}>
-                            {TranslationContext!==undefined?TranslationContext.option.yes:"Yes"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.yes
+                                : "Yes"}
                             </option>
                             <option value={false}>
-                            {TranslationContext!==undefined?TranslationContext.option.no:"No"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.option.no
+                                : "No"}
                             </option>
                           </select>
                           {this.state.userEdit.isClaimApprover == 0 && (
@@ -5290,8 +5660,9 @@ class StoreUsers extends Component {
                         <div className="mapped-cate-extra">
                           <div className="div-cntr">
                             <label className="edit-label-1">
-                            {TranslationContext!==undefined?TranslationContext.label.crmrole:"CRM Role"}
-                            
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.crmrole
+                                : "CRM Role"}
                             </label>
                             <select
                               value={this.state.userEdit.roleID}
@@ -5299,7 +5670,9 @@ class StoreUsers extends Component {
                               onChange={this.handleChagenMapping.bind(this)}
                             >
                               <option value={0}>
-                              {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.select
+                                  : "Select"}
                               </option>
                               {this.state.CrmRoleData !== null &&
                                 this.state.CrmRoleData.map((item, d) => (
@@ -5320,7 +5693,9 @@ class StoreUsers extends Component {
                           </div>
                           <div className="div-cntr">
                             <label className="edit-label-1">
-                            {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
                             </label>
                             <select
                               value={this.state.userEdit.isActive}
@@ -5328,7 +5703,9 @@ class StoreUsers extends Component {
                               onChange={this.handleChagenMapping.bind(this)}
                             >
                               <option value={0}>
-                              {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.select
+                                  : "Select"}
                               </option>
                               {this.state.activeData !== null &&
                                 this.state.activeData.map((item, j) => (
@@ -5356,16 +5733,18 @@ class StoreUsers extends Component {
                           className="pop-over-cancle canblue"
                           onClick={this.closeEditModals.bind(this)}
                         >
-                          
-                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.cancel
+                            : "CANCEL"}
                         </a>
                         <button
                           className="Save-Use"
                           onClick={this.handleUpdateUser.bind(this)}
                           style={{ marginLeft: "30px" }}
                         >
-                           {TranslationContext!==undefined?TranslationContext.button.save:"SAVE"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.save
+                            : "SAVE"}
                         </button>
                       </div>
                     </div>
