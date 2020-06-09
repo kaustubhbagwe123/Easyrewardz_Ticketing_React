@@ -3967,7 +3967,7 @@ class StoreModule extends Component {
                                         <div className="switch switch-primary d-inline m-r-10">
                                           <input
                                             type="checkbox"
-                                            id={"i" + row.index}
+                                            id={"lang" + row.index}
                                             name="allModules"
                                             //attrIds={item.moduleId}
                                             checked={
@@ -3981,7 +3981,7 @@ class StoreModule extends Component {
                                             )}
                                           />
                                           <label
-                                            htmlFor={"i" + row.index}
+                                            htmlFor={"lang" + row.index}
                                             className="cr cr-float-auto"
                                             style={{ float: "inherit" }}
                                           ></label>
