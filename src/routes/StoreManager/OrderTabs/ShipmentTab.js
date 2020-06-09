@@ -141,7 +141,7 @@ class ShipmentTab extends Component {
     debugger;
     let self = this;
     axios({
-      method: "get",
+      method: "post",
       url: config.apiUrl + "/HSOrder/UpdateShipmentPickupPendingData",
       headers: authHeader(),
       params: {
@@ -209,6 +209,7 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -424,13 +425,13 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
+                    className:"action-w",
                 render: (row, item) => {
                   return (
-                    <div>
+                    <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
                         <>
                           <Popover
-                            overlayClassName="pickuppendingcustom"
                             content={
                               <div className="pickuppending-table">
                                 <table>
@@ -549,38 +550,36 @@ class ShipmentTab extends Component {
             expandedRowRender={(row, item) => {
               return (
                 <div className="innertabcollapse">
-                  <div className="">
-                    <table className="table">
-                      <tr>
-                        <td>
-                          <label><b>Customer Name</b></label>
-                          <label>
-                            <p>{row.customerName}</p>
-                            <p>{row.mobileNumber}</p>
-                          </label>
-                        </td>
-                        <td>
-                          <label><b>Shipping Address</b></label>
-                          <label>{row.shippingAddress}</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label><b>Delivery Type</b></label>
-                          <label>{row.deliveryTypeName}</label>
-                        </td>
-                        <td>
-                          <label><b>Status</b></label>
-                          <label>{row.statusName}</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label><b>Partner</b></label>
-                          <label>{row.Partner}</label>
-                        </td>
-                      </tr>
-                    </table>
+                  <div className="row">
+                    <div>
+                      <label>Customer Name</label>
+                      <label>
+                        <p>{row.customerName}</p>
+                        <p>{row.mobileNumber}</p>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>Shipping Address</label>
+                      <label>{row.shippingAddress}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Delivery Type</label>
+                      <label>{row.deliveryTypeName}</label>
+                    </div>
+
+                    <div>
+                      <label>Status</label>
+                      <label>{row.statusName}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Partner</label>
+                      <label>{row.Partner}</label>
+                    </div>
                   </div>
                 </div>
               );
@@ -633,11 +632,11 @@ class ShipmentTab extends Component {
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
               <input
-                type="checkbox"
+                type="checkbox" className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "40px" }}
               />
               <input
-                type="checkbox"
+                type="checkbox" className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "211px" }}
               />
               <div className="step-progress">
@@ -663,18 +662,8 @@ const steps = [
   { name: "Airway Bill No", component: <Step2 /> },
 ];
 
-let dummy = {};
-
-if (window.localStorage.getItem("translateLanguage") === "hindi") {
-  dummy = translationHI;
-} else if (window.localStorage.getItem("translateLanguage") === "marathi") {
-  dummy = translationMA;
-} else {
-  dummy = {};
-}
-
 function Step1(props) {
-  const TranslationContext = dummy.default;
+  const TranslationContext = new ShipmentTab().state.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">
@@ -738,7 +727,7 @@ function Step1(props) {
   );
 }
 function Step2(props) {
-  const TranslationContext = dummy.default;
+  const TranslationContext = new ShipmentTab().state.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">

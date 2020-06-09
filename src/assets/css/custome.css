@@ -10056,6 +10056,18 @@ table tr th:last-child {
 #shipment-tab .antd-table-order .ant-table-row-expand-icon {
   display: inline;
 }
+#delivered-tab .antd-table-order .ant-table-row-expand-icon {
+  display: inline;
+}
+.pickuppendingcustom {
+    display: inline;
+    vertical-align: super;
+    float: left;
+}
+.action-w {
+  min-width: 150px;
+}
+
 
 @media (min-width: 768px) {
   .storecards .col-sm-4 {
@@ -11771,6 +11783,112 @@ table tr th:last-child {
   .addimg input {
     height: 53px;
   }
+  .pickuppendingcustom .deliv-grid-butn {
+    width: 110px;
+    height: 25px;
+    font-size: 11px;
+  }
+  #article-popup {
+    width: 95%;
+    border-radius: 5px;
+    padding: 0;
+}
+  #article-popup .cancalImg {
+    display: none;
+  }
+  .progtrckr li:first-child:before {
+    display: none;
+  }
+  .article-body span {
+    font-size: 11px;
+    margin: 0;
+    padding: 10px;
+}
+#article-popup .footer-buttons #next-button {
+  float: right;
+  margin: 10px 10px 10px 0;
+}
+#article-popup .footer-buttons #prev-button{
+  float: right;
+  margin: 10px 10px 10px 0;
+}
+  .cus-checkbox {
+    display: none;
+  }
+  #article-popup .progtrckr {
+    margin: 0;
+  }
+  #article-popup .progtrckr li {
+    margin-right: 0;
+    padding-left: 0;
+    font-size: 12px;
+}
+#article-popup .progtrckr li:first-child {
+  margin-right: 10px;
+}
+#article-popup .step-progress {
+  padding: 0;
+}
+#article-popup .progtrckr {
+  padding: 15px;
+  margin: 0;
+  background: #2561a8;
+  border-radius: 5px 5px 0 0;
+}
+
+#article-popup .progtrckr-done span {
+  color: #fff;
+  font-weight: normal;
+}
+#article-popup .progtrckr-doing span {
+  color: #fff;
+  font-weight: normal;
+  position: relative;
+}
+#article-popup .progtrckr-todo span {
+  color:#7fa9db;
+  font-weight: normal;
+}
+#article-popup .progtrckr-doing span::before {
+  width: 35px;
+  background: #3a91f8;
+  height: 2px;
+  left: 0;
+  bottom: -7px;
+  position: absolute;
+  content: '';
+}
+#article-popup .tabs-content {
+  padding: 0;
+  margin: 0;
+}
+.airwaybox {
+  border-radius: 5px;
+  border: none;
+  margin: 10px;
+}
+.airwaycontent .cardtick {
+  height: 40px;
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+.airwaycontent h2 {
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+.airwaycontent p {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 5px;
+}
+.airwaycontent ul li:first-child {
+  margin-right: 0;
+}
+.airwaycontent ul li {
+  font-size: 14px;
+  color: #666;
+  padding-top: 5px;
+}
   /* program code ends */
 }
 

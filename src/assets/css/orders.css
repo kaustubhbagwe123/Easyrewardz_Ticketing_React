@@ -559,7 +559,7 @@
   margin-right: 0px;
 }
 .antd-table-order .ant-table-row-expand-icon {
-  display: none;
+  display: none !important;
 }
 .order-popover-table .ant-table-thead > tr > th:nth-child(2),
 .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
@@ -681,7 +681,7 @@
     padding: 15px 5px !important;
   }
   .antd-table-order .ant-table-row-expand-icon {
-    display: block;
+    display: block !important;
   }
   .antd-table-order .ant-table-thead > tr:first-child > th:first-child {
     border-top-left-radius: 0px;
@@ -880,10 +880,11 @@
     font-size: 12px;
   }
   .order-grid-butn {
-    min-width: 105px;
+    min-width: 95px;
     padding-right: 5px !important;
     padding-left: 5px !important;
-    font-size: 12px;
+    font-size: 11px;
+    padding: 2px 6px !important;
   }
   .invoice-icon-cntr {
     width: 17px;
@@ -905,7 +906,7 @@
     background-size: 22px 22px;
     width: 22px;
     height: 22px;
-    margin-top: -2px;
+    margin-top: 0;
   }
   .orders-tabs-outer {
     padding: 4px 10px;
