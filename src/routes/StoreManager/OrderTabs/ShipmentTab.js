@@ -9,7 +9,6 @@ import Modal from "react-responsive-modal";
 // import OrderBag from "./../../../assets/Images/order-bag.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
-import StepZilla from "react-stepzilla";
 import CardTick from "./../../../assets/Images/card-tick.png";
 // import OrderDel from "./../../../assets/Images/order-del.png";
 import { authHeader } from "../../../helpers/authHeader";
@@ -36,6 +35,13 @@ class ShipmentTab extends Component {
       statusFilterData: [],
       strStatus: "",
       translateLanguage: {},
+      ShipmentOrderItem: [],
+      ShipmentOrderId: 0,
+      selectedRows: [],
+      orderId: 0,
+      AirwayBillAWBNo: 0,
+      AirwayItemIds: 0,
+      createdShoppingTabs: false,
     };
   }
 
@@ -141,7 +147,7 @@ class ShipmentTab extends Component {
     debugger;
     let self = this;
     axios({
-      method: "get",
+      method: "post",
       url: config.apiUrl + "/HSOrder/UpdateShipmentPickupPendingData",
       headers: authHeader(),
       params: {
@@ -161,14 +167,83 @@ class ShipmentTab extends Component {
         console.log(data);
       });
   }
+  /// handle get Order item data by order id
+  handleGetOrderItemDataByOrderId(OrderId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetItemDetailByOrderID",
+      headers: authHeader(),
+      params: {
+        orderID: OrderId,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            ShipmentOrderItem: data.ordersItems,
+            ShipmentOrderId: data.invoiceNumber,
+            ShipmentMdlbtn: true,
+            orderId: OrderId,
+          });
+        } else {
+          self.setState({
+            ShipmentOrderItem: [],
+            ShipmentOrderId: 0,
+            ShipmentMdlbtn: true,
+            orderId: OrderId,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// Create Shipment AWB
+  handleCreateShipmentAWB(e) {
+    e.preventDefault();
+    let self = this;
+    var itemIds = "";
+    if (this.state.selectedRows.length > 0) {
+      for (let i = 0; i < this.state.selectedRows.length; i++) {
+        itemIds += this.state.selectedRows[i].id + ",";
+      }
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
+      headers: authHeader(),
+      params: {
+        orderID: this.state.orderId,
+        itemIDs: itemIds,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AirwayBillAWBNo: data.awbNumber,
+            AirwayItemIds: data.itemIDs,
+            createdShoppingTabs: true,
+          });
+        } else {
+          self.setState({
+            createdShoppingTabs: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   ///-----------------------API function End----------------------------
 
-  //// shipment Modale Open
-  handleShipmentModalOpen() {
-    this.setState({
-      ShipmentMdlbtn: true,
-    });
-  }
   //// shipment Modale Close
   handleShipmentModalClose() {
     this.setState({
@@ -209,8 +284,23 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
+    const SelectedRow = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selectedRows,
+        });
+      },
+      onSelect: (record, selected, selectedRow) => {
+        //console.log(record, selected, selectedRow);
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+        //console.log(selected, selectedRows, changeRows);
+      },
+    };
+
     return (
       <>
         {this.state.orderPopoverOverlay && (
@@ -218,7 +308,7 @@ class ShipmentTab extends Component {
         )}
         <div className="table-cntr store dv-table-paging">
           <Table
-            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table antd-table-order-mobile"
             columns={[
               {
                 title:
@@ -424,7 +514,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
-                    className:"action-w",
+                className: "action-w",
                 render: (row, item) => {
                   return (
                     <div className="pickuppendingcustom">
@@ -533,10 +623,12 @@ class ShipmentTab extends Component {
                               : "butn order-grid-butn"
                           }
                           type="button"
-                          onClick={this.handleShipmentModalOpen.bind(this)}
+                          onClick={this.handleGetOrderItemDataByOrderId.bind(
+                            this,
+                            item.id
+                          )}
                         >
                           {item.actionTypeName}
-                          <Popover content={<p>hi</p>}></Popover>
                         </button>
                       )}
                     </div>
@@ -544,43 +636,39 @@ class ShipmentTab extends Component {
                 },
               },
             ]}
-            //
-
             expandedRowRender={(row, item) => {
               return (
                 <div className="innertabcollapse">
-                  <div className="">
-                    <table className="table">
-                      <tr>
-                        <td>
-                          <label><b>Customer Name</b></label>
-                          <label>
-                            <p>{row.customerName}</p>
-                            <p>{row.mobileNumber}</p>
-                          </label>
-                        </td>
-                        <td>
-                          <label><b>Shipping Address</b></label>
-                          <label>{row.shippingAddress}</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label><b>Delivery Type</b></label>
-                          <label>{row.deliveryTypeName}</label>
-                        </td>
-                        <td>
-                          <label><b>Status</b></label>
-                          <label>{row.statusName}</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label><b>Partner</b></label>
-                          <label>{row.Partner}</label>
-                        </td>
-                      </tr>
-                    </table>
+                  <div className="row">
+                    <div>
+                      <label>Customer Name</label>
+                      <label>
+                        <p>{row.customerName}</p>
+                        <p>{row.mobileNumber}</p>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>Shipping Address</label>
+                      <label>{row.shippingAddress}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Delivery Type</label>
+                      <label>{row.deliveryTypeName}</label>
+                    </div>
+
+                    <div>
+                      <label>Status</label>
+                      <label>{row.statusName}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Partner</label>
+                      <label>{row.Partner}</label>
+                    </div>
                   </div>
                 </div>
               );
@@ -632,23 +720,167 @@ class ShipmentTab extends Component {
                 className="cancalImg"
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
-              <input
-                type="checkbox" className="cus-checkbox"
-                style={{ position: "absolute", top: "48px", left: "40px" }}
-              />
-              <input
-                type="checkbox" className="cus-checkbox"
-                style={{ position: "absolute", top: "48px", left: "211px" }}
-              />
               <div className="step-progress">
-                <StepZilla
-                  steps={steps}
-                  //startAtStep={3}
-                  stepsNavigation={false}
-                  backButtonText="Cancel"
-                  nextButtonText="Save / Next"
-                  onStepChange={this.handleChange}
-                />
+                <ul className="nav nav-tabs" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className={
+                        this.state.createdShoppingTabs
+                          ? "nav-link disabled-link"
+                          : "nav-link active disabled-link"
+                      }
+                      data-toggle="tab"
+                      href="#article-Map-tab"
+                      role="tab"
+                      aria-controls="article-Map-tab"
+                      aria-selected="true"
+                    >
+                      Article Mapping
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className={
+                        this.state.createdShoppingTabs
+                          ? "nav-link active disabled-link"
+                          : "nav-link disabled-link"
+                      }
+                      data-toggle="tab"
+                      href="#airwayBill-tab"
+                      role="tab"
+                      aria-controls="airwayBill-tab"
+                      aria-selected="false"
+                    >
+                      Airway Bill No
+                    </a>
+                  </li>
+                </ul>
+
+                <div className="tab-content store-task-tab-cont orders-tab-cont">
+                  <div
+                    className={
+                      this.state.createdShoppingTabs
+                        ? "tab-pane fade"
+                        : "tab-pane fade show active"
+                    }
+                    id="article-Map-tab"
+                    role="tabpanel"
+                    aria-labelledby="article-Map-tab"
+                  >
+                    <div className="tabs-content">
+                      <form>
+                        <div className="article-body">
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span
+                                  .itemidshownbelowmappedtothisorder
+                              : "Item id shown below mapped to this Order"}
+                            &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.only
+                              : "only."}
+                            <br />
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span
+                                  .selectanyitemidyouwanttosendforshipment
+                              : "Select any item id, you want to send for shipment."}
+                          </span>
+                          <Table
+                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
+                            columns={[
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Article No",
+                                dataIndex: "itemID",
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Article Name",
+                                dataIndex: "itemName",
+                                width: 150,
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Article MRP",
+                                dataIndex: "itemPrice",
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Price Paid",
+                                dataIndex: "quantity",
+                              },
+                            ]}
+                            scroll={{ y: 240 }}
+                            pagination={false}
+                            rowSelection={SelectedRow}
+                            dataSource={this.state.ShipmentOrderItem}
+                          />
+                        </div>
+                        <div className="dv-status">
+                          <button className="btn-shipment-popup">Cancel</button>
+                          <button
+                            className="btn-shipment-saveNext"
+                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                          >
+                            Save &amp; Next
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      this.state.createdShoppingTabs
+                        ? "tab-pane fade show active"
+                        : "tab-pane fade"
+                    }
+                    id="airwayBill-tab"
+                    role="tabpanel"
+                    aria-labelledby="airwayBill-tab"
+                  >
+                    <div className="tabs-content">
+                      <form>
+                        <div className="text-center airwaybox">
+                          <div className="airwaycontent">
+                            <img
+                              src={CardTick}
+                              alt="CardTick"
+                              className="cardtick"
+                            />
+                            <h2>AWB No - {this.state.AirwayBillAWBNo}</h2>
+                            <p>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p.successfullymappedto
+                                : "Successfully mapped to"}
+                            </p>
+                            <ul>
+                              <li>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.li.invoiceno
+                                  : "Invoice no."}
+                                - {this.state.ShipmentOrderId}
+                              </li>
+                              <li>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.li.itemid
+                                  : "Item ID"}
+                                - {this.state.AirwayItemIds}
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </Modal>
@@ -656,122 +888,6 @@ class ShipmentTab extends Component {
       </>
     );
   }
-}
-
-const steps = [
-  { name: "Article Mapping", component: <Step1 /> },
-  { name: "Airway Bill No", component: <Step2 /> },
-];
-
-let dummy = {};
-
-if (window.localStorage.getItem("translateLanguage") === "hindi") {
-  dummy = translationHI;
-} else if (window.localStorage.getItem("translateLanguage") === "marathi") {
-  dummy = translationMA;
-} else {
-  dummy = {};
-}
-
-function Step1(props) {
-  const TranslationContext = dummy.default;
-  return (
-    <div>
-      <div className="tabs-content">
-        <form>
-          <div className="article-body">
-            <span>
-              {TranslationContext !== undefined
-                ? TranslationContext.span.itemidshownbelowmappedtothisorder
-                : "Item id shown below mapped to this Order"}
-              <b>334335</b>
-              {TranslationContext !== undefined
-                ? TranslationContext.span.only
-                : "only."}
-              <br />
-              {TranslationContext !== undefined
-                ? TranslationContext.span
-                    .selectanyitemidyouwanttosendforshipment
-                : "Select any item id, you want to send for shipment."}
-            </span>
-            <Table
-              className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
-              columns={[
-                {
-                  title:
-                    TranslationContext !== undefined
-                      ? TranslationContext.title.itemid
-                      : "Item ID",
-                  dataIndex: "itemID",
-                },
-                {
-                  title:
-                    TranslationContext !== undefined
-                      ? TranslationContext.title.itemname
-                      : "Item Name",
-                  dataIndex: "itemName",
-                  width: 150,
-                },
-                {
-                  title:
-                    TranslationContext !== undefined
-                      ? TranslationContext.title.itemprice
-                      : "Item Price",
-                  dataIndex: "itemPrice",
-                },
-                {
-                  title:
-                    TranslationContext !== undefined
-                      ? TranslationContext.title.quantity
-                      : "Quantity",
-                  dataIndex: "quantity",
-                },
-              ]}
-              scroll={{ y: 240 }}
-              pagination={false}
-              // dataSource={item.orderDeliveredItems}
-            />
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
-function Step2(props) {
-  const TranslationContext = dummy.default;
-  return (
-    <div>
-      <div className="tabs-content">
-        <form>
-          <div className="text-center airwaybox">
-            <div className="airwaycontent">
-              <img src={CardTick} alt="CardTick" className="cardtick" />
-              <h2>AWB No - 889676467</h2>
-              <p>
-                {TranslationContext !== undefined
-                  ? TranslationContext.p.successfullymappedto
-                  : "Successfully mapped to"}
-              </p>
-              <ul>
-                <li>
-                  {TranslationContext !== undefined
-                    ? TranslationContext.li.invoiceno
-                    : "Invoice no."}{" "}
-                  - 909676467
-                </li>
-                <li>
-                  {TranslationContext !== undefined
-                    ? TranslationContext.li.itemid
-                    : "Item ID"}{" "}
-                  - 9096 7646 7990
-                </li>
-              </ul>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
 }
 
 export default ShipmentTab;

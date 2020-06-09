@@ -124,6 +124,8 @@ class StoreModule extends Component {
       languageValidation: "",
       languageGridData: [],
       translateLanguage: {},
+      FilterSelectStore: 0,
+      isSlotLoading: false,
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -390,7 +392,6 @@ class StoreModule extends Component {
   };
 
   handleDrop_downOnchange = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     if (name === "selectStore") {
@@ -421,7 +422,6 @@ class StoreModule extends Component {
   };
 
   handleEditDrop_downOnchange = (e) => {
-    debugger;
     let name = e.target.name;
     let value = e.target.value;
     var timeSlotEdit = this.state.timeSlotEdit;
@@ -565,7 +565,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -587,7 +586,6 @@ class StoreModule extends Component {
       headers: authHeader(),
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -625,7 +623,8 @@ class StoreModule extends Component {
       });
   }
   /// handle Delete Language record
-  handleDeleteLanguage = async (row, type) => {
+  handleDeleteLanguage =  (row, type) => {
+    debugger;
     let languageGridData = [...this.state.languageGridData],
       isActive;
 
@@ -636,7 +635,7 @@ class StoreModule extends Component {
       }
     }
 
-    await this.setState({
+     this.setState({
       languageGridData,
     });
 
@@ -664,23 +663,28 @@ class StoreModule extends Component {
       });
   };
   //// Handle get time slot grid data
-  handleGetTimeslotGridData() {
+  handleGetTimeslotGridData(storeID) {
     let self = this;
+    this.setState({ isSlotLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetStoreTimeSlotMasterList",
       headers: authHeader(),
+      params: { StoreID: storeID ? storeID : 0 },
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
             TimeSlotGridData: data,
+            isSlotLoading: false,
           });
         } else {
           self.setState({
             TimeSlotGridData: [],
+            isSlotLoading: false,
           });
         }
       })
@@ -878,7 +882,6 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
@@ -1401,7 +1404,6 @@ class StoreModule extends Component {
   };
   /// handle Broadcast configuration toggle change
   handleBroadCongiFlageOnchange = (id) => {
-    debugger;
     var BroadConfig = id.target.id;
     if (BroadConfig === "ckbroadSMS") {
       this.state.BroadCastConfigData.smsFlag = !this.state.BroadCastConfigData
@@ -1680,7 +1682,6 @@ class StoreModule extends Component {
 
   /// Handle Update TimeSlot data
   handleUpdateTimeSlotData() {
-    debugger;
     var self = this;
     if (
       this.state.timeSlotEdit.storeId !== "0" &&
@@ -1737,7 +1738,6 @@ class StoreModule extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Language Added Successfully.");
@@ -1766,7 +1766,6 @@ class StoreModule extends Component {
   }
   /// handle Edit Time slot
   openSlotEditModal(EditData) {
-    debugger;
     var timeSlotEdit = {};
 
     timeSlotEdit.storeId = EditData.storeId;
@@ -1786,6 +1785,11 @@ class StoreModule extends Component {
       editSelectAmPm1: slot[1],
       editSelectAmPm2: slot[3],
     });
+  }
+
+  handleChangeStoreDropdown(e) {
+    this.setState({ FilterSelectStore: e.target.value });
+    this.handleGetTimeslotGridData(e.target.value);
   }
 
   render() {
@@ -3652,6 +3656,37 @@ class StoreModule extends Component {
                                     ? TranslationContext.button.submit
                                     : "SUBMIT"}
                                 </button>
+                                <div
+                                  className="cmpaign-channel-table slot-setting-options"
+                                  style={{ marginTop: "30px" }}
+                                >
+                                  <label className="slotstorelbl">
+                                    {" "}
+                                    Select Store Code
+                                  </label>
+                                  <select
+                                    style={{ width: "50%" }}
+                                    name="selectStore"
+                                    value={this.state.FilterSelectStore}
+                                    onChange={this.handleChangeStoreDropdown.bind(
+                                      this
+                                    )}
+                                  >
+                                    <option value={0}>All</option>
+                                    {this.state.storeCodeData !== null &&
+                                      this.state.storeCodeData.map(
+                                        (item, s) => (
+                                          <option
+                                            key={s}
+                                            value={item.storeID}
+                                            className="select-category-placeholder"
+                                          >
+                                            {item.storeCode}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -3792,6 +3827,8 @@ class StoreModule extends Component {
                                 ]}
                                 // resizable={false}
                                 minRows={2}
+                                noDataContent="No Record Found"
+                                loading={this.state.isSlotLoading}
                                 defaultPageSize={10}
                                 showPagination={true}
                               />
@@ -3963,30 +4000,47 @@ class StoreModule extends Component {
                                       //     </span>
                                       //   </>
                                       // );
-                                      return (
-                                        <div className="switch switch-primary d-inline m-r-10">
-                                          <input
-                                            type="checkbox"
-                                            id={"i" + row.index}
-                                            name="allModules"
-                                            //attrIds={item.moduleId}
-                                            checked={
-                                              row.original.isActive === false
-                                                ? true
-                                                : false
-                                            }
-                                            onClick={this.handleDeleteLanguage.bind(
-                                              this,
-                                              row.original
-                                            )}
-                                          />
-                                          <label
-                                            htmlFor={"i" + row.index}
-                                            className="cr cr-float-auto"
-                                            style={{ float: "inherit" }}
-                                          ></label>
-                                        </div>
-                                      );
+                                      // debugger;
+                                      // var isDisable = false;
+                                      if (row.original.language) {
+                                        var langage = row.original.language.split(
+                                          " "
+                                        )[0];
+                                        if (
+                                          langage.toLowerCase() ==
+                                          "English".toLowerCase()
+                                        ) {
+                                          return <></>;
+                                        } else {
+                                          return (
+                                            <div className="switch switch-primary d-inline m-r-10">
+                                              <input
+                                                type="checkbox"
+                                                id={"lang" + row.index}
+                                                name="allModules"
+                                                //attrIds={item.moduleId}
+                                                // checked={
+                                                //   row.original.isActive ===
+                                                //   false
+                                                //     ? true
+                                                //     : false
+                                                // }
+                                                onClick={this.handleDeleteLanguage.bind(
+                                                  this,
+                                                  row.original
+                                                )}
+                                              />
+                                              <label
+                                                htmlFor={"lang" + row.index}
+                                                className="cr cr-float-auto"
+                                                style={{ float: "inherit" }}
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
+                                      } else {
+                                        return <></>;
+                                      }
                                     },
                                   },
                                 ]}

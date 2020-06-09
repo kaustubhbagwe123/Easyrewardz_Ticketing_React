@@ -83,6 +83,7 @@
   padding: 4px 10px !important;
   border-radius: 3px;
   min-width: 121px;
+  text-transform: initial;
 }
 .order-del-butn img {
   width: 13px;
@@ -129,27 +130,31 @@
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar,
-.order-popover-address .ant-popover-message::-webkit-scrollbar {
+.order-popover-address .ant-popover-message::-webkit-scrollbar,
+.shopping-popover-cancel-info::-webkit-scrollbar {
   width: 7px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-track,
-.order-popover-address .ant-popover-message::-webkit-scrollbar-track {
+.order-popover-address .ant-popover-message::-webkit-scrollbar-track,
+.shopping-popover-cancel-info::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-thumb,
-.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb {
+.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb,
+.shopping-popover-cancel-info::-webkit-scrollbar-thumb {
   background: #cac8c8;
   border-radius: 10px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-thumb:hover,
-.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb:hover {
+.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb:hover,
+.shopping-popover-cancel-info::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
 .order-popover .ant-popover-arrow {
@@ -209,6 +214,9 @@
   font-size: 14px !important;
   font-weight: 400 !important;
   margin-top: 7px;
+  max-height: 200px;
+  overflow: auto;
+  padding-right: 10px;
 }
 .shopping-popover-cancel {
   width: 280px;
@@ -216,9 +224,13 @@
 .shopping-popover-cancel .ant-popover-inner-content {
   padding-top: 15px;
   padding-bottom: 20px;
+  padding-right: 6px;
 }
 .shopping-popover-cancel .ant-popover-inner {
   border-radius: 8px;
+}
+.username-mar {
+  margin-right: 10px;
 }
 /* shopping bag ends */
 
@@ -279,7 +291,32 @@
   line-height: 13px;
   text-align: center;
 }
-
+.btn-shipment-popup {
+  background-color: #ffffff;
+  border: 1px solid #2561a8;
+  border-radius: 3px;
+  min-width: 83px;
+  height: 35px;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
+}
+.btn-shipment-saveNext {
+  background-color: #2561a8;
+  border-radius: 3px;
+  min-width: 165px;
+  height: 36px;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 12px;
+  text-align: center;
+  margin-right: 10px;
+}
 .dv-status {
   margin-top: 15px;
 }
@@ -559,7 +596,7 @@
   margin-right: 0px;
 }
 .antd-table-order .ant-table-row-expand-icon {
-  display: none;
+  display: none !important;
 }
 .order-popover-table .ant-table-thead > tr > th:nth-child(2),
 .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
@@ -681,7 +718,7 @@
     padding: 15px 5px !important;
   }
   .antd-table-order .ant-table-row-expand-icon {
-    display: block;
+    display: block !important;
   }
   .antd-table-order .ant-table-thead > tr:first-child > th:first-child {
     border-top-left-radius: 0px;

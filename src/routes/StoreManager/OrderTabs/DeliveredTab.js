@@ -170,7 +170,7 @@ class DeliveredTab extends Component {
         )}
         <div className="table-cntr store dv-table-paging">
           <Table
-            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+            className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
                 title:
@@ -383,18 +383,24 @@ class DeliveredTab extends Component {
                     <table className="table">
                       <tr>
                         <td>
-                          <label><b>Date</b></label>
+                          <label>
+                            <b>Date</b>
+                          </label>
                           <label>{row.date}</label>
                         </td>
                         <td>
-                          <label><b>Customer Name</b></label>
+                          <label>
+                            <b>Customer Name</b>
+                          </label>
                           <label>
                             <p>{row.customerName}</p>
                             <p>{row.mobileNumber}</p>
                           </label>
                         </td>
                         <td>
-                          <label><b>Status</b></label>
+                          <label>
+                            <b>Status</b>
+                          </label>
                           <label>{row.statusName}</label>
                         </td>
                       </tr>
