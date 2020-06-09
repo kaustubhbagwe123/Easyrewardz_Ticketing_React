@@ -413,6 +413,8 @@ p {
   margin-bottom: 20px;
   margin-right: 10px;
   max-width: 80%;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 .chatcontentDiv .chat-trail-cntr:last-child {
   margin-bottom: 0px;
@@ -1517,4 +1519,10 @@ p {
   color: #fff;
   font-weight: bold;
   background-color: #eb7372;
+}
+.chat-cntr .ant-select-arrow {
+  display: block !important;
+}
+.showArrow .ant-select-arrow {
+  display: block !important;
 }

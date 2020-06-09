@@ -9898,7 +9898,6 @@ table tr th:last-child {
 .article-body span {
   text-align: center;
   display: block;
-  margin-bottom: 30px;
   font-size: 16px;
 }
 .staffdetailspopup {
@@ -9941,11 +9940,11 @@ table tr th:last-child {
   font-weight: normal;
 }
 #article-popup .tabs-content {
-  padding: 20px;
+  padding: 0px;
   margin: 0;
 }
 #article-popup .step-progress {
-  padding: 25px 0 0;
+  padding: 0;
 }
 #article-popup .footer-buttons {
   padding: 0 10px;
