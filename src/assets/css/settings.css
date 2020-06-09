@@ -3529,16 +3529,22 @@
   font-weight: bold !important;
 }
 
-.chat-tabslst .tab-content{
+.chat-tabslst .tab-content {
   padding: 0 !important;
 }
 
-.chattab-card{
+.chattab-card {
   width: 100%;
-    padding: 15px 15px;
-    margin-left: 0;
-    margin-right: 0;
+  padding: 15px 15px;
+  margin-left: 0;
+  margin-right: 0;
 }
-.chatsettingload{
+.chatsettingload {
   margin-left: 10px !important;
+}
+
+.slotstorelbl {
+  width: 50%;
+  text-align: right;
+  margin-right: 10px;
 }
