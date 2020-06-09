@@ -299,6 +299,11 @@ class ShipmentTab extends Component {
       onSelectAll: (selected, selectedRows, changeRows) => {
         //console.log(selected, selectedRows, changeRows);
       },
+      getCheckboxProps: (record) => ({
+        disabled: record.disable === "1",
+        // Column configuration not to be checked
+        name: record.disable,
+      }),
     };
 
     return (
