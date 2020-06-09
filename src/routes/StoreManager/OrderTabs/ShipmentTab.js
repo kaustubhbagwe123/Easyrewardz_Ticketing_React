@@ -37,7 +37,11 @@ class ShipmentTab extends Component {
       translateLanguage: {},
       ShipmentOrderItem: [],
       ShipmentOrderId: 0,
-      selectedRowKeys: [],
+      selectedRows: [],
+      orderId: 0,
+      AirwayBillAWBNo: 0,
+      AirwayItemIds: 0,
+      createdShoppingTabs: false,
     };
   }
 
@@ -184,12 +188,53 @@ class ShipmentTab extends Component {
             ShipmentOrderItem: data.ordersItems,
             ShipmentOrderId: data.invoiceNumber,
             ShipmentMdlbtn: true,
+            orderId: OrderId,
           });
         } else {
           self.setState({
             ShipmentOrderItem: [],
             ShipmentOrderId: 0,
             ShipmentMdlbtn: true,
+            orderId: OrderId,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// Create Shipment AWB
+  handleCreateShipmentAWB(e) {
+    e.preventDefault();
+    let self = this;
+    var itemIds = "";
+    if (this.state.selectedRows.length > 0) {
+      for (let i = 0; i < this.state.selectedRows.length; i++) {
+        itemIds += this.state.selectedRows[i].id + ",";
+      }
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
+      headers: authHeader(),
+      params: {
+        orderID: this.state.orderId,
+        itemIDs: itemIds,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AirwayBillAWBNo: data.awbNumber,
+            AirwayItemIds: data.itemIDs,
+            createdShoppingTabs: true,
+          });
+        } else {
+          self.setState({
+            createdShoppingTabs: false,
           });
         }
       })
@@ -239,19 +284,21 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
-  //// On selected change
-  handleOnSelectChange = (selectedRowKeys) => {
-    debugger;
-    alert("selectedRowKeys changed: ", selectedRowKeys);
-    this.setState({ selectedRowKeys });
-  };
 
   render() {
-    const { selectedRowKeys } = this.state;
     const TranslationContext = this.state.translateLanguage.default;
     const SelectedRow = {
-      selectedRowKeys,
-      onChange: this.handleOnSelectChange,
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selectedRows,
+        });
+      },
+      onSelect: (record, selected, selectedRow) => {
+        //console.log(record, selected, selectedRow);
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+        //console.log(selected, selectedRows, changeRows);
+      },
     };
 
     return (
@@ -677,7 +724,11 @@ class ShipmentTab extends Component {
                 <ul className="nav nav-tabs" role="tablist">
                   <li className="nav-item">
                     <a
-                      className="nav-link active disabled-link"
+                      className={
+                        this.state.createdShoppingTabs
+                          ? "nav-link disabled-link"
+                          : "nav-link active disabled-link"
+                      }
                       data-toggle="tab"
                       href="#article-Map-tab"
                       role="tab"
@@ -689,7 +740,11 @@ class ShipmentTab extends Component {
                   </li>
                   <li className="nav-item">
                     <a
-                      className="nav-link disabled-link"
+                      className={
+                        this.state.createdShoppingTabs
+                          ? "nav-link active disabled-link"
+                          : "nav-link disabled-link"
+                      }
                       data-toggle="tab"
                       href="#airwayBill-tab"
                       role="tab"
@@ -703,7 +758,11 @@ class ShipmentTab extends Component {
 
                 <div className="tab-content store-task-tab-cont orders-tab-cont">
                   <div
-                    className="tab-pane fade show active"
+                    className={
+                      this.state.createdShoppingTabs
+                        ? "tab-pane fade"
+                        : "tab-pane fade show active"
+                    }
                     id="article-Map-tab"
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
@@ -767,7 +826,10 @@ class ShipmentTab extends Component {
                         </div>
                         <div className="dv-status">
                           <button className="btn-shipment-popup">Cancel</button>
-                          <button className="btn-shipment-saveNext">
+                          <button
+                            className="btn-shipment-saveNext"
+                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                          >
                             Save &amp; Next
                           </button>
                         </div>
@@ -775,7 +837,11 @@ class ShipmentTab extends Component {
                     </div>
                   </div>
                   <div
-                    className="tab-pane fade"
+                    className={
+                      this.state.createdShoppingTabs
+                        ? "tab-pane fade show active"
+                        : "tab-pane fade"
+                    }
                     id="airwayBill-tab"
                     role="tabpanel"
                     aria-labelledby="airwayBill-tab"
@@ -789,7 +855,7 @@ class ShipmentTab extends Component {
                               alt="CardTick"
                               className="cardtick"
                             />
-                            <h2>AWB No - 889676467</h2>
+                            <h2>AWB No - {this.state.AirwayBillAWBNo}</h2>
                             <p>
                               {TranslationContext !== undefined
                                 ? TranslationContext.p.successfullymappedto
@@ -800,13 +866,13 @@ class ShipmentTab extends Component {
                                 {TranslationContext !== undefined
                                   ? TranslationContext.li.invoiceno
                                   : "Invoice no."}
-                                - 909676467
+                                - {this.state.ShipmentOrderId}
                               </li>
                               <li>
                                 {TranslationContext !== undefined
                                   ? TranslationContext.li.itemid
                                   : "Item ID"}
-                                - 9096 7646 7990
+                                - {this.state.AirwayItemIds}
                               </li>
                             </ul>
                           </div>
