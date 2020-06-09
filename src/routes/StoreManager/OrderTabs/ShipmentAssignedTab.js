@@ -22,7 +22,7 @@ class ShipmentAssignedTab extends Component {
       assignPostsPerPage: 10,
       orderPopoverOverlay: false,
       ShipAssignLoading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
   componentDidMount() {
@@ -61,13 +61,13 @@ class ShipmentAssignedTab extends Component {
           self.setState({
             shipmentAssignedGridData: data.shipmentAssigned,
             totalCount: data.totalCount,
-            ShipAssignLoading: false
+            ShipAssignLoading: false,
           });
         } else {
           self.setState({
             shipmentAssignedGridData: [],
             totalCount: 0,
-            ShipAssignLoading: false
+            ShipAssignLoading: false,
           });
         }
       })
@@ -280,8 +280,12 @@ class ShipmentAssignedTab extends Component {
                                 value={item.mobileNumber}
                                 onChange={this.handlechange.bind(this, index)}
                               />
-                              <button type="button" className="popbtnno"
-                              onClick={() => this.setState({orderPopoverOverlay: false})}
+                              <button
+                                type="button"
+                                className="popbtnno"
+                                onClick={() =>
+                                  this.setState({ orderPopoverOverlay: false })
+                                }
                               >
                                 {TranslationContext !== undefined
                                   ? TranslationContext.button.cancel
@@ -300,8 +304,8 @@ class ShipmentAssignedTab extends Component {
                                   {TranslationContext !== undefined
                                     ? TranslationContext.button.done
                                     : "Done"}
-
-                              </button>):null}
+                                </button>
+                              ) : null}
                             </div>
                           }
                           trigger="click"
@@ -343,7 +347,9 @@ class ShipmentAssignedTab extends Component {
                           : "Proceed"}
                       </button>
                     </div>
-                  ) : "";
+                  ) : (
+                    ""
+                  );
                 },
               },
             ]}
@@ -351,15 +357,23 @@ class ShipmentAssignedTab extends Component {
               debugger;
               return (
                 <div className="innertabcollapse">
-                  <div className="row">
-                    <div>
-                      <label>Courier Partner</label>
-                      <label>{row.courierPartner}</label>
-                    </div>
-                    <div>
-                      <label>POD</label>
-                      <button>{row.referenceNo}</button>
-                    </div>
+                  <div className="">
+                    <table className="table">
+                      <tr>
+                        <td>
+                          <label>
+                            <b>Courier Partner</b>
+                          </label>
+                          <label>{row.courierPartner}</label>
+                        </td>
+                        <td>
+                          <label>
+                            <b>POD</b>
+                          </label>
+                          <button>{row.referenceNo}</button>
+                        </td>
+                      </tr>
+                    </table>
                   </div>
                 </div>
               );

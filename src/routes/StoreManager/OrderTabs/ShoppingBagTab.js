@@ -33,6 +33,9 @@ class ShoppingBagTab extends Component {
       ShopCancelComment: "",
       invoiceNo: "",
       amountNo: "",
+      invoiceNovalidation: "",
+      amountNoValidation: "",
+      cancelCommentValidation: "",
     };
   }
 
@@ -171,60 +174,76 @@ class ShoppingBagTab extends Component {
   handleCancleAndCommnetShopBag(ShopId) {
     debugger;
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/UpdateShipmentBagCancelData",
-      headers: authHeader(),
-      params: {
-        ShoppingID: ShopId,
-        CancelComment: this.state.ShopCancelComment,
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.setState({
-            ShopCancelComment: "",
-          });
-          NotificationManager.success("Success.");
-          self.handleGetShoppingBagGridData();
-        } else {
-          NotificationManager.error("Failed.");
-        }
+    if (this.state.ShopCancelComment !== "") {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/UpdateShipmentBagCancelData",
+        headers: authHeader(),
+        params: {
+          ShoppingID: ShopId,
+          CancelComment: this.state.ShopCancelComment,
+        },
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              ShopCancelComment: "",
+              cancelCommentValidation: "",
+            });
+            NotificationManager.success("Success.");
+            self.handleGetShoppingBagGridData();
+          } else {
+            NotificationManager.error("Failed.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      self.setState({
+        cancelCommentValidation: "Please Enter Comment.",
       });
+    }
   }
   handleConvertToOrder(ShopId) {
     debugger;
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/InsertOrderDetails",
-      headers: authHeader(),
-      data: {
-        ShoppingID: ShopId,
-        InvoiceNo: this.state.invoiceNo,
-        Amount: this.state.amountNo,
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.setState({
-            invoiceNo: "",
-            amountNo: "",
-          });
-          NotificationManager.success("Success.");
-          self.handleGetShoppingBagGridData();
-        } else {
-          NotificationManager.error("Failed.");
-        }
+    if (this.state.invoiceNo !== "" && this.state.amountNo !== "") {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/InsertOrderDetails",
+        headers: authHeader(),
+        data: {
+          ShoppingID: ShopId,
+          InvoiceNo: this.state.invoiceNo,
+          Amount: this.state.amountNo,
+        },
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          let status = res.data.message;
+          if (status === "Success") {
+            self.setState({
+              invoiceNo: "",
+              amountNo: "",
+              invoiceNovalidation: "",
+              amountNoValidation: "",
+            });
+            NotificationManager.success("Success.");
+            self.handleGetShoppingBagGridData();
+          } else {
+            NotificationManager.error("Failed.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      self.setState({
+        invoiceNovalidation: "Please Enter Order Id.",
+        amountNoValidation: "Please Enter Amount.",
       });
+    }
   }
   ///-------------------API function end--------------------------------
 
@@ -653,6 +672,16 @@ class ShoppingBagTab extends Component {
                                   value={this.state.invoiceNo}
                                   onChange={this.handleTextOnchage}
                                 />
+                                {this.state.invoiceNo === "" && (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px",
+                                    }}
+                                  >
+                                    {this.state.invoiceNovalidation}
+                                  </p>
+                                )}
                               </div>
                               <div>
                                 <p>
@@ -671,23 +700,17 @@ class ShoppingBagTab extends Component {
                                   value={this.state.amountNo}
                                   onChange={this.handleTextOnchage}
                                 />
-                              </div>
-                              {/* <button className="btn-cancel-status">
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.cancel
-                                  : "Cancel"}
-                              </button>
-                              <button
-                                className="btn-apply-status"
-                                onClick={this.handleConvertToOrder.bind(
-                                  this,
-                                  item.shoppingID
+                                {this.state.amountNo === "" && (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px",
+                                    }}
+                                  >
+                                    {this.state.amountNoValidation}
+                                  </p>
                                 )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.done
-                                  : "Done"}
-                              </button> */}
+                              </div>
                             </div>
                           </>
                         }
@@ -697,7 +720,11 @@ class ShoppingBagTab extends Component {
                           this.setState({ orderPopoverOverlay: visible })
                         }
                         icon={false}
-                        // okText="Done"
+                        okText="Done"
+                        onConfirm={this.handleConvertToOrder.bind(
+                          this,
+                          item.shoppingID
+                        )}
                       >
                         <button className="butn order-grid-butn">
                           {TranslationContext !== undefined
@@ -726,23 +753,16 @@ class ShoppingBagTab extends Component {
                                   name="ShopCancelComment"
                                   onChange={this.handleTextOnchage}
                                 ></textarea>
-
-                                {/* <button className="btn-cancel-status">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.cancel
-                                    : "Cancel"}
-                                </button>
-                                <button
-                                  className="btn-apply-status"
-                                  onClick={this.handleCancleAndCommnetShopBag.bind(
-                                    this,
-                                    item.shoppingID
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.remove
-                                    : "Remove"}
-                                </button> */}
+                                {this.state.ShopCancelComment === "" && (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px",
+                                    }}
+                                  >
+                                    {this.state.cancelCommentValidation}
+                                  </p>
+                                )}
                               </div>
                             </div>
                           </>
@@ -753,7 +773,11 @@ class ShoppingBagTab extends Component {
                           this.setState({ orderPopoverOverlay: visible })
                         }
                         icon={false}
-                        // okText="Remove"
+                        okText="Remove"
+                        onConfirm={this.handleCancleAndCommnetShopBag.bind(
+                          this,
+                          item.shoppingID
+                        )}
                       >
                         <button className="butn order-grid-butn order-del-butn">
                           <img src={OrderDel} alt="delete icon" />
