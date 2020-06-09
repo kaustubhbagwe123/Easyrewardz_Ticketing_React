@@ -425,7 +425,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
-                    className:"action-w",
+                className: "action-w",
                 render: (row, item) => {
                   return (
                     <div className="pickuppendingcustom">
@@ -550,38 +550,36 @@ class ShipmentTab extends Component {
             expandedRowRender={(row, item) => {
               return (
                 <div className="innertabcollapse">
-                  <div className="">
-                    <table className="table">
-                      <tr>
-                        <td>
-                          <label><b>Customer Name</b></label>
-                          <label>
-                            <p>{row.customerName}</p>
-                            <p>{row.mobileNumber}</p>
-                          </label>
-                        </td>
-                        <td>
-                          <label><b>Shipping Address</b></label>
-                          <label>{row.shippingAddress}</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label><b>Delivery Type</b></label>
-                          <label>{row.deliveryTypeName}</label>
-                        </td>
-                        <td>
-                          <label><b>Status</b></label>
-                          <label>{row.statusName}</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label><b>Partner</b></label>
-                          <label>{row.Partner}</label>
-                        </td>
-                      </tr>
-                    </table>
+                  <div className="row">
+                    <div>
+                      <label>Customer Name</label>
+                      <label>
+                        <p>{row.customerName}</p>
+                        <p>{row.mobileNumber}</p>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>Shipping Address</label>
+                      <label>{row.shippingAddress}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Delivery Type</label>
+                      <label>{row.deliveryTypeName}</label>
+                    </div>
+
+                    <div>
+                      <label>Status</label>
+                      <label>{row.statusName}</label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div>
+                      <label>Partner</label>
+                      <label>{row.Partner}</label>
+                    </div>
                   </div>
                 </div>
               );
@@ -634,11 +632,13 @@ class ShipmentTab extends Component {
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
               <input
-                type="checkbox" className="cus-checkbox"
+                type="checkbox"
+                className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "40px" }}
               />
               <input
-                type="checkbox" className="cus-checkbox"
+                type="checkbox"
+                className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "211px" }}
               />
               <div className="step-progress">

@@ -281,9 +281,10 @@ class Header extends Component {
           : "single-menu",
     };
     var task = {
-      data:   this.state.translateLanguage.default !== undefined
-      ? this.state.translateLanguage.default.nav.task
-      : "Task",
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.task
+          : "Task",
       urls: "StoreTask",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
@@ -1282,6 +1283,7 @@ class Header extends Component {
     StoreID,
     isCustEndChat
   ) => {
+    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1868,7 +1870,7 @@ class Header extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    
+
     return (
       <React.Fragment>
         <div
@@ -2132,8 +2134,9 @@ class Header extends Component {
                   className="logout"
                   onClick={this.handleLogoutMethod.bind(this)}
                 >
-                  {TranslationContext!==undefined?TranslationContext.button.logout:"LOGOUT"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.button.logout
+                    : "LOGOUT"}
                 </button>
               </div>
             </div>
@@ -2142,27 +2145,35 @@ class Header extends Component {
                 <div className="logout-status" style={{ marginTop: "10px" }}>
                   <img src={StatusLogo} alt="status" />
                 </div>
-                <p className="logout-label chat-status">{TranslationContext!==undefined?TranslationContext.p.chatstatus:"CHAT STATUS"} :</p>
+                <p className="logout-label chat-status">
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.chatstatus
+                    : "CHAT STATUS"}{" "}
+                  :
+                </p>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="online" />
                 <label htmlFor="online" className="logout-label">
-                {TranslationContext!==undefined?TranslationContext.label.online:"Online"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.online
+                    : "Online"}
                 </label>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="away" />
                 <label htmlFor="away" className="logout-label">
-                {TranslationContext!==undefined?TranslationContext.label.away:"Away"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.away
+                    : "Away"}
                 </label>
               </div>
               <div className="status-options">
                 <input type="radio" name="logout-status" id="offline" />
                 <label htmlFor="offline" className="logout-label">
-                {TranslationContext!==undefined?TranslationContext.label.offline:"Offline"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.offline
+                    : "Offline"}
                 </label>
               </div>
             </div>
@@ -2170,7 +2181,9 @@ class Header extends Component {
               <div className="d-flex justify-content-between">
                 <div>
                   <p className="logout-label">
-                  {TranslationContext!==undefined?TranslationContext.p.logintime:"Login Time"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.logintime
+                      : "Login Time"}
                   </p>
                   <p className="font-weight-bold" style={{ fontSize: "16px" }}>
                     {this.state.LoginTime}
@@ -2178,7 +2191,9 @@ class Header extends Component {
                 </div>
                 <div>
                   <p className="logout-label">
-                  {TranslationContext!==undefined?TranslationContext.p.logouttime:"Logout Time"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.logouttime
+                      : "Logout Time"}
                   </p>
                   <p
                     className="font-weight-bold"
@@ -2205,7 +2220,9 @@ class Header extends Component {
             <div>
               <div>
                 <p className="logout-label">
-                {TranslationContext!==undefined?TranslationContext.p.slascore:"SLA SCORE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.slascore
+                    : "SLA SCORE"}
                 </p>
                 <p className="font-weight-bold">{this.state.SLAScore}</p>
               </div>
@@ -2215,7 +2232,9 @@ class Header extends Component {
               </div> */}
               <div>
                 <p className="logout-label">
-                {TranslationContext!==undefined?TranslationContext.p.avgresponsetime:"Avg Response time"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.avgresponsetime
+                    : "Avg Response time"}
                 </p>
                 <p className="font-weight-bold">{this.state.AvgResponse}</p>
               </div>
@@ -2314,8 +2333,9 @@ class Header extends Component {
                               : "text-disabled"
                           }
                         >
-                          {TranslationContext!==undefined?TranslationContext.div.view:"VIEW"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.view
+                            : "VIEW"}
                         </div>
                       </Popover>
                     </div>
@@ -4161,6 +4181,10 @@ class Header extends Component {
                             className="chatcontentdivtab chat-tabs-mobile"
                             style={{
                               height: !this.state.isDownbtn ? "80%" : "",
+                              pointerEvents:
+                                this.state.isCustEndChat === true
+                                  ? "none"
+                                  : "all",
                             }}
                           >
                             <ul className="nav nav-tabs" role="tablist">
