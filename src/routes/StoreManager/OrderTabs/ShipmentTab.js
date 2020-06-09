@@ -141,7 +141,7 @@ class ShipmentTab extends Component {
     debugger;
     let self = this;
     axios({
-      method: "get",
+      method: "post",
       url: config.apiUrl + "/HSOrder/UpdateShipmentPickupPendingData",
       headers: authHeader(),
       params: {
@@ -209,6 +209,7 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -424,13 +425,13 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
+                    className:"action-w",
                 render: (row, item) => {
                   return (
-                    <div>
+                    <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
                         <>
                           <Popover
-                            overlayClassName="pickuppendingcustom"
                             content={
                               <div className="pickuppending-table">
                                 <table>
@@ -631,11 +632,11 @@ class ShipmentTab extends Component {
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
               <input
-                type="checkbox"
+                type="checkbox" className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "40px" }}
               />
               <input
-                type="checkbox"
+                type="checkbox" className="cus-checkbox"
                 style={{ position: "absolute", top: "48px", left: "211px" }}
               />
               <div className="step-progress">
@@ -661,18 +662,8 @@ const steps = [
   { name: "Airway Bill No", component: <Step2 /> },
 ];
 
-let dummy = {};
-
-if (window.localStorage.getItem("translateLanguage") === "hindi") {
-  dummy = translationHI;
-} else if (window.localStorage.getItem("translateLanguage") === "marathi") {
-  dummy = translationMA;
-} else {
-  dummy = {};
-}
-
 function Step1(props) {
-  const TranslationContext = dummy.default;
+  const TranslationContext = new ShipmentTab().state.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">
@@ -736,7 +727,7 @@ function Step1(props) {
   );
 }
 function Step2(props) {
-  const TranslationContext = dummy.default;
+  const TranslationContext = new ShipmentTab().state.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">

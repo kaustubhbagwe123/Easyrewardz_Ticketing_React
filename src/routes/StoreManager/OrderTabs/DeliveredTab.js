@@ -350,7 +350,7 @@ class DeliveredTab extends Component {
                     : "Action",
                 render: (row, item) => {
                   return (
-                    <div className="d-flex">
+                    <div className="pickuppendingcustom d-flex">
                       {item.actionTypeName === "Delivered" ? (
                         <button className="delibutn deliv-grid-butn">
                           {item.actionTypeName}
