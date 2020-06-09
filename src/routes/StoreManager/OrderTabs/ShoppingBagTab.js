@@ -451,7 +451,7 @@ class ShoppingBagTab extends Component {
                             <div className="order-tab-popover">
                               <div className="d-flex align-items-center justify-content-between">
                                 <p>{item.canceledOn}</p>
-                                <p>{item.userName}</p>
+                                <p className="username-mar">{item.userName}</p>
                               </div>
                               <p className="shopping-popover-cancel-info">
                                 {item.canceledComment}
@@ -816,7 +816,7 @@ class ShoppingBagTab extends Component {
                               <div className="order-tab-popover">
                                 <div className="d-flex align-items-center justify-content-between">
                                   <p>{row.canceledOn}</p>
-                                  <p>{row.userName}</p>
+                                  <p className="username-mar">{row.userName}</p>
                                 </div>
                                 <p className="shopping-popover-cancel-info">
                                   {row.canceledComment}

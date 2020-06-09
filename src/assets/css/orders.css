@@ -83,6 +83,7 @@
   padding: 4px 10px !important;
   border-radius: 3px;
   min-width: 121px;
+  text-transform: initial;
 }
 .order-del-butn img {
   width: 13px;
@@ -129,27 +130,31 @@
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar,
-.order-popover-address .ant-popover-message::-webkit-scrollbar {
+.order-popover-address .ant-popover-message::-webkit-scrollbar,
+.shopping-popover-cancel-info::-webkit-scrollbar {
   width: 7px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-track,
-.order-popover-address .ant-popover-message::-webkit-scrollbar-track {
+.order-popover-address .ant-popover-message::-webkit-scrollbar-track,
+.shopping-popover-cancel-info::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-thumb,
-.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb {
+.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb,
+.shopping-popover-cancel-info::-webkit-scrollbar-thumb {
   background: #cac8c8;
   border-radius: 10px;
 }
 .order-popover-table
   .ant-table-hide-scrollbar
   + .ant-table-body::-webkit-scrollbar-thumb:hover,
-.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb:hover {
+.order-popover-address .ant-popover-message::-webkit-scrollbar-thumb:hover,
+.shopping-popover-cancel-info::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
 .order-popover .ant-popover-arrow {
@@ -209,6 +214,9 @@
   font-size: 14px !important;
   font-weight: 400 !important;
   margin-top: 7px;
+  max-height: 200px;
+  overflow: auto;
+  padding-right: 10px;
 }
 .shopping-popover-cancel {
   width: 280px;
@@ -216,9 +224,13 @@
 .shopping-popover-cancel .ant-popover-inner-content {
   padding-top: 15px;
   padding-bottom: 20px;
+  padding-right: 6px;
 }
 .shopping-popover-cancel .ant-popover-inner {
   border-radius: 8px;
+}
+.username-mar {
+  margin-right: 10px;
 }
 /* shopping bag ends */
 
