@@ -23,6 +23,7 @@ class Orders extends Component {
       deliverredTab3: false,
       shipmentAssignTab4: false,
       translateLanguage: {},
+      selectedTabs: 1,
     };
   }
   componentWillMount() {
@@ -63,6 +64,10 @@ class Orders extends Component {
         shipmentAssignTab4: true,
       });
     }
+  };
+
+  handleChanageNavTabs = (tab) => {
+    this.setState({ selectedTabs: tab });
   };
 
   render() {
@@ -157,12 +162,15 @@ class Orders extends Component {
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
               <a
-                className="nav-link active"
+                className={
+                  this.state.selectedTabs === 1 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shopping-bag-tab"
                 role="tab"
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
+                onClick={this.handleChanageNavTabs.bind(this, 1)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.shoppingbag
@@ -171,13 +179,15 @@ class Orders extends Component {
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 2 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#order-tab"
                 role="tab"
                 aria-controls="order-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("orderTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 2)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.order
@@ -186,13 +196,15 @@ class Orders extends Component {
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 3 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shipment-tab"
                 role="tab"
                 aria-controls="shipment-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("shipmentTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 3)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.shipment
@@ -204,13 +216,15 @@ class Orders extends Component {
               // onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
             >
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 4 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#delivered-tab"
                 role="tab"
                 aria-controls="delivered-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("deliveredTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 4)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.delivered
@@ -219,13 +233,15 @@ class Orders extends Component {
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 5 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shipment-assigned-tab"
                 role="tab"
                 aria-controls="shipment-assigned-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("shipmentAssignTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 5)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.shipmentassigned
@@ -247,44 +263,64 @@ class Orders extends Component {
         </div>
         <div className="tab-content store-task-tab-cont orders-tab-cont">
           <div
-            className="tab-pane fade show active"
+            className={
+              this.state.selectedTabs === 1
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="shopping-bag-tab"
             role="tabpanel"
             aria-labelledby="shopping-bag-tab"
           >
-            <ShoppingBagTab />
+            {this.state.selectedTabs === 1 ? <ShoppingBagTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 2
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="order-tab"
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            <OrderTab />
+            {this.state.selectedTabs === 2 ? <OrderTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 3
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="shipment-tab"
             role="tabpanel"
             aria-labelledby="shipment-tab"
           >
-            <ShipmentTab />
+            {this.state.selectedTabs === 3 ? <ShipmentTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 4
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="delivered-tab"
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            <DeliveredTab />
+            {this.state.selectedTabs === 4 ? <DeliveredTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 5
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="shipment-assigned-tab"
             role="tabpanel"
             aria-labelledby="shipment-assigned-tab"
           >
-            <ShipmentAssignedTab />
+            {this.state.selectedTabs === 5 ? <ShipmentAssignedTab /> : null}
           </div>
         </div>
       </Fragment>
