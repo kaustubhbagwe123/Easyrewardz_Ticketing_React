@@ -138,6 +138,8 @@ class OrderSetting extends Component {
         Payment: this.state.orderConfigData.payment,
         Shipment: this.state.orderConfigData.shipment,
         ShoppingBag: this.state.orderConfigData.shoppingBag,
+        EnableClickAfterValue: this.state.orderConfigData.enableClickAfterValue,
+        EnableClickAfterDuration: this.state.orderConfigData.enableClickAfterDuration
       },
     })
       .then(function(res) {
@@ -168,6 +170,44 @@ class OrderSetting extends Component {
 
     this.setState({ orderConfigData: this.state.orderConfigData });
   };
+
+  OrderSettingOnChange(e) {
+    const { name, value } = e.target;
+    var orderConfigData = this.state.orderConfigData;
+    if (name === "enableClickAfterValue") {
+      if (orderConfigData["enableClickAfterDuration"] == "M") {
+        if (parseInt(value) <= 60) {
+          orderConfigData[name] = value;
+          this.setState({ orderConfigData });
+        } else {
+          orderConfigData[name] = "";
+          this.setState({ orderConfigData });
+        }
+      } else {
+        if (parseInt(value) <= 99) {
+          orderConfigData[name] = value;
+          this.setState({ orderConfigData });
+        } else {
+          orderConfigData[name] = "";
+          this.setState({ orderConfigData });
+        }
+      }
+    } else {
+      if (name === "enableClickAfterDuration") {
+        if (value === "M") {
+          if (orderConfigData["enableClickAfterValue"] > 60)
+          orderConfigData["enableClickAfterValue"] = "";
+        }
+
+        if (value === "H") {
+          if (orderConfigData["enableClickAfterValue"] > 99)
+          orderConfigData["enableClickAfterValue"] = "";
+        }
+      }
+      orderConfigData[name] = value;
+      this.setState({ orderConfigData });
+    }
+  }
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -403,6 +443,66 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
+                                  <table className="cmpaign-channel-table">
+                                  <tr>
+                                    <td>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.td
+                                            .clickwillbeenabledafter
+                                        : "Click will be enabled after"}
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="enableClickAfterValue"
+                                        autoComplete="off"
+                                        maxLength={2}
+                                        value={
+                                          this.state.orderConfigData
+                                            .enableClickAfterValue
+                                        }
+                                        onChange={this.OrderSettingOnChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      {/* {this.state.campaignChannelData
+                                        .enableClickAfterValue === "" && (
+                                        <p
+                                          style={{
+                                            color: "red",
+                                            marginBottom: "0px",
+                                          }}
+                                        >
+                                          {this.state.enabledAfterValidation}
+                                        </p>
+                                      )} */}
+                                    </td>
+                                    <td>
+                                      <select
+                                        value={
+                                          this.state.orderConfigData
+                                            .enableClickAfterDuration
+                                        }
+                                        name="enableClickAfterDuration"
+                                        onChange={this.OrderSettingOnChange.bind(
+                                          this
+                                        )}
+                                      >
+                                        <option value="M">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.min
+                                            : "Min"}
+                                        </option>
+                                        <option value="H">
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.option.hr
+                                            : "Hr"}
+                                        </option>
+                                      </select>
+                                    </td>
+                                  </tr>
+                                </table>
+
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
