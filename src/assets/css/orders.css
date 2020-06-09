@@ -559,7 +559,7 @@
   margin-right: 0px;
 }
 .antd-table-order .ant-table-row-expand-icon {
-  display: none;
+  display: none !important;
 }
 .order-popover-table .ant-table-thead > tr > th:nth-child(2),
 .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
@@ -681,7 +681,7 @@
     padding: 15px 5px !important;
   }
   .antd-table-order .ant-table-row-expand-icon {
-    display: block;
+    display: block !important;
   }
   .antd-table-order .ant-table-thead > tr:first-child > th:first-child {
     border-top-left-radius: 0px;
