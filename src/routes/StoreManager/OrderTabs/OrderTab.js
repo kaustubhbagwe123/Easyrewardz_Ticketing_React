@@ -181,6 +181,32 @@ class OrderTab extends Component {
   handleUpdateAddressPending(orderId) {
     debugger;
     let self = this;
+
+    if (this.state.shippingAddress === "") {
+      NotificationManager.error("Please enter address.");
+      return false;
+    }
+
+    if (this.state.pincode === "") {
+      NotificationManager.error("Please enter pincode.");
+      return false;
+    }
+
+    if (this.state.city === "") {
+      NotificationManager.error("Please enter city.");
+      return false;
+    }
+
+    if (this.state.state === "") {
+      NotificationManager.error("Please enter state.");
+      return false;
+    }
+
+    if (this.state.country === "") {
+      NotificationManager.error("Please enter country.");
+      return false;
+    }
+
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateAddressPending",
