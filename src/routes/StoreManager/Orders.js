@@ -5,14 +5,13 @@ import OrderSearch from "./../../assets/Images/order-search.png";
 // import config from "../../helpers/config";
 // import { authHeader } from "../../helpers/authHeader";
 import "./../../assets/css/orders.css";
-import * as translationHI from './../../translations/hindi';
-import * as translationMA from './../../translations/marathi';
+import * as translationHI from "./../../translations/hindi";
+import * as translationMA from "./../../translations/marathi";
 import OrderTab from "./OrderTabs/OrderTab";
 import DeliveredTab from "./OrderTabs/DeliveredTab";
 import ShoppingBagTab from "./OrderTabs/ShoppingBagTab";
 import ShipmentTab from "./OrderTabs/ShipmentTab";
 import ShipmentAssignedTab from "./OrderTabs/ShipmentAssignedTab";
-
 
 class Orders extends Component {
   constructor(props) {
@@ -23,20 +22,18 @@ class Orders extends Component {
       shipmentTab2: false,
       deliverredTab3: false,
       shipmentAssignTab4: false,
-      translateLanguage: {}
+      translateLanguage: {},
+      selectedTabs: 1,
     };
   }
   componentWillMount() {
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   changeOrderDropdown() {
@@ -49,7 +46,7 @@ class Orders extends Component {
     }
   }
   handleOrderTabOnChange = (tabName) => {
-    debugger
+    debugger;
     if (tabName === "orderTab") {
       this.setState({
         orderTab1: true,
@@ -67,13 +64,16 @@ class Orders extends Component {
         shipmentAssignTab4: true,
       });
     }
+  };
 
+  handleChanageNavTabs = (tab) => {
+    this.setState({ selectedTabs: tab });
   };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const { Option } = Select;
-    
+
     return (
       <Fragment>
         {this.state.orderPopoverOverlay && (
@@ -99,8 +99,9 @@ class Orders extends Component {
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
               >
-              {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shoppingbag
+                  : "Shopping Bag"}
               </a>
             </Option>
             <Option value="order">
@@ -112,8 +113,9 @@ class Orders extends Component {
                 aria-controls="order-tab"
                 aria-selected="false"
               >
-              {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.order
+                  : "Order"}
               </a>
             </Option>
             <Option value="shipment">
@@ -125,8 +127,9 @@ class Orders extends Component {
                 aria-controls="shipment-tab"
                 aria-selected="false"
               >
-              {TranslationContext!==undefined?TranslationContext.a.shipment:"Shipment"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shipment
+                  : "Shipment"}
               </a>
             </Option>
             <Option value="delivered">
@@ -138,7 +141,9 @@ class Orders extends Component {
                 aria-controls="delivered-tab"
                 aria-selected="false"
               >
-                {TranslationContext!==undefined?TranslationContext.a.delivered:"Delivered"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.delivered
+                  : "Delivered"}
               </a>
             </Option>
             <Option value="shipment-assigned">
@@ -157,40 +162,53 @@ class Orders extends Component {
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
               <a
-                className="nav-link active"
+                className={
+                  this.state.selectedTabs === 1 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shopping-bag-tab"
                 role="tab"
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
+                onClick={this.handleChanageNavTabs.bind(this, 1)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.shoppingbag:"Shopping Bag"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shoppingbag
+                  : "Shopping Bag"}
               </a>
             </li>
-            <li className="nav-item" >
+            <li className="nav-item">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 2 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#order-tab"
                 role="tab"
                 aria-controls="order-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("orderTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 2)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.order:"Order"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.order
+                  : "Order"}
               </a>
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 3 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shipment-tab"
                 role="tab"
                 aria-controls="shipment-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("shipmentTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 3)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.shipment:"Shipment"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shipment
+                  : "Shipment"}
               </a>
             </li>
             <li
@@ -198,77 +216,111 @@ class Orders extends Component {
               // onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
             >
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 4 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#delivered-tab"
                 role="tab"
                 aria-controls="delivered-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("deliveredTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 4)}
               >
-                  {TranslationContext!==undefined?TranslationContext.a.delivered:"Delivered"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.delivered
+                  : "Delivered"}
               </a>
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 5 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shipment-assigned-tab"
                 role="tab"
                 aria-controls="shipment-assigned-tab"
                 aria-selected="false"
-                // onClick={this.handleOrderTabOnChange("shipmentAssignTab")}
+                onClick={this.handleChanageNavTabs.bind(this, 5)}
               >
-                 {TranslationContext!==undefined?TranslationContext.a.shipmentassigned:"Shipment Assigned"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.shipmentassigned
+                  : "Shipment Assigned"}
               </a>
             </li>
           </ul>
           <div className="order-search">
-            <input type="text" placeholder={TranslationContext!==undefined?TranslationContext.placeholder.searchdot:"Search..."} />
+            <input
+              type="text"
+              placeholder={
+                TranslationContext !== undefined
+                  ? TranslationContext.placeholder.searchdot
+                  : "Search..."
+              }
+            />
             <img src={OrderSearch} alt="search icon" />
           </div>
         </div>
         <div className="tab-content store-task-tab-cont orders-tab-cont">
           <div
-            className="tab-pane fade show active"
+            className={
+              this.state.selectedTabs === 1
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="shopping-bag-tab"
             role="tabpanel"
             aria-labelledby="shopping-bag-tab"
           >
-            <ShoppingBagTab />
+            {this.state.selectedTabs === 1 ? <ShoppingBagTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 2
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="order-tab"
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            <OrderTab />
+            {this.state.selectedTabs === 2 ? <OrderTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 3
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="shipment-tab"
             role="tabpanel"
             aria-labelledby="shipment-tab"
           >
-            <ShipmentTab />
+            {this.state.selectedTabs === 3 ? <ShipmentTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 4
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="delivered-tab"
             role="tabpanel"
             aria-labelledby="delivered-tab"
           >
-            <DeliveredTab />
+            {this.state.selectedTabs === 4 ? <DeliveredTab /> : null}
           </div>
           <div
-            className="tab-pane fade"
+            className={
+              this.state.selectedTabs === 5
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
             id="shipment-assigned-tab"
             role="tabpanel"
             aria-labelledby="shipment-assigned-tab"
           >
-            <ShipmentAssignedTab />
+            {this.state.selectedTabs === 5 ? <ShipmentAssignedTab /> : null}
           </div>
         </div>
       </Fragment>
