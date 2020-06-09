@@ -37,7 +37,7 @@ class OrderTab extends Component {
       pincode: "",
       city: "",
       state: "",
-      country: ""
+      country: "",
     };
   }
 
@@ -192,7 +192,7 @@ class OrderTab extends Component {
         PinCode: this.state.pincode,
         City: this.state.city,
         State: this.state.state,
-        Country: this.state.country
+        Country: this.state.country,
       },
     })
       .then(function(res) {
@@ -399,10 +399,10 @@ class OrderTab extends Component {
                                   );
                                 },
                               },
-                              {
-                                title: "AWB. No",
-                                dataIndex: "itemID",
-                              },
+                              // {
+                              //   title: "AWB. No",
+                              //   dataIndex: "itemID",
+                              // },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
@@ -533,9 +533,10 @@ class OrderTab extends Component {
                                       ? TranslationContext.p.address
                                       : "Address"}
                                   </p>
-                                  <textarea placeholder="Enter Address"
-                                   name="shippingAddress"
-                                   onChange={this.handleTextOnchage}
+                                  <textarea
+                                    placeholder="Enter Address"
+                                    name="shippingAddress"
+                                    onChange={this.handleTextOnchage}
                                   ></textarea>
                                 </div>
                                 <div>
