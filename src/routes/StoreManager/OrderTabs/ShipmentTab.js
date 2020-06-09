@@ -141,7 +141,7 @@ class ShipmentTab extends Component {
     debugger;
     let self = this;
     axios({
-      method: "get",
+      method: "post",
       url: config.apiUrl + "/HSOrder/UpdateShipmentPickupPendingData",
       headers: authHeader(),
       params: {
@@ -209,6 +209,7 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -661,18 +662,8 @@ const steps = [
   { name: "Airway Bill No", component: <Step2 /> },
 ];
 
-let dummy = {};
-
-if (window.localStorage.getItem("translateLanguage") === "hindi") {
-  dummy = translationHI;
-} else if (window.localStorage.getItem("translateLanguage") === "marathi") {
-  dummy = translationMA;
-} else {
-  dummy = {};
-}
-
 function Step1(props) {
-  const TranslationContext = dummy.default;
+  const TranslationContext = new ShipmentTab().state.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">
@@ -736,7 +727,7 @@ function Step1(props) {
   );
 }
 function Step2(props) {
-  const TranslationContext = dummy.default;
+  const TranslationContext = new ShipmentTab().state.translateLanguage.default;
   return (
     <div>
       <div className="tabs-content">
