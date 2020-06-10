@@ -42,6 +42,7 @@ class ShipmentTab extends Component {
       AirwayBillAWBNo: 0,
       AirwayItemIds: 0,
       createdShoppingTabs: false,
+      airWayBill2ndTab: false,
     };
   }
 
@@ -168,7 +169,7 @@ class ShipmentTab extends Component {
       });
   }
   /// handle get Order item data by order id
-  handleGetOrderItemDataByOrderId(OrderId) {
+  handleGetOrderItemDataByOrderId(ordId) {
     debugger;
     let self = this;
     axios({
@@ -176,7 +177,7 @@ class ShipmentTab extends Component {
       url: config.apiUrl + "/HSOrder/GetItemDetailByOrderID",
       headers: authHeader(),
       params: {
-        orderID: OrderId,
+        orderID: ordId,
       },
     })
       .then(function(res) {
@@ -188,14 +189,58 @@ class ShipmentTab extends Component {
             ShipmentOrderItem: data.ordersItems,
             ShipmentOrderId: data.invoiceNumber,
             ShipmentMdlbtn: true,
-            orderId: OrderId,
+            airWayBill2ndTab: false,
+            orderId: ordId,
           });
         } else {
           self.setState({
             ShipmentOrderItem: [],
             ShipmentOrderId: 0,
             ShipmentMdlbtn: true,
-            orderId: OrderId,
+            airWayBill2ndTab: false,
+            orderId: ordId,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  /// handle get AWB Invoice data by order id
+  handleGetAWBInvoiceDetailsOrderId(orderId) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetAWBInvoiceDetails",
+      headers: authHeader(),
+      params: {
+        orderID: orderId,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AirwayBillAWBNo: data[0].awbNumber,
+            AirwayItemIds: data[0].itemIDs,
+            ShipmentOrderId: data[0].invoiceNo,
+            ShipmentMdlbtn: true,
+            airWayBill2ndTab: true,
+            createdShoppingTabs: true,
+            orderId: orderId,
+          });
+        } else {
+          self.setState({
+            AirwayBillAWBNo: 0,
+            AirwayItemIds: 0,
+            ShipmentOrderId: 0,
+            ShipmentMdlbtn: true,
+            orderId: orderId,
           });
         }
       })
@@ -205,7 +250,7 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB(e) {
-    e.preventDefault();
+    e.stopPropagation()
     let self = this;
     var itemIds = "";
     if (this.state.selectedRows.length > 0) {
@@ -245,10 +290,12 @@ class ShipmentTab extends Component {
   ///-----------------------API function End----------------------------
 
   //// shipment Modale Close
-  handleShipmentModalClose() {
+  handleShipmentModalClose(e) {
+    e.stopPropagation();
     this.setState({
       ShipmentMdlbtn: false,
       createdShoppingTabs: false,
+      airWayBill2ndTab: false,
     });
   }
   /// handle check individual status
@@ -442,7 +489,8 @@ class ShipmentTab extends Component {
                 render: (row, item) => {
                   return (
                     <>
-                      <p className="order-clr-blue">{item.statusName}</p>
+                      <p>{item.statusName}</p>
+                      {/* <p className="order-clr-blue">{item.statusName}</p> */}
                       {/* {item.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
                       )} */}
@@ -620,22 +668,43 @@ class ShipmentTab extends Component {
                             </button>
                           </Popover>
                         </>
-                      ) : (
-                        <button
-                          className={
-                            item.actionTypeName === "Payment Done"
-                              ? "butn order-grid-butn order-grid-butn-green"
-                              : "butn order-grid-butn"
-                          }
-                          type="button"
-                          onClick={this.handleGetOrderItemDataByOrderId.bind(
-                            this,
-                            item.id
-                          )}
-                        >
-                          {item.actionTypeName}
-                        </button>
-                      )}
+                      ) : null}
+                      {item.actionTypeName === "Create Shipment" ? (
+                        <>
+                          <button
+                            className={
+                              item.actionTypeName === "Create Shipment"
+                              ? "butn order-grid-butn delibutn"
+                              : "butn order-grid-butn order-grid-butn-green"
+                            }
+                            type="button"
+                            onClick={this.handleGetOrderItemDataByOrderId.bind(
+                              this,
+                              item.id
+                            )}
+                          >
+                            {item.actionTypeName}
+                          </button>
+                        </>
+                      ) : null}
+                      {item.actionTypeName === "Shipment Created" ? (
+                        <>
+                          <button
+                            className={
+                              item.actionTypeName === "Shipment Created"
+                                ? "butn order-grid-butn"
+                                : "butn order-grid-butn order-grid-butn-green"
+                            }
+                            type="button"
+                            onClick={this.handleGetAWBInvoiceDetailsOrderId.bind(
+                              this,
+                              item.id
+                            )}
+                          >
+                            {item.actionTypeName}
+                          </button>
+                        </>
+                      ) : null}
                     </div>
                   );
                 },
@@ -774,10 +843,17 @@ class ShipmentTab extends Component {
                 <div className="tab-content store-task-tab-cont orders-tab-cont">
                   <div
                     className={
-                      this.state.createdShoppingTabs
+                      this.state.airWayBill2ndTab
+                        ? "tab-pane fade"
+                        : this.state.createdShoppingTabs
                         ? "tab-pane fade"
                         : "tab-pane fade show active"
                     }
+                    // className={
+                    //   this.state.createdShoppingTabs
+                    //     ? "tab-pane fade"
+                    //     : "tab-pane fade show active"
+                    // }
                     id="article-Map-tab"
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
@@ -859,10 +935,17 @@ class ShipmentTab extends Component {
                   </div>
                   <div
                     className={
-                      this.state.createdShoppingTabs
+                      this.state.airWayBill2ndTab
+                        ? "tab-pane fade show active"
+                        : this.state.createdShoppingTabs
                         ? "tab-pane fade show active"
                         : "tab-pane fade"
                     }
+                    // className={
+                    //   this.state.createdShoppingTabs
+                    //     ? "tab-pane fade show active"
+                    //     : "tab-pane fade"
+                    // }
                     id="airwayBill-tab"
                     role="tabpanel"
                     aria-labelledby="airwayBill-tab"
