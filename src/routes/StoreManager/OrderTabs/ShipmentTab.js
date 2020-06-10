@@ -543,6 +543,7 @@ class ShipmentTab extends Component {
                                           type="text"
                                           className="form-control"
                                           value={item.pickupDate}
+                                          disabled={true}
                                         />
                                       </td>
                                       <td>
@@ -557,6 +558,7 @@ class ShipmentTab extends Component {
                                           type="text"
                                           className="form-control"
                                           value={item.pickupTime}
+                                          disabled={true}
                                         />
                                       </td>
                                     </tr>
