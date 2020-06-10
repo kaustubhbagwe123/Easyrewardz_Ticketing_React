@@ -198,7 +198,6 @@ class ShipmentAssignedTab extends Component {
                 dataIndex: "referenceNo",
                 className: "table-coloum-hide",
                 render: (row, item, index) => {
-                  debugger;
                   return (
                     <div className="d-flex">
                       {item.awbNo !== "" ? (
@@ -215,7 +214,7 @@ class ShipmentAssignedTab extends Component {
                               placeholder={
                                 TranslationContext !== undefined
                                   ? TranslationContext.placeholder.enterpod
-                                  : "Enter POD"
+                                  : "Reference No"
                               }
                               onChange={this.handlechange.bind(this, index)}
                             />

@@ -2986,10 +2986,10 @@ class Header extends Component {
                               onClick={this.handleMainTabChange.bind(this, 2)}
                             >
                               {this.state.agentRecentChatData.length < 9
-                                ? "Recent Chat(0" +
+                                ? "Past Chat(0" +
                                   this.state.agentRecentChatData.length +
                                   ")"
-                                : "Recent Chat(" +
+                                : "Past Chat(" +
                                   this.state.agentRecentChatData.length +
                                   ")"}
                             </a>
@@ -5428,6 +5428,7 @@ class Header extends Component {
                             ]}
                             pagination={{ defaultPageSize: 5 }}
                             dataSource={this.state.historicalChatData}
+                            onRowClick={this.handleHistoricalTableRow.bind(this)}
                           ></Table>
                         </div>
                       </div>
