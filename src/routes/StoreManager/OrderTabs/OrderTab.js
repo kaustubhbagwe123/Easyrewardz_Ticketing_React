@@ -141,6 +141,30 @@ class OrderTab extends Component {
         console.log(data);
       });
   }
+  /// handle Sent Payment Link
+  handleSentPaymentLink(item) {
+    debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GeneratePaymentLink",
+      headers: authHeader(),
+      data: {
+        InvoiceNumber: item.invoiceNo,
+        StoreCode: item.storeCode,
+        SentPaymentLinkCount :item.countSendPaymentLink
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        // if (status === "Success") {
+        // } else {
+        // }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
 
   ///-------------------API function end--------------------------------
 
@@ -802,7 +826,15 @@ class OrderTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                           icon={false}
-                          okText="Sent Link Again"
+                          okText={
+                            item.countSendPaymentLink === 0
+                              ? "Send Link"
+                              : "Send Link Again"
+                          }
+                          onConfirm={this.handleSentPaymentLink.bind(
+                            this,
+                            item
+                          )}
                         >
                           <button className="butn order-grid-butn">
                             {item.actionTypeName}
