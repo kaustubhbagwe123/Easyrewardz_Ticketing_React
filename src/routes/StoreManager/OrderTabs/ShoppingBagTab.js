@@ -208,7 +208,7 @@ class ShoppingBagTab extends Component {
   }
   handleConvertToOrder(ShopId,e) {
     debugger;
-    e.preventDefault()
+    e.stopPropagation()
     let self = this;
     if (this.state.invoiceNo !== "" && this.state.amountNo !== "") {
       axios({

@@ -281,7 +281,8 @@ class DeliveredTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
-                      <p className="deliv-status">{item.statusName}</p>
+                      <p>{item.statusName}</p>
+                      {/* <p className="deliv-status">{item.statusName}</p> */}
                     </div>
                   );
                 },
