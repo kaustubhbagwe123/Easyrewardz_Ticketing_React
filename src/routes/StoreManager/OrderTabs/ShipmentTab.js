@@ -189,6 +189,7 @@ class ShipmentTab extends Component {
             ShipmentOrderItem: data.ordersItems,
             ShipmentOrderId: data.invoiceNumber,
             ShipmentMdlbtn: true,
+            airWayBill2ndTab: false,
             orderId: ordId,
           });
         } else {
@@ -196,6 +197,7 @@ class ShipmentTab extends Component {
             ShipmentOrderItem: [],
             ShipmentOrderId: 0,
             ShipmentMdlbtn: true,
+            airWayBill2ndTab: false,
             orderId: ordId,
           });
         }
@@ -293,6 +295,7 @@ class ShipmentTab extends Component {
     this.setState({
       ShipmentMdlbtn: false,
       createdShoppingTabs: false,
+      airWayBill2ndTab: false,
     });
   }
   /// handle check individual status
@@ -666,13 +669,13 @@ class ShipmentTab extends Component {
                           </Popover>
                         </>
                       ) : null}
-                      {item.actionTypeName === "Payment Done" ? (
+                      {item.actionTypeName === "Create Shipment" ? (
                         <>
                           <button
                             className={
-                              item.actionTypeName === "Payment Done"
-                                ? "butn order-grid-butn order-grid-butn-green"
-                                : "butn order-grid-butn"
+                              item.actionTypeName === "Create Shipment"
+                              ? "butn order-grid-butn delibutn"
+                              : "butn order-grid-butn order-grid-butn-green"
                             }
                             type="button"
                             onClick={this.handleGetOrderItemDataByOrderId.bind(
@@ -689,7 +692,7 @@ class ShipmentTab extends Component {
                           <button
                             className={
                               item.actionTypeName === "Shipment Created"
-                                ? "butn order-grid-butn delibutn"
+                                ? "butn order-grid-butn"
                                 : "butn order-grid-butn order-grid-butn-green"
                             }
                             type="button"
