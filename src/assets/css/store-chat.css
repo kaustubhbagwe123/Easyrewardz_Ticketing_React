@@ -1526,3 +1526,48 @@ p {
 .showArrow .ant-select-arrow {
   display: block !important;
 }
+
+.add-cursor .ant-table-row {
+  cursor: pointer;
+}
+
+.chathistory-div {
+  padding: 10px;
+}
+.mg-rm.ant-pagination .ant-table-pagination {
+  /* margin-bottom: 10px !important;
+  padding-right: 10px !important; */
+  margin: 0px !important;
+}
+
+.chathistory-tbl {
+  background-color: #f5f5f5 !important;
+  width: 100%;
+}
+
+.historychatcontnet {
+  margin: 10px;
+  background-color: #fcfcfc;
+  overflow: auto;
+  margin-top: 0px;
+  border-radius: 5px;
+}
+.historychatcontnet .add-bord {
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.chathistory-tbl .clickRowStyl {
+  background-color: #f6f6f6;
+}
+
+.chathistory-tbl.ant-table-tbody > .clickRowStyl:hover > td {
+  background-color: #f6f6f6;
+}
+.add-bord .chat-on-tuesday-jul {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
