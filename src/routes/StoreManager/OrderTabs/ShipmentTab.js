@@ -37,7 +37,6 @@ class ShipmentTab extends Component {
       translateLanguage: {},
       ShipmentOrderItem: [],
       ShipmentOrderId: 0,
-      selectedRows: [],
       orderId: 0,
       AirwayBillAWBNo: 0,
       AirwayItemIds: 0,
@@ -170,7 +169,6 @@ class ShipmentTab extends Component {
   }
   /// handle get Order item data by order id
   handleGetOrderItemDataByOrderId(ordId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -249,13 +247,13 @@ class ShipmentTab extends Component {
       });
   }
   /// Create Shipment AWB
-  handleCreateShipmentAWB(e) {
-    e.stopPropagation()
+  handleCreateShipmentAWB() {
+    debugger
     let self = this;
     var itemIds = "";
-    if (this.state.selectedRows.length > 0) {
-      for (let i = 0; i < this.state.selectedRows.length; i++) {
-        itemIds += this.state.selectedRows[i].id + ",";
+    if (this.state.ShipmentOrderItem.length > 0) {
+      for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
+        itemIds += this.state.ShipmentOrderItem[i].id + ",";
       }
     }
     axios({
@@ -335,23 +333,6 @@ class ShipmentTab extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    const SelectedRow = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.setState({
-          selectedRows,
-        });
-      },
-      onSelect: (record, selected, selectedRow) => {
-        //console.log(record, selected, selectedRow);
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        //console.log(selected, selectedRows, changeRows);
-      },
-      getCheckboxProps: (record) => ({
-        disabled: record.disable === 1,
-        name: record.disable,
-      }),
-    };
 
     return (
       <>
@@ -674,8 +655,8 @@ class ShipmentTab extends Component {
                           <button
                             className={
                               item.actionTypeName === "Create Shipment"
-                              ? "butn order-grid-butn delibutn"
-                              : "butn order-grid-butn order-grid-butn-green"
+                                ? "butn order-grid-butn"
+                                : "butn order-grid-butn order-grid-butn-green"
                             }
                             type="button"
                             onClick={this.handleGetOrderItemDataByOrderId.bind(
@@ -692,7 +673,7 @@ class ShipmentTab extends Component {
                           <button
                             className={
                               item.actionTypeName === "Shipment Created"
-                                ? "butn order-grid-butn"
+                                ? "butn order-grid-butn delibutn"
                                 : "butn order-grid-butn order-grid-butn-green"
                             }
                             type="button"
@@ -885,6 +866,13 @@ class ShipmentTab extends Component {
                                     ? TranslationContext.title.itemid
                                     : "Article No",
                                 dataIndex: "itemID",
+                                render: (row, item) => {
+                                  return (
+                                    <p>
+                                      <input type="checkbox" checked={item.checked} /> &nbsp;{item.itemID}
+                                    </p>
+                                  );
+                                },
                               },
                               {
                                 title:
@@ -911,7 +899,6 @@ class ShipmentTab extends Component {
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
-                            rowSelection={SelectedRow}
                             dataSource={this.state.ShipmentOrderItem}
                           />
                         </div>
