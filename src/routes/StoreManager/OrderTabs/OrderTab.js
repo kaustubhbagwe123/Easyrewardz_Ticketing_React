@@ -141,6 +141,30 @@ class OrderTab extends Component {
         console.log(data);
       });
   }
+  /// handle Sent Payment Link
+  handleSentPaymentLink(item) {
+    debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GeneratePaymentLink",
+      headers: authHeader(),
+      data: {
+        InvoiceNumber: item.invoiceNo,
+        StoreCode: item.storeCode,
+        SentPaymentLinkCount :item.countSendPaymentLink
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        // if (status === "Success") {
+        // } else {
+        // }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
 
   ///-------------------API function end--------------------------------
 
@@ -376,74 +400,81 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
-                      <p>{item.ordersItemList.length}</p>
-
-                      <Popover
-                        content={
-                          <Table
-                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemid
-                                    : "Item ID",
-                                dataIndex: "itemID",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemname
-                                    : "Item Name",
-                                dataIndex: "itemName",
-                                // width: 150,
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemprice
-                                    : "Item Price",
-                                dataIndex: "itemPrice",
-                                className: "order-desktop",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.quantity
-                                    : "Quantity",
-                                dataIndex: "quantity",
-                                className: "order-desktop",
-                              },
-                              {
-                                title: "Item Price/ Quantity",
-                                className: "order-mobile pick-up-date",
-                                render: (row, item) => {
-                                  return (
-                                    <p>
-                                      {item.itemPrice}/ {item.quantity}
-                                    </p>
-                                  );
-                                },
-                              },
-                              // {
-                              //   title: "AWB. No",
-                              //   dataIndex: "itemID",
-                              // },
-                            ]}
-                            scroll={{ y: 240 }}
-                            pagination={false}
-                            dataSource={item.ordersItemList}
-                          />
-                        }
-                        trigger="click"
-                        placement="bottom"
-                        overlayClassName="order-popover-table order-popover order-popover-table-big"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                      >
-                        <img src={OrderHamb} className="order-hamb" />
-                      </Popover>
+                      <p>
+                        {item.ordersItemList.length > 0
+                          ? item.ordersItemList.length
+                          : "-NIL-"}
+                      </p>
+                      {item.ordersItemList.length > 0 ? (
+                        <>
+                          <Popover
+                            content={
+                              <Table
+                                className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+                                columns={[
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.itemid
+                                        : "Item ID",
+                                    dataIndex: "itemID",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.itemname
+                                        : "Item Name",
+                                    dataIndex: "itemName",
+                                    // width: 150,
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.itemprice
+                                        : "Item Price",
+                                    dataIndex: "itemPrice",
+                                    className: "order-desktop",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.quantity
+                                        : "Quantity",
+                                    dataIndex: "quantity",
+                                    className: "order-desktop",
+                                  },
+                                  {
+                                    title: "Item Price/ Quantity",
+                                    className: "order-mobile pick-up-date",
+                                    render: (row, item) => {
+                                      return (
+                                        <p>
+                                          {item.itemPrice}/ {item.quantity}
+                                        </p>
+                                      );
+                                    },
+                                  },
+                                  // {
+                                  //   title: "AWB. No",
+                                  //   dataIndex: "itemID",
+                                  // },
+                                ]}
+                                scroll={{ y: 240 }}
+                                pagination={false}
+                                dataSource={item.ordersItemList}
+                              />
+                            }
+                            trigger="click"
+                            placement="bottom"
+                            overlayClassName="order-popover-table order-popover order-popover-table-big"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                          >
+                            <img src={OrderHamb} className="order-hamb" />
+                          </Popover>
+                        </>
+                      ) : null}
                     </div>
                   );
                 },
@@ -468,7 +499,7 @@ class OrderTab extends Component {
                 render: (row, item) => {
                   return (
                     <>
-                      <p className="order-clr-blue">{item.statusName}</p>
+                      <p>{item.statusName}</p>
                       {/* {item.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
                       )} */}
@@ -795,7 +826,15 @@ class OrderTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                           icon={false}
-                          okText="Sent Link Again"
+                          okText={
+                            item.countSendPaymentLink === 0
+                              ? "Send Link"
+                              : "Send Link Again"
+                          }
+                          onConfirm={this.handleSentPaymentLink.bind(
+                            this,
+                            item
+                          )}
                         >
                           <button className="butn order-grid-butn">
                             {item.actionTypeName}

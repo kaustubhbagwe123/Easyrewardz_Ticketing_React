@@ -206,8 +206,9 @@ class ShoppingBagTab extends Component {
       });
     }
   }
-  handleConvertToOrder(ShopId) {
+  handleConvertToOrder(ShopId, e) {
     debugger;
+    e.stopPropagation();
     let self = this;
     if (this.state.invoiceNo !== "" && this.state.amountNo !== "") {
       axios({
@@ -671,6 +672,7 @@ class ShoppingBagTab extends Component {
                                   name="invoiceNo"
                                   value={this.state.invoiceNo}
                                   onChange={this.handleTextOnchage}
+                                  autoComplete="off"
                                 />
                                 {this.state.invoiceNo === "" && (
                                   <p
@@ -699,6 +701,7 @@ class ShoppingBagTab extends Component {
                                   name="amountNo"
                                   value={this.state.amountNo}
                                   onChange={this.handleTextOnchage}
+                                  autoComplete="off"
                                 />
                                 {this.state.amountNo === "" && (
                                   <p

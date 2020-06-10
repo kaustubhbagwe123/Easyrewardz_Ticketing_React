@@ -6,33 +6,31 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import { NotificationManager } from "react-notifications";
-import * as translationHI from './../../../translations/hindi';
-import * as translationMA from './../../../translations/marathi';
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 
 class OrderSetting extends Component {
   constructor(props) {
     super(props);
 
-        this.state = {
-           moduleConfigData: {},
-           orderConfigData: {},
-           selTab: "Module Configuration",
-           translateLanguage: {}
-        }
-    }
+    this.state = {
+      moduleConfigData: {},
+      orderConfigData: {},
+      selTab: "Module Configuration",
+      translateLanguage: {},
+    };
+  }
 
   componentDidMount() {
     this.handleGetModuleConfigData();
     this.handleGetOrderConfigData();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   handleGetModuleConfigData() {
@@ -108,7 +106,7 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-          debugger
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -139,7 +137,8 @@ class OrderSetting extends Component {
         Shipment: this.state.orderConfigData.shipment,
         ShoppingBag: this.state.orderConfigData.shoppingBag,
         EnableClickAfterValue: this.state.orderConfigData.enableClickAfterValue,
-        EnableClickAfterDuration: this.state.orderConfigData.enableClickAfterDuration
+        EnableClickAfterDuration: this.state.orderConfigData
+          .enableClickAfterDuration,
       },
     })
       .then(function(res) {
@@ -196,12 +195,12 @@ class OrderSetting extends Component {
       if (name === "enableClickAfterDuration") {
         if (value === "M") {
           if (orderConfigData["enableClickAfterValue"] > 60)
-          orderConfigData["enableClickAfterValue"] = "";
+            orderConfigData["enableClickAfterValue"] = "";
         }
 
         if (value === "H") {
           if (orderConfigData["enableClickAfterValue"] > 99)
-          orderConfigData["enableClickAfterValue"] = "";
+            orderConfigData["enableClickAfterValue"] = "";
         }
       }
       orderConfigData[name] = value;
@@ -215,8 +214,9 @@ class OrderSetting extends Component {
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -226,13 +226,15 @@ class OrderSetting extends Component {
             }}
             className="header-path"
           >
-             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-          {TranslationContext!==undefined?TranslationContext.link.order:"Order"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.order
+              : "Order"}
           </Link>
         </div>
         <div className="Store-paddmodule storeModule">
@@ -337,7 +339,13 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab> */}
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.order:"Order"}>
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.order
+                      : "Order"
+                  }
+                >
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -346,14 +354,17 @@ class OrderSetting extends Component {
                             <div className="col-md-5 m-auto">
                               <div className="right-sect-div">
                                 <h3>
-                                {TranslationContext!==undefined?TranslationContext.h3.orderconfiguration:"ORDER CONFIGURATION"}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.h3.orderconfiguration
+                                    : "ORDER CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.shoppingbag:"Shopping Bag"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.shoppingbag
+                                          : "Shopping Bag"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -374,9 +385,11 @@ class OrderSetting extends Component {
                                   </div>
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
-                                      <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.integratedsystem:"Integrated System"}
-                                        
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label
+                                              .integratedsystem
+                                          : "Integrated System(Sync Order)"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -399,9 +412,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.payment:"Payment"}
-                                        
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.payment
+                                          : "Payment"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -423,8 +436,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
-                                      {TranslationContext!==undefined?TranslationContext.label.shipment:"Shipment"}
-                                        
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.shipment
+                                          : "Shipment"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -444,28 +458,28 @@ class OrderSetting extends Component {
                                     </div>
                                   </div>
                                   <table className="cmpaign-channel-table">
-                                  <tr>
-                                    <td>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.td
-                                            .clickwillbeenabledafter
-                                        : "Click will be enabled after"}
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        name="enableClickAfterValue"
-                                        autoComplete="off"
-                                        maxLength={2}
-                                        value={
-                                          this.state.orderConfigData
-                                            .enableClickAfterValue
-                                        }
-                                        onChange={this.OrderSettingOnChange.bind(
-                                          this
-                                        )}
-                                      />
-                                      {/* {this.state.campaignChannelData
+                                    <tr>
+                                      <td>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.td
+                                              .clickwillbeenabledafter
+                                          : "Click will be enabled after"}
+                                      </td>
+                                      <td>
+                                        <input
+                                          type="text"
+                                          name="enableClickAfterValue"
+                                          autoComplete="off"
+                                          maxLength={2}
+                                          value={
+                                            this.state.orderConfigData
+                                              .enableClickAfterValue
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                        {/* {this.state.campaignChannelData
                                         .enableClickAfterValue === "" && (
                                         <p
                                           style={{
@@ -476,33 +490,32 @@ class OrderSetting extends Component {
                                           {this.state.enabledAfterValidation}
                                         </p>
                                       )} */}
-                                    </td>
-                                    <td>
-                                      <select
-                                        value={
-                                          this.state.orderConfigData
-                                            .enableClickAfterDuration
-                                        }
-                                        name="enableClickAfterDuration"
-                                        onChange={this.OrderSettingOnChange.bind(
-                                          this
-                                        )}
-                                      >
-                                        <option value="M">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.min
-                                            : "Min"}
-                                        </option>
-                                        <option value="H">
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.option.hr
-                                            : "Hr"}
-                                        </option>
-                                      </select>
-                                    </td>
-                                  </tr>
-                                </table>
-
+                                      </td>
+                                      <td>
+                                        <select
+                                          value={
+                                            this.state.orderConfigData
+                                              .enableClickAfterDuration
+                                          }
+                                          name="enableClickAfterDuration"
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        >
+                                          <option value="M">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option.min
+                                              : "Min"}
+                                          </option>
+                                          <option value="H">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option.hr
+                                              : "Hr"}
+                                          </option>
+                                        </select>
+                                      </td>
+                                    </tr>
+                                  </table>
                                 </div>
                                 <button
                                   className="Schedulenext1 w-100 mb-0 mt-4"
@@ -511,8 +524,9 @@ class OrderSetting extends Component {
                                     this
                                   )}
                                 >
-                                      {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.update
+                                    : "UPDATE"}
                                 </button>
                               </div>
                             </div>

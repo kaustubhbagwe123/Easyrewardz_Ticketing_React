@@ -37,11 +37,11 @@ class ShipmentTab extends Component {
       translateLanguage: {},
       ShipmentOrderItem: [],
       ShipmentOrderId: 0,
-      selectedRows: [],
       orderId: 0,
       AirwayBillAWBNo: 0,
       AirwayItemIds: 0,
       createdShoppingTabs: false,
+      airWayBill2ndTab: false,
     };
   }
 
@@ -168,15 +168,14 @@ class ShipmentTab extends Component {
       });
   }
   /// handle get Order item data by order id
-  handleGetOrderItemDataByOrderId(OrderId) {
-    debugger;
+  handleGetOrderItemDataByOrderId(ordId) {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GetItemDetailByOrderID",
       headers: authHeader(),
       params: {
-        orderID: OrderId,
+        orderID: ordId,
       },
     })
       .then(function(res) {
@@ -188,14 +187,58 @@ class ShipmentTab extends Component {
             ShipmentOrderItem: data.ordersItems,
             ShipmentOrderId: data.invoiceNumber,
             ShipmentMdlbtn: true,
-            orderId: OrderId,
+            airWayBill2ndTab: false,
+            orderId: ordId,
           });
         } else {
           self.setState({
             ShipmentOrderItem: [],
             ShipmentOrderId: 0,
             ShipmentMdlbtn: true,
-            orderId: OrderId,
+            airWayBill2ndTab: false,
+            orderId: ordId,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  /// handle get AWB Invoice data by order id
+  handleGetAWBInvoiceDetailsOrderId(orderId) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetAWBInvoiceDetails",
+      headers: authHeader(),
+      params: {
+        orderID: orderId,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            AirwayBillAWBNo: data[0].awbNumber,
+            AirwayItemIds: data[0].itemIDs,
+            ShipmentOrderId: data[0].invoiceNo,
+            ShipmentMdlbtn: true,
+            airWayBill2ndTab: true,
+            createdShoppingTabs: true,
+            orderId: orderId,
+          });
+        } else {
+          self.setState({
+            AirwayBillAWBNo: 0,
+            AirwayItemIds: 0,
+            ShipmentOrderId: 0,
+            ShipmentMdlbtn: true,
+            orderId: orderId,
           });
         }
       })
@@ -204,13 +247,13 @@ class ShipmentTab extends Component {
       });
   }
   /// Create Shipment AWB
-  handleCreateShipmentAWB(e) {
-    e.preventDefault();
+  handleCreateShipmentAWB() {
+    debugger
     let self = this;
     var itemIds = "";
-    if (this.state.selectedRows.length > 0) {
-      for (let i = 0; i < this.state.selectedRows.length; i++) {
-        itemIds += this.state.selectedRows[i].id + ",";
+    if (this.state.ShipmentOrderItem.length > 0) {
+      for (let i = 0; i < this.state.ShipmentOrderItem.length; i++) {
+        itemIds += this.state.ShipmentOrderItem[i].id + ",";
       }
     }
     axios({
@@ -245,9 +288,12 @@ class ShipmentTab extends Component {
   ///-----------------------API function End----------------------------
 
   //// shipment Modale Close
-  handleShipmentModalClose() {
+  handleShipmentModalClose(e) {
+    e.stopPropagation();
     this.setState({
       ShipmentMdlbtn: false,
+      createdShoppingTabs: false,
+      airWayBill2ndTab: false,
     });
   }
   /// handle check individual status
@@ -287,24 +333,6 @@ class ShipmentTab extends Component {
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    const SelectedRow = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.setState({
-          selectedRows,
-        });
-      },
-      onSelect: (record, selected, selectedRow) => {
-        //console.log(record, selected, selectedRow);
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        //console.log(selected, selectedRows, changeRows);
-      },
-      getCheckboxProps: (record) => ({
-        disabled: record.disable === "1",
-        // Column configuration not to be checked
-        name: record.disable,
-      }),
-    };
 
     return (
       <>
@@ -442,7 +470,8 @@ class ShipmentTab extends Component {
                 render: (row, item) => {
                   return (
                     <>
-                      <p className="order-clr-blue">{item.statusName}</p>
+                      <p>{item.statusName}</p>
+                      {/* <p className="order-clr-blue">{item.statusName}</p> */}
                       {/* {item.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
                       )} */}
@@ -622,22 +651,43 @@ class ShipmentTab extends Component {
                             </button>
                           </Popover>
                         </>
-                      ) : (
-                        <button
-                          className={
-                            item.actionTypeName === "Payment Done"
-                              ? "butn order-grid-butn order-grid-butn-green"
-                              : "butn order-grid-butn"
-                          }
-                          type="button"
-                          onClick={this.handleGetOrderItemDataByOrderId.bind(
-                            this,
-                            item.id
-                          )}
-                        >
-                          {item.actionTypeName}
-                        </button>
-                      )}
+                      ) : null}
+                      {item.actionTypeName === "Create Shipment" ? (
+                        <>
+                          <button
+                            className={
+                              item.actionTypeName === "Create Shipment"
+                                ? "butn order-grid-butn"
+                                : "butn order-grid-butn order-grid-butn-green"
+                            }
+                            type="button"
+                            onClick={this.handleGetOrderItemDataByOrderId.bind(
+                              this,
+                              item.id
+                            )}
+                          >
+                            {item.actionTypeName}
+                          </button>
+                        </>
+                      ) : null}
+                      {item.actionTypeName === "Shipment Created" ? (
+                        <>
+                          <button
+                            className={
+                              item.actionTypeName === "Shipment Created"
+                                ? "butn order-grid-butn delibutn"
+                                : "butn order-grid-butn order-grid-butn-green"
+                            }
+                            type="button"
+                            onClick={this.handleGetAWBInvoiceDetailsOrderId.bind(
+                              this,
+                              item.id
+                            )}
+                          >
+                            {item.actionTypeName}
+                          </button>
+                        </>
+                      ) : null}
                     </div>
                   );
                 },
@@ -733,7 +783,7 @@ class ShipmentTab extends Component {
                     <a
                       className={
                         this.state.createdShoppingTabs
-                          ? "nav-link disabled-link"
+                          ? "nav-link nav-line disabled-link"
                           : "nav-link nav-line active disabled-link"
                       }
                       data-toggle="tab"
@@ -742,7 +792,11 @@ class ShipmentTab extends Component {
                       aria-controls="article-Map-tab"
                       aria-selected="true"
                     >
-                    <input type="checkbox" className="arti-check"/>
+                      <input
+                        type="checkbox"
+                        className="arti-check"
+                        checked={true}
+                      />
                       Article Mapping
                     </a>
                   </li>
@@ -751,7 +805,7 @@ class ShipmentTab extends Component {
                       className={
                         this.state.createdShoppingTabs
                           ? "nav-link active disabled-link"
-                          : "nav-link disabled-link"
+                          : "nav-link  active disabled-link"
                       }
                       data-toggle="tab"
                       href="#airwayBill-tab"
@@ -759,7 +813,11 @@ class ShipmentTab extends Component {
                       aria-controls="airwayBill-tab"
                       aria-selected="false"
                     >
-                    <input type="checkbox" className="arti-check"/>
+                      <input
+                        type="checkbox"
+                        className="arti-check"
+                        checked={this.state.createdShoppingTabs}
+                      />
                       Airway Bill No
                     </a>
                   </li>
@@ -768,10 +826,17 @@ class ShipmentTab extends Component {
                 <div className="tab-content store-task-tab-cont orders-tab-cont">
                   <div
                     className={
-                      this.state.createdShoppingTabs
+                      this.state.airWayBill2ndTab
+                        ? "tab-pane fade"
+                        : this.state.createdShoppingTabs
                         ? "tab-pane fade"
                         : "tab-pane fade show active"
                     }
+                    // className={
+                    //   this.state.createdShoppingTabs
+                    //     ? "tab-pane fade"
+                    //     : "tab-pane fade show active"
+                    // }
                     id="article-Map-tab"
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
@@ -779,7 +844,7 @@ class ShipmentTab extends Component {
                     <div className="tabs-content">
                       <form>
                         <div className="article-body">
-                          <span style={{marginBottom: "30px"}}>
+                          <span style={{ marginBottom: "30px" }}>
                             {TranslationContext !== undefined
                               ? TranslationContext.span
                                   .itemidshownbelowmappedtothisorder
@@ -803,6 +868,13 @@ class ShipmentTab extends Component {
                                     ? TranslationContext.title.itemid
                                     : "Article No",
                                 dataIndex: "itemID",
+                                render: (row, item) => {
+                                  return (
+                                    <p>
+                                      <input type="checkbox" checked={item.checked} /> &nbsp;{item.itemID}
+                                    </p>
+                                  );
+                                },
                               },
                               {
                                 title:
@@ -829,13 +901,18 @@ class ShipmentTab extends Component {
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
-                            rowSelection={SelectedRow}
                             dataSource={this.state.ShipmentOrderItem}
                           />
                         </div>
-                        <div className="dv-status">
-                          <button className="btn-shipment-popup" style={{marginRight:"10px"}}>Cancel</button>
-                          <button style={{marginRight:"0px"}}
+                        <div className="dv-status m-t-20">
+                          <button
+                            className="btn-shipment-popup"
+                            style={{ marginRight: "10px" }}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            style={{ marginRight: "0px" }}
                             className="btn-shipment-saveNext"
                             onClick={this.handleCreateShipmentAWB.bind(this)}
                           >
@@ -847,10 +924,17 @@ class ShipmentTab extends Component {
                   </div>
                   <div
                     className={
-                      this.state.createdShoppingTabs
+                      this.state.airWayBill2ndTab
+                        ? "tab-pane fade show active"
+                        : this.state.createdShoppingTabs
                         ? "tab-pane fade show active"
                         : "tab-pane fade"
                     }
+                    // className={
+                    //   this.state.createdShoppingTabs
+                    //     ? "tab-pane fade show active"
+                    //     : "tab-pane fade"
+                    // }
                     id="airwayBill-tab"
                     role="tabpanel"
                     aria-labelledby="airwayBill-tab"
@@ -886,13 +970,19 @@ class ShipmentTab extends Component {
                             </ul>
                           </div>
                         </div>
-                        <div className="dv-status">
-                          <button className="btn-shipment-popup" style={{marginRight:"10px"}}>Cancel</button>
-                          <button style={{marginRight:"0px"}}
-                            className="btn-shipment-saveNext"
-                            onClick={this.handleCreateShipmentAWB.bind(this)}
+                        <div className="dv-status m-t-20">
+                          <button
+                            className="btn-shipment-popup"
+                            style={{ marginRight: "10px" }}
                           >
-                            Save &amp; Next
+                            Cancel
+                          </button>
+                          <button
+                            style={{ marginRight: "0px" }}
+                            className="btn-shipment-saveNext"
+                            onClick={this.handleShipmentModalClose.bind(this)}
+                          >
+                            Done
                           </button>
                         </div>
                       </form>

@@ -18,10 +18,6 @@ class Orders extends Component {
     super(props);
     this.state = {
       orderPopoverOverlay: false,
-      orderTab1: true,
-      shipmentTab2: false,
-      deliverredTab3: false,
-      shipmentAssignTab4: false,
       translateLanguage: {},
       selectedTabs: 1,
     };
@@ -45,26 +41,6 @@ class Orders extends Component {
       value.classList.remove("active");
     }
   }
-  handleOrderTabOnChange = (tabName) => {
-    debugger;
-    if (tabName === "orderTab") {
-      this.setState({
-        orderTab1: true,
-      });
-    } else if (tabName === "shipmentTab") {
-      this.setState({
-        shipmentTab2: true,
-      });
-    } else if (tabName === "deliveredTab") {
-      this.setState({
-        deliverredTab3: true,
-      });
-    } else if (tabName === "shipmentAssignTab") {
-      this.setState({
-        shipmentAssignTab4: true,
-      });
-    }
-  };
 
   handleChanageNavTabs = (tab) => {
     this.setState({ selectedTabs: tab });
@@ -213,7 +189,6 @@ class Orders extends Component {
             </li>
             <li
               className="nav-item"
-              // onClick={this.handleGetOrderStatusFilterData.bind(this, 4)}
             >
               <a
                 className={
