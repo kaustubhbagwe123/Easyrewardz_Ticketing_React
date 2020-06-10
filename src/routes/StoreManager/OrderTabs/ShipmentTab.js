@@ -689,7 +689,7 @@ class ShipmentTab extends Component {
                           <button
                             className={
                               item.actionTypeName === "Shipment Created"
-                                ? "butn order-grid-butn"
+                                ? "butn order-grid-butn delibutn"
                                 : "butn order-grid-butn order-grid-butn-green"
                             }
                             type="button"

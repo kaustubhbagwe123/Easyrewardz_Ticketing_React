@@ -206,9 +206,9 @@ class ShoppingBagTab extends Component {
       });
     }
   }
-  handleConvertToOrder(ShopId,e) {
+  handleConvertToOrder(ShopId, e) {
     debugger;
-    e.stopPropagation()
+    e.stopPropagation();
     let self = this;
     if (this.state.invoiceNo !== "" && this.state.amountNo !== "") {
       axios({
