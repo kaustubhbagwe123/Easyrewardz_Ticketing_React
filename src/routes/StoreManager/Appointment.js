@@ -473,7 +473,7 @@ class Appointment extends Component {
                       //   },
                     },
                     {
-                      title: "Actions",
+                      title: TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
                       width: "20%",
                       render: (row, item) => {
                         if (item.status === "") {
