@@ -41,6 +41,7 @@ class OrderSetting extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -139,12 +140,19 @@ class OrderSetting extends Component {
         EnableClickAfterValue: this.state.orderConfigData.enableClickAfterValue,
         EnableClickAfterDuration: this.state.orderConfigData
           .enableClickAfterDuration,
+        StoreDelivery: this.state.orderConfigData.storeDelivery,
+        AlertCommunicationviaWhtsup: this.state.orderConfigData
+          .alertCommunicationviaWhtsup,
+        AlertCommunicationviaSMS: this.state.orderConfigData
+          .alertCommunicationviaSMS,
       },
     })
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Order Updated Successfully.");
+        } else {
+          NotificationManager.error("Order Not Updated.");
         }
       })
       .catch((data) => {
@@ -165,10 +173,34 @@ class OrderSetting extends Component {
     } else if (OrderConfig === "ckOrdconfigShopBag") {
       this.state.orderConfigData.shoppingBag = !this.state.orderConfigData
         .shoppingBag;
+    } else if (OrderConfig === "ckOrdconfigStoredelivery") {
+      this.state.orderConfigData.storeDelivery = !this.state.orderConfigData
+        .storeDelivery;
+    }
+    this.setState({ orderConfigData: this.state.orderConfigData });
+  };
+  /// Handle Communication change
+  handleCommunicationChange(id) {
+    debugger;
+    var OrderConfig = id.target.id;
+    if (OrderConfig === "ckOrdconfigAltConmWhts") {
+      if (this.state.orderConfigData.alertCommunicationviaWhtsup) {
+        this.state.orderConfigData.alertCommunicationviaWhtsup = true;
+        this.state.orderConfigData.alertCommunicationviaSMS = false;
+      } else {
+        this.state.orderConfigData.alertCommunicationviaWhtsup = true;
+      }
+    } else {
+      if (this.state.orderConfigData.alertCommunicationviaSMS) {
+        this.state.orderConfigData.alertCommunicationviaSMS = true;
+        this.state.orderConfigData.alertCommunicationviaWhtsup = false;
+      } else {
+        this.state.orderConfigData.alertCommunicationviaSMS = true;
+      }
     }
 
     this.setState({ orderConfigData: this.state.orderConfigData });
-  };
+  }
 
   OrderSettingOnChange(e) {
     const { name, value } = e.target;
@@ -453,6 +485,75 @@ class OrderSetting extends Component {
                                       />
                                       <label
                                         htmlFor="ckOrdconfigShipment"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Store as Delivery Partner
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckOrdconfigStoredelivery"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .storeDelivery
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckOrdconfigStoredelivery"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Alert Communication via Whatsapp
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckOrdconfigAltConmWhts"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .alertCommunicationviaWhtsup
+                                        }
+                                        onChange={this.handleCommunicationChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckOrdconfigAltConmWhts"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <div className="module-switch">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Alert Communication via SMS
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="ckOrdconfigAltComSMS"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .alertCommunicationviaSMS
+                                        }
+                                        onChange={this.handleCommunicationChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="ckOrdconfigAltComSMS"
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>

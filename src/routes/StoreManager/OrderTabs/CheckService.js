@@ -13,7 +13,7 @@ class CheckService extends Component {
         <div className="check-svr">
           <div className="row m-b-10">
             <div className="col-md-5">
-              <label className="">Store Pin Code</label>
+              <label className="naman">Store Pin Code</label>
             </div>
             <div className="col-md-6">
               <input
@@ -25,7 +25,7 @@ class CheckService extends Component {
           </div>
           <div className="row">
             <div className="col-md-5">
-              <label className="">Enter Pin Code</label>
+              <label className="naman">Enter Pin Code</label>
             </div>
             <div className="col-md-6">
               <input type="text" className="txt-1" placeholder="PIN Code" />
