@@ -12,6 +12,7 @@ import DeliveredTab from "./OrderTabs/DeliveredTab";
 import ShoppingBagTab from "./OrderTabs/ShoppingBagTab";
 import ShipmentTab from "./OrderTabs/ShipmentTab";
 import ShipmentAssignedTab from "./OrderTabs/ShipmentAssignedTab";
+import CheckService from "./OrderTabs/CheckService";
 
 class Orders extends Component {
   constructor(props) {
@@ -236,6 +237,21 @@ class Orders extends Component {
                   : "Shipment Assigned"}
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                className={
+                  this.state.selectedTabs === 7 ? "nav-link active" : "nav-link"
+                }
+                data-toggle="tab"
+                href="#check-service-tab"
+                role="tab"
+                aria-controls="check-service-tab"
+                aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 7)}
+              >
+                Check Service
+              </a>
+            </li>
           </ul>
           <div className="order-search">
             <input
@@ -309,6 +325,18 @@ class Orders extends Component {
             aria-labelledby="shipment-assigned-tab"
           >
             {this.state.selectedTabs === 5 ? <ShipmentAssignedTab /> : null}
+          </div>
+          <div
+            className={
+              this.state.selectedTabs === 7
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
+            id="check-service-tab"
+            role="tabpanel"
+            aria-labelledby="check-service-tab"
+          >
+            {this.state.selectedTabs === 7 ? <CheckService /> : null}
           </div>
         </div>
       </Fragment>
