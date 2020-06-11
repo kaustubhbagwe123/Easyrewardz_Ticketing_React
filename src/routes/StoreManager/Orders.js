@@ -12,6 +12,7 @@ import DeliveredTab from "./OrderTabs/DeliveredTab";
 import ShoppingBagTab from "./OrderTabs/ShoppingBagTab";
 import ShipmentTab from "./OrderTabs/ShipmentTab";
 import ShipmentAssignedTab from "./OrderTabs/ShipmentAssignedTab";
+import ReturnsTab from "./OrderTabs/ReturnsTab";
 
 class Orders extends Component {
   constructor(props) {
@@ -134,6 +135,18 @@ class Orders extends Component {
                 Shipment Assigned
               </a>
             </Option>
+            <Option value="returns">
+              <a
+                className="nav-link"
+                data-toggle="tab"
+                href="#returns-tab"
+                role="tab"
+                aria-controls="returns-tab"
+                aria-selected="false"
+              >
+                Returns
+              </a>
+            </Option>
           </Select>
           <ul className="nav nav-tabs" role="tablist">
             <li className="nav-item">
@@ -223,6 +236,22 @@ class Orders extends Component {
                   : "Shipment Assigned"}
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                className={
+                  this.state.selectedTabs === 6 ? "nav-link active" : "nav-link"
+                }
+                data-toggle="tab"
+                href="#returns-tab"
+                role="tab"
+                aria-controls="returns-tab"
+                aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 6)}
+              >
+                Returns
+              </a>
+            </li>
+
           </ul>
           <div className="order-search">
             <input
