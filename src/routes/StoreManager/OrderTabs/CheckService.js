@@ -31,9 +31,8 @@ class CheckService extends Component {
               <input type="text" className="txt-1" placeholder="PIN Code" />
             </div>
           </div>
-          <div className="row">
-            <button class="check-svcBtn">Submit</button>
-          </div>
+
+          <button class="check-svcBtn">Submit</button>
         </div>
       </>
     );
