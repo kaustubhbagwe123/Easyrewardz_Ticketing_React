@@ -2217,7 +2217,7 @@ table tr th:last-child {
   white-space: initial !important;
 }
 .storeTickeTtl {
-  color:#4934f6;
+  color: #4934f6;
   font-family: inherit;
   font-size: 19px;
   font-weight: 700;
@@ -2225,7 +2225,7 @@ table tr th:last-child {
   text-align: left;
   padding-left: 3px;
 }
-.storelabel-3{
+.storelabel-3 {
   margin-top: 0;
   font-size: 16px;
   padding-left: 3px;
@@ -3596,6 +3596,22 @@ table tr th:last-child {
 .custom-tableak .endVisitBtn {
   background-color: #00b894;
   border: #00b894;
+}
+
+.check-svr {
+  border: 1px solid #9b9b9b;
+  border-radius: 10px;
+  width: 50%;
+  text-align: center;
+  padding: 25px 20px 20px 20px;
+}
+.check-svcBtn{
+  width: 270px;
+  height: 40px;
+  background-color: #2561a8;
+  color: #fff;
+  margin-bottom: 25px;
+  margin-top: 15px;
 }
 
 @media screen and (max-width: 600px) {
