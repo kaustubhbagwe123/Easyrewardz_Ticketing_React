@@ -187,9 +187,7 @@ class Orders extends Component {
                   : "Shipment"}
               </a>
             </li>
-            <li
-              className="nav-item"
-            >
+            <li className="nav-item">
               <a
                 className={
                   this.state.selectedTabs === 4 ? "nav-link active" : "nav-link"
