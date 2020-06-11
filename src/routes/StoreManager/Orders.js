@@ -68,12 +68,15 @@ class Orders extends Component {
           >
             <Option value="shopping-bag">
               <a
-                className="nav-link active"
+                 className={
+                  this.state.selectedTabs === 1 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shopping-bag-tab"
                 role="tab"
                 aria-controls="shopping-bag-tab"
                 aria-selected="true"
+                onClick={this.handleChanageNavTabs.bind(this, 1)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.shoppingbag
@@ -82,12 +85,15 @@ class Orders extends Component {
             </Option>
             <Option value="order">
               <a
-                className="nav-link"
+               className={
+                this.state.selectedTabs === 2 ? "nav-link active" : "nav-link"
+              }
                 data-toggle="tab"
                 href="#order-tab"
                 role="tab"
                 aria-controls="order-tab"
                 aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 2)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.order
@@ -96,12 +102,15 @@ class Orders extends Component {
             </Option>
             <Option value="shipment">
               <a
-                className="nav-link"
+                 className={
+                  this.state.selectedTabs === 3 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shipment-tab"
                 role="tab"
                 aria-controls="shipment-tab"
                 aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 3)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.shipment
@@ -110,12 +119,15 @@ class Orders extends Component {
             </Option>
             <Option value="delivered">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 4 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#delivered-tab"
                 role="tab"
                 aria-controls="delivered-tab"
                 aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this,4)}
               >
                 {TranslationContext !== undefined
                   ? TranslationContext.a.delivered
@@ -124,12 +136,15 @@ class Orders extends Component {
             </Option>
             <Option value="shipment-assigned">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 5 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#shipment-assigned-tab"
                 role="tab"
                 aria-controls="shipment-assigned-tab"
                 aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 5)}
               >
                 Shipment Assigned
               </a>
