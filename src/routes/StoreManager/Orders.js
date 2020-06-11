@@ -339,6 +339,18 @@ class Orders extends Component {
           >
             {this.state.selectedTabs === 5 ? <ShipmentAssignedTab /> : null}
           </div>
+          <div
+            className={
+              this.state.selectedTabs === 6
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
+            id="returns-tab"
+            role="tabpanel"
+            aria-labelledby="returns-tab"
+          >
+            {this.state.selectedTabs === 6 ? <ReturnsTab /> : null}
+          </div>
         </div>
       </Fragment>
     );

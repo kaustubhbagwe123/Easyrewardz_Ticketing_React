@@ -343,38 +343,7 @@ class DeliveredTab extends Component {
                     style={{ color: filtered ? "#1890ff" : undefined }}
                   ></span>
                 ),
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.actions
-                    : "Action",
-                render: (row, item) => {
-                  return (
-                    <div className="pickuppendingcustom d-flex">
-                      {item.actionTypeName === "Delivered" ? (
-                        <button className="delibutn deliv-grid-butn">
-                          {item.actionTypeName}
-                        </button>
-                      ) : item.actionTypeName === "Mark As Delivered" ? (
-                        <button
-                          className="markasbutn deliv-grid-butn"
-                          onClick={this.handleUpdateMarkAsDelivered.bind(
-                            this,
-                            item.id
-                          )}
-                        >
-                          {item.actionTypeName}
-                        </button>
-                      ) : (
-                        <button className="pickedbutn deliv-grid-butn">
-                          {item.actionTypeName}
-                        </button>
-                      )}
-                    </div>
-                  );
-                },
-              },
+              }
             ]}
             expandedRowRender={(row, item) => {
               debugger;
