@@ -705,7 +705,7 @@ class Header extends Component {
       scheduleModal: false,
       selectedSlot: {},
       isScroll: true,
-      mainTabSelect:1,
+      mainTabSelect: 1,
       toggle: {
         one: true,
         two: false,
@@ -1850,6 +1850,15 @@ class Header extends Component {
 
   handleInsertCardImageUpload(itemcode, e) {
     debugger;
+
+    if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
+      NotificationManager.error("Please select valid image file");
+      return false;
+    }
+    if (e[0].size > 5242880) {
+      NotificationManager.error("Please select image file under 5MB");
+      return false;
+    }
     var formData = new FormData();
     // formData.append("ItemID", itemcode);
     // formData.append("ImageUrl ", e);
@@ -2871,7 +2880,8 @@ class Header extends Component {
                                   chat.mobileNo,
                                   chat.customerID,
                                   chat.programCode,
-                                  chat.storeID
+                                  chat.storeID,
+                                  chat.isCustEndChat
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -3584,6 +3594,8 @@ class Header extends Component {
                                                           />
                                                         ) : (
                                                           <Dropzone
+                                                            maxSize={5242880}
+                                                            accept="image/jpeg, image/png,image/jpg"
                                                             onDrop={this.handleInsertCardImageUpload.bind(
                                                               this,
                                                               item.uniqueItemCode
@@ -3956,6 +3968,7 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={data.isDisabled}
                                                                     className="s-red-active"
                                                                     style={{
                                                                       cursor:
@@ -3986,6 +3999,7 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={data.isDisabled}
                                                                     className={
                                                                       selectSlot
                                                                         ? "s-yellow-active"
@@ -4030,6 +4044,7 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={data.isDisabled}
                                                                     className={
                                                                       selectSlot
                                                                         ? "s-green-active"
@@ -4935,6 +4950,7 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={data.isDisabled}
                                                                         className="s-red-active"
                                                                         style={{
                                                                           cursor:
@@ -4963,6 +4979,7 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={data.isDisabled}
                                                                         className={
                                                                           selectSlot
                                                                             ? "s-yellow-active"
@@ -5005,6 +5022,7 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={data.isDisabled}
                                                                         className={
                                                                           selectSlot
                                                                             ? "s-green-active"
