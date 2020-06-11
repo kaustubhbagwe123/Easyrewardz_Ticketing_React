@@ -490,9 +490,9 @@ class storeMyTicketList extends Component {
                       onClick={this.HandleToggleSearch.bind(this)}
                     >
                       <small>
-                        {this.state.collapseSearch
-                          ? "Close Search"
-                          : "Search Tickets"}
+                            {this.state.collapseSearch
+                          ? TranslationContext!==undefined?TranslationContext.small.closesearch:"Close Search"
+                          : TranslationContext!==undefined?TranslationContext.small.searchtickets:"Search Tickets"}
                       </small>
                       {this.state.collapseSearch ? (
                         <img
