@@ -2416,7 +2416,9 @@ class StoreCampaign extends Component {
                         <option value={20}>20</option>
                         <option value={30}>30</option>
                       </select>
-                      <p>Items per page</p>
+                      <p>
+                      {TranslationContext!==undefined?TranslationContext.p.itemperpage:"Items per page"}
+                      </p>
                     </div>
                   </div>
                 </div>
