@@ -1761,10 +1761,13 @@ class StoreCampaign extends Component {
                           {this.state.showBroadcastChannel ? (
                             <>
                               <label className="broadcasttitle">
-                                Broadcast Campaign to Customers
+                              {TranslationContext!==undefined?TranslationContext.label.broadcastcampaigntocustomers:"Broadcast Campaign to Customers"}
+                 
                               </label>
                               <label className="broadcastsubtitle">
-                                Choose Channel
+                              {TranslationContext!==undefined?TranslationContext.label.choosechannel:"Choose Channel"}
+                 
+                                
                               </label>
                               <div>
                                 <Radio.Group
@@ -1781,7 +1784,8 @@ class StoreCampaign extends Component {
                                           .disableEmail
                                       }
                                     >
-                                      Email
+                                       {TranslationContext!==undefined?TranslationContext.radio.email:"Email"}
+                                      
                                     </Radio>
                                   ) : null}
                                   {this.state.broadcastConfiguration.smsFlag ? (
@@ -1793,7 +1797,7 @@ class StoreCampaign extends Component {
                                           .disableSMS
                                       }
                                     >
-                                      SMS
+                                        {TranslationContext!==undefined?TranslationContext.radio.sms:"SMS"}
                                     </Radio>
                                   ) : null}
                                   {this.state.broadcastConfiguration
@@ -1806,7 +1810,8 @@ class StoreCampaign extends Component {
                                           .disableWhatsapp
                                       }
                                     >
-                                      Whatsapp
+                                       {TranslationContext!==undefined?TranslationContext.radio.whatsapp:"Whatsapp"}
+                                      
                                     </Radio>
                                   ) : null}
                                 </Radio.Group>
@@ -1831,7 +1836,8 @@ class StoreCampaign extends Component {
                                   row.campaignCode
                                 )}
                               >
-                                Execute
+                                 {TranslationContext!==undefined?TranslationContext.button.execute:"Execute"}
+                                
                               </button>
                             </>
                           ) : null}
@@ -2410,7 +2416,9 @@ class StoreCampaign extends Component {
                         <option value={20}>20</option>
                         <option value={30}>30</option>
                       </select>
-                      <p>Items per page</p>
+                      <p>
+                      {TranslationContext!==undefined?TranslationContext.p.itemperpage:"Items per page"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -3147,7 +3155,8 @@ class StoreCampaign extends Component {
             {this.state.showBroadcastChannel ? (
               <>
                 <label className="broadcasttitle">
-                  Broadcast Campaign to Customers
+                {TranslationContext!==undefined?TranslationContext.label.broadcastcampaigntocustomers:"Broadcast Campaign to Customers"}
+                  
                 </label>
                 <label className="broadcastsubtitle">Choose Channel</label>
                 <div>

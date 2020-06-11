@@ -182,6 +182,7 @@ class Header extends Component {
       isHistoricalChatLoading: false,
       showHistoricalChat: false,
       chatTimeAgo: "",
+      rowChatId: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -704,6 +705,7 @@ class Header extends Component {
       scheduleModal: false,
       selectedSlot: {},
       isScroll: true,
+      mainTabSelect: 1,
       toggle: {
         one: true,
         two: false,
@@ -1173,8 +1175,14 @@ class Header extends Component {
   }
 
   ////handlecselect card in card tab
-  handleSelectCard(id) {
-    this.setState({ selectedCard: id });
+  handleSelectCard(id, imageUrl) {
+    if (imageUrl) {
+      this.setState({ selectedCard: id });
+    } else {
+      NotificationManager.error(
+        "Image is not available so,not select the card"
+      );
+    }
   }
   ////handle button down click
   handleDownButtonClick() {
@@ -1297,7 +1305,9 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
-          showHistoricalChat:false,
+          showHistoricalChat: false,
+          rowChatId: 0,
+          agentRecentChatData: [],
           mainTabSelect: 1,
           isCustEndChat,
           storeID: StoreID,
@@ -1334,7 +1344,9 @@ class Header extends Component {
         this.handleGetChatMessagesList(id);
       } else {
         this.setState({
-          showHistoricalChat:false,
+          rowChatId: 0,
+          agentRecentChatData: [],
+          showHistoricalChat: false,
           mainTabSelect: 1,
           isCustEndChat,
           storeID: StoreID,
@@ -1375,6 +1387,7 @@ class Header extends Component {
         }
       }
     }
+    this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
 
   onCloseCardModal = () => {
@@ -1663,10 +1676,10 @@ class Header extends Component {
     this.setState({
       isHistoricalChat: true,
       isDownbtn: false,
-      messageData:[],
-      chatId:0,
-      customerName:"",
-      showHistoricalChat:false
+      messageData: [],
+      rowChatId: 0,
+      customerName: "",
+      showHistoricalChat: false,
     });
     this.handleGetAgentChatHistory();
   };
@@ -1678,6 +1691,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetAgentRecentChat",
       headers: authHeader(),
+      params: { CustomerID: this.state.customerId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -1836,6 +1850,15 @@ class Header extends Component {
 
   handleInsertCardImageUpload(itemcode, e) {
     debugger;
+
+    if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
+      NotificationManager.error("Please select valid image file");
+      return false;
+    }
+    if (e[0].size > 5242880) {
+      NotificationManager.error("Please select image file under 5MB");
+      return false;
+    }
     var formData = new FormData();
     // formData.append("ItemID", itemcode);
     // formData.append("ImageUrl ", e);
@@ -1899,7 +1922,7 @@ class Header extends Component {
   handleHistoricalTableRow = (e) => {
     debugger;
     this.setState({
-      chatId: e.chatID,
+      rowChatId: e.chatID,
       // customerName: e.customerName,
       showHistoricalChat: true,
       chatTimeAgo: e.timeAgo,
@@ -1908,7 +1931,7 @@ class Header extends Component {
   };
   ///handle set row class
   setRowClassName = (record) => {
-    return record.chatID === this.state.chatId ? "clickRowStyl" : "";
+    return record.chatID === this.state.rowChatId ? "clickRowStyl" : "";
   };
   ////handle history messge scrool to bottom
   historyMessageScrollToBottom() {
@@ -1920,7 +1943,7 @@ class Header extends Component {
   ////handle history chat close
   handleHistoryChatClose() {
     this.setState({
-      chatId: 0,
+      rowChatId: 0,
       customerName: "",
       showHistoricalChat: false,
       chatTimeAgo: "",
@@ -2857,7 +2880,8 @@ class Header extends Component {
                                   chat.mobileNo,
                                   chat.customerID,
                                   chat.programCode,
-                                  chat.storeID
+                                  chat.storeID,
+                                  chat.isCustEndChat
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -3004,48 +3028,57 @@ class Header extends Component {
                           }}
                         >
                           {this.state.customerName ? (
-                            <li className="nav-item">
-                              <a
-                                className={
-                                  this.state.mainTabSelect === 1
-                                    ? "nav-link active chattitletab"
-                                    : "nav-link chattitletab"
-                                }
-                                data-toggle="tab"
-                                href="#current-chat"
-                                role="tab"
-                                aria-controls="current-chat"
-                                aria-selected="true"
-                                onClick={this.handleMainTabChange.bind(this, 1)}
-                              >
-                                {/* Current Chat */}
-                                {this.state.customerName}
-                              </a>
-                            </li>
+                            <>
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.mainTabSelect === 1
+                                      ? "nav-link active chattitletab"
+                                      : "nav-link chattitletab"
+                                  }
+                                  data-toggle="tab"
+                                  href="#current-chat"
+                                  role="tab"
+                                  aria-controls="current-chat"
+                                  aria-selected="true"
+                                  onClick={this.handleMainTabChange.bind(
+                                    this,
+                                    1
+                                  )}
+                                >
+                                  {/* Current Chat */}
+                                  {this.state.customerName}
+                                </a>
+                              </li>
+
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.mainTabSelect === 2
+                                      ? "nav-link active chattitletab"
+                                      : "nav-link chattitletab"
+                                  }
+                                  data-toggle="tab"
+                                  href="#recent-chat"
+                                  role="tab"
+                                  aria-controls="recent-chat"
+                                  aria-selected="true"
+                                  onClick={this.handleMainTabChange.bind(
+                                    this,
+                                    2
+                                  )}
+                                >
+                                  {this.state.agentRecentChatData.length < 9
+                                    ? "Past Chat(0" +
+                                      this.state.agentRecentChatData.length +
+                                      ")"
+                                    : "Past Chat(" +
+                                      this.state.agentRecentChatData.length +
+                                      ")"}
+                                </a>
+                              </li>
+                            </>
                           ) : null}
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.mainTabSelect === 2
-                                  ? "nav-link active chattitletab"
-                                  : "nav-link chattitletab"
-                              }
-                              data-toggle="tab"
-                              href="#recent-chat"
-                              role="tab"
-                              aria-controls="recent-chat"
-                              aria-selected="true"
-                              onClick={this.handleMainTabChange.bind(this, 2)}
-                            >
-                              {this.state.agentRecentChatData.length < 9
-                                ? "Past Chat(0" +
-                                  this.state.agentRecentChatData.length +
-                                  ")"
-                                : "Past Chat(" +
-                                  this.state.agentRecentChatData.length +
-                                  ")"}
-                            </a>
-                          </li>
                         </ul>
                         {this.state.customerName !== "" ? (
                           <button
@@ -3064,7 +3097,10 @@ class Header extends Component {
                           </button>
                         ) : null}
                       </div>
-                      <div className="tab-content chattabtitle">
+                      <div
+                        className="tab-content chattabtitle"
+                        style={{ backgroundColor: "#f5f5f5" }}
+                      >
                         <div
                           className={
                             this.state.mainTabSelect === 1
@@ -3558,6 +3594,8 @@ class Header extends Component {
                                                           />
                                                         ) : (
                                                           <Dropzone
+                                                            maxSize={5242880}
+                                                            accept="image/jpeg, image/png,image/jpg"
                                                             onDrop={this.handleInsertCardImageUpload.bind(
                                                               this,
                                                               item.uniqueItemCode
@@ -3590,7 +3628,8 @@ class Header extends Component {
                                                         className="col-md-8 bkcprdt"
                                                         onClick={this.handleSelectCard.bind(
                                                           this,
-                                                          item.itemID
+                                                          item.itemID,
+                                                          item.imageURL
                                                         )}
                                                       >
                                                         {item.productName ? (
@@ -3929,6 +3968,7 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={data.isDisabled}
                                                                     className="s-red-active"
                                                                     style={{
                                                                       cursor:
@@ -3959,6 +3999,7 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={data.isDisabled}
                                                                     className={
                                                                       selectSlot
                                                                         ? "s-yellow-active"
@@ -4003,6 +4044,7 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={data.isDisabled}
                                                                     className={
                                                                       selectSlot
                                                                         ? "s-green-active"
@@ -4908,6 +4950,7 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={data.isDisabled}
                                                                         className="s-red-active"
                                                                         style={{
                                                                           cursor:
@@ -4936,6 +4979,7 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={data.isDisabled}
                                                                         className={
                                                                           selectSlot
                                                                             ? "s-yellow-active"
@@ -4978,6 +5022,7 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={data.isDisabled}
                                                                         className={
                                                                           selectSlot
                                                                             ? "s-green-active"
