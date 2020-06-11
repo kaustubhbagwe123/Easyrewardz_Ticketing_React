@@ -185,17 +185,17 @@ class OrderSetting extends Component {
     var OrderConfig = id.target.id;
     if (OrderConfig === "ckOrdconfigAltConmWhts") {
       if (this.state.orderConfigData.alertCommunicationviaWhtsup) {
-        this.state.orderConfigData.alertCommunicationviaWhtsup = true;
-        this.state.orderConfigData.alertCommunicationviaSMS = false;
+        this.state.orderConfigData.alertCommunicationviaWhtsup = false;
+        this.state.orderConfigData.alertCommunicationviaSMS = true;
       } else {
-        this.state.orderConfigData.alertCommunicationviaWhtsup = true;
+        this.state.orderConfigData.alertCommunicationviaWhtsup = false;
       }
     } else {
       if (this.state.orderConfigData.alertCommunicationviaSMS) {
-        this.state.orderConfigData.alertCommunicationviaSMS = true;
-        this.state.orderConfigData.alertCommunicationviaWhtsup = false;
+        this.state.orderConfigData.alertCommunicationviaSMS = false;
+        this.state.orderConfigData.alertCommunicationviaWhtsup = true;
       } else {
-        this.state.orderConfigData.alertCommunicationviaSMS = true;
+        this.state.orderConfigData.alertCommunicationviaSMS = false;
       }
     }
 
