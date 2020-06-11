@@ -248,7 +248,7 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
-    debugger
+    debugger;
     let self = this;
     var itemIds = "";
     if (this.state.ShipmentOrderItem.length > 0) {
@@ -289,6 +289,7 @@ class ShipmentTab extends Component {
 
   //// shipment Modale Close
   handleShipmentModalClose(e) {
+    debugger;
     e.stopPropagation();
     this.setState({
       ShipmentMdlbtn: false,
@@ -842,84 +843,86 @@ class ShipmentTab extends Component {
                     aria-labelledby="article-Map-tab"
                   >
                     <div className="tabs-content">
-                      <form>
-                        <div className="article-body">
-                          <span style={{ marginBottom: "30px" }}>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.span
-                                  .itemidshownbelowmappedtothisorder
-                              : "Item id shown below mapped to this Order"}
-                            &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
-                            {TranslationContext !== undefined
-                              ? TranslationContext.span.only
-                              : "only."}
-                            <br />
-                            {TranslationContext !== undefined
-                              ? TranslationContext.span
-                                  .selectanyitemidyouwanttosendforshipment
-                              : "Select any item id, you want to send for shipment."}
-                          </span>
-                          <Table
-                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemid
-                                    : "Article No",
-                                dataIndex: "itemID",
-                                render: (row, item) => {
-                                  return (
-                                    <p>
-                                      <input type="checkbox" checked={item.checked} /> &nbsp;{item.itemID}
-                                    </p>
-                                  );
-                                },
+                      <div className="article-body">
+                        <span style={{ marginBottom: "30px" }}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span
+                                .itemidshownbelowmappedtothisorder
+                            : "Item id shown below mapped to this Order"}
+                          &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span.only
+                            : "only."}
+                          <br />
+                          {TranslationContext !== undefined
+                            ? TranslationContext.span
+                                .selectanyitemidyouwanttosendforshipment
+                            : "Select any item id, you want to send for shipment."}
+                        </span>
+                        <Table
+                          className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
+                          columns={[
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.title.itemid
+                                  : "Article No",
+                              dataIndex: "itemID",
+                              render: (row, item) => {
+                                return (
+                                  <p>
+                                    <input
+                                      type="checkbox"
+                                      checked={item.checked}
+                                    />{" "}
+                                    &nbsp;{item.itemID}
+                                  </p>
+                                );
                               },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemname
-                                    : "Article Name",
-                                dataIndex: "itemName",
-                                width: 150,
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.itemprice
-                                    : "Article MRP",
-                                dataIndex: "itemPrice",
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.quantity
-                                    : "Price Paid",
-                                dataIndex: "quantity",
-                              },
-                            ]}
-                            scroll={{ y: 240 }}
-                            pagination={false}
-                            dataSource={this.state.ShipmentOrderItem}
-                          />
-                        </div>
-                        <div className="dv-status m-t-20">
-                          <button
-                            className="btn-shipment-popup"
-                            style={{ marginRight: "10px" }}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            style={{ marginRight: "0px" }}
-                            className="btn-shipment-saveNext"
-                            onClick={this.handleCreateShipmentAWB.bind(this)}
-                          >
-                            Save &amp; Next
-                          </button>
-                        </div>
-                      </form>
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.title.itemname
+                                  : "Article Name",
+                              dataIndex: "itemName",
+                              width: 150,
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.title.itemprice
+                                  : "Article MRP",
+                              dataIndex: "itemPrice",
+                            },
+                            {
+                              title:
+                                TranslationContext !== undefined
+                                  ? TranslationContext.title.quantity
+                                  : "Price Paid",
+                              dataIndex: "quantity",
+                            },
+                          ]}
+                          scroll={{ y: 240 }}
+                          pagination={false}
+                          dataSource={this.state.ShipmentOrderItem}
+                        />
+                      </div>
+                      <div className="dv-status m-t-20">
+                        <button
+                          className="btn-shipment-popup"
+                          style={{ marginRight: "10px" }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          style={{ marginRight: "0px" }}
+                          className="btn-shipment-saveNext"
+                          onClick={this.handleCreateShipmentAWB.bind(this)}
+                        >
+                          Save &amp; Next
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -940,52 +943,50 @@ class ShipmentTab extends Component {
                     aria-labelledby="airwayBill-tab"
                   >
                     <div className="tabs-content">
-                      <form>
-                        <div className="text-center airwaybox">
-                          <div className="airwaycontent">
-                            <img
-                              src={CardTick}
-                              alt="CardTick"
-                              className="cardtick"
-                            />
-                            <h2>AWB No - {this.state.AirwayBillAWBNo}</h2>
-                            <p>
+                      <div className="text-center airwaybox">
+                        <div className="airwaycontent">
+                          <img
+                            src={CardTick}
+                            alt="CardTick"
+                            className="cardtick"
+                          />
+                          <h2>AWB No - {this.state.AirwayBillAWBNo}</h2>
+                          <p>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.successfullymappedto
+                              : "Successfully mapped to"}
+                          </p>
+                          <ul>
+                            <li>
                               {TranslationContext !== undefined
-                                ? TranslationContext.p.successfullymappedto
-                                : "Successfully mapped to"}
-                            </p>
-                            <ul>
-                              <li>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.li.invoiceno
-                                  : "Invoice no."}
-                                - {this.state.ShipmentOrderId}
-                              </li>
-                              <li>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.li.itemid
-                                  : "Item ID"}
-                                - {this.state.AirwayItemIds}
-                              </li>
-                            </ul>
-                          </div>
+                                ? TranslationContext.li.invoiceno
+                                : "Invoice no."}
+                              - {this.state.ShipmentOrderId}
+                            </li>
+                            <li>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.li.itemid
+                                : "Item ID"}
+                              - {this.state.AirwayItemIds}
+                            </li>
+                          </ul>
                         </div>
-                        <div className="dv-status m-t-20">
-                          <button
-                            className="btn-shipment-popup"
-                            style={{ marginRight: "10px" }}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            style={{ marginRight: "0px" }}
-                            className="btn-shipment-saveNext"
-                            onClick={this.handleShipmentModalClose.bind(this)}
-                          >
-                            Done
-                          </button>
-                        </div>
-                      </form>
+                      </div>
+                      <div className="dv-status m-t-20">
+                        <button
+                          className="btn-shipment-popup"
+                          style={{ marginRight: "10px" }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          style={{ marginRight: "0px" }}
+                          className="btn-shipment-saveNext"
+                          onClick={this.handleShipmentModalClose.bind(this)}
+                        >
+                          Done
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
