@@ -67,6 +67,7 @@ import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
 import { ItemMeta } from "semantic-ui-react";
 import CancelBlueImg from "./../../assets/Images/CancelBlue.png";
+import CancelBlack from "./../../assets/Images/cancel.png";
 import moment from "moment";
 import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,7 +79,7 @@ import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
 import Dropzone from "react-dropzone";
 import { NotificationManager } from "react-notifications";
-
+import "antd/dist/antd.css";
 const { Option } = Select;
 
 // var socket = io.connect(config.socketUrl, {
@@ -177,6 +178,11 @@ class Header extends Component {
       actionBtn: false,
       isCustEndChat: false,
       mainTabSelect: 1,
+      isPastChatLoading: false,
+      isHistoricalChatLoading: false,
+      showHistoricalChat: false,
+      chatTimeAgo: "",
+      rowChatId: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -435,6 +441,9 @@ class Header extends Component {
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
+    }
+    if (this.state.showHistoricalChat) {
+      this.historyMessageScrollToBottom();
     }
   }
 
@@ -696,6 +705,7 @@ class Header extends Component {
       scheduleModal: false,
       selectedSlot: {},
       isScroll: true,
+      mainTabSelect: 1,
       toggle: {
         one: true,
         two: false,
@@ -794,7 +804,7 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.setState({ chatMessageCount: self.state.chatMessageCount - 1 });
+          // self.setState({ chatMessageCount: self.state.chatMessageCount - 1 });
           self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
           self.handleGetChatNotificationCount();
@@ -1073,15 +1083,15 @@ class Header extends Component {
               " \n Customer : " +
               timeSlotData[0].customerName +
               ", " +
-              timeSlotData[0].mobileNo +
+              timeSlotData[0].customerMobileNo +
               " \n Store Name : " +
               timeSlotData[0].storeName +
               " \n Address : " +
               timeSlotData[0].storeAddress +
               " \n Contact Number : " +
-              (timeSlotData[0].mobileNo.length > 10
-                ? "+" + timeSlotData[0].mobileNo
-                : "+91" + timeSlotData[0].mobileNo) +
+              (timeSlotData[0].storeManagerMobile.length > 10
+                ? "+" + timeSlotData[0].storeManagerMobile
+                : "+91" + timeSlotData[0].storeManagerMobile) +
               " \n Number Of People : " +
               timeSlotData[0].noOfPeople;
             self.setState({
@@ -1165,8 +1175,14 @@ class Header extends Component {
   }
 
   ////handlecselect card in card tab
-  handleSelectCard(id) {
-    this.setState({ selectedCard: id });
+  handleSelectCard(id, imageUrl) {
+    if (imageUrl) {
+      this.setState({ selectedCard: id });
+    } else {
+      NotificationManager.error(
+        "Image is not available so,not select the card"
+      );
+    }
   }
   ////handle button down click
   handleDownButtonClick() {
@@ -1289,6 +1305,9 @@ class Header extends Component {
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          showHistoricalChat: false,
+          rowChatId: 0,
+          agentRecentChatData: [],
           mainTabSelect: 1,
           isCustEndChat,
           storeID: StoreID,
@@ -1325,6 +1344,9 @@ class Header extends Component {
         this.handleGetChatMessagesList(id);
       } else {
         this.setState({
+          rowChatId: 0,
+          agentRecentChatData: [],
+          showHistoricalChat: false,
           mainTabSelect: 1,
           isCustEndChat,
           storeID: StoreID,
@@ -1365,6 +1387,7 @@ class Header extends Component {
         }
       }
     }
+    this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
 
   onCloseCardModal = () => {
@@ -1414,14 +1437,17 @@ class Header extends Component {
     }
   };
   ////handle select slot button
-  handleSelectSlot = (data, selectedDate) => {
-    this.setState({
-      selectedSlot: data,
-      selectedDate,
-      isSelectSlot: "",
-      noOfPeople: "",
-      noOfPeopleMax: "",
-    });
+  handleSelectSlot = (data, selectedDate, isDisabled) => {
+    if (isDisabled) {
+    } else {
+      this.setState({
+        selectedSlot: data,
+        selectedDate,
+        isSelectSlot: "",
+        noOfPeople: "",
+        noOfPeopleMax: "",
+      });
+    }
   };
 
   onCloseScheduleModal = () => {
@@ -1653,16 +1679,22 @@ class Header extends Component {
     this.setState({
       isHistoricalChat: true,
       isDownbtn: false,
+      messageData: [],
+      rowChatId: 0,
+      customerName: "",
+      showHistoricalChat: false,
     });
     this.handleGetAgentChatHistory();
   };
   ////handle get agent recent chat data
   handleGetAgentRecentChat() {
     let self = this;
+    this.setState({ isPastChatLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetAgentRecentChat",
       headers: authHeader(),
+      params: { CustomerID: this.state.customerId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -1670,8 +1702,10 @@ class Header extends Component {
 
         if (message === "Success" && agentRecentChatData) {
           self.setState({ agentRecentChatData });
+          self.setState({ isPastChatLoading: false });
         } else {
           self.setState({ agentRecentChatData });
+          self.setState({ isPastChatLoading: false });
         }
       })
       .catch((response) => {
@@ -1717,6 +1751,7 @@ class Header extends Component {
 
   handleGetAgentChatHistory() {
     let self = this;
+    this.setState({ isHistoricalChatLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetAgentChatHistory",
@@ -1726,9 +1761,12 @@ class Header extends Component {
         var message = response.data.message;
         var historicalChatData = response.data.responseData;
         if (message === "Success" && historicalChatData) {
-          self.setState({ historicalChatData });
+          self.setState({ historicalChatData, isHistoricalChatLoading: false });
         } else {
-          self.setState({ historicalChatData: [] });
+          self.setState({
+            historicalChatData: [],
+            isHistoricalChatLoading: false,
+          });
         }
       })
       .catch((response) => {
@@ -1754,7 +1792,7 @@ class Header extends Component {
       tempmessageSuggestionData,
     });
   };
-
+  ////handle create socket connection
   handleCreateSocketConnection(programCode, storeCode) {
     let self = this;
     var socket = io.connect(config.socketUrl, {
@@ -1795,13 +1833,13 @@ class Header extends Component {
                   messageCount = self.state.ongoingChatsData.filter(
                     (x) => x.mobileNo === data[3].substring(2)
                   )[0].messageCount;
-                  if (messageCount === 0) {
-                    self.setState({
-                      chatMessageCount: self.state.chatMessageCount + 1,
-                    });
-                  }
+                  // if (messageCount === 0) {
+                  //   self.setState({
+                  //     chatMessageCount: self.state.chatMessageCount + 1,
+                  //   });
+                  // }
+                  self.handleGetChatNotificationCount();
                 }
-                self.handleGetChatNotificationCount();
               } else {
                 self.handleGetNewChat();
                 self.handleGetChatNotificationCount();
@@ -1815,6 +1853,15 @@ class Header extends Component {
 
   handleInsertCardImageUpload(itemcode, e) {
     debugger;
+
+    if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
+      NotificationManager.error("Please select valid image file");
+      return false;
+    }
+    if (e[0].size > 5242880) {
+      NotificationManager.error("Please select image file under 5MB");
+      return false;
+    }
     var formData = new FormData();
     // formData.append("ItemID", itemcode);
     // formData.append("ImageUrl ", e);
@@ -1874,10 +1921,40 @@ class Header extends Component {
         console.log(response, "---handleUpdateStoreManagerChatStatus");
       });
   }
-
+  ////handle historical table row click
+  handleHistoricalTableRow = (e) => {
+    debugger;
+    this.setState({
+      rowChatId: e.chatID,
+      // customerName: e.customerName,
+      showHistoricalChat: true,
+      chatTimeAgo: e.timeAgo,
+    });
+    this.handleGetChatMessagesList(e.chatID);
+  };
+  ///handle set row class
+  setRowClassName = (record) => {
+    return record.chatID === this.state.rowChatId ? "clickRowStyl" : "";
+  };
+  ////handle history messge scrool to bottom
+  historyMessageScrollToBottom() {
+    const scrollHeight = this.historyMessageList.scrollHeight;
+    const height = this.historyMessageList.clientHeight;
+    const maxScrollTop = scrollHeight - height;
+    this.historyMessageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  }
+  ////handle history chat close
+  handleHistoryChatClose() {
+    this.setState({
+      rowChatId: 0,
+      customerName: "",
+      showHistoricalChat: false,
+      chatTimeAgo: "",
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    console.log(this.state.mainTabSelect, "---mainTabSelect");
+
     return (
       <React.Fragment>
         <div
@@ -2521,9 +2598,10 @@ class Header extends Component {
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
                         <Option value={0}>
-                          {TranslationContext !== undefined
+                          {/* {TranslationContext !== undefined
                             ? TranslationContext.option.all
-                            : "All"}
+                            : "All"} */}
+                          All Store Member
                         </Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
@@ -2774,7 +2852,7 @@ class Header extends Component {
                         value={this.state.sAgentId}
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value={0}>All</Option>
+                        <Option value={0}>All Store Member</Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
@@ -2805,7 +2883,8 @@ class Header extends Component {
                                   chat.mobileNo,
                                   chat.customerID,
                                   chat.programCode,
-                                  chat.storeID
+                                  chat.storeID,
+                                  chat.isCustEndChat
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -2952,48 +3031,57 @@ class Header extends Component {
                           }}
                         >
                           {this.state.customerName ? (
-                            <li className="nav-item">
-                              <a
-                                className={
-                                  this.state.mainTabSelect === 1
-                                    ? "nav-link active chattitletab"
-                                    : "nav-link chattitletab"
-                                }
-                                data-toggle="tab"
-                                href="#current-chat"
-                                role="tab"
-                                aria-controls="current-chat"
-                                aria-selected="true"
-                                onClick={this.handleMainTabChange.bind(this, 1)}
-                              >
-                                {/* Current Chat */}
-                                {this.state.customerName}
-                              </a>
-                            </li>
+                            <>
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.mainTabSelect === 1
+                                      ? "nav-link active chattitletab"
+                                      : "nav-link chattitletab"
+                                  }
+                                  data-toggle="tab"
+                                  href="#current-chat"
+                                  role="tab"
+                                  aria-controls="current-chat"
+                                  aria-selected="true"
+                                  onClick={this.handleMainTabChange.bind(
+                                    this,
+                                    1
+                                  )}
+                                >
+                                  {/* Current Chat */}
+                                  {this.state.customerName}
+                                </a>
+                              </li>
+
+                              <li className="nav-item">
+                                <a
+                                  className={
+                                    this.state.mainTabSelect === 2
+                                      ? "nav-link active chattitletab"
+                                      : "nav-link chattitletab"
+                                  }
+                                  data-toggle="tab"
+                                  href="#recent-chat"
+                                  role="tab"
+                                  aria-controls="recent-chat"
+                                  aria-selected="true"
+                                  onClick={this.handleMainTabChange.bind(
+                                    this,
+                                    2
+                                  )}
+                                >
+                                  {this.state.agentRecentChatData.length < 9
+                                    ? "Past Chat(0" +
+                                      this.state.agentRecentChatData.length +
+                                      ")"
+                                    : "Past Chat(" +
+                                      this.state.agentRecentChatData.length +
+                                      ")"}
+                                </a>
+                              </li>
+                            </>
                           ) : null}
-                          <li className="nav-item">
-                            <a
-                              className={
-                                this.state.mainTabSelect === 2
-                                  ? "nav-link active chattitletab"
-                                  : "nav-link chattitletab"
-                              }
-                              data-toggle="tab"
-                              href="#recent-chat"
-                              role="tab"
-                              aria-controls="recent-chat"
-                              aria-selected="true"
-                              onClick={this.handleMainTabChange.bind(this, 2)}
-                            >
-                              {this.state.agentRecentChatData.length < 9
-                                ? "Past Chat(0" +
-                                  this.state.agentRecentChatData.length +
-                                  ")"
-                                : "Past Chat(" +
-                                  this.state.agentRecentChatData.length +
-                                  ")"}
-                            </a>
-                          </li>
                         </ul>
                         {this.state.customerName !== "" ? (
                           <button
@@ -3012,7 +3100,10 @@ class Header extends Component {
                           </button>
                         ) : null}
                       </div>
-                      <div className="tab-content chattabtitle">
+                      <div
+                        className="tab-content chattabtitle"
+                        style={{ backgroundColor: "#f5f5f5" }}
+                      >
                         <div
                           className={
                             this.state.mainTabSelect === 1
@@ -3506,6 +3597,8 @@ class Header extends Component {
                                                           />
                                                         ) : (
                                                           <Dropzone
+                                                            maxSize={5242880}
+                                                            accept="image/jpeg, image/png,image/jpg"
                                                             onDrop={this.handleInsertCardImageUpload.bind(
                                                               this,
                                                               item.uniqueItemCode
@@ -3538,7 +3631,8 @@ class Header extends Component {
                                                         className="col-md-8 bkcprdt"
                                                         onClick={this.handleSelectCard.bind(
                                                           this,
-                                                          item.itemID
+                                                          item.itemID,
+                                                          item.imageURL
                                                         )}
                                                       >
                                                         {item.productName ? (
@@ -3877,6 +3971,9 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    disabled={
+                                                                      data.isDisabled
+                                                                    }
                                                                     className="s-red-active"
                                                                     style={{
                                                                       cursor:
@@ -3907,15 +4004,19 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                     className={
-                                                                      selectSlot
+                                                                      data.isDisabled
+                                                                        ? "s-red-active"
+                                                                        : selectSlot
                                                                         ? "s-yellow-active"
                                                                         : "s-yellow-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
                                                                       data,
-                                                                      item.dates
+                                                                      item.dates,
+                                                                      data.isDisabled
                                                                     )}
                                                                   >
                                                                     {
@@ -3951,15 +4052,19 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
+                                                                    style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                     className={
-                                                                      selectSlot
+                                                                      data.isDisabled
+                                                                        ? "s-red-active"
+                                                                        : selectSlot
                                                                         ? "s-green-active"
                                                                         : "s-green-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
                                                                       data,
-                                                                      item.dates
+                                                                      item.dates,
+                                                                      data.isDisabled
                                                                     )}
                                                                   >
                                                                     {
@@ -4856,6 +4961,9 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        disabled={
+                                                                          data.isDisabled
+                                                                        }
                                                                         className="s-red-active"
                                                                         style={{
                                                                           cursor:
@@ -4884,15 +4992,19 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                         className={
-                                                                          selectSlot
+                                                                          data.isDisabled
+                                                                            ? "s-red-active"
+                                                                            : selectSlot
                                                                             ? "s-yellow-active"
                                                                             : "s-yellow-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
                                                                           data,
-                                                                          item.dates
+                                                                          item.dates,
+                                                                          data.isDisabled
                                                                         )}
                                                                       >
                                                                         {
@@ -4926,15 +5038,19 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
+                                                                        style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                         className={
-                                                                          selectSlot
+                                                                          data.isDisabled
+                                                                            ? "s-red-active"
+                                                                            : selectSlot
                                                                             ? "s-green-active"
                                                                             : "s-green-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
                                                                           data,
-                                                                          item.dates
+                                                                          item.dates,
+                                                                          data.isDisabled
                                                                         )}
                                                                       >
                                                                         {
@@ -5199,7 +5315,9 @@ class Header extends Component {
                                     </p>
                                   </div>
                                   <hr
-                                    style={{ borderTop: "1px solid #bbb" }}
+                                    style={{
+                                      borderTop: "1px solid #bbb",
+                                    }}
                                   ></hr>
                                   <p className="cls-p-sugg">
                                     {this.state.suggestionText}
@@ -5265,7 +5383,9 @@ class Header extends Component {
                                     </p>
                                   </div>
                                   <hr
-                                    style={{ borderTop: "1px solid #bbb" }}
+                                    style={{
+                                      borderTop: "1px solid #bbb",
+                                    }}
                                   ></hr>
                                   <p className="cls-p-sugg">
                                     {this.state.suggestionText}
@@ -5322,58 +5442,179 @@ class Header extends Component {
                           role="tabpanel"
                           aria-labelledby="recent-chat"
                         >
-                          <div className="table-cntr store chat-history chatabcus">
-                            <Table
-                              className="components-table-demo-nested antd-table-campaign custom-antd-table"
-                              columns={[
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.chatid
-                                      : "Chat ID",
-                                  dataIndex: "chatID",
-                                  width: "10%",
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.agent
-                                      : "Agent",
-                                  dataIndex: "agentName",
-                                  width: "20%",
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.time
-                                      : "Time",
-                                  dataIndex: "timeAgo",
-                                  width: "20%",
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.message
-                                      : "Message",
-                                  dataIndex: "message",
-                                  width: "30%",
-                                  render: (row, rowdata) => {
-                                    return (
-                                      <div className="d-flex">
-                                        <p className="storeaget-chat-ctn">
-                                          {rowdata.chatCount}
-                                        </p>
-                                        <p style={{ display: "inline-block" }}>
-                                          {row}
-                                        </p>
-                                      </div>
-                                    );
+                          <div className="chathistory-tbl">
+                            <div
+                              className="table-cntr store chat-history chatabcus mg-rm"
+                              style={{ margin: "10px" }}
+                            >
+                              <Table
+                                loading={this.state.isPastChatLoading}
+                                noDataContent="No Record Found"
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                columns={[
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.chatid
+                                        : "Chat ID",
+                                    dataIndex: "chatID",
+                                    width: "10%",
                                   },
-                                },
-                              ]}
-                              pagination={{ defaultPageSize: 5 }}
-                              dataSource={this.state.agentRecentChatData}
-                            ></Table>
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.agent
+                                        : "Agent",
+                                    dataIndex: "agentName",
+                                    width: "20%",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.time
+                                        : "Time",
+                                    dataIndex: "timeAgo",
+                                    width: "20%",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.time
+                                        : "Status",
+                                    dataIndex: "chatStatus",
+                                    width: "20%",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.message
+                                        : "Message",
+                                    dataIndex: "message",
+                                    width: "30%",
+                                    render: (row, rowdata) => {
+                                      return (
+                                        <div className="d-flex">
+                                          <p className="storeaget-chat-ctn">
+                                            {rowdata.chatCount}
+                                          </p>
+                                          <p
+                                            style={{
+                                              display: "inline-block",
+                                            }}
+                                          >
+                                            {row}
+                                          </p>
+                                        </div>
+                                      );
+                                    },
+                                  },
+                                ]}
+                                pagination={{ defaultPageSize: 5 }}
+                                dataSource={this.state.agentRecentChatData}
+                                onRowClick={this.handleHistoricalTableRow.bind(
+                                  this
+                                )}
+                                rowClassName={this.setRowClassName}
+                              ></Table>
+                            </div>
+                          </div>
+
+                          <div className="chathistory-tbl">
+                            {this.state.showHistoricalChat ? (
+                              <div className="historychatcontnet">
+                                <div className="chathistory-div add-bord">
+                                  <label className="chat-on-tuesday-jul">
+                                    {" "}
+                                    Chat On {this.state.chatTimeAgo}
+                                  </label>
+                                  <img
+                                    onClick={this.handleHistoryChatClose.bind(
+                                      this
+                                    )}
+                                    src={CancelBlack}
+                                    alt="close-icon"
+                                    style={{
+                                      float: "right",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  className="chatcontentDiv"
+                                  ref={(div) => {
+                                    this.historyMessageList = div;
+                                  }}
+                                >
+                                  {this.state.messageData !== null
+                                    ? this.state.messageData.map((item, i) => {
+                                        return (
+                                          <div
+                                            key={i}
+                                            className={
+                                              item.byCustomer === true &&
+                                              item.isBotReply !== true
+                                                ? "chat-trail-cntr"
+                                                : "chat-trail-cntr chat-trail-cntr-right"
+                                            }
+                                          >
+                                            <div className="chat-trail-img">
+                                              <span
+                                                className="chat-initial"
+                                                alt="face image"
+                                                title={
+                                                  item.byCustomer
+                                                    ? item.customerName
+                                                    : this.state.UserName
+                                                }
+                                              >
+                                                {item.byCustomer
+                                                  ? item.customerName
+                                                      .split(" ")
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()
+                                                  : this.state.UserName.split(
+                                                      " "
+                                                    )
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()}
+                                              </span>
+                                            </div>
+                                            <div className="chat-trail-chat-cntr">
+                                              {item.isBotReply && (
+                                                <p className="bot-mark">
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p.bot
+                                                    : "BOT"}
+                                                </p>
+                                              )}
+                                              <p className="chat-trail-chat pd-0">
+                                                {ReactHtmlParser(
+                                                  item.message
+                                                    .replace(
+                                                      "col-md-2",
+                                                      "col-md-4"
+                                                    )
+                                                    .replace(
+                                                      "col-md-10",
+                                                      "col-md-8"
+                                                    )
+                                                )}
+                                              </p>
+                                              <span className="chat-trail-time">
+                                                {item.chatDate + " "}
+                                                {item.chatTime}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        );
+                                      })
+                                    : null}
+                                </div>
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                       </div>
@@ -5389,9 +5630,16 @@ class Header extends Component {
                             ? TranslationContext.label.myhistoricalchat
                             : "My Historical Chat"}
                         </label>
-                        <div className="table-cntr store chat-history">
+                      </div>
+                      <div className="chathistory-tbl">
+                        <div
+                          className="table-cntr store chat-history mg-rm"
+                          style={{ margin: "10px" }}
+                        >
                           <Table
-                            className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                            loading={this.state.isHistoricalChatLoading}
+                            noDataContent="No Record Found"
+                            className="components-table-demo-nested antd-table-campaign custom-antd-table add-cursor"
                             columns={[
                               {
                                 title:
@@ -5420,6 +5668,14 @@ class Header extends Component {
                               {
                                 title:
                                   TranslationContext !== undefined
+                                    ? TranslationContext.title.time
+                                    : "Status",
+                                dataIndex: "chatStatus",
+                                width: "20%",
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
                                     ? TranslationContext.title.message
                                     : "Message",
                                 dataIndex: "message",
@@ -5428,9 +5684,98 @@ class Header extends Component {
                             ]}
                             pagination={{ defaultPageSize: 5 }}
                             dataSource={this.state.historicalChatData}
-                            onRowClick={this.handleHistoricalTableRow.bind(this)}
+                            onRowClick={this.handleHistoricalTableRow.bind(
+                              this
+                            )}
+                            rowClassName={this.setRowClassName}
                           ></Table>
                         </div>
+                      </div>
+                      <div className="chathistory-tbl">
+                        {this.state.showHistoricalChat ? (
+                          <div className="historychatcontnet">
+                            <div className="chathistory-div add-bord">
+                              <label className="chat-on-tuesday-jul">
+                                {" "}
+                                Chat On {this.state.chatTimeAgo}
+                              </label>
+                              <img
+                                onClick={this.handleHistoryChatClose.bind(this)}
+                                src={CancelBlack}
+                                alt="close-icon"
+                                style={{ float: "right", cursor: "pointer" }}
+                              />
+                            </div>
+                            <div
+                              className="chatcontentDiv"
+                              ref={(div) => {
+                                this.historyMessageList = div;
+                              }}
+                            >
+                              {this.state.messageData !== null
+                                ? this.state.messageData.map((item, i) => {
+                                    return (
+                                      <div
+                                        key={i}
+                                        className={
+                                          item.byCustomer === true &&
+                                          item.isBotReply !== true
+                                            ? "chat-trail-cntr"
+                                            : "chat-trail-cntr chat-trail-cntr-right"
+                                        }
+                                      >
+                                        <div className="chat-trail-img">
+                                          <span
+                                            className="chat-initial"
+                                            alt="face image"
+                                            title={
+                                              item.byCustomer
+                                                ? item.customerName
+                                                : this.state.UserName
+                                            }
+                                          >
+                                            {item.byCustomer
+                                              ? item.customerName
+                                                  .split(" ")
+                                                  .map((n) => n[0])
+                                                  .join("")
+                                                  .toUpperCase()
+                                              : this.state.UserName.split(" ")
+                                                  .map((n) => n[0])
+                                                  .join("")
+                                                  .toUpperCase()}
+                                          </span>
+                                        </div>
+                                        <div className="chat-trail-chat-cntr">
+                                          {item.isBotReply && (
+                                            <p className="bot-mark">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.bot
+                                                : "BOT"}
+                                            </p>
+                                          )}
+                                          <p className="chat-trail-chat pd-0">
+                                            {ReactHtmlParser(
+                                              item.message
+                                                .replace("col-md-2", "col-md-4")
+                                                .replace(
+                                                  "col-md-10",
+                                                  "col-md-8"
+                                                )
+                                            )}
+                                          </p>
+                                          <span className="chat-trail-time">
+                                            {item.chatDate + " "}
+                                            {item.chatTime}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })
+                                : null}
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   )}

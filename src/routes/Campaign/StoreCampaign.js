@@ -9,7 +9,7 @@ import Tick from "./../../assets/Images/tick.png";
 import Whatsapp from "./../../assets/Images/whatsapp.svg";
 import Sms1 from "./../../assets/Images/sms1.svg";
 import Email from "./../../assets/Images/camp-Email.svg";
-import PlusIcon from "./../../assets/Images/pluscircle.png";
+// import PlusIcon from "./../../assets/Images/pluscircle.png";
 import Smsicon from "./../../assets/Images/sms2.svg";
 import ChatbotS from "./../../assets/Images/chatbot-icon.svg";
 import axios from "axios";
@@ -26,8 +26,8 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import Demo from "./../../store/Hashtag";
 import ReactTable from "react-table";
-import * as translationHI from '../../translations/hindi'
-import * as translationMA from '../../translations/marathi'
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 // import Pagination from "./CampaignPagination";
 
 class StoreCampaign extends Component {
@@ -106,10 +106,10 @@ class StoreCampaign extends Component {
       CampCustNameValidation: "",
       campaignExecutionDetails: [],
       broadcastConfiguration: {},
-      showBroadcastChannel: false,
+      // showBroadcastChannel: false,
       storeCode: "",
       campaignCode: "",
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -120,15 +120,13 @@ class StoreCampaign extends Component {
   componentDidMount() {
     this.handleGetCampaignGridData();
     this.handleGetBrand();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   handleArrowImg() {
@@ -736,11 +734,11 @@ class StoreCampaign extends Component {
       ResponsiveBroadCast: false,
     });
   }
-  handleToggleBroadChannel() {
-    this.setState({
-      showBroadcastChannel: !this.state.showBroadcastChannel,
-    });
-  }
+  // handleToggleBroadChannel() {
+  //   this.setState({
+  //     showBroadcastChannel: !this.state.showBroadcastChannel,
+  //   });
+  // }
 
   handleShareNowOpenModal() {
     this.setState({
@@ -1420,11 +1418,11 @@ class StoreCampaign extends Component {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
-          if (data.campaignExecutionDetailsResponse.length > 0) {
-            self.setState({ showBroadcastChannel: false });
-          } else {
-            self.setState({ showBroadcastChannel: true });
-          }
+          // if (data.campaignExecutionDetailsResponse.length > 0) {
+          //   self.setState({ showBroadcastChannel: false });
+          // } else {
+          //   self.setState({ showBroadcastChannel: true });
+          // }
           self.setState({
             campaignExecutionDetails: data.campaignExecutionDetailsResponse,
             broadcastConfiguration: data.broadcastConfigurationResponse,
@@ -1437,7 +1435,7 @@ class StoreCampaign extends Component {
             campaignExecutionDetails: [],
             broadcastConfiguration: {},
             ResponsiveBroadCast: true,
-            showBroadcastChannel: true,
+            // showBroadcastChannel: true,
           });
         }
       })
@@ -1524,20 +1522,29 @@ class StoreCampaign extends Component {
             className="components-table-demo-nested antd-table-campaign custom-antd-table"
             columns={[
               {
-                title: TranslationContext!==undefined?TranslationContext.title.campaignname:"Campaign Name",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignname
+                    : "Campaign Name",
                 dataIndex: "campaignName",
                 className: "camp-status-header camp-status-header-cust-name",
                 filterDropdown: (dataIndex) => (
                   <div className="cust-name-drpdwn">
                     <label>
-                    {TranslationContext!==undefined?TranslationContext.label.campaignname:"Campaign Name"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.campaignname
+                        : "Campaign Name"}
                     </label>
                     <input
                       type="text"
                       className="txt-1"
                       autoComplete="off"
                       maxLength={100}
-                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entercampaignname:"Enter Campaign Name"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.placeholder.entercampaignname
+                          : "Enter Campaign Name"
+                      }
                       value={this.state.filterCampName}
                       onChange={this.handleCampaignNameOnchange.bind(this)}
                     />
@@ -1573,11 +1580,17 @@ class StoreCampaign extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.customers:"Customers" ,
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.customers
+                    : "Customers",
                 dataIndex: "customerCount",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.campaignscript:"Campaign Script", 
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignscript
+                    : "Campaign Script",
                 dataIndex: "campaignScript",
                 className: "table-coloum-hide",
                 render: (row, item) => {
@@ -1634,12 +1647,18 @@ class StoreCampaign extends Component {
                 },
               },
               {
-                title: TranslationContext!==undefined?TranslationContext.title.campaignperiod:"Campaign Period",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.campaignperiod
+                    : "Campaign Period",
                 dataIndex: "campaingPeriod",
                 className: "table-coloum-hide",
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.status
+                    : "Status",
                 dataIndex: "status",
                 className: "camp-status-header camp-status-header-statusFilter",
                 filterDropdown: (data, row) => {
@@ -1657,7 +1676,9 @@ class StoreCampaign extends Component {
                           />
                           <label htmlFor="Campall-status">
                             <span className="ch1-text">
-                            {TranslationContext!==undefined?TranslationContext.span.all:"All"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.all
+                                : "All"}
                             </span>
                           </label>
                         </li>
@@ -1674,7 +1695,9 @@ class StoreCampaign extends Component {
                           />
                           <label htmlFor="New100">
                             <span className="ch1-text">
-                            {TranslationContext!==undefined?TranslationContext.span.new:"New"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.new
+                                : "New"}
                             </span>
                           </label>
                         </li>
@@ -1691,7 +1714,9 @@ class StoreCampaign extends Component {
                           />
                           <label htmlFor="Inproress101">
                             <span className="ch1-text">
-                            {TranslationContext!==undefined?TranslationContext.span.inprogress:"InProgress"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.inprogress
+                                : "InProgress"}
                             </span>
                           </label>
                         </li>
@@ -1708,7 +1733,9 @@ class StoreCampaign extends Component {
                           />
                           <label htmlFor="Close102">
                             <span className="ch1-text">
-                            {TranslationContext!==undefined?TranslationContext.span.close:"Close"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.close
+                                : "Close"}
                             </span>
                           </label>
                         </li>
@@ -1726,7 +1753,10 @@ class StoreCampaign extends Component {
                 ),
               },
               {
-                title:TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
+                title:
+                  TranslationContext !== undefined
+                    ? TranslationContext.title.actions
+                    : "Actions",
                 render: (row, item) => {
                   return (
                     <Popover
@@ -1734,8 +1764,9 @@ class StoreCampaign extends Component {
                       content={
                         <div className="general-popover popover-body broadcastpop">
                           <label className="broadcasttitle">
-                            
-                            {TranslationContext!==undefined?TranslationContext.label.recentcampaigns:"Recent Campaigns"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.recentcampaigns
+                              : "Recent Campaigns"}
                           </label>
                           {this.state.campaignExecutionDetails !== null &&
                             this.state.campaignExecutionDetails.map(
@@ -1747,94 +1778,106 @@ class StoreCampaign extends Component {
                                       Executed Date: {item.executionDate}
                                     </span>
                                   </p>
-                                  <img
+                                  {/* <img
                                     src={PlusIcon}
                                     alt="plus-icone"
                                     className="plusico"
-                                    onClick={this.handleToggleBroadChannel.bind(
-                                      this
-                                    )}
-                                  />
+                                    // onClick={this.handleToggleBroadChannel.bind(
+                                    //   this
+                                    // )}
+                                  /> */}
                                 </div>
                               )
                             )}
-                          {this.state.showBroadcastChannel ? (
-                            <>
-                              <label className="broadcasttitle">
-                                Broadcast Campaign to Customers
-                              </label>
-                              <label className="broadcastsubtitle">
-                                Choose Channel
-                              </label>
-                              <div>
-                                <Radio.Group
-                                  onChange={this.handleBroadcastChange}
-                                  value={this.state.broadcastChannel}
-                                >
-                                  {this.state.broadcastConfiguration
-                                    .emailFlag ? (
-                                    <Radio
-                                      className="broadChannel"
-                                      value="Email"
-                                      disabled={
-                                        this.state.broadcastConfiguration
-                                          .disableEmail
-                                      }
-                                    >
-                                      Email
-                                    </Radio>
-                                  ) : null}
-                                  {this.state.broadcastConfiguration.smsFlag ? (
-                                    <Radio
-                                      className="broadChannel"
-                                      value="SMS"
-                                      disabled={
-                                        this.state.broadcastConfiguration
-                                          .disableSMS
-                                      }
-                                    >
-                                      SMS
-                                    </Radio>
-                                  ) : null}
-                                  {this.state.broadcastConfiguration
-                                    .whatsappFlag ? (
-                                    <Radio
-                                      className="broadChannel"
-                                      value="Whatsapp"
-                                      disabled={
-                                        this.state.broadcastConfiguration
-                                          .disableWhatsapp
-                                      }
-                                    >
-                                      Whatsapp
-                                    </Radio>
-                                  ) : null}
-                                </Radio.Group>
-
-                                {this.state.broadcastChannel === "" && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
-                                    }}
-                                  >
-                                    {this.state.broadChannelValidation}
-                                  </p>
-                                )}
-                              </div>
-                              <button
-                                type="button"
-                                className="executebtn"
-                                onClick={this.handleBroadcastExecute.bind(
-                                  this,
-                                  row.storeCode,
-                                  row.campaignCode
-                                )}
+                          {/* {this.state.showBroadcastChannel ? ( */}
+                          <>
+                            <label className="broadcasttitle">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label
+                                    .broadcastcampaigntocustomers
+                                : "Broadcast Campaign to Customers"}
+                            </label>
+                            <label className="broadcastsubtitle">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.choosechannel
+                                : "Choose Channel"}
+                            </label>
+                            <div>
+                              <Radio.Group
+                                onChange={this.handleBroadcastChange}
+                                value={this.state.broadcastChannel}
                               >
-                                Execute
-                              </button>
-                            </>
-                          ) : null}
+                                {this.state.broadcastConfiguration.emailFlag ? (
+                                  <Radio
+                                    className="broadChannel"
+                                    value="Email"
+                                    disabled={
+                                      this.state.broadcastConfiguration
+                                        .disableEmail
+                                    }
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.radio.email
+                                      : "Email"}
+                                  </Radio>
+                                ) : null}
+                                {this.state.broadcastConfiguration.smsFlag ? (
+                                  <Radio
+                                    className="broadChannel"
+                                    value="SMS"
+                                    disabled={
+                                      this.state.broadcastConfiguration
+                                        .disableSMS
+                                    }
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.radio.sms
+                                      : "SMS"}
+                                  </Radio>
+                                ) : null}
+                                {this.state.broadcastConfiguration
+                                  .whatsappFlag ? (
+                                  <Radio
+                                    className="broadChannel"
+                                    value="Whatsapp"
+                                    disabled={
+                                      this.state.broadcastConfiguration
+                                        .disableWhatsapp
+                                    }
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.radio.whatsapp
+                                      : "Whatsapp"}
+                                  </Radio>
+                                ) : null}
+                              </Radio.Group>
+
+                              {this.state.broadcastChannel === "" && (
+                                <p
+                                  style={{
+                                    color: "red",
+                                    marginBottom: "0px",
+                                  }}
+                                >
+                                  {this.state.broadChannelValidation}
+                                </p>
+                              )}
+                            </div>
+                            <button
+                              type="button"
+                              className="executebtn"
+                              onClick={this.handleBroadcastExecute.bind(
+                                this,
+                                row.storeCode,
+                                row.campaignCode
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.execute
+                                : "Execute"}
+                            </button>
+                          </>
+                          {/* ) : null} */}
                         </div>
                       }
                       placement="bottom"
@@ -1867,19 +1910,29 @@ class StoreCampaign extends Component {
                     className="midalResponseAction"
                     columns={[
                       {
-                        title: TranslationContext!==undefined?TranslationContext.title.customername:"Customer Name",
-                        className:"camp-status-header camp-status-header-cust-name",
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.customername
+                            : "Customer Name",
+                        className:
+                          "camp-status-header camp-status-header-cust-name",
                         dataIndex: "id",
                         filterDropdown: (dataIndex) => (
                           <div className="cust-name-drpdwn">
                             <label>
-                            {TranslationContext!==undefined?TranslationContext.label.customernumber:"Customer Number"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.customernumber
+                                : "Customer Number"}
                             </label>
                             <input
                               type="text"
                               className="txt-1"
                               autoComplete="off"
-                              placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entermobileno:"Enter Mobile No"}
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder.entermobileno
+                                  : "Enter Mobile No"
+                              }
                               maxLength={10}
                               value={this.state.filterCustNO}
                               onChange={this.handleCustomerFilerOnchange.bind(
@@ -1928,12 +1981,18 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        title:TranslationContext!==undefined?TranslationContext.title.date:"Date",
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.date
+                            : "Date",
                         dataIndex: "campaignDate",
                         className: "table-coloum-hide",
                       },
                       {
-                        title: TranslationContext!==undefined?TranslationContext.title.response:"Response",
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.response
+                            : "Response",
                         className: "table-coloum-hide",
                         render: (row, item) => {
                           return (
@@ -1962,7 +2021,10 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        title:TranslationContext!==undefined?TranslationContext.title.status:"Status",
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.status
+                            : "Status",
                         dataIndex: "statusName",
                         className: "camp-status-header",
                         render: (row, item) => {
@@ -2108,7 +2170,10 @@ class StoreCampaign extends Component {
                         ),
                       },
                       {
-                        title:TranslationContext!==undefined?TranslationContext.title.callrecheduledto:"Call Recheduled To",
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.callrecheduledto
+                            : "Call Recheduled To",
                         className: "table-coloum-hide",
                         dataIndex: "pricePaid",
                         render: (row, item) => {
@@ -2120,7 +2185,7 @@ class StoreCampaign extends Component {
                             >
                               <div className="date-time-resp">
                                 <DatePicker
-                                  id={"startDate"+item.id}
+                                  id={"startDate" + item.id}
                                   autoComplete="off"
                                   showTimeSelect
                                   name="startDate"
@@ -2170,7 +2235,10 @@ class StoreCampaign extends Component {
                         },
                       },
                       {
-                        title:TranslationContext!==undefined?TranslationContext.title.actions:"Actions",
+                        title:
+                          TranslationContext !== undefined
+                            ? TranslationContext.title.actions
+                            : "Actions",
                         render: (row, item) => {
                           return (
                             <div>
@@ -2187,8 +2255,9 @@ class StoreCampaign extends Component {
                                       item.campaignScriptID
                                     )}
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.button.update:"Update"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.update
+                                      : "Update"}
                                   </button>
                                   <button
                                     className="raisedticket-Btn"
@@ -2315,7 +2384,7 @@ class StoreCampaign extends Component {
                                   >
                                     <div className="date-time-resp">
                                       <DatePicker
-                                        id={"startDate"+item.id}
+                                        id={"startDate" + item.id}
                                         autoComplete="off"
                                         showTimeSelect
                                         name="startDate"
@@ -2410,7 +2479,11 @@ class StoreCampaign extends Component {
                         <option value={20}>20</option>
                         <option value={30}>30</option>
                       </select>
-                      <p>Items per page</p>
+                      <p>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.itemperpage
+                          : "Items per page"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -3135,74 +3208,75 @@ class StoreCampaign extends Component {
                     <label>{item.channelType}</label>
                     <span>Executed Date: {item.executionDate}</span>
                   </p>
-                  <img
+                  {/* <img
                     src={PlusIcon}
                     alt="plus-icone"
                     className="plusico"
-                    onClick={this.handleToggleBroadChannel.bind(this)}
-                  />
+                    // onClick={this.handleToggleBroadChannel.bind(this)}
+                  /> */}
                 </div>
               ))}
 
-            {this.state.showBroadcastChannel ? (
-              <>
-                <label className="broadcasttitle">
-                  Broadcast Campaign to Customers
-                </label>
-                <label className="broadcastsubtitle">Choose Channel</label>
-                <div>
-                  <Radio.Group
-                    onChange={this.handleBroadcastChange}
-                    value={this.state.broadcastChannel}
-                  >
-                    {this.state.broadcastConfiguration.emailFlag ? (
-                      <div className="">
-                        <Radio
-                          className="broadChannel"
-                          value="Email"
-                          disabled={
-                            this.state.broadcastConfiguration.disableEmail
-                          }
-                        >
-                          Email
-                        </Radio>
-                      </div>
-                    ) : null}
-                    {this.state.broadcastConfiguration.smsFlag ? (
+            {/* {this.state.showBroadcastChannel ? ( */}
+            <>
+              <label className="broadcasttitle">
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.broadcastcampaigntocustomers
+                  : "Broadcast Campaign to Customers"}
+              </label>
+              <label className="broadcastsubtitle">Choose Channel</label>
+              <div>
+                <Radio.Group
+                  onChange={this.handleBroadcastChange}
+                  value={this.state.broadcastChannel}
+                >
+                  {this.state.broadcastConfiguration.emailFlag ? (
+                    <div className="">
                       <Radio
                         className="broadChannel"
-                        value="SMS"
-                        disabled={this.state.broadcastConfiguration.disableSMS}
-                      >
-                        SMS
-                      </Radio>
-                    ) : null}
-                    {this.state.broadcastConfiguration.whatsappFlag ? (
-                      <Radio
-                        className="broadChannel"
-                        value="Whatsapp"
+                        value="Email"
                         disabled={
-                          this.state.broadcastConfiguration.disableWhatsapp
+                          this.state.broadcastConfiguration.disableEmail
                         }
                       >
-                        Whatsapp
+                        Email
                       </Radio>
-                    ) : null}
-                  </Radio.Group>
-                </div>
-                <button
-                  type="button"
-                  className="executebtn"
-                  onClick={this.handleBroadcastExecute.bind(
-                    this,
-                    this.state.storeCode,
-                    this.state.campaignCode
-                  )}
-                >
-                  Execute
-                </button>
-              </>
-            ) : null}
+                    </div>
+                  ) : null}
+                  {this.state.broadcastConfiguration.smsFlag ? (
+                    <Radio
+                      className="broadChannel"
+                      value="SMS"
+                      disabled={this.state.broadcastConfiguration.disableSMS}
+                    >
+                      SMS
+                    </Radio>
+                  ) : null}
+                  {this.state.broadcastConfiguration.whatsappFlag ? (
+                    <Radio
+                      className="broadChannel"
+                      value="Whatsapp"
+                      disabled={
+                        this.state.broadcastConfiguration.disableWhatsapp
+                      }
+                    >
+                      Whatsapp
+                    </Radio>
+                  ) : null}
+                </Radio.Group>
+              </div>
+              <button
+                type="button"
+                className="executebtn"
+                onClick={this.handleBroadcastExecute.bind(
+                  this,
+                  this.state.storeCode,
+                  this.state.campaignCode
+                )}
+              >
+                Execute
+              </button>
+            </>
           </div>
         </Modal>
         {/* ---------------Share via Modal-------------------- */}

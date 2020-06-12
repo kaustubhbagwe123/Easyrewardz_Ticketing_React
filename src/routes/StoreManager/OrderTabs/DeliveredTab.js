@@ -344,37 +344,6 @@ class DeliveredTab extends Component {
                   ></span>
                 ),
               },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.actions
-                    : "Action",
-                render: (row, item) => {
-                  return (
-                    <div className="pickuppendingcustom d-flex">
-                      {item.actionTypeName === "Delivered" ? (
-                        <button className="delibutn deliv-grid-butn">
-                          {item.actionTypeName}
-                        </button>
-                      ) : item.actionTypeName === "Mark As Delivered" ? (
-                        <button
-                          className="markasbutn deliv-grid-butn"
-                          onClick={this.handleUpdateMarkAsDelivered.bind(
-                            this,
-                            item.id
-                          )}
-                        >
-                          {item.actionTypeName}
-                        </button>
-                      ) : (
-                        <button className="pickedbutn deliv-grid-butn">
-                          {item.actionTypeName}
-                        </button>
-                      )}
-                    </div>
-                  );
-                },
-              },
             ]}
             expandedRowRender={(row, item) => {
               debugger;
@@ -388,6 +357,7 @@ class DeliveredTab extends Component {
                             <b>Date</b>
                           </label>
                           <label>{row.date}</label>
+                          <label className="order-small-font">{row.time}</label>
                         </td>
                         <td>
                           <label>
@@ -410,7 +380,8 @@ class DeliveredTab extends Component {
                 </div>
               );
             }}
-            expandIconColumnIndex={5}
+            expandIconColumnIndex={2}
+            // expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}

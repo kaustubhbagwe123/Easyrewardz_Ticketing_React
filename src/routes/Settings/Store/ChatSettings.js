@@ -399,7 +399,7 @@ class ChatSettings extends Component {
                 }
                 selected={this.state.selectedTab}
               >
-                <Tab label={"chat"}>
+                <Tab label={"CHAT"}>
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div

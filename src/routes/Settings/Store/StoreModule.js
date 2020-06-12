@@ -623,7 +623,7 @@ class StoreModule extends Component {
       });
   }
   /// handle Delete Language record
-  handleDeleteLanguage =  (row, type) => {
+  handleDeleteLanguage = (row, type) => {
     debugger;
     let languageGridData = [...this.state.languageGridData],
       isActive;
@@ -635,7 +635,7 @@ class StoreModule extends Component {
       }
     }
 
-     this.setState({
+    this.setState({
       languageGridData,
     });
 
@@ -3488,25 +3488,22 @@ class StoreModule extends Component {
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
-                            <div className="col-md-6 m-auto">
-                              <div className="right-sect-div">
+                            <div className="col-md-8 m-auto">
+                              <div
+                                className="right-sect-div"
+                                style={{ padding: "20px" }}
+                              >
                                 <h3>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.h3.slotsettings
                                     : "SLOT SETTINGS"}
                                 </h3>
-                                <span style={{ paddingLeft: "145px" }}>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.starttime
-                                    : "Start Time"}
-                                </span>
-                                <span style={{ paddingLeft: "58px" }}>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.endtime
-                                    : "End Time"}
-                                </span>
-                                <div className="cmpaign-channel-table slot-setting-options">
-                                  <div>
+                                <div
+                                  className="row cmpaign-channel-table lbl-fnt-w-400"
+                                  style={{ margin: "0px", marginLeft: "30px" }}
+                                >
+                                  <div className="strdrp-dwn">
+                                    <label></label>
                                     <select
                                       name="selectStore"
                                       value={this.state.selectStore}
@@ -3537,94 +3534,115 @@ class StoreModule extends Component {
                                       </p>
                                     )}
                                   </div>
-                                  <div className="slot-timings">
-                                    <div className="d-flex">
-                                      <select
-                                        className="slot-hour"
-                                        name="selectTimeSlot1"
-                                        value={this.state.selectTimeSlot1}
-                                        onChange={this.handleDrop_downOnchange}
-                                      >
-                                        {this.state.TimeSlotData !== null &&
-                                          this.state.TimeSlotData.map(
-                                            (item, j) => (
-                                              <option
-                                                value={item.TimeSlotId}
-                                                key={j}
-                                              >
-                                                {item.TimeSlot}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                      <select
-                                        className="slot-shift"
-                                        name="selectAmPm1"
-                                        value={this.state.selectAmPm1}
-                                        onChange={this.handleDrop_downOnchange}
-                                      >
-                                        <option value="AM">AM</option>
-                                        <option value="PM">PM</option>
-                                      </select>
-                                    </div>
-                                    <span className="slot-to">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span.to
-                                        : "TO"}
-                                    </span>
-                                    <div className="d-flex">
-                                      <select
-                                        className="slot-hour"
-                                        name="selectTimeSlot2"
-                                        value={this.state.selectTimeSlot2}
-                                        onChange={this.handleDrop_downOnchange}
-                                      >
-                                        {this.state.TimeSlotData !== null &&
-                                          this.state.TimeSlotData.map(
-                                            (item, j) => (
-                                              <option
-                                                value={item.TimeSlotId}
-                                                key={j}
-                                              >
-                                                {item.TimeSlot}
-                                              </option>
-                                            )
-                                          )}
-                                      </select>
-                                      <select
-                                        className="slot-shift"
-                                        name="selectAmPm2"
-                                        value={this.state.selectAmPm2}
-                                        onChange={this.handleDrop_downOnchange}
-                                      >
-                                        <option value="AM">AM</option>
-                                        <option value="PM">PM</option>
-                                      </select>
+                                  <div className="pd-10">
+                                    <label className="mr-10">
+                                      Store Open Time
+                                    </label>
+                                    <label>Store Close Time</label>
+                                    <div className="slot-timings">
+                                      <div className="d-flex">
+                                        <select
+                                          className="slot-hour"
+                                          name="selectTimeSlot1"
+                                          value={this.state.selectTimeSlot1}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          {this.state.TimeSlotData !== null &&
+                                            this.state.TimeSlotData.map(
+                                              (item, j) => (
+                                                <option
+                                                  value={item.TimeSlotId}
+                                                  key={j}
+                                                >
+                                                  {item.TimeSlot}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        <select
+                                          className="slot-shift"
+                                          name="selectAmPm1"
+                                          value={this.state.selectAmPm1}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          <option value="AM">AM</option>
+                                          <option value="PM">PM</option>
+                                        </select>
+                                      </div>
+                                      <span className="slot-to">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.to
+                                          : "TO"}
+                                      </span>
+                                      <div className="d-flex">
+                                        <select
+                                          className="slot-hour"
+                                          name="selectTimeSlot2"
+                                          value={this.state.selectTimeSlot2}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          {this.state.TimeSlotData !== null &&
+                                            this.state.TimeSlotData.map(
+                                              (item, j) => (
+                                                <option
+                                                  value={item.TimeSlotId}
+                                                  key={j}
+                                                >
+                                                  {item.TimeSlot}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        <select
+                                          className="slot-shift"
+                                          name="selectAmPm2"
+                                          value={this.state.selectAmPm2}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          <option value="AM">AM</option>
+                                          <option value="PM">PM</option>
+                                        </select>
+                                      </div>
                                     </div>
                                   </div>
-                                  <div>
-                                    <input
-                                      type="text"
-                                      placeholder="Order no."
-                                      name="orderNumber"
-                                      value={this.state.orderNumber}
-                                      autoComplete="off"
-                                      maxLength={3}
-                                      onChange={this.handleSlotInputOnchange}
-                                    />
-                                    {this.state.orderNumber === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.orderNovalidation}
-                                      </p>
-                                    )}
+                                  <div className="pd-10">
+                                    <label className="slt-time-lbl">
+                                      Slot Duration
+                                    </label>
+                                    <div className="slot-timings mr-0">
+                                      <div className="d-flex">
+                                        <select
+                                          className="slot-hour"
+                                          name="selectTimeSlot1"
+                                          style={{ width: "50px" }}
+                                        >
+                                          <option value="1/2">1/2</option>
+                                          <option value="1">1</option>
+                                          <option value="2">2</option>
+                                        </select>
+                                        <select
+                                          className="ap-select"
+                                          name="selectAmPm1"
+                                          style={{ width: "30px !important" }}
+                                          disabled={true}
+                                        >
+                                          <option value="H">Hr</option>
+                                        </select>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div>
+                                  <div className="mx-slt-div">
+                                    <label>Max Cpty Per Slot</label>
                                     <input
+                                      className="mx-slt-txt"
                                       type="text"
                                       placeholder="Max Cpty"
                                       name="maxCapacity"
@@ -3645,8 +3663,138 @@ class StoreModule extends Component {
                                     )}
                                   </div>
                                 </div>
+                                <label className="slt-non-op-hr-lbl">
+                                  Store Non-Oprational Hour
+                                </label>
+
+                                <div
+                                  className="row cmpaign-channel-table lbl-fnt-w-400"
+                                  style={{ margin: "0px", marginLeft: "30px" }}
+                                >
+                                  <div>
+                                    <label
+                                      className="mr-10"
+                                      style={{ marginLeft: "40px" }}
+                                    >
+                                      From
+                                    </label>
+                                    <label style={{ marginLeft: "80px" }}>
+                                      To
+                                    </label>
+                                    <div className="slot-timings">
+                                      <div className="d-flex">
+                                        <select
+                                          className="slot-hour"
+                                          name="selectTimeSlot1"
+                                          value={this.state.selectTimeSlot1}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          {this.state.TimeSlotData !== null &&
+                                            this.state.TimeSlotData.map(
+                                              (item, j) => (
+                                                <option
+                                                  value={item.TimeSlotId}
+                                                  key={j}
+                                                >
+                                                  {item.TimeSlot}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        <select
+                                          className="slot-shift"
+                                          name="selectAmPm1"
+                                          value={this.state.selectAmPm1}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          <option value="AM">AM</option>
+                                          <option value="PM">PM</option>
+                                        </select>
+                                      </div>
+                                      <span className="slot-to">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.to
+                                          : "TO"}
+                                      </span>
+                                      <div className="d-flex">
+                                        <select
+                                          className="slot-hour"
+                                          name="selectTimeSlot2"
+                                          value={this.state.selectTimeSlot2}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          {this.state.TimeSlotData !== null &&
+                                            this.state.TimeSlotData.map(
+                                              (item, j) => (
+                                                <option
+                                                  value={item.TimeSlotId}
+                                                  key={j}
+                                                >
+                                                  {item.TimeSlot}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        <select
+                                          className="slot-shift"
+                                          name="selectAmPm2"
+                                          value={this.state.selectAmPm2}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                        >
+                                          <option value="AM">AM</option>
+                                          <option value="PM">PM</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div style={{ marginLeft: "35px" }}>
+                                    <label className="mr-10">
+                                      Appointment Days
+                                    </label>
+                                    <div
+                                      className="slot-timings"
+                                      style={{
+                                        margin: "0px",
+                                        marginLeft: "10px",
+                                      }}
+                                    >
+                                      <div className="d-flex">
+                                        <select
+                                          className="slot-hour"
+                                          name="selectTimeSlot1"
+                                        >
+                                          <option value="1">1</option>
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                        </select>
+                                        <select
+                                          className="ap-select"
+                                          name="selectAmPm1"
+                                          disabled={true}
+                                          style={{ width: "50px" }}
+                                        >
+                                          <option value="D">Days</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row cmpaign-channel-table"></div>
+                                {/* <div className="cmpaign-channel-table slot-setting-options">
+                                  <div></div>
+
+                                  <div></div>
+                                </div> */}
                                 <button
-                                  className="Schedulenext1 w-100 mb-0 mt-4"
+                                  className="Schedulenext1 w-100 mb-0"
                                   type="button"
                                   onClick={this.handleSubmitTimeSlotDate.bind(
                                     this
@@ -3665,7 +3813,7 @@ class StoreModule extends Component {
                                     Select Store Code
                                   </label>
                                   <select
-                                    style={{ width: "50%" }}
+                                    style={{ width: "30%" }}
                                     name="selectStore"
                                     value={this.state.FilterSelectStore}
                                     onChange={this.handleChangeStoreDropdown.bind(
@@ -4168,50 +4316,136 @@ class StoreModule extends Component {
                         </select>
                       </div>
                     </div>
-                    <label className="edit-label-1">Order Number</label>
-                    <input
-                      type="text"
-                      placeholder="Order no."
-                      name="orderNumber"
-                      value={this.state.timeSlotEdit.orderNumber}
-                      autoComplete="off"
-                      maxLength={3}
-                      onChange={this.handleSlotEditInputOnchange}
-                    />
-                    {this.state.timeSlotEdit.orderNumber === "" && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "0px",
-                        }}
-                      >
-                        {this.state.editOrderNovalidation}
-                      </p>
-                    )}
-                    <label className="edit-label-1">
-                      {TranslationContext !== undefined
-                        ? TranslationContext.label.maximumcapacity
-                        : "Maximum Capacity"}
+                    <label className="edit-slot-lbl">Slot Duration</label>
+                    <label
+                      className="edit-slot-lbl"
+                      style={{ marginLeft: "48px" }}
+                    >
+                      Maximum Capacity
                     </label>
-                    <input
-                      type="text"
-                      placeholder="Max Cpty"
-                      name="maxCapacity"
-                      autoComplete="off"
-                      maxLength={2}
-                      value={this.state.timeSlotEdit.maxCapacity}
-                      onChange={this.handleSlotEditInputOnchange}
-                    />
-                    {this.state.timeSlotEdit.maxCapacity === "" && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "0px",
-                        }}
-                      >
-                        {this.state.editMaxCapacityValidation}
-                      </p>
-                    )}
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="editSelectTimeSlot1"
+                        >
+                          <option value="1/2">1/2</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="editSelectAmPm1"
+                          style={{ background: "none" }}
+                          disabled={true}
+                        >
+                          <option value="H">Hr</option>
+                        </select>
+                      </div>
+
+                      <input
+                        style={{ width: "93px", marginLeft: "34px" }}
+                        type="text"
+                        placeholder="Max Cpty"
+                        name="maxCapacity"
+                        autoComplete="off"
+                        maxLength={2}
+                        value={this.state.timeSlotEdit.maxCapacity}
+                        onChange={this.handleSlotEditInputOnchange}
+                      />
+                      {this.state.timeSlotEdit.maxCapacity === "" && (
+                        <p
+                          style={{
+                            color: "red",
+                            marginBottom: "0px",
+                          }}
+                        >
+                          {this.state.editMaxCapacityValidation}
+                        </p>
+                      )}
+                    </div>
+                    <label className="edit-slot-lbl">
+                      Store Non-Oprational Hours
+                    </label>
+                    <br />
+                    <label className="edit-slot-lbl edit-slot-lbl2">From</label>
+                    <label className="edit-slot-lbl edit-slot-lbl1">To</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="editSelectTimeSlot1"
+                          value={this.state.editSelectTimeSlot1}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          {this.state.TimeSlotData !== null &&
+                            this.state.TimeSlotData.map((item, j) => (
+                              <option value={item.TimeSlotId} key={j}>
+                                {item.TimeSlot}
+                              </option>
+                            ))}
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="editSelectAmPm1"
+                          value={this.state.editSelectAmPm1}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                      <span className="slot-to">TO</span>
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="editSelectTimeSlot2"
+                          value={this.state.editSelectTimeSlot2}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          {this.state.TimeSlotData !== null &&
+                            this.state.TimeSlotData.map((item, j) => (
+                              <option value={item.TimeSlotId} key={j}>
+                                {item.TimeSlot}
+                              </option>
+                            ))}
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="editSelectAmPm2"
+                          value={this.state.editSelectAmPm2}
+                          onChange={this.handleEditDrop_downOnchange}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="edit-slot-lbl">Appointment Days</label>
+                    <div className="slot-timings">
+                      <div className="d-flex">
+                        <select
+                          className="slot-hour"
+                          name="editSelectTimeSlot1"
+                        >
+                          <option value={1}>1</option>
+                          <option value={2}>2</option>
+                          <option value={3}>3</option>
+                          <option value={4}>4</option>
+                          <option value={5}>5</option>
+                          <option value={6}>6</option>
+                          <option value={7}>7</option>
+                        </select>
+                        <select
+                          className="slot-shift"
+                          name="editSelectAmPm1"
+                          style={{ background: "none" ,padding: "5px 7px"}}
+                          disabled={true}
+                        >
+                          <option value="D">Days</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <br />
