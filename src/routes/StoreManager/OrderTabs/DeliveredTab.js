@@ -343,7 +343,7 @@ class DeliveredTab extends Component {
                     style={{ color: filtered ? "#1890ff" : undefined }}
                   ></span>
                 ),
-              }
+              },
             ]}
             expandedRowRender={(row, item) => {
               debugger;
@@ -379,7 +379,8 @@ class DeliveredTab extends Component {
                 </div>
               );
             }}
-            expandIconColumnIndex={5}
+            expandIconColumnIndex={2}
+            // expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}
