@@ -352,7 +352,7 @@ class ShipmentAssignedTab extends Component {
                 },
               },
             ]}
-            expandedRowRender={(row, item) => {
+            expandedRowRender={(row, item, index) => {
               debugger;
               return (
                 <div className="innertabcollapse">
@@ -369,7 +369,19 @@ class ShipmentAssignedTab extends Component {
                           <label>
                             <b>POD</b>
                           </label>
-                          <button>{row.referenceNo}</button>
+                          <button className="btn-ref deliv-grid-butn">
+                            <input
+                              type="text"
+                              name="referenceNo"
+                              className="enterpod"
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder.enterpod
+                                  : "Reference No"
+                              }
+                              onChange={this.handlechange.bind(this, index)}
+                            />
+                          </button>
                         </td>
                       </tr>
                     </table>
