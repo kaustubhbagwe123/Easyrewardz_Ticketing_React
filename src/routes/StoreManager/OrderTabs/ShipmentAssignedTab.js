@@ -157,6 +157,35 @@ class ShipmentAssignedTab extends Component {
       });
   }
 
+  handleUpdateDeliveredByShipAssigned(orderID)
+  {
+    debugger;
+    let self = this;
+    
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateDeliveredByShipAssigned",
+      headers: authHeader(),
+      params: {
+        orderID: orderID
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetShipmentAssignedData();
+          NotificationManager.success("Record Updated Successfully.");
+          self.setState({
+            orderPopoverOverlay: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -486,11 +515,10 @@ class ShipmentAssignedTab extends Component {
                       </button>
                         <button
                           className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
-                        // onClick={this.handleUpdateShipmentAssignedData.bind(
-                        //   this,
-                        //   item,
-                        //   true
-                        // )}
+                          onClick={this.handleUpdateDeliveredByShipAssigned.bind(
+                            this,
+                            item.orderID
+                          )}
                         >
                           Delivered
                       </button>
