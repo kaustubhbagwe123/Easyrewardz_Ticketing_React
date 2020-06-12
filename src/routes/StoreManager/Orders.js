@@ -58,7 +58,7 @@ class Orders extends Component {
       url: config.apiUrl + "/HSOrder/GetOrderTabSettingDetails",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -419,6 +419,18 @@ class Orders extends Component {
             aria-labelledby="shipment-assigned-tab"
           >
             {this.state.selectedTabs === 5 ? <ShipmentAssignedTab /> : null}
+          </div>
+          <div
+            className={
+              this.state.selectedTabs === 6
+                ? "tab-pane fade show active"
+                : "tab-pane fade"
+            }
+            id="returns-tab"
+            role="tabpanel"
+            aria-labelledby="returns-tab"
+          >
+            {this.state.selectedTabs === 6 ? <ReturnsTab /> : null}
           </div>
           <div
             className={
