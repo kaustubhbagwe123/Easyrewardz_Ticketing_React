@@ -635,6 +635,9 @@
 /* chetan css ends */
 
 /* responsive starts */
+.assign-grid-btn{
+  margin-right: 25px;
+}
 
 @media all and (max-width: 576px) {
   /* chetan css starts */
@@ -769,6 +772,7 @@
   }
   .antd-table-order .ant-table-tbody > tr > td:first-child {
     padding-left: 15px !important;
+    color: #797979;
   }
   .antd-table-order .ant-table-row-collapsed::after,
   .antd-table-order .ant-table-row-expanded::after {
@@ -873,6 +877,19 @@
   /* returns ends */
 
   /* chetan css ends */
+  .deliv-grid-butn {
+    width: auto;
+      height: 22px;
+  }
+  .assign-grid-btn {
+    margin-right: 5px;
+  }
+  .order-grid-butn {
+    padding: 2px 10px !important;
+  }
+  .order-grid-butn {
+    min-width: 80px;
+  }
 }
 
 @media all and (max-width: 400px) {
@@ -958,6 +975,7 @@
   }
   .antd-table-order .ant-table-tbody > tr > td {
     font-size: 12px;
+    color: #797979;
   }
   .order-grid-butn {
     min-width: 95px;
@@ -1065,6 +1083,4 @@
 }
 
 /* responsive ends */
-.assign-grid-btn{
-  margin-right: 25px;
-}
+

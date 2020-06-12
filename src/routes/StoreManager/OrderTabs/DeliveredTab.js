@@ -200,6 +200,7 @@ class DeliveredTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.items
                     : "Items",
+                className: "cus-strecth",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
