@@ -1437,14 +1437,17 @@ class Header extends Component {
     }
   };
   ////handle select slot button
-  handleSelectSlot = (data, selectedDate) => {
-    this.setState({
-      selectedSlot: data,
-      selectedDate,
-      isSelectSlot: "",
-      noOfPeople: "",
-      noOfPeopleMax: "",
-    });
+  handleSelectSlot = (data, selectedDate, isDisabled) => {
+    if (isDisabled) {
+    } else {
+      this.setState({
+        selectedSlot: data,
+        selectedDate,
+        isSelectSlot: "",
+        noOfPeople: "",
+        noOfPeopleMax: "",
+      });
+    }
   };
 
   onCloseScheduleModal = () => {
@@ -3968,7 +3971,9 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
-                                                                    disabled={data.isDisabled}
+                                                                    disabled={
+                                                                      data.isDisabled
+                                                                    }
                                                                     className="s-red-active"
                                                                     style={{
                                                                       cursor:
@@ -3999,16 +4004,19 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
-                                                                    disabled={data.isDisabled}
+                                                                    style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                     className={
-                                                                      selectSlot
+                                                                      data.isDisabled
+                                                                        ? "s-red-active"
+                                                                        : selectSlot
                                                                         ? "s-yellow-active"
                                                                         : "s-yellow-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
                                                                       data,
-                                                                      item.dates
+                                                                      item.dates,
+                                                                      data.isDisabled
                                                                     )}
                                                                   >
                                                                     {
@@ -4044,16 +4052,19 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
-                                                                    disabled={data.isDisabled}
+                                                                    style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                     className={
-                                                                      selectSlot
+                                                                      data.isDisabled
+                                                                        ? "s-red-active"
+                                                                        : selectSlot
                                                                         ? "s-green-active"
                                                                         : "s-green-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
                                                                       data,
-                                                                      item.dates
+                                                                      item.dates,
+                                                                      data.isDisabled
                                                                     )}
                                                                   >
                                                                     {
@@ -4950,7 +4961,9 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
-                                                                        disabled={data.isDisabled}
+                                                                        disabled={
+                                                                          data.isDisabled
+                                                                        }
                                                                         className="s-red-active"
                                                                         style={{
                                                                           cursor:
@@ -4979,16 +4992,19 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
-                                                                        disabled={data.isDisabled}
+                                                                        style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                         className={
-                                                                          selectSlot
+                                                                          data.isDisabled
+                                                                            ? "s-red-active"
+                                                                            : selectSlot
                                                                             ? "s-yellow-active"
                                                                             : "s-yellow-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
                                                                           data,
-                                                                          item.dates
+                                                                          item.dates,
+                                                                          data.isDisabled
                                                                         )}
                                                                       >
                                                                         {
@@ -5022,16 +5038,19 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
-                                                                        disabled={data.isDisabled}
+                                                                        style={{cursor:data.isDisabled?"no-drop":"pointer"}}
                                                                         className={
-                                                                          selectSlot
+                                                                          data.isDisabled
+                                                                            ? "s-red-active"
+                                                                            : selectSlot
                                                                             ? "s-green-active"
                                                                             : "s-green-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
                                                                           data,
-                                                                          item.dates
+                                                                          item.dates,
+                                                                          data.isDisabled
                                                                         )}
                                                                       >
                                                                         {
