@@ -82,11 +82,6 @@ import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
 const { Option } = Select;
 
-// var socket = io.connect(config.socketUrl, {
-//   // transports: ["polling"],
-//   upgrade: false,
-// });
-// var isSocketReady=1;
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -245,12 +240,10 @@ class Header extends Component {
   }
 
   handleScrollRight(num) {
-    debugger;
     document.getElementById("schedule-btn-cntr" + num).scrollLeft += 20;
   }
 
   handleScrollLeft(num) {
-    debugger;
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
   handleShowMenu() {
@@ -416,7 +409,6 @@ class Header extends Component {
           data[i].moduleName === "Reports" &&
           data[i].modulestatus === true
         ) {
-          debugger;
           this.setState({
             reportAccess: "block",
           });
@@ -584,7 +576,6 @@ class Header extends Component {
   };
 
   handleGetStoreAgentDetailsById(agentID) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -595,7 +586,6 @@ class Header extends Component {
       },
     })
       .then((res) => {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -741,7 +731,6 @@ class Header extends Component {
       params: { Search: search, StoreManagerID: this.state.sAgentId },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
         if (message === "Success" && ongoingChatsData) {
@@ -875,7 +864,6 @@ class Header extends Component {
   ////handle save chat messgae
   handleSaveChatMessages(messageStringData, messagewhatsAppContent, imageURL) {
     let self = this;
-    debugger;
 
     var messagecontent = "";
     if (messageStringData) {
@@ -967,7 +955,6 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var searchCardData = response.data.responseData;
 
@@ -1004,7 +991,6 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
         var availableSlot = 0;
@@ -1028,7 +1014,7 @@ class Header extends Component {
   ////handle send schedual visit
   handleScheduleVisit() {
     let self = this;
-    debugger;
+
     var inputParam = {};
     if (this.state.customerId == 0) {
     } else {
@@ -1103,7 +1089,7 @@ class Header extends Component {
               isSendRecomended: false,
             });
             self.handleGetTimeSlot();
-            debugger;
+
             self.handleSaveChatMessages("", "", "");
           } else {
             self.setState({ isSendRecomended: false });
@@ -1190,7 +1176,6 @@ class Header extends Component {
   }
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
-    debugger;
     var message = evt.target.value;
     // var message = evt.editor.getData();
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
@@ -1237,7 +1222,6 @@ class Header extends Component {
         let status = res.data.message;
         let messageSuggestionData = res.data.responseData;
         if (status === "Success") {
-          debugger;
           var tempmessageSuggestionData = [];
           if (messageSuggestionData.length > 10) {
             for (let index = 0; index < 10; index++) {
@@ -1301,7 +1285,6 @@ class Header extends Component {
     StoreID,
     isCustEndChat
   ) => {
-    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1735,7 +1718,6 @@ class Header extends Component {
   }
   ////handle change main tabs
   handleMainTabChange(e) {
-    debugger;
     this.setState({ mainTabSelect: e });
     if (e === 2) {
       this.handleGetAgentRecentChat();
@@ -1776,7 +1758,6 @@ class Header extends Component {
 
   /// Pagination Onchange
   PaginationOnChange = async (numPage) => {
-    debugger;
     var tempmessageSuggestionData = [];
     if (this.state.messageSuggestionData.length < 10) {
       tempmessageSuggestionData = this.state.messageSuggestionData;
@@ -1806,7 +1787,6 @@ class Header extends Component {
         socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
           data
         ) {
-          debugger;
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
@@ -1852,8 +1832,6 @@ class Header extends Component {
   }
 
   handleInsertCardImageUpload(itemcode, e) {
-    debugger;
-
     if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
       NotificationManager.error("Please select valid image file");
       return false;
@@ -1873,7 +1851,6 @@ class Header extends Component {
       params: { ItemID: itemcode, ImageUrl: "" },
     })
       .then(function(response) {
-        debugger;
         var messgae = response.data.message;
         var responseData = response.data.responseData;
         if (messgae === "Success") {
@@ -1895,7 +1872,6 @@ class Header extends Component {
     this.setState({ actionBtn: false });
   };
   handleUpdateStoreManagerChatStatus(id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1904,7 +1880,6 @@ class Header extends Component {
       params: { ChatID: this.state.chatId, ChatStatusID: id },
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -1922,8 +1897,7 @@ class Header extends Component {
       });
   }
   ////handle historical table row click
-  handleHistoricalTableRow = (e) => {
-    debugger;
+  handleHistoricalTableRow = (e, e1, e2) => {
     this.setState({
       rowChatId: e.chatID,
       // customerName: e.customerName,
@@ -2582,7 +2556,7 @@ class Header extends Component {
                     </span>
                   </div>
                   <div className="chat-cntr">
-                    <p className="chats-heading d-flex justify-content-between align-items-center">
+                    <div className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
                         ? TranslationContext.p.ongoingchats
                         : "Ongoing Chats"}
@@ -2615,7 +2589,7 @@ class Header extends Component {
                             );
                           })}
                       </Select>
-                    </p>
+                    </div>
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData &&
                         this.state.ongoingChatsData.map((chat, i) => (
@@ -4004,7 +3978,11 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
-                                                                    style={{cursor:data.isDisabled?"no-drop":"pointer"}}
+                                                                    style={{
+                                                                      cursor: data.isDisabled
+                                                                        ? "no-drop"
+                                                                        : "pointer",
+                                                                    }}
                                                                     className={
                                                                       data.isDisabled
                                                                         ? "s-red-active"
@@ -4052,7 +4030,11 @@ class Header extends Component {
                                                                 >
                                                                   <button
                                                                     key={k}
-                                                                    style={{cursor:data.isDisabled?"no-drop":"pointer"}}
+                                                                    style={{
+                                                                      cursor: data.isDisabled
+                                                                        ? "no-drop"
+                                                                        : "pointer",
+                                                                    }}
                                                                     className={
                                                                       data.isDisabled
                                                                         ? "s-red-active"
@@ -4992,7 +4974,11 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
-                                                                        style={{cursor:data.isDisabled?"no-drop":"pointer"}}
+                                                                        style={{
+                                                                          cursor: data.isDisabled
+                                                                            ? "no-drop"
+                                                                            : "pointer",
+                                                                        }}
                                                                         className={
                                                                           data.isDisabled
                                                                             ? "s-red-active"
@@ -5038,7 +5024,11 @@ class Header extends Component {
                                                                     >
                                                                       <button
                                                                         key={k}
-                                                                        style={{cursor:data.isDisabled?"no-drop":"pointer"}}
+                                                                        style={{
+                                                                          cursor: data.isDisabled
+                                                                            ? "no-drop"
+                                                                            : "pointer",
+                                                                        }}
                                                                         className={
                                                                           data.isDisabled
                                                                             ? "s-red-active"
@@ -5459,6 +5449,13 @@ class Header extends Component {
                                         : "Chat ID",
                                     dataIndex: "chatID",
                                     width: "10%",
+                                    render: (row, rowData) => {
+                                      return (
+                                        <>
+                                          {rowData.chatID ? rowData.chatID : ""}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -5467,6 +5464,15 @@ class Header extends Component {
                                         : "Agent",
                                     dataIndex: "agentName",
                                     width: "20%",
+                                    render: (row, rowData) => {
+                                      return (
+                                        <>
+                                          {rowData.agentName
+                                            ? rowData.agentName
+                                            : ""}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -5475,6 +5481,15 @@ class Header extends Component {
                                         : "Time",
                                     dataIndex: "timeAgo",
                                     width: "20%",
+                                    render: (row, rowData) => {
+                                      return (
+                                        <>
+                                          {rowData.timeAgo
+                                            ? rowData.timeAgo
+                                            : ""}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -5483,6 +5498,15 @@ class Header extends Component {
                                         : "Status",
                                     dataIndex: "chatStatus",
                                     width: "20%",
+                                    render: (row, rowData) => {
+                                      return (
+                                        <>
+                                          {rowData.chatStatus
+                                            ? rowData.chatStatus
+                                            : ""}
+                                        </>
+                                      );
+                                    },
                                   },
                                   {
                                     title:
@@ -5495,14 +5519,16 @@ class Header extends Component {
                                       return (
                                         <div className="d-flex">
                                           <p className="storeaget-chat-ctn">
-                                            {rowdata.chatCount}
+                                            {rowdata.chatCount
+                                              ? rowdata.chatCount
+                                              : ""}
                                           </p>
                                           <p
                                             style={{
                                               display: "inline-block",
                                             }}
                                           >
-                                            {row}
+                                            {row ? row : ""}
                                           </p>
                                         </div>
                                       );
@@ -5511,9 +5537,18 @@ class Header extends Component {
                                 ]}
                                 pagination={{ defaultPageSize: 5 }}
                                 dataSource={this.state.agentRecentChatData}
-                                onRowClick={this.handleHistoricalTableRow.bind(
-                                  this
-                                )}
+                                onRow={(record, index) => ({
+                                  onClick: (event) => {
+                                    this.handleHistoricalTableRow(
+                                      record,
+                                      index,
+                                      event
+                                    );
+                                  },
+                                })}
+                                rowKey={(record) => {
+                                  return record.chatID;
+                                }}
                                 rowClassName={this.setRowClassName}
                               ></Table>
                             </div>
@@ -5648,6 +5683,11 @@ class Header extends Component {
                                     : "Chat ID",
                                 dataIndex: "chatID",
                                 width: "10%",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>{rowData.chatID ? rowData.chatID : ""}</>
+                                  );
+                                },
                               },
                               {
                                 title:
@@ -5656,6 +5696,15 @@ class Header extends Component {
                                     : "Customer Name",
                                 dataIndex: "customerName",
                                 width: "20%",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.customerName
+                                        ? rowData.customerName
+                                        : ""}
+                                    </>
+                                  );
+                                },
                               },
                               {
                                 title:
@@ -5664,6 +5713,13 @@ class Header extends Component {
                                     : "Time",
                                 dataIndex: "timeAgo",
                                 width: "20%",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.timeAgo ? rowData.timeAgo : ""}
+                                    </>
+                                  );
+                                },
                               },
                               {
                                 title:
@@ -5672,6 +5728,15 @@ class Header extends Component {
                                     : "Status",
                                 dataIndex: "chatStatus",
                                 width: "20%",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.chatStatus
+                                        ? rowData.chatStatus
+                                        : ""}
+                                    </>
+                                  );
+                                },
                               },
                               {
                                 title:
@@ -5680,13 +5745,29 @@ class Header extends Component {
                                     : "Message",
                                 dataIndex: "message",
                                 width: "30%",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.message ? rowData.message : ""}
+                                    </>
+                                  );
+                                },
                               },
                             ]}
                             pagination={{ defaultPageSize: 5 }}
                             dataSource={this.state.historicalChatData}
-                            onRowClick={this.handleHistoricalTableRow.bind(
-                              this
-                            )}
+                            onRow={(record, index) => ({
+                              onClick: (event) => {
+                                this.handleHistoricalTableRow(
+                                  record,
+                                  index,
+                                  event
+                                );
+                              },
+                            })}
+                            rowKey={(record) => {
+                              return record.chatID;
+                            }}
                             rowClassName={this.setRowClassName}
                           ></Table>
                         </div>

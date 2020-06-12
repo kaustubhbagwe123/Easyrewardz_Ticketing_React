@@ -27,7 +27,7 @@ import TimeSlotdropdown from "./TimeSlotDropdown";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { ProgressBar } from "react-bootstrap";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
-
+import "antd/dist/antd.css";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
