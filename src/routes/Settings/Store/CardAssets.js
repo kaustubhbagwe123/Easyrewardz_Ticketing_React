@@ -13,7 +13,7 @@ import Demo from "../../../store/Hashtag.js";
 import CancelImg from "./../../../assets/Images/cancel.png";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
-
+var uid = 0;
 // import InfoIcon from "../../assets/Images/info-icon.png";
 class CardAssets extends Component {
   constructor(props) {
@@ -430,6 +430,15 @@ class CardAssets extends Component {
                         },
                       },
                     ]}
+                    rowKey={(record) => {
+                      if (record.itemID) {
+                        uid = uid + 1;
+                        return record.itemID + "i" + uid;
+                      } else {
+                        uid = uid + 1;
+                        return "i" + uid;
+                      }
+                    }}
                     pagination={{ defaultPageSize: 10 }}
                     dataSource={this.state.assetApprovalData}
                   ></Table>
@@ -745,6 +754,15 @@ class CardAssets extends Component {
                       },
                     },
                   ]}
+                  rowKey={(record) => {
+                    if (record.itemID) {
+                      uid = uid + 1;
+                      return record.itemID + "d" + uid;
+                    } else {
+                      uid = uid + 1;
+                      return "d" + uid;
+                    }
+                  }}
                   pagination={{ defaultPageSize: 10 }}
                   dataSource={this.state.uploadLogData}
                 ></Table>

@@ -637,6 +637,9 @@
 /* chetan css ends */
 
 /* responsive starts */
+.assign-grid-btn{
+  margin-right: 25px;
+}
 
 @media all and (max-width: 576px) {
   /* chetan css starts */
@@ -771,6 +774,7 @@
   }
   .antd-table-order .ant-table-tbody > tr > td:first-child {
     padding-left: 15px !important;
+    color: #797979;
   }
   .antd-table-order .ant-table-row-collapsed::after,
   .antd-table-order .ant-table-row-expanded::after {
@@ -872,9 +876,27 @@
   .retry-butn {
     min-width: 80px;
   }
+  .return-popover-item.ant-popover-placement-bottom
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    margin-left: -75px;
+  }
   /* returns ends */
 
   /* chetan css ends */
+  .deliv-grid-butn {
+    width: auto;
+      height: 22px;
+  }
+  .assign-grid-btn {
+    margin-right: 5px;
+  }
+  .order-grid-butn {
+    padding: 2px 10px !important;
+  }
+  .order-grid-butn {
+    min-width: 80px;
+  }
 }
 
 @media all and (max-width: 400px) {
@@ -941,6 +963,11 @@
     padding-right: 5px !important;
     padding-left: 5px !important;
   }
+  .return-popover-item.ant-popover-placement-bottom
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    margin-left: -60px;
+  }
   /* returns ends */
 
   /* chetan css ends */
@@ -960,6 +987,7 @@
   }
   .antd-table-order .ant-table-tbody > tr > td {
     font-size: 12px;
+    color: #797979;
   }
   .order-grid-butn {
     min-width: 95px;
@@ -1063,10 +1091,16 @@
   }
   /* shopping bag ends */
 
+  /* returns starts */
+  .return-popover-item.ant-popover-placement-bottom
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    margin-left: -50px;
+  }
+  /* returns ends */
+
   /* chetan css ends */
 }
 
 /* responsive ends */
-.assign-grid-btn{
-  margin-right: 25px;
-}
+
