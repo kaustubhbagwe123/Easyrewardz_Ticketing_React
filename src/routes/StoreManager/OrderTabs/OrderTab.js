@@ -1175,7 +1175,7 @@ class OrderTab extends Component {
                             style={{ cursor: "pointer" }}
                             className="order-small-font d-inline-block order-clr-blue ml-1"
                           >
-                            ({" "}
+                            (
                             {TranslationContext !== undefined
                               ? TranslationContext.p.addresspending
                               : "ADDRESS PENDING"}

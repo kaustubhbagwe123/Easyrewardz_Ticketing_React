@@ -145,6 +145,20 @@ class OrderSetting extends Component {
           .alertCommunicationviaWhtsup,
         AlertCommunicationviaSMS: this.state.orderConfigData
           .alertCommunicationviaSMS,
+        AlertCommunicationSMSText: this.state.orderConfigData
+          .alertCommunicationSMSText,
+        ShoppingBagConvertToOrder: this.state.orderConfigData
+          .shoppingBagConvertToOrder,
+        ShoppingBagConvertToOrderText: this.state.orderConfigData
+          .shoppingBagConvertToOrderText,
+        AWBAssigned: this.state.orderConfigData.awbAssigned,
+        AWBAssignedText: this.state.orderConfigData.awbAssignedText,
+        PickupScheduled: this.state.orderConfigData.pickupScheduled,
+        PickupScheduledText: this.state.orderConfigData.pickupScheduledText,
+        Shipped: this.state.orderConfigData.shipped,
+        ShippedText: this.state.orderConfigData.shippedText,
+        Delivered: this.state.orderConfigData.delivered,
+        DeliveredText: this.state.orderConfigData.deliveredText,
       },
     })
       .then(function(res) {
@@ -176,6 +190,20 @@ class OrderSetting extends Component {
     } else if (OrderConfig === "ckOrdconfigStoredelivery") {
       this.state.orderConfigData.storeDelivery = !this.state.orderConfigData
         .storeDelivery;
+    } else if (OrderConfig === "OrdshoppingBagConvertToOrder") {
+      this.state.orderConfigData.shoppingBagConvertToOrder = !this.state
+        .orderConfigData.shoppingBagConvertToOrder;
+    } else if (OrderConfig === "OrdAwbAssigned") {
+      this.state.orderConfigData.awbAssigned = !this.state.orderConfigData
+        .awbAssigned;
+    } else if (OrderConfig === "OrdPickupScheduled") {
+      this.state.orderConfigData.pickupScheduled = !this.state.orderConfigData
+        .pickupScheduled;
+    } else if (OrderConfig === "OrdShipped") {
+      this.state.orderConfigData.shipped = !this.state.orderConfigData.shipped;
+    } else if (OrderConfig === "OrdDelivered") {
+      this.state.orderConfigData.delivered = !this.state.orderConfigData
+        .delivered;
     }
     this.setState({ orderConfigData: this.state.orderConfigData });
   };
@@ -276,6 +304,7 @@ class OrderSetting extends Component {
                 onSelect={(index, label) => this.setState({ selTab: label })}
                 selected={this.state.selTab}
               >
+                {/* Don't Remove commented code */}
                 {/* <Tab label="Module">
                   <div className="store-mdl backNone">
                     <div className="row">
@@ -391,7 +420,7 @@ class OrderSetting extends Component {
                                     : "ORDER CONFIGURATION"}
                                 </h3>
                                 <div className="module-switch-cntr">
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
                                         {TranslationContext !== undefined
@@ -415,7 +444,7 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         {TranslationContext !== undefined
@@ -441,7 +470,7 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
                                         {TranslationContext !== undefined
@@ -465,7 +494,7 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0">
                                         {TranslationContext !== undefined
@@ -489,7 +518,7 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         Store as Delivery Partner
@@ -512,7 +541,7 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         Alert Communication via Whatsapp
@@ -535,7 +564,7 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                   </div>
-                                  <div className="module-switch">
+                                  <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
                                         Alert Communication via SMS
@@ -557,6 +586,234 @@ class OrderSetting extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
+                                    {this.state.orderConfigData
+                                      .alertCommunicationviaSMS ? (
+                                      <div className="ordcusinput">
+                                        <input
+                                          type="text"
+                                          name="alertCommunicationSMSText"
+                                          autoComplete="off"
+                                          placeholder={
+                                            TranslationContext !== undefined
+                                              ? TranslationContext.placeholder
+                                                  .providername
+                                              : "Provider name"
+                                          }
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .alertCommunicationSMSText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Shopping bag Converted to Order
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="OrdshoppingBagConvertToOrder"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .shoppingBagConvertToOrder
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="OrdshoppingBagConvertToOrder"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                    {this.state.orderConfigData
+                                      .shoppingBagConvertToOrder ? (
+                                      <div className="ordcusinput1">
+                                        <input
+                                          type="text"
+                                          name="shoppingBagConvertToOrderText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .shoppingBagConvertToOrderText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Awb Assigned
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="OrdAwbAssigned"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData.awbAssigned
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="OrdAwbAssigned"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                    {this.state.orderConfigData.awbAssigned ? (
+                                      <div className="ordcusinput2">
+                                        <input
+                                          type="text"
+                                          name="awbAssignedText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .awbAssignedText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Pickup Scheduled/Generated
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="OrdPickupScheduled"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData
+                                            .pickupScheduled
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="OrdPickupScheduled"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                    {this.state.orderConfigData
+                                      .pickupScheduled ? (
+                                      <div className="ordcusinput3">
+                                        <input
+                                          type="text"
+                                          name="pickupScheduledText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .pickupScheduledText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Shipped
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="OrdShipped"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData.shipped
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="OrdShipped"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                    {this.state.orderConfigData.shipped ? (
+                                      <div className="ordcusinput4">
+                                        <input
+                                          type="text"
+                                          name="shippedText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .shippedText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                  <div className="module-switch ord-m-t20">
+                                    <div className="switch switch-primary">
+                                      <label className="storeRole-name-text m-0 ordSttd-store">
+                                        Delivered
+                                      </label>
+                                      <input
+                                        type="checkbox"
+                                        id="OrdDelivered"
+                                        name="allModules"
+                                        checked={
+                                          this.state.orderConfigData.delivered
+                                        }
+                                        onChange={this.OrderConfigFlagChange.bind(
+                                          this
+                                        )}
+                                      />
+                                      <label
+                                        htmlFor="OrdDelivered"
+                                        className="cr cr-float-auto"
+                                      ></label>
+                                    </div>
+                                    {this.state.orderConfigData.delivered ? (
+                                      <div className="ordcusinput5">
+                                        <input
+                                          type="text"
+                                          name="deliveredText"
+                                          autoComplete="off"
+                                          placeholder="Enter Template"
+                                          maxLength={15}
+                                          value={
+                                            this.state.orderConfigData
+                                              .deliveredText
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
                                   <table className="cmpaign-channel-table">
                                     <tr>
