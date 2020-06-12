@@ -76,11 +76,11 @@ class CheckService extends Component {
     return (
       <>
         <div className="check-svr">
-          <div className="row m-b-10">
-            <div className="col-md-5">
+          <div className="row m-b-10 mx-0">
+            <div className="col-5">
               <label className="naman">Store Pin Code</label>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-6 col-7">
               <input
                 type="text"
                 className="txt-1"
@@ -90,11 +90,11 @@ class CheckService extends Component {
               />
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-5">
+          <div className="row mx-0">
+            <div className="col-5">
               <label className="naman">Enter Pin Code</label>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-6 col-7">
               <input
                 type="text"
                 className="txt-1"
