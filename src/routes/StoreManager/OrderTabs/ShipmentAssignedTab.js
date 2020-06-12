@@ -358,6 +358,7 @@ class ShipmentAssignedTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.actions
                     : "Action",
+                className: "cus-strecth",
                 render: (row, item, index) => {
                   debugger;
                   return item.awbNo !== "" && item.courierPartner.toLowerCase() !== "store" ? (
@@ -698,7 +699,7 @@ class ShipmentAssignedTab extends Component {
                 </div>
               );
             }}
-            expandIconColumnIndex={4}
+            expandIconColumnIndex={3}
             expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}

@@ -2723,6 +2723,11 @@ table tr th:last-child {
   padding: 70px 10px 0 0;
   background-color: rgba(77, 92, 116, 0.2);
 }
+#Pincode-ovrly{
+  padding: 70px 10px 0 0;
+  background-color: rgba(77, 92, 116, 0.2);
+  z-index: 10000;
+}
 #logout-popup .styles_closeButton__20ID4 {
   display: none;
 }
@@ -9886,6 +9891,10 @@ table tr th:last-child {
 .pickuppending-table .form-control {
   margin: 0 !important;
 }
+#addressPincode-popup{
+  width: auto;
+  border-radius: 10px;
+}
 #article-popup {
   width: 800px;
   border-radius: 10px;
@@ -11887,6 +11896,51 @@ table tr th:last-child {
   font-size: 14px;
   color: #666;
   padding-top: 5px;
+}
+.innertabcollapse label b {
+  color: #797979;
+}
+.deliv-grid-butn {
+  width: auto;
+    height: 22px;
+}
+.assign-grid-btn {
+  margin-right: 5px;
+}
+.order-grid-butn {
+  min-width: 80px;
+}
+.step-progress .nav-tabs .nav-item {
+  background: #2561a8;
+  color: #fff;
+}
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background: #2561a8;
+  font-weight: normal;
+}
+.step-progress .nav-line::before {
+  display: none;
+}
+.step-progress .nav-line {
+  font-weight: normal;
+  color: #fff !important;
+}
+.airwaycontent ul {
+  border-top: 1px solid #ddd;
+  display: inline-block;
+  margin: 0 30px 0;
+}
+.dv-status {
+  margin-top: 15px;
+  text-align: right;
+  padding: 0 10px;
+}
+.cus-strecth {
+  display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
 }
   /* program code ends */
 }
