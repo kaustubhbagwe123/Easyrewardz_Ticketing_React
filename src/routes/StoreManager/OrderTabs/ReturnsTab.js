@@ -92,7 +92,7 @@ class ReturnTab extends Component {
       <>
         <div className="table-cntr store dv-table-paging">
           <Table
-            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
+            className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
                 title: "AWB No.",
@@ -150,6 +150,7 @@ class ReturnTab extends Component {
                           />
                         }
                         trigger="click"
+                        placement="bottom"
                         overlayClassName="order-popover-table order-popover"
                         onVisibleChange={(visible) =>
                           this.setState({ orderPopoverOverlay: visible })
@@ -187,7 +188,7 @@ class ReturnTab extends Component {
                       <button className="butn order-grid-butn order-grid-butn-orange">
                         Cancel
                       </button>
-                      <button className="butn order-grid-butn order-grid-butn-yellow ml-2">
+                      <button className="butn order-grid-butn order-grid-butn-yellow retry-butn ml-2">
                         Retry
                       </button>
                     </div>
@@ -198,33 +199,26 @@ class ReturnTab extends Component {
             expandedRowRender={(row, item) => {
               debugger;
               return (
-                <div className="innertabcollapse">
-                  <div className="">
-                    <table className="table">
-                      <tr>
-                        <td>
-                          <label>
-                            <b>Date</b>
-                          </label>
-                          <label>{row.date}</label>
-                        </td>
-                        <td>
-                          <label>
-                            <b>Customer Name</b>
-                          </label>
-                          <label>
-                            <p>{row.customerName}</p>
-                            <p>{row.mobileNumber}</p>
-                          </label>
-                        </td>
-                        <td>
-                          <label>
-                            <b>Status</b>
-                          </label>
-                          <label>{row.statusName}</label>
-                        </td>
-                      </tr>
-                    </table>
+                <div className="order-expanded-cntr">
+                  <div className="row">
+                    <div className="col-6">
+                      <p className="order-expanded-title">Invoice No.</p>
+                      <p>{row.invoiceNo}</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Customer</p>
+                      <p>{row.customerName},</p>
+                      <p className="order-small-font">{row.mobileNumber}</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Date</p>
+                      <p>{row.date}</p>
+                      <p className="order-small-font">{row.time}</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="order-expanded-title">Status</p>
+                      <p>{row.statusName}</p>
+                    </div>
                   </div>
                 </div>
               );
