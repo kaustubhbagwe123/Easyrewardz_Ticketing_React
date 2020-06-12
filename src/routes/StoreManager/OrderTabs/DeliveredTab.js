@@ -357,6 +357,7 @@ class DeliveredTab extends Component {
                             <b>Date</b>
                           </label>
                           <label>{row.date}</label>
+                          <label className="order-small-font">{row.time}</label>
                         </td>
                         <td>
                           <label>
