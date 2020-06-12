@@ -26,7 +26,6 @@ class CheckService extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -58,9 +57,9 @@ class CheckService extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Available.");
+          NotificationManager.success("Delivery Available.");
         } else {
-          NotificationManager.success("Not Available.");
+          NotificationManager.success("Delivery Not Available.");
         }
       })
       .catch((data) => {
@@ -87,6 +86,7 @@ class CheckService extends Component {
                 className="txt-1"
                 placeholder="Store PIN Code"
                 value={this.state.storePinCode}
+                disabled
               />
             </div>
           </div>
