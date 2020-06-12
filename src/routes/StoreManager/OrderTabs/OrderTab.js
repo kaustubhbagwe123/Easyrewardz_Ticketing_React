@@ -151,7 +151,7 @@ class OrderTab extends Component {
       data: {
         InvoiceNumber: item.invoiceNo,
         StoreCode: item.storeCode,
-        SentPaymentLinkCount :item.countSendPaymentLink
+        SentPaymentLinkCount: item.countSendPaymentLink,
       },
     })
       .then(function(res) {
@@ -858,7 +858,7 @@ class OrderTab extends Component {
                           : "Customer"}
                       </p>
                       <p>{row.customerName},</p>
-                      <p className="order-small-font">{row.customerName}</p>
+                      <p className="order-small-font">{row.mobileNumber}</p>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
@@ -914,7 +914,11 @@ class OrderTab extends Component {
                                       ? TranslationContext.p.address
                                       : "Address"}
                                   </p>
-                                  <textarea placeholder="Enter Address"></textarea>
+                                  <textarea
+                                    placeholder="Enter Address"
+                                    name="shippingAddress"
+                                    onChange={this.handleTextOnchage}
+                                  ></textarea>
                                 </div>
                                 <div>
                                   <p>
@@ -930,6 +934,8 @@ class OrderTab extends Component {
                                             .enterlandmark
                                         : "Enter Landmark"
                                     }
+                                    name="landmark"
+                                    onChange={this.handleTextOnchage}
                                   />
                                 </div>
                                 <div className="row">
@@ -947,6 +953,8 @@ class OrderTab extends Component {
                                               .enterpincode
                                           : "Enter Pin Code"
                                       }
+                                      name="pincode"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -963,6 +971,8 @@ class OrderTab extends Component {
                                               .entercity
                                           : "Enter City"
                                       }
+                                      name="city"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                 </div>
@@ -981,6 +991,8 @@ class OrderTab extends Component {
                                               .enterstate
                                           : "Enter State"
                                       }
+                                      name="state"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -997,6 +1009,8 @@ class OrderTab extends Component {
                                               .entercountry
                                           : "Enter Country"
                                       }
+                                      name="country"
+                                      onChange={this.handleTextOnchage}
                                     />
                                   </div>
                                 </div>
@@ -1032,6 +1046,10 @@ class OrderTab extends Component {
                           }
                           icon={false}
                           okText="Save Address"
+                          onConfirm={this.handleUpdateAddressPending.bind(
+                            this,
+                            row.id
+                          )}
                         >
                           <p
                             style={{ cursor: "pointer" }}

@@ -343,7 +343,7 @@ class DeliveredTab extends Component {
                     style={{ color: filtered ? "#1890ff" : undefined }}
                   ></span>
                 ),
-              }
+              },
             ]}
             expandedRowRender={(row, item) => {
               debugger;
@@ -357,6 +357,7 @@ class DeliveredTab extends Component {
                             <b>Date</b>
                           </label>
                           <label>{row.date}</label>
+                          <label className="order-small-font">{row.time}</label>
                         </td>
                         <td>
                           <label>
@@ -379,7 +380,8 @@ class DeliveredTab extends Component {
                 </div>
               );
             }}
-            expandIconColumnIndex={5}
+            expandIconColumnIndex={2}
+            // expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}

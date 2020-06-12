@@ -1709,7 +1709,7 @@
   display: inline-block;
   margin-left: 32px;
 }
-.ordSttd-store{
+.ordSttd-store {
   width: auto !important;
 }
 .Create-role-text {
@@ -3547,7 +3547,72 @@
 }
 
 .slotstorelbl {
-  width: 50%;
+  width: 70%;
   text-align: right;
   margin-right: 10px;
+}
+
+.strdrp-dwn {
+  padding: 10px;
+  margin-top: 25px;
+}
+.pd-10 {
+  padding: 10px;
+}
+.mr-10 {
+  margin: 10px;
+}
+.slt-time-lbl {
+  margin: 10px;
+  margin-left: 0;
+}
+.mx-slt-div {
+  padding: 10px;
+  margin: 10px;
+}
+
+.mr-0 {
+  margin: 0;
+}
+.lbl-fnt-w-400 label {
+  font-weight: 400 !important;
+}
+.mx-slt-div input {
+  width: 50% !important;
+  margin-top: 7px !important;
+}
+
+.ap-select {
+  background: none !important;
+  padding: 5px 7px !important;
+  cursor: auto !important;
+  border-radius: 0px 5px 5px 0px !important;
+  background: #fff;
+}
+
+.slt-non-op-hr-lbl {
+  margin: 10px;
+  margin-left: 40px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.edit-slot-lbl {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  margin-left: 5px;
+}
+.edit-slot-lbl1 {
+  margin-top: 0 !important;
+  margin-left: 106px;
+}
+.edit-slot-lbl2 {
+  margin-top: 0 !important;
+  margin-left: 30px;
 }
