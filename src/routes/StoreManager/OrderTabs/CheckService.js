@@ -109,7 +109,7 @@ class CheckService extends Component {
                 placeholder="PIN Code"
                 name="pin_code"
                 value={this.state.pin_code}
-                maxLength={10}
+                maxLength={6}
                 onChange={this.handleTextOnchange}
               />
               {this.state.pin_code === "" && (
