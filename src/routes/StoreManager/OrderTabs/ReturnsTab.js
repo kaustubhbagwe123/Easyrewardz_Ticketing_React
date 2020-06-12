@@ -12,100 +12,99 @@ import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
 
 class ReturnTab extends Component {
-    constructor(props) {
-      super(props);
-  
-      this.state = {
-        returnGridData: [],
-        totalCount: 0,
-        currentPage: 1,
-        postsPerPage: 10,
-        returnsLoading: false,
-        orderPopoverOverlay: false
-      };
-    }
+  constructor(props) {
+    super(props);
 
-    componentDidMount() {
-      this.handleGetOrderReturnsData();
-    }
+    this.state = {
+      returnGridData: [],
+      totalCount: 0,
+      currentPage: 1,
+      postsPerPage: 10,
+      returnsLoading: false,
+      orderPopoverOverlay: false,
+    };
+  }
 
-    handleGetOrderReturnsData() {
-      debugger;
-      let self = this;
-      var pageNumber = this.state.currentPage;
-      this.setState({
-        returnsLoading: true,
-      });
-      axios({
-        method: "post",
-        url: config.apiUrl + "/HSOrder/GetOrderReturnDetails",
-        headers: authHeader(),
-        data: {
-          SearchText: "",
-          PageNo: pageNumber,
-          PageSize: this.state.postsPerPage,
-          FilterStatus: "",
-        },
+  componentDidMount() {
+    this.handleGetOrderReturnsData();
+  }
+
+  handleGetOrderReturnsData() {
+    debugger;
+    let self = this;
+    var pageNumber = this.state.currentPage;
+    this.setState({
+      returnsLoading: true,
+    });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderReturnDetails",
+      headers: authHeader(),
+      data: {
+        SearchText: "",
+        PageNo: pageNumber,
+        PageSize: this.state.postsPerPage,
+        FilterStatus: "",
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            returnGridData: data.orderReturns,
+            totalCount: data.totalCount,
+            returnsLoading: false,
+          });
+        } else {
+          self.setState({
+            returnGridData: [],
+            totalCount: 0,
+            returnsLoading: false,
+          });
+        }
       })
-        .then(function(res) {
-          debugger;
-          let status = res.data.message;
-          let data = res.data.responseData;
-          if (status === "Success") {
-            self.setState({
-              returnGridData: data.orderReturns,
-              totalCount: data.totalCount,
-              returnsLoading: false,
-            });
-          } else {
-            self.setState({
-              returnGridData: [],
-              totalCount: 0,
-              returnsLoading: false,
-            });
-          }
-        })
-        .catch((data) => {
-          console.log(data);
-        });
-    }
-
-    ReturnPaginationOnChange = async (numPage) => {
-      debugger;
-      await this.setState({
-        currentPage: numPage,
+      .catch((data) => {
+        console.log(data);
       });
-  
-      this.handleGetOrderReturnsData();
-    };
+  }
 
-    handleReturnPageItemchange = async (e) => {
-      await this.setState({
-        postsPerPage: e.target.value,
-      });
-  
-      this.handleGetOrderReturnsData();
-    };
+  ReturnPaginationOnChange = async (numPage) => {
+    debugger;
+    await this.setState({
+      currentPage: numPage,
+    });
 
-    render() {
-      return(
-        <>
-          <div className="table-cntr store dv-table-paging">
+    this.handleGetOrderReturnsData();
+  };
+
+  handleReturnPageItemchange = async (e) => {
+    await this.setState({
+      postsPerPage: e.target.value,
+    });
+
+    this.handleGetOrderReturnsData();
+  };
+
+  render() {
+    return (
+      <>
+        <div className="table-cntr store dv-table-paging">
           <Table
             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
             columns={[
               {
-                title:"AWB No.",
+                title: "AWB No.",
                 dataIndex: "awbNo",
               },
               {
-                title:"Invoice No.",
+                title: "Invoice No.",
                 dataIndex: "invoiceNo",
+                className: "order-desktop",
               },
               {
-                className: "table-coloum-hide",
-                title:"Customer",
-
+                title: "Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -114,9 +113,10 @@ class ReturnTab extends Component {
                     </div>
                   );
                 },
+                className: "order-desktop",
               },
               {
-                title:"Items",
+                title: "Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -127,20 +127,20 @@ class ReturnTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title:"Item ID",
+                                title: "Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title:"Item Name",
+                                title: "Item Name",
                                 dataIndex: "itemName",
                                 width: 150,
                               },
                               {
-                                title:"Item Price",
+                                title: "Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title:"Quantity",
+                                title: "Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -162,8 +162,7 @@ class ReturnTab extends Component {
                 },
               },
               {
-                className: "table-coloum-hide",
-                title:"Date",
+                title: "Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -172,30 +171,27 @@ class ReturnTab extends Component {
                     </div>
                   );
                 },
+                className: "order-desktop",
               },
               {
-                title:"Status",
+                title: "Status",
                 dataIndex: "statusName",
+                className: "order-desktop",
               },
               {
-                title:"Action",
+                title: "Action",
                 render: (row, item) => {
                   debugger;
                   return (
                     <div className="d-flex">
-                      <button
-                        className="btn-proc deliv-grid-butn"
-                      >
+                      <button className="butn order-grid-butn order-grid-butn-orange">
                         Cancel
                       </button>
-                      <button
-                        className="btn-proc deliv-grid-butn"
-                      >
+                      <button className="butn order-grid-butn order-grid-butn-yellow ml-2">
                         Retry
                       </button>
                     </div>
-                  )
-                  
+                  );
                 },
               },
             ]}
@@ -233,7 +229,7 @@ class ReturnTab extends Component {
                 </div>
               );
             }}
-            expandIconColumnIndex={5}
+            expandIconColumnIndex={6}
             expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}
@@ -259,15 +255,13 @@ class ReturnTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>
-                Items per page
-              </p>
+              <p>Items per page</p>
             </div>
           </div>
-        </div> 
-        </>
-      );
-    }
+        </div>
+      </>
+    );
+  }
 }
 
 export default ReturnTab;

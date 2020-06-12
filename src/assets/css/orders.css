@@ -442,6 +442,10 @@
   background: #f3bc17;
   border-color: #f3bc17;
 }
+.order-grid-butn-orange {
+  background: #ef6b00;
+  border-color: #ef6b00;
+}
 .order-status-drpdwn {
   padding: 15px 25px 25px;
 }

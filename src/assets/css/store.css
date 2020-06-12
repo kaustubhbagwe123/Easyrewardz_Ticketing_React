@@ -3602,20 +3602,20 @@ table tr th:last-child {
   border: 1px solid #9b9b9b;
   border-radius: 10px;
   width: 35%;
-  padding: 25px 0px 20px 0px;
+  padding: 25px 0px;
   background: #ffff;
   text-align: center;
   display: inline-block;
-  margin-top: 30px;
+  margin-top: 20px;
 }
-.check-svcBtn{
+.check-svcBtn {
   width: 180px;
   height: 40px;
   background-color: #2561a8;
   color: #fff;
-  margin-top: 15px;
+  margin-top: 25px;
 }
-#check-service-tab{
+#check-service-tab {
   text-align: center;
 }
 
@@ -3846,6 +3846,13 @@ table tr th:last-child {
   .create-appoint-popup {
     padding: 15px !important;
   }
+
+  /* check service starts */
+  .check-svr {
+    width: calc(100% - 30px);
+    margin-top: 5px;
+  }
+  /* check service ends */
 }
 
 @media screen and (max-width: 400px) {
@@ -3921,4 +3928,10 @@ table tr th:last-child {
   .trasactablist {
     margin: 0 -16px;
   }
+
+  /* check service starts */
+  .check-svr {
+    width: calc(100% - 20px);
+  }
+  /* check service ends */
 }
