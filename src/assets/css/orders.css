@@ -277,6 +277,7 @@
   line-height: 12px;
   text-align: center;
   margin-right: 9px;
+  cursor: pointer;
 }
 .btn-cancel-status {
   background-color: #ffffff;
@@ -289,6 +290,7 @@
   font-size: 11px;
   font-weight: 400;
   line-height: 13px;
+  cursor: pointer;
   text-align: center;
 }
 .btn-shipment-popup {
@@ -874,6 +876,11 @@
   .retry-butn {
     min-width: 80px;
   }
+  .return-popover-item.ant-popover-placement-bottom
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    margin-left: -75px;
+  }
   /* returns ends */
 
   /* chetan css ends */
@@ -955,6 +962,11 @@
     min-width: 44px !important;
     padding-right: 5px !important;
     padding-left: 5px !important;
+  }
+  .return-popover-item.ant-popover-placement-bottom
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    margin-left: -60px;
   }
   /* returns ends */
 
@@ -1078,6 +1090,14 @@
     margin-left: -27px;
   }
   /* shopping bag ends */
+
+  /* returns starts */
+  .return-popover-item.ant-popover-placement-bottom
+    > .ant-popover-content
+    > .ant-popover-arrow {
+    margin-left: -50px;
+  }
+  /* returns ends */
 
   /* chetan css ends */
 }

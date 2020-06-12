@@ -58,7 +58,8 @@ class Orders extends Component {
       url: config.apiUrl + "/HSOrder/GetOrderTabSettingDetails",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
+        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -105,7 +106,9 @@ class Orders extends Component {
         )}
         <div className="store-task-tabs orders-tabs-outer">
           <Select
-            defaultValue="shopping-bag"
+            defaultValue={
+              this.state.shoppingBagVisible ? "shopping-bag" : "order"
+            }
             className="order-mobile-dropdown"
             // open={true}
             dropdownClassName="order-mobile-dropdown-menu"
@@ -115,21 +118,25 @@ class Orders extends Component {
             }
           >
             <Option value="shopping-bag">
-              <a
-                className={
-                  this.state.selectedTabs === 1 ? "nav-link active" : "nav-link"
-                }
-                data-toggle="tab"
-                href="#shopping-bag-tab"
-                role="tab"
-                aria-controls="shopping-bag-tab"
-                aria-selected="true"
-                onClick={this.handleChanageNavTabs.bind(this, 1)}
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.a.shoppingbag
-                  : "Shopping Bag"}
-              </a>
+              {this.state.shoppingBagVisible ? (
+                <a
+                  className={
+                    this.state.selectedTabs === 1
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  data-toggle="tab"
+                  href="#shopping-bag-tab"
+                  role="tab"
+                  aria-controls="shopping-bag-tab"
+                  aria-selected="true"
+                  onClick={this.handleChanageNavTabs.bind(this, 1)}
+                >
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.shoppingbag
+                    : "Shopping Bag"}
+                </a>
+              ) : null}
             </Option>
 
             <Option value="order">
