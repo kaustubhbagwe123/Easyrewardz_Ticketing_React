@@ -3618,7 +3618,10 @@ table tr th:last-child {
 #check-service-tab {
   text-align: center;
 }
-
+.main-pincodeDiv {
+  text-align: center;
+  margin-top: 20px;
+}
 @media screen and (max-width: 600px) {
   .customer-count-block {
     background: #f5f6fc;

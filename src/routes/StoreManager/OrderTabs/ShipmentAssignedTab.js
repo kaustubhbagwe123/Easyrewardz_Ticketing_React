@@ -53,7 +53,7 @@ class ShipmentAssignedTab extends Component {
         FilterReferenceNo: "",
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -141,7 +141,7 @@ class ShipmentAssignedTab extends Component {
         IsProceed: IsProceed,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -190,37 +190,194 @@ class ShipmentAssignedTab extends Component {
                 dataIndex: "courierPartner",
                 className: "table-coloum-hide",
               },
+              // {
+              //   title:
+              //     TranslationContext !== undefined
+              //       ? TranslationContext.title.referenceno
+              //       : "Reference No.",
+              //   dataIndex: "referenceNo",
+              //   className: "table-coloum-hide",
+              //   render: (row, item, index) => {
+              //     return (
+              //       <div className="d-flex">
+              //         {item.awbNo !== "" ? (
+              //           item.referenceNo !== "" && item.isProceed === true ? (
+              //             <button className="btn-ref deliv-grid-butn">
+              //               {item.referenceNo}
+              //             </button>
+              //           ) : (
+              //             <button className="btn-ref deliv-grid-butn">
+              //               <input
+              //                 type="text"
+              //                 name="referenceNo"
+              //                 className="enterpod"
+              //                 placeholder={
+              //                   TranslationContext !== undefined
+              //                     ? TranslationContext.placeholder.enterpod
+              //                     : "Reference No"
+              //                 }
+              //                 onChange={this.handlechange.bind(this, index)}
+              //               />
+              //             </button>
+              //           )
+              //         ) : (
+              //           <Popover
+              //             visible={this.state.orderPopoverOverlay}
+              //             content={
+              //               <div className="staffdetailspopup">
+              //                 <label>
+              //                   {TranslationContext !== undefined
+              //                     ? TranslationContext.label.storename
+              //                     : "Store Name"}
+              //                 </label>
+              //                 <input
+              //                   type="text"
+              //                   name="storeName"
+              //                   className="form-control"
+              //                   placeholder={
+              //                     TranslationContext !== undefined
+              //                       ? TranslationContext.placeholder
+              //                           .enterstorename
+              //                       : "Enter Store Name"
+              //                   }
+              //                   value={item.storeName}
+              //                   onChange={this.handlechange.bind(this, index)}
+              //                 />
+              //                 <label>
+              //                   {TranslationContext !== undefined
+              //                     ? TranslationContext.label.staffname
+              //                     : "Staff Name"}
+              //                 </label>
+              //                 <input
+              //                   type="text"
+              //                   name="staffName"
+              //                   className="form-control"
+              //                   placeholder={
+              //                     TranslationContext !== undefined
+              //                       ? TranslationContext.placeholder
+              //                           .enterstaffname
+              //                       : "Enter Staff Name"
+              //                   }
+              //                   value={item.staffName}
+              //                   onChange={this.handlechange.bind(this, index)}
+              //                 />
+              //                 <label>
+              //                   {TranslationContext !== undefined
+              //                     ? TranslationContext.label.mobileno
+              //                     : "Mobile No."}
+              //                 </label>
+              //                 <input
+              //                   type="number"
+              //                   name="mobileNumber"
+              //                   className="form-control"
+              //                   placeholder={
+              //                     TranslationContext !== undefined
+              //                       ? TranslationContext.placeholder
+              //                           .entermobileno
+              //                       : "Enter Mobile No."
+              //                   }
+              //                   value={item.mobileNumber}
+              //                   onChange={this.handlechange.bind(this, index)}
+              //                 />
+              //                 <button
+              //                   type="button"
+              //                   className="popbtnno"
+              //                   onClick={() =>
+              //                     this.setState({ orderPopoverOverlay: false })
+              //                   }
+              //                 >
+              //                   {TranslationContext !== undefined
+              //                     ? TranslationContext.button.cancel
+              //                     : "Cancel"}
+              //                 </button>
+              //                 {item.isProceed !== true ? (
+              //                   <button
+              //                     type="button"
+              //                     className="popbtn"
+              //                     onClick={this.handleUpdateShipmentAssignedData.bind(
+              //                       this,
+              //                       item,
+              //                       false
+              //                     )}
+              //                   >
+              //                     {TranslationContext !== undefined
+              //                       ? TranslationContext.button.done
+              //                       : "Done"}
+              //                   </button>
+              //                 ) : null}
+              //               </div>
+              //             }
+              //             trigger="click"
+              //             overlayClassName="order-popover-table order-popover"
+              //             onVisibleChange={(visible) =>
+              //               this.setState({ orderPopoverOverlay: visible })
+              //             }
+              //           >
+              //             <button className="btn-ref deliv-grid-butn">
+              //               {TranslationContext !== undefined
+              //                 ? TranslationContext.button.staffdetails
+              //                 : "Staff Details"}
+              //             </button>
+              //           </Popover>
+              //         )}
+              //       </div>
+              //     );
+              //   },
+              // },
               {
                 title:
                   TranslationContext !== undefined
-                    ? TranslationContext.title.referenceno
-                    : "Reference No.",
-                dataIndex: "referenceNo",
-                className: "table-coloum-hide",
+                    ? TranslationContext.title.actions
+                    : "Action",
                 render: (row, item, index) => {
-                  return (
+                  debugger;
+                  return item.awbNo !== "" && item.courierPartner.toLowerCase() !== "store" ? (
                     <div className="d-flex">
-                      {item.awbNo !== "" ? (
-                        item.referenceNo !== "" && item.isProceed === true ? (
-                          <button className="btn-ref deliv-grid-butn">
-                            {item.referenceNo}
-                          </button>
-                        ) : (
-                          <button className="btn-ref deliv-grid-butn">
-                            <input
-                              type="text"
-                              name="referenceNo"
-                              className="enterpod"
-                              placeholder={
-                                TranslationContext !== undefined
-                                  ? TranslationContext.placeholder.enterpod
-                                  : "Reference No"
-                              }
-                              onChange={this.handlechange.bind(this, index)}
-                            />
-                          </button>
-                        )
-                      ) : (
+                      {/* <button
+                        className="btn-proc deliv-grid-butn"
+                        onClick={this.handleUpdateShipmentAssignedData.bind(
+                          this,
+                          item,
+                          true
+                        )}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.proceed
+                          : "Proceed"}
+                      </button> */}
+                      <button
+                        className="btn-proc deliv-grid-butn assign-grid-btn"
+                      // onClick={this.handleUpdateShipmentAssignedData.bind(
+                      //   this,
+                      //   item,
+                      //   true
+                      // )}
+                      >
+                        Print Manifest
+                      </button>
+                      <button
+                        className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
+                      // onClick={this.handleUpdateShipmentAssignedData.bind(
+                      //   this,
+                      //   item,
+                      //   true
+                      // )}
+                      >
+                        Print Label
+                      </button>
+                      <button
+                        className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
+                      // onClick={this.handleUpdateShipmentAssignedData.bind(
+                      //   this,
+                      //   item,
+                      //   true
+                      // )}
+                      >
+                        Print Invoice
+                      </button>
+                    </div>
+                  ) : (
+                      <div className="d-flex">
                         <Popover
                           visible={this.state.orderPopoverOverlay}
                           content={
@@ -237,7 +394,7 @@ class ShipmentAssignedTab extends Component {
                                 placeholder={
                                   TranslationContext !== undefined
                                     ? TranslationContext.placeholder
-                                        .enterstorename
+                                      .enterstorename
                                     : "Enter Store Name"
                                 }
                                 value={item.storeName}
@@ -255,7 +412,7 @@ class ShipmentAssignedTab extends Component {
                                 placeholder={
                                   TranslationContext !== undefined
                                     ? TranslationContext.placeholder
-                                        .enterstaffname
+                                      .enterstaffname
                                     : "Enter Staff Name"
                                 }
                                 value={item.staffName}
@@ -273,7 +430,7 @@ class ShipmentAssignedTab extends Component {
                                 placeholder={
                                   TranslationContext !== undefined
                                     ? TranslationContext.placeholder
-                                        .entermobileno
+                                      .entermobileno
                                     : "Enter Mobile No."
                                 }
                                 value={item.mobileNumber}
@@ -291,26 +448,18 @@ class ShipmentAssignedTab extends Component {
                                   : "Cancel"}
                               </button>
                               <button
-                                class="btn-shipment-saveNext"
                                 type="button"
+                                className="popbtn"
+                                onClick={this.handleUpdateShipmentAssignedData.bind(
+                                  this,
+                                  item,
+                                  false
+                                )}
                               >
-                                Done
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.done
+                                  : "Done"}
                               </button>
-                              {item.isProceed !== true ? (
-                                <button
-                                  type="button"
-                                  className="popbtn"
-                                  onClick={this.handleUpdateShipmentAssignedData.bind(
-                                    this,
-                                    item,
-                                    false
-                                  )}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.done
-                                    : "Done"}
-                                </button>
-                              ) : null}
                             </div>
                           }
                           trigger="click"
@@ -319,43 +468,36 @@ class ShipmentAssignedTab extends Component {
                             this.setState({ orderPopoverOverlay: visible })
                           }
                         >
-                          <button className="btn-ref deliv-grid-butn">
+                          <button className="btn-proc deliv-grid-butn assign-grid-btn">
                             {TranslationContext !== undefined
                               ? TranslationContext.button.staffdetails
                               : "Staff Details"}
                           </button>
                         </Popover>
-                      )}
-                    </div>
-                  );
-                },
-              },
-              {
-                title:
-                  TranslationContext !== undefined
-                    ? TranslationContext.title.actions
-                    : "Action",
-                render: (row, item) => {
-                  debugger;
-                  return item.isProceed !== true ? (
-                    <div className="d-flex">
-                      <button
-                        className="btn-proc deliv-grid-butn"
-                        onClick={this.handleUpdateShipmentAssignedData.bind(
-                          this,
-                          item,
-                          true
-                        )}
-                      >
-                        {TranslationContext !== undefined
-                          ? TranslationContext.button.proceed
-                          : "Proceed"}
+                        <button
+                          className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
+                        // onClick={this.handleUpdateShipmentAssignedData.bind(
+                        //   this,
+                        //   item,
+                        //   true
+                        // )}
+                        >
+                          RTO
                       </button>
-                    </div>
-                  ) : (
-                    ""
-                  );
+                        <button
+                          className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
+                        // onClick={this.handleUpdateShipmentAssignedData.bind(
+                        //   this,
+                        //   item,
+                        //   true
+                        // )}
+                        >
+                          Delivered
+                      </button>
+                      </div>
+                    );
                 },
+                width: 120
               },
             ]}
             expandedRowRender={(row, item, index) => {

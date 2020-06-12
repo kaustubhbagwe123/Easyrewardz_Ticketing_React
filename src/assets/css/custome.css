@@ -2723,6 +2723,11 @@ table tr th:last-child {
   padding: 70px 10px 0 0;
   background-color: rgba(77, 92, 116, 0.2);
 }
+#Pincode-ovrly{
+  padding: 70px 10px 0 0;
+  background-color: rgba(77, 92, 116, 0.2);
+  z-index: 10000;
+}
 #logout-popup .styles_closeButton__20ID4 {
   display: none;
 }
@@ -9885,6 +9890,10 @@ table tr th:last-child {
 }
 .pickuppending-table .form-control {
   margin: 0 !important;
+}
+#addressPincode-popup{
+  width: auto;
+  border-radius: 10px;
 }
 #article-popup {
   width: 800px;

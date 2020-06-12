@@ -57,7 +57,7 @@ class CheckService extends Component {
         },
       })
         .then(function(res) {
-          debugger
+          debugger;
           let status = res.data.responseData.available;
           if (status === "true") {
             NotificationManager.success("Delivery Available.");
@@ -76,9 +76,12 @@ class CheckService extends Component {
   }
   /// handle Text onchage
   handleTextOnchange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    var reg = /^[0-9\b]+$/;
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({ [e.target.name]: e.target.value });
+    } else {
+      e.target.value = "";
+    }
   };
   render() {
     return (
