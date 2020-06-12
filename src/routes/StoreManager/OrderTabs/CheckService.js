@@ -10,6 +10,7 @@ class CheckService extends Component {
     this.state = {
       storePinCode: "",
       pin_code: "",
+      pinCodeValidation: "",
     };
   }
 
@@ -43,28 +44,35 @@ class CheckService extends Component {
       });
   }
   /// handle Submit Check service data
-  handleGetCheckServiceData() {
-    debugger;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/CheckCourierAvailibilty",
-      headers: authHeader(),
-      data: {
-        Pickup_postcode: parseInt(this.state.storePinCode),
-        Delivery_postcode: parseInt(this.state.pin_code),
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Delivery Available.");
-        } else {
-          NotificationManager.success("Delivery Not Available.");
-        }
+  handleUpdateCheckServiceData() {
+    var self = this;
+    if (this.state.pin_code !== "") {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/HSOrder/CheckCourierAvailibilty",
+        headers: authHeader(),
+        data: {
+          Pickup_postcode: parseInt(this.state.storePinCode),
+          Delivery_postcode: parseInt(this.state.pin_code),
+        },
       })
-      .catch((data) => {
-        console.log(data);
+        .then(function(res) {
+          debugger
+          let status = res.data.responseData.available;
+          if (status === "true") {
+            NotificationManager.success("Delivery Available.");
+          } else {
+            NotificationManager.error("Delivery Not Available.");
+          }
+        })
+        .catch((data) => {
+          console.log(data);
+        });
+    } else {
+      self.setState({
+        pinCodeValidation: "Please Enter Pin Code",
       });
+    }
   }
   /// handle Text onchage
   handleTextOnchange = (e) => {
@@ -101,14 +109,25 @@ class CheckService extends Component {
                 placeholder="PIN Code"
                 name="pin_code"
                 value={this.state.pin_code}
+                maxLength={10}
                 onChange={this.handleTextOnchange}
               />
+              {this.state.pin_code === "" && (
+                <p
+                  style={{
+                    color: "red",
+                    marginBottom: "0px",
+                  }}
+                >
+                  {this.state.pinCodeValidation}
+                </p>
+              )}
             </div>
           </div>
 
           <button
             className="check-svcBtn"
-            onClick={this.handleGetCheckServiceData.bind(this)}
+            onClick={this.handleUpdateCheckServiceData.bind(this)}
           >
             Submit
           </button>

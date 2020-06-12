@@ -290,6 +290,7 @@ class ShipmentAssignedTab extends Component {
                                   ? TranslationContext.button.cancel
                                   : "Cancel"}
                               </button>
+                              <button class="btn-shipment-saveNext" type="button">Done</button>
                               {item.isProceed !== true ? (
                                 <button
                                   type="button"
