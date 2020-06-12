@@ -1224,24 +1224,26 @@ class OrderTab extends Component {
             onClose={this.handlePincodeMdlModalClose.bind(this)}
             center
             modalId="addressPincode-popup"
-            overlayId="logout-ovrly"
+            overlayId="Pincode-ovrly"
           >
-            <h3>Would you like to add your pincode...</h3>
-            <div className="">
-              <button
-                type="button"
-                className="btn-cancel-status"
-                onClick={this.handlePincodeMdlModalClose.bind(this)}
-              >
-                No
-              </button>
-              <button
-                type="button"
-                className="btn-apply-status"
-                onClick={this.handleSetOrderHasBeenReturn.bind(this)}
-              >
-                Yes
-              </button>
+            <div className="padding-div">
+              <h5>Entered Pincode is Not Shippable</h5>
+              <div className="main-pincodeDiv">
+                <button
+                  type="button"
+                  className="btn-cancel-status"
+                  onClick={this.handlePincodeMdlModalClose.bind(this)}
+                >
+                  Change Pincode
+                </button>
+                <button
+                  type="button"
+                  className="btn-apply-status m-l-40"
+                  onClick={this.handleSetOrderHasBeenReturn.bind(this)}
+                >
+                  Move to Returns
+                </button>
+              </div>
             </div>
           </Modal>
         </div>
