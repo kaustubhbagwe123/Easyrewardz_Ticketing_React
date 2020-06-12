@@ -151,7 +151,7 @@ class OrderTab extends Component {
       data: {
         InvoiceNumber: item.invoiceNo,
         StoreCode: item.storeCode,
-        SentPaymentLinkCount :item.countSendPaymentLink
+        SentPaymentLinkCount: item.countSendPaymentLink,
       },
     })
       .then(function(res) {
@@ -858,7 +858,7 @@ class OrderTab extends Component {
                           : "Customer"}
                       </p>
                       <p>{row.customerName},</p>
-                      <p className="order-small-font">{row.customerName}</p>
+                      <p className="order-small-font">{row.mobileNumber}</p>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
