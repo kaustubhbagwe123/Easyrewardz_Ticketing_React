@@ -9886,6 +9886,10 @@ table tr th:last-child {
 .pickuppending-table .form-control {
   margin: 0 !important;
 }
+#addressPincode-popup{
+  width: auto;
+  border-radius: 10px;
+}
 #article-popup {
   width: 800px;
   border-radius: 10px;

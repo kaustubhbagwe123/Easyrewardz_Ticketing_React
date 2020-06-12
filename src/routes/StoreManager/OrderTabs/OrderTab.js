@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Select } from "antd";
+import { Table, Popover, Popconfirm } from "antd";
 import Modal from "react-responsive-modal";
 import NoPayment from "./../../../assets/Images/no-payment.png";
 import CreditCard from "./../../../assets/Images/credit-card.png";
@@ -38,12 +38,16 @@ class OrderTab extends Component {
       city: "",
       state: "",
       country: "",
+      storePinCode: "",
+      PincodeMdl: false,
+      orderId: 0,
     };
   }
 
   componentDidMount() {
     this.handleGetOrderTabGridData();
     this.handleGetOrderStatusFilterData();
+    this.handleGetCheckServiceData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -165,7 +169,88 @@ class OrderTab extends Component {
         console.log(data);
       });
   }
-
+  /// handle Get Check service data
+  handleGetCheckServiceData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetStorePinCodeByUserID",
+      headers: authHeader(),
+    })
+      .then(function(res) {
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            storePinCode: data,
+          });
+        } else {
+          self.setState({
+            storePinCode: "",
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  /// handle Submit Check service data
+  handleUpdateCheckServiceData(ordId) {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/CheckCourierAvailibilty",
+      headers: authHeader(),
+      data: {
+        Pickup_postcode: parseInt(this.state.storePinCode),
+        Delivery_postcode: parseInt(this.state.pincode),
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.responseData.available;
+        if (status === "false") {
+          self.setState({
+            PincodeMdl: true,
+            orderId: ordId,
+          });
+        } else {
+          self.setState({
+            PincodeMdl: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+  handleSetOrderHasBeenReturn() {
+    var self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/SetOrderHasBeenReturn",
+      headers: authHeader(),
+      params: {
+        orderID: this.state.orderId,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.setState({
+            PincodeMdl: false,
+          });
+        } else {
+          self.setState({
+            PincodeMdl: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
   ///-------------------API function end--------------------------------
 
   ///handle pagination onchage
@@ -263,7 +348,30 @@ class OrderTab extends Component {
       [e.target.name]: e.target.value,
     });
   };
+  /// handle Pin code change
+  handlePinCodeCheck(ordId, e) {
+    debugger;
+    var reg = /^[0-9\b]+$/;
 
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      this.setState({ pincode: e.target.value });
+    } else {
+      e.target.value = "";
+    }
+    if (this.state.pincode.length === 5) {
+      setTimeout(() => {
+        this.handleUpdateCheckServiceData(ordId);
+      }, 100);
+    }
+  }
+
+  ///handle Pin code modla close
+  handlePincodeMdlModalClose() {
+    this.setState({
+      PincodeMdl: false,
+      pincode: "",
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -630,7 +738,13 @@ class OrderTab extends Component {
                                           : "Enter Pin Code"
                                       }
                                       name="pincode"
-                                      onChange={this.handleTextOnchage}
+                                      autoComplete="off"
+                                      maxLength={6}
+                                      value={this.state.pincode}
+                                      onChange={this.handlePinCodeCheck.bind(
+                                        this,
+                                        item.id
+                                      )}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -954,7 +1068,13 @@ class OrderTab extends Component {
                                           : "Enter Pin Code"
                                       }
                                       name="pincode"
-                                      onChange={this.handleTextOnchage}
+                                      autoComplete="off"
+                                      maxLength={6}
+                                      value={this.state.pincode}
+                                      onChange={this.handlePinCodeCheck.bind(
+                                        this,
+                                        row.id
+                                      )}
                                     />
                                   </div>
                                   <div className="col-md-6">
@@ -1093,13 +1213,37 @@ class OrderTab extends Component {
                 <option value={30}>30</option>
               </select>
               <p>
-                {" "}
                 {TranslationContext !== undefined
                   ? TranslationContext.p.itemsperpage
                   : "Items per page"}
               </p>
             </div>
           </div>
+          <Modal
+            open={this.state.PincodeMdl}
+            onClose={this.handlePincodeMdlModalClose.bind(this)}
+            center
+            modalId="addressPincode-popup"
+            overlayId="logout-ovrly"
+          >
+            <h3>Would you like to add your pincode...</h3>
+            <div className="">
+              <button
+                type="button"
+                className="btn-cancel-status"
+                onClick={this.handlePincodeMdlModalClose.bind(this)}
+              >
+                No
+              </button>
+              <button
+                type="button"
+                className="btn-apply-status"
+                onClick={this.handleSetOrderHasBeenReturn.bind(this)}
+              >
+                Yes
+              </button>
+            </div>
+          </Modal>
         </div>
       </>
     );
