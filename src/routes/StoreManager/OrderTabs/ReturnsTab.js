@@ -133,7 +133,7 @@ class ReturnTab extends Component {
                               {
                                 title: "Item Name",
                                 dataIndex: "itemName",
-                                width: 150,
+                                // width: 150,
                               },
                               {
                                 title: "Item Price",
@@ -151,7 +151,7 @@ class ReturnTab extends Component {
                         }
                         trigger="click"
                         placement="bottom"
-                        overlayClassName="order-popover-table order-popover"
+                        overlayClassName="order-popover-table order-popover return-popover-item"
                         onVisibleChange={(visible) =>
                           this.setState({ orderPopoverOverlay: visible })
                         }
