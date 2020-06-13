@@ -148,6 +148,7 @@ class OrderTab extends Component {
   /// handle Sent Payment Link
   handleSentPaymentLink(item) {
     debugger;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/GeneratePaymentLink",
@@ -161,9 +162,13 @@ class OrderTab extends Component {
       .then(function(res) {
         debugger;
         let status = res.data.message;
-        // if (status === "Success") {
-        // } else {
-        // }
+        if (status === "Success") {
+          self.handleGetOrderTabGridData();
+          NotificationManager.success("Link Send Successfully.");
+        }else
+        {
+          NotificationManager.error(status);
+        }
       })
       .catch((data) => {
         console.log(data);
@@ -241,6 +246,7 @@ class OrderTab extends Component {
           self.setState({
             PincodeMdl: false,
           });
+          self.handleGetOrderTabGridData();
         } else {
           self.setState({
             PincodeMdl: false,
@@ -299,6 +305,13 @@ class OrderTab extends Component {
     if (this.state.pincode === "") {
       NotificationManager.error("Please enter pincode.");
       return false;
+    }
+    else{
+      if (this.state.pincode.length < 6)
+      {
+        NotificationManager.error("Please enter 6 digits pincode");
+        return false;
+      }
     }
 
     if (this.state.city === "") {
@@ -949,8 +962,10 @@ class OrderTab extends Component {
                             this,
                             item
                           )}
+                          disabled={item.disablePaymentlinkbutton}
                         >
-                          <button className="butn order-grid-butn">
+                          <button className="butn order-grid-butn"
+                          >
                             {item.actionTypeName}
                           </button>
                         </Popconfirm>
