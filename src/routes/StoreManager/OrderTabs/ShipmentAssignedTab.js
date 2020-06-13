@@ -164,7 +164,36 @@ class ShipmentAssignedTab extends Component {
     
     axios({
       method: "post",
-      url: config.apiUrl + "/HSOrder/UpdateDeliveredByShipAssigned",
+      url: config.apiUrl + "/HSOrder/UpdateShipmentAssignedDelivered",
+      headers: authHeader(),
+      params: {
+        orderID: orderID
+      },
+    })
+      .then(function (res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetShipmentAssignedData();
+          NotificationManager.success("Record Updated Successfully.");
+          self.setState({
+            orderPopoverOverlay: false,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleUpdateShipmentAssignedRTO(orderID)
+  {
+    debugger;
+    let self = this;
+    
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateShipmentAssignedRTO",
       headers: authHeader(),
       params: {
         orderID: orderID
@@ -506,11 +535,10 @@ class ShipmentAssignedTab extends Component {
                         </Popover>
                         <button
                           className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
-                        // onClick={this.handleUpdateShipmentAssignedData.bind(
-                        //   this,
-                        //   item,
-                        //   true
-                        // )}
+                          onClick={this.handleUpdateShipmentAssignedRTO.bind(
+                            this,
+                            item.orderID
+                          )}
                         >
                           RTO
                       </button>

@@ -12454,6 +12454,45 @@ table tr th:last-child {
   right: -135px;
   top: 50px;
 }
+.ord-m-t20{
+  margin-top: 20px !important;
+}
+.ordcusinput{
+  position: absolute;
+  width: 135px;
+  right: -135px;
+  top: 325px;
+}
+.ordcusinput1{
+  position: absolute;
+  width: 250px;
+  right: -249px;
+  top: 371px;
+}
+.ordcusinput2{
+  position: absolute;
+  width: 250px;
+  right: -249px;
+  top: 418px;
+}
+.ordcusinput3{
+  position: absolute;
+  width: 250px;
+  right: -249px;
+  top: 466px;
+}
+.ordcusinput4{
+  position: absolute;
+  width: 250px;
+  right: -249px;
+  top: 513px;
+}
+.ordcusinput5{
+  position: absolute;
+  width: 250px;
+  right: -249px;
+  top: 560px;
+}
 .chatabcus table td {
   color: #333;
 }
