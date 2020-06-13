@@ -178,6 +178,8 @@ class Header extends Component {
       showHistoricalChat: false,
       chatTimeAgo: "",
       rowChatId: 0,
+      storeManagerId: 0,
+      tempCardSearch: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -684,7 +686,13 @@ class Header extends Component {
 
   ////handle chat modal close
   handleChatModalClose() {
-    this.setState({ chatModal: false, searchCardData: [], searchItem: "" });
+    this.setState({
+      chatModal: false,
+      searchCardData: [],
+      searchItem: "",
+      showHistoricalChat: false,
+      isDownbtn: true,
+    });
   }
   ////handle chat modal open
   handleChatModalOpen() {
@@ -711,6 +719,10 @@ class Header extends Component {
     this.handleGetStoreAgentDetailsById(this.state.AgentID);
     this.handleGetAgentList();
     this.handleGetChatNotificationCount();
+    debugger;
+    if (this.state.rowChatId > 0) {
+      this.handleGetChatMessagesList(this.state.chatId);
+    }
   }
 
   ////handleGet Ongoing Chat
@@ -804,7 +816,7 @@ class Header extends Component {
         console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
-  handleUpdateCustomerChatStatus(id, mobileNo, programCode) {
+  handleUpdateCustomerChatStatus(id) {
     let self = this;
 
     axios({
@@ -823,9 +835,8 @@ class Header extends Component {
             chatId: 0,
           });
           self.handleGetOngoingChat();
-
+          self.handleGetChatNotificationCount();
           self.handleGetNewChat();
-        } else {
         }
       })
       .catch((response) => {
@@ -833,14 +844,19 @@ class Header extends Component {
       });
   }
   ////handle get chat messgae by chat id
-  handleGetChatMessagesList(id) {
+  handleGetChatMessagesList(id, RecentChat) {
     let self = this;
+    var forRecentChat = 0;
+    if (RecentChat) {
+      forRecentChat = 1;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/getChatMessagesList",
       headers: authHeader(),
       params: {
         chatID: id,
+        ForRecentChat: forRecentChat,
       },
     })
       .then(function(response) {
@@ -878,7 +894,7 @@ class Header extends Component {
       inputParam.attachment = null;
       inputParam.byCustomer = false;
       inputParam.chatStatus = 0;
-      inputParam.storeManagerId = 0;
+      inputParam.storeManagerId = this.state.storeManagerId;
 
       this.setState({
         message: "",
@@ -965,6 +981,7 @@ class Header extends Component {
           self.setState({
             searchCardData,
             noProductFound: "",
+            tempCardSearch: self.state.searchItem,
           });
         } else {
           self.setState({
@@ -1283,11 +1300,14 @@ class Header extends Component {
     customerId,
     ProgramCode,
     StoreID,
-    isCustEndChat
+    isCustEndChat,
+    storeManagerId
   ) => {
+    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
+          storeManagerId,
           showHistoricalChat: false,
           rowChatId: 0,
           agentRecentChatData: [],
@@ -1327,6 +1347,7 @@ class Header extends Component {
         this.handleGetChatMessagesList(id);
       } else {
         this.setState({
+          storeManagerId,
           rowChatId: 0,
           agentRecentChatData: [],
           showHistoricalChat: false,
@@ -1721,6 +1742,18 @@ class Header extends Component {
     this.setState({ mainTabSelect: e });
     if (e === 2) {
       this.handleGetAgentRecentChat();
+      this.setState({
+        messageData: [],
+        showHistoricalChat: false,
+        rowChatId: 0,
+      });
+    } else {
+      this.setState({
+        messageData: [],
+        showHistoricalChat: false,
+        rowChatId: 0,
+      });
+      this.handleGetChatMessagesList(this.state.chatId);
     }
   }
   ////handle change agent dropdown
@@ -1832,8 +1865,9 @@ class Header extends Component {
   }
 
   handleInsertCardImageUpload(itemcode, e) {
+    debugger;
     if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
-      NotificationManager.error("Please select valid image file");
+      NotificationManager.error("Please select valid image file JPG,JPEG,PNG,");
       return false;
     }
     if (e[0].size > 5242880) {
@@ -1841,14 +1875,14 @@ class Header extends Component {
       return false;
     }
     var formData = new FormData();
-    // formData.append("ItemID", itemcode);
-    // formData.append("ImageUrl ", e);
+    formData.append("files", e[0]);
+    formData.append("ItemID", itemcode);
+    formData.append("SearchText", this.state.tempCardSearch);
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/InsertCardImageUpload",
       headers: authHeader(),
-      // data: formData,
-      params: { ItemID: itemcode, ImageUrl: "" },
+      data: formData,
     })
       .then(function(response) {
         var messgae = response.data.message;
@@ -1904,7 +1938,7 @@ class Header extends Component {
       showHistoricalChat: true,
       chatTimeAgo: e.timeAgo,
     });
-    this.handleGetChatMessagesList(e.chatID);
+    this.handleGetChatMessagesList(e.chatID,1);
   };
   ///handle set row class
   setRowClassName = (record) => {
@@ -2610,7 +2644,8 @@ class Header extends Component {
                               chat.customerID,
                               chat.programCode,
                               chat.storeID,
-                              chat.isCustEndChat
+                              chat.isCustEndChat,
+                              chat.storeManagerId
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -2673,9 +2708,7 @@ class Header extends Component {
                             }
                             onClick={this.handleUpdateCustomerChatStatus.bind(
                               this,
-                              chat.chatID,
-                              chat.mobileNo,
-                              chat.programCode
+                              chat.chatID
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -2858,7 +2891,8 @@ class Header extends Component {
                                   chat.customerID,
                                   chat.programCode,
                                   chat.storeID,
-                                  chat.isCustEndChat
+                                  chat.isCustEndChat,
+                                  chat.storeManagerId
                                 )}
                               >
                                 <div className="chat-face-cntr">
@@ -5580,73 +5614,76 @@ class Header extends Component {
                                     this.historyMessageList = div;
                                   }}
                                 >
-                                  {this.state.messageData !== null
-                                    ? this.state.messageData.map((item, i) => {
-                                        return (
-                                          <div
-                                            key={i}
-                                            className={
-                                              item.byCustomer === true &&
-                                              item.isBotReply !== true
-                                                ? "chat-trail-cntr"
-                                                : "chat-trail-cntr chat-trail-cntr-right"
-                                            }
-                                          >
-                                            <div className="chat-trail-img">
-                                              <span
-                                                className="chat-initial"
-                                                alt="face image"
-                                                title={
-                                                  item.byCustomer
-                                                    ? item.customerName
-                                                    : this.state.UserName
-                                                }
-                                              >
-                                                {item.byCustomer
+                                  {this.state.messageData !== null &&
+                                  this.state.messageData.length > 0 ? (
+                                    this.state.messageData.map((item, i) => {
+                                      return (
+                                        <div
+                                          key={i}
+                                          className={
+                                            item.byCustomer === true &&
+                                            item.isBotReply !== true
+                                              ? "chat-trail-cntr"
+                                              : "chat-trail-cntr chat-trail-cntr-right"
+                                          }
+                                        >
+                                          <div className="chat-trail-img">
+                                            <span
+                                              className="chat-initial"
+                                              alt="face image"
+                                              title={
+                                                item.byCustomer
                                                   ? item.customerName
-                                                      .split(" ")
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()
-                                                  : this.state.UserName.split(
-                                                      " "
-                                                    )
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()}
-                                              </span>
-                                            </div>
-                                            <div className="chat-trail-chat-cntr">
-                                              {item.isBotReply && (
-                                                <p className="bot-mark">
-                                                  {TranslationContext !==
-                                                  undefined
-                                                    ? TranslationContext.p.bot
-                                                    : "BOT"}
-                                                </p>
-                                              )}
-                                              <p className="chat-trail-chat pd-0">
-                                                {ReactHtmlParser(
-                                                  item.message
-                                                    .replace(
-                                                      "col-md-2",
-                                                      "col-md-4"
-                                                    )
-                                                    .replace(
-                                                      "col-md-10",
-                                                      "col-md-8"
-                                                    )
-                                                )}
-                                              </p>
-                                              <span className="chat-trail-time">
-                                                {item.chatDate + " "}
-                                                {item.chatTime}
-                                              </span>
-                                            </div>
+                                                  : this.state.UserName
+                                              }
+                                            >
+                                              {item.byCustomer
+                                                ? item.customerName
+                                                    .split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()
+                                                : this.state.UserName.split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()}
+                                            </span>
                                           </div>
-                                        );
-                                      })
-                                    : null}
+                                          <div className="chat-trail-chat-cntr">
+                                            {item.isBotReply && (
+                                              <p className="bot-mark">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p.bot
+                                                  : "BOT"}
+                                              </p>
+                                            )}
+                                            <p className="chat-trail-chat pd-0">
+                                              {ReactHtmlParser(
+                                                item.message
+                                                  .replace(
+                                                    "col-md-2",
+                                                    "col-md-4"
+                                                  )
+                                                  .replace(
+                                                    "col-md-10",
+                                                    "col-md-8"
+                                                  )
+                                              )}
+                                            </p>
+                                            <span className="chat-trail-time">
+                                              {item.chatDate + " "}
+                                              {item.chatTime}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      );
+                                    })
+                                  ) : (
+                                    <p style={{ margin: "10" }}>
+                                      No record found
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                             ) : null}
@@ -5793,67 +5830,69 @@ class Header extends Component {
                                 this.historyMessageList = div;
                               }}
                             >
-                              {this.state.messageData !== null
-                                ? this.state.messageData.map((item, i) => {
-                                    return (
-                                      <div
-                                        key={i}
-                                        className={
-                                          item.byCustomer === true &&
-                                          item.isBotReply !== true
-                                            ? "chat-trail-cntr"
-                                            : "chat-trail-cntr chat-trail-cntr-right"
-                                        }
-                                      >
-                                        <div className="chat-trail-img">
-                                          <span
-                                            className="chat-initial"
-                                            alt="face image"
-                                            title={
-                                              item.byCustomer
-                                                ? item.customerName
-                                                : this.state.UserName
-                                            }
-                                          >
-                                            {item.byCustomer
+                              {this.state.messageData !== null &&
+                              this.state.messageData.length > 0 ? (
+                                this.state.messageData.map((item, i) => {
+                                  return (
+                                    <div
+                                      key={i}
+                                      className={
+                                        item.byCustomer === true &&
+                                        item.isBotReply !== true
+                                          ? "chat-trail-cntr"
+                                          : "chat-trail-cntr chat-trail-cntr-right"
+                                      }
+                                    >
+                                      <div className="chat-trail-img">
+                                        <span
+                                          className="chat-initial"
+                                          alt="face image"
+                                          title={
+                                            item.byCustomer
                                               ? item.customerName
-                                                  .split(" ")
-                                                  .map((n) => n[0])
-                                                  .join("")
-                                                  .toUpperCase()
-                                              : this.state.UserName.split(" ")
-                                                  .map((n) => n[0])
-                                                  .join("")
-                                                  .toUpperCase()}
-                                          </span>
-                                        </div>
-                                        <div className="chat-trail-chat-cntr">
-                                          {item.isBotReply && (
-                                            <p className="bot-mark">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.bot
-                                                : "BOT"}
-                                            </p>
-                                          )}
-                                          <p className="chat-trail-chat pd-0">
-                                            {ReactHtmlParser(
-                                              item.message
-                                                .replace("col-md-2", "col-md-4")
-                                                .replace(
-                                                  "col-md-10",
-                                                  "col-md-8"
-                                                )
-                                            )}
-                                          </p>
-                                          <span className="chat-trail-time">
-                                            {item.chatDate + " "}
-                                            {item.chatTime}
-                                          </span>
-                                        </div>
+                                              : this.state.UserName
+                                          }
+                                        >
+                                          {item.byCustomer
+                                            ? item.customerName
+                                                .split(" ")
+                                                .map((n) => n[0])
+                                                .join("")
+                                                .toUpperCase()
+                                            : this.state.UserName.split(" ")
+                                                .map((n) => n[0])
+                                                .join("")
+                                                .toUpperCase()}
+                                        </span>
                                       </div>
-                                    );
-                                  })
-                                : null}
+                                      <div className="chat-trail-chat-cntr">
+                                        {item.isBotReply && (
+                                          <p className="bot-mark">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.bot
+                                              : "BOT"}
+                                          </p>
+                                        )}
+                                        <p className="chat-trail-chat pd-0">
+                                          {ReactHtmlParser(
+                                            item.message
+                                              .replace("col-md-2", "col-md-4")
+                                              .replace("col-md-10", "col-md-8")
+                                          )}
+                                        </p>
+                                        <span className="chat-trail-time">
+                                          {item.chatDate + " "}
+                                          {item.chatTime}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  );
+                                })
+                              ) : (
+                                <p style={{ margin: "10px" }}>
+                                  No record found
+                                </p>
+                              )}
                             </div>
                           </div>
                         ) : null}
