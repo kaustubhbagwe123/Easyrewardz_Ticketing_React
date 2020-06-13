@@ -41,6 +41,7 @@ class OrderTab extends Component {
       storePinCode: "",
       PincodeMdl: false,
       orderId: 0,
+      AddressConf: false
     };
   }
 
@@ -295,8 +296,40 @@ class OrderTab extends Component {
 
   handleUpdateAddressPending(orderId) {
     debugger;
-    let self = this;
+    let self = this; 
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/UpdateAddressPending",
+      headers: authHeader(),
+      data: {
+        OrderID: orderId,
+        ShipmentAddress: this.state.shippingAddress,
+        Landmark: this.state.landmark,
+        PinCode: this.state.pincode,
+        City: this.state.city,
+        State: this.state.state,
+        Country: this.state.country,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetOrderTabGridData();
+          self.setState({
+            orderId: 0,
+            AddressConf: false
+          })
+          NotificationManager.success("Record Updated Successfully.");
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
 
+  handleAddressPending(orderId){
+    debugger;
     if (this.state.shippingAddress === "") {
       NotificationManager.error("Please enter address.");
       return false;
@@ -329,33 +362,12 @@ class OrderTab extends Component {
       return false;
     }
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/UpdateAddressPending",
-      headers: authHeader(),
-      data: {
-        OrderID: orderId,
-        ShipmentAddress: this.state.shippingAddress,
-        Landmark: this.state.landmark,
-        PinCode: this.state.pincode,
-        City: this.state.city,
-        State: this.state.state,
-        Country: this.state.country,
-      },
+    this.setState({
+      orderId: orderId,
+      AddressConf: true
     })
-      .then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetOrderTabGridData();
-          NotificationManager.success("Record Updated Successfully.");
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-      });
-  }
 
+  }
   handleTextOnchage = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -383,6 +395,12 @@ class OrderTab extends Component {
     this.setState({
       PincodeMdl: false,
       pincode: "",
+    });
+  }
+
+  handleAddressMdlModalClose() {
+    this.setState({
+      AddressConf: false
     });
   }
   render() {
@@ -844,7 +862,7 @@ class OrderTab extends Component {
                           }
                           icon={false}
                           okText="Save Address"
-                          onConfirm={this.handleUpdateAddressPending.bind(
+                          onConfirm={this.handleAddressPending.bind(
                             this,
                             item.id
                           )}
@@ -1181,7 +1199,7 @@ class OrderTab extends Component {
                           }
                           icon={false}
                           okText="Save Address"
-                          onConfirm={this.handleUpdateAddressPending.bind(
+                          onConfirm={this.handleAddressPending.bind(
                             this,
                             row.id
                           )}
@@ -1261,6 +1279,37 @@ class OrderTab extends Component {
               </div>
             </div>
           </Modal>
+          <Modal
+            open={this.state.AddressConf}
+            onClose={this.handleAddressMdlModalClose.bind(this)}
+            center
+            modalId="addressPincode-popup"
+            overlayId="Pincode-ovrly"
+          >
+            <div className="padding-div">
+              <h5>Are you sure you want to save?</h5>
+              <div className="main-pincodeDiv">
+                <button
+                  type="button"
+                  className="btn-cancel-status"
+                  onClick={this.handleAddressMdlModalClose.bind(this)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn-apply-status m-l-40"
+                  onClick={this.handleUpdateAddressPending.bind(
+                    this,
+                    this.state.orderId
+                  )}
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+          </Modal>
+
         </div>
       </>
     );
