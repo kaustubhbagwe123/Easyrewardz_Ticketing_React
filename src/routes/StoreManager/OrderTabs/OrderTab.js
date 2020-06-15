@@ -7,6 +7,7 @@ import CreditCard from "./../../../assets/Images/credit-card.png";
 import OrderInfo from "./../../../assets/Images/order-info.png";
 import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../../assets/Images/order-bag.png";
+import OrderShopingGreen from "./../../../assets/Images/green-icon.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
@@ -399,6 +400,13 @@ class OrderTab extends Component {
       AddressConf: false,
     });
   }
+  /// handle Close Status filter
+  handleCloseStatusFilter() {
+    this.setState({
+      filterOrderStatus: false,
+    });
+  }
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -421,14 +429,22 @@ class OrderTab extends Component {
                       <div className="invoice-icon-cntr">
                         <img
                           src={
-                            item.isShoppingBagConverted
+                            item.sourceOfOrder === "FTP"
+                              ? OrderShopingGreen
+                              : item.sourceOfOrder === "POS"
+                              ? OrderBag
+                              : item.sourceOfOrder === "Wbot"
                               ? OrderShopingBlack
-                              : OrderBag
+                              : null
                           }
                           className={
-                            item.isShoppingBagConverted
+                            item.sourceOfOrder === "FTP"
                               ? "order-shoping"
-                              : "order-bag"
+                              : item.sourceOfOrder === "POS"
+                              ? "order-bag"
+                              : item.sourceOfOrder === "Wbot"
+                              ? "order-shoping"
+                              : null
                           }
                         />
                       </div>
@@ -679,7 +695,10 @@ class OrderTab extends Component {
                             ? TranslationContext.button.apply
                             : "Apply"}
                         </button>
-                        <button className="btn-cancel-status">
+                        <button
+                          className="btn-cancel-status"
+                          onClick={this.handleCloseStatusFilter.bind(this)}
+                        >
                           {TranslationContext !== undefined
                             ? TranslationContext.button.cancel
                             : "Cancel"}
@@ -982,6 +1001,21 @@ class OrderTab extends Component {
                             {item.actionTypeName}
                           </button>
                         </Popconfirm>
+                      )}
+                      {item.actionTypeName === "Sync Order" && (
+                        <button className="butn order-grid-butn order-grid-butn-yellow">
+                          {item.actionTypeName}
+                        </button>
+                      )}
+                      {item.actionTypeName === "Get Address" && (
+                        <button className="butn order-grid-butn pickedbutn">
+                          {item.actionTypeName}
+                        </button>
+                      )}
+                      {item.actionTypeName === "Ready to Ship" && (
+                        <button className="butn order-grid-butn delibutn">
+                          {item.actionTypeName}
+                        </button>
                       )}
                     </div>
                   );
