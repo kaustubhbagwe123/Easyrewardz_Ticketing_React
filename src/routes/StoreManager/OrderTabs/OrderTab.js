@@ -241,7 +241,6 @@ class OrderTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.setState({
