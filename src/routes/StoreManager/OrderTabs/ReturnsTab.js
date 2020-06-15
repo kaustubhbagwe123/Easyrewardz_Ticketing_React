@@ -22,11 +22,15 @@ class ReturnTab extends Component {
       postsPerPage: 10,
       returnsLoading: false,
       orderPopoverOverlay: false,
+      filterOrderReturnsStatus: false,
+      statusFilterData: [],
+      strStatus: ""
     };
   }
 
   componentDidMount() {
     this.handleGetOrderReturnsData();
+    this.handleGetOrderStatusFilterData();
   }
 
   handleGetOrderReturnsData() {
@@ -35,6 +39,7 @@ class ReturnTab extends Component {
     var pageNumber = this.state.currentPage;
     this.setState({
       returnsLoading: true,
+      filterOrderReturnsStatus: false
     });
     axios({
       method: "post",
@@ -44,7 +49,7 @@ class ReturnTab extends Component {
         SearchText: "",
         PageNo: pageNumber,
         PageSize: this.state.postsPerPage,
-        FilterStatus: "",
+        FilterStatus: this.state.strStatus,
       },
     })
       .then(function(res) {
@@ -86,6 +91,50 @@ class ReturnTab extends Component {
 
     this.handleGetOrderReturnsData();
   };
+
+  handleGetOrderStatusFilterData() {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
+      headers: authHeader(),
+      params: {
+        pageID: 5,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            statusFilterData: data,
+          });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handleCheckReturnsIndividualStatus() {
+    debugger;
+    var checkboxes = document.getElementsByName("ReturnStatus");
+    var strStatus = "";
+    for (var i in checkboxes) {
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strStatus += checkboxes[i].getAttribute("attrIds") + ",";
+        }
+      }
+    }
+    this.setState({
+      strStatus,
+    });
+  }
 
   render() {
     return (
@@ -177,7 +226,60 @@ class ReturnTab extends Component {
               {
                 title: "Status",
                 dataIndex: "statusName",
-                className: "order-desktop",
+                className: "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
+                filterDropdown: (data, row) => {
+                  return (
+                    <div className="campaign-status-drpdwn">
+                      <ul>
+                        {this.state.statusFilterData !== null &&
+                          this.state.statusFilterData.map((item, b) => (
+                            <li>
+                              <input
+                                type="checkbox"
+                                id={"New" + item.statusID}
+                                className="ch1"
+                                onChange={this.handleCheckReturnsIndividualStatus.bind(
+                                  this
+                                )}
+                                // checked={this.state.CheckBoxAllStatus}
+                                name="ReturnStatus"
+                                attrIds={item.statusID}
+                              />
+                              <label htmlFor={"New" + item.statusID}>
+                                <span className="ch1-text">
+                                  {item.statusName}
+                                </span>
+                              </label>
+                            </li>
+                          ))}
+                      </ul>
+                      <div className="dv-status">
+                        <button
+                          className="btn-apply-status"
+                          onClick={this.handleGetOrderReturnsData.bind(this)}
+                        >
+                          Apply
+                        </button>
+                        <button
+                          className="btn-cancel-status"
+                          onClick={() =>
+                            this.setState({ filterOrderReturnsStatus: false })
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  );
+                },
+                filterDropdownVisible: this.state.filterOrderReturnsStatus,
+                onFilterDropdownVisibleChange: (visible) =>
+                  this.setState({ filterOrderReturnsStatus: visible }),
+                filterIcon: (filtered) => (
+                  <span
+                    style={{ color: filtered ? "#1890ff" : undefined }}
+                  ></span>
+                ),
               },
               {
                 title: "Action",
