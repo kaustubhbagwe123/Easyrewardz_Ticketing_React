@@ -41,7 +41,7 @@ class OrderTab extends Component {
       storePinCode: "",
       PincodeMdl: false,
       orderId: 0,
-      AddressConf: false
+      AddressConf: false,
     };
   }
 
@@ -166,8 +166,7 @@ class OrderTab extends Component {
         if (status === "Success") {
           self.handleGetOrderTabGridData();
           NotificationManager.success("Link Send Successfully.");
-        }else
-        {
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -296,7 +295,7 @@ class OrderTab extends Component {
 
   handleUpdateAddressPending(orderId) {
     debugger;
-    let self = this; 
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/UpdateAddressPending",
@@ -318,8 +317,8 @@ class OrderTab extends Component {
           self.handleGetOrderTabGridData();
           self.setState({
             orderId: 0,
-            AddressConf: false
-          })
+            AddressConf: false,
+          });
           NotificationManager.success("Record Updated Successfully.");
         }
       })
@@ -328,7 +327,7 @@ class OrderTab extends Component {
       });
   }
 
-  handleAddressPending(orderId){
+  handleAddressPending(orderId) {
     debugger;
     if (this.state.shippingAddress === "") {
       NotificationManager.error("Please enter address.");
@@ -338,10 +337,8 @@ class OrderTab extends Component {
     if (this.state.pincode === "") {
       NotificationManager.error("Please enter pincode.");
       return false;
-    }
-    else{
-      if (this.state.pincode.length < 6)
-      {
+    } else {
+      if (this.state.pincode.length < 6) {
         NotificationManager.error("Please enter 6 digits pincode");
         return false;
       }
@@ -364,9 +361,8 @@ class OrderTab extends Component {
 
     this.setState({
       orderId: orderId,
-      AddressConf: true
-    })
-
+      AddressConf: true,
+    });
   }
   handleTextOnchage = (e) => {
     this.setState({
@@ -400,7 +396,7 @@ class OrderTab extends Component {
 
   handleAddressMdlModalClose() {
     this.setState({
-      AddressConf: false
+      AddressConf: false,
     });
   }
   render() {
@@ -982,8 +978,7 @@ class OrderTab extends Component {
                           )}
                           disabled={item.disablePaymentlinkbutton}
                         >
-                          <button className="butn order-grid-butn"
-                          >
+                          <button className="butn order-grid-butn">
                             {item.actionTypeName}
                           </button>
                         </Popconfirm>
@@ -1309,7 +1304,6 @@ class OrderTab extends Component {
               </div>
             </div>
           </Modal>
-
         </div>
       </>
     );
