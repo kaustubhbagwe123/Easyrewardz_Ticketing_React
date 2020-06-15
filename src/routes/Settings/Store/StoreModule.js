@@ -2234,10 +2234,11 @@ class StoreModule extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "campaignName",
-                                      "Campaign Name"
+                                      TranslationContext!==undefined?TranslationContext.span.campaignname:"Campaign Name"
                                     )}
                                   >
-                                    Campaign Name
+                                    {TranslationContext!==undefined?TranslationContext.span.campaignname:"Campaign Name"}
+                                    
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
@@ -3503,13 +3504,15 @@ class StoreModule extends Component {
                                   style={{ margin: "0px", marginLeft: "30px" }}
                                 >
                                   <div className="strdrp-dwn">
-                                    <label></label>
+                                    <label>{TranslationContext!==undefined?TranslationContext.label.selectstore:"Select Store"}</label>
                                     <select
                                       name="selectStore"
                                       value={this.state.selectStore}
                                       onChange={this.handleDrop_downOnchange}
                                     >
-                                      <option value={0}>Store code</option>
+                                      <option value={0}>
+                                      {TranslationContext!==undefined?TranslationContext.option.storecode:"Store code"}
+                                      </option>
                                       {this.state.storeCodeData !== null &&
                                         this.state.storeCodeData.map(
                                           (item, s) => (
@@ -3536,9 +3539,12 @@ class StoreModule extends Component {
                                   </div>
                                   <div className="pd-10">
                                     <label className="mr-10">
-                                      Store Open Time
+                                    {TranslationContext!==undefined?TranslationContext.label.storeopentime:"Store Open Time"}
+                                      
                                     </label>
-                                    <label>Store Close Time</label>
+                                    <label>
+                                    {TranslationContext!==undefined?TranslationContext.label.storeclosetime:"Store Close Time"}
+                                    </label>
                                     <div className="slot-timings">
                                       <div className="d-flex">
                                         <select
@@ -3569,8 +3575,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                          <option value="AM">
+                                           AM
+                                          </option>
+                                          <option value="PM">
+                                          PM
+                                          </option>
                                         </select>
                                       </div>
                                       <span className="slot-to">
@@ -3615,7 +3625,8 @@ class StoreModule extends Component {
                                   </div>
                                   <div className="pd-10">
                                     <label className="slt-time-lbl">
-                                      Slot Duration
+                                    {TranslationContext!==undefined?TranslationContext.label.slotduration:"Slot Duration"}
+                                      
                                     </label>
                                     <div className="slot-timings mr-0">
                                       <div className="d-flex">
@@ -3640,7 +3651,9 @@ class StoreModule extends Component {
                                     </div>
                                   </div>
                                   <div className="mx-slt-div">
-                                    <label>Max Cpty Per Slot</label>
+                                    <label>
+                                    {TranslationContext!==undefined?TranslationContext.label.maxcptyperslot:"Max Cpty Per Slot"}
+                                    </label>
                                     <input
                                       className="mx-slt-txt"
                                       type="text"
@@ -3664,7 +3677,8 @@ class StoreModule extends Component {
                                   </div>
                                 </div>
                                 <label className="slt-non-op-hr-lbl">
-                                  Store Non-Oprational Hour
+                                {TranslationContext!==undefined?TranslationContext.label.storenonoperationalhours:"Store Non-Oprational Hour"}
+                                  
                                 </label>
 
                                 <div
@@ -3676,10 +3690,13 @@ class StoreModule extends Component {
                                       className="mr-10"
                                       style={{ marginLeft: "40px" }}
                                     >
-                                      From
+                                       {TranslationContext!==undefined?TranslationContext.label.from:"From"}
+                                  
+                                      
                                     </label>
                                     <label style={{ marginLeft: "80px" }}>
-                                      To
+                                    {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                                      
                                     </label>
                                     <div className="slot-timings">
                                       <div className="d-flex">
@@ -3757,7 +3774,8 @@ class StoreModule extends Component {
                                   </div>
                                   <div style={{ marginLeft: "35px" }}>
                                     <label className="mr-10">
-                                      Appointment Days
+                                    {TranslationContext!==undefined?TranslationContext.label.appointmentdays:"Appointment Days"}
+                                      
                                     </label>
                                     <div
                                       className="slot-timings"
@@ -3810,7 +3828,8 @@ class StoreModule extends Component {
                                 >
                                   <label className="slotstorelbl">
                                     {" "}
-                                    Select Store Code
+                                    
+                                    {TranslationContext!==undefined?TranslationContext.label.selectstorecode:"Select Store Code"}
                                   </label>
                                   <select
                                     style={{ width: "30%" }}

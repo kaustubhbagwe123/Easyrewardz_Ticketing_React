@@ -389,7 +389,19 @@
       "shipment":"शिपमेंट",
       "clearsearch":"स्पष्ट खोज",
       "notes":"टिप्पणियाँ",
-      "orders":"आदेश"
+      "orders":"आदेश",
+      "chat":"चैट",
+      "charditemconfiguration":"कार्ड की सूचना",
+      "cardassestsconfiguration":"कार्ड संपत्ति विन्यास",
+      "selectstorecode":"स्टोर कोड चुनें",
+      "selectstore":"स्टोर का चयन करें",
+      "storeopentime":"स्टोर ओपन टाइम",
+      "storeclosetime":"स्टोर बंद समय",
+      "slotduration":"स्लॉट अवधि",
+      "maxcptyperslot":"अधिकतम खाली प्रति स्लॉट",
+      "storenonoperationalhours":"नॉन-ऑप्रेशनल घंटा स्टोर करें",
+      "from":"से",
+      "appointmentdays":"नियुक्ति के दिन"
     
    
    
@@ -900,7 +912,8 @@
       "creditcard":"क्रेडिट कार्ड",
       "itemidshownbelowmappedtothisorder":"इस क्रम में मैप की गई आइटम आईडी को नीचे दिखाया गया है",
       "only":"केवल।",
-      "selectanyitemidyouwanttosendforshipment":"किसी भी आइटम आईडी का चयन करें, जिसे आप शिपमेंट के लिए भेजना चाहते हैं।"
+      "selectanyitemidyouwanttosendforshipment":"किसी भी आइटम आईडी का चयन करें, जिसे आप शिपमेंट के लिए भेजना चाहते हैं।",
+      "campaignname":"अभियान का नाम"
     
      
       
@@ -1077,7 +1090,9 @@
       "campaignchannel":"अभियान चैनल",
       "slotsettings":"स्लॉट सेटिंग्स",
       "languagesettings":"भाषा सेटिंग",
-      "orderconfiguration":"आदेश विन्यास"
+      "orderconfiguration":"आदेश विन्यास",
+      "charditemconfiguration":"कार्ड की सूचना",
+      "cardassestsconfiguration":"कार्ड संपत्ति विन्यास"
     },
     "h4": {
       "personaldetails":"व्यक्तिगत विवरण",
@@ -1258,6 +1273,7 @@
       "ticketstatus":"टिकट की स्थिति",
       "selectcategory":"श्रेणी का चयन करें",
       "selectissuetype":"समस्या का प्रकार चुनें"
+    
     },
     "radio":{
         "email":"ईमेल",
