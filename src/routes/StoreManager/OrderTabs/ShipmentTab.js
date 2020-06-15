@@ -42,6 +42,7 @@ class ShipmentTab extends Component {
       AirwayItemIds: 0,
       createdShoppingTabs: false,
       airWayBill2ndTab: false,
+      PickPendingvisisble: false,
     };
   }
 
@@ -335,6 +336,12 @@ class ShipmentTab extends Component {
   handleCloseStatusFilter() {
     this.setState({
       filterShipmentStatus: false,
+    });
+  }
+  /// close pick up pending pophover
+  handleClosePickPending() {
+    this.setState({
+      PickPendingvisisble: false,
     });
   }
   render() {
@@ -631,6 +638,9 @@ class ShipmentTab extends Component {
                                         <button
                                           type="button"
                                           className="popbtnno"
+                                          onClick={this.handleClosePickPending.bind(
+                                            this
+                                          )}
                                         >
                                           {TranslationContext !== undefined
                                             ? TranslationContext.button.no
@@ -645,6 +655,7 @@ class ShipmentTab extends Component {
                             trigger="click"
                             overlayClassName="order-popover order-popover-butns"
                             placement="bottomRight"
+                            visible={this.state.PickPendingvisisble}
                             // onVisibleChange={(visible) =>
                             //   this.setState({ orderPopoverOverlay: visible })
                             // }
@@ -930,6 +941,7 @@ class ShipmentTab extends Component {
                         <button
                           className="btn-shipment-popup"
                           style={{ marginRight: "10px" }}
+                          onClick={this.handleShipmentModalClose.bind(this)}
                         >
                           Cancel
                         </button>
@@ -994,6 +1006,7 @@ class ShipmentTab extends Component {
                         <button
                           className="btn-shipment-popup"
                           style={{ marginRight: "10px" }}
+                          onClick={this.handleShipmentModalClose.bind(this)}
                         >
                           Cancel
                         </button>
