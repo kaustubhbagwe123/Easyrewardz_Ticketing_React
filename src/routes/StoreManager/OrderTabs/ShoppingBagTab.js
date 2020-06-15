@@ -656,136 +656,141 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <div className="d-flex">
-                      <Popconfirm
-                        title={
-                          <>
-                            <div className="popover-input-cntr">
-                              <div>
-                                <p>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.orderid
-                                    : "Order Id"}
-                                </p>
-                                <input
-                                  type="text"
-                                  placeholder="Enter Order Id"
-                                  name="invoiceNo"
-                                  value={this.state.invoiceNo}
-                                  onChange={this.handleTextOnchage}
-                                  autoComplete="off"
-                                />
-                                {this.state.invoiceNo === "" && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
-                                    }}
-                                  >
-                                    {this.state.invoiceNovalidation}
-                                  </p>
-                                )}
-                              </div>
-                              <div>
-                                <p>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.amount
-                                    : "Amount"}
-                                </p>
-                                <input
-                                  type="text"
-                                  placeholder={
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.placeholder.amount
-                                      : "Enter Amount"
-                                  }
-                                  name="amountNo"
-                                  value={this.state.amountNo}
-                                  onChange={this.handleTextOnchage}
-                                  autoComplete="off"
-                                />
-                                {this.state.amountNo === "" && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
-                                    }}
-                                  >
-                                    {this.state.amountNoValidation}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </>
-                        }
-                        overlayClassName="order-popover order-popover-butns"
-                        placement="bottomRight"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                        icon={false}
-                        okText="Done"
-                        onConfirm={this.handleConvertToOrder.bind(
-                          this,
-                          item.shoppingID
-                        )}
-                      >
-                        <button className="butn order-grid-butn">
-                          {TranslationContext !== undefined
-                            ? TranslationContext.button.convertoorder
-                            : "Convert to Order"}
-                        </button>
-                      </Popconfirm>
-                      <Popconfirm
-                        title={
-                          <>
-                            <div className="popover-input-cntr">
-                              <div>
-                                <p>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.comment
-                                    : "Comment"}
-                                </p>
-                                <textarea
-                                  placeholder={
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.placeholder
-                                          .entercomment
-                                      : "Enter Comment"
-                                  }
-                                  value={this.state.ShopCancelComment}
-                                  name="ShopCancelComment"
-                                  onChange={this.handleTextOnchage}
-                                ></textarea>
-                                {this.state.ShopCancelComment === "" && (
-                                  <p
-                                    style={{
-                                      color: "red",
-                                      marginBottom: "0px",
-                                    }}
-                                  >
-                                    {this.state.cancelCommentValidation}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </>
-                        }
-                        overlayClassName="order-popover order-popover-butns shopping-popover-delete"
-                        placement="bottomRight"
-                        onVisibleChange={(visible) =>
-                          this.setState({ orderPopoverOverlay: visible })
-                        }
-                        icon={false}
-                        okText="Remove"
-                        onConfirm={this.handleCancleAndCommnetShopBag.bind(
-                          this,
-                          item.shoppingID
-                        )}
-                      >
-                        <button className="butn order-grid-butn order-del-butn">
-                          <img src={OrderDel} alt="delete icon" />
-                        </button>
-                      </Popconfirm>
+                      {item.actionTypeName !== "" ? (
+                        <>
+                          <Popconfirm
+                            title={
+                              <>
+                                <div className="popover-input-cntr">
+                                  <div>
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.orderid
+                                        : "Order Id"}
+                                    </p>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter Order Id"
+                                      name="invoiceNo"
+                                      value={this.state.invoiceNo}
+                                      onChange={this.handleTextOnchage}
+                                      autoComplete="off"
+                                    />
+                                    {this.state.invoiceNo === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.invoiceNovalidation}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.amount
+                                        : "Amount"}
+                                    </p>
+                                    <input
+                                      type="text"
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .amount
+                                          : "Enter Amount"
+                                      }
+                                      name="amountNo"
+                                      value={this.state.amountNo}
+                                      onChange={this.handleTextOnchage}
+                                      autoComplete="off"
+                                    />
+                                    {this.state.amountNo === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.amountNoValidation}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </>
+                            }
+                            overlayClassName="order-popover order-popover-butns"
+                            placement="bottomRight"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                            icon={false}
+                            okText="Done"
+                            onConfirm={this.handleConvertToOrder.bind(
+                              this,
+                              item.shoppingID
+                            )}
+                          >
+                            <button className="butn order-grid-butn">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.convertoorder
+                                : "Convert to Order"}
+                            </button>
+                          </Popconfirm>
+                          <Popconfirm
+                            title={
+                              <>
+                                <div className="popover-input-cntr">
+                                  <div>
+                                    <p>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.comment
+                                        : "Comment"}
+                                    </p>
+                                    <textarea
+                                      placeholder={
+                                        TranslationContext !== undefined
+                                          ? TranslationContext.placeholder
+                                              .entercomment
+                                          : "Enter Comment"
+                                      }
+                                      value={this.state.ShopCancelComment}
+                                      name="ShopCancelComment"
+                                      onChange={this.handleTextOnchage}
+                                    ></textarea>
+                                    {this.state.ShopCancelComment === "" && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        {this.state.cancelCommentValidation}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </>
+                            }
+                            overlayClassName="order-popover order-popover-butns shopping-popover-delete"
+                            placement="bottomRight"
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                            icon={false}
+                            okText="Remove"
+                            onConfirm={this.handleCancleAndCommnetShopBag.bind(
+                              this,
+                              item.shoppingID
+                            )}
+                          >
+                            <button className="butn order-grid-butn order-del-butn">
+                              <img src={OrderDel} alt="delete icon" />
+                            </button>
+                          </Popconfirm>
+                        </>
+                      ) : null}
                     </div>
                   );
                 },

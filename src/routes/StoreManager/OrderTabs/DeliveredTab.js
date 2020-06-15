@@ -278,7 +278,7 @@ class DeliveredTab extends Component {
                     ? TranslationContext.title.status
                     : "Status",
                 className:
-                  "camp-status-header camp-status-header-statusFilter table-coloum-hide",
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
