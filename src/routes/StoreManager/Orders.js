@@ -207,14 +207,32 @@ class Orders extends Component {
             </Option>
             <Option value="returns">
               <a
-                className="nav-link"
+                className={
+                  this.state.selectedTabs === 6 ? "nav-link active" : "nav-link"
+                }
                 data-toggle="tab"
                 href="#returns-tab"
                 role="tab"
                 aria-controls="returns-tab"
                 aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 6)}
               >
                 Returns
+              </a>
+            </Option>
+            <Option value="check-service">
+              <a
+                className={
+                  this.state.selectedTabs === 7 ? "nav-link active" : "nav-link"
+                }
+                data-toggle="tab"
+                href="#check-service-tab"
+                role="tab"
+                aria-controls="check-service-tab"
+                aria-selected="false"
+                onClick={this.handleChanageNavTabs.bind(this, 7)}
+              >
+                Check Service
               </a>
             </Option>
           </Select>

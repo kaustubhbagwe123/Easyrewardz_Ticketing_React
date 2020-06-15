@@ -637,7 +637,7 @@
 /* chetan css ends */
 
 /* responsive starts */
-.assign-grid-btn{
+.assign-grid-btn {
   margin-right: 25px;
 }
 
@@ -714,6 +714,7 @@
   .order-mobile-dropdown-menu .ant-select-dropdown-menu {
     /* padding: 0; */
     border-radius: 5px;
+    max-height: 300px;
   }
   .order-mobile-dropdown-menu {
     border-radius: 5px;
@@ -886,7 +887,7 @@
   /* chetan css ends */
   .deliv-grid-butn {
     width: auto;
-      height: 22px;
+    height: 22px;
   }
   .assign-grid-btn {
     margin-right: 5px;
@@ -1103,4 +1104,3 @@
 }
 
 /* responsive ends */
-

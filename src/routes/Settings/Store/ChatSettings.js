@@ -399,7 +399,7 @@ class ChatSettings extends Component {
                 }
                 selected={this.state.selectedTab}
               >
-                <Tab label={"CHAT"}>
+                <Tab label={TranslationContext!==undefined?TranslationContext.label.chat:"CHAT"}>
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div
@@ -557,14 +557,14 @@ class ChatSettings extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={"CARD ITEM CONFIGURATION"}>
+                <Tab label={TranslationContext!==undefined?TranslationContext.label.charditemconfiguration:"CARD ITEM CONFIGURATION"}>
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div className="card" style={{ height: "auto" }}>
                         <div className="row">
                           <div className="col-md-5 m-auto">
                             <div className="right-sect-div">
-                              <h3>CARD ITEM CONFIGURATION</h3>
+                                  <h3>{TranslationContext!==undefined?TranslationContext.h3.charditemconfiguration:"CARD ITEM CONFIGURATION"}</h3>
                               {/* <div className="cmpaign-channel-table slot-setting-options">
                                 <div className="w-100">
                                   <input
@@ -671,7 +671,7 @@ class ChatSettings extends Component {
                                   this
                                 )}
                               >
-                                UPDATE
+                                {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
                                 {this.state.isLoadingUpdate ? (
                                   <FontAwesomeIcon
                                     className="circular-loader chatsettingload"
@@ -689,14 +689,14 @@ class ChatSettings extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={"CARD ASSETS CONFIGURATION"}>
+                <Tab label={TranslationContext!==undefined?TranslationContext.label.cardassestsconfiguration:"CARD ASSETS CONFIGURATION"}>
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div className="card" style={{ height: "auto" }}>
                         <div className="row">
                           <div className="col-md-5 m-auto">
                             <div className="right-sect-div">
-                              <h3>CARD ASSETS CONFIGURATION</h3>
+                                <h3>{TranslationContext!==undefined?TranslationContext.h3.cardassestsconfiguration:"CARD ASSETS CONFIGURATION"}</h3>
                               <div className="module-switch crm-margin-div crm-padding-div">
                                 <div className="switch switch-primary d-inline m-r-10">
                                   {this.state.approvalTypeData != null
@@ -739,7 +739,8 @@ class ChatSettings extends Component {
                                   this
                                 )}
                               >
-                                SUBMIT
+                                {TranslationContext!==undefined?TranslationContext.button.submit:"SUBMIT"}
+                                
                                 {this.state.isLoadingAdd ? (
                                   <FontAwesomeIcon
                                     className="circular-loader chatsettingload"

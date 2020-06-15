@@ -331,7 +331,12 @@ class ShipmentTab extends Component {
 
     this.handleGetShipmentTabGridData();
   };
-
+  /// handle close status filter
+  handleCloseStatusFilter() {
+    this.setState({
+      filterShipmentStatus: false,
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -467,7 +472,7 @@ class ShipmentTab extends Component {
                     ? TranslationContext.title.status
                     : "Status",
                 className:
-                  "camp-status-header camp-status-header-statusFilter table-coloum-hide",
+                  "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 render: (row, item) => {
                   return (
                     <>
@@ -517,7 +522,10 @@ class ShipmentTab extends Component {
                             ? TranslationContext.button.apply
                             : "Apply"}
                         </button>
-                        <button className="btn-cancel-status">
+                        <button
+                          className="btn-cancel-status"
+                          onClick={this.handleCloseStatusFilter.bind(this)}
+                        >
                           {TranslationContext !== undefined
                             ? TranslationContext.button.cancel
                             : "Cancel"}
@@ -700,30 +708,40 @@ class ShipmentTab extends Component {
                   <table>
                     <tr>
                       <td>
-                        <label><b>Customer Name</b></label>
+                        <label>
+                          <b>Customer Name</b>
+                        </label>
                         <label>
                           <p>{row.customerName}</p>
                           <p>{row.mobileNumber}</p>
                         </label>
                       </td>
                       <td>
-                        <label><b>Shipping Address</b></label>
+                        <label>
+                          <b>Shipping Address</b>
+                        </label>
                         <label>{row.shippingAddress}</label>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <label><b>Delivery Type</b></label>
+                        <label>
+                          <b>Delivery Type</b>
+                        </label>
                         <label>{row.deliveryTypeName}</label>
                       </td>
                       <td>
-                        <label><b>Status</b></label>
+                        <label>
+                          <b>Status</b>
+                        </label>
                         <label>{row.statusName}</label>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <label><b>Partner</b></label>
+                        <label>
+                          <b>Partner</b>
+                        </label>
                         <label>{row.Partner}</label>
                       </td>
                     </tr>
