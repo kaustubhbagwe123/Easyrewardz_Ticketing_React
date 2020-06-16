@@ -422,6 +422,7 @@ class OrderTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
+                key: "invoiceNo",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -913,15 +914,16 @@ class OrderTab extends Component {
                             <div className="order-tab-popover">
                               <div className="pay-done">
                                 <p>
-                                  {TranslationContext !== undefined
+                                  {/* {TranslationContext !== undefined
                                     ? TranslationContext.p.modeofpayment
-                                    : "Mode of Payment"}
-                                  :
+                                    : "Mode of Payment"} */}{" "}
+                                  Payment Date :
                                 </p>
                                 <span>
-                                  {TranslationContext !== undefined
+                                  {/* {TranslationContext !== undefined
                                     ? TranslationContext.span.online
-                                    : "Online"}
+                                    : "Online"} */}{" "}
+                                  {item.paymentBillDate}
                                 </span>
                               </div>
                               <div className="pay-done">
@@ -933,7 +935,8 @@ class OrderTab extends Component {
                                 </p>
                                 <span>{item.amount}</span>
                               </div>
-                              <div className="pay-done">
+                              {/* -----------Don't remove commented code------------------ */}
+                              {/* <div className="pay-done">
                                 <p>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.p.paymentvia
@@ -950,7 +953,7 @@ class OrderTab extends Component {
                                     ? TranslationContext.span.creditcard
                                     : "Credit Card"}
                                 </span>
-                              </div>
+                              </div> */}
                             </div>
                           }
                           trigger="click"
@@ -1022,6 +1025,12 @@ class OrderTab extends Component {
                           {item.actionTypeName}
                         </button>
                       )}
+
+                      {item.actionTypeName === "Update Payment" && (
+                        <button className="butn order-grid-butn order-grid-butn-yellow">
+                          {item.actionTypeName}
+                        </button>
+                      )}
                     </div>
                   );
                 },
@@ -1047,7 +1056,8 @@ class OrderTab extends Component {
                           ? TranslationContext.p.status
                           : "Status"}
                       </p>
-                      <p className="order-clr-blue">{row.statusName}</p>
+                      <p >{row.statusName}</p>
+                      {/* <p className="order-clr-blue">{row.statusName}</p> */}
                       {/* {row.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
                       )} */}

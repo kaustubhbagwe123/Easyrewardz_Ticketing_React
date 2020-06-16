@@ -361,7 +361,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
-
+                key:"invoiceNo",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -555,7 +555,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.partner
                     : "Partner",
-                dataIndex: "Partner",
+                dataIndex: "courierPartner",
                 className: "table-coloum-hide",
                 width: 150,
               },
@@ -753,7 +753,7 @@ class ShipmentTab extends Component {
                         <label>
                           <b>Partner</b>
                         </label>
-                        <label>{row.Partner}</label>
+                        <label>{row.courierPartner}</label>
                       </td>
                     </tr>
                   </table>

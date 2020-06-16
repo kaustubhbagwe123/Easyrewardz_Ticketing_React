@@ -3517,7 +3517,9 @@ class Dashboard extends Component {
           debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
-            NotificationManager.success("Save Search parameter successfully.");
+            NotificationManager.success(
+              "Your search has been saved successfully."
+            );
             self.handleGetSaveSearchList();
             self.setState({
               SearchName: "",

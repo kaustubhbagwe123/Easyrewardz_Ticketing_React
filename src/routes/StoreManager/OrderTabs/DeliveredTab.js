@@ -178,6 +178,7 @@ class DeliveredTab extends Component {
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
                 dataIndex: "invoiceNo",
+                key:"invoiceNo"
               },
               {
                 className: "table-coloum-hide",
@@ -293,7 +294,7 @@ class DeliveredTab extends Component {
                       <ul>
                         {this.state.statusFilterData !== null &&
                           this.state.statusFilterData.map((item, b) => (
-                            <li>
+                            <li key={b}>
                               <input
                                 type="checkbox"
                                 id={"New" + item.statusID}

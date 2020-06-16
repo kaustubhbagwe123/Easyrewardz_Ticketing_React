@@ -84,6 +84,7 @@
   border-radius: 3px;
   min-width: 121px;
   text-transform: initial;
+  cursor: pointer;
 }
 .order-del-butn img {
   width: 13px;
@@ -357,6 +358,7 @@
   background-color: #2561a8;
   border: 1px solid #2561a8;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .dv-table-paging .react-pagination-js-bootstrap ul {
