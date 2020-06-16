@@ -153,7 +153,8 @@ class Header extends Component {
       isSendRecomended: false,
       chatAccess: "none",
       noProductFound: "",
-      remainingCount: "100 characters remaining...",
+      remainingCount: "",
+      tempRemainingCount: "",
       noRecommendedFound: "",
       suggestionModal: false,
       suggestionText: "",
@@ -231,6 +232,7 @@ class Header extends Component {
       );
       this.handleGetNotigfication();
       this.handleGetChatNotificationCount();
+      this.handleGetChatSession();
     }
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -960,7 +962,7 @@ class Header extends Component {
               tempmessageSuggestionData: [],
               cardModal: false,
               selectedCard: 0,
-              remainingCount: "100 characters remaining...",
+              remainingCount: self.state.tempRemainingCount,
               suggestionModal: false,
               suggestionModalMob: false,
             });
@@ -1242,15 +1244,15 @@ class Header extends Component {
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
     // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     var remLength = 0;
-    remLength = 100 - parseInt(message.length);
+    remLength = 200 - parseInt(message.length);
     if (remLength < 0) {
-      message = message.substring(0, 100);
+      message = message.substring(0, 200);
       return false;
     }
 
     this.setState({
       message,
-      remainingCount: remLength + " characters remaining...",
+      remainingCount: remLength,
       // messageSuggestion,
     });
   };
@@ -2003,6 +2005,35 @@ class Header extends Component {
       showHistoricalChat: false,
       chatTimeAgo: "",
     });
+  }
+
+  ////handle get chat session
+  handleGetChatSession() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatSession",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+
+        if (message === "Success" && data) {
+          self.setState({
+            tempRemainingCount: data.chatCharLimit,
+            remainingCount: data.chatCharLimit,
+          });
+        } else {
+          self.setState({
+            tempRemainingCount: "",
+            remainingCount: "",
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatSession");
+      });
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -3402,7 +3433,7 @@ class Header extends Component {
                                     )}
                                   ></textarea>
                                   <p className="cls-charcount">
-                                    {this.state.remainingCount}
+                                    {this.state.remainingCount+" characters remaining..."}
                                   </p>
                                   {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
@@ -4509,7 +4540,7 @@ class Header extends Component {
                                     className="cls-charcount"
                                     style={{ fontSize: "x-small" }}
                                   >
-                                    {this.state.remainingCount}
+                                    {this.state.remainingCount+" characters remaining..."}
                                   </p>
 
                                   {this.state.tempmessageSuggestionData !==
