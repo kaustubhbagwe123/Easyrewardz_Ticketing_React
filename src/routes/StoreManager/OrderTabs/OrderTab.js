@@ -422,7 +422,7 @@ class OrderTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
-                    key:"invoiceNo",
+                key: "invoiceNo",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -916,13 +916,14 @@ class OrderTab extends Component {
                                 <p>
                                   {/* {TranslationContext !== undefined
                                     ? TranslationContext.p.modeofpayment
-                                    : "Mode of Payment"} */} Payment Date
-                                  :
+                                    : "Mode of Payment"} */}{" "}
+                                  Payment Date :
                                 </p>
                                 <span>
                                   {/* {TranslationContext !== undefined
                                     ? TranslationContext.span.online
-                                    : "Online"} */} 16 June 2020
+                                    : "Online"} */}{" "}
+                                  {item.paymentBillDate}
                                 </span>
                               </div>
                               <div className="pay-done">
@@ -1021,6 +1022,12 @@ class OrderTab extends Component {
                       )}
                       {item.actionTypeName === "Ready to Ship" && (
                         <button className="butn order-grid-butn delibutn">
+                          {item.actionTypeName}
+                        </button>
+                      )}
+
+                      {item.actionTypeName === "Update Payment" && (
+                        <button className="butn order-grid-butn order-grid-butn-yellow">
                           {item.actionTypeName}
                         </button>
                       )}
