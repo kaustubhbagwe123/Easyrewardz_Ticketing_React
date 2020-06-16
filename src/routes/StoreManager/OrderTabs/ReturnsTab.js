@@ -146,6 +146,7 @@ class ReturnTab extends Component {
               {
                 title: "AWB No.",
                 dataIndex: "awbNo",
+                key:"awbNo"
               },
               {
                 title: "Invoice No.",

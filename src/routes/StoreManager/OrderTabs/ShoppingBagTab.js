@@ -331,6 +331,7 @@ class ShoppingBagTab extends Component {
                     ? TranslationContext.title.shoppingbagno
                     : "Shopping Bag No.",
                 dataIndex: "shoppingBagNo",
+                key:"shoppingBagNo",
               },
               {
                 title:
