@@ -230,6 +230,7 @@ class ShipmentAssignedTab extends Component {
                     ? TranslationContext.title.awbno
                     : "AWB No.",
                 dataIndex: "awbNo",
+                key:"awbNo",
               },
               {
                 title:
