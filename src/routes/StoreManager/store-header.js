@@ -790,7 +790,7 @@ class Header extends Component {
       });
   }
   ////handle Make As Read On Going Chat
-  async handleMakeAsReadOnGoingChat(id) {
+  async handleMakeAsReadOnGoingChat(id,isNew) {
     let self = this;
     this.setState({ chatId: id });
     await axios({
@@ -816,8 +816,51 @@ class Header extends Component {
         console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
-  handleUpdateCustomerChatStatus(id) {
+  handleUpdateCustomerChatStatus(
+    id,
+    storeManagerId,
+    StoreID,
+    name,
+    mobileNo,
+    customerId,
+    ProgramCode
+  ) {
     let self = this;
+
+    this.setState({
+      storeManagerId,
+      rowChatId: 0,
+      agentRecentChatData: [],
+      showHistoricalChat: false,
+      mainTabSelect: 1,
+      storeID: StoreID,
+      customerName: name,
+      mobileNo: mobileNo,
+      customerId: customerId,
+      programCode: ProgramCode,
+      message: "",
+      messageSuggestionData: [],
+      chkSuggestion: [],
+      toggle: {
+        one: true,
+        two: false,
+        three: false,
+        four: false,
+        five: false,
+      },
+      noOfPeople: "",
+      selectSlot: {},
+      scheduleModal: false,
+      selectedSlot: {},
+      activeTab: 1,
+      timeSlotData: [],
+      searchItem: "",
+      searchCardData: [],
+      messageData: [],
+      isSendClick: false,
+      isHistoricalChat: false,
+      isDownbtn: true,
+    });
 
     axios({
       method: "post",
@@ -831,11 +874,12 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          self.setState({
-            chatId: 0,
-          });
-          self.handleGetOngoingChat();
-          self.handleGetChatNotificationCount();
+          // self.setState({
+          //   chatId: id,
+          // });
+          self.handleMakeAsReadOnGoingChat(id, true);
+          // self.handleGetOngoingChat();
+          // self.handleGetChatNotificationCount();
           self.handleGetNewChat();
         }
       })
@@ -1938,7 +1982,7 @@ class Header extends Component {
       showHistoricalChat: true,
       chatTimeAgo: e.timeAgo,
     });
-    this.handleGetChatMessagesList(e.chatID,1);
+    this.handleGetChatMessagesList(e.chatID, 1);
   };
   ///handle set row class
   setRowClassName = (record) => {
@@ -2708,7 +2752,13 @@ class Header extends Component {
                             }
                             onClick={this.handleUpdateCustomerChatStatus.bind(
                               this,
-                              chat.chatID
+                              chat.chatID,
+                              chat.storeManagerId,
+                              chat.storeID,
+                              chat.cumtomerName,
+                              chat.mobileNo,
+                              chat.customerID,
+                              chat.programCode
                             )}
                           >
                             <div className="d-flex align-items-center overflow-hidden">
@@ -2967,7 +3017,13 @@ class Header extends Component {
                                 className="chat-detail-cntr"
                                 onClick={this.handleUpdateCustomerChatStatus.bind(
                                   this,
-                                  chat.chatID
+                                  chat.chatID,
+                                  chat.storeManagerId,
+                                  chat.storeID,
+                                  chat.cumtomerName,
+                                  chat.mobileNo,
+                                  chat.customerID,
+                                  chat.programCode
                                 )}
                               >
                                 <div
@@ -5536,6 +5592,8 @@ class Header extends Component {
                                       return (
                                         <>
                                           {rowData.chatStatus
+                                            ? rowData.chatStatus === "InActive"
+                                            : "Closed"
                                             ? rowData.chatStatus
                                             : ""}
                                         </>
@@ -5558,9 +5616,8 @@ class Header extends Component {
                                               : ""}
                                           </p>
                                           <p
-                                            style={{
-                                              display: "inline-block",
-                                            }}
+                                            className="msg-text-overlap"
+                                            title={row ? row : ""}
                                           >
                                             {row ? row : ""}
                                           </p>

@@ -30,7 +30,7 @@ class DeliveredTab extends Component {
   }
   componentDidMount() {
     this.handleGetOrderDeliveredData();
-    this.handleGetOrderStatusFilterData(4);
+    this.handleGetOrderStatusFilterData();
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -45,7 +45,7 @@ class DeliveredTab extends Component {
     var pageNumber = this.state.currentPage;
     this.setState({
       DeliveredLoading: true,
-      filterOrderDeliveredStatus: false,
+      filterOrderDeliveredStatus: false
     });
     axios({
       method: "post",
@@ -80,7 +80,7 @@ class DeliveredTab extends Component {
         console.log(data);
       });
   }
-  handleGetOrderStatusFilterData(pageID) {
+  handleGetOrderStatusFilterData() {
     debugger;
     let self = this;
 
@@ -89,7 +89,7 @@ class DeliveredTab extends Component {
       url: config.apiUrl + "/HSOrder/GetOrderStatusFilter",
       headers: authHeader(),
       params: {
-        pageID: pageID,
+        pageID: 4,
       },
     })
       .then(function(res) {
