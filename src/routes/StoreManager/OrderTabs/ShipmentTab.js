@@ -753,7 +753,7 @@ class ShipmentTab extends Component {
                         <label>
                           <b>Partner</b>
                         </label>
-                        <label>{row.Partner}</label>
+                        <label>{row.courierPartner}</label>
                       </td>
                     </tr>
                   </table>

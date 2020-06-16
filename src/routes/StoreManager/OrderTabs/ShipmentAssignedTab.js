@@ -577,7 +577,7 @@ class ShipmentAssignedTab extends Component {
                           </label>
                           <label>{row.courierPartner}</label>
                         </td>
-                        <td>
+                        {/* <td>
                           <label>
                             <b>POD</b>
                           </label>
@@ -727,7 +727,7 @@ class ShipmentAssignedTab extends Component {
                                 </Popover>
                               )}
                           </div>
-                        </td>
+                        </td> */}
                       </tr>
                     </table>
                   </div>

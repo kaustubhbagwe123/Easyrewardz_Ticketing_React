@@ -1056,7 +1056,8 @@ class OrderTab extends Component {
                           ? TranslationContext.p.status
                           : "Status"}
                       </p>
-                      <p className="order-clr-blue">{row.statusName}</p>
+                      <p >{row.statusName}</p>
+                      {/* <p className="order-clr-blue">{row.statusName}</p> */}
                       {/* {row.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
                       )} */}
