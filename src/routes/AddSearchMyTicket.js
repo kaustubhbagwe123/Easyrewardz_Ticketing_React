@@ -13,9 +13,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import SimpleReactValidator from "simple-react-validator";
-import {
-  NotificationManager
-} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -38,7 +36,7 @@ class AddSearchMyTicket extends Component {
       SearchData: [],
       value: "",
       copied: false,
-      searchCompulsion: ""
+      searchCompulsion: "",
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -47,7 +45,11 @@ class AddSearchMyTicket extends Component {
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCopyToaster = this.handleCopyToaster.bind(this);
-    this.validator = new SimpleReactValidator();
+    this.validator = new SimpleReactValidator({
+      messages: {
+        size: "The :attribute must be :size digits.",
+      },
+    });
   }
   handleCopyToaster() {
     //debugger;
@@ -69,7 +71,7 @@ class AddSearchMyTicket extends Component {
       genderID: 1,
       dob: "",
       altNumber: "",
-      altEmailID: ""
+      altEmailID: "",
     });
     this.validator.hideMessages();
   }
@@ -83,8 +85,8 @@ class AddSearchMyTicket extends Component {
         url: config.apiUrl + "/Customer/searchCustomer",
         headers: authHeader(),
         params: {
-          SearchText: this.state.SrchEmailPhone.trim()
-        }
+          SearchText: this.state.SrchEmailPhone.trim(),
+        },
       })
         .then(function(res) {
           debugger;
@@ -94,36 +96,36 @@ class AddSearchMyTicket extends Component {
             setTimeout(function() {
               self.props.history.push({
                 pathname: "ticketsystem",
-                state: self.state
+                state: self.state,
               });
             }, 100);
             self.setState({
-              customerId: GetCustId
+              customerId: GetCustId,
               // message: res.data.message
             });
           } else {
             var filter = Number(self.state.SrchEmailPhone.trim());
             if (filter) {
               self.setState({
-                customerPhoneNumber: self.state.SrchEmailPhone.trim()
+                customerPhoneNumber: self.state.SrchEmailPhone.trim(),
               });
             } else {
               self.setState({
-                customerEmailId: self.state.SrchEmailPhone.trim()
+                customerEmailId: self.state.SrchEmailPhone.trim(),
               });
             }
             self.setState({
-              message: res.data.message
+              message: res.data.message,
             });
             // NotificationManager.error(res.data.message);
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
-        searchCompulsion: "Search field is compulsory."
+        searchCompulsion: "Search field is compulsory.",
       });
     }
   }
@@ -131,28 +133,34 @@ class AddSearchMyTicket extends Component {
     //debugger;
     let self = this;
     if (this.validator.allValid()) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Customer/validateCustomerExist",
-        headers: authHeader(),
-        params: {
-          Cust_EmailId: this.state.customerEmailId.trim(),
-          Cust_PhoneNumber: this.state.customerPhoneNumber.trim()
-        }
-      })
-        .then(function(res) {
-          //debugger;
-          let validCheck = res.data.message;
-          if (validCheck === "Success") {
-            self.handleAddCustomerSave();
-          } else {
-            NotificationManager.error(res.data.responseData);
-          }
-          // let GetCustId = SearchData.customerID;
+      if (this.state.altEmailID === this.state.customerEmailId) {
+        NotificationManager.error(
+          "Email ID and Alternate Email ID fields cannot be same."
+        );
+      } else {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Customer/validateCustomerExist",
+          headers: authHeader(),
+          params: {
+            Cust_EmailId: this.state.customerEmailId.trim(),
+            Cust_PhoneNumber: this.state.customerPhoneNumber.trim(),
+          },
         })
-        .catch(data => {
-          console.log(data);
-        });
+          .then(function(res) {
+            //debugger;
+            let validCheck = res.data.message;
+            if (validCheck === "Success") {
+              self.handleAddCustomerSave();
+            } else {
+              NotificationManager.error(res.data.responseData);
+            }
+            // let GetCustId = SearchData.customerID;
+          })
+          .catch((data) => {
+            console.log(data);
+          });
+      }
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -161,7 +169,8 @@ class AddSearchMyTicket extends Component {
 
   handleAddCustomerSave() {
     debugger;
-    let self = this, dob;
+    let self = this,
+      dob;
 
     if (this.state.dob === "") {
       dob = "";
@@ -184,47 +193,45 @@ class AddSearchMyTicket extends Component {
         IsActive: 1,
         // ModifyBy: 1,
         // ModifiedDate: "2019-12-17"
-      }
+      },
     })
       .then(function(res) {
         debugger;
         let responseMessage = res.data.message;
         let custId = res.data.responseData;
         self.setState({
-          loading: true
+          loading: true,
         });
         if (responseMessage === "Success") {
           //debugger
-          NotificationManager.success(
-            "New Customer added successfully."
-          );
+          NotificationManager.success("New Customer added successfully.");
           setTimeout(function() {
             self.props.history.push({
               pathname: "ticketsystem",
-              state: self.state
+              state: self.state,
             });
           }, 1000);
           self.setState({
-            customerId: custId
+            customerId: custId,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  genderSelect = e => {
+  genderSelect = (e) => {
     this.setState({
-      genderID: e.target.value
+      genderID: e.target.value,
     });
   };
   handleChange(date) {
     this.setState({
-      dob: date
+      dob: date,
     });
   }
 
-  addCustomerData = e => {
+  addCustomerData = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   render() {
@@ -264,7 +271,7 @@ class AddSearchMyTicket extends Component {
                       <span className="span-color">*</span>
                     </label>
                   </label>
-                  <div className="input-group" style={{background:"none"}}>
+                  <div className="input-group" style={{ background: "none" }}>
                     <input
                       type="text"
                       className="search-customerAddSrch"
@@ -276,16 +283,15 @@ class AddSearchMyTicket extends Component {
                       autoComplete="off"
                     />
                     <span className="input-group-addon seacrh-img-addsearch">
-                    <img
-                      src={SearchBlueImg}
-                      alt="SearchBlueImg"
-                      className="srch-imge"
-                      onClick={this.handleSearchCustomer}
-                    />
+                      <img
+                        src={SearchBlueImg}
+                        alt="SearchBlueImg"
+                        className="srch-imge"
+                        onClick={this.handleSearchCustomer}
+                      />
                     </span>
                   </div>
-                  <div>
-                  </div>
+                  <div></div>
                 </div>
               </form>
               {this.state.SrchEmailPhone.length === 0 && (
@@ -392,7 +398,7 @@ class AddSearchMyTicket extends Component {
                   <div className="col-md-6 addcustdate">
                     <DatePicker
                       selected={this.state.dob}
-                      onChange={date => this.handleChange(date)}
+                      onChange={(date) => this.handleChange(date)}
                       placeholderText="DOB"
                       value={this.state.dob}
                       maxDate={new Date()}
