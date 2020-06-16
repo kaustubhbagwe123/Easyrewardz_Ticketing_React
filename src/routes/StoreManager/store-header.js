@@ -354,6 +354,21 @@ class Header extends Component {
           ? "active single-menu"
           : "single-menu",
     };
+    var orders = {
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.orders
+          : "Orders",
+      urls: "orders",
+      logoBlack: OrderLogoBlack,
+      logoBlue: OrderLogoBlue,
+      imgAlt: "Order Icon",
+      imgClass: "myTicket",
+      activeClass:
+        page.toLowerCase() === "Orders".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -386,6 +401,11 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(myTicket);
+        } else if (
+          data[i].moduleName === "Orders" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(orders);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -2054,74 +2074,7 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
-              <Link to="orders" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={OrderLogoBlack}
-                    alt="order icon"
-                    className="dashboardImg1"
-                  />
-                  <img
-                    src={OrderLogoBlue}
-                    alt="order icon"
-                    className="order-blue"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                <label className="cusheade">
-                  {TranslationContext !== undefined
-                    ? TranslationContext.label.orders
-                    : "Orders"}
-                </label>
-              </Link>
-              {/* <Link to="storedashboard" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={DashboardLogo}
-                    alt="dashboard icon"
-                    className="dashboardImg1"
-                  />
-                  <img
-                    src={DashboardLogoBlue}
-                    alt="dashboard icon"
-                    className="dashboardImg1"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Dashboards
-              </Link>
-              <Link to="StoreTask" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={TicketLogo}
-                    alt="ticket icon"
-                    className="myTicket"
-                  />
-                  <img
-                    src={TicketLogoBlue}
-                    alt="ticket icon"
-                    className="myTicket"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Task
-              </Link>
-              <Link to="claim" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={ClaimLogo}
-                    alt="claim icon"
-                    className="claim-logo"
-                  />
-                  <img
-                    src={ClaimLogoBlue}
-                    alt="claim icon"
-                    className="claim-logo"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Claim
-              </Link> */}
+            
             </div>
           </div>
 
