@@ -996,7 +996,13 @@ class OrderTab extends Component {
                           )}
                           disabled={item.disablePaymentlinkbutton}
                         >
-                          <button className="butn order-grid-butn">
+                          <button
+                            className={
+                              item.showPaymentLinkPopup
+                                ? "butn order-grid-butn"
+                                : "butn order-grid-butn disabled-link"
+                            }
+                          >
                             {item.actionTypeName}
                           </button>
                         </Popconfirm>
