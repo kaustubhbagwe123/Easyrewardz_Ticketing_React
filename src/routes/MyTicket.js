@@ -25,7 +25,7 @@ import {
   Collapse,
   CardBody,
   Card,
-  Progress
+  Progress,
 } from "reactstrap";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
@@ -110,8 +110,8 @@ class MyTicket extends Component {
           taskDescription: "",
           department: "",
           type: "",
-          assign: ""
-        }
+          assign: "",
+        },
       ],
       TicketStatusData: TicketStatus(),
       selectedTicketActionType: [],
@@ -207,7 +207,7 @@ class MyTicket extends Component {
       notiCurPosiFreeCmnt: 0,
       isKB: false,
       selectedInvoiceNo: "",
-      isSystemGenerated: false
+      isSystemGenerated: false,
     };
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
@@ -282,13 +282,13 @@ class MyTicket extends Component {
   setWrapperRef(node) {
     this.wrapperRef = node;
   }
-  onAddCKEditorChange = evt => {
+  onAddCKEditorChange = (evt) => {
     var newContent = evt.editor.getData();
     this.setState({
-      mailBodyData: newContent
+      mailBodyData: newContent,
     });
   };
-  onCkBlur = evt => {
+  onCkBlur = (evt) => {
     debugger;
     var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
@@ -298,10 +298,10 @@ class MyTicket extends Component {
     }
     this.setState({
       ckCusrsorPosition: ckCusrsorPosition.startOffset,
-      ckCusrsorData
+      ckCusrsorData,
     });
   };
-  onCkBlurReply = evt => {
+  onCkBlurReply = (evt) => {
     debugger;
     var ckCusrsorPositionReply = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0]
@@ -311,13 +311,13 @@ class MyTicket extends Component {
     }
     this.setState({
       ckCusrsorPositionReply: ckCusrsorPositionReply.startOffset,
-      ckCusrsorDataReply
+      ckCusrsorDataReply,
     });
   };
-  onreplyCKEditorChange = evt => {
+  onreplyCKEditorChange = (evt) => {
     var newContent = evt.editor.getData();
     this.setState({
-      replymailBodyData: newContent
+      replymailBodyData: newContent,
     });
   };
   // handle Get Agent List for User dropdown
@@ -326,23 +326,23 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            AssignToData: data
+            AssignToData: data,
           });
           // self.checkAllAgentStart();
         } else {
           self.setState({
-            AssignToData: []
+            AssignToData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -353,23 +353,23 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Template/GetMailParameter",
       headers: authHeader(),
       params: {
-        AlertID: 8
-      }
+        AlertID: 8,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            placeholderData: data
+            placeholderData: data,
           });
         } else {
           self.setState({
-            placeholderData: []
+            placeholderData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -387,19 +387,19 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         TicketID: this.state.ticket_Id,
-        FollowUPUserID: followUpIds
-      }
+        FollowUPUserID: followUpIds,
+      },
     })
       .then(function(res) {
         debugger;
         let status = res.data.status;
         if (status) {
           self.setState({
-            followUpIds: ""
+            followUpIds: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -413,8 +413,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/getTicketDetailsByTicketId",
       headers: authHeader(),
       params: {
-        ticketID: ID
-      }
+        ticketID: ID,
+      },
     })
       .then(function(res) {
         debugger;
@@ -445,7 +445,7 @@ class MyTicket extends Component {
             subCategoryID: ticketSubGategory,
             channelOfPurchaseID: ticketChannelOfPurchaseID,
             ticketActionTypeID: ticketActionType,
-            issueTypeID: ticketIssueTypeID
+            issueTypeID: ticketIssueTypeID,
           };
 
           var Storedetails = "";
@@ -473,7 +473,7 @@ class MyTicket extends Component {
             fileDummy: attachementDetails,
             oldAgentId: AgentId,
             // role_Name: rolename_,
-            loading: false
+            loading: false,
           });
 
           setTimeout(() => {
@@ -485,11 +485,11 @@ class MyTicket extends Component {
         } else {
           self.setState({
             ticketDetailsData: {},
-            custID: 0
+            custID: 0,
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -513,30 +513,30 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/getagentlist",
       headers: authHeader(),
       params: {
-        TicketID: this.state.ticket_Id
-      }
+        TicketID: this.state.ticket_Id,
+      },
     })
       .then(function(res) {
         let data = res.data.responseData;
         self.setState({
-          SearchAssignData: data
+          SearchAssignData: data,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  setNotiCurPosiCmnt = e => {
+  setNotiCurPosiCmnt = (e) => {
     debugger;
     this.setState({
-      notiCurPosiCmnt: e.target.selectionStart
+      notiCurPosiCmnt: e.target.selectionStart,
     });
   };
-  setNotiCurPosiFreeCmnt = e => {
+  setNotiCurPosiFreeCmnt = (e) => {
     debugger;
     this.setState({
-      notiCurPosiFreeCmnt: e.target.selectionStart
+      notiCurPosiFreeCmnt: e.target.selectionStart,
     });
   };
 
@@ -548,8 +548,8 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         TicketID: this.state.ticket_Id,
-        status: ticStaId
-      }
+        status: ticStaId,
+      },
     })
       .then(function(res) {
         ////
@@ -562,7 +562,7 @@ class MyTicket extends Component {
           }
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -575,8 +575,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/getticketmessage",
       headers: authHeader(),
       params: {
-        ticketID: ticketId
-      }
+        ticketID: ticketId,
+      },
     })
       .then(function(res) {
         debugger;
@@ -589,7 +589,7 @@ class MyTicket extends Component {
           self.setState({
             isSystemGenerated,
             messageDetails: data,
-            hasAttachmentFile: data
+            hasAttachmentFile: data,
           });
           setTimeout(() => {
             self.handleHasAttachmentFileData();
@@ -597,11 +597,11 @@ class MyTicket extends Component {
         } else {
           self.setState({
             messageDetails: [],
-            hasAttachmentFile: []
+            hasAttachmentFile: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -647,8 +647,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Order/getorderdetailsbycustomerid",
       headers: authHeader(),
       params: {
-        CustomerID: this.state.custID
-      }
+        CustomerID: this.state.custID,
+      },
     })
       .then(function(res) {
         debugger;
@@ -660,7 +660,7 @@ class MyTicket extends Component {
           self.setState({ orderDetails: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -673,8 +673,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Order/getOrderDetailByTicketID",
       headers: authHeader(),
       params: {
-        TicketID: this.state.ticket_Id
-      }
+        TicketID: this.state.ticket_Id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -695,16 +695,16 @@ class MyTicket extends Component {
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckOrderID: data[i].invoiceNumber ? newSelected : false
+                CheckOrderID: data[i].invoiceNumber ? newSelected : false,
               });
             }
             if (data[i].orderItems.length > 0) {
               var OrderSubItem = data[i].orderItems;
               self.setState({
-                OrderSubItem
+                OrderSubItem,
               });
               var Order_Master = self.state.OrderSubItem.filter(
-                x => x.invoiceNumber === data[i].invoiceNumber
+                (x) => x.invoiceNumber === data[i].invoiceNumber
               );
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
@@ -714,7 +714,7 @@ class MyTicket extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem
+                  CheckBoxAllItem: objCheckBoxAllItem,
                 });
               }
             }
@@ -723,15 +723,15 @@ class MyTicket extends Component {
           self.setState({
             SelectedAllOrder: data,
             OrderSubItem,
-            selectedInvoiceNo
+            selectedInvoiceNo,
           });
         } else {
           self.setState({
-            SelectedAllOrder: []
+            SelectedAllOrder: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -752,7 +752,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID === e.currentTarget.value
+        (x) => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
@@ -764,7 +764,7 @@ class MyTicket extends Component {
         ticketFreeTextcomment: text,
         followUpIds,
         notiCurPosiFreeCmnt,
-        notiCountFreeCmnt
+        notiCountFreeCmnt,
       });
     } else if (check === "comment") {
       let followUpIds = this.state.followUpIds;
@@ -780,7 +780,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID === e.currentTarget.value
+        (x) => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
@@ -792,7 +792,7 @@ class MyTicket extends Component {
         ticketcommentMSG: text,
         followUpIds,
         notiCurPosiCmnt,
-        notiCountCmnt
+        notiCountCmnt,
       });
     } else if (check === "rply") {
       let followUpIds = this.state.followUpIds;
@@ -834,7 +834,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID === e.currentTarget.value
+        (x) => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -843,7 +843,7 @@ class MyTicket extends Component {
         this.state.ckCusrsorPositionReply + userName.length + 2;
       this.setState({
         ckCusrsorPositionReply: newCkCusrsorPosition,
-        ckCusrsorDataReply: ckDataArrLast
+        ckCusrsorDataReply: ckDataArrLast,
       });
       if (ckTags) {
         // let ckFinal = ckTags[0] + ck + ckTags[1];
@@ -894,7 +894,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        x => x.userID === e.currentTarget.value
+        (x) => x.userID === e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -903,7 +903,7 @@ class MyTicket extends Component {
         this.state.ckCusrsorPosition + userName.length + 2;
       this.setState({
         ckCusrsorPosition: newCkCusrsorPosition,
-        ckCusrsorData: ckDataArrLast
+        ckCusrsorData: ckDataArrLast,
       });
       if (ckTags) {
         // let ckFinal = ckTags[0] + ck + ckTags[1];
@@ -953,7 +953,7 @@ class MyTicket extends Component {
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      x => x.mailParameterID === e.currentTarget.value
+      (x) => x.mailParameterID === e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     // ck += placeholderName;
@@ -962,7 +962,7 @@ class MyTicket extends Component {
       this.state.ckCusrsorPosition + placeholderName.length + 1;
     this.setState({
       ckCusrsorPosition: newCkCusrsorPosition,
-      ckCusrsorData: ckDataArrLast
+      ckCusrsorData: ckDataArrLast,
     });
     if (ckTags) {
       // let ckFinal = ckTags[0] + ck + ckTags[1];
@@ -984,8 +984,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Store/SearchStoreDetail",
       headers: authHeader(),
       params: {
-        SearchText: this.state.SearchStore
-      }
+        SearchText: this.state.SearchStore,
+      },
     })
       .then(function(res) {
         debugger;
@@ -995,11 +995,11 @@ class MyTicket extends Component {
           self.setState({ storeDetails: data });
         } else {
           self.setState({
-            storeDetails: []
+            storeDetails: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1011,8 +1011,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/GetCountByticketID",
       headers: authHeader(),
       params: {
-        ticketID: ID
-      }
+        ticketID: ID,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -1023,7 +1023,7 @@ class MyTicket extends Component {
           self.setState({ tabCounts: {} });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1047,8 +1047,8 @@ class MyTicket extends Component {
           PriortyID: this.state.selectetedParameters.priorityID,
           ChannelOfPurchaseID: this.state.selectetedParameters
             .channelOfPurchaseID,
-          TicketActionID: this.state.selectetedParameters.ticketActionTypeID
-        }
+          TicketActionID: this.state.selectetedParameters.ticketActionTypeID,
+        },
       })
         .then(function(res) {
           let status = res.data.message;
@@ -1063,7 +1063,7 @@ class MyTicket extends Component {
             NotificationManager.error("Ticket not update");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -1078,7 +1078,7 @@ class MyTicket extends Component {
 
     if (value === "" || reg.test(value)) {
       var index = this.state.OrderSubItem.findIndex(
-        x => x.articleNumber === rowData.original.articleNumber
+        (x) => x.articleNumber === rowData.original.articleNumber
       );
 
       var OrderSubItem = this.state.OrderSubItem;
@@ -1108,8 +1108,8 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         OrderNumber: this.state.orderNumber,
-        CustomerID: this.state.custID
-      }
+        CustomerID: this.state.custID,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1128,39 +1128,39 @@ class MyTicket extends Component {
         self.setState({
           message: Msg,
           orderDetailsData: mainData,
-          OrderSubItem
+          OrderSubItem,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
-  handleNoteOnChange = e => {
+  handleNoteOnChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (e.target.name === "ticketcommentMSG") {
       this.setState({
         notiCountCmnt: e.target.value.length,
-        notiCurPosiCmnt: e.target.value.length
+        notiCurPosiCmnt: e.target.value.length,
       });
     }
     if (e.target.name === "ticketFreeTextcomment") {
       this.setState({
         notiCountFreeCmnt: e.target.value.length,
-        notiCurPosiFreeCmnt: e.target.value.length
+        notiCurPosiFreeCmnt: e.target.value.length,
       });
     }
   };
-  fileUpload = e => {
+  fileUpload = (e) => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  fileDrop = e => {
+  fileDrop = (e) => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
     e.preventDefault();
   };
-  fileDragOver = e => {
+  fileDragOver = (e) => {
     e.preventDefault();
   };
 
@@ -1168,15 +1168,15 @@ class MyTicket extends Component {
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
-        CustStoreStatusDrop: 1
+        CustStoreStatusDrop: 1,
       });
     } else {
       this.setState({
-        CustStoreStatusDrop: 2
+        CustStoreStatusDrop: 2,
       });
     }
   }
-  handleDropDownChange = e => {
+  handleDropDownChange = (e) => {
     ////
     let name = e.target.name;
     let Value = e.target.value;
@@ -1184,12 +1184,12 @@ class MyTicket extends Component {
     if (name === "priorityID") {
       data[name] = Value;
       this.setState({
-        selectetedParameters: data
+        selectetedParameters: data,
       });
     } else if (name === "ticketStatusID") {
       data[name] = Value;
       this.setState({
-        selectetedParameters: data
+        selectetedParameters: data,
       });
     } else if (name === "brandID") {
       data[name] = Value;
@@ -1197,7 +1197,7 @@ class MyTicket extends Component {
         selectetedParameters: data,
         CategoryData: [],
         SubCategoryData: [],
-        IssueTypeData: []
+        IssueTypeData: [],
       });
       setTimeout(() => {
         if (this.state.selectetedParameters.brandID) {
@@ -1209,7 +1209,7 @@ class MyTicket extends Component {
       this.setState({
         selectetedParameters: data,
         SubCategoryData: [],
-        IssueTypeData: []
+        IssueTypeData: [],
       });
       setTimeout(() => {
         if (this.state.selectetedParameters.categoryID) {
@@ -1220,7 +1220,7 @@ class MyTicket extends Component {
       data[name] = Value;
       this.setState({
         selectetedParameters: data,
-        IssueTypeData: []
+        IssueTypeData: [],
       });
 
       setTimeout(() => {
@@ -1231,17 +1231,17 @@ class MyTicket extends Component {
     } else if (name === "channelOfPurchaseID") {
       data[name] = Value;
       this.setState({
-        selectetedParameters: data
+        selectetedParameters: data,
       });
     } else if (name === "issueTypeID") {
       data[name] = Value;
       this.setState({
-        selectetedParameters: data
+        selectetedParameters: data,
       });
     } else if (name === "ticketActionTypeID") {
       data[name] = Value;
       this.setState({
-        selectetedParameters: data
+        selectetedParameters: data,
       });
     }
   };
@@ -1252,7 +1252,7 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         ////
@@ -1264,7 +1264,7 @@ class MyTicket extends Component {
           self.setState({ BrandData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1275,24 +1275,24 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
       params: {
-        BrandID: this.state.selectetedParameters.brandID
-      }
+        BrandID: this.state.selectetedParameters.brandID,
+      },
     })
       .then(function(res) {
         ////
         let data = res.data;
         let CategoryData = res.data;
-        if(data.length > 0){
+        if (data.length > 0) {
           self.setState({
             CategoryData: CategoryData,
           });
-        }else{
+        } else {
           self.setState({
             CategoryData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1302,7 +1302,7 @@ class MyTicket extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         ////
@@ -1314,7 +1314,7 @@ class MyTicket extends Component {
           self.setState({ TicketPriorityData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1325,8 +1325,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: this.state.selectetedParameters.categoryID
-      }
+        CategoryID: this.state.selectetedParameters.categoryID,
+      },
     })
       .then(function(res) {
         ////
@@ -1338,7 +1338,7 @@ class MyTicket extends Component {
           self.setState({ SubCategoryData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1349,8 +1349,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: this.state.selectetedParameters.subCategoryID
-      }
+        SubCategoryID: this.state.selectetedParameters.subCategoryID,
+      },
     })
       .then(function(res) {
         ////
@@ -1362,7 +1362,7 @@ class MyTicket extends Component {
           self.setState({ IssueTypeData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1371,7 +1371,7 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         ////
@@ -1383,7 +1383,7 @@ class MyTicket extends Component {
           self.setState({ ChannelOfPurchaseData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1397,8 +1397,8 @@ class MyTicket extends Component {
       params: {
         TicketID: this.state.ticket_Id,
         AgentID: this.state.agentId,
-        Remark: ""
-      }
+        Remark: "",
+      },
     })
       .then(function(res) {
         ////
@@ -1413,7 +1413,7 @@ class MyTicket extends Component {
           }, 1500);
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1426,10 +1426,10 @@ class MyTicket extends Component {
     }
 
     this.setState({
-      expanded: expanded
+      expanded: expanded,
     });
   }
-  fileDragEnter = e => {
+  fileDragEnter = (e) => {
     e.preventDefault();
   };
   HandleKbLinkModalOpen() {
@@ -1453,7 +1453,7 @@ class MyTicket extends Component {
     this.setState({
       OrderTable: false,
       SearchStore: "",
-      OrdItmBtnStatus: false
+      OrdItmBtnStatus: false,
     });
   }
 
@@ -1490,29 +1490,29 @@ class MyTicket extends Component {
     this.setState({ labelModal: false });
   }
   HandleEmailCollapseOpen() {
-    this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
+    this.setState((state) => ({ EmailCollapse: !state.EmailCollapse }));
   }
   handleReAssignCommentOpen() {
     this.setState({
-      ReAssignComment: !this.state.ReAssignComment
+      ReAssignComment: !this.state.ReAssignComment,
     });
   }
   handleFreeTextCommentOpen(row) {
     if (row === "close") {
       this.setState({
         FreeTextComment: !this.state.FreeTextComment,
-        ticketFreeTextcomment: ""
+        ticketFreeTextcomment: "",
       });
     } else {
       this.setState({
-        FreeTextComment: !this.state.FreeTextComment
+        FreeTextComment: !this.state.FreeTextComment,
       });
     }
   }
   handleCommentCollapseOpen(Mail_Id) {
-    this.setState(state => ({
+    this.setState((state) => ({
       CommentCollapse: !state.CommentCollapse,
-      mailId: Mail_Id
+      mailId: Mail_Id,
     }));
   }
   handleCommentCollapseClose() {
@@ -1525,11 +1525,11 @@ class MyTicket extends Component {
     this.setState({ CommentCollapse2: false });
   }
   handleCommentCollapseOpen2() {
-    this.setState(state => ({ CommentCollapse2: !state.CommentCollapse2 }));
+    this.setState((state) => ({ CommentCollapse2: !state.CommentCollapse2 }));
     this.handleCommentCollapseClose();
   }
   HandleComment1CollapseOpen() {
-    this.setState(state => ({ Comment1Collapse: !state.Comment1Collapse }));
+    this.setState((state) => ({ Comment1Collapse: !state.Comment1Collapse }));
   }
 
   handleBillImgModalOpen() {
@@ -1548,7 +1548,7 @@ class MyTicket extends Component {
   }
   handleHasAttachmetModalOpen(msgID) {
     ////
-    var filedata = this.state.FileAttachment.filter(x => x.id === msgID);
+    var filedata = this.state.FileAttachment.filter((x) => x.id === msgID);
     // for (let i = 0; i < filedata.length; i++) {
 
     // }
@@ -1562,40 +1562,40 @@ class MyTicket extends Component {
   }
   showInformStoreFuncation = () => {
     this.setState({
-      InformStore: !this.state.InformStore
+      InformStore: !this.state.InformStore,
     });
   };
   showInformStoreReply = () => {
     this.setState({
-      ReplyInformStore: !this.state.ReplyInformStore
+      ReplyInformStore: !this.state.ReplyInformStore,
     });
   };
   handleGetTabsName(e) {
-    debugger
+    debugger;
     let self = this;
     let CurrentActive = e.target.name;
     if (CurrentActive === "Task") {
       this.setState({
         TaskTab: 1,
         NotesTab: 0,
-        ClaimTab: 0
+        ClaimTab: 0,
       });
     } else if (CurrentActive === "Notes") {
       this.setState({
         TaskTab: 0,
         NotesTab: 3,
-        ClaimTab: 0
+        ClaimTab: 0,
       });
     } else if (CurrentActive === "Claim") {
       this.setState({
         TaskTab: 0,
         NotesTab: 0,
-        ClaimTab: 2
+        ClaimTab: 2,
       });
     }
     setTimeout(function() {
       self.props.history.push({
-        state: self.state
+        state: self.state,
       });
     }, 100);
   }
@@ -1611,8 +1611,8 @@ class MyTicket extends Component {
         params: {
           CommentForId: this.state.NotesTab,
           Comment: this.state.NoteAddComment.trim(),
-          Id: this.state.ticket_Id
-        }
+          Id: this.state.ticket_Id,
+        },
       })
         .then(function(res) {
           ////
@@ -1623,18 +1623,18 @@ class MyTicket extends Component {
             NotificationManager.success("Comment added successfully.");
             self.setState({
               NoteAddComment: "",
-              notesCommentCompulsion: ""
+              notesCommentCompulsion: "",
             });
           } else {
             NotificationManager.error("Comment not added.");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
-        notesCommentCompulsion: "The Notes field is compulsory."
+        notesCommentCompulsion: "The Notes field is compulsory.",
       });
     }
   }
@@ -1646,8 +1646,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/gettickethistory",
       headers: authHeader(),
       params: {
-        TicketId: this.state.ticket_Id
-      }
+        TicketId: this.state.ticket_Id,
+      },
     })
       .then(function(res) {
         ////
@@ -1658,7 +1658,7 @@ class MyTicket extends Component {
           self.setState({ historicalDetails: details });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1671,8 +1671,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Store/getSelectedStores",
       headers: authHeader(),
       params: {
-        TicketID: this.state.ticket_Id
-      }
+        TicketID: this.state.ticket_Id,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -1688,21 +1688,21 @@ class MyTicket extends Component {
               ];
               selectedRow.push(data[i]);
               self.setState({
-                CheckStoreID: data[i].storeID ? newSelected : false
+                CheckStoreID: data[i].storeID ? newSelected : false,
               });
             }
           }
           self.setState({
             selectedStoreData: selectedRow,
-            selectedStore: data
+            selectedStore: data,
           });
         } else {
           self.setState({
-            selectedStore: []
+            selectedStore: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1808,7 +1808,7 @@ class MyTicket extends Component {
       method: "post",
       url: config.apiUrl + "/Store/attachstore",
       headers: authHeader(),
-      data: formData
+      data: formData,
     })
       .then(function(res) {
         debugger;
@@ -1818,13 +1818,13 @@ class MyTicket extends Component {
           self.HandleStoreModalClose();
           self.handleGetTicketDetails(self.state.ticket_Id);
           self.setState({
-            storeDetails:[]
-          })
+            storeDetails: [],
+          });
         } else {
           NotificationManager.error("Store not attached");
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1909,7 +1909,7 @@ class MyTicket extends Component {
           StoreCode: order_data.storeCode,
           TransactionDate: order_data.invoiceDate,
           ModeOfPaymentID: 1,
-          TicketSourceID: this.state.selectetedParameters.channelOfPurchaseID
+          TicketSourceID: this.state.selectetedParameters.channelOfPurchaseID,
         };
       } else {
         var OrderData = null;
@@ -1953,7 +1953,7 @@ class MyTicket extends Component {
         method: "post",
         url: config.apiUrl + "/Order/attachorder",
         headers: authHeader(),
-        data: formData
+        data: formData,
       })
         .then(function(res) {
           debugger;
@@ -1965,13 +1965,13 @@ class MyTicket extends Component {
             self.handleGetTicketDetails(self.state.ticket_Id);
             self.setState({
               SelectedAllOrder: [],
-              orderDetailsData: []
+              orderDetailsData: [],
             });
           } else {
             NotificationManager.error("Product not attached");
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -1987,8 +1987,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/getNotesByTicketId",
       headers: authHeader(),
       params: {
-        TicketId: ticket_Id
-      }
+        TicketId: ticket_Id,
+      },
     })
       .then(function(res) {
         ////
@@ -2000,12 +2000,12 @@ class MyTicket extends Component {
           self.setState({ Notesdetails: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
   handleAddNewForm() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       values: [
         ...prevState.values,
         {
@@ -2013,13 +2013,13 @@ class MyTicket extends Component {
           taskDescription: "",
           department: "",
           type: "",
-          assign: ""
-        }
-      ]
+          assign: "",
+        },
+      ],
     }));
   }
 
-  setTicketActionTypeValue = e => {
+  setTicketActionTypeValue = (e) => {
     this.setState({ selectedTicketActionType: e });
   };
 
@@ -2027,14 +2027,14 @@ class MyTicket extends Component {
     const newSelected = Object.assign({}, this.state.CheckStoreID);
     newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
     this.setState({
-      CheckStoreID: storeMasterID ? newSelected : false
+      CheckStoreID: storeMasterID ? newSelected : false,
     });
     var selectedRow = [];
     rowData["Purpose_Id"] = this.state.CustStoreStatusDrop;
     if (this.state.selectedStoreData.length === 0) {
       selectedRow.push(rowData);
       this.setState({
-        selectedStoreData: rowData
+        selectedStoreData: rowData,
       });
     } else {
       if (newSelected[storeMasterID] === true) {
@@ -2061,7 +2061,7 @@ class MyTicket extends Component {
     }
 
     this.setState({
-      selectedStoreData: selectedRow
+      selectedStoreData: selectedRow,
     });
   }
   //KB Templete Pop up Search API
@@ -2075,8 +2075,8 @@ class MyTicket extends Component {
       params: {
         Type_ID: self.state.selectedIssueTypeKB,
         Category_ID: self.state.selectedCategoryKB,
-        SubCategor_ID: self.state.selectedSubCategoryKB
-      }
+        SubCategor_ID: self.state.selectedSubCategoryKB,
+      },
     })
       .then(function(res) {
         ////
@@ -2086,7 +2086,7 @@ class MyTicket extends Component {
         }
         self.setState({ KbPopupData: KbPopupData });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2098,11 +2098,11 @@ class MyTicket extends Component {
       selectedIssueTypeKB: 0,
       selectedCategoryKB: 0,
       selectedSubCategoryKB: 0,
-      KbPopupData: []
+      KbPopupData: [],
     });
   }
   //Category change funcation in KB Templete Modal
-  setCategoryValueKB = e => {
+  setCategoryValueKB = (e) => {
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategoryKB: categoryValue });
     setTimeout(() => {
@@ -2113,7 +2113,7 @@ class MyTicket extends Component {
   };
 
   //Sub-Category change funcation in KB Templete Modal
-  setSubCategoryValueKB = e => {
+  setSubCategoryValueKB = (e) => {
     ////
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryKB: subCategoryValue });
@@ -2126,7 +2126,7 @@ class MyTicket extends Component {
   };
 
   //Issue-Type change funcation in KB Templete Modal
-  setIssueTypeValueKB = e => {
+  setIssueTypeValueKB = (e) => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
@@ -2139,18 +2139,18 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Template/getListOfTemplateForNote",
       headers: authHeader(),
       params: {
-        IssueTypeID: this.state.selectetedParameters.issueTypeID
-      }
+        IssueTypeID: this.state.selectetedParameters.issueTypeID,
+      },
     })
       .then(function(res) {
         ////
         let data = res.data.responseData;
         self.setState({
           CkEditorTemplateData: data,
-          ReplyCKEditoertemplat: data
+          ReplyCKEditoertemplat: data,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2165,8 +2165,8 @@ class MyTicket extends Component {
         url: config.apiUrl + "/Template/getTemplateContent",
         headers: authHeader(),
         params: {
-          TemplateId: tempId
-        }
+          TemplateId: tempId,
+        },
       })
         .then(function(res) {
           ////
@@ -2176,10 +2176,10 @@ class MyTicket extends Component {
             CkEditorTemplateDetails: TemplateDetails,
             tempName: tempName,
             selectTicketTemplateId: tempId,
-            replymailBodyData: bodyData
+            replymailBodyData: bodyData,
           });
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -2188,8 +2188,8 @@ class MyTicket extends Component {
         url: config.apiUrl + "/Template/getTemplateContent",
         headers: authHeader(),
         params: {
-          TemplateId: tempId
-        }
+          TemplateId: tempId,
+        },
       })
         .then(function(res) {
           ////
@@ -2199,10 +2199,10 @@ class MyTicket extends Component {
             CkEditorTemplateDetails: TemplateDetails,
             tempName: tempName,
             selectTicketTemplateId: tempId,
-            mailBodyData: bodyData
+            mailBodyData: bodyData,
           });
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     }
@@ -2243,7 +2243,7 @@ class MyTicket extends Component {
           IsResponseToCustomer: 1,
           IsInternalComment: 0,
           MailID: this.state.mailId,
-          StoreID: selectedStore.substring(",", selectedStore.length - 1)
+          StoreID: selectedStore.substring(",", selectedStore.length - 1),
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramMessageData));
         for (let j = 0; j < this.state.ReplyFileData.length; j++) {
@@ -2253,7 +2253,7 @@ class MyTicket extends Component {
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
           headers: authHeader(),
-          data: formData
+          data: formData,
         })
           .then(function(res) {
             ////
@@ -2268,13 +2268,13 @@ class MyTicket extends Component {
                 mailFiled: {},
                 ReplyFileData: [],
                 ReplyfileText: 0,
-                replymailBodyData: ""
+                replymailBodyData: "",
               });
             } else {
               NotificationManager.error(status);
             }
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
       } else {
@@ -2311,7 +2311,7 @@ class MyTicket extends Component {
             // IsCustomerComment: 1,
             IsResponseToCustomer: 1,
             MailID: 0,
-            StoreID: store_Id.substring(",", store_Id.length - 1)
+            StoreID: store_Id.substring(",", store_Id.length - 1),
           };
           formData.append("ticketingMailerQue", JSON.stringify(paramData2));
           for (let j = 0; j < this.state.FileData.length; j++) {
@@ -2322,7 +2322,7 @@ class MyTicket extends Component {
             method: "post",
             url: config.apiUrl + "/Ticketing/MessageComment",
             headers: authHeader(),
-            data: formData
+            data: formData,
           })
             .then(function(res) {
               let status = res.data.message;
@@ -2337,13 +2337,13 @@ class MyTicket extends Component {
                 self.setState({
                   mailFiled: {},
                   // mailSubject: "",
-                  mailBodyData: ""
+                  mailBodyData: "",
                 });
               } else {
                 NotificationManager.error(status);
               }
             })
-            .catch(data => {
+            .catch((data) => {
               console.log(data);
             });
         } else {
@@ -2362,7 +2362,7 @@ class MyTicket extends Component {
           IsSent: 1,
           IsCustomerComment: 0,
           IsInternalComment: 1,
-          MailID: this.state.mailId
+          MailID: this.state.mailId,
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramData3));
 
@@ -2370,7 +2370,7 @@ class MyTicket extends Component {
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
           headers: authHeader(),
-          data: formData
+          data: formData,
         })
           .then(function(res) {
             let status = res.data.message;
@@ -2382,21 +2382,21 @@ class MyTicket extends Component {
               self.handleCommentCollapseOpen();
               self.setState({
                 ticketcommentMSG: "",
-                tckcmtMSGCompulsory: ""
+                tckcmtMSGCompulsory: "",
               });
             } else {
               NotificationManager.error(status);
               self.setState({
-                ticketcommentMSG: ""
+                ticketcommentMSG: "",
               });
             }
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
       } else {
         this.setState({
-          tckcmtMSGCompulsory: "Comment field is compulsory."
+          tckcmtMSGCompulsory: "Comment field is compulsory.",
         });
       }
     } else if (isSend === 4) {
@@ -2411,7 +2411,7 @@ class MyTicket extends Component {
           IsInternalComment: 1,
           MailID: 0,
           OldAgentID: this.state.oldAgentId,
-          NewAgentID: this.state.agentId
+          NewAgentID: this.state.agentId,
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramData4));
 
@@ -2419,7 +2419,7 @@ class MyTicket extends Component {
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
           headers: authHeader(),
-          data: formData
+          data: formData,
         })
           .then(function(res) {
             let status = res.data.message;
@@ -2433,21 +2433,21 @@ class MyTicket extends Component {
               self.handleAssignTickets();
               self.setState({
                 addReassignCmmt: "",
-                AssignCommentCompulsory: ""
+                AssignCommentCompulsory: "",
               });
             } else {
               NotificationManager.error(status);
               self.setState({
-                addReassignCmmt: ""
+                addReassignCmmt: "",
               });
             }
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
       } else {
         this.setState({
-          AssignCommentCompulsory: "Comment field is compulsory."
+          AssignCommentCompulsory: "Comment field is compulsory.",
         });
       }
     } else {
@@ -2458,7 +2458,7 @@ class MyTicket extends Component {
           TicketMailBody: this.state.ticketFreeTextcomment.trim(),
           IsSent: 1,
           IsCustomerComment: 0,
-          IsInternalComment: 1
+          IsInternalComment: 1,
         };
         formData.append("ticketingMailerQue", JSON.stringify(paramData5));
 
@@ -2466,7 +2466,7 @@ class MyTicket extends Component {
           method: "post",
           url: config.apiUrl + "/Ticketing/MessageComment",
           headers: authHeader(),
-          data: formData
+          data: formData,
         })
           .then(function(res) {
             let status = res.data.message;
@@ -2478,18 +2478,18 @@ class MyTicket extends Component {
               self.handleFreeTextCommentOpen();
               self.setState({
                 ticketFreeTextcomment: "",
-                freetextCommentCompulsory: ""
+                freetextCommentCompulsory: "",
               });
             } else {
               NotificationManager.error(status);
             }
           })
-          .catch(data => {
+          .catch((data) => {
             console.log(data);
           });
       } else {
         this.setState({
-          freetextCommentCompulsory: "Comment field is compulsory."
+          freetextCommentCompulsory: "Comment field is compulsory.",
         });
       }
     }
@@ -2516,8 +2516,8 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/getprogressbardetail",
       headers: authHeader(),
       params: {
-        TicketID: id
-      }
+        TicketID: id,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -2536,13 +2536,13 @@ class MyTicket extends Component {
           }
           self.setState({
             progressBarData: data,
-            progressDataWithcColor: progressColor
+            progressDataWithcColor: progressColor,
           });
         } else {
           self.setState({ progressBarData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -2567,7 +2567,6 @@ class MyTicket extends Component {
     //   }
     // }
     for (let i = 0; i < e.target.files.length; i++) {
-
       var objFile = new Object();
       var name = e.target.files[i].name;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -2583,7 +2582,7 @@ class MyTicket extends Component {
 
     this.setState({
       ReplyfileText: this.state.Rplyfile.length,
-      ReplyFileData: allFiles
+      ReplyFileData: allFiles,
     });
   }
   handleFileUpload(e) {
@@ -2597,16 +2596,15 @@ class MyTicket extends Component {
       const filesAmount = e.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
-        reader.onload = file => {
+        reader.onload = (file) => {
           this.setState({
-            imageView: file.target.result
+            imageView: file.target.result,
           });
         };
         reader.readAsDataURL(e.target.files[i]);
       }
     }
     for (let i = 0; i < e.target.files.length; i++) {
-
       var objFile = new Object();
       var name = e.target.files[i].name;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -2630,21 +2628,21 @@ class MyTicket extends Component {
     // var index = this.state.selectedStoreData.findIndex(
     //   x => x.lpassStoreID === id
     // );
-    if(e.original.lpassStoreID > 0){
+    if (e.original.lpassStoreID > 0) {
       var id = e.original.lpassStoreID;
-    }else{
+    } else {
       var id = e.original.storeID;
     }
 
-    if(e.original.lpassStoreID > 0){
+    if (e.original.lpassStoreID > 0) {
       var id = e.original.lpassStoreID;
       var index = this.state.selectedStoreData.findIndex(
-        x => x.lpassStoreID === id
+        (x) => x.lpassStoreID === id
       );
-    }else{
+    } else {
       var id = e.original.storeID;
       var index = this.state.selectedStoreData.findIndex(
-        x => x.storeID === id
+        (x) => x.storeID === id
       );
     }
     // this.state.selectedStoreData["VisitedDate"] = rowData;
@@ -2653,7 +2651,7 @@ class MyTicket extends Component {
 
     this.setState({ selectedStoreData });
   }
-  handleChangeOrderItem = e => {
+  handleChangeOrderItem = (e) => {
     debugger;
     var values = e.target.checked;
     if (!this.state.selectProductOrd) {
@@ -2683,7 +2681,7 @@ class MyTicket extends Component {
         j.style.display = "none ";
       }
       this.setState({
-        OrdItmBtnStatus: e.target.checked
+        OrdItmBtnStatus: e.target.checked,
       });
     } else {
       if (values) {
@@ -2712,7 +2710,7 @@ class MyTicket extends Component {
         oi2.style.display = "none";
       }
       this.setState({
-        OrdItmBtnStatus: e.target.checked
+        OrdItmBtnStatus: e.target.checked,
       });
     }
   };
@@ -2754,7 +2752,7 @@ class MyTicket extends Component {
       y1.style.display = "none";
     }
     this.setState({
-      selectProductOrd: !this.state.selectProductOrd
+      selectProductOrd: !this.state.selectProductOrd,
     });
   };
   /// Handle get Order Item data
@@ -2766,7 +2764,7 @@ class MyTicket extends Component {
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
-        selectedInvoiceNo: ""
+        selectedInvoiceNo: "",
       });
       let self = this;
       axios({
@@ -2778,8 +2776,8 @@ class MyTicket extends Component {
           OrderNumber: rowData.invoiceNumber,
           CustomerID: this.state.custID,
           StoreCode: rowData.storeCode,
-          InvoiceDate: rowData.invoiceDate
-        }
+          InvoiceDate: rowData.invoiceDate,
+        },
       })
         .then(function(res) {
           debugger;
@@ -2787,7 +2785,7 @@ class MyTicket extends Component {
           let data = res.data.responseData;
           if (Msg === "Success") {
             self.setState({
-              OrderSubItem: data
+              OrderSubItem: data,
             });
             var selectedInvoiceNo = invoiceNumber;
             const newSelected = Object.assign({}, self.state.CheckBoxAllOrder);
@@ -2796,14 +2794,14 @@ class MyTicket extends Component {
             ];
             self.setState({
               CheckBoxAllOrder: newSelected,
-              selectedInvoiceNo
+              selectedInvoiceNo,
             });
             var selectedRow = [];
             var CselectedRow = [];
             if (self.state.SelectedAllOrder.length === 0) {
               selectedRow.push(rowData);
               var Order_Master = self.state.OrderSubItem.filter(
-                x => x.invoiceNumber === invoiceNumber
+                (x) => x.invoiceNumber === invoiceNumber
               );
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
@@ -2813,12 +2811,12 @@ class MyTicket extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem
+                  CheckBoxAllItem: objCheckBoxAllItem,
                 });
               }
               self.setState({
                 SelectedAllOrder: selectedRow,
-                SelectedAllItem: CselectedRow
+                SelectedAllItem: CselectedRow,
               });
             } else {
               if (newSelected[invoiceNumber] === true) {
@@ -2827,7 +2825,7 @@ class MyTicket extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.push(rowData);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -2839,13 +2837,13 @@ class MyTicket extends Component {
                         CselectedRow.push(Order_Master[j]);
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: CselectedRow
+                      SelectedAllItem: CselectedRow,
                     });
 
                     break;
@@ -2857,7 +2855,7 @@ class MyTicket extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.splice(i, 1);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -2867,13 +2865,13 @@ class MyTicket extends Component {
                         ] = false;
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: []
+                      SelectedAllItem: [],
                     });
                     break;
                   }
@@ -2883,7 +2881,7 @@ class MyTicket extends Component {
 
             self.setState({
               SelectedAllOrder: selectedRow,
-              SelectedAllItem: CselectedRow
+              SelectedAllItem: CselectedRow,
             });
           } else {
             var selectedInvoiceNo = invoiceNumber;
@@ -2893,14 +2891,14 @@ class MyTicket extends Component {
             ];
             self.setState({
               CheckBoxAllOrder: newSelected,
-              selectedInvoiceNo
+              selectedInvoiceNo,
             });
             var selectedRow = [];
             var CselectedRow = [];
             if (self.state.SelectedAllOrder.length === 0) {
               selectedRow.push(rowData);
               var Order_Master = self.state.OrderSubItem.filter(
-                x => x.invoiceNumber === invoiceNumber
+                (x) => x.invoiceNumber === invoiceNumber
               );
               if (Order_Master.length > 0) {
                 var objCheckBoxAllItem = new Object();
@@ -2910,12 +2908,12 @@ class MyTicket extends Component {
                   CselectedRow.push(Order_Master[j]);
                 }
                 self.setState({
-                  CheckBoxAllItem: objCheckBoxAllItem
+                  CheckBoxAllItem: objCheckBoxAllItem,
                 });
               }
               self.setState({
                 SelectedAllOrder: selectedRow,
-                SelectedAllItem: CselectedRow
+                SelectedAllItem: CselectedRow,
               });
             } else {
               if (newSelected[invoiceNumber] === true) {
@@ -2924,7 +2922,7 @@ class MyTicket extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.push(rowData);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -2936,13 +2934,13 @@ class MyTicket extends Component {
                         CselectedRow.push(Order_Master[j]);
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: CselectedRow
+                      SelectedAllItem: CselectedRow,
                     });
 
                     break;
@@ -2954,7 +2952,7 @@ class MyTicket extends Component {
                     selectedRow = self.state.SelectedAllOrder;
                     selectedRow.splice(i, 1);
                     var Order_Master = self.state.OrderSubItem.filter(
-                      x => x.invoiceNumber === invoiceNumber
+                      (x) => x.invoiceNumber === invoiceNumber
                     );
                     if (Order_Master.length > 0) {
                       var objCheckBoxAllItem = new Object();
@@ -2964,13 +2962,13 @@ class MyTicket extends Component {
                         ] = false;
                       }
                       self.setState({
-                        CheckBoxAllItem: objCheckBoxAllItem
+                        CheckBoxAllItem: objCheckBoxAllItem,
                       });
                     }
 
                     self.setState({
                       SelectedAllOrder: selectedRow,
-                      SelectedAllItem: []
+                      SelectedAllItem: [],
                     });
 
                     break;
@@ -2982,11 +2980,11 @@ class MyTicket extends Component {
             self.setState({
               CheckBoxAllOrder: newSelected,
               selectedInvoiceNo,
-              OrderSubItem: []
+              OrderSubItem: [],
             });
           }
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
@@ -2994,7 +2992,7 @@ class MyTicket extends Component {
         SelectedAllOrder: [],
         SelectedAllItem: [],
         OrderSubItem: [],
-        selectedInvoiceNo: ""
+        selectedInvoiceNo: "",
       });
     }
   }
@@ -3097,13 +3095,13 @@ class MyTicket extends Component {
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
-      CheckBoxAllItem: articleNumber ? newSelected : false
+      CheckBoxAllItem: articleNumber ? newSelected : false,
     });
     var selectedRow = [];
     if (this.state.SelectedAllItem.length === 0) {
       selectedRow.push(rowData);
       this.setState({
-        SelectedAllItem: selectedRow
+        SelectedAllItem: selectedRow,
       });
     } else {
       if (newSelected[articleNumber] === true) {
@@ -3111,7 +3109,8 @@ class MyTicket extends Component {
           selectedRow = this.state.SelectedAllItem;
           selectedRow.push(rowData);
           var Order_Master = this.state.OrderSubItem.filter(
-            x => x.articleNumber === this.state.SelectedAllItem[i].articleNumber
+            (x) =>
+              x.articleNumber === this.state.SelectedAllItem[i].articleNumber
           );
           if (Order_Master.length === selectedRow.length) {
             const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
@@ -3120,16 +3119,16 @@ class MyTicket extends Component {
             this.setState({
               CheckBoxAllOrder: Order_Master[0].articleNumber
                 ? newSelected
-                : false
+                : false,
             });
             var data_master = this.state.orderDetailsData.filter(
-              y => y.articleNumber === Order_Master[0].articleNumber
+              (y) => y.articleNumber === Order_Master[0].articleNumber
             );
             if (data_master.length > 0) {
               var MastOrd = this.state.SelectedAllOrder;
               MastOrd.push(data_master[0]);
               this.setState({
-                SelectedAllOrder: MastOrd
+                SelectedAllOrder: MastOrd,
               });
             }
           }
@@ -3142,7 +3141,7 @@ class MyTicket extends Component {
             selectedRow.splice(j, 1);
 
             var Order_Master = this.state.OrderSubItem.filter(
-              x => x.articleNumber === rowData.articleNumber
+              (x) => x.articleNumber === rowData.articleNumber
             );
 
             if (Order_Master.length !== selectedRow.length) {
@@ -3154,19 +3153,19 @@ class MyTicket extends Component {
               this.setState({
                 CheckBoxAllOrder: Order_Master[0].articleNumber
                   ? newSelected
-                  : false
+                  : false,
               });
               var data_master = this.state.orderDetailsData.filter(
-                y => y.articleNumber === Order_Master[0].articleNumber
+                (y) => y.articleNumber === Order_Master[0].articleNumber
               );
               var GetIndex = this.state.orderDetailsData.findIndex(
-                y => y.articleNumber === Order_Master[0].articleNumber
+                (y) => y.articleNumber === Order_Master[0].articleNumber
               );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
                 MastOrd.splice(GetIndex, 1);
                 this.setState({
-                  SelectedAllOrder: MastOrd
+                  SelectedAllOrder: MastOrd,
                 });
               }
             }
@@ -3178,7 +3177,7 @@ class MyTicket extends Component {
     }
     this.setState({
       SelectedAllItem: selectedRow,
-      SelectedAllOrder: selectedRow
+      SelectedAllOrder: selectedRow,
     });
   }
   // -------------------------------Check box selected all code end-------------------------------
@@ -3186,12 +3185,12 @@ class MyTicket extends Component {
   callbackToParent = () => {
     this.handleGetCountOfTabs(this.state.ticket_Id);
   };
-  handleTicketSourceChange = e => {
+  handleTicketSourceChange = (e) => {
     let value = e.target.value;
     this.setState({ ticketSourceId: value });
   };
 
-  handleReplyTcktSourceChange = e => {
+  handleReplyTcktSourceChange = (e) => {
     let value = e.target.value;
     this.setState({ ReplySourceId: value });
   };
@@ -3206,7 +3205,7 @@ class MyTicket extends Component {
       IsInternalComment: 1,
       MailID: 0,
       OldAgentID: this.state.oldAgentId,
-      NewAgentID: this.state.agentId
+      NewAgentID: this.state.agentId,
     };
     formData.append("ticketingMailerQue", JSON.stringify(paramData));
 
@@ -3214,7 +3213,7 @@ class MyTicket extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/MessageComment",
       headers: authHeader(),
-      data: formData
+      data: formData,
     })
       .then(function(res) {
         let status = res.data.message;
@@ -3224,16 +3223,16 @@ class MyTicket extends Component {
           self.handleReAssignCommentOpen();
           self.handleAssignTickets();
           self.setState({
-            addReassignCmmt: ""
+            addReassignCmmt: "",
           });
         } else {
           NotificationManager.error(status);
           self.setState({
-            addReassignCmmt: ""
+            addReassignCmmt: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -3243,7 +3242,7 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/GetLogedInEmail",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         var status = res.data.status;
@@ -3253,7 +3252,7 @@ class MyTicket extends Component {
           self.setState({ logInEmail: data.emailID, role_Name: data.roleName });
         }
       })
-      .catch(response => {
+      .catch((response) => {
         console.log(response);
       });
   }
@@ -3312,13 +3311,13 @@ class MyTicket extends Component {
       IsActive: 1,
       IssueTypeID: this.state.selectetedParameters.issueTypeID,
       TicketID: this.state.ticket_Id,
-      IsFromTicket: 1
+      IsFromTicket: 1,
     };
     axios({
       method: "post",
       url: config.apiUrl + "/KnowledgeBase/AddKB",
       headers: authHeader(),
-      data: inputParam
+      data: inputParam,
     })
       .then(function(res) {
         debugger;
@@ -3331,7 +3330,7 @@ class MyTicket extends Component {
           NotificationManager.success("Ticket Added in knowledgebase.");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -3343,7 +3342,7 @@ class MyTicket extends Component {
       historicalDetails,
       SearchAssignData,
       orderDetails,
-      selectedStore
+      selectedStore,
     } = this.state;
 
     var statusValidate = false;
@@ -3400,7 +3399,7 @@ class MyTicket extends Component {
                     <label className="id-abc-1234">
                       ID - {ticketDetailsData.ticketID}
                       <span className="updated-2-d-ago">
-                        {ticketDetailsData.updateDate}
+                        Updated {ticketDetailsData.updateDate}
                       </span>
                     </label>
                     <a
@@ -3441,17 +3440,17 @@ class MyTicket extends Component {
                             {
                               Header: <span>Name</span>,
                               accessor: "name",
-                              width: 150
+                              width: 150,
                             },
                             {
                               Header: <span>Action</span>,
-                              accessor: "action"
+                              accessor: "action",
                             },
                             {
                               Header: <span>Time & Date</span>,
                               accessor: "dateandTime",
                               width: 200,
-                              Cell: row => {
+                              Cell: (row) => {
                                 var date = row.original["dateandTime"];
                                 return (
                                   <span>
@@ -3459,8 +3458,8 @@ class MyTicket extends Component {
                                     {moment(date).format("HH:mm")}
                                   </span>
                                 );
-                              }
-                            }
+                              },
+                            },
                           ]}
                           resizable={false}
                           defaultPageSize={5}
@@ -3535,16 +3534,16 @@ class MyTicket extends Component {
                           {
                             Header: <span>Emp Id</span>,
                             accessor: "user_ID",
-                            width: 80
+                            width: 80,
                           },
                           {
                             Header: <span>Name</span>,
-                            accessor: "agentName"
+                            accessor: "agentName",
                           },
                           {
                             Header: <span>Designation</span>,
-                            accessor: "designation"
-                          }
+                            accessor: "designation",
+                          },
                         ]}
                         minRows={2}
                         // defaultPageSize={5}
@@ -3553,15 +3552,15 @@ class MyTicket extends Component {
                         getTrProps={(rowInfo, column) => {
                           const index = column ? column.index : -1;
                           return {
-                            onClick: e => {
+                            onClick: (e) => {
                               this.selectedRow = index;
                               var agentId = column.original["user_ID"];
                               this.setState({ agentId });
                             },
                             style: {
                               background:
-                                this.selectedRow === index ? "#ECF2F4" : null
-                            }
+                                this.selectedRow === index ? "#ECF2F4" : null,
+                            },
                           };
                         }}
                       />
@@ -3592,7 +3591,7 @@ class MyTicket extends Component {
               modalId="Historical-popup"
               overlayId="logout-ovrly"
               classNames={{
-                modal: "historical-popup"
+                modal: "historical-popup",
               }}
             >
               <div className="commenttextborder">
@@ -3745,7 +3744,7 @@ class MyTicket extends Component {
                         className=""
                         style={{
                           display: "inline",
-                          marginLeft: "5px"
+                          marginLeft: "5px",
                         }}
                       >
                         <img
@@ -3825,7 +3824,7 @@ class MyTicket extends Component {
                                           Order Number
                                         </span>
                                       ),
-                                      accessor: "orderNumber"
+                                      accessor: "orderNumber",
                                     },
                                     {
                                       Header: (
@@ -3833,7 +3832,7 @@ class MyTicket extends Component {
                                           Mobile Number
                                         </span>
                                       ),
-                                      accessor: "mobileNumber"
+                                      accessor: "mobileNumber",
                                     },
                                     {
                                       Header: (
@@ -3842,7 +3841,7 @@ class MyTicket extends Component {
                                         </span>
                                       ),
                                       // accessor: "itemPrice",
-                                      accessor: "itemPrice"
+                                      accessor: "itemPrice",
                                     },
                                     {
                                       Header: (
@@ -3850,8 +3849,8 @@ class MyTicket extends Component {
                                           Purchase Date
                                         </span>
                                       ),
-                                      accessor: "dateFormat"
-                                    }
+                                      accessor: "dateFormat",
+                                    },
                                   ]}
                                   defaultPageSize={5}
                                   showPagination={false}
@@ -3879,7 +3878,7 @@ class MyTicket extends Component {
                           Resolution
                         </label>
                       </div>
-                     
+
                       <div className="tic-det-progress">
                         <Progress multi>
                           {this.state.progressDataWithcColor.map(function(
@@ -4331,7 +4330,7 @@ class MyTicket extends Component {
                                   style={{
                                     display: "flex",
                                     marginTop: "7px",
-                                    float: "right"
+                                    float: "right",
                                   }}
                                 >
                                   <label className="orderdetailpopup">
@@ -4473,7 +4472,7 @@ class MyTicket extends Component {
                                       {
                                         Header: <span></span>,
                                         accessor: "purpose",
-                                        Cell: row => {
+                                        Cell: (row) => {
                                           debugger;
                                           var storeId = 0;
                                           if (row.original.lpassStoreID > 0) {
@@ -4487,7 +4486,7 @@ class MyTicket extends Component {
                                                 type="checkbox"
                                                 id={"i" + storeId}
                                                 style={{
-                                                  display: "none"
+                                                  display: "none",
                                                 }}
                                                 name="ticket-store"
                                                 checked={
@@ -4508,28 +4507,28 @@ class MyTicket extends Component {
                                             </div>
                                           );
                                         },
-                                        width: 20
+                                        width: 20,
                                       },
                                       {
                                         Header: <span>Store Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Name</span>,
-                                        accessor: "storeName"
+                                        accessor: "storeName",
                                       },
                                       {
                                         Header: <span>Store Pin Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Email ID</span>,
-                                        accessor: "storeEmailID"
+                                        accessor: "storeEmailID",
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "address"
-                                      }
+                                        accessor: "address",
+                                      },
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
@@ -4545,7 +4544,6 @@ class MyTicket extends Component {
                                 aria-labelledby="selectedstore-tab"
                               >
                                 <div className="reactstoreselect custom-react-table datePickertable storeTdetail">
-                                 
                                   <ReactTable
                                     data={this.state.selectedStoreData}
                                     columns={[
@@ -4553,7 +4551,7 @@ class MyTicket extends Component {
                                         Header: "",
                                         accessor: "storeID",
                                         width: 20,
-                                        Cell: row => {
+                                        Cell: (row) => {
                                           var storeId = 0;
                                           if (row.original.lpassStoreID > 0) {
                                             storeId = row.original.lpassStoreID;
@@ -4564,14 +4562,14 @@ class MyTicket extends Component {
                                             <div
                                               className="filter-checkbox"
                                               style={{
-                                                marginLeft: "15px"
+                                                marginLeft: "15px",
                                               }}
                                             >
                                               <input
                                                 type="checkbox"
                                                 id={"i" + storeId}
                                                 style={{
-                                                  display: "none"
+                                                  display: "none",
                                                 }}
                                                 name="ticket-store"
                                                 checked={
@@ -4591,17 +4589,17 @@ class MyTicket extends Component {
                                               ></label>
                                             </div>
                                           );
-                                        }
+                                        },
                                       },
                                       {
                                         Header: <span>Purpose</span>,
                                         accessor: "invoiceNumber",
                                         minWidth: 160,
-                                        Cell: row => (
+                                        Cell: (row) => (
                                           <div
                                             className="filter-checkbox"
                                             style={{
-                                              marginLeft: "15px"
+                                              marginLeft: "15px",
                                             }}
                                           >
                                             <label
@@ -4614,35 +4612,35 @@ class MyTicket extends Component {
                                                 : "Customer Already visited store"}
                                             </label>
                                           </div>
-                                        )
+                                        ),
                                       },
                                       {
                                         Header: <span>Store Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Name</span>,
-                                        accessor: "storeName"
+                                        accessor: "storeName",
                                       },
                                       {
                                         Header: <span>Store Pin Code</span>,
-                                        accessor: "pincode"
+                                        accessor: "pincode",
                                       },
                                       {
                                         Header: <span>Store Email ID</span>,
                                         accessor: "storeEmailID",
-                                        minWidth: 190
+                                        minWidth: 190,
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
                                         accessor: "address",
-                                        minWidth: 140
+                                        minWidth: 140,
                                       },
                                       {
                                         Header: <span>Visit Date</span>,
                                         accessor: "storeVisitDate",
                                         minWidth: 150,
-                                        Cell: row => {
+                                        Cell: (row) => {
                                           var storeId = 0;
                                           if (row.original.lpassStoreID > 0) {
                                             storeId = row.original.lpassStoreID;
@@ -4664,10 +4662,7 @@ class MyTicket extends Component {
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 dateFormat="MM/DD/YYYY"
-                                                id={
-                                                  "visitDate" +
-                                                  storeId
-                                                }
+                                                id={"visitDate" + storeId}
                                                 value={
                                                   row.original
                                                     .storeVisitDate !== null
@@ -4685,8 +4680,8 @@ class MyTicket extends Component {
                                               />
                                             </div>
                                           );
-                                        }
-                                      }
+                                        },
+                                      },
                                     ]}
                                     resizable={false}
                                     defaultPageSize={5}
@@ -4730,7 +4725,7 @@ class MyTicket extends Component {
                               className="row"
                               style={{
                                 marginLeft: "0px",
-                                marginRight: "0px"
+                                marginRight: "0px",
                               }}
                             >
                               <div
@@ -4761,7 +4756,7 @@ class MyTicket extends Component {
                               className="row m-t-10 m-b-10"
                               style={{
                                 marginLeft: "0",
-                                marginRight: "0"
+                                marginRight: "0",
                               }}
                             >
                               <div className="col-md-6">
@@ -4773,7 +4768,7 @@ class MyTicket extends Component {
                                 <div
                                   style={{
                                     float: "right",
-                                    display: "flex"
+                                    display: "flex",
                                   }}
                                 >
                                   <label className="orderdetailpopup">
@@ -4908,7 +4903,7 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "invoiceNumber",
                                         width: 20,
-                                        Cell: row => (
+                                        Cell: (row) => (
                                           <div className="filter-checkbox">
                                             <input
                                               type="checkbox"
@@ -4917,7 +4912,7 @@ class MyTicket extends Component {
                                                 row.original.invoiceNumber
                                               }
                                               style={{
-                                                display: "none"
+                                                display: "none",
                                               }}
                                               name="AllOrder"
                                               checked={this.state.selectedInvoiceNo.includes(
@@ -4936,42 +4931,42 @@ class MyTicket extends Component {
                                               }
                                             ></label>
                                           </div>
-                                        )
+                                        ),
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
                                         accessor: "invoiceNumber",
-                                        minWidth: 150
+                                        minWidth: 150,
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
                                         accessor: "dateFormat",
-                                        minWidth: 120
+                                        minWidth: 120,
                                       },
                                       {
                                         Header: <span>Item Count</span>,
-                                        accessor: "itemCount"
+                                        accessor: "itemCount",
                                       },
                                       {
                                         Header: <span>Item Price</span>,
-                                        accessor: "ordeItemPrice"
+                                        accessor: "ordeItemPrice",
                                       },
                                       {
                                         Header: <span>Price Paid</span>,
-                                        accessor: "orderPricePaid"
+                                        accessor: "orderPricePaid",
                                       },
                                       {
                                         Header: <span>Store Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "storeAddress"
+                                        accessor: "storeAddress",
                                       },
                                       {
                                         Header: <span>Discount</span>,
-                                        accessor: "discount"
-                                      }
+                                        accessor: "discount",
+                                      },
                                     ]}
                                     resizable={false}
                                     minRows={2}
@@ -4995,7 +4990,7 @@ class MyTicket extends Component {
                                       if (newExpanded[index[0]] === false) {
                                         newExpanded = {};
                                       } else {
-                                        Object.keys(newExpanded).map(k => {
+                                        Object.keys(newExpanded).map((k) => {
                                           newExpanded[k] =
                                             parseInt(k) === index[0]
                                               ? {}
@@ -5004,7 +4999,7 @@ class MyTicket extends Component {
                                       }
                                       this.setState({
                                         ...this.state,
-                                        expanded: newExpanded
+                                        expanded: newExpanded,
                                       });
                                     }}
                                     columns={[
@@ -5012,7 +5007,7 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "invoiceNumber",
                                         width: 20,
-                                        Cell: row => (
+                                        Cell: (row) => (
                                           <div className="filter-checkbox">
                                             <input
                                               type="checkbox"
@@ -5021,7 +5016,7 @@ class MyTicket extends Component {
                                                 row.original.invoiceNumber
                                               }
                                               style={{
-                                                display: "none"
+                                                display: "none",
                                               }}
                                               name="AllOrder"
                                               checked={this.state.selectedInvoiceNo.includes(
@@ -5040,48 +5035,48 @@ class MyTicket extends Component {
                                               }
                                             ></label>
                                           </div>
-                                        )
+                                        ),
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
                                         accessor: "invoiceNumber",
-                                        minWidth: 150
+                                        minWidth: 150,
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
                                         accessor: "dateFormat",
-                                        minWidth: 120
+                                        minWidth: 120,
                                       },
                                       {
                                         Header: <span>Item Count</span>,
-                                        accessor: "itemCount"
+                                        accessor: "itemCount",
                                       },
                                       {
                                         Header: <span>Item Price</span>,
-                                        accessor: "ordeItemPrice"
+                                        accessor: "ordeItemPrice",
                                       },
                                       {
                                         Header: <span>Price Paid</span>,
-                                        accessor: "orderPricePaid"
+                                        accessor: "orderPricePaid",
                                       },
                                       {
                                         Header: <span>Store Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "storeAddress"
+                                        accessor: "storeAddress",
                                       },
                                       {
                                         Header: <span>Discount</span>,
-                                        accessor: "discount"
-                                      }
+                                        accessor: "discount",
+                                      },
                                     ]}
                                     resizable={false}
                                     minRows={2}
                                     defaultPageSize={5}
                                     showPagination={true}
-                                    SubComponent={row => {
+                                    SubComponent={(row) => {
                                       return (
                                         <div
                                           className="inner-custom-react-table"
@@ -5090,7 +5085,7 @@ class MyTicket extends Component {
                                           <ReactTable
                                             // data={row.original.orderItems}
                                             data={this.state.OrderSubItem.filter(
-                                              x =>
+                                              (x) =>
                                                 x.invoiceNumber ===
                                                 row.original.invoiceNumber
                                             )}
@@ -5099,7 +5094,7 @@ class MyTicket extends Component {
                                                 Header: <span> </span>,
                                                 accessor: "invoiceNo",
                                                 width: 20,
-                                                Cell: row => {
+                                                Cell: (row) => {
                                                   return (
                                                     <div className="filter-checkbox">
                                                       <input
@@ -5110,7 +5105,7 @@ class MyTicket extends Component {
                                                             .invoiceNumber
                                                         }
                                                         style={{
-                                                          display: "none"
+                                                          display: "none",
                                                         }}
                                                         name="AllItem"
                                                         checked={
@@ -5136,43 +5131,45 @@ class MyTicket extends Component {
                                                       ></label>
                                                     </div>
                                                   );
-                                                }
+                                                },
                                               },
                                               {
                                                 Header: (
                                                   <span>Article Number</span>
                                                 ),
                                                 accessor: "articleNumber",
-                                                minWidth: 140
+                                                minWidth: 140,
                                               },
                                               {
                                                 Header: (
                                                   <span>Article Name</span>
                                                 ),
-                                                accessor: "articleName"
+                                                accessor: "articleName",
                                               },
                                               {
                                                 Header: (
                                                   <span>Article MRP</span>
                                                 ),
-                                                accessor: "itemPrice"
+                                                accessor: "itemPrice",
                                               },
                                               {
                                                 Header: <span>Price Paid</span>,
-                                                accessor: "pricePaid"
+                                                accessor: "pricePaid",
                                               },
                                               {
                                                 Header: <span>Discount</span>,
-                                                accessor: "discount"
+                                                accessor: "discount",
                                               },
                                               {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
                                                 accessor: "requireSize",
-                                                Cell: row => {
+                                                Cell: (row) => {
                                                   return (
-                                                    <div ref={this.setWrapperRef}>
+                                                    <div
+                                                      ref={this.setWrapperRef}
+                                                    >
                                                       <input
                                                         type="text"
                                                         id={
@@ -5187,7 +5184,7 @@ class MyTicket extends Component {
                                                         name="requiredSize"
                                                         className="order-input"
                                                         autoComplete="off"
-                                                        ref={input => {
+                                                        ref={(input) => {
                                                           this.searchInput = input;
                                                         }}
                                                         onChange={() => {
@@ -5199,8 +5196,8 @@ class MyTicket extends Component {
                                                       />
                                                     </div>
                                                   );
-                                                }
-                                              }
+                                                },
+                                              },
                                             ]}
                                             resizable={false}
                                             defaultPageSize={5}
@@ -5235,7 +5232,7 @@ class MyTicket extends Component {
                                       if (newExpanded[index[0]] === false) {
                                         newExpanded = {};
                                       } else {
-                                        Object.keys(newExpanded).map(k => {
+                                        Object.keys(newExpanded).map((k) => {
                                           newExpanded[k] =
                                             parseInt(k) === index[0]
                                               ? {}
@@ -5244,7 +5241,7 @@ class MyTicket extends Component {
                                       }
                                       this.setState({
                                         ...this.state,
-                                        expanded: newExpanded
+                                        expanded: newExpanded,
                                       });
                                     }}
                                     columns={[
@@ -5252,7 +5249,7 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "invoiceNumber",
                                         width: 20,
-                                        Cell: row => (
+                                        Cell: (row) => (
                                           <div className="filter-checkbox">
                                             <input
                                               type="checkbox"
@@ -5261,7 +5258,7 @@ class MyTicket extends Component {
                                                 row.original.invoiceNumber
                                               }
                                               style={{
-                                                display: "none"
+                                                display: "none",
                                               }}
                                               name="AllOrder"
                                               checked={this.state.selectedInvoiceNo.includes(
@@ -5280,42 +5277,42 @@ class MyTicket extends Component {
                                               }
                                             ></label>
                                           </div>
-                                        )
+                                        ),
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
                                         accessor: "invoiceNumber",
-                                        minWidth: 150
+                                        minWidth: 150,
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
                                         accessor: "dateFormat",
-                                        minWidth: 120
+                                        minWidth: 120,
                                       },
                                       {
                                         Header: <span>Item Count</span>,
-                                        accessor: "itemCount"
+                                        accessor: "itemCount",
                                       },
                                       {
                                         Header: <span>Item Price</span>,
-                                        accessor: "ordeItemPrice"
+                                        accessor: "ordeItemPrice",
                                       },
                                       {
                                         Header: <span>Price Paid</span>,
-                                        accessor: "orderPricePaid"
+                                        accessor: "orderPricePaid",
                                       },
                                       {
                                         Header: <span>Store Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "storeAddress"
+                                        accessor: "storeAddress",
                                       },
                                       {
                                         Header: <span>Discount</span>,
-                                        accessor: "discount"
-                                      }
+                                        accessor: "discount",
+                                      },
                                     ]}
                                     resizable={false}
                                     minRows={2}
@@ -5339,7 +5336,7 @@ class MyTicket extends Component {
                                       if (newExpanded[index[0]] === false) {
                                         newExpanded = {};
                                       } else {
-                                        Object.keys(newExpanded).map(k => {
+                                        Object.keys(newExpanded).map((k) => {
                                           newExpanded[k] =
                                             parseInt(k) === index[0]
                                               ? {}
@@ -5348,7 +5345,7 @@ class MyTicket extends Component {
                                       }
                                       this.setState({
                                         ...this.state,
-                                        expanded: newExpanded
+                                        expanded: newExpanded,
                                       });
                                     }}
                                     columns={[
@@ -5356,7 +5353,7 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "invoiceNumber",
                                         width: 20,
-                                        Cell: row => (
+                                        Cell: (row) => (
                                           <div className="filter-checkbox">
                                             <input
                                               type="checkbox"
@@ -5365,7 +5362,7 @@ class MyTicket extends Component {
                                                 row.original.invoiceNumber
                                               }
                                               style={{
-                                                display: "none"
+                                                display: "none",
                                               }}
                                               name="AllOrder"
                                               checked={this.state.selectedInvoiceNo.includes(
@@ -5384,46 +5381,46 @@ class MyTicket extends Component {
                                               }
                                             ></label>
                                           </div>
-                                        )
+                                        ),
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
-                                        accessor: "invoiceNumber"
+                                        accessor: "invoiceNumber",
                                       },
                                       {
                                         Header: <span>Invoice Date</span>,
-                                        accessor: "dateFormat"
+                                        accessor: "dateFormat",
                                       },
                                       {
                                         Header: <span>Item Count</span>,
-                                        accessor: "itemCount"
+                                        accessor: "itemCount",
                                       },
                                       {
                                         Header: <span>Item Price</span>,
-                                        accessor: "ordeItemPrice"
+                                        accessor: "ordeItemPrice",
                                       },
                                       {
                                         Header: <span>Price Paid</span>,
-                                        accessor: "orderPricePaid"
+                                        accessor: "orderPricePaid",
                                       },
                                       {
                                         Header: <span>Store Code</span>,
-                                        accessor: "storeCode"
+                                        accessor: "storeCode",
                                       },
                                       {
                                         Header: <span>Store Addres</span>,
-                                        accessor: "storeAddress"
+                                        accessor: "storeAddress",
                                       },
                                       {
                                         Header: <span>Discount</span>,
-                                        accessor: "discount"
-                                      }
+                                        accessor: "discount",
+                                      },
                                     ]}
                                     //resizable={false}
                                     minRows={2}
                                     defaultPageSize={5}
                                     showPagination={false}
-                                    SubComponent={row => {
+                                    SubComponent={(row) => {
                                       return (
                                         <div
                                           className="inner-custom-react-table"
@@ -5431,7 +5428,7 @@ class MyTicket extends Component {
                                         >
                                           <ReactTable
                                             data={this.state.OrderSubItem.filter(
-                                              x =>
+                                              (x) =>
                                                 x.invoiceNumber ===
                                                 row.original.invoiceNumber
                                             )}
@@ -5440,7 +5437,7 @@ class MyTicket extends Component {
                                                 Header: <span></span>,
                                                 accessor: "size",
                                                 width: 20,
-                                                Cell: row => (
+                                                Cell: (row) => (
                                                   <div className="filter-checkbox">
                                                     <input
                                                       type="checkbox"
@@ -5450,7 +5447,7 @@ class MyTicket extends Component {
                                                           .articleNumber
                                                       }
                                                       style={{
-                                                        display: "none"
+                                                        display: "none",
                                                       }}
                                                       name="AllItem"
                                                       checked={
@@ -5475,43 +5472,45 @@ class MyTicket extends Component {
                                                       }
                                                     ></label>
                                                   </div>
-                                                )
+                                                ),
                                               },
                                               {
                                                 Header: (
                                                   <span>Article Number</span>
                                                 ),
-                                                accessor: "articleNumber"
+                                                accessor: "articleNumber",
                                               },
                                               {
                                                 Header: (
                                                   <span>Article Name</span>
                                                 ),
-                                                accessor: "articleName"
+                                                accessor: "articleName",
                                               },
                                               {
                                                 Header: (
                                                   <span>Article MRP</span>
                                                 ),
-                                                accessor: "itemPrice"
+                                                accessor: "itemPrice",
                                               },
                                               {
                                                 Header: <span>Price Paid</span>,
-                                                accessor: "pricePaid"
+                                                accessor: "pricePaid",
                                               },
                                               {
                                                 Header: <span>Discount</span>,
                                                 accessor: "discount",
-                                                sortable: true
+                                                sortable: true,
                                               },
                                               {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
                                                 accessor: "requireSize",
-                                                Cell: row => {
+                                                Cell: (row) => {
                                                   return (
-                                                    <div ref={this.setWrapperRef}>
+                                                    <div
+                                                      ref={this.setWrapperRef}
+                                                    >
                                                       <input
                                                         type="text"
                                                         id={
@@ -5526,7 +5525,7 @@ class MyTicket extends Component {
                                                         }
                                                         name="requiredSize"
                                                         autoComplete="off"
-                                                        ref={input => {
+                                                        ref={(input) => {
                                                           this.searchInput = input;
                                                         }}
                                                         onChange={() => {
@@ -5535,12 +5534,11 @@ class MyTicket extends Component {
                                                             row
                                                           );
                                                         }}
-                                                        
                                                       />
                                                     </div>
                                                   );
-                                                }
-                                              }
+                                                },
+                                              },
                                             ]}
                                             defaultPageSize={5}
                                             showPagination={false}
@@ -5859,33 +5857,33 @@ class MyTicket extends Component {
                               toolbar: [
                                 {
                                   name: "basicstyles",
-                                  items: ["Bold", "Italic", "Strike"]
+                                  items: ["Bold", "Italic", "Strike"],
                                 },
                                 {
                                   name: "styles",
-                                  items: ["Styles", "Format"]
+                                  items: ["Styles", "Format"],
                                 },
                                 {
                                   name: "paragraph",
-                                  items: ["NumberedList", "BulletedList"]
+                                  items: ["NumberedList", "BulletedList"],
                                 },
                                 {
                                   name: "links",
-                                  items: ["Link", "Unlink"]
+                                  items: ["Link", "Unlink"],
                                 },
                                 {
                                   name: "insert",
-                                  items: ["Image", "Table"]
+                                  items: ["Image", "Table"],
                                 },
                                 {
                                   name: "tools",
-                                  items: ["Maximize"]
+                                  items: ["Maximize"],
                                 },
                                 {
                                   name: "editing",
-                                  items: ["Scayt"]
-                                }
-                              ]
+                                  items: ["Scayt"],
+                                },
+                              ],
                             }}
                           />
                         </div>
@@ -6306,8 +6304,8 @@ class MyTicket extends Component {
                         claimData={{
                           claimDeatils: {
                             ticketId: this.state.ticket_Id,
-                            claimTabId: this.state.ClaimTab
-                          }
+                            claimTabId: this.state.ClaimTab,
+                          },
                         }}
                       />
                     ) : (
@@ -6413,7 +6411,7 @@ class MyTicket extends Component {
                                               <label
                                                 className="solved-by-naman-r mt-0"
                                                 style={{
-                                                  marginLeft: "7px"
+                                                  marginLeft: "7px",
                                                 }}
                                               >
                                                 {
@@ -6426,7 +6424,7 @@ class MyTicket extends Component {
                                                 <label
                                                   style={{
                                                     display: "block",
-                                                    marginLeft: "7px"
+                                                    marginLeft: "7px",
                                                   }}
                                                 >
                                                   Reassign to &nbsp;
@@ -6484,7 +6482,7 @@ class MyTicket extends Component {
                                                   alt="comment"
                                                   className="commentImg"
                                                   style={{
-                                                    display: "inline-block"
+                                                    display: "inline-block",
                                                   }}
                                                 />
                                               ) : null}
@@ -6510,7 +6508,7 @@ class MyTicket extends Component {
                                           <p
                                             className="label-5"
                                             style={{
-                                              display: "inline-block"
+                                              display: "inline-block",
                                             }}
                                           >
                                             {/* {details.latestMessageDetails.ticketMailBody
@@ -6645,7 +6643,7 @@ class MyTicket extends Component {
                                                                 className="label-5"
                                                                 style={{
                                                                   display:
-                                                                    "block"
+                                                                    "block",
                                                                 }}
                                                               >
                                                                 {ReactHtmlParser(
@@ -6680,7 +6678,7 @@ class MyTicket extends Component {
                                                         <label
                                                           className="label-5"
                                                           style={{
-                                                            display: "block"
+                                                            display: "block",
                                                           }}
                                                         >
                                                           {ReactHtmlParser(
@@ -6722,7 +6720,7 @@ class MyTicket extends Component {
                       modalId="Historical-popup"
                       overlayId="logout-ovrly"
                       classNames={{
-                        modal: "historical-popup"
+                        modal: "historical-popup",
                       }}
                     >
                       <div className="commenttextborder">
@@ -6775,7 +6773,7 @@ class MyTicket extends Component {
                           <p
                             style={{
                               color: "red",
-                              marginBottom: "0px"
+                              marginBottom: "0px",
                             }}
                           >
                             {this.state.tckcmtMSGCompulsory}
@@ -6969,33 +6967,33 @@ class MyTicket extends Component {
                             toolbar: [
                               {
                                 name: "basicstyles",
-                                items: ["Bold", "Italic", "Strike"]
+                                items: ["Bold", "Italic", "Strike"],
                               },
                               {
                                 name: "styles",
-                                items: ["Styles", "Format"]
+                                items: ["Styles", "Format"],
                               },
                               {
                                 name: "paragraph",
-                                items: ["NumberedList", "BulletedList"]
+                                items: ["NumberedList", "BulletedList"],
                               },
                               {
                                 name: "links",
-                                items: ["Link", "Unlink"]
+                                items: ["Link", "Unlink"],
                               },
                               {
                                 name: "insert",
-                                items: ["Image", "Table"]
+                                items: ["Image", "Table"],
                               },
                               {
                                 name: "tools",
-                                items: ["Maximize"]
+                                items: ["Maximize"],
                               },
                               {
                                 name: "editing",
-                                items: ["Scayt"]
-                              }
-                            ]
+                                items: ["Scayt"],
+                              },
+                            ],
                           }}
                         />
                         <div className="row colladrowa">
@@ -7132,7 +7130,7 @@ class MyTicket extends Component {
                       modalId="Historical-popup"
                       overlayId="logout-ovrly"
                       classNames={{
-                        modal: "historical-popup"
+                        modal: "historical-popup",
                       }}
                     >
                       <div className="commenttextborder">
@@ -7186,7 +7184,7 @@ class MyTicket extends Component {
                           <p
                             style={{
                               color: "red",
-                              marginBottom: "0px"
+                              marginBottom: "0px",
                             }}
                           >
                             {this.state.freetextCommentCompulsory}
@@ -7219,8 +7217,8 @@ class MyTicket extends Component {
                             TicketData: {
                               TicketId: this.state.ticket_Id,
                               // GridData: this.state.taskTableGrid,
-                              TabActiveId: this.state.TaskTab
-                            }
+                              TabActiveId: this.state.TaskTab,
+                            },
                           }}
                           // callBackTaskLenght={this.handleGetCountOfTabs(this.state.ticket_Id)}
                         />
@@ -7261,7 +7259,7 @@ class MyTicket extends Component {
                           <p
                             style={{
                               color: "red",
-                              marginBottom: "0px"
+                              marginBottom: "0px",
                             }}
                           >
                             {this.state.notesCommentCompulsion}
@@ -7470,7 +7468,7 @@ class MyTicket extends Component {
               modalId="Historical-popup"
               overlayId="logout-ovrly"
               classNames={{
-                modal: "myticket-knowpopup"
+                modal: "myticket-knowpopup",
               }}
             >
               <div className="commenttextborder">
