@@ -790,7 +790,7 @@ class Header extends Component {
       });
   }
   ////handle Make As Read On Going Chat
-  async handleMakeAsReadOnGoingChat(id,isNew) {
+  async handleMakeAsReadOnGoingChat(id, isNew) {
     let self = this;
     this.setState({ chatId: id });
     await axios({
@@ -5592,8 +5592,6 @@ class Header extends Component {
                                       return (
                                         <>
                                           {rowData.chatStatus
-                                            ? rowData.chatStatus === "InActive"
-                                            : "Closed"
                                             ? rowData.chatStatus
                                             : ""}
                                         </>
@@ -5842,7 +5840,12 @@ class Header extends Component {
                                 render: (row, rowData) => {
                                   return (
                                     <>
-                                      {rowData.message ? rowData.message : ""}
+                                      <p
+                                        className="msg-text-overlap"
+                                        title={row ? row : ""}
+                                      >
+                                        {row ? row : ""}
+                                      </p>
                                     </>
                                   );
                                 },

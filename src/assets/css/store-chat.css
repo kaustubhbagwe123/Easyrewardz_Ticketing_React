@@ -987,6 +987,19 @@ p {
   .chat-tabs-desktop {
     display: none;
   }
+  .chatdivtitle{
+    display: inline-block;
+  }
+  .chatdivtitle ul {
+    width: 55% !important;
+}
+.chatactionbtn {
+  display: none !important;
+}
+a.nav-link.active.chattitletab {
+  color: #2561a8;
+  font-weight: bold;
+}
   .store-chat-header h3 {
     font-size: 16px;
   }
