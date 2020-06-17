@@ -112,17 +112,17 @@ class TicketSystem extends Component {
       file: [],
       SpacialEqmt: [
         {
-          department: 25
+          department: 25,
         },
         {
-          department: 30
+          department: 30,
         },
         {
-          department: 50
+          department: 50,
         },
         {
-          department: 90
-        }
+          department: 90,
+        },
       ],
       titleSuggValue: "",
       toggleTitle: false,
@@ -152,7 +152,7 @@ class TicketSystem extends Component {
       showTaskData: false,
       fileDummy: [],
       ckCusrsorPosition: 0,
-      ckCusrsorData: ""
+      ckCusrsorData: "",
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -201,7 +201,7 @@ class TicketSystem extends Component {
       this.setState({
         customerDetails,
         customer_Id: custId,
-        ticketDetailID: ticketid_
+        ticketDetailID: ticketid_,
       });
       this.handleGetCustomerData(custId);
       if (ticketid_) {
@@ -245,7 +245,7 @@ class TicketSystem extends Component {
   }
   HandleKbLinkModalClose() {
     this.setState({
-      KbLink: false
+      KbLink: false,
     });
   }
   handleThumbModalOpen() {
@@ -263,9 +263,9 @@ class TicketSystem extends Component {
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
   }
-  handleTaskMasterChange = taskData => {
+  handleTaskMasterChange = (taskData) => {
     this.setState({
-      taskMaster: taskData
+      taskMaster: taskData,
     });
   };
 
@@ -304,7 +304,7 @@ class TicketSystem extends Component {
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      x => x.mailParameterID == e.currentTarget.value
+      (x) => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     // ck += placeholderName;
@@ -313,7 +313,7 @@ class TicketSystem extends Component {
       this.state.ckCusrsorPosition + placeholderName.length + 1;
     this.setState({
       ckCusrsorPosition: newCkCusrsorPosition,
-      ckCusrsorData: ckDataArrLast
+      ckCusrsorData: ckDataArrLast,
     });
     if (ckTags) {
       // let ckFinal = ckTags[0] + ck + ckTags[1];
@@ -336,8 +336,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Template/GetMailParameter",
       headers: authHeader(),
       params: {
-        AlertID: 8
-      }
+        AlertID: 8,
+      },
     })
       .then(function(res) {
         ////
@@ -345,47 +345,47 @@ class TicketSystem extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            placeholderData: data
+            placeholderData: data,
           });
         } else {
           self.setState({
-            placeholderData: []
+            placeholderData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
 
   handleCustomerAttachamentStatus(custAttachOrder) {
     this.setState({
-      customerAttachOrder: custAttachOrder
+      customerAttachOrder: custAttachOrder,
     });
   }
   handleGetOrderId = (selectParentData, selectChildData) => {
     debugger;
     this.setState({
       selectedOrderData: selectParentData,
-      SelectedItemData: selectChildData
+      SelectedItemData: selectChildData,
       // idSizeArray: idSizeArray
     });
   };
-  handleGetItemData = selectChildData => {
+  handleGetItemData = (selectChildData) => {
     this.setState({
-      SelectedItemData: selectChildData
+      SelectedItemData: selectChildData,
     });
   };
-  handleGetStoreId = selectedStoreData => {
+  handleGetStoreId = (selectedStoreData) => {
     debugger;
     this.setState({
-      selectedStoreIDs: selectedStoreData
+      selectedStoreIDs: selectedStoreData,
     });
   };
   handleCustomerStoreStatus(WantVisit, AlreadyCustomerVisit) {
     this.setState({
       custVisit: WantVisit,
-      AlreadycustVisit: AlreadyCustomerVisit
+      AlreadycustVisit: AlreadyCustomerVisit,
     });
   }
   handleEditCustomerClose() {
@@ -397,35 +397,35 @@ class TicketSystem extends Component {
       genderID: 1,
       dob: "",
       altNumber: "",
-      altEmailID: ""
+      altEmailID: "",
     });
     this.validator.hideMessages();
   }
-  GenderonChange = e => {
+  GenderonChange = (e) => {
     const value = e.target.value;
 
     let CustData = this.state.CustData;
     CustData.genderID = value;
     this.setState({ CustData });
   };
-  handleChange = date => {
+  handleChange = (date) => {
     this.setState({
-      editDOB: date
+      editDOB: date,
     });
   };
   showAddNoteFuncation() {
     const { showAddNote } = this.state;
     this.setState({
       showAddNote: !showAddNote,
-      ticketNote: ""
+      ticketNote: "",
     });
   }
   showInformStoreFuncation = () => {
     this.setState({
-      InformStore: !this.state.InformStore
+      InformStore: !this.state.InformStore,
     });
   };
-  handleOnChangeData = e => {
+  handleOnChangeData = (e) => {
     const { name, value } = e.target;
     // const value =e.target.value;
 
@@ -435,7 +435,7 @@ class TicketSystem extends Component {
   };
   handleEscalationChange() {
     this.setState({
-      escalationLevel: 1
+      escalationLevel: 1,
     });
   }
   handlechangebtntab(e) {
@@ -464,34 +464,40 @@ class TicketSystem extends Component {
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Customer/updateCustomer",
-        headers: authHeader(),
-        data: {
-          CustomerID: this.state.CustData.customerID,
-          CustomerName: this.state.CustData.customername,
-          CustomerPhoneNumber: this.state.CustData.customerPhone,
-          CustomerEmailId: this.state.CustData.custEmailId,
-          GenderID: this.state.CustData.genderID,
-          AltNumber: this.state.CustData.altNo,
-          AltEmailID: this.state.CustData.altEmail,
-          CreatedBy: this.state.createdBy,
-          // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
-          IsActive: 1
-        }
-      })
-        .then(function(res) {
-          let Message = res.data.message;
-          if (Message === "Success") {
-            NotificationManager.success("Record updated Successfull.");
-            self.componentDidMount();
-            self.handleEditCustomerClose.bind(this);
-          }
+      if (this.state.CustData.altEmail === this.state.CustData.custEmailId) {
+        NotificationManager.error(
+          "Email ID and Alternate Email ID fields cannot be same."
+        );
+      } else {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Customer/updateCustomer",
+          headers: authHeader(),
+          data: {
+            CustomerID: this.state.CustData.customerID,
+            CustomerName: this.state.CustData.customername,
+            CustomerPhoneNumber: this.state.CustData.customerPhone,
+            CustomerEmailId: this.state.CustData.custEmailId,
+            GenderID: this.state.CustData.genderID,
+            AltNumber: this.state.CustData.altNo,
+            AltEmailID: this.state.CustData.altEmail,
+            CreatedBy: this.state.createdBy,
+            // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
+            IsActive: 1,
+          },
         })
-        .catch(res => {
-          console.log(res);
-        });
+          .then(function(res) {
+            let Message = res.data.message;
+            if (Message === "Success") {
+              NotificationManager.success("Record updated successfully.");
+              self.componentDidMount();
+              self.handleEditCustomerClose.bind(this);
+            }
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      }
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -504,8 +510,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Ticketing/gettitlesuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: this.state.titleSuggValue
-      }
+        TikcketTitle: this.state.titleSuggValue,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -516,7 +522,7 @@ class TicketSystem extends Component {
           self.setState({ TicketTitleData: [] });
         }
       })
-      .catch(res => {
+      .catch((res) => {
         console.log(res);
       });
   }
@@ -527,14 +533,14 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Template/getListOfTemplateForNote",
       headers: authHeader(),
       params: {
-        IssueTypeID: this.state.selectedIssueType
-      }
+        IssueTypeID: this.state.selectedIssueType,
+      },
     })
       .then(function(res) {
         let data = res.data.responseData;
         self.setState({ CkEditorTemplateData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -545,8 +551,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Template/getTemplateContent",
       headers: authHeader(),
       params: {
-        TemplateId: tempId
-      }
+        TemplateId: tempId,
+      },
     })
       .then(function(res) {
         let data = res.data.responseData.templateBody;
@@ -555,10 +561,10 @@ class TicketSystem extends Component {
           editorTemplateDetails: data,
           tempName: tempName,
           selectTicketTemplateId: tempId,
-          mailBodyData: bodyData
+          mailBodyData: bodyData,
         });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -576,8 +582,8 @@ class TicketSystem extends Component {
         params: {
           Type_ID: this.state.selectedIssueTypeKB,
           Category_ID: this.state.selectedCategoryKB,
-          SubCategor_ID: this.state.selectedSubCategoryKB
-        }
+          SubCategor_ID: this.state.selectedSubCategoryKB,
+        },
       })
         .then(function(res) {
           let KbPopupData = res.data.responseData;
@@ -586,14 +592,14 @@ class TicketSystem extends Component {
           }
           self.setState({ KbPopupData: KbPopupData });
         })
-        .catch(data => {
+        .catch((data) => {
           console.log(data);
         });
     } else {
       this.setState({
         categoryKbCompulsion: "Category field is compulsory.",
         subCategoryKbCompulsion: "Sub Category field is compulsory.",
-        issueTypeKbCompulsion: "Issue Type field is compulsory."
+        issueTypeKbCompulsion: "Issue Type field is compulsory.",
       });
     }
   }
@@ -602,13 +608,13 @@ class TicketSystem extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let data = res.data.responseData;
         self.setState({ BrandData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -621,14 +627,14 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader(),
       params: {
-        BrandID: brand_Id
-      }
+        BrandID: brand_Id,
+      },
     })
       .then(function(res) {
         let data = res.data;
         self.setState({ CategoryData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -643,14 +649,14 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: cateId
-      }
+        CategoryID: cateId,
+      },
     })
       .then(function(res) {
         let data = res.data.responseData;
         self.setState({ SubCategoryData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -665,14 +671,14 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: subCateId
-      }
+        SubCategoryID: subCateId,
+      },
     })
       .then(function(res) {
         let data = res.data.responseData;
         self.setState({ IssueTypeData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -681,7 +687,7 @@ class TicketSystem extends Component {
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let status = res.data.message;
@@ -692,7 +698,7 @@ class TicketSystem extends Component {
           self.setState({ TicketPriorityData: [] });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -701,13 +707,13 @@ class TicketSystem extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then(function(res) {
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -719,8 +725,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Ticketing/getagentlist",
       headers: authHeader(),
       params: {
-        TicketID: 0 // Don't remove this Zexo
-      }
+        TicketID: 0, // Don't remove this Zexo
+      },
     })
       .then(function(res) {
         debugger;
@@ -728,16 +734,16 @@ class TicketSystem extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
-            AssignToData: data
+            AssignToData: data,
           });
           self.checkAllAgentStart();
         } else {
           self.setState({
-            AssignToData: []
+            AssignToData: [],
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -749,11 +755,11 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Customer/getcustomerdetailsbyid",
       headers: authHeader(),
       params: {
-        CustomerID: CustId
-      }
+        CustomerID: CustId,
+      },
     })
       .then(function(res) {
-        debugger
+        debugger;
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
         var CustData = res.data.responseData;
@@ -773,7 +779,7 @@ class TicketSystem extends Component {
           self.setState({ customerData: customerData, CustData });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -815,7 +821,7 @@ class TicketSystem extends Component {
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.AssignToData.filter(
-      x => x.user_ID == e.currentTarget.value
+      (x) => x.user_ID == e.currentTarget.value
     );
     let userName = matchedArr[0].agentName;
     // ck += "@" + userName;
@@ -824,7 +830,7 @@ class TicketSystem extends Component {
       this.state.ckCusrsorPosition + userName.length + 2;
     this.setState({
       ckCusrsorPosition: newCkCusrsorPosition,
-      ckCusrsorData: ckDataArrLast
+      ckCusrsorData: ckDataArrLast,
     });
     if (ckTags) {
       // let ckFinal = ckTags[0] + ck + ckTags[1];
@@ -855,19 +861,19 @@ class TicketSystem extends Component {
       headers: authHeader(),
       params: {
         TicketID: ticketID_,
-        FollowUPUserID: followUpIds
-      }
+        FollowUPUserID: followUpIds,
+      },
     })
       .then(function(res) {
         debugger;
         let status = res.data.status;
         if (status) {
           self.setState({
-            followUpIds: ""
+            followUpIds: "",
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -879,18 +885,18 @@ class TicketSystem extends Component {
       this.setState({ TicketTitleData: [] });
     }
   }
-  handleTicketSuggestion = ticketSuggestion => {
+  handleTicketSuggestion = (ticketSuggestion) => {
     this.setState({ ticketSuggestion });
   };
-  onAddCKEditorChange = evt => {
+  onAddCKEditorChange = (evt) => {
     debugger;
     var newContent = evt.editor.getData();
     var cursorPosition = evt.editor.getSelection().getRanges()[0];
     this.setState({
-      editorTemplateDetails: newContent
+      editorTemplateDetails: newContent,
     });
   };
-  onCkBlur = evt => {
+  onCkBlur = (evt) => {
     debugger;
     var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
@@ -900,11 +906,11 @@ class TicketSystem extends Component {
     }
     this.setState({
       ckCusrsorPosition: ckCusrsorPosition.startOffset,
-      ckCusrsorData
+      ckCusrsorData,
     });
   };
 
-  handleAppendTicketSuggestion = e => {
+  handleAppendTicketSuggestion = (e) => {
     this.setState({ toggleTitle: true });
     var startPoint = document.getElementById("titleSuggestion").selectionStart;
     var textLength = document.getElementById("titleSuggestion").value.length;
@@ -928,7 +934,7 @@ class TicketSystem extends Component {
     this.setState({ titleSuggValue });
     this.searchInput.focus();
   };
-  handleTicSugg = e => {
+  handleTicSugg = (e) => {
     ////
     let ticSugg = e.currentTarget.value;
     this.setState({ titleSuggValue: ticSugg });
@@ -937,7 +943,7 @@ class TicketSystem extends Component {
         this.handleGetTicketTitleList();
       } else {
         this.setState({
-          TicketTitleData: []
+          TicketTitleData: [],
         });
       }
     }, 1);
@@ -955,9 +961,9 @@ class TicketSystem extends Component {
       const filesAmount = e.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
-        reader.onload = file => {
+        reader.onload = (file) => {
           this.setState({
-            imageView: file.target.result
+            imageView: file.target.result,
           });
         };
         reader.readAsDataURL(e.target.files[i]);
@@ -994,7 +1000,7 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    if(this.state.selectedTicketPriority > 0){
+    if (this.state.selectedTicketPriority > 0) {
       if (
         this.state.titleSuggValue.length > 0 &&
         this.state.ticketDetails.length > 0 &&
@@ -1011,7 +1017,7 @@ class TicketSystem extends Component {
         if (this.state.selectedOrderData.length > 0) {
           order_masterId = this.state.selectedOrderData[0]["orderMasterID"];
         }
-  
+
         // --------------New Code start---------------
         if (this.state.SelectedItemData.length === 0) {
           for (let j = 0; j < this.state.selectedOrderData.length; j++) {
@@ -1028,18 +1034,18 @@ class TicketSystem extends Component {
           }
         }
         // --------------New Code end-----------------
-  
+
         var selectedStore = "";
         for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
           var PurposeID = this.state.selectedStoreIDs[j]["purposeId"];
-  
+
           if (PurposeID === "0") {
             // Send Id as 1 and 2 from API
             PurposeID = 1;
           } else {
             PurposeID = 2;
           }
-  
+
           var visitDate = "";
           if (
             this.state.selectedStoreIDs[j]["StoreVisitDate"] === null ||
@@ -1052,7 +1058,7 @@ class TicketSystem extends Component {
               this.state.selectedStoreIDs[j]["StoreVisitDate"]
             ).format("YYYY-MM-DD");
           }
-  
+
           selectedStore +=
             this.state.selectedStoreIDs[j]["storeID"] +
             "|" +
@@ -1069,18 +1075,22 @@ class TicketSystem extends Component {
         } else {
           actionStatusId = 100;
         }
-  
+
         var mailData = [];
         mailData = this.state.mailData;
-        this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
+        this.state.mailFiled[
+          "ToEmail"
+        ] = this.state.customerData.customerEmailId;
         this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
-        this.state.mailFiled["TicketMailBody"] = this.state.editorTemplateDetails;
+        this.state.mailFiled[
+          "TicketMailBody"
+        ] = this.state.editorTemplateDetails;
         this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
         this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
         mailData.push(this.state.mailFiled);
-  
+
         const formData = new FormData();
-  
+
         var paramData = {
           TicketTitle: this.state.titleSuggValue,
           Ticketdescription: this.state.ticketDetails,
@@ -1105,7 +1115,7 @@ class TicketSystem extends Component {
           OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
           StoreID: selectedStore.substring(",", selectedStore.length - 1),
           ticketingMailerQues: mailData,
-          OrderMasterID: order_masterId
+          OrderMasterID: order_masterId,
         };
         //// ----------------Order attachment Code Start-----------------
         /// For Attached order
@@ -1122,12 +1132,12 @@ class TicketSystem extends Component {
             StoreCode: order_data.storeCode,
             TransactionDate: order_data.invoiceDate,
             ModeOfPaymentID: 1,
-            TicketSourceID: this.state.selectedChannelOfPurchase
+            TicketSourceID: this.state.selectedChannelOfPurchase,
           };
         } else {
           var OrderData = null;
         }
-  
+
         /// For Attached OrderItem data
         var order_itemData = [];
         for (let i = 0; i < this.state.SelectedItemData.length; i++) {
@@ -1157,26 +1167,26 @@ class TicketSystem extends Component {
             "articleNumber"
           ];
           item_data["ArticleName"] = this.state.SelectedItemData[i]["itemName"];
-  
+
           order_itemData.push(item_data);
         }
         //// ----------------Order attachment Code End-----------------
-  
+
         //// ----------------Store attachment Code Start---------------
         var store_Details = [];
         for (let k = 0; k < this.state.selectedStoreIDs.length; k++) {
           var storeData = {};
-  
+
           ///check purpose id
           var PurposeID = this.state.selectedStoreIDs[k]["purposeId"];
-  
+
           if (PurposeID === "0") {
             // Send Purpose Id as 1 and 2 from API
             PurposeID = 1;
           } else {
             PurposeID = 2;
           }
-  
+
           var visitDate = "";
           if (
             this.state.selectedStoreIDs[k]["StoreVisitDate"] === null ||
@@ -1189,7 +1199,7 @@ class TicketSystem extends Component {
               this.state.selectedStoreIDs[k]["StoreVisitDate"]
             ).format("YYYY-MM-DD");
           }
-  
+
           storeData["StoreID"] = this.state.selectedStoreIDs[k]["storeID"];
           storeData["BrandID"] = this.state.selectedStoreIDs[k]["brandID"];
           storeData["CityID"] = this.state.selectedStoreIDs[k]["cityID"];
@@ -1213,11 +1223,11 @@ class TicketSystem extends Component {
           storeData["Purpose"] = PurposeID;
           storeData["Pincode"] = this.state.selectedStoreIDs[k]["pincode"];
           storeData["BrandIDs"] = this.state.selectedBrand;
-  
+
           store_Details.push(storeData);
         }
         //// ----------------Store attachment Code End-----------------
-  
+
         formData.append("ticketingDetails", JSON.stringify(paramData));
         formData.append("orderDetails", JSON.stringify(OrderData));
         formData.append("orderItemDetails", JSON.stringify(order_itemData));
@@ -1252,7 +1262,7 @@ class TicketSystem extends Component {
             TicketSourceID: 1,
             OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
             StoreID: selectedStore.substring(",", selectedStore.length - 1),
-            ticketingMailerQues: mailData
+            ticketingMailerQues: mailData,
           };
           DRAFTFromData.append("ticketingDetails", JSON.stringify(paramData));
           for (let j = 0; j < this.state.FileData.length; j++) {
@@ -1262,7 +1272,7 @@ class TicketSystem extends Component {
             method: "post",
             url: config.apiUrl + "/Ticketing/UpdateDraftTicket",
             headers: authHeader(),
-            data: DRAFTFromData
+            data: DRAFTFromData,
           })
             .then(function(res) {
               debugger;
@@ -1281,7 +1291,7 @@ class TicketSystem extends Component {
                 NotificationManager.error(res.data.message, "", 2000);
               }
             })
-            .catch(data => {
+            .catch((data) => {
               console.log(data);
             });
         } else {
@@ -1289,7 +1299,7 @@ class TicketSystem extends Component {
             method: "post",
             url: config.apiUrl + "/Ticketing/createTicket",
             headers: authHeader(),
-            data: formData
+            data: formData,
           })
             .then(function(res) {
               debugger;
@@ -1308,7 +1318,7 @@ class TicketSystem extends Component {
                 NotificationManager.error(res.data.message, "", 2000);
               }
             })
-            .catch(data => {
+            .catch((data) => {
               console.log(data);
             });
         }
@@ -1320,13 +1330,12 @@ class TicketSystem extends Component {
           ticketCategoryCompulsion: "Category field is compulsory.",
           ticketSubCategoryCompulsion: "Sub Category field is compulsory.",
           ticketIssueTypeCompulsion: "Issue Type field is compulsory.",
-          channelPurchaseCompulsion: "Channel of Purchase field is compulsory."
+          channelPurchaseCompulsion: "Channel of Purchase field is compulsory.",
         });
       }
-    }else{
+    } else {
       NotificationManager.error("Please Select Ticket Priority.", "", 2000);
     }
-    
 
     // Don't remove this function
   }
@@ -1360,7 +1369,7 @@ class TicketSystem extends Component {
   handlebackprev() {
     this.props.history.push("myTicketList");
   }
-  setBrandValue = e => {
+  setBrandValue = (e) => {
     let value = e.currentTarget.value;
     this.setState({
       selectedBrand: value,
@@ -1368,11 +1377,11 @@ class TicketSystem extends Component {
       selectedCategory: "",
       SubCategoryData: [],
       selectedSubCategory: "",
-      IssueTypeData: []
+      IssueTypeData: [],
     });
     this.handleGetCategoryList(value);
   };
-  setIssueTypeValue = e => {
+  setIssueTypeValue = (e) => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
 
@@ -1382,24 +1391,24 @@ class TicketSystem extends Component {
       }
     }, 1);
   };
-  setIssueTypeValueKB = e => {
+  setIssueTypeValueKB = (e) => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
-  setTicketPriorityValue = e => {
+  setTicketPriorityValue = (e) => {
     let value = e.target.value;
     this.setState({ selectedTicketPriority: Number(value) });
   };
-  setTicketActionTypeValue = e => {
+  setTicketActionTypeValue = (e) => {
     let value = e.currentTarget.value;
     this.setState({ selectedTicketActionType: value });
   };
-  setCategoryValue = e => {
+  setCategoryValue = (e) => {
     let value = e.currentTarget.value;
     this.setState({
       selectedCategory: value,
       SubCategoryData: [],
-      IssueTypeData: []
+      IssueTypeData: [],
     });
     setTimeout(() => {
       if (this.state.selectedCategory) {
@@ -1409,12 +1418,12 @@ class TicketSystem extends Component {
           IssueTypeData: [],
           selectedIssueType: "",
           selectedSubCategory: "",
-          SubCategoryData: []
+          SubCategoryData: [],
         });
       }
     }, 1);
   };
-  setCategoryValueKB = e => {
+  setCategoryValueKB = (e) => {
     let value = e.currentTarget.value;
     this.setState({ selectedCategoryKB: value });
     setTimeout(() => {
@@ -1425,12 +1434,12 @@ class TicketSystem extends Component {
           IssueTypeData: [],
           selectedIssueTypeKB: "",
           selectedSubCategoryKB: "",
-          SubCategoryData: []
+          SubCategoryData: [],
         });
       }
     }, 1);
   };
-  setSubCategoryValue = e => {
+  setSubCategoryValue = (e) => {
     ////
     let value = e.currentTarget.value;
     this.setState({ selectedSubCategory: value, IssueTypeData: [] });
@@ -1443,7 +1452,7 @@ class TicketSystem extends Component {
       }
     }, 1);
   };
-  setSubCategoryValueKB = e => {
+  setSubCategoryValueKB = (e) => {
     ////
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryKB: subCategoryValue });
@@ -1456,8 +1465,8 @@ class TicketSystem extends Component {
       }
     }, 1);
   };
-  setChannelOfPurchaseValue = e => {
-    debugger
+  setChannelOfPurchaseValue = (e) => {
+    debugger;
     let value = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: value });
   };
@@ -1471,8 +1480,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Ticketing/getTicketDetailsByTicketId",
       headers: authHeader(),
       params: {
-        ticketID: Id
-      }
+        ticketID: Id,
+      },
     })
       .then(function(res) {
         debugger;
@@ -1504,20 +1513,20 @@ class TicketSystem extends Component {
           if (checkALert === 0 && CheckCustomerCmt === true) {
             var editoerData = data.ticketingMailerQue.ticketMailBody;
             self.setState({
-              editorTemplateDetails: editoerData
+              editorTemplateDetails: editoerData,
             });
           }
           //// Check Store data
           if (storeCheck.length > 0) {
             self.setState({
-              showStoreData: true
+              showStoreData: true,
             });
           }
 
           //// Check Order Data
           if (orderData.length > 0) {
             self.setState({
-              showOrderDetails: true
+              showOrderDetails: true,
             });
           }
 
@@ -1525,7 +1534,7 @@ class TicketSystem extends Component {
 
           if (TaskData > 0) {
             self.setState({
-              showTaskData: true
+              showTaskData: true,
             });
           }
           self.setState({
@@ -1539,7 +1548,7 @@ class TicketSystem extends Component {
             selectedChannelOfPurchase: purchase_Id,
             selectedTicketActionType: ticketAction_Id.toString(),
             fileDummy: attachementDetails,
-            mailFiled
+            mailFiled,
           });
           setTimeout(() => {
             self.handleGetCategoryList();
@@ -1549,11 +1558,11 @@ class TicketSystem extends Component {
           }, 100);
         } else {
           self.setState({
-            ticketDetailsData: {}
+            ticketDetailsData: {},
           });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
@@ -1572,7 +1581,7 @@ class TicketSystem extends Component {
       this.state.file.push(objFile);
     }
     this.setState({
-      fileText: this.state.file.length
+      fileText: this.state.file.length,
     });
   }
 
@@ -1584,8 +1593,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Ticketing/getNotesByTicketId",
       headers: authHeader(),
       params: {
-        TicketId: Id
-      }
+        TicketId: Id,
+      },
     })
       .then(function(res) {
         let status = res.data.message;
@@ -1595,11 +1604,11 @@ class TicketSystem extends Component {
           self.setState({ ticketNote: data, showAddNote: true });
         }
       })
-      .catch(data => {
+      .catch((data) => {
         console.log(data);
       });
   }
-  parentCallBackFuncation = type => {
+  parentCallBackFuncation = (type) => {
     if (type === "store") {
       this.setState({ showStoreData: false });
     }
@@ -1708,7 +1717,7 @@ class TicketSystem extends Component {
                           value={this.state.titleSuggValue}
                           type="text"
                           onChange={this.handleTicSugg}
-                          ref={input => {
+                          ref={(input) => {
                             this.searchInput = input;
                           }}
                           id="titleSuggestion"
@@ -2106,7 +2115,7 @@ class TicketSystem extends Component {
                     modalId="thumb-modal-popup"
                     overlayId="logout-ovrlykb"
                     classNames={{
-                      modal: "ck-exp-width"
+                      modal: "ck-exp-width",
                     }}
                   >
                     <div className="ck-det-cntr">
@@ -2118,29 +2127,29 @@ class TicketSystem extends Component {
                           toolbar: [
                             {
                               name: "basicstyles",
-                              items: ["Bold", "Italic", "Strike"]
+                              items: ["Bold", "Italic", "Strike"],
                             },
                             {
                               name: "styles",
-                              items: ["Styles", "Format"]
+                              items: ["Styles", "Format"],
                             },
                             {
                               name: "paragraph",
-                              items: ["NumberedList", "BulletedList"]
+                              items: ["NumberedList", "BulletedList"],
                             },
                             {
                               name: "links",
-                              items: ["Link", "Unlink"]
+                              items: ["Link", "Unlink"],
                             },
                             {
                               name: "insert",
-                              items: ["Image", "Table"]
+                              items: ["Image", "Table"],
                             },
                             {
                               name: "editing",
-                              items: ["Scayt"]
-                            }
-                          ]
+                              items: ["Scayt"],
+                            },
+                          ],
                         }}
                       />
                       <img
@@ -2475,33 +2484,33 @@ class TicketSystem extends Component {
                           toolbar: [
                             {
                               name: "basicstyles",
-                              items: ["Bold", "Italic", "Strike"]
+                              items: ["Bold", "Italic", "Strike"],
                             },
                             {
                               name: "styles",
-                              items: ["Styles", "Format"]
+                              items: ["Styles", "Format"],
                             },
                             {
                               name: "paragraph",
-                              items: ["NumberedList", "BulletedList"]
+                              items: ["NumberedList", "BulletedList"],
                             },
                             {
                               name: "links",
-                              items: ["Link", "Unlink"]
+                              items: ["Link", "Unlink"],
                             },
                             {
                               name: "insert",
-                              items: ["Image", "Table"]
+                              items: ["Image", "Table"],
                             },
                             {
                               name: "editing",
-                              items: ["Scayt"]
-                            }
+                              items: ["Scayt"],
+                            },
                             // {
                             //   name: "tools",
                             //   items: ["Maximize"]
                             // },
-                          ]
+                          ],
                         }}
                       />
                       <img
@@ -3301,7 +3310,7 @@ class TicketSystem extends Component {
                           onClose={this.handleviewPolicyModelClose}
                           modalId="viewPolicyModel"
                           classNames={{
-                            modal: "schedule-width"
+                            modal: "schedule-width",
                           }}
                           overlayId="logout-ovrly"
                         >

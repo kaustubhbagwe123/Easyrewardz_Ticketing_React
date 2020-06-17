@@ -78,6 +78,7 @@ class Orders extends Component {
               });
             }
           }
+
           self.setState({
             shipmentVisible: data.shipmentVisible,
             shoppingBagVisible: data.shoppingBagVisible,
@@ -106,9 +107,7 @@ class Orders extends Component {
         )}
         <div className="store-task-tabs orders-tabs-outer">
           <Select
-            defaultValue={
-              this.state.shoppingBagVisible ? "shopping-bag" : "order"
-            }
+            value={this.state.shoppingBagVisible ? "shopping-bag" : "order"}
             className="order-mobile-dropdown"
             // open={true}
             dropdownClassName="order-mobile-dropdown-menu"
@@ -157,83 +156,103 @@ class Orders extends Component {
               </a>
             </Option>
             <Option value="shipment">
-              <a
-                className={
-                  this.state.selectedTabs === 3 ? "nav-link active" : "nav-link"
-                }
-                data-toggle="tab"
-                href="#shipment-tab"
-                role="tab"
-                aria-controls="shipment-tab"
-                aria-selected="false"
-                onClick={this.handleChanageNavTabs.bind(this, 3)}
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.a.shipment
-                  : "Shipment"}
-              </a>
+              {this.state.shipmentVisible ? (
+                <a
+                  className={
+                    this.state.selectedTabs === 3
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  data-toggle="tab"
+                  href="#shipment-tab"
+                  role="tab"
+                  aria-controls="shipment-tab"
+                  aria-selected="false"
+                  onClick={this.handleChanageNavTabs.bind(this, 3)}
+                >
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.shipment
+                    : "Shipment"}
+                </a>
+              ) : null}
             </Option>
             <Option value="delivered">
-              <a
-                className={
-                  this.state.selectedTabs === 4 ? "nav-link active" : "nav-link"
-                }
-                data-toggle="tab"
-                href="#delivered-tab"
-                role="tab"
-                aria-controls="delivered-tab"
-                aria-selected="false"
-                onClick={this.handleChanageNavTabs.bind(this, 4)}
-              >
-                {TranslationContext !== undefined
-                  ? TranslationContext.a.delivered
-                  : "Delivered"}
-              </a>
+              {this.state.shipmentVisible ? (
+                <a
+                  className={
+                    this.state.selectedTabs === 4
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  data-toggle="tab"
+                  href="#delivered-tab"
+                  role="tab"
+                  aria-controls="delivered-tab"
+                  aria-selected="false"
+                  onClick={this.handleChanageNavTabs.bind(this, 4)}
+                >
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.delivered
+                    : "Delivered"}
+                </a>
+              ) : null}
             </Option>
             <Option value="shipment-assigned">
-              <a
-                className={
-                  this.state.selectedTabs === 5 ? "nav-link active" : "nav-link"
-                }
-                data-toggle="tab"
-                href="#shipment-assigned-tab"
-                role="tab"
-                aria-controls="shipment-assigned-tab"
-                aria-selected="false"
-                onClick={this.handleChanageNavTabs.bind(this, 5)}
-              >
-                Shipment Assigned
-              </a>
+              {this.state.shipmentVisible ? (
+                <a
+                  className={
+                    this.state.selectedTabs === 5
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  data-toggle="tab"
+                  href="#shipment-assigned-tab"
+                  role="tab"
+                  aria-controls="shipment-assigned-tab"
+                  aria-selected="false"
+                  onClick={this.handleChanageNavTabs.bind(this, 5)}
+                >
+                  Shipment Assigned
+                </a>
+              ) : null}
             </Option>
             <Option value="returns">
-              <a
-                className={
-                  this.state.selectedTabs === 6 ? "nav-link active" : "nav-link"
-                }
-                data-toggle="tab"
-                href="#returns-tab"
-                role="tab"
-                aria-controls="returns-tab"
-                aria-selected="false"
-                onClick={this.handleChanageNavTabs.bind(this, 6)}
-              >
-                Returns
-              </a>
+              {this.state.shipmentVisible ? (
+                <a
+                  className={
+                    this.state.selectedTabs === 6
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  data-toggle="tab"
+                  href="#returns-tab"
+                  role="tab"
+                  aria-controls="returns-tab"
+                  aria-selected="false"
+                  onClick={this.handleChanageNavTabs.bind(this, 6)}
+                >
+                  Returns
+                </a>
+              ) : null}
             </Option>
             <Option value="check-service">
-              <a
-                className={
-                  this.state.selectedTabs === 7 ? "nav-link active" : "nav-link"
-                }
-                data-toggle="tab"
-                href="#check-service-tab"
-                role="tab"
-                aria-controls="check-service-tab"
-                aria-selected="false"
-                onClick={this.handleChanageNavTabs.bind(this, 7)}
-              >
-                Check Service
-              </a>
+              {this.state.shipmentVisible ? (
+                <a
+                  className={
+                    this.state.selectedTabs === 7
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  data-toggle="tab"
+                  href="#check-service-tab"
+                  role="tab"
+                  aria-controls="check-service-tab"
+                  aria-selected="false"
+                  onClick={this.handleChanageNavTabs.bind(this, 7)}
+                >
+                  Check Service
+                </a>
+              ) : null}
             </Option>
           </Select>
           <ul className="nav nav-tabs" role="tablist">

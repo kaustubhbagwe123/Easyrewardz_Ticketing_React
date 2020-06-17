@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import config from "../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
-import { authHeader } from "../helpers/authHeader";
+// import { authHeader } from "../helpers/authHeader";
 import { encryption } from "../helpers/encryption";
 
 class ForgotPassword extends Component {

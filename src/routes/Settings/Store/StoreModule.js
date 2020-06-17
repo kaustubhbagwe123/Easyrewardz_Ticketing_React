@@ -30,10 +30,15 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import "antd/dist/antd.css";
 import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
+import { Table, Select } from "antd";
+import "antd/dist/antd.css";
+import { number } from "prop-types";
+
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
-
+const { Option } = Select;
+var uid = 0;
 class StoreModule extends Component {
   constructor(props) {
     super(props);
@@ -126,6 +131,26 @@ class StoreModule extends Component {
       translateLanguage: {},
       FilterSelectStore: 0,
       isSlotLoading: false,
+      selectedStoreCode: [],
+      slotDuration: "0.5",
+      selectNOTimeSlot1: "1",
+      selectNOTimeSlot2: "1",
+      selectNOAmPm1: "AM",
+      selectNOAmPm2: "AM",
+      appointmentDays: "1",
+      slotId: 0,
+      editstoreCode: "",
+      editmaxCapacity: "",
+      editSelectTimeSlot1: "",
+      editSelectTimeSlot2: "",
+      editSelectAmPm1: "",
+      editSelectAmPm2: "",
+      editSelectNOTimeSlot1: "",
+      editSelectNOTimeSlot2: "",
+      editSelectNOAmPm1: "",
+      editSelectNOAmPm2: "",
+      editAppointmentDays: "",
+      editSlotDuration: "",
     };
     this.handleClaimTabData = this.handleClaimTabData.bind(this);
     this.handleCampaignNameList = this.handleCampaignNameList.bind(this);
@@ -367,31 +392,41 @@ class StoreModule extends Component {
   };
 
   handleSlotInputOnchange = (e) => {
-    var name = e.target.name;
+    debugger;
+
     var reg = /^[0-9\b]+$/;
     if (e.target.value === "" || reg.test(e.target.value)) {
-      this.setState({ [e.target.name]: e.target.value });
+      if (Number(e.target.value) <= 30 && Number(e.target.value) >= 1) {
+        this.setState({ [e.target.name]: e.target.value });
+      } else {
+        this.setState({ [e.target.name]: "" });
+      }
     } else {
-      e.target.value = "";
+      this.setState({ [e.target.name]: "" });
     }
   };
 
   handleSlotEditInputOnchange = (e) => {
-    var name = e.target.name;
-    var value = e.target.value;
-    var timeSlotEdit = this.state.timeSlotEdit;
     var reg = /^[0-9\b]+$/;
-    if (value === "" || reg.test(value)) {
-      timeSlotEdit[name] = value;
-      this.setState({
-        timeSlotEdit,
-      });
+    if (e.target.value === "" || reg.test(e.target.value)) {
+      if (Number(e.target.value) <= 30 && Number(e.target.value) >= 1) {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      } else {
+        this.setState({
+          [e.target.name]: "",
+        });
+      }
     } else {
-      value = "";
+      this.setState({
+        [e.target.name]: "",
+      });
     }
   };
 
   handleDrop_downOnchange = (e) => {
+    debugger;
     let name = e.target.name;
     let value = e.target.value;
     if (name === "selectStore") {
@@ -418,12 +453,37 @@ class StoreModule extends Component {
       this.setState({
         selectLanguage: value,
       });
+    } else if (name === "slotDuration") {
+      this.setState({
+        slotDuration: value,
+      });
+    } else if (name === "selectNOAmPm1") {
+      this.setState({
+        selectNOAmPm1: value,
+      });
+    } else if (name === "selectNOAmPm2") {
+      this.setState({
+        selectNOAmPm2: value,
+      });
+    } else if (name === "selectNOTimeSlot2") {
+      this.setState({
+        selectNOTimeSlot2: value,
+      });
+    } else if (name === "selectNOTimeSlot1") {
+      this.setState({
+        selectNOTimeSlot1: value,
+      });
+    } else if (name === "appointmentDays") {
+      this.setState({
+        appointmentDays: value,
+      });
     }
   };
 
   handleEditDrop_downOnchange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+    debugger;
     var timeSlotEdit = this.state.timeSlotEdit;
     if (name === "editSelectTimeSlot1") {
       this.setState({
@@ -441,10 +501,33 @@ class StoreModule extends Component {
       this.setState({
         editSelectAmPm2: value,
       });
-    } else if (name === "storeId") {
-      timeSlotEdit[name] = value;
+    } else if (name === "editstoreCode") {
       this.setState({
-        timeSlotEdit,
+        editstoreCode: value,
+      });
+    } else if (name === "editSelectNOAmPm1") {
+      this.setState({
+        editSelectNOAmPm1: value,
+      });
+    } else if (name === "editSelectNOAmPm2") {
+      this.setState({
+        editSelectNOAmPm2: value,
+      });
+    } else if (name === "editSelectNOTimeSlot1") {
+      this.setState({
+        editSelectNOTimeSlot1: value,
+      });
+    } else if (name === "editSelectNOTimeSlot2") {
+      this.setState({
+        editSelectNOTimeSlot2: value,
+      });
+    } else if (name === "editslotDuration") {
+      this.setState({
+        editslotDuration: value,
+      });
+    } else if (name === "editAppointmentDays") {
+      this.setState({
+        editAppointmentDays: value,
       });
     }
   };
@@ -603,10 +686,11 @@ class StoreModule extends Component {
     var self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/StoreCampaign/GetCampaignSettingList",
+      url: config.apiUrl + "/Appointment/DeleteTimeSlotMaster",
       headers: authHeader(),
       params: {
         SlotID: slotId,
+        
       },
     })
       .then(function(res) {
@@ -663,14 +747,14 @@ class StoreModule extends Component {
       });
   };
   //// Handle get time slot grid data
-  handleGetTimeslotGridData(storeID) {
+  handleGetTimeslotGridData(slotID,storeId) {
     let self = this;
     this.setState({ isSlotLoading: true });
     axios({
       method: "post",
-      url: config.apiUrl + "/Appointment/GetStoreTimeSlotMasterList",
+      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
       headers: authHeader(),
-      params: { StoreID: storeID ? storeID : 0 },
+      params: { SlotID: slotID ? slotID : 0 ,StoreID:storeId ? storeId : 0},
     })
       .then(function(res) {
         debugger;
@@ -1633,33 +1717,48 @@ class StoreModule extends Component {
   handleSubmitTimeSlotDate() {
     var self = this;
     if (
-      this.state.selectStore !== 0 &&
-      this.state.orderNumber !== "" &&
+      this.state.selectedStoreCode.length > 0 &&
       this.state.maxCapacity !== ""
     ) {
-      var slot1 = this.state.selectTimeSlot1 + this.state.selectAmPm1;
-      var slot2 = this.state.selectTimeSlot2 + this.state.selectAmPm2;
+      debugger;
+      var storeIds = "";
+      for (let i = 0; i < this.state.selectedStoreCode.length; i++) {
+        storeIds += this.state.selectedStoreCode[i] + ",";
+      }
       axios({
         method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
+        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
         headers: authHeader(),
         data: {
-          StoreId: this.state.selectStore,
-          TimeSlot: slot1 + "-" + slot2,
-          OrderNumber: parseInt(this.state.orderNumber),
-          MaxCapacity: parseInt(this.state.maxCapacity),
+          SlotId: this.state.slotId,
+          StoreIds: storeIds,
+          StoreOpenValue: Number(this.state.selectTimeSlot1),
+          StoreOpenAt: this.state.selectAmPm1,
+          StoreCloseValue: Number(this.state.selectTimeSlot2),
+          StoreCloseAt: this.state.selectAmPm2,
+          Slotduration: parseFloat(this.state.slotDuration),
+          SlotMaxCapacity: Number(this.state.maxCapacity),
+          StoreNonOpFromValue: Number(this.state.selectNOTimeSlot1),
+          StoreNonOpFromAt: this.state.selectNOAmPm1,
+          StoreNonOpToValue: Number(this.state.selectNOTimeSlot2),
+          StoreNonOpToAt: this.state.selectNOAmPm2,
+          AppointmentDays: Number(this.state.appointmentDays),
         },
       })
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
-              selectStore: 0,
+              selectedStoreCode: [],
               selectTimeSlot1: 1,
               selectTimeSlot2: 1,
+              selectNOTimeSlot1: 1,
+              selectNOTimeSlot2: 1,
               selectAmPm1: "AM",
               selectAmPm2: "AM",
-              orderNumber: "",
+              selectNOAmPm1: "AM",
+              selectNOAmPm2: "AM",
+              slotduration: "0.5",
               maxCapacity: "",
             });
             NotificationManager.success("Time Slot Added Successfully.");
@@ -1674,7 +1773,6 @@ class StoreModule extends Component {
     } else {
       this.setState({
         storeCodeValidation: "Required",
-        orderNovalidation: "Required",
         maxCapacityValidation: "Required",
       });
     }
@@ -1683,23 +1781,26 @@ class StoreModule extends Component {
   /// Handle Update TimeSlot data
   handleUpdateTimeSlotData() {
     var self = this;
-    if (
-      this.state.timeSlotEdit.storeId !== "0" &&
-      this.state.timeSlotEdit.orderNumber !== "" &&
-      this.state.timeSlotEdit.maxCapacity !== ""
-    ) {
-      var slot1 = this.state.editSelectTimeSlot1 + this.state.editSelectAmPm1;
-      var slot2 = this.state.editSelectTimeSlot2 + this.state.editSelectAmPm2;
+    if (this.state.editstoreCode !== "0" && this.state.editmaxCapacity !== "") {
+      debugger;
       axios({
         method: "post",
-        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotMaster",
+        url: config.apiUrl + "/Appointment/InsertUpdateTimeSlotSetting",
         headers: authHeader(),
         data: {
-          SlotId: this.state.timeSlotId,
-          StoreId: this.state.timeSlotEdit.storeId,
-          TimeSlot: slot1 + "-" + slot2,
-          OrderNumber: parseInt(this.state.timeSlotEdit.orderNumber),
-          MaxCapacity: parseInt(this.state.timeSlotEdit.maxCapacity),
+          SlotId: this.state.slotId,
+          StoreIds: this.state.editstoreCode,
+          StoreOpenValue: Number(this.state.editSelectTimeSlot1),
+          StoreOpenAt: this.state.editSelectAmPm1,
+          StoreCloseValue: Number(this.state.editSelectTimeSlot2),
+          StoreCloseAt: this.state.editSelectAmPm2,
+          Slotduration: parseFloat(this.state.editSlotDuration),
+          SlotMaxCapacity: Number(this.state.editmaxCapacity),
+          StoreNonOpFromValue: Number(this.state.editSelectNOTimeSlot1),
+          StoreNonOpFromAt: this.state.editSelectNOAmPm1,
+          StoreNonOpToValue: Number(this.state.editSelectNOTimeSlot2),
+          StoreNonOpToAt: this.state.editSelectNOAmPm2,
+          AppointmentDays: Number(this.state.editAppointmentDays),
         },
       })
         .then(function(res) {
@@ -1709,6 +1810,17 @@ class StoreModule extends Component {
             self.handleGetTimeslotGridData();
             self.setState({
               editSlotModal: false,
+              editselectTimeSlot1: 1,
+              editselectTimeSlot2: 1,
+              editselectNOTimeSlot1: 1,
+              editselectNOTimeSlot2: 1,
+              editselectAmPm1: "AM",
+              editselectAmPm2: "AM",
+              editselectNOAmPm1: "AM",
+              editselectNOAmPm2: "AM",
+              editslotDuration: "0.5",
+              editmaxCapacity: "",
+              slotId: 0,
             });
           } else {
             NotificationManager.error("Time Slot Not Updated.");
@@ -1765,32 +1877,100 @@ class StoreModule extends Component {
     });
   }
   /// handle Edit Time slot
-  openSlotEditModal(EditData) {
+  openSlotEditModal(slotId,storeId) {
     var timeSlotEdit = {};
+    let self = this;
 
-    timeSlotEdit.storeId = EditData.storeId;
-    timeSlotEdit.storeCode = EditData.storeCode;
-    timeSlotEdit.orderNumber = EditData.orderNumber;
-    timeSlotEdit.maxCapacity = EditData.maxCapacity;
-    timeSlotEdit.timeSlot = EditData.timeSlot;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
+      headers: authHeader(),
+      params: { SlotID: slotId ? slotId : 0,
+      StoreID:storeId
+      },
+    })
+      .then(function(res) {
+        debugger;
+        var message = res.data.message;
+        var data = res.data.responseData;
+        if (message === "Success") {
+          var slotId = data[0].slotSettingID;
+          var editstoreCode = data[0].storeId;
+          var editmaxCapacity = data[0].maxCapacity;
+          var storeTimimg = data[0].storeTimimg.match(
+            /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
+          );
+          var nonOperationalTimimg = data[0].nonOperationalTimimg.match(
+            /[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g
+          );
+          var editSelectTimeSlot1 = storeTimimg[0];
+          var editSelectTimeSlot2 = storeTimimg[2];
+          var editSelectAmPm1 = storeTimimg[1];
+          var editSelectAmPm2 = storeTimimg[3];
+          var editSelectNOTimeSlot1 = nonOperationalTimimg[0];
+          var editSelectNOTimeSlot2 = nonOperationalTimimg[2];
+          var editSelectNOAmPm1 = nonOperationalTimimg[1];
+          var editSelectNOAmPm2 = nonOperationalTimimg[3];
+          var editAppointmentDays = data[0].appointmentDays;
+          var editSlotDuration = data[0].storeSlotDuration.split(" ")[0];
 
-    var slot = timeSlotEdit.timeSlot.match(/[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g);
+          self.setState({
+            editSlotModal: true,
+            slotId,
+            editstoreCode,
+            editmaxCapacity,
+            editSelectTimeSlot1,
+            editSelectTimeSlot2,
+            editSelectAmPm1,
+            editSelectAmPm2,
+            editSelectNOTimeSlot1,
+            editSelectNOTimeSlot2,
+            editSelectNOAmPm1,
+            editSelectNOAmPm2,
+            editAppointmentDays,
+            editSlotDuration,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response);
+      });
 
-    this.setState({
-      editSlotModal: true,
-      timeSlotEdit,
-      timeSlotId: EditData.slotId,
-      editSelectTimeSlot1: slot[0],
-      editSelectTimeSlot2: slot[2],
-      editSelectAmPm1: slot[1],
-      editSelectAmPm2: slot[3],
-    });
+    // timeSlotEdit.storeId = EditData.storeId;
+    // timeSlotEdit.storeCode = EditData.storeCode;
+    // timeSlotEdit.orderNumber = EditData.orderNumber;
+    // timeSlotEdit.maxCapacity = EditData.maxCapacity;
+    // timeSlotEdit.timeSlot = EditData.timeSlot;
+
+    // this.setState({
+    //   editSlotModal: true,
+    //   timeSlotEdit,
+    //   timeSlotId: EditData.slotId,
+    //   editSelectTimeSlot1: slot[0],
+    //   editSelectTimeSlot2: slot[2],
+    //   editSelectAmPm1: slot[1],
+    //   editSelectAmPm2: slot[3],
+    // });
   }
 
   handleChangeStoreDropdown(e) {
     this.setState({ FilterSelectStore: e.target.value });
-    this.handleGetTimeslotGridData(e.target.value);
+    this.handleGetTimeslotGridData(0,e.target.value);
   }
+  handleStoreChangeChange = (e) => {
+    debugger;
+    if (e.length > 0) {
+      this.setState({
+        selectedStoreCode: e,
+        storeCodeValidation: "",
+      });
+    } else {
+      this.setState({
+        storeCodeValidation: "Required",
+        selectedStoreCode: e,
+      });
+    }
+  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -2234,11 +2414,15 @@ class StoreModule extends Component {
                                     onClick={this.StatusOpenModel.bind(
                                       this,
                                       "campaignName",
-                                      TranslationContext!==undefined?TranslationContext.span.campaignname:"Campaign Name"
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.span.campaignname
+                                        : "Campaign Name"
                                     )}
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.span.campaignname:"Campaign Name"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.campaignname
+                                      : "Campaign Name"}
+
                                     <FontAwesomeIcon
                                       icon={
                                         this.state.isATOZ == false &&
@@ -3503,30 +3687,39 @@ class StoreModule extends Component {
                                   className="row cmpaign-channel-table lbl-fnt-w-400"
                                   style={{ margin: "0px", marginLeft: "30px" }}
                                 >
-                                  <div className="strdrp-dwn">
-                                    <label>{TranslationContext!==undefined?TranslationContext.label.selectstore:"Select Store"}</label>
-                                    <select
-                                      name="selectStore"
-                                      value={this.state.selectStore}
-                                      onChange={this.handleDrop_downOnchange}
+                                  <div
+                                    className="strdrp-dwn"
+                                    style={{ width: "15%", padding: "0" }}
+                                  >
+                                    <label>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.selectstore
+                                        : "Select Store"}
+                                    </label>
+                                    <Select
+                                      mode="multiple"
+                                      style={{ width: "100%" }}
+                                      placeholder="Select store Code"
+                                      onChange={this.handleStoreChangeChange.bind(
+                                        this
+                                      )}
+                                      value={this.state.selectedStoreCode}
                                     >
-                                      <option value={0}>
-                                      {TranslationContext!==undefined?TranslationContext.option.storecode:"Store code"}
-                                      </option>
                                       {this.state.storeCodeData !== null &&
                                         this.state.storeCodeData.map(
                                           (item, s) => (
-                                            <option
+                                            <Option
                                               key={s}
                                               value={item.storeID}
                                               className="select-category-placeholder"
                                             >
                                               {item.storeCode}
-                                            </option>
+                                            </Option>
                                           )
                                         )}
-                                    </select>
-                                    {this.state.selectStore === 0 && (
+                                    </Select>
+                                    {this.state.selectedStoreCode.length ===
+                                      0 && (
                                       <p
                                         style={{
                                           color: "red",
@@ -3539,11 +3732,15 @@ class StoreModule extends Component {
                                   </div>
                                   <div className="pd-10">
                                     <label className="mr-10">
-                                    {TranslationContext!==undefined?TranslationContext.label.storeopentime:"Store Open Time"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.storeopentime
+                                        : "Store Open Time"}
                                     </label>
                                     <label>
-                                    {TranslationContext!==undefined?TranslationContext.label.storeclosetime:"Store Close Time"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .storeclosetime
+                                        : "Store Close Time"}
                                     </label>
                                     <div className="slot-timings">
                                       <div className="d-flex">
@@ -3575,12 +3772,8 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">
-                                           AM
-                                          </option>
-                                          <option value="PM">
-                                          PM
-                                          </option>
+                                          <option value="AM">AM</option>
+                                          <option value="PM">PM</option>
                                         </select>
                                       </div>
                                       <span className="slot-to">
@@ -3625,17 +3818,22 @@ class StoreModule extends Component {
                                   </div>
                                   <div className="pd-10">
                                     <label className="slt-time-lbl">
-                                    {TranslationContext!==undefined?TranslationContext.label.slotduration:"Slot Duration"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.slotduration
+                                        : "Slot Duration"}
                                     </label>
                                     <div className="slot-timings mr-0">
                                       <div className="d-flex">
                                         <select
                                           className="slot-hour"
-                                          name="selectTimeSlot1"
+                                          name="slotDuration"
                                           style={{ width: "50px" }}
+                                          value={this.state.slotDuration}
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
                                         >
-                                          <option value="1/2">1/2</option>
+                                          <option value="0.5">1/2</option>
                                           <option value="1">1</option>
                                           <option value="2">2</option>
                                         </select>
@@ -3652,7 +3850,10 @@ class StoreModule extends Component {
                                   </div>
                                   <div className="mx-slt-div">
                                     <label>
-                                    {TranslationContext!==undefined?TranslationContext.label.maxcptyperslot:"Max Cpty Per Slot"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .maxcptyperslot
+                                        : "Max Cpty Per Slot"}
                                     </label>
                                     <input
                                       className="mx-slt-txt"
@@ -3677,8 +3878,10 @@ class StoreModule extends Component {
                                   </div>
                                 </div>
                                 <label className="slt-non-op-hr-lbl">
-                                {TranslationContext!==undefined?TranslationContext.label.storenonoperationalhours:"Store Non-Oprational Hour"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label
+                                        .storenonoperationalhours
+                                    : "Store Non-Oprational Hour"}
                                 </label>
 
                                 <div
@@ -3690,20 +3893,21 @@ class StoreModule extends Component {
                                       className="mr-10"
                                       style={{ marginLeft: "40px" }}
                                     >
-                                       {TranslationContext!==undefined?TranslationContext.label.from:"From"}
-                                  
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.from
+                                        : "From"}
                                     </label>
                                     <label style={{ marginLeft: "80px" }}>
-                                    {TranslationContext!==undefined?TranslationContext.label.to:"To"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.to
+                                        : "To"}
                                     </label>
                                     <div className="slot-timings">
                                       <div className="d-flex">
                                         <select
                                           className="slot-hour"
-                                          name="selectTimeSlot1"
-                                          value={this.state.selectTimeSlot1}
+                                          name="selectNOTimeSlot1"
+                                          value={this.state.selectNOTimeSlot1}
                                           onChange={
                                             this.handleDrop_downOnchange
                                           }
@@ -3722,8 +3926,8 @@ class StoreModule extends Component {
                                         </select>
                                         <select
                                           className="slot-shift"
-                                          name="selectAmPm1"
-                                          value={this.state.selectAmPm1}
+                                          name="selectNOAmPm1"
+                                          value={this.state.selectNOAmPm1}
                                           onChange={
                                             this.handleDrop_downOnchange
                                           }
@@ -3740,8 +3944,8 @@ class StoreModule extends Component {
                                       <div className="d-flex">
                                         <select
                                           className="slot-hour"
-                                          name="selectTimeSlot2"
-                                          value={this.state.selectTimeSlot2}
+                                          name="selectNOTimeSlot2"
+                                          value={this.state.selectNOTimeSlot2}
                                           onChange={
                                             this.handleDrop_downOnchange
                                           }
@@ -3760,8 +3964,8 @@ class StoreModule extends Component {
                                         </select>
                                         <select
                                           className="slot-shift"
-                                          name="selectAmPm2"
-                                          value={this.state.selectAmPm2}
+                                          name="selectNOAmPm2"
+                                          value={this.state.selectNOAmPm2}
                                           onChange={
                                             this.handleDrop_downOnchange
                                           }
@@ -3774,8 +3978,10 @@ class StoreModule extends Component {
                                   </div>
                                   <div style={{ marginLeft: "35px" }}>
                                     <label className="mr-10">
-                                    {TranslationContext!==undefined?TranslationContext.label.appointmentdays:"Appointment Days"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .appointmentdays
+                                        : "Appointment Days"}
                                     </label>
                                     <div
                                       className="slot-timings"
@@ -3787,11 +3993,19 @@ class StoreModule extends Component {
                                       <div className="d-flex">
                                         <select
                                           className="slot-hour"
-                                          name="selectTimeSlot1"
+                                          name="appointmentDays"
+                                          onChange={
+                                            this.handleDrop_downOnchange
+                                          }
+                                          value={this.state.appointmentDays}
                                         >
                                           <option value="1">1</option>
                                           <option value="2">2</option>
                                           <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
                                         </select>
                                         <select
                                           className="ap-select"
@@ -3806,11 +4020,7 @@ class StoreModule extends Component {
                                   </div>
                                 </div>
                                 <div className="row cmpaign-channel-table"></div>
-                                {/* <div className="cmpaign-channel-table slot-setting-options">
-                                  <div></div>
 
-                                  <div></div>
-                                </div> */}
                                 <button
                                   className="Schedulenext1 w-100 mb-0"
                                   type="button"
@@ -3828,8 +4038,9 @@ class StoreModule extends Component {
                                 >
                                   <label className="slotstorelbl">
                                     {" "}
-                                    
-                                    {TranslationContext!==undefined?TranslationContext.label.selectstorecode:"Select Store Code"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.selectstorecode
+                                      : "Select Store Code"}
                                   </label>
                                   <select
                                     style={{ width: "30%" }}
@@ -3859,57 +4070,58 @@ class StoreModule extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12">
-                              <ReactTable
-                                data={this.state.TimeSlotGridData}
+                              <Table
+                                loading={this.state.loading}
+                                noDataContent="No Record Found"
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
                                 columns={[
                                   {
-                                    Header:
+                                    title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.header.slotno
-                                        : "Slot No",
-                                    sortable: false,
-                                    accessor: "slotId",
+                                        : "Slot Id",
+
+                                    dataIndex: "slotSettingID",
                                   },
                                   {
-                                    Header:
+                                    title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.header.storecode
                                         : "Store Code",
-                                    accessor: "storeCode",
-                                    sortable: false,
+                                    dataIndex: "storeCode",
                                   },
                                   {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.timeslot
-                                        : "Time Slot",
-                                    accessor: "timeSlot",
-                                    sortable: false,
+                                    title: "Store Timing",
+                                    dataIndex: "storeTimimg",
                                   },
                                   {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.order
-                                        : "Order",
-                                    accessor: "orderNumber",
-                                    sortable: false,
+                                    title: "Non Operational Hour",
+                                    dataIndex: "nonOperationalTimimg",
                                   },
                                   {
-                                    Header:
-                                      TranslationContext !== undefined
-                                        ? TranslationContext.header.createdname
-                                        : "Created Name",
-                                    accessor: "createdByName",
-                                    sortable: false,
+                                    title: "Slot Duration",
+                                    dataIndex: "storeSlotDuration",
                                   },
                                   {
-                                    Header:
+                                    title: "Max Capacity",
+                                    dataIndex: "maxCapacity",
+                                  },
+                                  {
+                                    title: "Total Slot",
+                                    dataIndex: "totalSlot",
+                                  },
+                                  {
+                                    title: "Appointment Days",
+                                    dataIndex: "appointmentDays",
+                                  },
+                                  {
+                                    title:
                                       TranslationContext !== undefined
                                         ? TranslationContext.header.actions
                                         : "Actions",
-                                    sortable: false,
-                                    Cell: (row) => {
-                                      var ids = row.original["slotId"];
+
+                                    render: (row, rowData) => {
+                                      var ids = row;
                                       return (
                                         <>
                                           <span>
@@ -3951,7 +4163,8 @@ class StoreModule extends Component {
                                                         className="butn"
                                                         onClick={this.handleDeleteTimeSlot.bind(
                                                           this,
-                                                          row.original.slotId
+                                                          rowData.slotSettingID
+                                                          
                                                         )}
                                                       >
                                                         {TranslationContext !==
@@ -3979,7 +4192,8 @@ class StoreModule extends Component {
                                               className="react-tabel-button editre"
                                               onClick={this.openSlotEditModal.bind(
                                                 this,
-                                                row.original
+                                                rowData.slotSettingID,
+                                                rowData.storeId
                                               )}
                                             >
                                               {TranslationContext !== undefined
@@ -3992,13 +4206,18 @@ class StoreModule extends Component {
                                     },
                                   },
                                 ]}
-                                // resizable={false}
-                                minRows={2}
-                                noDataContent="No Record Found"
-                                loading={this.state.isSlotLoading}
-                                defaultPageSize={10}
-                                showPagination={true}
-                              />
+                                rowKey={(record) => {
+                                  if (record.slotSettingID) {
+                                    uid = uid + 1;
+                                    return record.slotSettingID + "i" + uid;
+                                  } else {
+                                    uid = uid + 1;
+                                    return "i" + uid;
+                                  }
+                                }}
+                                pagination={{ defaultPageSize: 10 }}
+                                dataSource={this.state.TimeSlotGridData}
+                              ></Table>
                             </div>
                           </div>
                         </div>
@@ -4248,9 +4467,9 @@ class StoreModule extends Component {
                     </label>
                     <div>
                       <select
-                        name="storeId"
-                        value={this.state.timeSlotEdit.storeId}
-                        onChange={this.handleEditDrop_downOnchange}
+                        name="editstoreCode"
+                        value={this.state.editstoreCode}
+                        disabled={true}
                       >
                         <option value={0}>
                           {TranslationContext !== undefined
@@ -4268,7 +4487,7 @@ class StoreModule extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.timeSlotEdit.storeId === "0" && (
+                      {this.state.editstoreCode === "0" && (
                         <p
                           style={{
                             color: "red",
@@ -4346,9 +4565,11 @@ class StoreModule extends Component {
                       <div className="d-flex">
                         <select
                           className="slot-hour"
-                          name="editSelectTimeSlot1"
+                          name="editSlotDuration"
+                          value={this.state.editSlotDuration}
+                          onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="1/2">1/2</option>
+                          <option value="0.5">1/2</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                         </select>
@@ -4366,13 +4587,13 @@ class StoreModule extends Component {
                         style={{ width: "93px", marginLeft: "34px" }}
                         type="text"
                         placeholder="Max Cpty"
-                        name="maxCapacity"
+                        name="editmaxCapacity"
                         autoComplete="off"
                         maxLength={2}
-                        value={this.state.timeSlotEdit.maxCapacity}
+                        value={this.state.editmaxCapacity}
                         onChange={this.handleSlotEditInputOnchange}
                       />
-                      {this.state.timeSlotEdit.maxCapacity === "" && (
+                      {this.state.editmaxCapacity === "" && (
                         <p
                           style={{
                             color: "red",
@@ -4393,8 +4614,8 @@ class StoreModule extends Component {
                       <div className="d-flex">
                         <select
                           className="slot-hour"
-                          name="editSelectTimeSlot1"
-                          value={this.state.editSelectTimeSlot1}
+                          name="editSelectNOTimeSlot1"
+                          value={this.state.editSelectNOTimeSlot1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
                           {this.state.TimeSlotData !== null &&
@@ -4406,8 +4627,8 @@ class StoreModule extends Component {
                         </select>
                         <select
                           className="slot-shift"
-                          name="editSelectAmPm1"
-                          value={this.state.editSelectAmPm1}
+                          name="editSelectNOAmPm1"
+                          value={this.state.editSelectNOAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
                           <option value="AM">AM</option>
@@ -4418,8 +4639,8 @@ class StoreModule extends Component {
                       <div className="d-flex">
                         <select
                           className="slot-hour"
-                          name="editSelectTimeSlot2"
-                          value={this.state.editSelectTimeSlot2}
+                          name="editSelectNOTimeSlot2"
+                          value={this.state.editSelectNOTimeSlot2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
                           {this.state.TimeSlotData !== null &&
@@ -4431,8 +4652,8 @@ class StoreModule extends Component {
                         </select>
                         <select
                           className="slot-shift"
-                          name="editSelectAmPm2"
-                          value={this.state.editSelectAmPm2}
+                          name="editSelectNOAmPm2"
+                          value={this.state.editSelectNOAmPm2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
                           <option value="AM">AM</option>
@@ -4445,7 +4666,9 @@ class StoreModule extends Component {
                       <div className="d-flex">
                         <select
                           className="slot-hour"
-                          name="editSelectTimeSlot1"
+                          name="editAppointmentDays"
+                          value={this.state.editAppointmentDays}
+                          onChange={this.handleEditDrop_downOnchange}
                         >
                           <option value={1}>1</option>
                           <option value={2}>2</option>
@@ -4458,7 +4681,7 @@ class StoreModule extends Component {
                         <select
                           className="slot-shift"
                           name="editSelectAmPm1"
-                          style={{ background: "none" ,padding: "5px 7px"}}
+                          style={{ background: "none", padding: "5px 7px" }}
                           disabled={true}
                         >
                           <option value="D">Days</option>

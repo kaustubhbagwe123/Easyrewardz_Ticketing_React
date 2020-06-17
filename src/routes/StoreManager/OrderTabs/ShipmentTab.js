@@ -42,6 +42,7 @@ class ShipmentTab extends Component {
       AirwayItemIds: 0,
       createdShoppingTabs: false,
       airWayBill2ndTab: false,
+      PickPendingvisisble: false,
     };
   }
 
@@ -337,6 +338,12 @@ class ShipmentTab extends Component {
       filterShipmentStatus: false,
     });
   }
+  /// close pick up pending pophover
+  handleClosePickPending() {
+    this.setState({
+      PickPendingvisisble: false,
+    });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -354,7 +361,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
-
+                key: "invoiceNo",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -548,7 +555,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.partner
                     : "Partner",
-                dataIndex: "Partner",
+                dataIndex: "courierPartner",
                 className: "table-coloum-hide",
                 width: 150,
               },
@@ -631,6 +638,9 @@ class ShipmentTab extends Component {
                                         <button
                                           type="button"
                                           className="popbtnno"
+                                          onClick={this.handleClosePickPending.bind(
+                                            this
+                                          )}
                                         >
                                           {TranslationContext !== undefined
                                             ? TranslationContext.button.no
@@ -645,6 +655,7 @@ class ShipmentTab extends Component {
                             trigger="click"
                             overlayClassName="order-popover order-popover-butns"
                             placement="bottomRight"
+                            visible={this.state.PickPendingvisisble}
                             // onVisibleChange={(visible) =>
                             //   this.setState({ orderPopoverOverlay: visible })
                             // }
@@ -720,7 +731,9 @@ class ShipmentTab extends Component {
                         <label>
                           <b>Shipping Address</b>
                         </label>
-                        <label>{row.shippingAddress}</label>
+                        <label style={{ whiteSpace: "initial" }}>
+                          {row.shippingAddress}
+                        </label>
                       </td>
                     </tr>
                     <tr>
@@ -742,7 +755,7 @@ class ShipmentTab extends Component {
                         <label>
                           <b>Partner</b>
                         </label>
-                        <label>{row.Partner}</label>
+                        <label>{row.courierPartner}</label>
                       </td>
                     </tr>
                   </table>
@@ -930,6 +943,7 @@ class ShipmentTab extends Component {
                         <button
                           className="btn-shipment-popup"
                           style={{ marginRight: "10px" }}
+                          onClick={this.handleShipmentModalClose.bind(this)}
                         >
                           Cancel
                         </button>
@@ -994,6 +1008,7 @@ class ShipmentTab extends Component {
                         <button
                           className="btn-shipment-popup"
                           style={{ marginRight: "10px" }}
+                          onClick={this.handleShipmentModalClose.bind(this)}
                         >
                           Cancel
                         </button>

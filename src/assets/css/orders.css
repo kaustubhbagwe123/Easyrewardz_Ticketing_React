@@ -84,6 +84,7 @@
   border-radius: 3px;
   min-width: 121px;
   text-transform: initial;
+  cursor: pointer;
 }
 .order-del-butn img {
   width: 13px;
@@ -305,6 +306,7 @@
   font-weight: 400;
   line-height: 13px;
   text-align: center;
+  text-transform: none;
 }
 .btn-shipment-saveNext {
   background-color: #2561a8;
@@ -318,6 +320,7 @@
   line-height: 12px;
   text-align: center;
   margin-right: 10px;
+  text-transform: none;
 }
 .dv-status {
   margin-top: 15px;
@@ -357,6 +360,7 @@
   background-color: #2561a8;
   border: 1px solid #2561a8;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .dv-table-paging .react-pagination-js-bootstrap ul {
@@ -533,6 +537,7 @@
   box-shadow: none;
   color: #2561a8;
   margin-left: 0;
+  text-transform: none;
 }
 .order-popover-butns .ant-popover-buttons button:last-child {
   width: 150px;
@@ -543,6 +548,7 @@
   border: 0;
   text-shadow: none;
   box-shadow: none;
+  text-transform: none;
 }
 .order-popover-butns .ant-popover-buttons {
   margin-top: 25px;
@@ -891,12 +897,6 @@
   }
   .assign-grid-btn {
     margin-right: 5px;
-  }
-  .order-grid-butn {
-    padding: 2px 10px !important;
-  }
-  .order-grid-butn {
-    min-width: 80px;
   }
 }
 

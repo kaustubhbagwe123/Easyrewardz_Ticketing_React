@@ -159,10 +159,11 @@ class OrderSetting extends Component {
         ShippedText: this.state.orderConfigData.shippedText,
         Delivered: this.state.orderConfigData.delivered,
         DeliveredText: this.state.orderConfigData.deliveredText,
-        Cancel:this.state.orderConfigData.cancel,
-        CancelText:this.state.orderConfigData.cancelText,
-        UnDeliverable:this.state.orderConfigData.unDeliverable,
-        UnDeliverableText:this.state.orderConfigData.unDeliverableText
+        Cancel: this.state.orderConfigData.cancel,
+        CancelText: this.state.orderConfigData.cancelText,
+        UnDeliverable: this.state.orderConfigData.unDeliverable,
+        UnDeliverableText: this.state.orderConfigData.unDeliverableText,
+        StoreDeliveryText: this.state.orderConfigData.storeDeliveryText,
       },
     })
       .then(function(res) {
@@ -209,8 +210,7 @@ class OrderSetting extends Component {
       this.state.orderConfigData.delivered = !this.state.orderConfigData
         .delivered;
     } else if (OrderConfig === "OrdCancelled") {
-      this.state.orderConfigData.cancel = !this.state.orderConfigData
-        .cancel;
+      this.state.orderConfigData.cancel = !this.state.orderConfigData.cancel;
     } else if (OrderConfig === "OrdUndelivered") {
       this.state.orderConfigData.unDeliverable = !this.state.orderConfigData
         .unDeliverable;
@@ -629,6 +629,7 @@ class OrderSetting extends Component {
                                           ? TranslationContext.td
                                               .clickwillbeenabledafter
                                           : "Click will be enabled after"}
+                                        <span>(Payment send link button)</span>
                                       </td>
                                       <td>
                                         <input
@@ -707,7 +708,7 @@ class OrderSetting extends Component {
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
-                            <div className="col-md-5 m-auto">
+                            <div className="col-md-5">
                               <div className="right-sect-div">
                                 <h3>SMS &amp; WhatsApp</h3>
                                 <div className="module-switch-cntr">
@@ -775,22 +776,40 @@ class OrderSetting extends Component {
                                       ></label>
                                     </div>
                                     {this.state.orderConfigData.awbAssigned ? (
-                                      <div className="ordcusinput2">
-                                        <input
-                                          type="text"
-                                          name="awbAssignedText"
-                                          autoComplete="off"
-                                          placeholder="Enter Template"
-                                          maxLength={500}
-                                          value={
-                                            this.state.orderConfigData
-                                              .awbAssignedText
-                                          }
-                                          onChange={this.OrderSettingOnChange.bind(
-                                            this
-                                          )}
-                                        />
-                                      </div>
+                                      <>
+                                        <div className="ordcusinput2">
+                                          <input
+                                            type="text"
+                                            name="awbAssignedText"
+                                            autoComplete="off"
+                                            placeholder="Enter Template"
+                                            maxLength={500}
+                                            value={
+                                              this.state.orderConfigData
+                                                .awbAssignedText
+                                            }
+                                            onChange={this.OrderSettingOnChange.bind(
+                                              this
+                                            )}
+                                          />
+                                        </div>
+                                        <div className="ordcusinputStore2">
+                                          <input
+                                            type="text"
+                                            name="storeDeliveryText"
+                                            autoComplete="off"
+                                            placeholder="Enter Template"
+                                            maxLength={500}
+                                            value={
+                                              this.state.orderConfigData
+                                                .storeDeliveryText
+                                            }
+                                            onChange={this.OrderSettingOnChange.bind(
+                                              this
+                                            )}
+                                          />
+                                        </div>
+                                      </>
                                     ) : null}
                                   </div>
                                   <div className="module-switch ord-m-t20">
@@ -965,7 +984,8 @@ class OrderSetting extends Component {
                                         id="OrdUndelivered"
                                         name="allModules"
                                         checked={
-                                          this.state.orderConfigData.unDeliverable
+                                          this.state.orderConfigData
+                                            .unDeliverable
                                         }
                                         onChange={this.OrderConfigFlagChange.bind(
                                           this
@@ -976,7 +996,8 @@ class OrderSetting extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
-                                    {this.state.orderConfigData.unDeliverable ? (
+                                    {this.state.orderConfigData
+                                      .unDeliverable ? (
                                       <div className="ordcusinput7">
                                         <input
                                           type="text"
