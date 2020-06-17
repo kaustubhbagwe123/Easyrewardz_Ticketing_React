@@ -1264,9 +1264,9 @@ class Header extends Component {
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
     // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     var remLength = 0;
-    remLength = 200 - parseInt(message.length);
+    remLength = this.state.tempRemainingCount - parseInt(message.length);
     if (remLength < 0) {
-      message = message.substring(0, 200);
+      message = message.substring(0, this.state.tempRemainingCount);
       return false;
     }
 
@@ -2021,7 +2021,6 @@ class Header extends Component {
   handleHistoryChatClose() {
     this.setState({
       rowChatId: 0,
-      customerName: "",
       showHistoricalChat: false,
       chatTimeAgo: "",
     });
