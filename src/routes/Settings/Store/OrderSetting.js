@@ -629,6 +629,7 @@ class OrderSetting extends Component {
                                           ? TranslationContext.td
                                               .clickwillbeenabledafter
                                           : "Click will be enabled after"}
+                                          <span>(Payment send link button)</span>
                                       </td>
                                       <td>
                                         <input

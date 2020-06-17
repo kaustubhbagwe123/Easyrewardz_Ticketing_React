@@ -153,7 +153,8 @@ class Header extends Component {
       isSendRecomended: false,
       chatAccess: "none",
       noProductFound: "",
-      remainingCount: "100 characters remaining...",
+      remainingCount: "",
+      tempRemainingCount: "",
       noRecommendedFound: "",
       suggestionModal: false,
       suggestionText: "",
@@ -231,6 +232,7 @@ class Header extends Component {
       );
       this.handleGetNotigfication();
       this.handleGetChatNotificationCount();
+      this.handleGetChatSession();
     }
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
@@ -354,6 +356,21 @@ class Header extends Component {
           ? "active single-menu"
           : "single-menu",
     };
+    var orders = {
+      data:
+        this.state.translateLanguage.default !== undefined
+          ? this.state.translateLanguage.default.nav.orders
+          : "Orders",
+      urls: "orders",
+      logoBlack: OrderLogoBlack,
+      logoBlue: OrderLogoBlue,
+      imgAlt: "Order Icon",
+      imgClass: "myTicket",
+      activeClass:
+        page.toLowerCase() === "Orders".toLowerCase()
+          ? "active single-menu"
+          : "single-menu",
+    };
     if (data !== null) {
       for (var i = 0; i < data.length; i++) {
         if (
@@ -386,6 +403,11 @@ class Header extends Component {
           data[i].modulestatus === true
         ) {
           accessdata.push(myTicket);
+        } else if (
+          data[i].moduleName === "Orders" &&
+          data[i].modulestatus === true
+        ) {
+          accessdata.push(orders);
         } else if (
           data[i].moduleName === "Settings" &&
           data[i].modulestatus === true
@@ -790,7 +812,7 @@ class Header extends Component {
       });
   }
   ////handle Make As Read On Going Chat
-  async handleMakeAsReadOnGoingChat(id,isNew) {
+  async handleMakeAsReadOnGoingChat(id, isNew) {
     let self = this;
     this.setState({ chatId: id });
     await axios({
@@ -960,7 +982,7 @@ class Header extends Component {
               tempmessageSuggestionData: [],
               cardModal: false,
               selectedCard: 0,
-              remainingCount: "100 characters remaining...",
+              remainingCount: self.state.tempRemainingCount,
               suggestionModal: false,
               suggestionModalMob: false,
             });
@@ -1242,15 +1264,15 @@ class Header extends Component {
     // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
     // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     var remLength = 0;
-    remLength = 100 - parseInt(message.length);
+    remLength = 200 - parseInt(message.length);
     if (remLength < 0) {
-      message = message.substring(0, 100);
+      message = message.substring(0, 200);
       return false;
     }
 
     this.setState({
       message,
-      remainingCount: remLength + " characters remaining...",
+      remainingCount: remLength,
       // messageSuggestion,
     });
   };
@@ -2004,6 +2026,35 @@ class Header extends Component {
       chatTimeAgo: "",
     });
   }
+
+  ////handle get chat session
+  handleGetChatSession() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/GetChatSession",
+      headers: authHeader(),
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+
+        if (message === "Success" && data) {
+          self.setState({
+            tempRemainingCount: data.chatCharLimit,
+            remainingCount: data.chatCharLimit,
+          });
+        } else {
+          self.setState({
+            tempRemainingCount: "",
+            remainingCount: "",
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleGetChatSession");
+      });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -2054,74 +2105,7 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
-              <Link to="orders" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={OrderLogoBlack}
-                    alt="order icon"
-                    className="dashboardImg1"
-                  />
-                  <img
-                    src={OrderLogoBlue}
-                    alt="order icon"
-                    className="order-blue"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                <label className="cusheade">
-                  {TranslationContext !== undefined
-                    ? TranslationContext.label.orders
-                    : "Orders"}
-                </label>
-              </Link>
-              {/* <Link to="storedashboard" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={DashboardLogo}
-                    alt="dashboard icon"
-                    className="dashboardImg1"
-                  />
-                  <img
-                    src={DashboardLogoBlue}
-                    alt="dashboard icon"
-                    className="dashboardImg1"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Dashboards
-              </Link>
-              <Link to="StoreTask" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={TicketLogo}
-                    alt="ticket icon"
-                    className="myTicket"
-                  />
-                  <img
-                    src={TicketLogoBlue}
-                    alt="ticket icon"
-                    className="myTicket"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Task
-              </Link>
-              <Link to="claim" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={ClaimLogo}
-                    alt="claim icon"
-                    className="claim-logo"
-                  />
-                  <img
-                    src={ClaimLogoBlue}
-                    alt="claim icon"
-                    className="claim-logo"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Claim
-              </Link> */}
+            
             </div>
           </div>
 
@@ -3402,7 +3386,7 @@ class Header extends Component {
                                     )}
                                   ></textarea>
                                   <p className="cls-charcount">
-                                    {this.state.remainingCount}
+                                    {this.state.remainingCount+" characters remaining..."}
                                   </p>
                                   {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
@@ -4509,7 +4493,7 @@ class Header extends Component {
                                     className="cls-charcount"
                                     style={{ fontSize: "x-small" }}
                                   >
-                                    {this.state.remainingCount}
+                                    {this.state.remainingCount+" characters remaining..."}
                                   </p>
 
                                   {this.state.tempmessageSuggestionData !==
@@ -5592,8 +5576,6 @@ class Header extends Component {
                                       return (
                                         <>
                                           {rowData.chatStatus
-                                            ? rowData.chatStatus === "InActive"
-                                            : "Closed"
                                             ? rowData.chatStatus
                                             : ""}
                                         </>
@@ -5842,7 +5824,12 @@ class Header extends Component {
                                 render: (row, rowData) => {
                                   return (
                                     <>
-                                      {rowData.message ? rowData.message : ""}
+                                      <p
+                                        className="msg-text-overlap"
+                                        title={row ? row : ""}
+                                      >
+                                        {row ? row : ""}
+                                      </p>
                                     </>
                                   );
                                 },

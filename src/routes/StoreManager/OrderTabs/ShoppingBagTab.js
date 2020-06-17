@@ -331,6 +331,7 @@ class ShoppingBagTab extends Component {
                     ? TranslationContext.title.shoppingbagno
                     : "Shopping Bag No.",
                 dataIndex: "shoppingBagNo",
+                key:"shoppingBagNo",
               },
               {
                 title:
@@ -542,11 +543,11 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <p
-                      className={
-                        item.deliveryTypeName === "Store Delivery"
-                          ? "order-clr-green"
-                          : "order-clr-blue"
-                      }
+                      // className={
+                      //   item.deliveryTypeName === "Store Delivery"
+                      //     ? "order-clr-green"
+                      //     : "order-clr-blue"
+                      // }
                     >
                       {item.deliveryTypeName}
                     </p>
@@ -864,11 +865,11 @@ class ShoppingBagTab extends Component {
                     <div className="col-6">
                       <p className="order-expanded-title">Delivery Type</p>
                       <p
-                        className={
-                          row.deliveryTypeName === "Store Delivery"
-                            ? "order-clr-green"
-                            : "order-clr-blue"
-                        }
+                        // className={
+                        //   row.deliveryTypeName === "Store Delivery"
+                        //     ? "order-clr-green"
+                        //     : "order-clr-blue"
+                        // }
                       >
                         {row.deliveryTypeName}
                       </p>
