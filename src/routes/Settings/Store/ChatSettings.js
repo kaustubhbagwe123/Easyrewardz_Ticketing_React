@@ -39,6 +39,7 @@ class ChatSettings extends Component {
       isManual: false,
       isAutoMatic: false,
       approvalTypeData: [],
+      limitText: "",
     };
   }
 
@@ -65,7 +66,6 @@ class ChatSettings extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -76,6 +76,7 @@ class ChatSettings extends Component {
             chatDisplayValue: data.chatDisplayValue,
             chatDisplayDurationHour: data.chatDisplayDuration,
             programCode: data.programCode,
+            limitText: data.chatCharLimit,
           });
         } else {
           self.setState({
@@ -83,6 +84,7 @@ class ChatSettings extends Component {
             chatSessionDuration: "",
             chatDisplayValue: "",
             chatDisplayDurationHour: "",
+            limitText: "",
           });
         }
       })
@@ -93,7 +95,6 @@ class ChatSettings extends Component {
 
   ////handle update chate session
   handleUpdateChatSession() {
-    debugger;
     let self = this;
     if (
       this.state.isChatDisplayValue === "" &&
@@ -108,11 +109,10 @@ class ChatSettings extends Component {
           ChatSessionDuration: this.state.chatSessionDuration,
           ChatDisplayValue: Number(this.state.chatDisplayValue),
           ChatDisplayDuration: this.state.chatDisplayDurationHour,
+          ChatCharLimit: Number(this.state.limitText),
         },
       })
         .then((response) => {
-          debugger;
-
           var message = response.data.message;
           if (message === "Success") {
             NotificationManager.success("Recode update successfully!");
@@ -153,7 +153,6 @@ class ChatSettings extends Component {
 
   ////handle change textbox
   handleOnChange(e) {
-    debugger;
     const { name, value } = e.target;
     if (!isNaN(value)) {
       this.setState({
@@ -189,7 +188,6 @@ class ChatSettings extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -225,7 +223,6 @@ class ChatSettings extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -259,7 +256,6 @@ class ChatSettings extends Component {
         },
       })
         .then(function(response) {
-          debugger;
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success") {
@@ -286,7 +282,6 @@ class ChatSettings extends Component {
     });
   };
   handleTypeChange = (e) => {
-    debugger;
     var id = e.target.id;
 
     if (id === "Automatic") {
@@ -316,7 +311,6 @@ class ChatSettings extends Component {
       headers: authHeader(),
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -335,7 +329,7 @@ class ChatSettings extends Component {
     let self = this;
     var id = this.state.approvalTypeData.filter((x) => x.isEnabled === true)[0]
       .id;
-    debugger;
+
     this.setState({ isLoadingAdd: true });
     axios({
       method: "post",
@@ -344,7 +338,6 @@ class ChatSettings extends Component {
       params: { ID: id },
     })
       .then((response) => {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
@@ -399,7 +392,13 @@ class ChatSettings extends Component {
                 }
                 selected={this.state.selectedTab}
               >
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.chat:"CHAT"}>
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.chat
+                      : "CHAT"
+                  }
+                >
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div
@@ -553,18 +552,49 @@ class ChatSettings extends Component {
                             <div className="col-md-3"></div>
                           </div>
                         </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">
+                            Set Limit Type box of Chat Window
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              type="text"
+                              className="chatsetngtxt"
+                              placeholder="Enter value"
+                              name="limitText"
+                              onChange={this.handleOnChange.bind(this)}
+                              value={this.state.limitText}
+                              // maxLength={3}
+                            />
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </Tab>
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.charditemconfiguration:"CARD ITEM CONFIGURATION"}>
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.charditemconfiguration
+                      : "CARD ITEM CONFIGURATION"
+                  }
+                >
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div className="card" style={{ height: "auto" }}>
                         <div className="row">
                           <div className="col-md-5 m-auto">
                             <div className="right-sect-div">
-                                  <h3>{TranslationContext!==undefined?TranslationContext.h3.charditemconfiguration:"CARD ITEM CONFIGURATION"}</h3>
+                              <h3>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h3.charditemconfiguration
+                                  : "CARD ITEM CONFIGURATION"}
+                              </h3>
                               {/* <div className="cmpaign-channel-table slot-setting-options">
                                 <div className="w-100">
                                   <input
@@ -671,7 +701,9 @@ class ChatSettings extends Component {
                                   this
                                 )}
                               >
-                                {TranslationContext!==undefined?TranslationContext.button.update:"UPDATE"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.update
+                                  : "UPDATE"}
                                 {this.state.isLoadingUpdate ? (
                                   <FontAwesomeIcon
                                     className="circular-loader chatsettingload"
@@ -689,20 +721,30 @@ class ChatSettings extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.cardassestsconfiguration:"CARD ASSETS CONFIGURATION"}>
+                <Tab
+                  label={
+                    TranslationContext !== undefined
+                      ? TranslationContext.label.cardassestsconfiguration
+                      : "CARD ASSETS CONFIGURATION"
+                  }
+                >
                   <div className="row chattab-card">
                     <div className="col-md-12">
                       <div className="card" style={{ height: "auto" }}>
                         <div className="row">
                           <div className="col-md-5 m-auto">
                             <div className="right-sect-div">
-                                <h3>{TranslationContext!==undefined?TranslationContext.h3.cardassestsconfiguration:"CARD ASSETS CONFIGURATION"}</h3>
+                              <h3>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.h3
+                                      .cardassestsconfiguration
+                                  : "CARD ASSETS CONFIGURATION"}
+                              </h3>
                               <div className="module-switch crm-margin-div crm-padding-div">
                                 <div className="switch switch-primary d-inline m-r-10">
                                   {this.state.approvalTypeData != null
                                     ? this.state.approvalTypeData.map(
                                         (item, i) => {
-                                          debugger;
                                           return (
                                             <div key={i}>
                                               <label
@@ -739,8 +781,10 @@ class ChatSettings extends Component {
                                   this
                                 )}
                               >
-                                {TranslationContext!==undefined?TranslationContext.button.submit:"SUBMIT"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.submit
+                                  : "SUBMIT"}
+
                                 {this.state.isLoadingAdd ? (
                                   <FontAwesomeIcon
                                     className="circular-loader chatsettingload"
