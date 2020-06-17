@@ -53,7 +53,7 @@ class ShipmentAssignedTab extends Component {
         FilterReferenceNo: "",
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -141,7 +141,7 @@ class ShipmentAssignedTab extends Component {
         IsProceed: IsProceed,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -166,10 +166,10 @@ class ShipmentAssignedTab extends Component {
       url: config.apiUrl + "/HSOrder/UpdateShipmentAssignedDelivered",
       headers: authHeader(),
       params: {
-        orderID: orderID
+        orderID: orderID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -194,10 +194,10 @@ class ShipmentAssignedTab extends Component {
       url: config.apiUrl + "/HSOrder/UpdateShipmentAssignedRTO",
       headers: authHeader(),
       params: {
-        orderID: orderID
+        orderID: orderID,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
@@ -230,7 +230,7 @@ class ShipmentAssignedTab extends Component {
                     ? TranslationContext.title.awbno
                     : "AWB No.",
                 dataIndex: "awbNo",
-                key:"awbNo",
+                key: "awbNo",
               },
               {
                 title:
@@ -389,7 +389,8 @@ class ShipmentAssignedTab extends Component {
                 className: "cus-strecth",
                 render: (row, item, index) => {
                   debugger;
-                  return item.awbNo !== "" && item.courierPartner.toLowerCase() !== "store" ? (
+                  return item.awbNo !== "" &&
+                    item.courierPartner.toLowerCase() !== "store" ? (
                     <div className="d-flex">
                       {/* <button
                         className="btn-proc deliv-grid-butn"
@@ -404,164 +405,170 @@ class ShipmentAssignedTab extends Component {
                           : "Proceed"}
                       </button> */}
                       <button
-                        className="btn-proc deliv-grid-butn assign-grid-btn"
-                      // onClick={this.handleUpdateShipmentAssignedData.bind(
-                      //   this,
-                      //   item,
-                      //   true
-                      // )}
+                        className="butn order-grid-butn assign-grid-btn"
+                        // className="btn-proc deliv-grid-butn assign-grid-btn"
+                        // onClick={this.handleUpdateShipmentAssignedData.bind(
+                        //   this,
+                        //   item,
+                        //   true
+                        // )}
                       >
                         Print Manifest
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
-                      // onClick={this.handleUpdateShipmentAssignedData.bind(
-                      //   this,
-                      //   item,
-                      //   true
-                      // )}
+                        // onClick={this.handleUpdateShipmentAssignedData.bind(
+                        //   this,
+                        //   item,
+                        //   true
+                        // )}
                       >
                         Print Label
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
-                      // onClick={this.handleUpdateShipmentAssignedData.bind(
-                      //   this,
-                      //   item,
-                      //   true
-                      // )}
+                        // onClick={this.handleUpdateShipmentAssignedData.bind(
+                        //   this,
+                        //   item,
+                        //   true
+                        // )}
                       >
                         Print Invoice
                       </button>
                     </div>
                   ) : (
-                      <div className="d-flex">
-                        <Popover
-                          visible={this.state.orderPopoverOverlay}
-                          content={
-                            <div className="staffdetailspopup">
-                              <label>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.storename
-                                  : "Store Name"}
-                              </label>
-                              <input
-                                type="text"
-                                name="storeName"
-                                className="form-control"
-                                placeholder={
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.placeholder
+                    <div className="d-flex">
+                      <Popover
+                        visible={this.state.orderPopoverOverlay}
+                        content={
+                          <div className="staffdetailspopup">
+                            <label>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.storename
+                                : "Store Name"}
+                            </label>
+                            <input
+                              type="text"
+                              name="storeName"
+                              className="form-control"
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder
                                       .enterstorename
-                                    : "Enter Store Name"
-                                }
-                                value={item.storeName}
-                                onChange={this.handlechange.bind(this, index)}
-                              />
-                              <label>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.staffname
-                                  : "Staff Name"}
-                              </label>
-                              <input
-                                type="text"
-                                name="staffName"
-                                className="form-control"
-                                placeholder={
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.placeholder
+                                  : "Enter Store Name"
+                              }
+                              value={item.storeName}
+                              onChange={this.handlechange.bind(this, index)}
+                            />
+                            <label>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.staffname
+                                : "Staff Name"}
+                            </label>
+                            <input
+                              type="text"
+                              name="staffName"
+                              className="form-control"
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder
                                       .enterstaffname
-                                    : "Enter Staff Name"
-                                }
-                                value={item.staffName}
-                                onChange={this.handlechange.bind(this, index)}
-                              />
-                              <label>
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.label.mobileno
-                                  : "Mobile No."}
-                              </label>
-                              <input
-                                type="number"
-                                name="mobileNumber"
-                                className="form-control"
-                                placeholder={
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.placeholder
-                                      .entermobileno
-                                    : "Enter Mobile No."
-                                }
-                                value={item.mobileNumber}
-                                onChange={this.handlechange.bind(this, index)}
-                              />
-                              <button
-                                type="button"
-                                className="popbtnno"
-                                onClick={() =>
-                                  this.setState({ orderPopoverOverlay: false })
-                                }
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.cancel
-                                  : "Cancel"}
-                              </button>
-                              <button
-                                type="button"
-                                className="popbtn"
-                                onClick={this.handleUpdateShipmentAssignedData.bind(
-                                  this,
-                                  item,
-                                  false
-                                )}
-                              >
-                                {TranslationContext !== undefined
-                                  ? TranslationContext.button.done
-                                  : "Done"}
-                              </button>
-                            </div>
-                          }
-                          trigger="click"
-                          overlayClassName="order-popover-table order-popover"
-                          onVisibleChange={(visible) =>
-                            this.setState({ orderPopoverOverlay: visible })
-                          }
-                        >
-                          <button className="btn-proc deliv-grid-butn assign-grid-btn">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.staffdetails
-                              : "Staff Details"}
-                          </button>
-                        </Popover>
-                        <button
-                          className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
-                          onClick={this.handleUpdateShipmentAssignedRTO.bind(
-                            this,
-                            item.orderID
-                          )}
-                          disabled={
-                            item.storeName !== "" && item.staffName !== "" && item.mobileNumber !== "" ?
-                              false : true
-                          }
-                        >
-                          RTO
+                                  : "Enter Staff Name"
+                              }
+                              value={item.staffName}
+                              onChange={this.handlechange.bind(this, index)}
+                            />
+                            <label>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.mobileno
+                                : "Mobile No."}
+                            </label>
+                            <input
+                              type="number"
+                              name="mobileNumber"
+                              className="form-control"
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder.entermobileno
+                                  : "Enter Mobile No."
+                              }
+                              value={item.mobileNumber}
+                              onChange={this.handlechange.bind(this, index)}
+                            />
+                            <button
+                              type="button"
+                              className="popbtnno"
+                              onClick={() =>
+                                this.setState({ orderPopoverOverlay: false })
+                              }
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.cancel
+                                : "Cancel"}
+                            </button>
+                            <button
+                              type="button"
+                              className="popbtn"
+                              onClick={this.handleUpdateShipmentAssignedData.bind(
+                                this,
+                                item,
+                                false
+                              )}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.done
+                                : "Done"}
+                            </button>
+                          </div>
+                        }
+                        trigger="click"
+                        overlayClassName="order-popover-table order-popover"
+                        onVisibleChange={(visible) =>
+                          this.setState({ orderPopoverOverlay: visible })
+                        }
+                      >
+                        <button className="btn-proc deliv-grid-butn assign-grid-btn">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.staffdetails
+                            : "Staff Details"}
+                        </button>
+                      </Popover>
+                      <button
+                        className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
+                        onClick={this.handleUpdateShipmentAssignedRTO.bind(
+                          this,
+                          item.orderID
+                        )}
+                        disabled={
+                          item.storeName !== "" &&
+                          item.staffName !== "" &&
+                          item.mobileNumber !== ""
+                            ? false
+                            : true
+                        }
+                      >
+                        RTO
                       </button>
                       <button
-                          className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
-                          onClick={this.handleUpdateDeliveredByShipAssigned.bind(
-                            this,
-                            item.orderID
-                          )}
-                          disabled={
-                            item.storeName !== "" && item.staffName !== "" && item.mobileNumber !== "" ?
-                              false : true
-                          }
-                        >
-                          Delivered
+                        className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
+                        onClick={this.handleUpdateDeliveredByShipAssigned.bind(
+                          this,
+                          item.orderID
+                        )}
+                        disabled={
+                          item.storeName !== "" &&
+                          item.staffName !== "" &&
+                          item.mobileNumber !== ""
+                            ? false
+                            : true
+                        }
+                      >
+                        Delivered
                       </button>
-                      </div>
-                    );
+                    </div>
+                  );
                 },
-                width: 120
+                width: 120,
               },
             ]}
             expandedRowRender={(row, item, index) => {
