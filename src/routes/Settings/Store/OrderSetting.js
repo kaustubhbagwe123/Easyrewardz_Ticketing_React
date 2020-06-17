@@ -708,7 +708,7 @@ class OrderSetting extends Component {
                       <div className="col-md-12">
                         <div style={{ background: "white" }}>
                           <div className="row">
-                            <div className="col-md-5 m-auto">
+                            <div className="col-md-5">
                               <div className="right-sect-div">
                                 <h3>SMS &amp; WhatsApp</h3>
                                 <div className="module-switch-cntr">

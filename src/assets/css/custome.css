@@ -10066,6 +10066,7 @@ table tr th:last-child {
 }
 #shipment-tab .antd-table-order .ant-table-row-expand-icon {
   display: inline;
+  margin-left: 10px;
 }
 #delivered-tab .antd-table-order .ant-table-row-expand-icon {
   display: inline;
@@ -11812,7 +11813,9 @@ table tr th:last-child {
   .article-body span {
     font-size: 11px;
     margin: 0;
-    padding: 10px;
+    padding: 2px;
+    margin-bottom: 5px !important;
+    white-space: normal;
   }
   #article-popup .footer-buttons #next-button {
     float: right;
@@ -11915,12 +11918,16 @@ table tr th:last-child {
   .step-progress .nav-tabs .nav-item {
     background: #2561a8;
     color: #fff;
+    width: 100%;
   }
   .nav-tabs .nav-link.active {
     color: #fff;
     background: #2561a8;
     font-weight: normal;
   }
+  .step-progress .nav-tabs .nav-link {
+    font-size: 12px;
+}
   .step-progress .nav-line::before {
     display: none;
   }
