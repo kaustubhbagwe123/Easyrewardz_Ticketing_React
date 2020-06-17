@@ -898,12 +898,6 @@
   .assign-grid-btn {
     margin-right: 5px;
   }
-  .order-grid-butn {
-    padding: 2px 10px !important;
-  }
-  .order-grid-butn {
-    min-width: 80px;
-  }
 }
 
 @media all and (max-width: 400px) {

@@ -10055,6 +10055,7 @@ table tr th:last-child {
 }
 .innertabcollapse table td {
   border-top: none;
+  vertical-align: top;
 }
 .innertabcollapse label b {
   font-weight: bold;
@@ -12477,7 +12478,7 @@ table tr th:last-child {
   right: -249px;
   top: 100px;
 }
-.ordcusinputStore2{
+.ordcusinputStore2 {
   position: absolute;
   width: 250px;
   right: -515px;
