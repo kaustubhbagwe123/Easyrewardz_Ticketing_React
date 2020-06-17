@@ -134,6 +134,7 @@ class ShipmentAssignedTab extends Component {
       headers: authHeader(),
       data: {
         ShipmentAWBID: row.shipmentAWBID,
+        OrderID: row.orderID,
         ReferenceNo: row.referenceNo,
         StoreName: row.storeName,
         StaffName: row.staffName,
