@@ -306,6 +306,7 @@
   font-weight: 400;
   line-height: 13px;
   text-align: center;
+  text-transform: none;
 }
 .btn-shipment-saveNext {
   background-color: #2561a8;
@@ -319,6 +320,7 @@
   line-height: 12px;
   text-align: center;
   margin-right: 10px;
+  text-transform: none;
 }
 .dv-status {
   margin-top: 15px;
@@ -535,6 +537,7 @@
   box-shadow: none;
   color: #2561a8;
   margin-left: 0;
+  text-transform: none;
 }
 .order-popover-butns .ant-popover-buttons button:last-child {
   width: 150px;
@@ -545,6 +548,7 @@
   border: 0;
   text-shadow: none;
   box-shadow: none;
+  text-transform: none;
 }
 .order-popover-butns .ant-popover-buttons {
   margin-top: 25px;

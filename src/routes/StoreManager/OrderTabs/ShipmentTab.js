@@ -361,7 +361,7 @@ class ShipmentTab extends Component {
                   TranslationContext !== undefined
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
-                key:"invoiceNo",
+                key: "invoiceNo",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -731,7 +731,9 @@ class ShipmentTab extends Component {
                         <label>
                           <b>Shipping Address</b>
                         </label>
-                        <label>{row.shippingAddress}</label>
+                        <label style={{ whiteSpace: "initial" }}>
+                          {row.shippingAddress}
+                        </label>
                       </td>
                     </tr>
                     <tr>

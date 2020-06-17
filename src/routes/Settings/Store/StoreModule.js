@@ -1935,22 +1935,7 @@ class StoreModule extends Component {
       .catch((response) => {
         console.log(response);
       });
-
-    // timeSlotEdit.storeId = EditData.storeId;
-    // timeSlotEdit.storeCode = EditData.storeCode;
-    // timeSlotEdit.orderNumber = EditData.orderNumber;
-    // timeSlotEdit.maxCapacity = EditData.maxCapacity;
-    // timeSlotEdit.timeSlot = EditData.timeSlot;
-
-    // this.setState({
-    //   editSlotModal: true,
-    //   timeSlotEdit,
-    //   timeSlotId: EditData.slotId,
-    //   editSelectTimeSlot1: slot[0],
-    //   editSelectTimeSlot2: slot[2],
-    //   editSelectAmPm1: slot[1],
-    //   editSelectAmPm2: slot[3],
-    // });
+ 
   }
 
   handleChangeStoreDropdown(e) {
@@ -3712,6 +3697,7 @@ class StoreModule extends Component {
                                               key={s}
                                               value={item.storeID}
                                               className="select-category-placeholder"
+                                              title={item.storeCode}
                                             >
                                               {item.storeCode}
                                             </Option>
