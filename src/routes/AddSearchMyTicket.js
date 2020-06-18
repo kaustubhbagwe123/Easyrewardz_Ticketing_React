@@ -248,7 +248,7 @@ class AddSearchMyTicket extends Component {
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
           <CopyToClipboard
-            text={"Hello"}
+            text={"+91-9873470074"}
             onCopy={() => this.setState({ copied: true })}
           >
             <img
@@ -275,7 +275,7 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="search-customerAddSrch"
-                      placeholder="Search Customer"
+                      placeholder="Enter Customer Phone Number, Email ID"
                       name="SrchEmailPhone"
                       value={this.state.SrchEmailPhone}
                       onChange={this.addCustomerData}

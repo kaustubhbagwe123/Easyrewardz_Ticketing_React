@@ -793,12 +793,16 @@ class Settings extends Component {
                             <img src={modules} alt="modules" />
                           </div>
                           <div className="setting-desc">
-                            <strong>{TranslationContext!==undefined?TranslationContext.strong.ordersetting:"Order Settings"}</strong>
+                            <strong>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.strong.ordersetting
+                                : "Order Settings"}
+                            </strong>
                             <p>
-                            {TranslationContext !== undefined
-                              ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.p
+                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
+                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
                             </p>
                           </div>
                         </Link>

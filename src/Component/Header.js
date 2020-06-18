@@ -94,6 +94,7 @@ class Header extends Component {
         //   activeClass: "single-menu"
         // }
       ],
+      reportAccess: "none",
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
@@ -353,6 +354,13 @@ class Header extends Component {
           this.setState({
             notificationAccess: "block",
           });
+        } else if (
+          data[i].moduleName === "Reports" &&
+          data[i].modulestatus === true
+        ) {
+          this.setState({
+            reportAccess: "block",
+          });
         }
       }
     }
@@ -510,6 +518,7 @@ class Header extends Component {
           className="d-flex align-items-center justify-content-between"
           style={{ background: "white" }}
         >
+          <input type="hidden" value={this.state.reportAccess} id="isReport" />
           <div className="d-flex">
             <div className="er">
               <label className="er-label">ER</label>

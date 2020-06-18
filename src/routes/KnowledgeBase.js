@@ -1001,12 +1001,12 @@ class KnowledgeBase extends Component {
         debugger;
         let data = res.data;
         let CategoryData = res.data;
-        if(data.length > 0){
+        if (data.length > 0) {
           self.setState({
             CategoryData: CategoryData,
             // CategoryDataAll: CategoryDataAll
           });
-        }else{
+        } else {
           self.setState({
             CategoryData: [],
           });
@@ -1989,7 +1989,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                          Subject <FontAwesomeIcon icon={faCaretDown} />
+                          Details <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2199,7 +2199,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Ticket Tital</label>
+                          <label>Ticket Title</label>
                         </div>
                       </span>
                     ),
@@ -2351,7 +2351,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <label>
-                          Subject <FontAwesomeIcon icon={faCaretDown} />
+                          Details <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
                     ),
@@ -2560,7 +2560,7 @@ class KnowledgeBase extends Component {
                     Header: (
                       <span>
                         <div>
-                          <label>Ticket Tital</label>
+                          <label>Ticket Title</label>
                         </div>
                       </span>
                     ),
