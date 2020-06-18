@@ -890,8 +890,9 @@ class ShipmentTab extends Component {
                                 .selectanyitemidyouwanttosendforshipment
                             : "Select any item id, you want to send for shipment."}
                         </span>
+                        <div className="table-responsive">
                         <Table
-                          className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table"
+                          className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
                           columns={[
                             {
                               title:
@@ -937,7 +938,7 @@ class ShipmentTab extends Component {
                           scroll={{ y: 240 }}
                           pagination={false}
                           dataSource={this.state.ShipmentOrderItem}
-                        />
+                        /></div>
                       </div>
                       <div className="dv-status m-t-20">
                         <button

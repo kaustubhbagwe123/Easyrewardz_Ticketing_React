@@ -528,7 +528,7 @@ class ShipmentAssignedTab extends Component {
                           this.setState({ orderPopoverOverlay: visible })
                         }
                       >
-                        <button className="btn-proc deliv-grid-butn assign-grid-btn">
+                        <button className="butn order-grid-butn assign-grid-btn">
                           {TranslationContext !== undefined
                             ? TranslationContext.button.staffdetails
                             : "Staff Details"}

@@ -24,6 +24,7 @@ class Orders extends Component {
       selectedTabs: 0,
       shipmentVisible: false,
       shoppingBagVisible: false,
+      mobileTabShopping: false,
     };
   }
   componentWillMount() {
@@ -48,6 +49,21 @@ class Orders extends Component {
 
   handleChanageNavTabs = (tab) => {
     this.setState({ selectedTabs: tab });
+    if (tab === 1) {
+      this.setState({ shoppingBagVisible: "shopping-bag" });
+    } else if (tab === 2) {
+      this.setState({ shoppingBagVisible: "order" });
+    } else if (tab === 3) {
+      this.setState({ shoppingBagVisible: "shipment" });
+    } else if (tab === 4) {
+      this.setState({ shoppingBagVisible: "delivered" });
+    } else if (tab === 5) {
+      this.setState({ shoppingBagVisible: "shipment-assigned" });
+    } else if (tab === 6) {
+      this.setState({ shoppingBagVisible: "returns" });
+    } else if (tab === 7) {
+      this.setState({ shoppingBagVisible: "check-service" });
+    }
   };
 
   /// handle Get Order tab setting
@@ -81,7 +97,10 @@ class Orders extends Component {
 
           self.setState({
             shipmentVisible: data.shipmentVisible,
-            shoppingBagVisible: data.shoppingBagVisible,
+            shoppingBagVisible: data.shoppingBagVisible
+              ? "shopping-bag"
+              : "order",
+            mobileTabShopping: data.shoppingBagVisible,
           });
         } else {
           self.setState({
@@ -107,7 +126,7 @@ class Orders extends Component {
         )}
         <div className="store-task-tabs orders-tabs-outer">
           <Select
-            value={this.state.shoppingBagVisible ? "shopping-bag" : "order"}
+            value={this.state.shoppingBagVisible}
             className="order-mobile-dropdown"
             // open={true}
             dropdownClassName="order-mobile-dropdown-menu"
@@ -117,7 +136,7 @@ class Orders extends Component {
             }
           >
             <Option value="shopping-bag">
-              {this.state.shoppingBagVisible ? (
+              {this.state.mobileTabShopping ? (
                 <a
                   className={
                     this.state.selectedTabs === 1
@@ -256,7 +275,7 @@ class Orders extends Component {
             </Option>
           </Select>
           <ul className="nav nav-tabs" role="tablist">
-            {this.state.shoppingBagVisible ? (
+            {this.state.mobileTabShopping ? (
               <li className="nav-item">
                 <a
                   className={

@@ -43,7 +43,7 @@ import BlockedEmail from "./Settings/Ticketing/BlockedEmail";
 import JunkWords from "./Settings/Ticketing/JunkWords";
 import { NotificationContainer } from "react-notifications";
 
-export class App extends Component {
+export class App extends Component { 
   render() {
     const { match } = this.props;
     return (
