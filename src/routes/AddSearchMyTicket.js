@@ -275,7 +275,7 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="search-customerAddSrch"
-                      placeholder="Search Customer"
+                      placeholder="Enter Customer Phone Number, Email ID"
                       name="SrchEmailPhone"
                       value={this.state.SrchEmailPhone}
                       onChange={this.addCustomerData}
