@@ -80,6 +80,7 @@ import * as translationMA from "../../translations/marathi";
 import Dropzone from "react-dropzone";
 import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
+
 const { Option } = Select;
 
 class Header extends Component {
@@ -553,6 +554,7 @@ class Header extends Component {
       .then(function(res) {
         var data = res.data.responseData;
         var status = res.data.message;
+
         if (status === "Success") {
           var strTag = data.agentName.split(" ");
           var nameTag = strTag[0].charAt(0).toUpperCase();
@@ -741,7 +743,7 @@ class Header extends Component {
     this.handleGetStoreAgentDetailsById(this.state.AgentID);
     this.handleGetAgentList();
     this.handleGetChatNotificationCount();
-    debugger;
+
     if (this.state.rowChatId > 0) {
       this.handleGetChatMessagesList(this.state.chatId);
     }
@@ -1369,7 +1371,6 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
-    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1886,6 +1887,7 @@ class Header extends Component {
         socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
           data
         ) {
+          debugger;
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
@@ -1894,8 +1896,8 @@ class Header extends Component {
 
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
-                  // self.handleGetChatNotificationCount();
-                  // self.handleGetOngoingChat();
+                  self.handleGetChatNotificationCount();
+                  self.handleGetOngoingChat();
                   var chatId = 0;
                   self.setState({ isCustEndChat: data[6] });
                   if (self.state.ongoingChatsData.length > 0) {
@@ -1903,8 +1905,8 @@ class Header extends Component {
                       (x) => x.mobileNo === self.state.mobileNo
                     )[0].chatID;
                   }
-                  self.handleMakeAsReadOnGoingChat(chatId);
-                  // self.handleGetChatMessagesList(chatId);
+                  // self.handleMakeAsReadOnGoingChat(chatId);
+                  self.handleGetChatMessagesList(chatId);
                 } else {
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
@@ -1931,7 +1933,6 @@ class Header extends Component {
   }
 
   handleInsertCardImageUpload(itemcode, e) {
-    debugger;
     if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
       NotificationManager.error("Please select valid image file JPG,JPEG,PNG,");
       return false;
@@ -2104,7 +2105,6 @@ class Header extends Component {
                   <label className="cusheade">{item.data}</label>
                 </Link>
               ))}
-            
             </div>
           </div>
 
@@ -3385,7 +3385,8 @@ class Header extends Component {
                                     )}
                                   ></textarea>
                                   <p className="cls-charcount">
-                                    {this.state.remainingCount+" characters remaining..."}
+                                    {this.state.remainingCount +
+                                      " characters remaining..."}
                                   </p>
                                   {/* <CKEditor
                               onBeforeLoad={(CKEDITOR) =>
@@ -4492,7 +4493,8 @@ class Header extends Component {
                                     className="cls-charcount"
                                     style={{ fontSize: "x-small" }}
                                   >
-                                    {this.state.remainingCount+" characters remaining..."}
+                                    {this.state.remainingCount +
+                                      " characters remaining..."}
                                   </p>
 
                                   {this.state.tempmessageSuggestionData !==

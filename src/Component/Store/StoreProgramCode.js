@@ -36,6 +36,10 @@ class StoreProgramCode extends Component {
         "enc"
       );
       // let X_Authorized_Domainname = encryption(
+      //   "https://ui-shopsterqa.ercx.co",
+      //   "enc"
+      // );
+      // let X_Authorized_Domainname = encryption(
       //   "http://erbelltktstore.dcdev.brainvire.net",
       //   "enc"
       // );
