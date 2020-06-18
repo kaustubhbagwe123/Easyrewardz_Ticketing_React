@@ -2298,8 +2298,20 @@ table tr th:last-child {
     margin-left: 10px !important;
   }
   .single-menu {
-    margin-left: 5px !important;
+    /* margin-left: 5px !important; */
+    margin-left: 0 !important;
+    color: #4a4a4a;
   }
+  .single-menu.active {
+    color: #2561a8;
+    font-weight: 700;
+  }
+  /* .lowersec .header-icons-cntr img:first-child {
+    display: block;
+  }
+  .lowersec .active .header-icons-cntr img:last-child {
+    display: block;
+  } */
   .headers-menu {
     display: flex;
     align-items: center;

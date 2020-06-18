@@ -182,7 +182,8 @@ class Header extends Component {
       rowChatId: 0,
       storeManagerId: 0,
       tempCardSearch: "",
-      reportAccess:"none"
+      reportAccess: "none",
+      mobileHeading: "",
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -219,6 +220,7 @@ class Header extends Component {
 
       let pageName, lastOne, lastValue, arr;
       arr = [...this.state.cont];
+      debugger;
       setTimeout(
         function() {
           pageName = window.location.pathname;
@@ -438,7 +440,6 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
-           
         }
       }
     }
@@ -704,7 +705,11 @@ class Header extends Component {
       i.activeClass = "single-menu";
       if (i.data === e.target.textContent) i.activeClass = "active single-menu";
     });
-    this.setState({ cont: contDummy });
+    this.setState({
+      cont: contDummy,
+      visible: false,
+      mobileHeading: e.target.textContent,
+    });
   };
 
   ////handle chat modal close
@@ -2181,7 +2186,7 @@ class Header extends Component {
               alt="hamburger icon"
             />
           </div>
-          <label className="cusheadermob">Campaign</label>
+          <label className="cusheadermob">{this.state.mobileHeading}</label>
           <div className="header-right-icons">
             <a
               onClick={this.handleChatModalOpen.bind(this)}
@@ -2491,6 +2496,31 @@ class Header extends Component {
             </div>
             <div className="lowersec">
               <ul>
+                {this.state.cont.map((item) => (
+                  <li key={item.data}>
+                    <Link
+                      onClick={this.actives}
+                      to={item.urls}
+                      className={item.activeClass}
+                    >
+                      <span className="header-icons-cntr mr-0">
+                        <img
+                          src={item.logoBlack}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                        <img
+                          src={item.logoBlue}
+                          alt={item.imgAlt}
+                          className={item.imgClass}
+                        />
+                      </span>
+                      {item.data}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              {/* <ul>
                 <li>
                   <span>
                     <img src={DashboardIco} alt="Dashboard" />
@@ -2533,7 +2563,7 @@ class Header extends Component {
                   </span>
                   To-do's
                 </li>
-              </ul>
+              </ul> */}
             </div>
             <div className="logoutbox">
               <ul>
