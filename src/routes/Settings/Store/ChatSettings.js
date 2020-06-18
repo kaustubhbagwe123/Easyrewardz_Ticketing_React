@@ -410,10 +410,11 @@ class ChatSettings extends Component {
                             className="row"
                             style={{ width: "100%", margin: "0" }}
                           >
+                            <div className="col-md-3">Program Code</div>
                             <div className="col-md-3">
                               <Select
                                 showArrow={true}
-                                style={{ width: "100%" }}
+                                style={{ width: "100%" ,marginBottom:"10px"}}
                                 placeholder="Select program code"
                                 value={this.state.programCode}
                                 disabled={true}
@@ -423,135 +424,140 @@ class ChatSettings extends Component {
                                 </Option>
                               </Select>
                             </div>
-                            <div className="col-md-3">
-                              <div className="chattxtdiv">
-                                <div className="chattxtdivcus">
-                                  <input
-                                    type="text"
-                                    className="chatsetngtxt"
-                                    placeholder="Enter value"
-                                    name="chatSessionValue"
-                                    onChange={this.handleOnChange.bind(this)}
-                                    value={this.state.chatSessionValue}
-                                    maxLength={2}
-                                  />
-                                  <Select
-                                    showArrow={true}
-                                    defaultValue="M"
-                                    style={{ marginLeft: "10px" }}
-                                    name="chatSessionDuration"
-                                    onChange={this.handleSessionDuration.bind(
-                                      this
-                                    )}
-                                    value={this.state.chatSessionDuration}
-                                  >
-                                    <Option value="M">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.option.m
-                                        : "M"}
-                                    </Option>
-                                    <Option value="H">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.option.h
-                                        : "H"}
-                                    </Option>
-                                    <Option value="D">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.option.d
-                                        : "D"}
-                                    </Option>
-                                  </Select>
-                                  <Popover
-                                    content={
-                                      <>
-                                        {" "}
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.content
-                                              .howmanydaystoshowchathistory
-                                          : "How many days to show chat history."}
-                                      </>
-                                    }
-                                    placement="bottom"
-                                  >
-                                    <img
-                                      className="info-icon-cp"
-                                      style={{ visibility: "hidden" }}
-                                      src={BlackInfoIcon}
-                                      alt="info-icon"
-                                    />
-                                  </Popover>
-                                </div>
-                              </div>
-                              <div className="chattxtdivcus">
-                                <input
-                                  type="text"
-                                  className="chatsetngtxt"
-                                  placeholder="Enter value"
-                                  onChange={this.handleOnChange.bind(this)}
-                                  value={this.state.chatDisplayValue}
-                                  maxLength={2}
-                                  name="chatDisplayValue"
-                                />
-                                <Select
-                                  showArrow={true}
-                                  defaultValue="D"
-                                  style={{ marginLeft: "10px" }}
-                                  onChange={this.handleChatDisplayDurationHour.bind(
-                                    this
-                                  )}
-                                  value={this.state.chatDisplayDurationHour}
-                                >
-                                  <Option value="M">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.option.m
-                                      : "M"}
-                                  </Option>
-                                  <Option value="H">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.option.h
-                                      : "H"}
-                                  </Option>
-                                  <Option value="D">
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.option.d
-                                      : "D"}
-                                  </Option>
-                                </Select>
-                                <Popover
-                                  content={
-                                    <>
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.content
-                                            .howmanydaystoshowchathistory
-                                        : "How many days to show chat history."}
-                                    </>
-                                  }
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon-cp"
-                                    src={BlackInfoIcon}
-                                    alt="info-icon"
-                                  />
-                                </Popover>
-                              </div>
-                            </div>
-                            <div className="col-md-3">
-                              <div>
-                                <button
-                                  className="butn"
-                                  type="button"
-                                  onClick={this.handleSubmit.bind(this)}
-                                >
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.button.submit
-                                    : "SUBMIT"}
-                                </button>
-                              </div>
-                            </div>
+                            <div className="col-md-3"></div>
                             <div className="col-md-3"></div>
                           </div>
                         </div>
+
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">Customer Time Out</div>
+                          <div className="col-md-3">
+                            <div className="chattxtdivcus">
+                              <input
+                                type="text"
+                                className="chatsetngtxt"
+                                placeholder="Enter value"
+                                name="chatSessionValue"
+                                onChange={this.handleOnChange.bind(this)}
+                                value={this.state.chatSessionValue}
+                                maxLength={2}
+                              />
+                              <Select
+                                showArrow={true}
+                                defaultValue="M"
+                                style={{ marginLeft: "10px" }}
+                                name="chatSessionDuration"
+                                onChange={this.handleSessionDuration.bind(this)}
+                                value={this.state.chatSessionDuration}
+                              >
+                                <Option value="M">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.m
+                                    : "M"}
+                                </Option>
+                                <Option value="H">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.h
+                                    : "H"}
+                                </Option>
+                                <Option value="D">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.d
+                                    : "D"}
+                                </Option>
+                              </Select>
+                              <Popover
+                                content={
+                                  <>
+                                    {" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.content
+                                          .howmanydaystoshowchathistory
+                                      : "How many days to show chat history."}
+                                  </>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon-cp"
+                                  style={{ visibility: "hidden" }}
+                                  src={BlackInfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3">Agent Time Out</div>
+                          <div className="col-md-3">
+                            <div className="chattxtdivcus">
+                              <input
+                                type="text"
+                                className="chatsetngtxt"
+                                placeholder="Enter value"
+                                onChange={this.handleOnChange.bind(this)}
+                                value={this.state.chatDisplayValue}
+                                maxLength={2}
+                                name="chatDisplayValue"
+                              />
+                              <Select
+                                showArrow={true}
+                                defaultValue="D"
+                                style={{ marginLeft: "10px" }}
+                                onChange={this.handleChatDisplayDurationHour.bind(
+                                  this
+                                )}
+                                value={this.state.chatDisplayDurationHour}
+                              >
+                                <Option value="M">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.m
+                                    : "M"}
+                                </Option>
+                                <Option value="H">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.h
+                                    : "H"}
+                                </Option>
+                                <Option value="D">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.option.d
+                                    : "D"}
+                                </Option>
+                              </Select>
+                              <Popover
+                                content={
+                                  <>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.content
+                                          .howmanydaystoshowchathistory
+                                      : "How many days to show chat history."}
+                                  </>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon-cp"
+                                  src={BlackInfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </div>
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+
                         <div
                           className="row"
                           style={{ width: "100%", margin: "0" }}
@@ -569,6 +575,27 @@ class ChatSettings extends Component {
                               value={this.state.limitText}
                               // maxLength={3}
                             />
+                          </div>
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3"></div>
+                        </div>
+                        <div
+                          className="row"
+                          style={{ width: "100%", margin: "0" }}
+                        >
+                          <div className="col-md-3"></div>
+                          <div className="col-md-3">
+                            <div>
+                              <button
+                                className="butn"
+                                type="button"
+                                onClick={this.handleSubmit.bind(this)}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.submit
+                                  : "SUBMIT"}
+                              </button>
+                            </div>
                           </div>
                           <div className="col-md-3"></div>
                           <div className="col-md-3"></div>

@@ -182,6 +182,7 @@ class Header extends Component {
       rowChatId: 0,
       storeManagerId: 0,
       tempCardSearch: "",
+      reportAccess:"none"
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -437,9 +438,7 @@ class Header extends Component {
           this.setState({
             reportAccess: "block",
           });
-          // setTimeout(() => {
-          //   transferData.sendReport(this.state.reportAccess);
-          // }, 100);
+           
         }
       }
     }
