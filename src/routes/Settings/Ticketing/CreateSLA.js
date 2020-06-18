@@ -1549,7 +1549,8 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        sortable: false,
+                        sortable: false, 
+                        width: 170,
                         accessor: "createdBy",
                         Cell: (row) => {
                           var ids = row.original["id"];

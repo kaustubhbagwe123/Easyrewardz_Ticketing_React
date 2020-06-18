@@ -3205,7 +3205,7 @@ class Users extends Component {
                               "Mobile Number"
                             )}
                           >
-                            Mobile No.
+                            Mob. No.
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),

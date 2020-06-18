@@ -409,8 +409,11 @@ class TicketSystem extends Component {
     this.setState({ CustData });
   };
   handleChange = (date) => {
+    let CustData = this.state.CustData;
+    CustData.editDOB = date;
     this.setState({
-      editDOB: date,
+      // editDOB: date,
+      CustData,
     });
   };
   showAddNoteFuncation() {

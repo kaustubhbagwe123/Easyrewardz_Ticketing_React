@@ -677,14 +677,9 @@ class Brands extends Component {
   };
   /// handle check validation code
   handleCheckValidationCode = (e) => {
-    var iChars = /^[A-Za-z0-9 ]+$/;
-    if (iChars.indexOf(e.target.value)) {
-      this.setState({
-        [e.target.name]: e.target.value,
-      });
-    } else {
-      this.setState({ BcSpecialCharatacter: true, brand_Code: "" });
-    }
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   };
   handleActiveStatus = (e) => {
     let value = e.target.value;

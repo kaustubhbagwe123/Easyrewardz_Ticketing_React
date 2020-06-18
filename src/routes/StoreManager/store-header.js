@@ -443,6 +443,14 @@ class Header extends Component {
         }
       }
     }
+    debugger;
+    for (let i = 0; i < accessdata.length; i++) {
+      if (accessdata[i].activeClass === "active single-menu") {
+        this.setState({
+          mobileHeading: accessdata[i].data,
+        });
+      }
+    }
     this.setState({
       cont: accessdata,
     });
@@ -700,6 +708,7 @@ class Header extends Component {
   };
 
   actives = (e) => {
+    debugger;
     const contDummy = [...this.state.cont];
     contDummy.forEach((i) => {
       i.activeClass = "single-menu";

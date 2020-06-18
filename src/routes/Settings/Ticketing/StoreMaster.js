@@ -3064,6 +3064,7 @@ class StoreMaster extends Component {
                           ),
                           sortable: false,
                           accessor: "storeName",
+                          width:120,
                         },
                         {
                           Header: (
@@ -3081,6 +3082,7 @@ class StoreMaster extends Component {
                           ),
                           sortable: false,
                           accessor: "storeCode",
+                          width:120,
                         },
                         {
                           Header: (
@@ -3097,6 +3099,7 @@ class StoreMaster extends Component {
                             </span>
                           ),
                           accessor: "brand_Names",
+                          width:125,
                           sortable: false,
                           Cell: (row) => {
                             if (isNaN(row.original.brand_Names)) {
@@ -3251,6 +3254,7 @@ class StoreMaster extends Component {
                             </span>
                           ),
                           sortable: false,
+                          width:115,
                           accessor: "storeTypeName",
                         },
                         {
