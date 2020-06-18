@@ -753,9 +753,11 @@
     > th {
     padding: 5px 5px !important;
     height: 30px;
+    width: 90px;
   }
   .antd-table-order .ant-table-tbody > tr > td {
     padding: 15px 5px !important;
+    width: 90px;
   }
   .antd-table-order .ant-table-row-expand-icon {
     display: block !important;
@@ -788,11 +790,11 @@
     position: static;
     transform: none;
     display: inline-block;
-    margin-top: -5px;
-    margin-left: 6px;
-    background-size: 28px 28px;
-    width: 28px;
-    height: 28px;
+    margin-top: 0px;
+    margin-left: -2px;
+    background-size: 20px 20px;
+    width: 20px;
+    height: 20px;
   }
   .order-expanded-title {
     font-weight: 700;
@@ -894,9 +896,18 @@
   .deliv-grid-butn {
     width: auto;
     height: 22px;
+    font-size: 10px;
+    min-width: auto;
+    padding: 0 5px !important;
   }
   .assign-grid-btn {
     margin-right: 5px;
+  }
+  .order-grid-butn {
+    padding: 0px 5px !important;
+    height: 22px;
+    font-size: 10px;
+    min-width: auto !important;
   }
 }
 
