@@ -260,7 +260,7 @@ class Templates extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Template update successfully.");
+          NotificationManager.success("Template updated successfully.");
           self.handleGetTemplate();
           self.setState({
             editSaveLoading: false,
