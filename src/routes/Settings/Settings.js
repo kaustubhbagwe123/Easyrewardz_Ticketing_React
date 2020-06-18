@@ -36,8 +36,7 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    debugger;
-    var isReport = document.getElementById("isReport").value || "none";
+    var isReport = document.getElementById("isReport").value||"none";
 
     if (isReport === "block") {
       this.setState({ showReport: true });
