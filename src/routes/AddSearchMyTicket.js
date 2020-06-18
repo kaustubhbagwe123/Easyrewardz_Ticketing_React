@@ -248,7 +248,7 @@ class AddSearchMyTicket extends Component {
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
           <CopyToClipboard
-            text={"Hello"}
+            text={"+91-9873470074"}
             onCopy={() => this.setState({ copied: true })}
           >
             <img
