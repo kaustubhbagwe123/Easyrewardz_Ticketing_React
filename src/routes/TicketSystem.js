@@ -270,7 +270,6 @@ class TicketSystem extends Component {
   };
 
   setPlaceholderValue(e) {
-    debugger;
     let ckData = this.state.editorTemplateDetails;
     let ckDataArr = ckData.split("\n\n");
     let ckDataArrNew = [];
@@ -340,7 +339,6 @@ class TicketSystem extends Component {
       },
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -364,7 +362,6 @@ class TicketSystem extends Component {
     });
   }
   handleGetOrderId = (selectParentData, selectChildData) => {
-    debugger;
     this.setState({
       selectedOrderData: selectParentData,
       SelectedItemData: selectChildData,
@@ -377,7 +374,6 @@ class TicketSystem extends Component {
     });
   };
   handleGetStoreId = (selectedStoreData) => {
-    debugger;
     this.setState({
       selectedStoreIDs: selectedStoreData,
     });
@@ -409,8 +405,10 @@ class TicketSystem extends Component {
     this.setState({ CustData });
   };
   handleChange = (date) => {
+    var dateFormat = moment(date).format("DD MMM YYYY");
     let CustData = this.state.CustData;
-    CustData.editDOB = date;
+    CustData.editDOB = dateFormat;
+
     this.setState({
       // editDOB: date,
       CustData,
@@ -431,7 +429,6 @@ class TicketSystem extends Component {
   handleOnChangeData = (e) => {
     const { name, value } = e.target;
     // const value =e.target.value;
-
     let details = this.state.CustData;
     details[name] = value;
     this.setState({ details });
@@ -485,6 +482,7 @@ class TicketSystem extends Component {
             AltNumber: this.state.CustData.altNo,
             AltEmailID: this.state.CustData.altEmail,
             CreatedBy: this.state.createdBy,
+            DateOfBirth: this.state.CustData.editDOB,
             // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
             IsActive: 1,
           },
@@ -2907,6 +2905,7 @@ class TicketSystem extends Component {
                               selected={this.state.editDOB}
                               value={this.state.CustData.editDOB}
                               onChange={this.handleChange}
+                              dateFormat="dd MMM YYYY"
                             />
                             {/* {this.validator.message(
                               "Date of Birth",
