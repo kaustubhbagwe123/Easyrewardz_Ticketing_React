@@ -976,10 +976,10 @@ p {
 /* Responsive starts */
 @media all and (max-width: 576px) {
   .ant-pagination-item-active a {
-    color: #1890ff !important;
+    color: #4a4a4a !important;
   }
   .anticon svg {
-    color: #1890ff;
+    color: #4a4a4a;
   }
   #chat-popup-overlay {
     padding: 0px;
@@ -1297,10 +1297,10 @@ p {
 
 @media all and (max-width: 425px) {
   .ant-pagination-item-active a {
-    color: #1890ff !important;
+    color: #4a4a4a !important;
   }
   .anticon svg {
-    color: #1890ff;
+    color: #4a4a4a;
   }
   .chat-face-cntr {
     width: 35px;
@@ -1350,10 +1350,10 @@ p {
 
 @media all and (max-width: 387px) {
   .ant-pagination-item-active a {
-    color: #1890ff !important;
+    color: #4a4a4a !important;
   }
   .anticon svg {
-    color: #1890ff;
+    color: #4a4a4a;
   }
   /* schedule modal starts */
   .schedule-btn-cntr button,
