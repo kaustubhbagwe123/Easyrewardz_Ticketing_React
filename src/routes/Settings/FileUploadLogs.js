@@ -673,140 +673,6 @@ class FileUploadLogs extends Component {
   };
 
   render() {
-    const columnsTickFileUpload = [
-      {
-        Header: (
-          <span onClick={this.StatusOpenModel.bind(this, "fileType", "Type")}>
-            Type
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "fileType",
-      },
-      {
-        Header: (
-          <span onClick={this.StatusOpenModel.bind(this, "fileName", "Name")}>
-            File Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "fileName",
-      },
-      {
-        Header: (
-          <span
-            onClick={this.StatusOpenModel.bind(this, "createdDate", "Date")}
-          >
-            Date
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "date",
-        Cell: (row) => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                {row.original.date}
-                <Popover
-                  content={
-                    <>
-                      <div>
-                        <b>
-                          <p className="title">
-                            Created By: {row.original.createdDate}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          Created Date: {row.original.createdDate}
-                        </p>
-                      </div>
-                      <div>
-                        <b>
-                          <p className="title">
-                            Updated By: {row.original.modifiedBy}
-                          </p>
-                        </b>
-                        <p className="sub-title">
-                          Updated Date: {row.original.modifiedDate}
-                        </p>
-                      </div>
-                    </>
-                  }
-                  placement="bottom"
-                >
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        },
-      },
-      {
-        Header: (
-          <span
-            onClick={this.StatusOpenModel.bind(
-              this,
-              "fileUploadStatus",
-              "Status"
-            )}
-          >
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        sortable: false,
-        accessor: "fileUploadStatus",
-      },
-      {
-        Header: <span>Error File</span>,
-        accessor: "Erroor",
-        sortable: false,
-        Cell: (row) =>
-          row.original.fileUploadStatus === "Completed" &&
-          row.original.errorFilePath && (
-            <div>
-              <button
-                className="downloadBtn"
-                onClick={this.downloadDefaultReport.bind(
-                  this,
-                  row.original.errorFilePath
-                )}
-              >
-                DOWNLOAD
-              </button>
-            </div>
-          ),
-      },
-      {
-        Header: <span>Success File</span>,
-        accessor: "success",
-        Cell: (row) =>
-          row.original.fileUploadStatus === "Completed" &&
-          row.original.successFilePath && (
-            <div>
-              <button
-                className="downloadBtn"
-                onClick={this.downloadDefaultReport.bind(
-                  this,
-                  row.original.successFilePath
-                )}
-              >
-                DOWNLOAD
-              </button>
-            </div>
-          ),
-      },
-    ];
-
     return (
       <div className="mainDivPadding">
         <div className="position-relative d-inline-block">
@@ -1008,7 +874,155 @@ class FileUploadLogs extends Component {
           <ReactTable
             minRows={2}
             data={this.state.fileUploadLog}
-            columns={columnsTickFileUpload}
+            columns={[
+              {
+                Header: (
+                  <span
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "fileType",
+                      "Type"
+                    )}
+                  >
+                    Type
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "fileType",
+              },
+              {
+                Header: (
+                  <span
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "fileName",
+                      "Name"
+                    )}
+                  >
+                    File Name
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "fileName",
+              },
+              {
+                Header: (
+                  <span
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "createdDate",
+                      "Date"
+                    )}
+                  >
+                    Date
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "date",
+                Cell: (row) => {
+                  var ids = row.original["id"];
+                  return (
+                    <div>
+                      <span>
+                        {row.original.date}
+                        <Popover
+                          content={
+                            <>
+                              <div>
+                                <b>
+                                  <p className="title">
+                                    Created By: {row.original.createdBy}
+                                  </p>
+                                </b>
+                                <p className="sub-title">
+                                  Created Date: {row.original.createdDate}
+                                </p>
+                              </div>
+                              <div>
+                                <b>
+                                  <p className="title">
+                                    Updated By: {row.original.modifiedBy}
+                                  </p>
+                                </b>
+                                <p className="sub-title">
+                                  Updated Date: {row.original.modifiedDate}
+                                </p>
+                              </div>
+                            </>
+                          }
+                          placement="bottom"
+                        >
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id={ids}
+                          />
+                        </Popover>
+                      </span>
+                    </div>
+                  );
+                },
+              },
+              {
+                Header: (
+                  <span
+                    onClick={this.StatusOpenModel.bind(
+                      this,
+                      "fileUploadStatus",
+                      "Status"
+                    )}
+                  >
+                    Status
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                sortable: false,
+                accessor: "fileUploadStatus",
+              },
+              {
+                Header: <span>Error File</span>,
+                accessor: "Erroor",
+                sortable: false,
+                Cell: (row) =>
+                  row.original.fileUploadStatus === "Completed" &&
+                  row.original.errorFilePath && (
+                    <div>
+                      <button
+                        className="downloadBtn"
+                        onClick={this.downloadDefaultReport.bind(
+                          this,
+                          row.original.errorFilePath
+                        )}
+                      >
+                        DOWNLOAD
+                      </button>
+                    </div>
+                  ),
+              },
+              {
+                Header: <span>Success File</span>,
+                accessor: "success",
+                Cell: (row) =>
+                  row.original.fileUploadStatus === "Completed" &&
+                  row.original.successFilePath && (
+                    <div>
+                      <button
+                        className="downloadBtn"
+                        onClick={this.downloadDefaultReport.bind(
+                          this,
+                          row.original.successFilePath
+                        )}
+                      >
+                        DOWNLOAD
+                      </button>
+                    </div>
+                  ),
+              },
+            ]}
             resizable={false}
             defaultPageSize={5}
             showPagination={true}

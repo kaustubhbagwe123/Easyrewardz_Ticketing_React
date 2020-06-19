@@ -1474,7 +1474,7 @@ class CreateSLA extends Component {
                           );
                           return (
                             <div>
-                              <span>
+                              <span className="one-liner">
                                 <label>{priorityName}</label>
                                 {priorityName.length > 0 ? (
                                   <Popover
@@ -1549,7 +1549,7 @@ class CreateSLA extends Component {
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
-                        sortable: false, 
+                        sortable: false,
                         width: 170,
                         accessor: "createdBy",
                         Cell: (row) => {

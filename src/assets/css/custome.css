@@ -2012,10 +2012,13 @@ button,
 .dash-creation-popup li {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  /* margin-top: 15px; */
+  margin-top: 20px;
 }
 .dash-creation-popup li.title {
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
   margin-top: 0;
   padding-bottom: 5px;
@@ -2027,8 +2030,10 @@ button,
   flex: 0 0 30%;
 }
 .dash-creation-popup li p {
-  font-size: 13px;
+  /* font-size: 13px; */
+  font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
   text-align: left;
   line-height: 0.8;
 }
@@ -2221,6 +2226,16 @@ table td span {
 }
 .scroll-table::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
+}
+.one-liner label {
+  max-width: calc(100% - 20px);
+}
+.one-liner {
+  display: flex;
+  align-items: flex-start;
+}
+.one-liner .info-icon {
+  margin-top: 4px;
 }
 .info-icon {
   width: 17px;
@@ -10879,7 +10894,8 @@ table tr th:last-child {
   padding-right: 45px;
   padding-top: 4px;
 }
-.cus-drp .css-1g48xl4-IndicatorsContainer {
+.cus-drp .css-1g48xl4-IndicatorsContainer,
+.cus-drp .css-1wy0on6 {
   display: none;
 }
 .cus-drp .css-1pahdxg-control {
@@ -11928,7 +11944,7 @@ table tr th:last-child {
   }
   .step-progress .nav-tabs .nav-link {
     font-size: 12px;
-}
+  }
   .step-progress .nav-line::before {
     display: none;
   }
