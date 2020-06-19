@@ -521,9 +521,9 @@ class StoreModule extends Component {
       this.setState({
         editSelectNOTimeSlot2: value,
       });
-    } else if (name === "editslotDuration") {
+    } else if (name === "editSlotDuration") {
       this.setState({
-        editslotDuration: value,
+        editSlotDuration: value,
       });
     } else if (name === "editAppointmentDays") {
       this.setState({
@@ -1818,7 +1818,7 @@ class StoreModule extends Component {
               editselectAmPm2: "AM",
               editselectNOAmPm1: "AM",
               editselectNOAmPm2: "AM",
-              editslotDuration: "0.5",
+              editSlotDuration: "0.5",
               editmaxCapacity: "",
               slotId: 0,
             });

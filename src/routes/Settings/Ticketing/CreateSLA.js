@@ -605,33 +605,65 @@ class CreateSLA extends Component {
     const { name, value } = e.target;
     let finalEditData = [...this.state.finalEditData];
     if (
-      name === "SlaBreach" &&
-      name === "Rerspondtime" &&
+      name === "SlaBreach" ||
+      name === "Rerspondtime" ||
       name === "ResolveTime"
     ) {
-      finalEditData[i] = {
-        ...finalEditData[i],
-        [name]: parseFloat(value),
-      };
+      // finalEditData[i] = {
+      //   ...finalEditData[i],
+      //   [name]: parseFloat(value),
+      // };
+      var reg = /^[0-9\b]+$/;
+      if (value === "" || reg.test(value)) {
+        // const { name, value } = e.target;
+        // let finalData = [...this.state.finalData];
+        finalEditData[i] = {
+          ...finalEditData[i],
+          [name]: value,
+        };
+        this.setState({ finalEditData });
+      } else {
+        e.target.value = "";
+      }
     } else {
       finalEditData[i] = {
         ...finalEditData[i],
         [name]: value,
       };
+      this.setState({ finalEditData });
     }
 
-    this.setState({ finalEditData });
+    // this.setState({ finalEditData });
   };
 
   handleSlaTargets = (i, e) => {
     debugger;
-    const { name, value } = e.target;
-    let finalData = [...this.state.finalData];
-    finalData[i] = {
-      ...finalData[i],
-      [name]: value,
-    };
-    this.setState({ finalData });
+    if (
+      e.target.name === "SlaBreach" ||
+      e.target.name === "Rerspondtime" ||
+      e.target.name === "ResolveTime"
+    ) {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        const { name, value } = e.target;
+        let finalData = [...this.state.finalData];
+        finalData[i] = {
+          ...finalData[i],
+          [name]: value,
+        };
+        this.setState({ finalData });
+      } else {
+        e.target.value = "";
+      }
+    } else {
+      const { name, value } = e.target;
+      let finalData = [...this.state.finalData];
+      finalData[i] = {
+        ...finalData[i],
+        [name]: value,
+      };
+      this.setState({ finalData });
+    }
   };
   handleSlaTargetsDropdowns(e) {
     debugger;
@@ -1479,7 +1511,7 @@ class CreateSLA extends Component {
                                 {priorityName.length > 0 ? (
                                   <Popover
                                     content={
-                                      <div className="general-popover created-popover">
+                                      <div className="general-popover created-popover sla-popover">
                                         <div>
                                           <label className="slatargettext-1">
                                             SLA TARGETS
