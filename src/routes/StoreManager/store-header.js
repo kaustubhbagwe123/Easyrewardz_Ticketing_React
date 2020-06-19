@@ -82,7 +82,7 @@ import { NotificationManager } from "react-notifications";
 import "antd/dist/antd.css";
 
 const { Option } = Select;
-
+var uid = 0;
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -463,10 +463,12 @@ class Header extends Component {
   }
   componentDidUpdate() {
     // console.clear();
+
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
     }
+
     if (this.state.showHistoricalChat) {
       this.historyMessageScrollToBottom();
     }
@@ -739,7 +741,7 @@ class Header extends Component {
       selectSlot: {},
       scheduleModal: false,
       selectedSlot: {},
-      isScroll: true,
+      // isScroll: true,
       mainTabSelect: 1,
       toggle: {
         one: true,
@@ -1384,7 +1386,6 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
-
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -5649,7 +5650,6 @@ class Header extends Component {
                                     },
                                   },
                                 ]}
-                                pagination={{ defaultPageSize: 5 }}
                                 dataSource={this.state.agentRecentChatData}
                                 onRow={(record, index) => ({
                                   onClick: (event) => {
@@ -5661,8 +5661,15 @@ class Header extends Component {
                                   },
                                 })}
                                 rowKey={(record) => {
-                                  return record.chatID;
+                                  if (record.chatID) {
+                                    uid = uid + 1;
+                                    return record.chatID + "p" + uid;
+                                  } else {
+                                    uid = uid + 1;
+                                    return "p" + uid;
+                                  }
                                 }}
+                                pagination={{ pageSize: 5, defaultPageSize: 5 }}
                                 rowClassName={this.setRowClassName}
                               ></Table>
                             </div>
@@ -5876,7 +5883,6 @@ class Header extends Component {
                                 },
                               },
                             ]}
-                            pagination={{ defaultPageSize: 5 }}
                             dataSource={this.state.historicalChatData}
                             onRow={(record, index) => ({
                               onClick: (event) => {
@@ -5887,8 +5893,15 @@ class Header extends Component {
                                 );
                               },
                             })}
+                            pagination={{ pageSize: 5, defaultPageSize: 5 }}
                             rowKey={(record) => {
-                              return record.chatID;
+                              if (record.chatID) {
+                                uid = uid + 1;
+                                return record.chatID + "g" + uid;
+                              } else {
+                                uid = uid + 1;
+                                return "h" + uid;
+                              }
                             }}
                             rowClassName={this.setRowClassName}
                           ></Table>
