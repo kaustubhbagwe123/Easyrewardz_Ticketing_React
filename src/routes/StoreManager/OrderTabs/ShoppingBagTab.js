@@ -310,9 +310,21 @@ class ShoppingBagTab extends Component {
   }
   ///handle text onchange
   handleTextOnchage = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    var name = e.target.name;
+    if (name === "amountNo") {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      } else {
+        e.target.value = "";
+      }
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
+    }
   };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -331,7 +343,7 @@ class ShoppingBagTab extends Component {
                     ? TranslationContext.title.shoppingbagno
                     : "Shopping Bag No.",
                 dataIndex: "shoppingBagNo",
-                key:"shoppingBagNo",
+                key: "shoppingBagNo",
               },
               {
                 title:
@@ -543,11 +555,11 @@ class ShoppingBagTab extends Component {
                 render: (row, item) => {
                   return (
                     <p
-                      // className={
-                      //   item.deliveryTypeName === "Store Delivery"
-                      //     ? "order-clr-green"
-                      //     : "order-clr-blue"
-                      // }
+                    // className={
+                    //   item.deliveryTypeName === "Store Delivery"
+                    //     ? "order-clr-green"
+                    //     : "order-clr-blue"
+                    // }
                     >
                       {item.deliveryTypeName}
                     </p>
@@ -865,11 +877,11 @@ class ShoppingBagTab extends Component {
                     <div className="col-6">
                       <p className="order-expanded-title">Delivery Type</p>
                       <p
-                        // className={
-                        //   row.deliveryTypeName === "Store Delivery"
-                        //     ? "order-clr-green"
-                        //     : "order-clr-blue"
-                        // }
+                      // className={
+                      //   row.deliveryTypeName === "Store Delivery"
+                      //     ? "order-clr-green"
+                      //     : "order-clr-blue"
+                      // }
                       >
                         {row.deliveryTypeName}
                       </p>
