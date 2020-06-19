@@ -23,6 +23,7 @@ class ShipmentAssignedTab extends Component {
       orderPopoverOverlay: false,
       ShipAssignLoading: false,
       translateLanguage: {},
+      orderIDs: [41814156]
     };
   }
   componentDidMount() {
@@ -207,6 +208,61 @@ class ShipmentAssignedTab extends Component {
           self.setState({
             orderPopoverOverlay: false,
           });
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+
+  handlePrintManifest(orderIds) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintManifest",
+      headers: authHeader(),
+      params: {
+        OrderIds: orderIds,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          window.location.href = res.data.responseData.manifestUrl;
+        }
+        else{
+          NotificationManager.error(status);
+        }
+      })
+      .catch((data) => {
+        console.log(data);
+      });
+  }
+
+  handlePrintLabel(shipmentId) {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/HSOrder/ShipmentAssignedPrintLabel",
+      headers: authHeader(),
+      params: {
+        ShipmentId: shipmentId,
+      },
+    })
+      .then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          window.location.href = res.data.responseData.label_url;
+        }
+        else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -408,21 +464,13 @@ class ShipmentAssignedTab extends Component {
                       <button
                         className="butn order-grid-butn assign-grid-btn"
                         // className="btn-proc deliv-grid-butn assign-grid-btn"
-                        // onClick={this.handleUpdateShipmentAssignedData.bind(
-                        //   this,
-                        //   item,
-                        //   true
-                        // )}
+                        onClick={this.handlePrintManifest.bind(this, item.courierPartnerOrderID)}
                       >
                         Print Manifest
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
-                        // onClick={this.handleUpdateShipmentAssignedData.bind(
-                        //   this,
-                        //   item,
-                        //   true
-                        // )}
+                        onClick={this.handlePrintLabel.bind(this, item.courierPartnerShipmentID)}
                       >
                         Print Label
                       </button>

@@ -2222,6 +2222,16 @@ table td span {
 .scroll-table::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+.one-liner label {
+  max-width: calc(100% - 20px);
+}
+.one-liner {
+  display: flex;
+  align-items: flex-start;
+}
+.one-liner .info-icon {
+  margin-top: 4px;
+}
 .info-icon {
   width: 17px;
   position: relative;
@@ -11928,7 +11938,7 @@ table tr th:last-child {
   }
   .step-progress .nav-tabs .nav-link {
     font-size: 12px;
-}
+  }
   .step-progress .nav-line::before {
     display: none;
   }
