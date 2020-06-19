@@ -559,6 +559,22 @@
   padding-right: 0;
   padding-bottom: 7px;
   min-width: 350px;
+  max-height: 450px;
+  overflow: auto;
+}
+.sla-popover::-webkit-scrollbar {
+  width: 7px;
+}
+.sla-popover::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.sla-popover::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.sla-popover::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
 }
 .sla-popover .slatargettext-1 {
   margin-bottom: 15px;
