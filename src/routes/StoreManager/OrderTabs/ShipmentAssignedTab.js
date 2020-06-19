@@ -583,7 +583,11 @@ class ShipmentAssignedTab extends Component {
                         </button>
                       </Popover>
                       <button
-                        className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
+                        className={item.storeName !== "" &&
+                                   item.staffName !== "" &&
+                                   item.mobileNumber !== ""?
+                                   "butn order-grid-butn order-grid-butn-yellow assign-grid-btn":
+                                   "butn order-grid-butn order-grid-butn-yellow assign-grid-btn order-grid-btn-disable"}
                         onClick={this.handleUpdateShipmentAssignedRTO.bind(
                           this,
                           item.orderID
@@ -599,7 +603,12 @@ class ShipmentAssignedTab extends Component {
                         RTO
                       </button>
                       <button
-                        className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
+                        className={item.storeName !== "" &&
+                                  item.staffName !== "" &&
+                                  item.mobileNumber !== ""?
+                                  "butn order-grid-butn order-grid-butn-green assign-grid-btn":
+                                  "butn order-grid-butn order-grid-butn-green assign-grid-btn order-grid-btn-disable"
+                                  }
                         onClick={this.handleUpdateDeliveredByShipAssigned.bind(
                           this,
                           item.orderID

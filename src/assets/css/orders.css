@@ -452,6 +452,10 @@
   background: #ef6b00;
   border-color: #ef6b00;
 }
+.order-grid-btn-disable {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
 .order-status-drpdwn {
   padding: 15px 25px 25px;
 }
