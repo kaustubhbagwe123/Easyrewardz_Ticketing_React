@@ -939,7 +939,10 @@ class Users extends Component {
       }
     } else {
       if (e.target.value === "" || reg.test(e.target.value)) {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({
+          [e.target.name]: e.target.value,
+          mobileValidation: "",
+        });
       } else {
         e.target.value = "";
       }
@@ -1245,7 +1248,6 @@ class Users extends Component {
   }
 
   handleGetReporteedesignationList(data1) {
-    debugger;
     let self = this;
     let id;
     if (data1 === "add") {
@@ -1263,11 +1265,17 @@ class Users extends Component {
     })
       .then(function(res) {
         debugger;
+        let status = res.data.message;
         let data = res.data.responseData;
-
-        self.setState({
-          ReporteeDesignData: data,
-        });
+        if (status === "Success") {
+          self.setState({
+            ReporteeDesignData: data,
+          });
+        } else {
+          self.setState({
+            ReporteeDesignData: [],
+          });
+        }
       })
       .catch((data) => {
         console.log(data);
@@ -1291,7 +1299,6 @@ class Users extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2338,7 +2345,7 @@ class Users extends Component {
       this.setState({
         edituserdesignCompulsion: "Please select designation.",
         editreporteeDesignCompulsion: "Please select reportee designation.",
-        editreportToCompulsion: "Please select reportee",
+        editreportToCompulsion: "Please select report.",
       });
     }
   };
