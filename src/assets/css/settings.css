@@ -554,6 +554,31 @@
   font-size: 14px;
   text-transform: uppercase;
 }
+.sla-popover {
+  padding: 15px 16px;
+  padding-right: 0;
+  padding-bottom: 7px;
+  min-width: 350px;
+}
+.sla-popover .slatargettext-1 {
+  margin-bottom: 15px;
+}
+.sla-popover .createhead-text-1 {
+  color: #2561a8;
+  padding-right: 20px;
+  padding-left: 0px;
+  margin-bottom: 10px;
+  width: 20%;
+}
+.sla-popover .slatemp-textpopup-1 {
+  font-size: 12px;
+  margin-bottom: 12px;
+  padding-right: 20px;
+  width: 20%;
+}
+.sla-popover div:not(:first-child) label:first-child {
+  width: 40%;
+}
 .created-popover .popover-body {
   padding: 25px 35px;
 }

@@ -1511,7 +1511,7 @@ class CreateSLA extends Component {
                                 {priorityName.length > 0 ? (
                                   <Popover
                                     content={
-                                      <div className="general-popover created-popover">
+                                      <div className="general-popover created-popover sla-popover">
                                         <div>
                                           <label className="slatargettext-1">
                                             SLA TARGETS
