@@ -975,6 +975,12 @@ p {
 
 /* Responsive starts */
 @media all and (max-width: 576px) {
+  .ant-pagination-item-active a {
+    color: #1890ff !important;
+  }
+  .anticon svg {
+    color: #1890ff;
+  }
   #chat-popup-overlay {
     padding: 0px;
   }
@@ -987,19 +993,19 @@ p {
   .chat-tabs-desktop {
     display: none;
   }
-  .chatdivtitle{
+  .chatdivtitle {
     display: inline-block;
   }
   .chatdivtitle ul {
     width: 55% !important;
-}
-.chatactionbtn {
-  display: none !important;
-}
-a.nav-link.active.chattitletab {
-  color: #2561a8;
-  font-weight: bold;
-}
+  }
+  .chatactionbtn {
+    display: none !important;
+  }
+  a.nav-link.active.chattitletab {
+    color: #2561a8;
+    font-weight: bold;
+  }
   .store-chat-header h3 {
     font-size: 16px;
   }
@@ -1290,6 +1296,12 @@ a.nav-link.active.chattitletab {
 }
 
 @media all and (max-width: 425px) {
+  .ant-pagination-item-active a {
+    color: #1890ff !important;
+  }
+  .anticon svg {
+    color: #1890ff;
+  }
   .chat-face-cntr {
     width: 35px;
   }
@@ -1337,6 +1349,12 @@ a.nav-link.active.chattitletab {
 }
 
 @media all and (max-width: 387px) {
+  .ant-pagination-item-active a {
+    color: #1890ff !important;
+  }
+  .anticon svg {
+    color: #1890ff;
+  }
   /* schedule modal starts */
   .schedule-btn-cntr button,
   .select-slot-cntr,
@@ -1591,4 +1609,14 @@ a.nav-link.active.chattitletab {
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+.now-rap-tbl-txt.chatabcus
+  .custom-antd-table.antd-table-campaign
+  .ant-table-tbody
+  > tr
+  > td {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

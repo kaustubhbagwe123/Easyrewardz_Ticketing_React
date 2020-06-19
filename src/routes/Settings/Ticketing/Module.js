@@ -160,6 +160,7 @@ class Module extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger
         let status = res.data.message;
         let data = res.data.responseData;
         let moduleID = data[0].moduleID;
