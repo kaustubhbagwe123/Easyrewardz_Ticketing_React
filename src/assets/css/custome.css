@@ -10889,7 +10889,8 @@ table tr th:last-child {
   padding-right: 45px;
   padding-top: 4px;
 }
-.cus-drp .css-1g48xl4-IndicatorsContainer {
+.cus-drp .css-1g48xl4-IndicatorsContainer,
+.cus-drp .css-1wy0on6 {
   display: none;
 }
 .cus-drp .css-1pahdxg-control {
