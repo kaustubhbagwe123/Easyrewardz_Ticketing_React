@@ -1068,7 +1068,7 @@ class Header extends Component {
           });
         } else {
           self.setState({
-            searchCardData,
+            searchCardData:[],
             noProductFound: "No Product Found",
           });
         }
@@ -1489,6 +1489,7 @@ class Header extends Component {
   };
   ////handle got to message scroll down
   scrollToBottom() {
+    debugger;
     const scrollHeight = this.messageList.scrollHeight;
     const height = this.messageList.clientHeight;
     const maxScrollTop = scrollHeight - height;
@@ -1989,29 +1990,31 @@ class Header extends Component {
     this.setState({ actionBtn: false });
   };
   handleUpdateStoreManagerChatStatus(id) {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/UpdateStoreManagerChatStatus",
-      headers: authHeader(),
-      params: { ChatID: this.state.chatId, ChatStatusID: id },
-    })
-      .then((response) => {
-        var message = response.data.message;
-        var responseData = response.data.responseData;
-        if (message === "Success" && responseData) {
-          self.setState({
-            customerName: "",
-            messageData: [],
-            isCustEndChat: false,
-          });
-          self.handleGetOngoingChat();
-          self.handleActionClose();
-        }
+    if (this.state.isCustEndChat) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/UpdateStoreManagerChatStatus",
+        headers: authHeader(),
+        params: { ChatID: this.state.chatId, ChatStatusID: id },
       })
-      .catch((response) => {
-        console.log(response, "---handleUpdateStoreManagerChatStatus");
-      });
+        .then((response) => {
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+          if (message === "Success" && responseData) {
+            self.setState({
+              customerName: "",
+              messageData: [],
+              isCustEndChat: false,
+            });
+            self.handleGetOngoingChat();
+            self.handleActionClose();
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleUpdateStoreManagerChatStatus");
+        });
+    }
   }
   ////handle historical table row click
   handleHistoricalTableRow = (e, e1, e2) => {
@@ -5550,7 +5553,7 @@ class Header extends Component {
                         >
                           <div className="chathistory-tbl">
                             <div
-                              className="table-cntr store chat-history chatabcus mg-rm"
+                              className="table-cntr store chat-history chatabcus mg-rm now-rap-tbl-txt"
                               style={{ margin: "10px" }}
                             >
                               <Table
@@ -5565,6 +5568,7 @@ class Header extends Component {
                                         : "Chat ID",
                                     dataIndex: "chatID",
                                     width: "10%",
+                                    className:"textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5580,13 +5584,34 @@ class Header extends Component {
                                         : "Agent",
                                     dataIndex: "agentName",
                                     width: "20%",
+                                    className:"textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
-                                        <>
+                                        <p>
                                           {rowData.agentName
                                             ? rowData.agentName
                                             : ""}
-                                        </>
+                                        </p>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.agent
+                                        : "Mobile No",
+                                    dataIndex: "customerMobile",
+                                    width: "20%",
+                                    className:"textnowrap-table",
+                                    render: (row, rowData) => {
+                                      return (
+                                        <p title={rowData.customerMobile
+                                          ? rowData.customerMobile.substring(2)
+                                          : ""}>
+                                          {rowData.customerMobile
+                                            ? rowData.customerMobile.substring(2)
+                                            : ""}
+                                        </p>
                                       );
                                     },
                                   },
@@ -5597,6 +5622,7 @@ class Header extends Component {
                                         : "Time",
                                     dataIndex: "timeAgo",
                                     width: "20%",
+                                    className:"textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5614,6 +5640,7 @@ class Header extends Component {
                                         : "Status",
                                     dataIndex: "chatStatus",
                                     width: "20%",
+                                    className:"textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5631,6 +5658,7 @@ class Header extends Component {
                                         : "Message",
                                     dataIndex: "message",
                                     width: "30%",
+                                    className:"textnowrap-table",
                                     render: (row, rowdata) => {
                                       return (
                                         <div className="d-flex">
@@ -5792,7 +5820,7 @@ class Header extends Component {
                       </div>
                       <div className="chathistory-tbl">
                         <div
-                          className="table-cntr store chat-history mg-rm"
+                          className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
                           style={{ margin: "10px" }}
                         >
                           <Table
@@ -5807,6 +5835,7 @@ class Header extends Component {
                                     : "Chat ID",
                                 dataIndex: "chatID",
                                 width: "10%",
+                                className:"textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>{rowData.chatID ? rowData.chatID : ""}</>
@@ -5820,11 +5849,27 @@ class Header extends Component {
                                     : "Customer Name",
                                 dataIndex: "customerName",
                                 width: "20%",
+                                className:"textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
                                       {rowData.customerName
                                         ? rowData.customerName
+                                        : ""}
+                                    </>
+                                  );
+                                },
+                              },
+                              {
+                                title:"Mobile No",
+                                dataIndex: "customerMobile",
+                                width: "20%",
+                                className:"textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.customerMobile
+                                        ? rowData.customerMobile
                                         : ""}
                                     </>
                                   );
@@ -5837,6 +5882,7 @@ class Header extends Component {
                                     : "Time",
                                 dataIndex: "timeAgo",
                                 width: "20%",
+                                className:"textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5852,6 +5898,7 @@ class Header extends Component {
                                     : "Status",
                                 dataIndex: "chatStatus",
                                 width: "20%",
+                                className:"textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5869,6 +5916,7 @@ class Header extends Component {
                                     : "Message",
                                 dataIndex: "message",
                                 width: "30%",
+                                className:"textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -6017,6 +6065,8 @@ class Header extends Component {
                 style={{
                   cursor:
                     this.state.isCustEndChat === false ? "no-drop" : "Pointer",
+                  pointerEvents:
+                    this.state.isCustEndChat === false ? "none" : "all",
                 }}
                 disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
