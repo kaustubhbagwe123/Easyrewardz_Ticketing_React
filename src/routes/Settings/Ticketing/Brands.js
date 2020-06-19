@@ -166,7 +166,6 @@ class Brands extends Component {
       screated_ByFilterCheckbox: "",
       sstatusFilterCheckbox: "",
       isortA: false,
-      BcSpecialCharatacter: false,
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -677,9 +676,17 @@ class Brands extends Component {
   };
   /// handle check validation code
   handleCheckValidationCode = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    debugger;
+    var regex = new RegExp("^[a-zA-Z0-9-]+$");
+    if (regex.test(e.target.value)) {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      this.setState({
+        brand_Code: "",
+      });
+    }
   };
   handleActiveStatus = (e) => {
     let value = e.target.value;
@@ -1249,7 +1256,6 @@ class Brands extends Component {
                           sortable: false,
                           accessor: "created_By",
                           Cell: (row) => {
-                            debugger;
                             return (
                               <div>
                                 <span>
@@ -1434,16 +1440,12 @@ class Brands extends Component {
                         maxLength={10}
                         name="brand_Code"
                         value={this.state.brand_Code}
+                        autoComplete="off"
                         onChange={this.handleCheckValidationCode}
                       />
                       {this.state.brand_Code.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.brandcodeCompulsion}
-                        </p>
-                      )}
-                      {this.state.BcSpecialCharatacter && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          Invalid Brand code.
                         </p>
                       )}
                     </div>
@@ -1457,6 +1459,7 @@ class Brands extends Component {
                           maxLength={25}
                           name="brand_name"
                           value={this.state.brand_name}
+                          autoComplete="off"
                           onChange={this.handleBrandOnchange}
                         />
                         {this.state.brand_name.length === 0 && (
