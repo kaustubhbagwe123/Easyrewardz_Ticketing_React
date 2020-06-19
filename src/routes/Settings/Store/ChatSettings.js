@@ -433,7 +433,7 @@ class ChatSettings extends Component {
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
-                          <div className="col-md-3">Customer Time Out</div>
+                          <div className="col-md-3">Chat Session Time Out</div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
@@ -498,7 +498,7 @@ class ChatSettings extends Component {
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
-                          <div className="col-md-3">Agent Time Out</div>
+                          <div className="col-md-3">Historical Chat Time</div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input

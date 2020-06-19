@@ -1384,6 +1384,7 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
+
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1471,6 +1472,7 @@ class Header extends Component {
         }
       }
     }
+    this.handleGetAgentRecentChat(customerId);
     this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
 
@@ -1771,14 +1773,14 @@ class Header extends Component {
     this.handleGetAgentChatHistory();
   };
   ////handle get agent recent chat data
-  handleGetAgentRecentChat() {
+  handleGetAgentRecentChat(customerId) {
     let self = this;
     this.setState({ isPastChatLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetAgentRecentChat",
       headers: authHeader(),
-      params: { CustomerID: this.state.customerId },
+      params: { CustomerID: customerId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -1821,7 +1823,7 @@ class Header extends Component {
   handleMainTabChange(e) {
     this.setState({ mainTabSelect: e });
     if (e === 2) {
-      this.handleGetAgentRecentChat();
+      // this.handleGetAgentRecentChat();
       this.setState({
         messageData: [],
         showHistoricalChat: false,
