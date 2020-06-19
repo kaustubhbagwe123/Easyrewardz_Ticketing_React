@@ -2980,6 +2980,9 @@
 .insertpop1 {
   padding: 20px;
 }
+.new-insertpop1 {
+  padding: 10px;
+}
 .ticketreport .ticketreportdat input[type="text"] {
   width: 100%;
   border-radius: 4px;

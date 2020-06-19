@@ -7276,7 +7276,7 @@ class Dashboard extends Component {
 
                             <Popover
                               content={
-                                <div className="insertpop1">
+                                <div className="insertpop1 new-insertpop1">
                                   <ul className="dash-creation-popup">
                                     <li className="title">Creation details</li>
                                     <li>

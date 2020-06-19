@@ -2012,10 +2012,13 @@ button,
 .dash-creation-popup li {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  /* margin-top: 15px; */
+  margin-top: 20px;
 }
 .dash-creation-popup li.title {
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
   margin-top: 0;
   padding-bottom: 5px;
@@ -2027,8 +2030,10 @@ button,
   flex: 0 0 30%;
 }
 .dash-creation-popup li p {
-  font-size: 13px;
+  /* font-size: 13px; */
+  font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
   text-align: left;
   line-height: 0.8;
 }
