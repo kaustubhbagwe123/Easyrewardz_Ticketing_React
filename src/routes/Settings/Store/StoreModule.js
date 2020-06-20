@@ -32,7 +32,8 @@ import * as translationHI from "./../../../translations/hindi";
 import * as translationMA from "./../../../translations/marathi";
 import { Table, Select } from "antd";
 import "antd/dist/antd.css";
-import { number } from "prop-types";
+
+ 
 
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
@@ -690,7 +691,6 @@ class StoreModule extends Component {
       headers: authHeader(),
       params: {
         SlotID: slotId,
-        
       },
     })
       .then(function(res) {
@@ -747,14 +747,14 @@ class StoreModule extends Component {
       });
   };
   //// Handle get time slot grid data
-  handleGetTimeslotGridData(slotID,storeId) {
+  handleGetTimeslotGridData(slotID, storeId) {
     let self = this;
     this.setState({ isSlotLoading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
       headers: authHeader(),
-      params: { SlotID: slotID ? slotID : 0 ,StoreID:storeId ? storeId : 0},
+      params: { SlotID: slotID ? slotID : 0, StoreID: storeId ? storeId : 0 },
     })
       .then(function(res) {
         debugger;
@@ -1823,7 +1823,16 @@ class StoreModule extends Component {
               slotId: 0,
             });
           } else {
-            NotificationManager.error("Time Slot Not Updated.");
+            debugger;
+            if(status.trim().toLowerCase()==="Record Already Exists".trim().toLowerCase())
+            {
+              NotificationManager.error("Appointment Record Already Exists");
+            }
+            else
+            {
+              NotificationManager.error("Time Slot Not Updated.");
+            }
+            
           }
         })
         .catch((data) => {
@@ -1877,7 +1886,7 @@ class StoreModule extends Component {
     });
   }
   /// handle Edit Time slot
-  openSlotEditModal(slotId,storeId) {
+  openSlotEditModal(slotId, storeId) {
     var timeSlotEdit = {};
     let self = this;
 
@@ -1885,9 +1894,7 @@ class StoreModule extends Component {
       method: "post",
       url: config.apiUrl + "/Appointment/GetStoreSettingTimeSlot",
       headers: authHeader(),
-      params: { SlotID: slotId ? slotId : 0,
-      StoreID:storeId
-      },
+      params: { SlotID: slotId ? slotId : 0, StoreID: storeId },
     })
       .then(function(res) {
         debugger;
@@ -1935,25 +1942,45 @@ class StoreModule extends Component {
       .catch((response) => {
         console.log(response);
       });
- 
   }
 
   handleChangeStoreDropdown(e) {
     this.setState({ FilterSelectStore: e.target.value });
-    this.handleGetTimeslotGridData(0,e.target.value);
+    this.handleGetTimeslotGridData(0, e.target.value);
   }
   handleStoreChangeChange = (e) => {
     debugger;
-    if (e.length > 0) {
-      this.setState({
-        selectedStoreCode: e,
-        storeCodeValidation: "",
-      });
-    } else {
-      this.setState({
-        storeCodeValidation: "Required",
-        selectedStoreCode: e,
-      });
+    if (this.state.TimeSlotGridData.length > 0) {
+      var isExits = this.state.TimeSlotGridData.filter(
+        (x) => x.storeId === e[e.length - 1]
+      );
+      if (isExits.length > 0) {
+        NotificationManager.error("Slot already created of this store code.");
+      } else {
+        if (e.length > 0) {
+          this.setState({
+            selectedStoreCode: e,
+            storeCodeValidation: "",
+          });
+        } else {
+          this.setState({
+            storeCodeValidation: "Required",
+            selectedStoreCode: e,
+          });
+        }
+      }
+    }else{
+      if (e.length > 0) {
+        this.setState({
+          selectedStoreCode: e,
+          storeCodeValidation: "",
+        });
+      } else {
+        this.setState({
+          storeCodeValidation: "Required",
+          selectedStoreCode: e,
+        });
+      }
     }
   };
 
@@ -4150,7 +4177,6 @@ class StoreModule extends Component {
                                                         onClick={this.handleDeleteTimeSlot.bind(
                                                           this,
                                                           rowData.slotSettingID
-                                                          
                                                         )}
                                                       >
                                                         {TranslationContext !==

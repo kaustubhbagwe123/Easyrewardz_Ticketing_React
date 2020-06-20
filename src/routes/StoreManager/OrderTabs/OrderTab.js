@@ -1000,6 +1000,11 @@ class OrderTab extends Component {
                           disabled={item.disablePaymentlinkbutton}
                         >
                           <button
+                            style={{
+                              display: item.showPaymentLinkPopup
+                                ? "block"
+                                : "none",
+                            }}
                             className={
                               item.showPaymentLinkPopup
                                 ? "butn order-grid-butn"
@@ -1056,7 +1061,7 @@ class OrderTab extends Component {
                           ? TranslationContext.p.status
                           : "Status"}
                       </p>
-                      <p >{row.statusName}</p>
+                      <p>{row.statusName}</p>
                       {/* <p className="order-clr-blue">{row.statusName}</p> */}
                       {/* {row.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>

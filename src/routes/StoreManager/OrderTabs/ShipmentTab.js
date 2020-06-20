@@ -18,6 +18,7 @@ import "react-pagination-js/dist/styles.css";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
+var rowid=0;
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -276,6 +277,7 @@ class ShipmentTab extends Component {
             AirwayItemIds: data.itemIDs,
             createdShoppingTabs: true,
           });
+          self.handleGetShipmentTabGridData();
         } else {
           self.setState({
             createdShoppingTabs: false,
@@ -566,6 +568,8 @@ class ShipmentTab extends Component {
                     : "Action",
                 className: "action-w",
                 render: (row, item) => {
+                  debugger
+                  rowid=rowid+1;
                   return (
                     <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
@@ -655,12 +659,14 @@ class ShipmentTab extends Component {
                             trigger="click"
                             overlayClassName="order-popover order-popover-butns"
                             placement="bottomRight"
-                            visible={this.state.PickPendingvisisble}
+                            // visible={this.state.PickPendingvisisble}
                             // onVisibleChange={(visible) =>
                             //   this.setState({ orderPopoverOverlay: visible })
                             // }
+                            id={item.actionTypeName+rowid}
                           >
                             <button
+                            id={item.actionTypeName+rowid}
                               className={
                                 item.actionTypeName === "Pickup Pending"
                                   ? "butn order-grid-butn order-grid-butn-green"

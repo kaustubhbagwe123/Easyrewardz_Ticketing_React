@@ -867,6 +867,7 @@ class Header extends Component {
     let self = this;
 
     this.setState({
+      isCustEndChat: false,
       storeManagerId,
       rowChatId: 0,
       agentRecentChatData: [],
@@ -910,12 +911,14 @@ class Header extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           // self.setState({
           //   chatId: id,
           // });
+          self.handleGetAgentRecentChat(customerId);
           self.handleMakeAsReadOnGoingChat(id, true);
           // self.handleGetOngoingChat();
           // self.handleGetChatNotificationCount();
@@ -1068,7 +1071,7 @@ class Header extends Component {
           });
         } else {
           self.setState({
-            searchCardData:[],
+            searchCardData: [],
             noProductFound: "No Product Found",
           });
         }
@@ -1924,6 +1927,7 @@ class Header extends Component {
                   }
                   // self.handleMakeAsReadOnGoingChat(chatId);
                   self.handleGetChatMessagesList(chatId);
+                  self.handleGetNewChat();
                 } else {
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
@@ -3530,7 +3534,7 @@ class Header extends Component {
                                     <Pagination
                                       currentPage={this.state.selectedSugpage}
                                       totalSize={
-                                        this.state.messageSuggestionData.length
+                                        this.state.messageSuggestionData.length 
                                       }
                                       // totalSize={row.customerCount}
                                       sizePerPage={10}
@@ -5568,7 +5572,7 @@ class Header extends Component {
                                         : "Chat ID",
                                     dataIndex: "chatID",
                                     width: "10%",
-                                    className:"textnowrap-table",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5584,7 +5588,7 @@ class Header extends Component {
                                         : "Agent",
                                     dataIndex: "agentName",
                                     width: "20%",
-                                    className:"textnowrap-table",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <p>
@@ -5602,14 +5606,22 @@ class Header extends Component {
                                         : "Mobile No",
                                     dataIndex: "customerMobile",
                                     width: "20%",
-                                    className:"textnowrap-table",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
-                                        <p title={rowData.customerMobile
-                                          ? rowData.customerMobile.substring(2)
-                                          : ""}>
+                                        <p
+                                          title={
+                                            rowData.customerMobile
+                                              ? rowData.customerMobile.substring(
+                                                  2
+                                                )
+                                              : ""
+                                          }
+                                        >
                                           {rowData.customerMobile
-                                            ? rowData.customerMobile.substring(2)
+                                            ? rowData.customerMobile.substring(
+                                                2
+                                              )
                                             : ""}
                                         </p>
                                       );
@@ -5622,7 +5634,7 @@ class Header extends Component {
                                         : "Time",
                                     dataIndex: "timeAgo",
                                     width: "20%",
-                                    className:"textnowrap-table",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5640,7 +5652,7 @@ class Header extends Component {
                                         : "Status",
                                     dataIndex: "chatStatus",
                                     width: "20%",
-                                    className:"textnowrap-table",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5658,7 +5670,7 @@ class Header extends Component {
                                         : "Message",
                                     dataIndex: "message",
                                     width: "30%",
-                                    className:"textnowrap-table",
+                                    className: "textnowrap-table",
                                     render: (row, rowdata) => {
                                       return (
                                         <div className="d-flex">
@@ -5835,7 +5847,7 @@ class Header extends Component {
                                     : "Chat ID",
                                 dataIndex: "chatID",
                                 width: "10%",
-                                className:"textnowrap-table",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>{rowData.chatID ? rowData.chatID : ""}</>
@@ -5849,7 +5861,7 @@ class Header extends Component {
                                     : "Customer Name",
                                 dataIndex: "customerName",
                                 width: "20%",
-                                className:"textnowrap-table",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5861,10 +5873,10 @@ class Header extends Component {
                                 },
                               },
                               {
-                                title:"Mobile No",
+                                title: "Mobile No",
                                 dataIndex: "customerMobile",
                                 width: "20%",
-                                className:"textnowrap-table",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5882,7 +5894,7 @@ class Header extends Component {
                                     : "Time",
                                 dataIndex: "timeAgo",
                                 width: "20%",
-                                className:"textnowrap-table",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5898,7 +5910,7 @@ class Header extends Component {
                                     : "Status",
                                 dataIndex: "chatStatus",
                                 width: "20%",
-                                className:"textnowrap-table",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5916,7 +5928,7 @@ class Header extends Component {
                                     : "Message",
                                 dataIndex: "message",
                                 width: "30%",
-                                className:"textnowrap-table",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
