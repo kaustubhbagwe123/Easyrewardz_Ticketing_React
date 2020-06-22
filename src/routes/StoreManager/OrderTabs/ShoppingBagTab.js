@@ -260,6 +260,7 @@ class ShoppingBagTab extends Component {
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
+      currentPage:1
     });
 
     this.handleGetShoppingBagGridData();
