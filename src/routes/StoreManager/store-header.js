@@ -83,6 +83,7 @@ import "antd/dist/antd.css";
 
 const { Option } = Select;
 var uid = 0;
+var i = 0;
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -4549,15 +4550,15 @@ class Header extends Component {
                                     0 ? (
                                     <div className="suggestions-cntr">
                                       <Table
-                                        loading={this.state.isPastChatLoading}
+                                        
                                         noDataContent="No Record Found"
-                                        className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                        className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
                                         columns={[
                                           {
-                                            dataIndex: "chatID",
+                                            dataIndex: "suggestionText",
                                             className: "textnowrap-table",
                                             render: (row, rowData) => {
-                                              var i = 0;
+                                              
                                               return (
                                                 <div
                                                   className={

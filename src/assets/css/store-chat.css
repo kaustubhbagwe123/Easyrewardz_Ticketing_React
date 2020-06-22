@@ -975,6 +975,10 @@ p {
 
 /* Responsive starts */
 @media all and (max-width: 576px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+
   .ant-pagination-item-active a {
     color: #4a4a4a !important;
   }
@@ -1296,6 +1300,9 @@ p {
 }
 
 @media all and (max-width: 425px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
   .ant-pagination-item-active a {
     color: #4a4a4a !important;
   }
@@ -1349,6 +1356,9 @@ p {
 }
 
 @media all and (max-width: 387px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
   .ant-pagination-item-active a {
     color: #4a4a4a !important;
   }
@@ -1621,10 +1631,12 @@ p {
   white-space: nowrap;
 }
 
-.setpagination.ant-pagination-item-ellipsis {
+.ant-pagination-item-ellipsis {
   background: none !important;
-  padding: 0 !important;
   box-shadow: none !important;
+  padding: 0 !important;
+  width: 22px !important;
+  overflow: visible !important;
 }
 .rm-header tbody {
   display: flex;
@@ -1650,4 +1662,8 @@ p {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
+}
+
+.rm-header.ant-pagination-item-active{
+  border-color: #2561A8 !important;
 }
