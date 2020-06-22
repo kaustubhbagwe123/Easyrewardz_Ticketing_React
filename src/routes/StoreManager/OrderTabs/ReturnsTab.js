@@ -24,13 +24,23 @@ class ReturnTab extends Component {
       orderPopoverOverlay: false,
       filterOrderReturnsStatus: false,
       statusFilterData: [],
-      strStatus: ""
+      strStatus: "",
+      translateLanguage: {}
     };
   }
 
   componentDidMount() {
     this.handleGetOrderReturnsData();
     this.handleGetOrderStatusFilterData();
+    if(window.localStorage.getItem("translateLanguage") === "hindi"){
+      this.state.translateLanguage = translationHI
+     }
+     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
+       this.state.translateLanguage = translationMA
+     }
+     else{
+       this.state.translateLanguage = {}
+     }
   }
 
   handleGetOrderReturnsData() {
@@ -137,6 +147,7 @@ class ReturnTab extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     return (
       <>
         <div className="table-cntr store dv-table-paging">
@@ -144,17 +155,17 @@ class ReturnTab extends Component {
             className="components-table-demo-nested antd-table-campaign antd-table-order antd-table-order-mobile custom-antd-table"
             columns={[
               {
-                title: "AWB No.",
+                title: TranslationContext!==undefined?TranslationContext.title.awbno:"AWB No.",
                 dataIndex: "awbNo",
                 key:"awbNo"
               },
               {
-                title: "Invoice No.",
+                title: TranslationContext!==undefined?TranslationContext.title.invoiceno:"Invoice No.",
                 dataIndex: "invoiceNo",
                 className: "order-desktop",
               },
               {
-                title: "Customer",
+                title: TranslationContext!==undefined?TranslationContext.title.customer:"Customer",
                 render: (row, item) => {
                   return (
                     <div>
@@ -166,7 +177,7 @@ class ReturnTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: "Items",
+                title: TranslationContext!==undefined?TranslationContext.title.items:"Items",
                 render: (row, item) => {
                   return (
                     <div className="d-flex align-items-center">
@@ -177,20 +188,20 @@ class ReturnTab extends Component {
                             className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table"
                             columns={[
                               {
-                                title: "Item ID",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemid:"Item ID",
                                 dataIndex: "itemID",
                               },
                               {
-                                title: "Item Name",
+                                title:  TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
                                 dataIndex: "itemName",
                                 // width: 150,
                               },
                               {
-                                title: "Item Price",
+                                title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: "Quantity",
+                                title: TranslationContext!==undefined?TranslationContext.title.quantity:"Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -213,7 +224,7 @@ class ReturnTab extends Component {
                 },
               },
               {
-                title: "Date",
+                title: TranslationContext!==undefined?TranslationContext.title.date:"Date",
                 render: (row, item) => {
                   return (
                     <div>
@@ -225,7 +236,7 @@ class ReturnTab extends Component {
                 className: "order-desktop",
               },
               {
-                title: "Status",
+                title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
                 dataIndex: "statusName",
                 className: "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
                 filterDropdown: (data, row) => {
@@ -259,7 +270,8 @@ class ReturnTab extends Component {
                           className="btn-apply-status"
                           onClick={this.handleGetOrderReturnsData.bind(this)}
                         >
-                          Apply
+                          {TranslationContext!==undefined?TranslationContext.button.apply:"Apply"}
+                          
                         </button>
                         <button
                           className="btn-cancel-status"
@@ -267,7 +279,8 @@ class ReturnTab extends Component {
                             this.setState({ filterOrderReturnsStatus: false })
                           }
                         >
-                          Cancel
+                           {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          
                         </button>
                       </div>
                     </div>
@@ -283,16 +296,18 @@ class ReturnTab extends Component {
                 ),
               },
               {
-                title: "Action",
+                title:  TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: (row, item) => {
                   debugger;
                   return (
                     <div className="d-flex">
                       <button className="butn order-grid-butn order-grid-butn-orange">
-                        Cancel
+                        {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                        
                       </button>
                       <button className="butn order-grid-butn order-grid-butn-yellow retry-butn ml-2">
-                        Retry
+                      {TranslationContext!==undefined?TranslationContext.button.retry:"Retry"}
+                        
                       </button>
                     </div>
                   );
@@ -305,21 +320,21 @@ class ReturnTab extends Component {
                 <div className="order-expanded-cntr">
                   <div className="row">
                     <div className="col-6">
-                      <p className="order-expanded-title">Invoice No.</p>
+                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.invoiceno:"Invoice No."}</p>
                       <p>{row.invoiceNo}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Customer</p>
+                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.customer:"Customer"}</p>
                       <p>{row.customerName},</p>
                       <p className="order-small-font">{row.mobileNumber}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Date</p>
+                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.date:"Date"}</p>
                       <p>{row.date}</p>
                       <p className="order-small-font">{row.time}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Status</p>
+                      <p className="order-expanded-title">{TranslationContext!==undefined?TranslationContext.p.status:"Status"}</p>
                       <p>{row.statusName}</p>
                     </div>
                   </div>
@@ -352,7 +367,7 @@ class ReturnTab extends Component {
                 <option value={20}>20</option>
                 <option value={30}>30</option>
               </select>
-              <p>Items per page</p>
+              <p>{TranslationContext!==undefined?TranslationContext.p.itemperpage:"Items per page"}</p>
             </div>
           </div>
         </div>
