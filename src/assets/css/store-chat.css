@@ -1626,7 +1626,13 @@ p {
   padding: 0 !important;
   box-shadow: none !important;
 }
-
+.rm-header tbody {
+  display: flex;
+  flex-wrap: wrap;
+}
+.rm-header table tbody tr {
+  border-bottom: 0;
+}
 .rm-header .ant-table-thead {
   display: none;
 }
@@ -1636,12 +1642,11 @@ p {
   margin: 0 !important;
 }
 
-.rm-header .ant-table{
+.rm-header .ant-table {
   width: 100% !important;
 }
 
-
-.rm-header.ant-table-pagination.ant-pagination{
+.rm-header.ant-table-pagination.ant-pagination {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
