@@ -136,7 +136,7 @@ class Header extends Component {
       recommendedModal: false,
       paymentModal: false,
       selectedCard: 0,
-      chkSuggestion: [],
+      chkSuggestion: 0,
       programCode: "",
       oldCount: 0,
       toggle: {
@@ -881,7 +881,7 @@ class Header extends Component {
       programCode: ProgramCode,
       message: "",
       messageSuggestionData: [],
-      chkSuggestion: [],
+      chkSuggestion: 0,
       toggle: {
         one: true,
         two: false,
@@ -1215,17 +1215,17 @@ class Header extends Component {
     var inputParam = {};
     if (Message.trim() !== "") {
       if (index > 0) {
-        if (this.state.chkSuggestion.length > 0) {
-          if (this.state.chkSuggestion[index] === 1) {
-            this.state.chkSuggestion[index] = 0;
-          } else {
-            this.state.chkSuggestion[index] = 1;
-          }
-        } else {
-          this.state.chkSuggestion[index] = 1;
-        }
+        // if (this.state.chkSuggestion.length > 0) {
+        //   if (this.state.chkSuggestion[index] === 1) {
+        //     this.state.chkSuggestion[index] = 0;
+        //   } else {
+        //     this.state.chkSuggestion[index] = 1;
+        //   }
+        // } else {
+        //   this.state.chkSuggestion[index] = 1;
+        // }
         this.setState({
-          chkSuggestion: this.state.chkSuggestion,
+          chkSuggestion: 0,
         });
       }
       inputParam.ChatID = this.state.chatId;
@@ -1390,6 +1390,7 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
+    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1476,8 +1477,48 @@ class Header extends Component {
           this.handleMakeAsReadOnGoingChat(id);
         }
       }
+    } else {
+      this.setState({
+        storeManagerId,
+        rowChatId: 0,
+        agentRecentChatData: [],
+        showHistoricalChat: false,
+        mainTabSelect: 1,
+        isCustEndChat,
+        storeID: StoreID,
+        chatId: id,
+        customerName: name,
+        mobileNo: mobileNo,
+        customerId: customerId,
+        programCode: ProgramCode,
+        mobileNo: mobileNo,
+        message: "",
+        messageSuggestionData: [],
+        chkSuggestion: [],
+        oldCount: count,
+        toggle: {
+          one: true,
+          two: false,
+          three: false,
+          four: false,
+          five: false,
+        },
+        noOfPeople: "",
+        selectSlot: {},
+        scheduleModal: false,
+        selectedSlot: {},
+        activeTab: 1,
+        timeSlotData: [],
+        searchItem: "",
+        searchCardData: [],
+        messageData: [],
+        isSendClick: false,
+        isHistoricalChat: false,
+        isDownbtn: true,
+      });
+      this.handleGetChatMessagesList(id);
+      this.handleGetAgentRecentChat(customerId);
     }
-    this.handleGetAgentRecentChat(customerId);
     this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
 
@@ -1494,10 +1535,12 @@ class Header extends Component {
   ////handle got to message scroll down
   scrollToBottom() {
     debugger;
-    const scrollHeight = this.messageList.scrollHeight;
-    const height = this.messageList.clientHeight;
-    const maxScrollTop = scrollHeight - height;
-    this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    if (this.messageList) {
+      const scrollHeight = this.messageList.scrollHeight;
+      const height = this.messageList.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
@@ -1736,17 +1779,17 @@ class Header extends Component {
   }
 
   onOpenMobSuggestionModal(suggestionText, index) {
+    debugger;
     if (index > 0) {
       // if (this.state.chkSuggestion.length > 0) {
       // if (this.state.chkSuggestion[index] === 1) {
       //   this.state.chkSuggestion = [];
       //   this.state.chkSuggestion[index] = 0;
       // } else {
-      this.state.chkSuggestion = [];
-      this.state.chkSuggestion[index] = 1;
+
       this.setState({
         suggestionModalMob: true,
-        chkSuggestion: this.state.chkSuggestion,
+        chkSuggestion: index,
         suggestionText: suggestionText,
       });
       // }
@@ -2701,66 +2744,78 @@ class Header extends Component {
                       </Select>
                     </div>
                     <div className="chat-left-height">
-                      {this.state.ongoingChatsData &&
-                        this.state.ongoingChatsData.map((chat, i) => (
-                          <div
-                            id={chat.chatID}
-                            key={i}
-                            className={
-                              this.state.chatId === chat.chatID
-                                ? "chat-info active"
-                                : "chat-info"
-                            }
-                            onClick={this.handleOngoingChatClick.bind(
-                              this,
-                              chat.chatID,
-                              chat.cumtomerName,
-                              chat.messageCount,
-                              chat.mobileNo,
-                              chat.customerID,
-                              chat.programCode,
-                              chat.storeID,
-                              chat.isCustEndChat,
-                              chat.storeManagerId
-                            )}
-                          >
-                            <div className="d-flex align-items-center overflow-hidden">
-                              <span className="dark-blue-ini initial">
-                                {chat.cumtomerName.charAt(0)}
-                              </span>
-                              <div className="name-num mx-2">
-                                <p className="chat-name">{chat.cumtomerName}</p>
-                                <p className="num">{chat.mobileNo}</p>
+                      {this.state.ongoingChatsData
+                        ? this.state.ongoingChatsData.map((chat, i) => (
+                            <div
+                              id={chat.chatID}
+                              key={i}
+                              className={
+                                this.state.chatId === chat.chatID
+                                  ? "chat-info active"
+                                  : "chat-info"
+                              }
+                              onClick={this.handleOngoingChatClick.bind(
+                                this,
+                                chat.chatID,
+                                chat.cumtomerName,
+                                chat.messageCount,
+                                chat.mobileNo,
+                                chat.customerID,
+                                chat.programCode,
+                                chat.storeID,
+                                chat.isCustEndChat,
+                                chat.storeManagerId
+                              )}
+                            >
+                              <div className="d-flex align-items-center overflow-hidden">
+                                <span className="dark-blue-ini initial">
+                                  {chat.cumtomerName.charAt(0)}
+                                </span>
+                                <div className="name-num mx-2">
+                                  <p className="chat-name">
+                                    {chat.cumtomerName}
+                                  </p>
+                                  <p className="num">{chat.mobileNo}</p>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="mess-time">
+                                  <p
+                                    className={"chat-storemng "}
+                                    title="Store Manager"
+                                  >
+                                    {chat.storeManagerName}
+                                  </p>
+                                  <p
+                                    style={{
+                                      fontWeight:
+                                        chat.messageCount > 0 ? "bold" : "400",
+                                    }}
+                                  >
+                                    {chat.messageCount === 0
+                                      ? "No"
+                                      : chat.messageCount}{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.newmessages
+                                      : "New Messages"}
+                                  </p>
+                                  <p>{chat.timeAgo}</p>
+                                </div>
                               </div>
                             </div>
-                            <div>
-                              <div className="mess-time">
-                                <p
-                                  className={"chat-storemng "}
-                                  title="Store Manager"
-                                >
-                                  {chat.storeManagerName}
-                                </p>
-                                <p
-                                  style={{
-                                    fontWeight:
-                                      chat.messageCount > 0 ? "bold" : "400",
-                                  }}
-                                >
-                                  {chat.messageCount === 0
-                                    ? "No"
-                                    : chat.messageCount}{" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.newmessages
-                                    : "New Messages"}
-                                </p>
-                                <p>{chat.timeAgo}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                          ))
+                        : null}
+                      
                     </div>
                   </div>
+                  {this.state.ongoingChatsData.length === 0 && (
+                        <p className="no-record" style={{marginTop:"0px"}}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.norecordsfound
+                            : "No Records Found"}
+                          !
+                        </p>
+                      )}
                   <div className="chat-cntr">
                     <p className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
@@ -2822,8 +2877,17 @@ class Header extends Component {
                             </div>
                           </div>
                         ))}
+                      
                     </div>
                   </div>
+                  {this.state.newChatsData.length === 0 && (
+                        <p className="no-record" style={{marginTop:"0px"}}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.norecordsfound
+                            : "No Records Found"}
+                          !
+                        </p>
+                      )}
                   <div className="chat-hist">
                     <li className="nav-item">
                       <a
@@ -3485,34 +3549,35 @@ class Header extends Component {
                                       .length > 0 &&
                                     this.state.tempmessageSuggestionData
                                       .length > 0 && (
-                                      <div className="suggestions-cntr setpagination"
-                                      style={{width:"100%"}}
+                                      <div
+                                        className="suggestions-cntr setpagination"
+                                        style={{ width: "100%" }}
                                       >
                                         <Table
-                                          
                                           noDataContent="No Record Found"
-                                          style={{width:"100%"}}
+                                          style={{ width: "100%" }}
                                           className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
                                           columns={[
                                             {
                                               dataIndex: "suggestionText",
                                               render: (row, rowData) => {
-                                                var i = 0;
+                                                i = i + 1;
+                                                debugger;
                                                 return (
                                                   <div
                                                     className={
-                                                      this.state.chkSuggestion[
-                                                        i + 1
-                                                      ] === 1
+                                                      this.state
+                                                        .chkSuggestion ===
+                                                      rowData.suggestionID
                                                         ? "suggestions-tick"
                                                         : ""
                                                     }
-                                                    style={{width:"100%"}}
-                                                    key={i}
+                                                    style={{ width: "100%" }}
+                                                    id={i}
                                                     onClick={this.onOpenMobSuggestionModal.bind(
                                                       this,
                                                       rowData.suggestionText,
-                                                      i + 1
+                                                      rowData.suggestionID
                                                     )}
                                                   >
                                                     <Tooltip
@@ -4550,7 +4615,6 @@ class Header extends Component {
                                     0 ? (
                                     <div className="suggestions-cntr">
                                       <Table
-                                        
                                         noDataContent="No Record Found"
                                         className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
                                         columns={[
@@ -4558,21 +4622,21 @@ class Header extends Component {
                                             dataIndex: "suggestionText",
                                             className: "textnowrap-table",
                                             render: (row, rowData) => {
-                                              
+                                              i = i + 1;
                                               return (
                                                 <div
                                                   className={
                                                     this.state.chkSuggestion[
-                                                      i + 1
-                                                    ] === 1
+                                                      i
+                                                    ] === i
                                                       ? "suggestions-tick"
                                                       : ""
                                                   }
-                                                  key={i}
+                                                  id={i}
                                                   onClick={this.onOpenMobSuggestionModal.bind(
                                                     this,
                                                     rowData.suggestionText,
-                                                    i + 1
+                                                    i
                                                   )}
                                                 >
                                                   <Tooltip
