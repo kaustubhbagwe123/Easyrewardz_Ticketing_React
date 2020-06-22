@@ -3484,67 +3484,63 @@ class Header extends Component {
                                       .length > 0 &&
                                     this.state.tempmessageSuggestionData
                                       .length > 0 && (
-                                      <div className="suggestions-cntr">
-                                        {this.state
-                                          .tempmessageSuggestionData !== null &&
-                                          this.state.tempmessageSuggestionData.map(
-                                            (item, i) => (
-                                              <div
-                                                className={
-                                                  this.state.chkSuggestion[
-                                                    i + 1
-                                                  ] === 1
-                                                    ? "suggestions-tick"
-                                                    : ""
-                                                }
-                                                key={i}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i + 1,
-                                                //   "",
-                                                //   ""
-                                                // )}
-                                                onClick={this.onOpenSuggestionModal.bind(
-                                                  this,
-                                                  item.suggestionText,
-                                                  i + 1
-                                                )}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i
-                                                // )}
-                                              >
-                                                <Tooltip
-                                                  placement="left"
-                                                  title={item.suggestionText}
-                                                >
-                                                  <span>
-                                                    {item.suggestionText}
-                                                  </span>
-                                                </Tooltip>
-                                              </div>
-                                            )
-                                          )}
+                                      <div className="suggestions-cntr setpagination"
+                                      style={{width:"100%"}}
+                                      >
+                                        <Table
+                                          
+                                          noDataContent="No Record Found"
+                                          style={{width:"100%"}}
+                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                          columns={[
+                                            {
+                                              dataIndex: "suggestionText",
+                                              render: (row, rowData) => {
+                                                var i = 0;
+                                                return (
+                                                  <div
+                                                    className={
+                                                      this.state.chkSuggestion[
+                                                        i + 1
+                                                      ] === 1
+                                                        ? "suggestions-tick"
+                                                        : ""
+                                                    }
+                                                    style={{width:"100%"}}
+                                                    key={i}
+                                                    onClick={this.onOpenMobSuggestionModal.bind(
+                                                      this,
+                                                      rowData.suggestionText,
+                                                      i + 1
+                                                    )}
+                                                  >
+                                                    <Tooltip
+                                                      placement="left"
+                                                      title={
+                                                        rowData.suggestionText
+                                                      }
+                                                    >
+                                                      <span>
+                                                        {rowData.suggestionText}
+                                                      </span>
+                                                    </Tooltip>
+                                                  </div>
+                                                );
+                                              },
+                                            },
+                                          ]}
+                                          dataSource={
+                                            this.state.messageSuggestionData
+                                          }
+                                          pagination={{
+                                            pageSize: 10,
+                                            defaultPageSize: 10,
+                                          }}
+                                          // rowClassName={this.setRowClassName}
+                                        ></Table>
                                       </div>
                                     )}
-                                  {this.state.messageSuggestionData.length >
-                                    0 && (
-                                    <Pagination
-                                      currentPage={this.state.selectedSugpage}
-                                      totalSize={
-                                        this.state.messageSuggestionData.length 
-                                      }
-                                      // totalSize={row.customerCount}
-                                      sizePerPage={10}
-                                      hideFirstLastPages={true}
-                                      changeCurrentPage={
-                                        this.PaginationOnChange
-                                      }
-                                      theme="bootstrap"
-                                    />
-                                  )}
+
                                   {this.state.storeAgentDetail.length !== 0 &&
                                   this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
@@ -4547,71 +4543,63 @@ class Header extends Component {
 
                                   {this.state.tempmessageSuggestionData !==
                                     null &&
-                                    this.state.tempmessageSuggestionData
-                                      .length > 0 &&
-                                    this.state.tempmessageSuggestionData
-                                      .length > 0 && (
-                                      <div className="suggestions-cntr">
-                                        {this.state
-                                          .tempmessageSuggestionData !== null &&
-                                          this.state.tempmessageSuggestionData.map(
-                                            (item, i) => (
-                                              <div
-                                                className={
-                                                  this.state.chkSuggestion[
+                                  this.state.tempmessageSuggestionData.length >
+                                    0 &&
+                                  this.state.tempmessageSuggestionData.length >
+                                    0 ? (
+                                    <div className="suggestions-cntr">
+                                      <Table
+                                        loading={this.state.isPastChatLoading}
+                                        noDataContent="No Record Found"
+                                        className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                        columns={[
+                                          {
+                                            dataIndex: "chatID",
+                                            className: "textnowrap-table",
+                                            render: (row, rowData) => {
+                                              var i = 0;
+                                              return (
+                                                <div
+                                                  className={
+                                                    this.state.chkSuggestion[
+                                                      i + 1
+                                                    ] === 1
+                                                      ? "suggestions-tick"
+                                                      : ""
+                                                  }
+                                                  key={i}
+                                                  onClick={this.onOpenMobSuggestionModal.bind(
+                                                    this,
+                                                    rowData.suggestionText,
                                                     i + 1
-                                                  ] === 1
-                                                    ? "suggestions-tick"
-                                                    : ""
-                                                }
-                                                key={i}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i
-                                                // )}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i + 1,
-                                                //   "",
-                                                //   ""
-                                                // )}
-
-                                                onClick={this.onOpenMobSuggestionModal.bind(
-                                                  this,
-                                                  item.suggestionText,
-                                                  i + 1
-                                                )}
-                                              >
-                                                <Tooltip
-                                                  placement="left"
-                                                  title={item.suggestionText}
+                                                  )}
                                                 >
-                                                  <span>
-                                                    {item.suggestionText}
-                                                  </span>
-                                                </Tooltip>
-                                              </div>
-                                            )
-                                          )}
-                                      </div>
-                                    )}
-                                  {this.state.messageSuggestionData.length >
-                                    0 && (
-                                    <Pagination
-                                      currentPage={this.state.selectedSugpage}
-                                      totalSize={
-                                        this.state.messageSuggestionData.length
-                                      }
-                                      // totalSize={row.customerCount}
-                                      sizePerPage={10}
-                                      changeCurrentPage={
-                                        this.PaginationOnChange
-                                      }
-                                      theme="bootstrap"
-                                    />
-                                  )}
+                                                  <Tooltip
+                                                    placement="left"
+                                                    title={
+                                                      rowData.suggestionText
+                                                    }
+                                                  >
+                                                    <span>
+                                                      {rowData.suggestionText}
+                                                    </span>
+                                                  </Tooltip>
+                                                </div>
+                                              );
+                                            },
+                                          },
+                                        ]}
+                                        dataSource={
+                                          this.state.messageSuggestionData
+                                        }
+                                        pagination={{
+                                          pageSize: 5,
+                                          defaultPageSize: 5,
+                                        }}
+                                        // rowClassName={this.setRowClassName}
+                                      ></Table>
+                                    </div>
+                                  ) : null}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
                                   this.state.storeAgentDetail[0].suggestion ===

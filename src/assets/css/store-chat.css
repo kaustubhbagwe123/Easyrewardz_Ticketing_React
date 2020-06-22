@@ -1620,3 +1620,29 @@ p {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.setpagination.ant-pagination-item-ellipsis {
+  background: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.rm-header .ant-table-thead {
+  display: none;
+}
+
+.rm-header.custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rm-header .ant-table{
+  width: 100% !important;
+}
+
+
+.rm-header.ant-table-pagination.ant-pagination{
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
