@@ -18,7 +18,7 @@ import "react-pagination-js/dist/styles.css";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
-var rowid=0;
+var rowid = 0;
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -568,8 +568,8 @@ class ShipmentTab extends Component {
                     : "Action",
                 className: "action-w",
                 render: (row, item) => {
-                  debugger
-                  rowid=rowid+1;
+                  debugger;
+                  rowid = rowid + 1;
                   return (
                     <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
@@ -663,10 +663,10 @@ class ShipmentTab extends Component {
                             // onVisibleChange={(visible) =>
                             //   this.setState({ orderPopoverOverlay: visible })
                             // }
-                            id={item.actionTypeName+rowid}
+                            id={item.actionTypeName + rowid}
                           >
                             <button
-                            id={item.actionTypeName+rowid}
+                              id={item.actionTypeName + rowid}
                               className={
                                 item.actionTypeName === "Pickup Pending"
                                   ? "butn order-grid-butn order-grid-butn-green"
@@ -815,7 +815,7 @@ class ShipmentTab extends Component {
                 className="cancalImg"
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
-              <div className="step-progress">
+              <div className="step-progress no-focus">
                 <ul className="nav nav-tabs" role="tablist">
                   <li className="nav-item">
                     <a
@@ -897,54 +897,55 @@ class ShipmentTab extends Component {
                             : "Select any item id, you want to send for shipment."}
                         </span>
                         <div className="table-responsive">
-                        <Table
-                          className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
-                          columns={[
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.itemid
-                                  : "Article No",
-                              dataIndex: "itemID",
-                              render: (row, item) => {
-                                return (
-                                  <p>
-                                    <input
-                                      type="checkbox"
-                                      checked={item.checked}
-                                    />{" "}
-                                    &nbsp;{item.itemID}
-                                  </p>
-                                );
+                          <Table
+                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
+                            columns={[
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Article No",
+                                dataIndex: "itemID",
+                                render: (row, item) => {
+                                  return (
+                                    <p>
+                                      <input
+                                        type="checkbox"
+                                        checked={item.checked}
+                                      />{" "}
+                                      &nbsp;{item.itemID}
+                                    </p>
+                                  );
+                                },
                               },
-                            },
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.itemname
-                                  : "Article Name",
-                              dataIndex: "itemName",
-                              width: 150,
-                            },
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.itemprice
-                                  : "Article MRP",
-                              dataIndex: "itemPrice",
-                            },
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.quantity
-                                  : "Price Paid",
-                              dataIndex: "quantity",
-                            },
-                          ]}
-                          scroll={{ y: 240 }}
-                          pagination={false}
-                          dataSource={this.state.ShipmentOrderItem}
-                        /></div>
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Article Name",
+                                dataIndex: "itemName",
+                                width: 150,
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Article MRP",
+                                dataIndex: "itemPrice",
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Price Paid",
+                                dataIndex: "quantity",
+                              },
+                            ]}
+                            scroll={{ y: 240 }}
+                            pagination={false}
+                            dataSource={this.state.ShipmentOrderItem}
+                          />
+                        </div>
                       </div>
                       <div className="dv-status m-t-20">
                         <button
