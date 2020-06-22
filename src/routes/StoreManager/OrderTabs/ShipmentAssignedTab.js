@@ -23,7 +23,7 @@ class ShipmentAssignedTab extends Component {
       orderPopoverOverlay: false,
       ShipAssignLoading: false,
       translateLanguage: {},
-      orderIDs: [41814156]
+      orderIDs: [41814156],
     };
   }
   componentDidMount() {
@@ -95,14 +95,30 @@ class ShipmentAssignedTab extends Component {
 
   handlechange(i, e) {
     debugger;
+    var name = e.target.name;
     let shipmentAssignedGridData = [...this.state.shipmentAssignedGridData];
-    shipmentAssignedGridData[i] = {
-      ...shipmentAssignedGridData[i],
-      [e.target.name]: e.target.value,
-    };
-    this.setState({
-      shipmentAssignedGridData,
-    });
+    if (name === "mobileNumber") {
+      var reg = /^[0-9\b]+$/;
+      if (e.target.value === "" || reg.test(e.target.value)) {
+        shipmentAssignedGridData[i] = {
+          ...shipmentAssignedGridData[i],
+          [e.target.name]: e.target.value,
+        };
+        this.setState({
+          shipmentAssignedGridData,
+        });
+      } else {
+        e.target.value = "";
+      }
+    } else {
+      shipmentAssignedGridData[i] = {
+        ...shipmentAssignedGridData[i],
+        [e.target.name]: e.target.value,
+      };
+      this.setState({
+        shipmentAssignedGridData,
+      });
+    }
   }
 
   handleUpdateShipmentAssignedData(row, IsProceed) {
@@ -215,7 +231,6 @@ class ShipmentAssignedTab extends Component {
       });
   }
 
-
   handlePrintManifest(orderIds) {
     debugger;
     let self = this;
@@ -233,8 +248,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           window.location.href = res.data.responseData.manifestUrl;
-        }
-        else{
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -260,8 +274,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           window.location.href = res.data.responseData.label_url;
-        }
-        else{
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -464,13 +477,19 @@ class ShipmentAssignedTab extends Component {
                       <button
                         className="butn order-grid-butn assign-grid-btn"
                         // className="btn-proc deliv-grid-butn assign-grid-btn"
-                        onClick={this.handlePrintManifest.bind(this, item.courierPartnerOrderID)}
+                        onClick={this.handlePrintManifest.bind(
+                          this,
+                          item.courierPartnerOrderID
+                        )}
                       >
                         Print Manifest
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
-                        onClick={this.handlePrintLabel.bind(this, item.courierPartnerShipmentID)}
+                        onClick={this.handlePrintLabel.bind(
+                          this,
+                          item.courierPartnerShipmentID
+                        )}
                       >
                         Print Label
                       </button>
@@ -488,7 +507,7 @@ class ShipmentAssignedTab extends Component {
                   ) : (
                     <div className="d-flex">
                       <Popover
-                        visible={this.state.orderPopoverOverlay}
+                        // visible={this.state.orderPopoverOverlay}
                         content={
                           <div className="staffdetailspopup">
                             <label>
@@ -533,7 +552,7 @@ class ShipmentAssignedTab extends Component {
                                 : "Mobile No."}
                             </label>
                             <input
-                              type="number"
+                              type="text"
                               name="mobileNumber"
                               className="form-control"
                               placeholder={
@@ -542,6 +561,7 @@ class ShipmentAssignedTab extends Component {
                                   : "Enter Mobile No."
                               }
                               value={item.mobileNumber}
+                              maxLength={10}
                               onChange={this.handlechange.bind(this, index)}
                             />
                             <button
@@ -583,11 +603,13 @@ class ShipmentAssignedTab extends Component {
                         </button>
                       </Popover>
                       <button
-                        className={item.storeName !== "" &&
-                                   item.staffName !== "" &&
-                                   item.mobileNumber !== ""?
-                                   "butn order-grid-butn order-grid-butn-yellow assign-grid-btn":
-                                   "butn order-grid-butn order-grid-butn-yellow assign-grid-btn order-grid-btn-disable"}
+                        className={
+                          item.storeName !== "" &&
+                          item.staffName !== "" &&
+                          item.mobileNumber !== ""
+                            ? "butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
+                            : "butn order-grid-butn order-grid-butn-yellow assign-grid-btn order-grid-btn-disable"
+                        }
                         onClick={this.handleUpdateShipmentAssignedRTO.bind(
                           this,
                           item.orderID
@@ -603,12 +625,13 @@ class ShipmentAssignedTab extends Component {
                         RTO
                       </button>
                       <button
-                        className={item.storeName !== "" &&
-                                  item.staffName !== "" &&
-                                  item.mobileNumber !== ""?
-                                  "butn order-grid-butn order-grid-butn-green assign-grid-btn":
-                                  "butn order-grid-butn order-grid-butn-green assign-grid-btn order-grid-btn-disable"
-                                  }
+                        className={
+                          item.storeName !== "" &&
+                          item.staffName !== "" &&
+                          item.mobileNumber !== ""
+                            ? "butn order-grid-butn order-grid-butn-green assign-grid-btn"
+                            : "butn order-grid-butn order-grid-butn-green assign-grid-btn order-grid-btn-disable"
+                        }
                         onClick={this.handleUpdateDeliveredByShipAssigned.bind(
                           this,
                           item.orderID

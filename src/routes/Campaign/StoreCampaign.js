@@ -110,6 +110,7 @@ class StoreCampaign extends Component {
       storeCode: "",
       campaignCode: "",
       translateLanguage: {},
+      broadCastLoading: false,
     };
     this.handleGetCampaignGridData = this.handleGetCampaignGridData.bind(this);
     this.handleGetCampaignCustomerData = this.handleGetCampaignCustomerData.bind(
@@ -1404,6 +1405,9 @@ class StoreCampaign extends Component {
   handleGetBroadcastConfiguration(store_Code, campaign_Code) {
     debugger;
     let self = this;
+    this.setState({
+      broadCastLoading: true,
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/GetBroadcastConfigurationResponses",
@@ -1429,12 +1433,14 @@ class StoreCampaign extends Component {
             ResponsiveBroadCast: true,
             storeCode: store_Code,
             campaignCode: campaign_Code,
+            broadCastLoading: false,
           });
         } else {
           self.setState({
             campaignExecutionDetails: [],
             broadcastConfiguration: {},
             ResponsiveBroadCast: true,
+            broadCastLoading: false,
             // showBroadcastChannel: true,
           });
         }
@@ -3199,23 +3205,32 @@ class StoreCampaign extends Component {
             className="cust-icon"
             onClick={this.handleBroadCastModalClose.bind(this)}
           />
+
           <div className="general-popover popover-body broadcastpop">
-            <label className="broadcasttitle">Recent Campaigns</label>
-            {this.state.campaignExecutionDetails !== null &&
-              this.state.campaignExecutionDetails.map((item, b) => (
-                <div className="broembox clearfix" key={b}>
-                  <p>
-                    <label>{item.channelType}</label>
-                    <span>Executed Date: {item.executionDate}</span>
-                  </p>
-                  {/* <img
+            {this.state.broadCastLoading === true ? (
+              <div className="loader-icon-cntr">
+                <div className="loader-icon"></div>
+              </div>
+            ) : (
+              <>
+                <label className="broadcasttitle">Recent Campaigns</label>
+                {this.state.campaignExecutionDetails !== null &&
+                  this.state.campaignExecutionDetails.map((item, b) => (
+                    <div className="broembox clearfix" key={b}>
+                      <p>
+                        <label>{item.channelType}</label>
+                        <span>Executed Date: {item.executionDate}</span>
+                      </p>
+                      {/* <img
                     src={PlusIcon}
                     alt="plus-icone"
                     className="plusico"
                     // onClick={this.handleToggleBroadChannel.bind(this)}
                   /> */}
-                </div>
-              ))}
+                    </div>
+                  ))}
+              </>
+            )}
 
             {/* {this.state.showBroadcastChannel ? ( */}
             <>
