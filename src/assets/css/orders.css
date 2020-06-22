@@ -307,6 +307,7 @@
   line-height: 13px;
   text-align: center;
   text-transform: none;
+  cursor: pointer;
 }
 .btn-shipment-saveNext {
   background-color: #2561a8;
@@ -321,6 +322,7 @@
   text-align: center;
   margin-right: 10px;
   text-transform: none;
+  cursor: pointer;
 }
 .dv-status {
   margin-top: 15px;

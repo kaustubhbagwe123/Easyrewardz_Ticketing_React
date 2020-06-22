@@ -459,7 +459,7 @@ class OrderTab extends Component {
                           content={
                             <>
                               <p className="shopping-num-invoice">
-                                Shopping bag No:{" "}
+                                Shopping bag No:
                                 <span>{item.shoppingBagNo}</span>
                               </p>
                               <Table
