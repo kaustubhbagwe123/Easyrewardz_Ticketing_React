@@ -231,7 +231,10 @@ class Orders extends Component {
                   aria-selected="false"
                   onClick={this.handleChanageNavTabs.bind(this, 5)}
                 >
-                  Shipment Assigned
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.shipmentassigned
+                    : "Shipment Assigned"}
+                  
                 </a>
               ) : null}
             </Option>
@@ -250,7 +253,10 @@ class Orders extends Component {
                   aria-selected="false"
                   onClick={this.handleChanageNavTabs.bind(this, 6)}
                 >
-                  Returns
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.returns
+                    : "Returns"}
+                  
                 </a>
               ) : null}
             </Option>
@@ -387,7 +393,9 @@ class Orders extends Component {
                     aria-selected="false"
                     onClick={this.handleChanageNavTabs.bind(this, 6)}
                   >
-                    Returns
+                     {TranslationContext !== undefined
+                    ? TranslationContext.a.returns
+                    : "Returns"}
                   </a>
                 </li>
                 <li className="nav-item">
@@ -404,7 +412,10 @@ class Orders extends Component {
                     aria-selected="false"
                     onClick={this.handleChanageNavTabs.bind(this, 7)}
                   >
-                    Check Service
+                     {TranslationContext !== undefined
+                    ? TranslationContext.a.checkservice
+                    : "Check Service"}
+                    
                   </a>
                 </li>
               </>

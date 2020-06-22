@@ -43,7 +43,7 @@ class ShipmentTab extends Component {
       AirwayItemIds: 0,
       createdShoppingTabs: false,
       airWayBill2ndTab: false,
-      PickPendingvisisble: false,
+      IsStoreDelivery: false,
     };
   }
 
@@ -234,6 +234,11 @@ class ShipmentTab extends Component {
             createdShoppingTabs: true,
             orderId: orderId,
           });
+          if (data[0].isStoreDelivery) {
+            self.setState({
+              IsStoreDelivery: true,
+            });
+          }
         } else {
           self.setState({
             AirwayBillAWBNo: 0,
@@ -250,7 +255,6 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
-    debugger;
     let self = this;
     var itemIds = "";
     if (this.state.ShipmentOrderItem.length > 0) {
@@ -272,13 +276,23 @@ class ShipmentTab extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({
-            AirwayBillAWBNo: data.awbNumber,
-            AirwayItemIds: data.itemIDs,
-            createdShoppingTabs: true,
-          });
-          self.handleGetShipmentTabGridData();
+          if (data.status) {
+            self.setState({
+              AirwayBillAWBNo: data.awbNumber,
+              AirwayItemIds: data.itemIDs,
+              createdShoppingTabs: true,
+            });
+            self.handleGetShipmentTabGridData();
+            if (data.isStoreDelivery) {
+              self.setState({
+                IsStoreDelivery: true,
+              });
+            }
+          } else {
+            NotificationManager.error(data.status);
+          }
         } else {
+          NotificationManager.error(status);
           self.setState({
             createdShoppingTabs: false,
           });
@@ -340,12 +354,7 @@ class ShipmentTab extends Component {
       filterShipmentStatus: false,
     });
   }
-  /// close pick up pending pophover
-  handleClosePickPending() {
-    this.setState({
-      PickPendingvisisble: false,
-    });
-  }
+ 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -568,7 +577,6 @@ class ShipmentTab extends Component {
                     : "Action",
                 className: "action-w",
                 render: (row, item) => {
-                  debugger;
                   rowid = rowid + 1;
                   return (
                     <div className="pickuppendingcustom">
@@ -642,9 +650,6 @@ class ShipmentTab extends Component {
                                         <button
                                           type="button"
                                           className="popbtnno"
-                                          onClick={this.handleClosePickPending.bind(
-                                            this
-                                          )}
                                         >
                                           {TranslationContext !== undefined
                                             ? TranslationContext.button.no
@@ -659,7 +664,6 @@ class ShipmentTab extends Component {
                             trigger="click"
                             overlayClassName="order-popover order-popover-butns"
                             placement="bottomRight"
-                            // visible={this.state.PickPendingvisisble}
                             // onVisibleChange={(visible) =>
                             //   this.setState({ orderPopoverOverlay: visible })
                             // }
@@ -891,10 +895,10 @@ class ShipmentTab extends Component {
                             ? TranslationContext.span.only
                             : "only."}
                           <br />
-                          {TranslationContext !== undefined
+                          {/* {TranslationContext !== undefined
                             ? TranslationContext.span
                                 .selectanyitemidyouwanttosendforshipment
-                            : "Select any item id, you want to send for shipment."}
+                            : "Select any item id, you want to send for shipment."} */}
                         </span>
                         <div className="table-responsive">
                           <Table
@@ -990,7 +994,13 @@ class ShipmentTab extends Component {
                             alt="CardTick"
                             className="cardtick"
                           />
-                          <h2>AWB No - {this.state.AirwayBillAWBNo}</h2>
+                          <h2>
+                            {this.state.IsStoreDelivery ? (
+                              "Courier Partner - Store"
+                            ) : (
+                              <> AWB No - {this.state.AirwayBillAWBNo}</>
+                            )}
+                          </h2>
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p.successfullymappedto
