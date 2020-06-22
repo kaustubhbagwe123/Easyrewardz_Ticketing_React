@@ -333,7 +333,7 @@
   position: relative;
   color: #2561a8;
 }
-.step-progress .nav-line::before {
+/* .step-progress .nav-line::before {
   width: 30px;
   background: #3a91f8;
   height: 2px;
@@ -341,7 +341,7 @@
   bottom: 20px;
   position: absolute;
   content: "";
-}
+} */
 .step-progress .nav-tabs .nav-link.active {
   border-bottom: none;
 }

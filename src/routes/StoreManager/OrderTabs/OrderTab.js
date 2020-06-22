@@ -294,7 +294,6 @@ class OrderTab extends Component {
   }
 
   handleUpdateAddressPending(orderId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -318,6 +317,12 @@ class OrderTab extends Component {
           self.setState({
             orderId: 0,
             AddressConf: false,
+            shippingAddress: "",
+            pincode: "",
+            city: "",
+            state: "",
+            country: "",
+            landmark: "",
           });
           NotificationManager.success("Record Updated Successfully.");
         }
@@ -747,6 +752,7 @@ class OrderTab extends Component {
                                   <textarea
                                     placeholder="Enter Address"
                                     name="shippingAddress"
+                                    autoComplete="off"
                                     onChange={this.handleTextOnchage}
                                   ></textarea>
                                 </div>
@@ -764,6 +770,7 @@ class OrderTab extends Component {
                                             .enterlandmark
                                         : "Enter Landmark"
                                     }
+                                    autoComplete="off"
                                     name="landmark"
                                     onChange={this.handleTextOnchage}
                                   />
@@ -807,6 +814,7 @@ class OrderTab extends Component {
                                               .entercity
                                           : "Enter City"
                                       }
+                                      autoComplete="off"
                                       name="city"
                                       onChange={this.handleTextOnchage}
                                     />
@@ -823,6 +831,7 @@ class OrderTab extends Component {
                                       type="text"
                                       placeholder="Enter State"
                                       name="state"
+                                      autoComplete="off"
                                       onChange={this.handleTextOnchage}
                                     />
                                   </div>
@@ -841,6 +850,7 @@ class OrderTab extends Component {
                                           : "Enter Country"
                                       }
                                       name="country"
+                                      autoComplete="off"
                                       onChange={this.handleTextOnchage}
                                     />
                                   </div>
