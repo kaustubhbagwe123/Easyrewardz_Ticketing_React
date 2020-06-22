@@ -329,6 +329,9 @@
 .arti-check {
   margin-right: 7px;
 }
+.no-focus .nav-link:focus {
+  outline: 0;
+}
 .step-progress .nav-line {
   position: relative;
   color: #2561a8;
