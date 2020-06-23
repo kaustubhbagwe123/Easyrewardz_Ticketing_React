@@ -750,7 +750,7 @@ class Header extends Component {
         four: false,
         five: false,
       },
-      activeTab: 1,
+      activeTab: 1
     });
 
     this.handleGetNewChat();
@@ -784,9 +784,19 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
+        var chatData = ongoingChatsData.filter(
+          (x) => x.chatID === self.state.chatId
+        );
+        if(chatData.length==0)
+        {
+          self.setState({
+            customerName: "",
+            messageData: []
+          });
+        }
         if (message === "Success" && ongoingChatsData) {
           self.setState({
-            ongoingChatsData,
+            ongoingChatsData
           });
         } else {
           self.setState({ ongoingChatsData: [] });
