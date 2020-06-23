@@ -18,6 +18,7 @@ import "react-pagination-js/dist/styles.css";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
+var rowid = 0;
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class ShipmentTab extends Component {
       AirwayItemIds: 0,
       createdShoppingTabs: false,
       airWayBill2ndTab: false,
-      PickPendingvisisble: false,
+      IsStoreDelivery: false,
     };
   }
 
@@ -233,6 +234,11 @@ class ShipmentTab extends Component {
             createdShoppingTabs: true,
             orderId: orderId,
           });
+          if (data[0].isStoreDelivery) {
+            self.setState({
+              IsStoreDelivery: true,
+            });
+          }
         } else {
           self.setState({
             AirwayBillAWBNo: 0,
@@ -249,7 +255,6 @@ class ShipmentTab extends Component {
   }
   /// Create Shipment AWB
   handleCreateShipmentAWB() {
-    debugger;
     let self = this;
     var itemIds = "";
     if (this.state.ShipmentOrderItem.length > 0) {
@@ -271,12 +276,23 @@ class ShipmentTab extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          self.setState({
-            AirwayBillAWBNo: data.awbNumber,
-            AirwayItemIds: data.itemIDs,
-            createdShoppingTabs: true,
-          });
+          if (data.status) {
+            self.setState({
+              AirwayBillAWBNo: data.awbNumber,
+              AirwayItemIds: data.itemIDs,
+              createdShoppingTabs: true,
+            });
+            self.handleGetShipmentTabGridData();
+            if (data.isStoreDelivery) {
+              self.setState({
+                IsStoreDelivery: true,
+              });
+            }
+          } else {
+            NotificationManager.error(data.status);
+          }
         } else {
+          NotificationManager.error(status);
           self.setState({
             createdShoppingTabs: false,
           });
@@ -328,6 +344,7 @@ class ShipmentTab extends Component {
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
+      currentPage:1
     });
 
     this.handleGetShipmentTabGridData();
@@ -338,12 +355,7 @@ class ShipmentTab extends Component {
       filterShipmentStatus: false,
     });
   }
-  /// close pick up pending pophover
-  handleClosePickPending() {
-    this.setState({
-      PickPendingvisisble: false,
-    });
-  }
+ 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -566,6 +578,7 @@ class ShipmentTab extends Component {
                     : "Action",
                 className: "action-w",
                 render: (row, item) => {
+                  rowid = rowid + 1;
                   return (
                     <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
@@ -638,9 +651,6 @@ class ShipmentTab extends Component {
                                         <button
                                           type="button"
                                           className="popbtnno"
-                                          onClick={this.handleClosePickPending.bind(
-                                            this
-                                          )}
                                         >
                                           {TranslationContext !== undefined
                                             ? TranslationContext.button.no
@@ -655,12 +665,13 @@ class ShipmentTab extends Component {
                             trigger="click"
                             overlayClassName="order-popover order-popover-butns"
                             placement="bottomRight"
-                            visible={this.state.PickPendingvisisble}
                             // onVisibleChange={(visible) =>
                             //   this.setState({ orderPopoverOverlay: visible })
                             // }
+                            id={item.actionTypeName + rowid}
                           >
                             <button
+                              id={item.actionTypeName + rowid}
                               className={
                                 item.actionTypeName === "Pickup Pending"
                                   ? "butn order-grid-butn order-grid-butn-green"
@@ -809,7 +820,7 @@ class ShipmentTab extends Component {
                 className="cancalImg"
                 onClick={this.handleShipmentModalClose.bind(this)}
               />
-              <div className="step-progress">
+              <div className="step-progress no-focus">
                 <ul className="nav nav-tabs" role="tablist">
                   <li className="nav-item">
                     <a
@@ -885,60 +896,61 @@ class ShipmentTab extends Component {
                             ? TranslationContext.span.only
                             : "only."}
                           <br />
-                          {TranslationContext !== undefined
+                          {/* {TranslationContext !== undefined
                             ? TranslationContext.span
                                 .selectanyitemidyouwanttosendforshipment
-                            : "Select any item id, you want to send for shipment."}
+                            : "Select any item id, you want to send for shipment."} */}
                         </span>
                         <div className="table-responsive">
-                        <Table
-                          className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
-                          columns={[
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.itemid
-                                  : "Article No",
-                              dataIndex: "itemID",
-                              render: (row, item) => {
-                                return (
-                                  <p>
-                                    <input
-                                      type="checkbox"
-                                      checked={item.checked}
-                                    />{" "}
-                                    &nbsp;{item.itemID}
-                                  </p>
-                                );
+                          <Table
+                            className="components-table-demo-nested antd-table-campaign antd-table-order custom-antd-table order-popover-table table-responsive"
+                            columns={[
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemid
+                                    : "Article No",
+                                dataIndex: "itemID",
+                                render: (row, item) => {
+                                  return (
+                                    <p>
+                                      <input
+                                        type="checkbox"
+                                        checked={item.checked}
+                                      />{" "}
+                                      &nbsp;{item.itemID}
+                                    </p>
+                                  );
+                                },
                               },
-                            },
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.itemname
-                                  : "Article Name",
-                              dataIndex: "itemName",
-                              width: 150,
-                            },
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.itemprice
-                                  : "Article MRP",
-                              dataIndex: "itemPrice",
-                            },
-                            {
-                              title:
-                                TranslationContext !== undefined
-                                  ? TranslationContext.title.quantity
-                                  : "Price Paid",
-                              dataIndex: "quantity",
-                            },
-                          ]}
-                          scroll={{ y: 240 }}
-                          pagination={false}
-                          dataSource={this.state.ShipmentOrderItem}
-                        /></div>
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemname
+                                    : "Article Name",
+                                dataIndex: "itemName",
+                                width: 150,
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemprice
+                                    : "Article MRP",
+                                dataIndex: "itemPrice",
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.quantity
+                                    : "Price Paid",
+                                dataIndex: "quantity",
+                              },
+                            ]}
+                            scroll={{ y: 240 }}
+                            pagination={false}
+                            dataSource={this.state.ShipmentOrderItem}
+                          />
+                        </div>
                       </div>
                       <div className="dv-status m-t-20">
                         <button
@@ -983,7 +995,13 @@ class ShipmentTab extends Component {
                             alt="CardTick"
                             className="cardtick"
                           />
-                          <h2>AWB No - {this.state.AirwayBillAWBNo}</h2>
+                          <h2>
+                            {this.state.IsStoreDelivery ? (
+                              "Courier Partner - Store"
+                            ) : (
+                              <> AWB No - {this.state.AirwayBillAWBNo}</>
+                            )}
+                          </h2>
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p.successfullymappedto

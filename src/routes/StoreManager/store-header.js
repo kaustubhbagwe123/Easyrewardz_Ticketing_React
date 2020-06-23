@@ -72,7 +72,7 @@ import moment from "moment";
 import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { Table, Select } from "antd";
+import { Table, Select, Spin } from "antd";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
@@ -83,6 +83,7 @@ import "antd/dist/antd.css";
 
 const { Option } = Select;
 var uid = 0;
+var i = 0;
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -135,7 +136,7 @@ class Header extends Component {
       recommendedModal: false,
       paymentModal: false,
       selectedCard: 0,
-      chkSuggestion: [],
+      chkSuggestion: 0,
       programCode: "",
       oldCount: 0,
       toggle: {
@@ -184,6 +185,7 @@ class Header extends Component {
       tempCardSearch: "",
       reportAccess: "none",
       mobileHeading: "",
+      messageHistoryChatData:[]
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -877,6 +879,7 @@ class Header extends Component {
     let self = this;
 
     this.setState({
+      isCustEndChat: false,
       storeManagerId,
       rowChatId: 0,
       agentRecentChatData: [],
@@ -889,7 +892,7 @@ class Header extends Component {
       programCode: ProgramCode,
       message: "",
       messageSuggestionData: [],
-      chkSuggestion: [],
+      chkSuggestion: 0,
       toggle: {
         one: true,
         two: false,
@@ -920,12 +923,14 @@ class Header extends Component {
       },
     })
       .then(function(response) {
+        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           // self.setState({
           //   chatId: id,
           // });
+          self.handleGetAgentRecentChat(customerId);
           self.handleMakeAsReadOnGoingChat(id, true);
           // self.handleGetOngoingChat();
           // self.handleGetChatNotificationCount();
@@ -956,11 +961,19 @@ class Header extends Component {
         var message = response.data.message;
         var messageData = response.data.responseData;
         if (message === "Success" && messageData) {
-          self.setState({
-            ...messageData,
-            messageData,
-            isScroll: true,
-          });
+          if (self.state.showHistoricalChat) {
+            self.setState({
+              
+              messageHistoryChatData:messageData,
+              
+            });
+          } else {
+            self.setState({
+              ...messageData,
+              messageData,
+              isScroll: true,
+            });
+          }
           // self.handleGetChatNotificationCount();
         } else {
           self.setState({ messageData: [] });
@@ -1078,7 +1091,7 @@ class Header extends Component {
           });
         } else {
           self.setState({
-            searchCardData,
+            searchCardData: [],
             noProductFound: "No Product Found",
           });
         }
@@ -1221,17 +1234,17 @@ class Header extends Component {
     var inputParam = {};
     if (Message.trim() !== "") {
       if (index > 0) {
-        if (this.state.chkSuggestion.length > 0) {
-          if (this.state.chkSuggestion[index] === 1) {
-            this.state.chkSuggestion[index] = 0;
-          } else {
-            this.state.chkSuggestion[index] = 1;
-          }
-        } else {
-          this.state.chkSuggestion[index] = 1;
-        }
+        // if (this.state.chkSuggestion.length > 0) {
+        //   if (this.state.chkSuggestion[index] === 1) {
+        //     this.state.chkSuggestion[index] = 0;
+        //   } else {
+        //     this.state.chkSuggestion[index] = 1;
+        //   }
+        // } else {
+        //   this.state.chkSuggestion[index] = 1;
+        // }
         this.setState({
-          chkSuggestion: this.state.chkSuggestion,
+          chkSuggestion: 0,
         });
       }
       inputParam.ChatID = this.state.chatId;
@@ -1396,6 +1409,7 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
+    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1437,6 +1451,7 @@ class Header extends Component {
           isDownbtn: true,
         });
         this.handleGetChatMessagesList(id);
+        this.handleGetAgentRecentChat(customerId);
       } else {
         this.setState({
           storeManagerId,
@@ -1478,12 +1493,54 @@ class Header extends Component {
         });
         if (count === 0) {
           this.handleGetChatMessagesList(id);
+          this.handleGetAgentRecentChat(customerId);
         } else {
           this.handleMakeAsReadOnGoingChat(id);
+          this.handleGetAgentRecentChat(customerId);
         }
       }
+    } else {
+      this.setState({
+        storeManagerId,
+        rowChatId: 0,
+        agentRecentChatData: [],
+        showHistoricalChat: false,
+        mainTabSelect: 1,
+        isCustEndChat,
+        storeID: StoreID,
+        chatId: id,
+        customerName: name,
+        mobileNo: mobileNo,
+        customerId: customerId,
+        programCode: ProgramCode,
+        mobileNo: mobileNo,
+        message: "",
+        messageSuggestionData: [],
+        chkSuggestion: [],
+        oldCount: count,
+        toggle: {
+          one: true,
+          two: false,
+          three: false,
+          four: false,
+          five: false,
+        },
+        noOfPeople: "",
+        selectSlot: {},
+        scheduleModal: false,
+        selectedSlot: {},
+        activeTab: 1,
+        timeSlotData: [],
+        searchItem: "",
+        searchCardData: [],
+        messageData: [],
+        isSendClick: false,
+        isHistoricalChat: false,
+        isDownbtn: true,
+      });
+      this.handleGetChatMessagesList(id);
+      this.handleGetAgentRecentChat(customerId);
     }
-    this.handleGetAgentRecentChat(customerId);
     this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
 
@@ -1499,10 +1556,13 @@ class Header extends Component {
   };
   ////handle got to message scroll down
   scrollToBottom() {
-    const scrollHeight = this.messageList.scrollHeight;
-    const height = this.messageList.clientHeight;
-    const maxScrollTop = scrollHeight - height;
-    this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    debugger;
+    if (this.messageList) {
+      const scrollHeight = this.messageList.scrollHeight;
+      const height = this.messageList.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
   }
   ////handle no of people text change
   handleNoOfPeopleChange = (e) => {
@@ -1741,17 +1801,17 @@ class Header extends Component {
   }
 
   onOpenMobSuggestionModal(suggestionText, index) {
+    debugger;
     if (index > 0) {
       // if (this.state.chkSuggestion.length > 0) {
       // if (this.state.chkSuggestion[index] === 1) {
       //   this.state.chkSuggestion = [];
       //   this.state.chkSuggestion[index] = 0;
       // } else {
-      this.state.chkSuggestion = [];
-      this.state.chkSuggestion[index] = 1;
+
       this.setState({
         suggestionModalMob: true,
-        chkSuggestion: this.state.chkSuggestion,
+        chkSuggestion: index,
         suggestionText: suggestionText,
       });
       // }
@@ -1933,6 +1993,7 @@ class Header extends Component {
                   }
                   // self.handleMakeAsReadOnGoingChat(chatId);
                   self.handleGetChatMessagesList(chatId);
+                  self.handleGetNewChat();
                 } else {
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
@@ -1940,11 +2001,7 @@ class Header extends Component {
                   messageCount = self.state.ongoingChatsData.filter(
                     (x) => x.mobileNo === data[3].substring(2)
                   )[0].messageCount;
-                  // if (messageCount === 0) {
-                  //   self.setState({
-                  //     chatMessageCount: self.state.chatMessageCount + 1,
-                  //   });
-                  // }
+
                   self.handleGetChatNotificationCount();
                 }
               } else {
@@ -1999,29 +2056,31 @@ class Header extends Component {
     this.setState({ actionBtn: false });
   };
   handleUpdateStoreManagerChatStatus(id) {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/CustomerChat/UpdateStoreManagerChatStatus",
-      headers: authHeader(),
-      params: { ChatID: this.state.chatId, ChatStatusID: id },
-    })
-      .then((response) => {
-        var message = response.data.message;
-        var responseData = response.data.responseData;
-        if (message === "Success" && responseData) {
-          self.setState({
-            customerName: "",
-            messageData: [],
-            isCustEndChat: false,
-          });
-          self.handleGetOngoingChat();
-          self.handleActionClose();
-        }
+    if (this.state.isCustEndChat) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CustomerChat/UpdateStoreManagerChatStatus",
+        headers: authHeader(),
+        params: { ChatID: this.state.chatId, ChatStatusID: id },
       })
-      .catch((response) => {
-        console.log(response, "---handleUpdateStoreManagerChatStatus");
-      });
+        .then((response) => {
+          var message = response.data.message;
+          var responseData = response.data.responseData;
+          if (message === "Success" && responseData) {
+            self.setState({
+              customerName: "",
+              messageData: [],
+              isCustEndChat: false,
+            });
+            self.handleGetOngoingChat();
+            self.handleActionClose();
+          }
+        })
+        .catch((response) => {
+          console.log(response, "---handleUpdateStoreManagerChatStatus");
+        });
+    }
   }
   ////handle historical table row click
   handleHistoricalTableRow = (e, e1, e2) => {
@@ -2703,66 +2762,77 @@ class Header extends Component {
                       </Select>
                     </div>
                     <div className="chat-left-height">
-                      {this.state.ongoingChatsData &&
-                        this.state.ongoingChatsData.map((chat, i) => (
-                          <div
-                            id={chat.chatID}
-                            key={i}
-                            className={
-                              this.state.chatId === chat.chatID
-                                ? "chat-info active"
-                                : "chat-info"
-                            }
-                            onClick={this.handleOngoingChatClick.bind(
-                              this,
-                              chat.chatID,
-                              chat.cumtomerName,
-                              chat.messageCount,
-                              chat.mobileNo,
-                              chat.customerID,
-                              chat.programCode,
-                              chat.storeID,
-                              chat.isCustEndChat,
-                              chat.storeManagerId
-                            )}
-                          >
-                            <div className="d-flex align-items-center overflow-hidden">
-                              <span className="dark-blue-ini initial">
-                                {chat.cumtomerName.charAt(0)}
-                              </span>
-                              <div className="name-num mx-2">
-                                <p className="chat-name">{chat.cumtomerName}</p>
-                                <p className="num">{chat.mobileNo}</p>
+                      {this.state.ongoingChatsData
+                        ? this.state.ongoingChatsData.map((chat, i) => (
+                            <div
+                              id={chat.chatID}
+                              key={i}
+                              className={
+                                this.state.chatId === chat.chatID
+                                  ? "chat-info active"
+                                  : "chat-info"
+                              }
+                              onClick={this.handleOngoingChatClick.bind(
+                                this,
+                                chat.chatID,
+                                chat.cumtomerName,
+                                chat.messageCount,
+                                chat.mobileNo,
+                                chat.customerID,
+                                chat.programCode,
+                                chat.storeID,
+                                chat.isCustEndChat,
+                                chat.storeManagerId
+                              )}
+                            >
+                              <div className="d-flex align-items-center overflow-hidden">
+                                <span className="dark-blue-ini initial">
+                                  {chat.cumtomerName.charAt(0)}
+                                </span>
+                                <div className="name-num mx-2">
+                                  <p className="chat-name">
+                                    {chat.cumtomerName}
+                                  </p>
+                                  <p className="num">{chat.mobileNo}</p>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="mess-time">
+                                  <p
+                                    className={"chat-storemng "}
+                                    title="Store Manager"
+                                  >
+                                    {chat.storeManagerName}
+                                  </p>
+                                  <p
+                                    style={{
+                                      fontWeight:
+                                        chat.messageCount > 0 ? "bold" : "400",
+                                    }}
+                                  >
+                                    {chat.messageCount === 0
+                                      ? "No"
+                                      : chat.messageCount}{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.newmessages
+                                      : "New Messages"}
+                                  </p>
+                                  <p>{chat.timeAgo}</p>
+                                </div>
                               </div>
                             </div>
-                            <div>
-                              <div className="mess-time">
-                                <p
-                                  className={"chat-storemng "}
-                                  title="Store Manager"
-                                >
-                                  {chat.storeManagerName}
-                                </p>
-                                <p
-                                  style={{
-                                    fontWeight:
-                                      chat.messageCount > 0 ? "bold" : "400",
-                                  }}
-                                >
-                                  {chat.messageCount === 0
-                                    ? "No"
-                                    : chat.messageCount}{" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.newmessages
-                                    : "New Messages"}
-                                </p>
-                                <p>{chat.timeAgo}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                          ))
+                        : null}
                     </div>
                   </div>
+                  {this.state.ongoingChatsData.length === 0 && (
+                    <p className="no-record" style={{ marginTop: "0px" }}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.norecordsfound
+                        : "No Records Found"}
+                      !
+                    </p>
+                  )}
                   <div className="chat-cntr">
                     <p className="chats-heading d-flex justify-content-between align-items-center">
                       {TranslationContext !== undefined
@@ -2826,6 +2896,14 @@ class Header extends Component {
                         ))}
                     </div>
                   </div>
+                  {this.state.newChatsData.length === 0 && (
+                    <p className="no-record" style={{ marginTop: "0px" }}>
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.norecordsfound
+                        : "No Records Found"}
+                      !
+                    </p>
+                  )}
                   <div className="chat-hist">
                     <li className="nav-item">
                       <a
@@ -3285,6 +3363,7 @@ class Header extends Component {
                                       );
                                     })
                                   : null}
+                                {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
                               </div>
                               {this.state.isCustEndChat &&
                               this.state.customerName !== "" ? (
@@ -3481,73 +3560,69 @@ class Header extends Component {
                                       {this.state.isMessage}
                                     </p>
                                   )}
-                                  {this.state.tempmessageSuggestionData !==
-                                    null &&
-                                    this.state.tempmessageSuggestionData
-                                      .length > 0 &&
-                                    this.state.tempmessageSuggestionData
-                                      .length > 0 && (
-                                      <div className="suggestions-cntr">
-                                        {this.state
-                                          .tempmessageSuggestionData !== null &&
-                                          this.state.tempmessageSuggestionData.map(
-                                            (item, i) => (
-                                              <div
-                                                className={
-                                                  this.state.chkSuggestion[
-                                                    i + 1
-                                                  ] === 1
-                                                    ? "suggestions-tick"
-                                                    : ""
-                                                }
-                                                key={i}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i + 1,
-                                                //   "",
-                                                //   ""
-                                                // )}
-                                                onClick={this.onOpenSuggestionModal.bind(
-                                                  this,
-                                                  item.suggestionText,
-                                                  i + 1
-                                                )}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i
-                                                // )}
-                                              >
-                                                <Tooltip
-                                                  placement="left"
-                                                  title={item.suggestionText}
-                                                >
-                                                  <span>
-                                                    {item.suggestionText}
-                                                  </span>
-                                                </Tooltip>
-                                              </div>
-                                            )
-                                          )}
+                                  {this.state.messageSuggestionData !== null &&
+                                    this.state.messageSuggestionData.length >
+                                      0 &&
+                                    this.state.messageSuggestionData.length >
+                                      0 && (
+                                      <div
+                                        className="suggestions-cntr setpagination"
+                                        style={{ width: "100%" }}
+                                      >
+                                        <Table
+                                          noDataContent="No Record Found"
+                                          style={{ width: "100%" }}
+                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                          columns={[
+                                            {
+                                              dataIndex: "suggestionText",
+                                              render: (row, rowData) => {
+                                                i = i + 1;
+                                                debugger;
+                                                return (
+                                                  <div
+                                                    className={
+                                                      this.state
+                                                        .chkSuggestion ===
+                                                      rowData.suggestionID
+                                                        ? "suggestions-tick"
+                                                        : ""
+                                                    }
+                                                    style={{ width: "100%" }}
+                                                    id={i}
+                                                    onClick={this.onOpenMobSuggestionModal.bind(
+                                                      this,
+                                                      rowData.suggestionText,
+                                                      rowData.suggestionID
+                                                    )}
+                                                  >
+                                                    <Tooltip
+                                                      placement="left"
+                                                      title={
+                                                        rowData.suggestionText
+                                                      }
+                                                    >
+                                                      <span>
+                                                        {rowData.suggestionText}
+                                                      </span>
+                                                    </Tooltip>
+                                                  </div>
+                                                );
+                                              },
+                                            },
+                                          ]}
+                                          dataSource={
+                                            this.state.messageSuggestionData
+                                          }
+                                          pagination={{
+                                            pageSize: 10,
+                                            defaultPageSize: 10,
+                                          }}
+                                          // rowClassName={this.setRowClassName}
+                                        ></Table>
                                       </div>
                                     )}
-                                  {this.state.messageSuggestionData.length >
-                                    0 && (
-                                    <Pagination
-                                      currentPage={this.state.selectedSugpage}
-                                      totalSize={
-                                        this.state.messageSuggestionData.length
-                                      }
-                                      // totalSize={row.customerCount}
-                                      sizePerPage={10}
-                                      hideFirstLastPages={true}
-                                      changeCurrentPage={
-                                        this.PaginationOnChange
-                                      }
-                                      theme="bootstrap"
-                                    />
-                                  )}
+
                                   {this.state.storeAgentDetail.length !== 0 &&
                                   this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
@@ -4548,73 +4623,62 @@ class Header extends Component {
                                       " characters remaining..."}
                                   </p>
 
-                                  {this.state.tempmessageSuggestionData !==
-                                    null &&
-                                    this.state.tempmessageSuggestionData
-                                      .length > 0 &&
-                                    this.state.tempmessageSuggestionData
-                                      .length > 0 && (
-                                      <div className="suggestions-cntr">
-                                        {this.state
-                                          .tempmessageSuggestionData !== null &&
-                                          this.state.tempmessageSuggestionData.map(
-                                            (item, i) => (
-                                              <div
-                                                className={
-                                                  this.state.chkSuggestion[
-                                                    i + 1
-                                                  ] === 1
-                                                    ? "suggestions-tick"
-                                                    : ""
-                                                }
-                                                key={i}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i
-                                                // )}
-                                                // onClick={this.handleSaveChatMessages.bind(
-                                                //   this,
-                                                //   item.suggestionText,
-                                                //   i + 1,
-                                                //   "",
-                                                //   ""
-                                                // )}
-
-                                                onClick={this.onOpenMobSuggestionModal.bind(
-                                                  this,
-                                                  item.suggestionText,
-                                                  i + 1
-                                                )}
-                                              >
-                                                <Tooltip
-                                                  placement="left"
-                                                  title={item.suggestionText}
+                                  {this.state.messageSuggestionData !== null &&
+                                  this.state.messageSuggestionData.length > 0 &&
+                                  this.state.messageSuggestionData.length >
+                                    0 ? (
+                                    <div className="suggestions-cntr">
+                                      <Table
+                                        noDataContent="No Record Found"
+                                        className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                        columns={[
+                                          {
+                                            dataIndex: "suggestionText",
+                                            className: "textnowrap-table",
+                                            render: (row, rowData) => {
+                                              i = i + 1;
+                                              return (
+                                                <div
+                                                  className={
+                                                    this.state.chkSuggestion[
+                                                      i
+                                                    ] === i
+                                                      ? "suggestions-tick"
+                                                      : ""
+                                                  }
+                                                  id={i}
+                                                  onClick={this.onOpenMobSuggestionModal.bind(
+                                                    this,
+                                                    rowData.suggestionText,
+                                                    i
+                                                  )}
                                                 >
-                                                  <span>
-                                                    {item.suggestionText}
-                                                  </span>
-                                                </Tooltip>
-                                              </div>
-                                            )
-                                          )}
-                                      </div>
-                                    )}
-                                  {this.state.messageSuggestionData.length >
-                                    0 && (
-                                    <Pagination
-                                      currentPage={this.state.selectedSugpage}
-                                      totalSize={
-                                        this.state.messageSuggestionData.length
-                                      }
-                                      // totalSize={row.customerCount}
-                                      sizePerPage={10}
-                                      changeCurrentPage={
-                                        this.PaginationOnChange
-                                      }
-                                      theme="bootstrap"
-                                    />
-                                  )}
+                                                  <Tooltip
+                                                    placement="left"
+                                                    title={
+                                                      rowData.suggestionText
+                                                    }
+                                                  >
+                                                    <span>
+                                                      {rowData.suggestionText}
+                                                    </span>
+                                                  </Tooltip>
+                                                </div>
+                                              );
+                                            },
+                                          },
+                                        ]}
+                                        dataSource={
+                                          this.state.messageSuggestionData
+                                        }
+                                        pagination={{
+                                          pageSize: 10,
+                                          defaultPageSize: 10,
+                                        }}
+                                        // rowClassName={this.setRowClassName}
+                                      ></Table>
+                                    </div>
+                                  ) : null}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
                                   this.state.storeAgentDetail[0].suggestion ===
@@ -5560,7 +5624,7 @@ class Header extends Component {
                         >
                           <div className="chathistory-tbl">
                             <div
-                              className="table-cntr store chat-history chatabcus mg-rm"
+                              className="table-cntr store chat-history chatabcus mg-rm now-rap-tbl-txt"
                               style={{ margin: "10px" }}
                             >
                               <Table
@@ -5575,6 +5639,7 @@ class Header extends Component {
                                         : "Chat ID",
                                     dataIndex: "chatID",
                                     width: "10%",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5590,13 +5655,42 @@ class Header extends Component {
                                         : "Agent",
                                     dataIndex: "agentName",
                                     width: "20%",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
-                                        <>
+                                        <p>
                                           {rowData.agentName
                                             ? rowData.agentName
                                             : ""}
-                                        </>
+                                        </p>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.title.agent
+                                        : "Mobile No",
+                                    dataIndex: "customerMobile",
+                                    width: "20%",
+                                    className: "textnowrap-table",
+                                    render: (row, rowData) => {
+                                      return (
+                                        <p
+                                          title={
+                                            rowData.customerMobile
+                                              ? rowData.customerMobile.substring(
+                                                  2
+                                                )
+                                              : ""
+                                          }
+                                        >
+                                          {rowData.customerMobile
+                                            ? rowData.customerMobile.substring(
+                                                2
+                                              )
+                                            : ""}
+                                        </p>
                                       );
                                     },
                                   },
@@ -5607,6 +5701,7 @@ class Header extends Component {
                                         : "Time",
                                     dataIndex: "timeAgo",
                                     width: "20%",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5624,6 +5719,7 @@ class Header extends Component {
                                         : "Status",
                                     dataIndex: "chatStatus",
                                     width: "20%",
+                                    className: "textnowrap-table",
                                     render: (row, rowData) => {
                                       return (
                                         <>
@@ -5641,6 +5737,7 @@ class Header extends Component {
                                         : "Message",
                                     dataIndex: "message",
                                     width: "30%",
+                                    className: "textnowrap-table",
                                     render: (row, rowdata) => {
                                       return (
                                         <div className="d-flex">
@@ -5679,7 +5776,10 @@ class Header extends Component {
                                     return "p" + uid;
                                   }
                                 }}
-                                pagination={{ pageSize: 5, defaultPageSize: 5 }}
+                                pagination={{
+                                  pageSize: 5,
+                                  defaultPageSize: 5,
+                                }}
                                 rowClassName={this.setRowClassName}
                               ></Table>
                             </div>
@@ -5711,76 +5811,82 @@ class Header extends Component {
                                     this.historyMessageList = div;
                                   }}
                                 >
-                                  {this.state.messageData !== null &&
-                                  this.state.messageData.length > 0 ? (
-                                    this.state.messageData.map((item, i) => {
-                                      return (
-                                        <div
-                                          key={i}
-                                          className={
-                                            item.byCustomer === true &&
-                                            item.isBotReply !== true
-                                              ? "chat-trail-cntr"
-                                              : "chat-trail-cntr chat-trail-cntr-right"
-                                          }
-                                        >
-                                          <div className="chat-trail-img">
-                                            <span
-                                              className="chat-initial"
-                                              alt="face image"
-                                              title={
-                                                item.byCustomer
+                                  {this.state.messageHistoryChatData !== null &&
+                                  this.state.messageHistoryChatData.length >
+                                    0 ? (
+                                    this.state.messageHistoryChatData.map(
+                                      (item, i) => {
+                                        return (
+                                          <div
+                                            key={i}
+                                            className={
+                                              item.byCustomer === true &&
+                                              item.isBotReply !== true
+                                                ? "chat-trail-cntr"
+                                                : "chat-trail-cntr chat-trail-cntr-right"
+                                            }
+                                          >
+                                            <div className="chat-trail-img">
+                                              <span
+                                                className="chat-initial"
+                                                alt="face image"
+                                                title={
+                                                  item.byCustomer
+                                                    ? item.customerName
+                                                    : this.state.UserName
+                                                }
+                                              >
+                                                {item.byCustomer
                                                   ? item.customerName
-                                                  : this.state.UserName
-                                              }
-                                            >
-                                              {item.byCustomer
-                                                ? item.customerName
-                                                    .split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()
-                                                : this.state.UserName.split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()}
-                                            </span>
-                                          </div>
-                                          <div className="chat-trail-chat-cntr">
-                                            {item.isBotReply && (
-                                              <p className="bot-mark">
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.p.bot
-                                                  : "BOT"}
-                                              </p>
-                                            )}
-                                            <p className="chat-trail-chat pd-0">
-                                              {ReactHtmlParser(
-                                                item.message
-                                                  .replace(
-                                                    "col-md-2",
-                                                    "col-md-4"
-                                                  )
-                                                  .replace(
-                                                    "col-md-10",
-                                                    "col-md-8"
-                                                  )
+                                                      .split(" ")
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()
+                                                  : this.state.UserName.split(
+                                                      " "
+                                                    )
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()}
+                                              </span>
+                                            </div>
+                                            <div className="chat-trail-chat-cntr">
+                                              {item.isBotReply && (
+                                                <p className="bot-mark">
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p.bot
+                                                    : "BOT"}
+                                                </p>
                                               )}
-                                            </p>
-                                            <span className="chat-trail-time">
-                                              {item.chatDate + " "}
-                                              {item.chatTime}
-                                            </span>
+                                              <p className="chat-trail-chat pd-0">
+                                                {ReactHtmlParser(
+                                                  item.message
+                                                    .replace(
+                                                      "col-md-2",
+                                                      "col-md-4"
+                                                    )
+                                                    .replace(
+                                                      "col-md-10",
+                                                      "col-md-8"
+                                                    )
+                                                )}
+                                              </p>
+                                              <span className="chat-trail-time">
+                                                {item.chatDate + " "}
+                                                {item.chatTime}
+                                              </span>
+                                            </div>
                                           </div>
-                                        </div>
-                                      );
-                                    })
+                                        );
+                                      }
+                                    )
                                   ) : (
                                     <p style={{ margin: "10" }}>
                                       No record found
                                     </p>
                                   )}
+                                  {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
                                 </div>
                               </div>
                             ) : null}
@@ -5802,7 +5908,7 @@ class Header extends Component {
                       </div>
                       <div className="chathistory-tbl">
                         <div
-                          className="table-cntr store chat-history mg-rm"
+                          className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
                           style={{ margin: "10px" }}
                         >
                           <Table
@@ -5817,6 +5923,7 @@ class Header extends Component {
                                     : "Chat ID",
                                 dataIndex: "chatID",
                                 width: "10%",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>{rowData.chatID ? rowData.chatID : ""}</>
@@ -5830,11 +5937,27 @@ class Header extends Component {
                                     : "Customer Name",
                                 dataIndex: "customerName",
                                 width: "20%",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
                                       {rowData.customerName
                                         ? rowData.customerName
+                                        : ""}
+                                    </>
+                                  );
+                                },
+                              },
+                              {
+                                title: "Mobile No",
+                                dataIndex: "customerMobile",
+                                width: "20%",
+                                className: "textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.customerMobile
+                                        ? rowData.customerMobile.substring(2)
                                         : ""}
                                     </>
                                   );
@@ -5847,6 +5970,7 @@ class Header extends Component {
                                     : "Time",
                                 dataIndex: "timeAgo",
                                 width: "20%",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5862,6 +5986,7 @@ class Header extends Component {
                                     : "Status",
                                 dataIndex: "chatStatus",
                                 width: "20%",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5879,6 +6004,7 @@ class Header extends Component {
                                     : "Message",
                                 dataIndex: "message",
                                 width: "30%",
+                                className: "textnowrap-table",
                                 render: (row, rowData) => {
                                   return (
                                     <>
@@ -5903,7 +6029,10 @@ class Header extends Component {
                                 );
                               },
                             })}
-                            pagination={{ pageSize: 5, defaultPageSize: 5 }}
+                            pagination={{
+                              pageSize: 5,
+                              defaultPageSize: 5,
+                            }}
                             rowKey={(record) => {
                               if (record.chatID) {
                                 uid = uid + 1;
@@ -5938,64 +6067,69 @@ class Header extends Component {
                                 this.historyMessageList = div;
                               }}
                             >
-                              {this.state.messageData !== null &&
-                              this.state.messageData.length > 0 ? (
-                                this.state.messageData.map((item, i) => {
-                                  return (
-                                    <div
-                                      key={i}
-                                      className={
-                                        item.byCustomer === true &&
-                                        item.isBotReply !== true
-                                          ? "chat-trail-cntr"
-                                          : "chat-trail-cntr chat-trail-cntr-right"
-                                      }
-                                    >
-                                      <div className="chat-trail-img">
-                                        <span
-                                          className="chat-initial"
-                                          alt="face image"
-                                          title={
-                                            item.byCustomer
+                              {this.state.messageHistoryChatData !== null &&
+                              this.state.messageHistoryChatData.length > 0 ? (
+                                this.state.messageHistoryChatData.map(
+                                  (item, i) => {
+                                    return (
+                                      <div
+                                        key={i}
+                                        className={
+                                          item.byCustomer === true &&
+                                          item.isBotReply !== true
+                                            ? "chat-trail-cntr"
+                                            : "chat-trail-cntr chat-trail-cntr-right"
+                                        }
+                                      >
+                                        <div className="chat-trail-img">
+                                          <span
+                                            className="chat-initial"
+                                            alt="face image"
+                                            title={
+                                              item.byCustomer
+                                                ? item.customerName
+                                                : this.state.UserName
+                                            }
+                                          >
+                                            {item.byCustomer
                                               ? item.customerName
-                                              : this.state.UserName
-                                          }
-                                        >
-                                          {item.byCustomer
-                                            ? item.customerName
-                                                .split(" ")
-                                                .map((n) => n[0])
-                                                .join("")
-                                                .toUpperCase()
-                                            : this.state.UserName.split(" ")
-                                                .map((n) => n[0])
-                                                .join("")
-                                                .toUpperCase()}
-                                        </span>
-                                      </div>
-                                      <div className="chat-trail-chat-cntr">
-                                        {item.isBotReply && (
-                                          <p className="bot-mark">
-                                            {TranslationContext !== undefined
-                                              ? TranslationContext.p.bot
-                                              : "BOT"}
-                                          </p>
-                                        )}
-                                        <p className="chat-trail-chat pd-0">
-                                          {ReactHtmlParser(
-                                            item.message
-                                              .replace("col-md-2", "col-md-4")
-                                              .replace("col-md-10", "col-md-8")
+                                                  .split(" ")
+                                                  .map((n) => n[0])
+                                                  .join("")
+                                                  .toUpperCase()
+                                              : this.state.UserName.split(" ")
+                                                  .map((n) => n[0])
+                                                  .join("")
+                                                  .toUpperCase()}
+                                          </span>
+                                        </div>
+                                        <div className="chat-trail-chat-cntr">
+                                          {item.isBotReply && (
+                                            <p className="bot-mark">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.bot
+                                                : "BOT"}
+                                            </p>
                                           )}
-                                        </p>
-                                        <span className="chat-trail-time">
-                                          {item.chatDate + " "}
-                                          {item.chatTime}
-                                        </span>
+                                          <p className="chat-trail-chat pd-0">
+                                            {ReactHtmlParser(
+                                              item.message
+                                                .replace("col-md-2", "col-md-4")
+                                                .replace(
+                                                  "col-md-10",
+                                                  "col-md-8"
+                                                )
+                                            )}
+                                          </p>
+                                          <span className="chat-trail-time">
+                                            {item.chatDate + " "}
+                                            {item.chatTime}
+                                          </span>
+                                        </div>
                                       </div>
-                                    </div>
-                                  );
-                                })
+                                    );
+                                  }
+                                )
                               ) : (
                                 <p style={{ margin: "10px" }}>
                                   No record found
@@ -6027,6 +6161,8 @@ class Header extends Component {
                 style={{
                   cursor:
                     this.state.isCustEndChat === false ? "no-drop" : "Pointer",
+                  pointerEvents:
+                    this.state.isCustEndChat === false ? "none" : "all",
                 }}
                 disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}

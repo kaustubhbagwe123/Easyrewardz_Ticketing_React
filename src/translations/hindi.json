@@ -6,7 +6,8 @@
       "campaign": "अभियान",
       "appointment": "नियुक्ति",
       "myticket":"मेरा टिकट",
-      "task":"कार्य"
+      "task":"कार्य",
+      "orders":"आदेश"
     },
     "label":{
       "er": "एर",
@@ -401,7 +402,9 @@
       "maxcptyperslot":"अधिकतम खाली प्रति स्लॉट",
       "storenonoperationalhours":"नॉन-ऑप्रेशनल घंटा स्टोर करें",
       "from":"से",
-      "appointmentdays":"नियुक्ति के दिन"
+      "appointmentdays":"नियुक्ति के दिन",
+      "enterpincode":"पिन कोड दर्ज करें",
+      "storepincode":"पिनकोड स्टोर करें"
     
    
    
@@ -573,7 +576,8 @@
       "landmark":"सीमा चिन्ह",
       "pincode":"पिन कोड",
       "successfullymappedto":"सफलतापूर्वक मैप किया गया",
-      "updated":"अद्यतन"
+      "updated":"अद्यतन",
+      "invoiceno":"चालान नंबर"
      
      
       
@@ -701,7 +705,10 @@
       "order":"गण",
       "shipment":"लदान",
       "delivered":"वितरण",
-      "shipmentassigned":"शिपमेंट सौंपा गया"
+      "shipmentassigned":"शिपमेंट सौंपा गया",
+      "returns":"रिटर्न",
+      "checkservice":"सेवा की जाँच करें"
+      
     },
     "span":{
       "status": "स्थिति",
@@ -1013,7 +1020,8 @@
       "proceed":"बढ़ना",
       "convertoorder":"आदेश में परिवर्तित करें",
       "collectpayment":"भुगतान प्राप्त करें",
-      "remove":"हटाना"
+      "remove":"हटाना",
+      "retry":"पुन: प्रयास करें"
       
      
      
@@ -1335,7 +1343,9 @@
       "enterstorename":"स्टोर का नाम दर्ज करें",
       "enterstaffname":"कर्मचारियों का नाम दर्ज करें",
       "addnotes":"नोट्स जोड़ें",
-      "searchdot":"खोज.."
+      "searchdot":"खोज..",
+      "pincode":"पिन कोड",
+      "storepincode":"पिनकोड स्टोर करें"
     },
     "title":{
       "campaignname":"अभियान का नाम",

@@ -7887,6 +7887,7 @@ table tr th:last-child {
   background-color: #2561a8;
   color: #fff;
   margin-bottom: 40px;
+  cursor: pointer;
 }
 .buttonschdulesave {
   margin-bottom: 10px;
@@ -12482,6 +12483,12 @@ table tr th:last-child {
 }
 .ord-m-t20 {
   margin-top: 20px !important;
+}
+.ordPayment1{
+  position: absolute;
+  width: 250px;
+  right: -249px;
+  top: 148px;
 }
 .ordcusinput {
   position: absolute;

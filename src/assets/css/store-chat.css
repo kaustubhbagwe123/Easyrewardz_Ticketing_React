@@ -975,6 +975,16 @@ p {
 
 /* Responsive starts */
 @media all and (max-width: 576px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+
+  .ant-pagination-item-active a {
+    color: #4a4a4a !important;
+  }
+  .anticon svg {
+    color: #4a4a4a;
+  }
   #chat-popup-overlay {
     padding: 0px;
   }
@@ -987,19 +997,19 @@ p {
   .chat-tabs-desktop {
     display: none;
   }
-  .chatdivtitle{
+  .chatdivtitle {
     display: inline-block;
   }
   .chatdivtitle ul {
     width: 55% !important;
-}
-.chatactionbtn {
-  display: none !important;
-}
-a.nav-link.active.chattitletab {
-  color: #2561a8;
-  font-weight: bold;
-}
+  }
+  .chatactionbtn {
+    display: none !important;
+  }
+  a.nav-link.active.chattitletab {
+    color: #2561a8;
+    font-weight: bold;
+  }
   .store-chat-header h3 {
     font-size: 16px;
   }
@@ -1290,6 +1300,15 @@ a.nav-link.active.chattitletab {
 }
 
 @media all and (max-width: 425px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+  .ant-pagination-item-active a {
+    color: #4a4a4a !important;
+  }
+  .anticon svg {
+    color: #4a4a4a;
+  }
   .chat-face-cntr {
     width: 35px;
   }
@@ -1337,6 +1356,15 @@ a.nav-link.active.chattitletab {
 }
 
 @media all and (max-width: 387px) {
+  .ant-pagination-item a {
+    color: #4a4a4a !important;
+  }
+  .ant-pagination-item-active a {
+    color: #4a4a4a !important;
+  }
+  .anticon svg {
+    color: #4a4a4a;
+  }
   /* schedule modal starts */
   .schedule-btn-cntr button,
   .select-slot-cntr,
@@ -1591,4 +1619,51 @@ a.nav-link.active.chattitletab {
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+.now-rap-tbl-txt.chatabcus
+  .custom-antd-table.antd-table-campaign
+  .ant-table-tbody
+  > tr
+  > td {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ant-pagination-item-ellipsis {
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: 22px !important;
+  overflow: visible !important;
+}
+.rm-header tbody {
+  display: flex;
+  flex-wrap: wrap;
+}
+.rm-header table tbody tr {
+  border-bottom: 0;
+}
+.rm-header .ant-table-thead {
+  display: none;
+}
+
+.rm-header.custom-antd-table.antd-table-campaign .ant-table-tbody > tr > td {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rm-header .ant-table {
+  width: 100% !important;
+}
+
+.rm-header.ant-table-pagination.ant-pagination {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
+
+.rm-header.ant-pagination-item-active{
+  border-color: #2561A8 !important;
 }

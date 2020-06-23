@@ -164,6 +164,7 @@ class OrderSetting extends Component {
         UnDeliverable: this.state.orderConfigData.unDeliverable,
         UnDeliverableText: this.state.orderConfigData.unDeliverableText,
         StoreDeliveryText: this.state.orderConfigData.storeDeliveryText,
+        PaymentTenantCodeText:this.state.orderConfigData.paymentTenantCodeText,
       },
     })
       .then(function(res) {
@@ -503,6 +504,24 @@ class OrderSetting extends Component {
                                         className="cr cr-float-auto"
                                       ></label>
                                     </div>
+                                    {this.state.orderConfigData.payment ? (
+                                      <div className="ordPayment1">
+                                        <input
+                                          type="text"
+                                          name="paymentTenantCodeText"
+                                          autoComplete="off"
+                                          placeholder="Enter Tenant Code"
+                                          maxLength={500}
+                                          value={
+                                            this.state.orderConfigData
+                                              .paymentTenantCodeText 
+                                          }
+                                          onChange={this.OrderSettingOnChange.bind(
+                                            this
+                                          )}
+                                        />
+                                      </div>
+                                    ) : null}
                                   </div>
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">

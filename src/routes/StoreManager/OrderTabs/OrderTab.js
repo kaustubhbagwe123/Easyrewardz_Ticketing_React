@@ -271,6 +271,7 @@ class OrderTab extends Component {
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
+      currentPage: 1,
     });
 
     this.handleGetOrderTabGridData();
@@ -294,7 +295,6 @@ class OrderTab extends Component {
   }
 
   handleUpdateAddressPending(orderId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -318,6 +318,12 @@ class OrderTab extends Component {
           self.setState({
             orderId: 0,
             AddressConf: false,
+            shippingAddress: "",
+            pincode: "",
+            city: "",
+            state: "",
+            country: "",
+            landmark: "",
           });
           NotificationManager.success("Record Updated Successfully.");
         }
@@ -454,7 +460,7 @@ class OrderTab extends Component {
                           content={
                             <>
                               <p className="shopping-num-invoice">
-                                Shopping bag No:{" "}
+                                Shopping bag No:
                                 <span>{item.shoppingBagNo}</span>
                               </p>
                               <Table
@@ -747,6 +753,7 @@ class OrderTab extends Component {
                                   <textarea
                                     placeholder="Enter Address"
                                     name="shippingAddress"
+                                    autoComplete="off"
                                     onChange={this.handleTextOnchage}
                                   ></textarea>
                                 </div>
@@ -764,6 +771,7 @@ class OrderTab extends Component {
                                             .enterlandmark
                                         : "Enter Landmark"
                                     }
+                                    autoComplete="off"
                                     name="landmark"
                                     onChange={this.handleTextOnchage}
                                   />
@@ -807,6 +815,7 @@ class OrderTab extends Component {
                                               .entercity
                                           : "Enter City"
                                       }
+                                      autoComplete="off"
                                       name="city"
                                       onChange={this.handleTextOnchage}
                                     />
@@ -823,6 +832,7 @@ class OrderTab extends Component {
                                       type="text"
                                       placeholder="Enter State"
                                       name="state"
+                                      autoComplete="off"
                                       onChange={this.handleTextOnchage}
                                     />
                                   </div>
@@ -841,6 +851,7 @@ class OrderTab extends Component {
                                           : "Enter Country"
                                       }
                                       name="country"
+                                      autoComplete="off"
                                       onChange={this.handleTextOnchage}
                                     />
                                   </div>
@@ -1000,6 +1011,11 @@ class OrderTab extends Component {
                           disabled={item.disablePaymentlinkbutton}
                         >
                           <button
+                            style={{
+                              display: item.showPaymentLinkPopup
+                                ? "block"
+                                : "none",
+                            }}
                             className={
                               item.showPaymentLinkPopup
                                 ? "butn order-grid-butn"
@@ -1056,7 +1072,7 @@ class OrderTab extends Component {
                           ? TranslationContext.p.status
                           : "Status"}
                       </p>
-                      <p >{row.statusName}</p>
+                      <p>{row.statusName}</p>
                       {/* <p className="order-clr-blue">{row.statusName}</p> */}
                       {/* {row.selfPickUp && (
                         <p className="order-clr-orange">(Self Pickup)</p>
