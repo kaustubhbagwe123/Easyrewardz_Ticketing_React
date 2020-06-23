@@ -10,6 +10,7 @@ import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
+import Demo from "../../../store/Hashtag";
 
 class ShipmentAssignedTab extends Component {
   constructor(props) {
@@ -458,7 +459,6 @@ class ShipmentAssignedTab extends Component {
                     : "Action",
                 className: "cus-strecth",
                 render: (row, item, index) => {
-                  debugger;
                   return item.awbNo !== "" &&
                     item.courierPartner.toLowerCase() !== "store" ? (
                     <div className="d-flex">
@@ -506,102 +506,87 @@ class ShipmentAssignedTab extends Component {
                     </div>
                   ) : (
                     <div className="d-flex">
-                      <Popover
-                        // visible={this.state.orderPopoverOverlay}
-                        content={
-                          <div className="staffdetailspopup">
-                            <label>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.storename
-                                : "Store Name"}
-                            </label>
-                            <input
-                              type="text"
-                              name="storeName"
-                              className="form-control"
-                              placeholder={
-                                TranslationContext !== undefined
-                                  ? TranslationContext.placeholder
-                                      .enterstorename
-                                  : "Enter Store Name"
-                              }
-                              value={item.storeName}
-                              onChange={this.handlechange.bind(this, index)}
-                            />
-                            <label>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.staffname
-                                : "Staff Name"}
-                            </label>
-                            <input
-                              type="text"
-                              name="staffName"
-                              className="form-control"
-                              placeholder={
-                                TranslationContext !== undefined
-                                  ? TranslationContext.placeholder
-                                      .enterstaffname
-                                  : "Enter Staff Name"
-                              }
-                              value={item.staffName}
-                              onChange={this.handlechange.bind(this, index)}
-                            />
-                            <label>
-                              {TranslationContext !== undefined
-                                ? TranslationContext.label.mobileno
-                                : "Mobile No."}
-                            </label>
-                            <input
-                              type="text"
-                              name="mobileNumber"
-                              className="form-control"
-                              placeholder={
-                                TranslationContext !== undefined
-                                  ? TranslationContext.placeholder.entermobileno
-                                  : "Enter Mobile No."
-                              }
-                              value={item.mobileNumber}
-                              maxLength={10}
-                              onChange={this.handlechange.bind(this, index)}
-                            />
-                            <button
-                              type="button"
-                              className="popbtnno"
-                              onClick={() =>
-                                this.setState({ orderPopoverOverlay: false })
-                              }
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.button.cancel
-                                : "Cancel"}
-                            </button>
-                            <button
-                              type="button"
-                              className="popbtn"
-                              onClick={this.handleUpdateShipmentAssignedData.bind(
-                                this,
-                                item,
-                                false
-                              )}
-                            >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.button.done
-                                : "Done"}
-                            </button>
-                          </div>
+                      <Popconfirm
+                        title={
+                          <>
+                            <div className="">
+                              <label>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.storename
+                                  : "Store Name"}
+                              </label>
+                              <input
+                                type="text"
+                                name="storeName"
+                                className="form-control"
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .enterstorename
+                                    : "Enter Store Name"
+                                }
+                                value={item.storeName}
+                                onChange={this.handlechange.bind(this, index)}
+                              />
+                              <label>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.staffname
+                                  : "Staff Name"}
+                              </label>
+                              <input
+                                type="text"
+                                name="staffName"
+                                className="form-control"
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .enterstaffname
+                                    : "Enter Staff Name"
+                                }
+                                value={item.staffName}
+                                onChange={this.handlechange.bind(this, index)}
+                              />
+                              <label>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.mobileno
+                                  : "Mobile No."}
+                              </label>
+                              <input
+                                type="text"
+                                name="mobileNumber"
+                                className="form-control"
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .entermobileno
+                                    : "Enter Mobile No."
+                                }
+                                value={item.mobileNumber}
+                                maxLength={10}
+                                onChange={this.handlechange.bind(this, index)}
+                              />
+                            </div>
+                          </>
                         }
-                        trigger="click"
-                        overlayClassName="order-popover-table order-popover"
+                        overlayClassName="order-popover order-popover-butns order-popover-address"
+                        placement="topLeft"
                         onVisibleChange={(visible) =>
                           this.setState({ orderPopoverOverlay: visible })
                         }
+                        icon={false}
+                        okText="Done"
+                        onConfirm={this.handleUpdateShipmentAssignedData.bind(
+                          this,
+                          item,
+                          false
+                        )}
                       >
                         <button className="butn order-grid-butn assign-grid-btn">
                           {TranslationContext !== undefined
                             ? TranslationContext.button.staffdetails
                             : "Staff Details"}
                         </button>
-                      </Popover>
+                      </Popconfirm>
                       <button
                         className={
                           item.storeName !== "" &&
