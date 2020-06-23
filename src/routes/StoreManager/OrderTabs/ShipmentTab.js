@@ -344,7 +344,7 @@ class ShipmentTab extends Component {
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
-      currentPage:1
+      currentPage: 1,
     });
 
     this.handleGetShipmentTabGridData();
@@ -355,7 +355,7 @@ class ShipmentTab extends Component {
       filterShipmentStatus: false,
     });
   }
- 
+
   render() {
     const TranslationContext = this.state.translateLanguage.default;
 
@@ -939,10 +939,11 @@ class ShipmentTab extends Component {
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.quantity
-                                    : "Price Paid",
+                                // title:
+                                //   TranslationContext !== undefined
+                                //     ? TranslationContext.title.quantity
+                                //     : "Price Paid",
+                                title: "Article Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
