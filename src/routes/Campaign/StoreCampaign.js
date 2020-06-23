@@ -1769,11 +1769,14 @@ class StoreCampaign extends Component {
                       overlayClassName="antcustom antbroadcast"
                       content={
                         <div className="general-popover popover-body broadcastpop">
-                          <label className="broadcasttitle">
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.recentcampaigns
-                              : "Recent Campaigns"}
-                          </label>
+                          {this.state.campaignExecutionDetails.length > 0 ? (
+                            <label className="broadcasttitle">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.recentcampaigns
+                                : "Recent Campaigns"}
+                            </label>
+                          ) : null}
+
                           {this.state.campaignExecutionDetails !== null &&
                             this.state.campaignExecutionDetails.map(
                               (item, b) => (
@@ -3213,7 +3216,10 @@ class StoreCampaign extends Component {
               </div>
             ) : (
               <>
-                <label className="broadcasttitle">Recent Campaigns</label>
+                {this.state.campaignExecutionDetails.length > 0 ? (
+                  <label className="broadcasttitle">Recent Campaigns</label>
+                ) : null}
+
                 {this.state.campaignExecutionDetails !== null &&
                   this.state.campaignExecutionDetails.map((item, b) => (
                     <div className="broembox clearfix" key={b}>
