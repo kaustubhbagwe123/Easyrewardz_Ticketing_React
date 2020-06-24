@@ -13,23 +13,21 @@ class CheckService extends Component {
       storePinCode: "",
       pin_code: "",
       pinCodeValidation: "",
-      translateLanguage: {}
+      translateLanguage: {},
+      btnSubmitData: false,
     };
   }
 
   componentDidMount() {
     this.handleGetCheckServiceData();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   /// handle Get Check service data
@@ -61,6 +59,9 @@ class CheckService extends Component {
   handleUpdateCheckServiceData() {
     var self = this;
     if (this.state.pin_code !== "") {
+      this.setState({
+        btnSubmitData: true,
+      });
       axios({
         method: "post",
         url: config.apiUrl + "/HSOrder/CheckCourierAvailibilty",
@@ -75,8 +76,14 @@ class CheckService extends Component {
           let status = res.data.responseData.available;
           if (status === "true") {
             NotificationManager.success("Delivery Available.");
+            self.setState({
+              btnSubmitData: false,
+            });
           } else {
             NotificationManager.error("Delivery Not Available.");
+            self.setState({
+              btnSubmitData: false,
+            });
           }
         })
         .catch((data) => {
@@ -105,7 +112,9 @@ class CheckService extends Component {
           <div className="row m-b-10 mx-0">
             <div className="col-5">
               <label className="naman">
-              {TranslationContext!==undefined?TranslationContext.label.storepincode:"Store Pin Code"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.storepincode
+                  : "Store Pin Code"}
               </label>
             </div>
             <div className="col-md-6 col-7">
@@ -121,17 +130,24 @@ class CheckService extends Component {
           <div className="row mx-0">
             <div className="col-5">
               <label className="naman">
-              {TranslationContext!==undefined?TranslationContext.label.enterpincode:"Enter Pin Code"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.enterpincode
+                  : "Enter Pin Code"}
               </label>
             </div>
             <div className="col-md-6 col-7">
               <input
                 type="text"
                 className="txt-1"
-                placeholder=  {TranslationContext!==undefined?TranslationContext.label.pincode:"PIN Code"}
+                placeholder={
+                  TranslationContext !== undefined
+                    ? TranslationContext.label.pincode
+                    : "PIN Code"
+                }
                 name="pin_code"
                 value={this.state.pin_code}
                 maxLength={6}
+                autoComplete="off"
                 onChange={this.handleTextOnchange}
               />
               {this.state.pin_code === "" && (
@@ -148,11 +164,17 @@ class CheckService extends Component {
           </div>
 
           <button
-            className="check-svcBtn"
+            className={
+              this.state.btnSubmitData
+                ? "check-svcBtn order-grid-btn-disable"
+                : "check-svcBtn"
+            }
+            // className="check-svcBtn"
             onClick={this.handleUpdateCheckServiceData.bind(this)}
           >
-            {TranslationContext!==undefined?TranslationContext.button.submit:"Submit"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.button.submit
+              : "Submit"}
           </button>
         </div>
       </>
