@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./../../../node_modules/jquery/dist/jquery.js";
 import "./../../../node_modules/popper.js/dist/popper.js";
 import "./../../../node_modules/bootstrap/dist/js/bootstrap.js";
-import Demo from "./../../store/Hashtag";
+// import Demo from "./../../store/Hashtag";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import TaskDepartment from "./Charts/TaskDepartment.js";
@@ -167,7 +167,7 @@ class StoreDashboard extends Component {
     debugger;
     var itemsArray = [];
 
-    if (this.state.activeTab == 1) {
+    if (this.state.activeTab === 1) {
       itemsArray = this.state.dashboardGridData;
     } else {
       itemsArray = this.state.cliamSearchData;
@@ -261,7 +261,7 @@ class StoreDashboard extends Component {
     debugger;
     var itemsArray = [];
 
-    if (this.state.activeTab == 1) {
+    if (this.state.activeTab === 1) {
       itemsArray = this.state.dashboardGridData;
     } else {
       itemsArray = this.state.cliamSearchData;
@@ -750,7 +750,7 @@ class StoreDashboard extends Component {
         sortHeader: this.state.isortA ? this.state.sortHeader : "",
       });
 
-      if (this.state.activeTab == 1) {
+      if (this.state.activeTab === 1) {
         this.setState({
           dashboardGridData: this.state.isortA
             ? this.state.itemData
@@ -1525,7 +1525,7 @@ class StoreDashboard extends Component {
         debugger;
         var message = response.data.message;
         var categoryData = response.data.responseData;
-        if (message == "Success" && categoryData) {
+        if (message === "Success" && categoryData) {
           self.setState({ categoryData });
         } else {
           self.setState({ categoryData });
@@ -1548,7 +1548,7 @@ class StoreDashboard extends Component {
       .then(function(response) {
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
-        if (message == "Success" && subCategoryData) {
+        if (message === "Success" && subCategoryData) {
           self.setState({ subCategoryData });
         } else {
           self.setState({ subCategoryData });
@@ -1571,7 +1571,7 @@ class StoreDashboard extends Component {
       .then(function(response) {
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
-        if (message == "Success" && issueTypeData) {
+        if (message === "Success" && issueTypeData) {
           self.setState({ issueTypeData });
         } else {
           self.setState({ issueTypeData });
@@ -1592,7 +1592,7 @@ class StoreDashboard extends Component {
       .then(function(response) {
         var message = response.data.message;
         var userData = response.data.responseData;
-        if (message == "Success" && userData) {
+        if (message === "Success" && userData) {
           self.setState({ userData });
         } else {
           self.setState({ userData });
@@ -1794,7 +1794,7 @@ class StoreDashboard extends Component {
 
   ////handle view search
   handleViewSerach() {
-    if (this.state.activeTab == 1) {
+    if (this.state.activeTab === 1) {
       this.handleViewSearchData();
     } else {
       this.handleClaimViewSearch();
@@ -1803,7 +1803,7 @@ class StoreDashboard extends Component {
   ////handle tab change
   handleTabChange = (tab, e) => {
     this.setState({ activeTab: tab });
-    if (tab == 2) {
+    if (tab === 2) {
       this.handleClaimViewSearch();
     }
   };
@@ -1812,57 +1812,57 @@ class StoreDashboard extends Component {
     const { name, value } = e.target;
     debugger;
     var searchData = this.state.searchData;
-    if (name == "claimID") {
+    if (name === "claimID") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "ticketID") {
+    if (name === "ticketID") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "claimissueType") {
+    if (name === "claimissueType") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "ticketMapped") {
+    if (name === "ticketMapped") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "claimsubcat") {
+    if (name === "claimsubcat") {
       searchData[name] = value;
       this.setState({ searchData });
       setTimeout(() => {
         this.handleGetIssueType();
       }, 100);
     }
-    if (name == "assignTo") {
+    if (name === "assignTo") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "claimcat") {
+    if (name === "claimcat") {
       searchData[name] = value;
       this.setState({ searchData });
       setTimeout(() => {
         this.handleGetClaimSubCategory();
       }, 100);
     }
-    if (name == "claimraiseddate") {
+    if (name === "claimraiseddate") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "taskID") {
+    if (name === "taskID") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "claimstatus") {
+    if (name === "claimstatus") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "taskmapped") {
+    if (name === "taskmapped") {
       searchData[name] = value;
       this.setState({ searchData });
     }
-    if (name == "raisedby") {
+    if (name === "raisedby") {
       searchData[name] = value;
       this.setState({ searchData });
     }
