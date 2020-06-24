@@ -186,7 +186,7 @@ class Header extends Component {
       reportAccess: "none",
       mobileHeading: "",
       messageHistoryChatData: [],
-      isMainLoader:false
+      isMainLoader: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -777,7 +777,7 @@ class Header extends Component {
     } else {
       search = this.state.searchChat;
     }
-this.setState({ isMainLoader: true });
+    this.setState({ isMainLoader: true });
     await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetOngoingChat",
@@ -787,17 +787,18 @@ this.setState({ isMainLoader: true });
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-        var chatData = ongoingChatsData.filter(
-          (x) => x.chatID === self.state.chatId
-        );
-        if (chatData.length == 0) {
-          self.setState({
-            customerName: "",
-            messageData: [],
-            isMainLoader:false
-          });
-        }
+
         if (message === "Success" && ongoingChatsData) {
+          var chatData = ongoingChatsData.filter(
+            (x) => x.chatID === self.state.chatId
+          );
+          if (chatData.length == 0) {
+            self.setState({
+              customerName: "",
+              messageData: [],
+              isMainLoader: false,
+            });
+          }
           self.setState({
             ongoingChatsData,
           });
@@ -817,7 +818,7 @@ this.setState({ isMainLoader: true });
 
   ////handle Get New Chat
   async handleGetNewChat() {
-    this.setState({isMainLoader:true})
+    this.setState({ isMainLoader: true });
     let self = this;
     await axios({
       method: "post",
@@ -828,14 +829,14 @@ this.setState({ isMainLoader: true });
         var message = response.data.message;
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
-          self.setState({ newChatsData,isMainLoader:false });
+          self.setState({ newChatsData, isMainLoader: false });
           // setInterval(() => {
           // if (self.state.chatModal) {
           //   self.handleGetNewChat();
           // }
           // }, 40000);
         } else {
-          self.setState({ newChatsData: [],isMainLoader:false });
+          self.setState({ newChatsData: [], isMainLoader: false });
         }
       })
       .catch((response) => {
@@ -881,7 +882,7 @@ this.setState({ isMainLoader: true });
     let self = this;
 
     this.setState({
-      isMainLoader:true,
+      isMainLoader: true,
       isCustEndChat: false,
       storeManagerId,
       rowChatId: 0,
@@ -946,7 +947,7 @@ this.setState({ isMainLoader: true });
     if (RecentChat) {
       forRecentChat = 1;
     }
-    this.setState({isMainLoader:true})
+    this.setState({ isMainLoader: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/getChatMessagesList",
@@ -963,14 +964,14 @@ this.setState({ isMainLoader: true });
           if (self.state.showHistoricalChat) {
             self.setState({
               messageHistoryChatData: messageData,
-              isMainLoader:false
+              isMainLoader: false,
             });
           } else {
             self.setState({
               ...messageData,
               messageData,
               isScroll: true,
-              isMainLoader:false
+              isMainLoader: false,
             });
           }
           // self.handleGetChatNotificationCount();
@@ -1003,9 +1004,9 @@ this.setState({ isMainLoader: true });
 
       this.setState({
         message: "",
-        isMainLoader:true
+        isMainLoader: true,
       });
-      
+
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
@@ -1026,7 +1027,7 @@ this.setState({ isMainLoader: true });
               remainingCount: self.state.tempRemainingCount,
               suggestionModal: false,
               suggestionModalMob: false,
-              isMainLoader:false,
+              isMainLoader: false,
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat();
@@ -1037,7 +1038,7 @@ this.setState({ isMainLoader: true });
               imageURL
             );
           } else {
-            self.setState({ isSendRecomended: false ,isMainLoader:false,});
+            self.setState({ isSendRecomended: false, isMainLoader: false });
           }
         })
         .catch((response) => {
@@ -2100,10 +2101,12 @@ this.setState({ isMainLoader: true });
   };
   ////handle history messge scrool to bottom
   historyMessageScrollToBottom() {
-    const scrollHeight = this.historyMessageList.scrollHeight;
-    const height = this.historyMessageList.clientHeight;
-    const maxScrollTop = scrollHeight - height;
-    this.historyMessageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    if (this.historyMessageList) {
+      const scrollHeight = this.historyMessageList.scrollHeight;
+      const height = this.historyMessageList.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      this.historyMessageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
   }
   ////handle history chat close
   handleHistoryChatClose() {
@@ -2677,12 +2680,7 @@ this.setState({ isMainLoader: true });
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat window"}
             </h3>
-            {this.state.isMainLoader ? (
-                        // <div className="example">
-                          // <Spin size="small"/>
-                          <div class="loader"></div>
-                        // </div>
-                      ) : null}
+            {this.state.isMainLoader ? <div class="loader"></div> : null}
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>
@@ -2744,7 +2742,6 @@ this.setState({ isMainLoader: true });
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
- 
                       <Select
                         className="agentchatdrop-down"
                         showArrow={true}
@@ -2832,10 +2829,7 @@ this.setState({ isMainLoader: true });
                             </div>
                           ))
                         : null}
-
-                      
                     </div>
-                    
                   </div>
                   {this.state.ongoingChatsData.length === 0 && (
                     <p className="no-record" style={{ marginTop: "0px" }}>
@@ -3375,6 +3369,7 @@ this.setState({ isMainLoader: true });
                                       );
                                     })
                                   : null}
+
                                 {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
                               </div>
                               {this.state.isCustEndChat &&
@@ -3771,8 +3766,7 @@ this.setState({ isMainLoader: true });
                                                           alignSelf: "center",
                                                         }}
                                                       >
-                                                        {item.imageURL !==
-                                                        "" ? (
+                                                        {item.imageURL ? (
                                                           <img
                                                             className="chat-product-img"
                                                             src={item.imageURL}
@@ -4799,20 +4793,7 @@ this.setState({ isMainLoader: true });
                                                   ) : null}
                                                   <div className="mobile-card-cntr">
                                                     <div className="mobile-card-img">
-                                                      {/* <img
-                                                        className="chat-product-img"
-                                                        src={item.imageURL}
-                                                        alt="Product Image"
-                                                        title={item.productName}
-                                                      />
-                                                      <span className="addimg">
-                                                        <input
-                                                          type="image"
-                                                          alt="Add Image"
-                                                          src={addimg}
-                                                        />
-                                                      </span> */}
-                                                      {item.imageURL !== "" ? (
+                                                      {item.imageURL ? (
                                                         <img
                                                           className="chat-product-img"
                                                           src={item.imageURL}
