@@ -100,6 +100,8 @@ class DeliveredTab extends Component {
           self.setState({
             statusFilterData: data,
           });
+        }else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -155,6 +157,8 @@ class DeliveredTab extends Component {
         if (status === "Success") {
           self.handleGetOrderDeliveredData();
           NotificationManager.success("Record Updated Successfully.");
+        }else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {

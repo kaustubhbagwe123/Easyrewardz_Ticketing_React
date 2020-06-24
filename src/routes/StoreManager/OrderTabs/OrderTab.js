@@ -326,6 +326,8 @@ class OrderTab extends Component {
             landmark: "",
           });
           NotificationManager.success("Record Updated Successfully.");
+        } else {
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {

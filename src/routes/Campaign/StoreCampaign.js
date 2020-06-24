@@ -316,32 +316,32 @@ class StoreCampaign extends Component {
   }
 
   handleCreateTicket() {
-    if (this.state.modalData.tiketTitle == "") {
+    if (this.state.modalData.tiketTitle === "") {
       this.setState({ isTiketTitle: "Please Enter Ticket Title." });
     } else {
       this.setState({ isTiketTitle: "" });
     }
-    if (this.state.modalData.tiketDetails == "") {
+    if (this.state.modalData.tiketDetails === "") {
       this.setState({ isTiketDetails: "Please Enter Ticket Details." });
     } else {
       this.setState({ isTiketDetails: "" });
     }
-    if (this.state.modalData.brandId == "") {
+    if (this.state.modalData.brandId === "") {
       this.setState({ isBrand: "Please select Brand." });
     } else {
       this.setState({ isBrand: "" });
     }
-    if (this.state.modalData.cateogryId == "") {
+    if (this.state.modalData.cateogryId === "") {
       this.setState({ isCategory: "Please select Category." });
     } else {
       this.setState({ isCategory: "" });
     }
-    if (this.state.modalData.subCategoryId == "") {
+    if (this.state.modalData.subCategoryId === "") {
       this.setState({ isSubCategory: "Please select Sub Category." });
     } else {
       this.setState({ isSubCategory: "" });
     }
-    if (this.state.modalData.issueTypeId == "") {
+    if (this.state.modalData.issueTypeId === "") {
       this.setState({ isIssueType: "Please select Issue Type." });
     } else {
       this.setState({ isIssueType: "" });
@@ -349,12 +349,12 @@ class StoreCampaign extends Component {
 
     setTimeout(() => {
       if (
-        this.state.isTiketTitle == "" &&
-        this.state.isTiketDetails == "" &&
-        this.state.isBrand == "" &&
-        this.state.isCategory == "" &&
-        this.state.isSubCategory == "" &&
-        this.state.isIssueType == ""
+        this.state.isTiketTitle === "" &&
+        this.state.isTiketDetails === "" &&
+        this.state.isBrand === "" &&
+        this.state.isCategory === "" &&
+        this.state.isSubCategory === "" &&
+        this.state.isIssueType === ""
       ) {
         let self = this;
 

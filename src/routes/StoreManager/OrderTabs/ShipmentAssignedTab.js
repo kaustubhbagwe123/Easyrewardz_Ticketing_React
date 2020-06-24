@@ -6,11 +6,9 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
-import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
-import Demo from "../../../store/Hashtag";
 
 class ShipmentAssignedTab extends Component {
   constructor(props) {
@@ -78,7 +76,6 @@ class ShipmentAssignedTab extends Component {
       });
   }
   AssignedPaginationOnChange = async (numPage) => {
-    debugger;
     await this.setState({
       assignCurrentPage: numPage,
     });
@@ -95,7 +92,6 @@ class ShipmentAssignedTab extends Component {
   };
 
   handlechange(i, e) {
-    debugger;
     var name = e.target.name;
     let shipmentAssignedGridData = [...this.state.shipmentAssignedGridData];
     if (name === "mobileNumber") {
@@ -123,7 +119,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateShipmentAssignedData(row, IsProceed) {
-    debugger;
     let self = this;
     if (row.awbNo !== "" && row.courierPartner.toLowerCase() !== "store") {
       if (row.referenceNo === "") {
@@ -169,6 +164,8 @@ class ShipmentAssignedTab extends Component {
           self.setState({
             orderPopoverOverlay: false,
           });
+        }else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -177,7 +174,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateDeliveredByShipAssigned(orderID) {
-    debugger;
     let self = this;
 
     axios({
@@ -197,6 +193,8 @@ class ShipmentAssignedTab extends Component {
           self.setState({
             orderPopoverOverlay: false,
           });
+        }else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -205,7 +203,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateShipmentAssignedRTO(orderID) {
-    debugger;
     let self = this;
 
     axios({
@@ -225,6 +222,8 @@ class ShipmentAssignedTab extends Component {
           self.setState({
             orderPopoverOverlay: false,
           });
+        }else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -233,8 +232,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handlePrintManifest(orderIds) {
-    debugger;
-    let self = this;
 
     axios({
       method: "post",
@@ -259,8 +256,6 @@ class ShipmentAssignedTab extends Component {
   }
 
   handlePrintLabel(shipmentId) {
-    debugger;
-    let self = this;
 
     axios({
       method: "post",
