@@ -762,7 +762,32 @@
     > th {
     padding: 5px 5px !important;
     height: 30px;
-    width: 90px;
+    width: 100px;
+  }
+  #delivered-tab .custom-antd-table.antd-table-campaign.antd-table-order
+    .ant-table-thead
+    > tr
+    > th {
+    padding: 5px 5px !important;
+    height: 30px;
+    width: auto;
+  }
+  #shipment-assigned-tab .custom-antd-table.antd-table-campaign.antd-table-order
+    .ant-table-thead
+    > tr
+    > th {
+    padding: 5px 5px !important;
+    height: 30px;
+    width: auto;
+  }
+  #delivered-tab .antd-table-order .ant-table-tbody > tr > td {
+    width: auto;
+  }
+  #shipment-assigned-tab .antd-table-order .ant-table-tbody > tr > td {
+    width: auto;
+  }
+  #delivered-tab .antd-table-order .ant-table-row-expand-icon {
+    margin-left: 10px;
   }
   .antd-table-order .ant-table-tbody > tr > td {
     padding: 15px 5px !important;
@@ -787,7 +812,7 @@
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
     padding-right: 15px !important;
   }
   .antd-table-order .ant-table-tbody > tr > td:first-child {
@@ -800,7 +825,7 @@
     transform: none;
     display: inline-block;
     margin-top: 0px;
-    margin-left: -2px;
+    margin-left: 5px;
     background-size: 20px 20px;
     width: 20px;
     height: 20px;

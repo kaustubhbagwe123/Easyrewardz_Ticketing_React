@@ -11970,6 +11970,19 @@ table tr th:last-child {
     justify-content: flex-end;
   }
   /* program code ends */
+
+  .order-popover .antd-table-order .ant-table-tbody > tr > td {
+    padding: 15px 5px !important;
+    width: 60px;
+}
+.order-popover .custom-antd-table.antd-table-campaign.antd-table-order .ant-table-thead > tr > th {
+  padding: 5px 5px !important;
+  height: 30px;
+  width: auto;
+}
+.order-popover .ant-table-thead > tr > th:nth-child(2), .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
+  width: 75px !important;
+}
 }
 
 @media only screen and (max-width: 480px) {
@@ -11985,9 +11998,9 @@ table tr th:last-child {
     padding: 0;
     font-size: 12px;
   }
-  .active a {
+  /* .active a {
     color: #fff !important;
-  }
+  } */
   .header-right-icons a:last-child {
     margin-right: 0px;
   }
