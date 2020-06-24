@@ -185,7 +185,7 @@ class Header extends Component {
       tempCardSearch: "",
       reportAccess: "none",
       mobileHeading: "",
-      messageHistoryChatData:[]
+      messageHistoryChatData: [],
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -564,9 +564,9 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
+        debugger;
         var data = res.data.responseData;
         var status = res.data.message;
-
         if (status === "Success") {
           var strTag = data.agentName.split(" ");
           var nameTag = strTag[0].charAt(0).toUpperCase();
@@ -786,6 +786,15 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
+        var chatData = ongoingChatsData.filter(
+          (x) => x.chatID === self.state.chatId
+        );
+        if (chatData.length == 0) {
+          self.setState({
+            customerName: "",
+            messageData: [],
+          });
+        }
         if (message === "Success" && ongoingChatsData) {
           self.setState({
             ongoingChatsData,
@@ -953,9 +962,7 @@ class Header extends Component {
         if (message === "Success" && messageData) {
           if (self.state.showHistoricalChat) {
             self.setState({
-              
-              messageHistoryChatData:messageData,
-              
+              messageHistoryChatData: messageData,
             });
           } else {
             self.setState({
@@ -2561,7 +2568,7 @@ class Header extends Component {
                 </li>
                 <li>
                   <h3>HomeEshop</h3>
-                  <p>SMB3557</p>
+                  <p>{this.state.storeCode}</p>
                 </li>
               </ul>
             </div>
