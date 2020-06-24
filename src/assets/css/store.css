@@ -3626,6 +3626,7 @@ table tr th:last-child {
   background-color: #2561a8;
   color: #fff;
   margin-top: 25px;
+  cursor: pointer;
 }
 #check-service-tab {
   text-align: center;
