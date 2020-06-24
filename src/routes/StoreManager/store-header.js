@@ -186,6 +186,7 @@ class Header extends Component {
       reportAccess: "none",
       mobileHeading: "",
       messageHistoryChatData: [],
+      isMainLoader:false
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -776,7 +777,7 @@ class Header extends Component {
     } else {
       search = this.state.searchChat;
     }
-
+this.setState({ isMainLoader: true });
     await axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/GetOngoingChat",
@@ -793,6 +794,7 @@ class Header extends Component {
           self.setState({
             customerName: "",
             messageData: [],
+            isMainLoader:false
           });
         }
         if (message === "Success" && ongoingChatsData) {
@@ -815,6 +817,7 @@ class Header extends Component {
 
   ////handle Get New Chat
   async handleGetNewChat() {
+    this.setState({isMainLoader:true})
     let self = this;
     await axios({
       method: "post",
@@ -825,14 +828,14 @@ class Header extends Component {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
-          self.setState({ newChatsData });
+          self.setState({ newChatsData,isMainLoader:false });
           // setInterval(() => {
           // if (self.state.chatModal) {
           //   self.handleGetNewChat();
           // }
           // }, 40000);
         } else {
-          self.setState({ newChatsData: [] });
+          self.setState({ newChatsData: [],isMainLoader:false });
         }
       })
       .catch((response) => {
@@ -878,6 +881,7 @@ class Header extends Component {
     let self = this;
 
     this.setState({
+      isMainLoader:true,
       isCustEndChat: false,
       storeManagerId,
       rowChatId: 0,
@@ -926,13 +930,8 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          // self.setState({
-          //   chatId: id,
-          // });
           self.handleGetAgentRecentChat(customerId);
           self.handleMakeAsReadOnGoingChat(id, true);
-          // self.handleGetOngoingChat();
-          // self.handleGetChatNotificationCount();
           self.handleGetNewChat();
         }
       })
@@ -947,6 +946,7 @@ class Header extends Component {
     if (RecentChat) {
       forRecentChat = 1;
     }
+    this.setState({isMainLoader:true})
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/getChatMessagesList",
@@ -963,12 +963,14 @@ class Header extends Component {
           if (self.state.showHistoricalChat) {
             self.setState({
               messageHistoryChatData: messageData,
+              isMainLoader:false
             });
           } else {
             self.setState({
               ...messageData,
               messageData,
               isScroll: true,
+              isMainLoader:false
             });
           }
           // self.handleGetChatNotificationCount();
@@ -1001,7 +1003,9 @@ class Header extends Component {
 
       this.setState({
         message: "",
+        isMainLoader:true
       });
+      
       axios({
         method: "post",
         url: config.apiUrl + "/CustomerChat/saveChatMessages",
@@ -1022,6 +1026,7 @@ class Header extends Component {
               remainingCount: self.state.tempRemainingCount,
               suggestionModal: false,
               suggestionModalMob: false,
+              isMainLoader:false,
             });
             self.handleGetChatMessagesList(self.state.chatId);
             self.handleGetOngoingChat();
@@ -1032,7 +1037,7 @@ class Header extends Component {
               imageURL
             );
           } else {
-            self.setState({ isSendRecomended: false });
+            self.setState({ isSendRecomended: false ,isMainLoader:false,});
           }
         })
         .catch((response) => {
@@ -2672,6 +2677,12 @@ class Header extends Component {
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat window"}
             </h3>
+            {this.state.isMainLoader ? (
+                        // <div className="example">
+                          // <Spin size="small"/>
+                          <div class="loader"></div>
+                        // </div>
+                      ) : null}
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>
@@ -2733,6 +2744,7 @@ class Header extends Component {
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
+ 
                       <Select
                         className="agentchatdrop-down"
                         showArrow={true}
@@ -2820,7 +2832,10 @@ class Header extends Component {
                             </div>
                           ))
                         : null}
+
+                      
                     </div>
+                    
                   </div>
                   {this.state.ongoingChatsData.length === 0 && (
                     <p className="no-record" style={{ marginTop: "0px" }}>
