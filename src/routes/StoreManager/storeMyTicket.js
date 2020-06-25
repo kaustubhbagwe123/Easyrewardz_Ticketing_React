@@ -15,8 +15,8 @@ import StoreMyTicketStatus from "./StoreMyTicketStatus";
 import moment from "moment";
 import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
-import * as translationHI from './../../translations/hindi'
-import * as translationMA from './../../translations/marathi'
+import * as translationHI from "./../../translations/hindi";
+import * as translationMA from "./../../translations/marathi";
 
 class storeMyTicket extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class storeMyTicket extends Component {
       historicalTicket: false,
       historicalDetails: [],
       loading: false,
-      translateLanguage: {}
+      translateLanguage: {},
     };
   }
   componentDidMount() {
@@ -50,16 +50,13 @@ class storeMyTicket extends Component {
       this.props.history.push("myTicketList");
     }
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   /// ---------------------API call start---------------------------------
@@ -366,7 +363,10 @@ class storeMyTicket extends Component {
                       className="headphone"
                     />
                     <label className="id-abc-1234">
-                    {TranslationContext!==undefined?TranslationContext.label.id:"ID"} - {this.state.ticketDetailsData.ticketID}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.id
+                        : "ID"}{" "}
+                      - {this.state.ticketDetailsData.ticketID}
                       <span className="updated-2-d-ago">
                         {this.state.ticketDetailsData.createdDate}
                       </span>
@@ -393,8 +393,10 @@ class storeMyTicket extends Component {
                       classNames={{ modal: "historical-popup" }}
                     >
                       <label className="lblHistorical">
-                      {TranslationContext!==undefined?TranslationContext.label.tickethistorical:"Ticket Historical"}
-                        </label>
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.tickethistorical
+                          : "Ticket Historical"}
+                      </label>
                       <img
                         src={CancelImg}
                         alt="cancelImg"
@@ -406,19 +408,36 @@ class storeMyTicket extends Component {
                           data={this.state.historicalDetails}
                           columns={[
                             {
-                              Header: <span> {TranslationContext!==undefined?TranslationContext.span.name:"Name"}</span>,
+                              Header: (
+                                <span>
+                                  {" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.name
+                                    : "Name"}
+                                </span>
+                              ),
                               accessor: "name",
                               width: 150,
                             },
                             {
-                              Header: <span> {TranslationContext!==undefined?TranslationContext.span.actions:"Action"}</span>,
+                              Header: (
+                                <span>
+                                  {" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.actions
+                                    : "Action"}
+                                </span>
+                              ),
                               accessor: "action",
                             },
                             {
-                              Header: <span>
-                                   {TranslationContext!==undefined?TranslationContext.span.timeanddate:"Time & Date"}
-
-                              </span>,
+                              Header: (
+                                <span>
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.timeanddate
+                                    : "Time & Date"}
+                                </span>
+                              ),
                               accessor: "dateandTime",
                               width: 200,
                               Cell: (row) => {
@@ -445,33 +464,33 @@ class storeMyTicket extends Component {
                       style={{ float: "right", marginTop: "0px" }}
                       //   className={this.state.isKB ? "iskbticket" : ""}
                     >
-                      
-                        <img
-                          src={Headphone2Img}
-                          alt="headphone"
-                          className="oval-55"
-                          title="Agent List"
-                        />
-                        <label
-                          className="naman-r"
-                          // onClick={this.HandlelabelModalOpen.bind(this)}
-                        >
-                          {this.state.ticketDetailsData.assignTo}
-                        </label>
-                        <img
-                          src={DownImg}
-                          alt="down"
-                          className="down-header"
-                          style={{ display: "none" }}
-                        />
-                      
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55"
+                        title="Agent List"
+                      />
+                      <label
+                        className="naman-r"
+                        // onClick={this.HandlelabelModalOpen.bind(this)}
+                      >
+                        {this.state.ticketDetailsData.assignTo}
+                      </label>
+                      <img
+                        src={DownImg}
+                        alt="down"
+                        className="down-header"
+                        style={{ display: "none" }}
+                      />
+
                       <button
                         type="button"
                         className="myticket-submit-solve-button"
                         onClick={this.handleUpdateTicketDetails.bind(this)}
                       >
-                          {TranslationContext!==undefined?TranslationContext.button.submit:"SUBMIT"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.submit
+                          : "SUBMIT"}
                       </button>
                     </div>
                   </div>
@@ -485,7 +504,9 @@ class storeMyTicket extends Component {
                     <div style={{ padding: "15px", paddingLeft: "30px" }}>
                       <div>
                         <label className="mobile-number">
-                        {TranslationContext!==undefined?TranslationContext.label.customername:"Customer Name"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.customername
+                            : "Customer Name"}
                         </label>
                         <br />
                         <label className="mobile-no">
@@ -494,7 +515,9 @@ class storeMyTicket extends Component {
                       </div>
                       <div className="m-t-15">
                         <label className="mobile-number">
-                        {TranslationContext!==undefined?TranslationContext.label.mobilenumber:"Mobile Number"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.mobilenumber
+                            : "Mobile Number"}
                         </label>
                         <br />
                         <label className="mobile-no">
@@ -526,7 +549,9 @@ class storeMyTicket extends Component {
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                           <div className="form-group">
                             <label className="label-4">
-                            {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"}
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -535,8 +560,9 @@ class storeMyTicket extends Component {
                               name="ticketStatus"
                             >
                               <option>
-
-                              {TranslationContext!==undefined?TranslationContext.option.ticketstatus:"Ticket Status"}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.ticketstatus
+                                  : "Ticket Status"}
                               </option>
                               {this.state.TicketStatusData !== null &&
                                 this.state.TicketStatusData.map((item, s) => (
@@ -551,7 +577,9 @@ class storeMyTicket extends Component {
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                           <div className="form-group disabled-link">
                             <label className="label-4">
-                            {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.priority
+                                : "Priority"}
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -571,7 +599,9 @@ class storeMyTicket extends Component {
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                           <div className="form-group disabled-link">
                             <label className="label-4">
-                            {TranslationContext!==undefined?TranslationContext.label.brand:"Brand"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.brand
+                                : "Brand"}
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -591,7 +621,9 @@ class storeMyTicket extends Component {
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                           <div className="form-group disabled-link">
                             <label className="label-4">
-                            {TranslationContext!==undefined?TranslationContext.label.category:"Category"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.category
+                                : "Category"}
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -600,8 +632,9 @@ class storeMyTicket extends Component {
                               onChange={this.handleDropDownChange}
                             >
                               <option className="select-category-placeholder">
-                              {TranslationContext!==undefined?TranslationContext.option.selectcategory:"Select Category"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectcategory
+                                  : "Select Category"}
                               </option>
                               {this.state.CategoryData !== null &&
                                 this.state.CategoryData.map((item, i) => (
@@ -619,7 +652,9 @@ class storeMyTicket extends Component {
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                           <div className="form-group disabled-link">
                             <label className="label-4">
-                            {TranslationContext!==undefined?TranslationContext.label.subcategory:"Sub Category"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.subcategory
+                                : "Sub Category"}
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -628,8 +663,9 @@ class storeMyTicket extends Component {
                               name="subCategoryID"
                             >
                               <option className="select-category-placeholder">
-                              {TranslationContext!==undefined?TranslationContext.option.selectsubcategory:"Select Sub Category"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectsubcategory
+                                  : "Select Sub Category"}
                               </option>
                               {this.state.SubCategoryData !== null &&
                                 this.state.SubCategoryData.map((item, i) => (
@@ -647,7 +683,9 @@ class storeMyTicket extends Component {
                         <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                           <div className="form-group disabled-link">
                             <label className="label-4">
-                            {TranslationContext!==undefined?TranslationContext.label.issuetype:"Issue Type"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.issuetype
+                                : "Issue Type"}
                             </label>
                             <select
                               className="rectangle-9 select-category-placeholder"
@@ -656,8 +694,9 @@ class storeMyTicket extends Component {
                               name="issueTypeID"
                             >
                               <option className="select-sub-category-placeholder">
-                              {TranslationContext!==undefined?TranslationContext.option.selectissuetype:"Select Issue Type"}
-                                
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.option.selectissuetype
+                                  : "Select Issue Type"}
                               </option>
                               {this.state.IssueTypeData !== null &&
                                 this.state.IssueTypeData.map((item, i) => (
@@ -682,7 +721,10 @@ class storeMyTicket extends Component {
               <div className="rectangle-3 text-editor">
                 <div className="row mt-2">
                   <label className="ticket-title-where mb-0">
-                    {TranslationContext!==undefined?TranslationContext.label.tickettitle:"Ticket Title"}:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.tickettitle
+                      : "Ticket Title"}
+                    :
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -692,7 +734,10 @@ class storeMyTicket extends Component {
                 </div>
                 <div className="row mt-3">
                   <label className="ticket-title-where mb-0">
-                    {TranslationContext!==undefined?TranslationContext.label.ticketdetails:"Ticket Details"}:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.ticketdetails
+                      : "Ticket Details"}
+                    :
                   </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
@@ -704,7 +749,10 @@ class storeMyTicket extends Component {
               <div className="row">
                 <div className="col-md-4" style={{ top: "20px" }}>
                   <label className="storeTickeTtl mb-0">
-                     {TranslationContext!==undefined?TranslationContext.label.notes:"Notes"}:
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.notes
+                      : "Notes"}
+                    :
                     {this.state.NotesCount < 9
                       ? "0" + this.state.NotesCount
                       : this.state.NotesCount}
@@ -718,7 +766,11 @@ class storeMyTicket extends Component {
                 >
                   <textarea
                     className="Add-Notes-textarea"
-                    placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.addnotes:"Add Notes"}
+                    placeholder={
+                      TranslationContext !== undefined
+                        ? TranslationContext.placeholder.addnotes
+                        : "Add Notes"
+                    }
                     name="NoteAddComment"
                     value={this.state.NoteAddComment}
                     onChange={this.handleNoteOnChange}
@@ -739,7 +791,9 @@ class storeMyTicket extends Component {
                     onClick={this.handleNoteAddComments.bind(this)}
                     style={{ marginTop: "5px" }}
                   >
-                    {TranslationContext!==undefined?TranslationContext.button.addcomment:"ADD COMMENT"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.button.addcomment
+                      : "ADD COMMENT"}
                   </button>
                 </div>
 
