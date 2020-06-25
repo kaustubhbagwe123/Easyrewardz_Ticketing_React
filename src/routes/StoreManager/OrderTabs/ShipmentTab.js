@@ -784,7 +784,6 @@ class ShipmentTab extends Component {
           <Pagination
             currentPage={this.state.currentPage}
             totalSize={this.state.totalCount}
-            // totalSize={row.customerCount}
             sizePerPage={this.state.postsPerPage}
             changeCurrentPage={this.PaginationOnChange}
             theme="bootstrap"
@@ -875,11 +874,6 @@ class ShipmentTab extends Component {
                         ? "tab-pane fade"
                         : "tab-pane fade show active"
                     }
-                    // className={
-                    //   this.state.createdShoppingTabs
-                    //     ? "tab-pane fade"
-                    //     : "tab-pane fade show active"
-                    // }
                     id="article-Map-tab"
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
@@ -939,10 +933,6 @@ class ShipmentTab extends Component {
                                 dataIndex: "itemPrice",
                               },
                               {
-                                // title:
-                                //   TranslationContext !== undefined
-                                //     ? TranslationContext.title.quantity
-                                //     : "Price Paid",
                                 title: "Article Quantity",
                                 dataIndex: "quantity",
                               },
