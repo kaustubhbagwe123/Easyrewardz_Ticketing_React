@@ -42,6 +42,7 @@ class OrderTab extends Component {
       PincodeMdl: false,
       orderId: 0,
       AddressConf: false,
+      pincodeChecAvaibility: false,
     };
   }
 
@@ -201,6 +202,9 @@ class OrderTab extends Component {
   }
   /// handle Submit Check service data
   handleUpdateCheckServiceData(ordId) {
+    this.setState({
+      pincodeChecAvaibility: true,
+    });
     var self = this;
     axios({
       method: "post",
@@ -217,6 +221,7 @@ class OrderTab extends Component {
         if (status === "false") {
           self.setState({
             PincodeMdl: true,
+            pincodeChecAvaibility: false,
             orderId: ordId,
           });
         } else {
@@ -314,6 +319,7 @@ class OrderTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
+          self.handleGetCheckServiceData();
           self.setState({
             orderId: 0,
             AddressConf: false,
@@ -792,6 +798,16 @@ class OrderTab extends Component {
                                         item.id
                                       )}
                                     />
+                                    {this.state.pincodeChecAvaibility && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        Checking your availability.
+                                      </p>
+                                    )}
                                   </div>
                                   <div className="col-md-6">
                                     <p>
