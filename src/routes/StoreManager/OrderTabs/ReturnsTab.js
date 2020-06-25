@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Select } from "antd";
-import Modal from "react-responsive-modal";
+import { Table, Popover } from "antd";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
-import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
 
@@ -194,7 +192,6 @@ class ReturnTab extends Component {
                               {
                                 title:  TranslationContext!==undefined?TranslationContext.title.itemname:"Item Name",
                                 dataIndex: "itemName",
-                                // width: 150,
                               },
                               {
                                 title: TranslationContext!==undefined?TranslationContext.title.itemprice:"Item Price",
@@ -239,12 +236,12 @@ class ReturnTab extends Component {
                 title: TranslationContext!==undefined?TranslationContext.title.status:"Status",
                 dataIndex: "statusName",
                 className: "camp-status-header camp-status-header-statusFilter table-coloum-hide order-status-header",
-                filterDropdown: (data, row) => {
+                filterDropdown: () => {
                   return (
                     <div className="campaign-status-drpdwn">
                       <ul>
                         {this.state.statusFilterData !== null &&
-                          this.state.statusFilterData.map((item, b) => (
+                          this.state.statusFilterData.map((item) => (
                             <li>
                               <input
                                 type="checkbox"
@@ -253,7 +250,6 @@ class ReturnTab extends Component {
                                 onChange={this.handleCheckReturnsIndividualStatus.bind(
                                   this
                                 )}
-                                // checked={this.state.CheckBoxAllStatus}
                                 name="ReturnStatus"
                                 attrIds={item.statusID}
                               />
@@ -297,7 +293,7 @@ class ReturnTab extends Component {
               },
               {
                 title:  TranslationContext!==undefined?TranslationContext.title.actions:"Action",
-                render: (row, item) => {
+                render: () => {
                   debugger;
                   return (
                     <div className="d-flex">
@@ -314,7 +310,7 @@ class ReturnTab extends Component {
                 },
               },
             ]}
-            expandedRowRender={(row, item) => {
+            expandedRowRender={(row) => {
               debugger;
               return (
                 <div className="order-expanded-cntr">
@@ -352,7 +348,6 @@ class ReturnTab extends Component {
           <Pagination
             currentPage={this.state.currentPage}
             totalSize={this.state.totalCount}
-            // totalSize={row.customerCount}
             sizePerPage={this.state.postsPerPage}
             changeCurrentPage={this.ReturnPaginationOnChange}
             theme="bootstrap"

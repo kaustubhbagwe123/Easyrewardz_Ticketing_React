@@ -68,7 +68,7 @@ class ShoppingBagTab extends Component {
         FilterDelivery: this.state.deliveryStrStatus,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -121,7 +121,7 @@ class ShoppingBagTab extends Component {
         pageID: 1,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -149,7 +149,7 @@ class ShoppingBagTab extends Component {
         pageID: 1,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -181,7 +181,7 @@ class ShoppingBagTab extends Component {
           CancelComment: this.state.ShopCancelComment,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -214,7 +214,7 @@ class ShoppingBagTab extends Component {
           Amount: this.state.amountNo,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -474,8 +474,8 @@ class ShoppingBagTab extends Component {
                           <img src={OrderInfo} className="order-info" />
                         </Popover>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </div>
                   );
                 },
@@ -493,7 +493,6 @@ class ShoppingBagTab extends Component {
                                 onChange={this.handleCheckShopBagIndividualStatus.bind(
                                   this
                                 )}
-                                // checked={this.state.CheckBoxAllStatus}
                                 name="ShopBagStatus"
                                 attrIds={item.statusID}
                               />
@@ -547,13 +546,7 @@ class ShoppingBagTab extends Component {
                   "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header order-desktop",
                 render: (row, item) => {
                   return (
-                    <p
-                    // className={
-                    //   item.deliveryTypeName === "Store Delivery"
-                    //     ? "order-clr-green"
-                    //     : "order-clr-blue"
-                    // }
-                    >
+                    <p>
                       {item.deliveryTypeName}
                     </p>
                   );
@@ -572,7 +565,6 @@ class ShoppingBagTab extends Component {
                                 onChange={this.handleCheckShopBagDeliveryStatus.bind(
                                   this
                                 )}
-                                // checked={this.state.CheckBoxAllStatus}
                                 name="shopBagDeliveryStatus"
                                 attrIds={item.deliveryTypeID}
                               />
@@ -628,13 +620,13 @@ class ShoppingBagTab extends Component {
                       {item.pickupDate === "" && item.pickupTime === "" ? (
                         <p className="order-clr-blue">-NIL-</p>
                       ) : (
-                        <>
-                          <p className="order-clr-blue">{item.pickupDate},</p>
-                          <p className="order-clr-blue order-more-small-font">
-                            {item.pickupTime}
-                          </p>
-                        </>
-                      )}
+                          <>
+                            <p className="order-clr-blue">{item.pickupDate},</p>
+                            <p className="order-clr-blue order-more-small-font">
+                              {item.pickupTime}
+                            </p>
+                          </>
+                        )}
                     </div>
                   );
                 },
@@ -694,7 +686,7 @@ class ShoppingBagTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .amount
+                                            .amount
                                           : "Enter Amount"
                                       }
                                       name="amountNo"
@@ -738,7 +730,7 @@ class ShoppingBagTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .entercomment
+                                            .entercomment
                                           : "Enter Comment"
                                       }
                                       value={this.state.ShopCancelComment}
@@ -818,8 +810,8 @@ class ShoppingBagTab extends Component {
                             <img src={OrderInfo} className="order-info" />
                           </Popover>
                         ) : (
-                          ""
-                        )}
+                            ""
+                          )}
                       </div>
                     </div>
                     <div className="col-6">
@@ -829,23 +821,17 @@ class ShoppingBagTab extends Component {
                       {row.pickupDate === "" && row.pickupTime === "" ? (
                         <p className="order-clr-blue">-NIL-</p>
                       ) : (
-                        <>
-                          <p className="order-clr-blue">{row.pickupDate},</p>
-                          <p className="order-clr-blue order-small-font">
-                            {row.pickupTime}
-                          </p>
-                        </>
-                      )}
+                          <>
+                            <p className="order-clr-blue">{row.pickupDate},</p>
+                            <p className="order-clr-blue order-small-font">
+                              {row.pickupTime}
+                            </p>
+                          </>
+                        )}
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">Delivery Type</p>
-                      <p
-                      // className={
-                      //   row.deliveryTypeName === "Store Delivery"
-                      //     ? "order-clr-green"
-                      //     : "order-clr-blue"
-                      // }
-                      >
+                      <p>
                         {row.deliveryTypeName}
                       </p>
                     </div>
@@ -873,7 +859,6 @@ class ShoppingBagTab extends Component {
           <Pagination
             currentPage={this.state.currentPage}
             totalSize={this.state.totalCount}
-            // totalSize={row.customerCount}
             sizePerPage={this.state.postsPerPage}
             changeCurrentPage={this.PaginationOnChange}
             theme="bootstrap"
