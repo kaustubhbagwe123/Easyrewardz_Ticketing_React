@@ -33,9 +33,6 @@ class ShoppingBagTab extends Component {
       ShopCancelComment: "",
       invoiceNo: "",
       amountNo: "",
-      invoiceNovalidation: "",
-      amountNoValidation: "",
-      cancelCommentValidation: "",
     };
   }
 
@@ -189,7 +186,6 @@ class ShoppingBagTab extends Component {
           if (status === "Success") {
             self.setState({
               ShopCancelComment: "",
-              cancelCommentValidation: "",
             });
             NotificationManager.success("Success.");
             self.handleGetShoppingBagGridData();
@@ -201,13 +197,10 @@ class ShoppingBagTab extends Component {
           console.log(data);
         });
     } else {
-      self.setState({
-        cancelCommentValidation: "Please Enter Comment.",
-      });
+      NotificationManager.error("Please Enter Comment.");
     }
   }
   handleConvertToOrder(ShopId, e) {
-    debugger;
     e.stopPropagation();
     let self = this;
     if (this.state.invoiceNo !== "" && this.state.amountNo !== "") {
@@ -227,8 +220,6 @@ class ShoppingBagTab extends Component {
             self.setState({
               invoiceNo: "",
               amountNo: "",
-              invoiceNovalidation: "",
-              amountNoValidation: "",
             });
             NotificationManager.success("Success.");
             self.handleGetShoppingBagGridData();
@@ -240,10 +231,11 @@ class ShoppingBagTab extends Component {
           console.log(data);
         });
     } else {
-      self.setState({
-        invoiceNovalidation: "Please Enter Order Id.",
-        amountNoValidation: "Please Enter Amount.",
-      });
+      if (this.state.invoiceNo === "") {
+        NotificationManager.error("Please Enter Order Id.");
+      } else {
+        NotificationManager.error("Please Enter Amount.");
+      }
     }
   }
   ///-------------------API function end--------------------------------
@@ -260,7 +252,7 @@ class ShoppingBagTab extends Component {
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
-      currentPage:1
+      currentPage: 1,
     });
 
     this.handleGetShoppingBagGridData();
@@ -690,16 +682,6 @@ class ShoppingBagTab extends Component {
                                       onChange={this.handleTextOnchage}
                                       autoComplete="off"
                                     />
-                                    {this.state.invoiceNo === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.invoiceNovalidation}
-                                      </p>
-                                    )}
                                   </div>
                                   <div>
                                     <p>
@@ -720,16 +702,6 @@ class ShoppingBagTab extends Component {
                                       onChange={this.handleTextOnchage}
                                       autoComplete="off"
                                     />
-                                    {this.state.amountNo === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.amountNoValidation}
-                                      </p>
-                                    )}
                                   </div>
                                 </div>
                               </>
@@ -773,16 +745,6 @@ class ShoppingBagTab extends Component {
                                       name="ShopCancelComment"
                                       onChange={this.handleTextOnchage}
                                     ></textarea>
-                                    {this.state.ShopCancelComment === "" && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px",
-                                        }}
-                                      >
-                                        {this.state.cancelCommentValidation}
-                                      </p>
-                                    )}
                                   </div>
                                 </div>
                               </>

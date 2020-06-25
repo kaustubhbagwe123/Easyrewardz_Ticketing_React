@@ -557,7 +557,7 @@ class ShipmentAssignedTab extends Component {
                                     : "Enter Mobile No."
                                 }
                                 value={item.mobileNumber}
-                                maxLength={10}
+                                // maxLength={10}
                                 onChange={this.handlechange.bind(this, index)}
                               />
                             </div>

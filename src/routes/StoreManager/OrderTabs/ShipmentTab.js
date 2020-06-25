@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover } from "antd";
+import { Table, Popover, Popconfirm } from "antd";
 import Modal from "react-responsive-modal";
 // import NoPayment from "./../../../assets/Images/no-payment.png";
 // import CreditCard from "./../../../assets/Images/credit-card.png";
@@ -18,7 +18,6 @@ import "react-pagination-js/dist/styles.css";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
-var rowid = 0;
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -44,6 +43,7 @@ class ShipmentTab extends Component {
       createdShoppingTabs: false,
       airWayBill2ndTab: false,
       IsStoreDelivery: false,
+      createShipmentBtnDisbaled: false,
     };
   }
 
@@ -262,6 +262,9 @@ class ShipmentTab extends Component {
         itemIds += this.state.ShipmentOrderItem[i].id + ",";
       }
     }
+    this.setState({
+      createShipmentBtnDisbaled: true,
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
@@ -281,6 +284,7 @@ class ShipmentTab extends Component {
               AirwayBillAWBNo: data.awbNumber,
               AirwayItemIds: data.itemIDs,
               createdShoppingTabs: true,
+              createShipmentBtnDisbaled: false,
             });
             self.handleGetShipmentTabGridData();
             if (data.isStoreDelivery) {
@@ -295,6 +299,7 @@ class ShipmentTab extends Component {
           NotificationManager.error(status);
           self.setState({
             createdShoppingTabs: false,
+            createShipmentBtnDisbaled: false,
           });
         }
       })
@@ -578,13 +583,12 @@ class ShipmentTab extends Component {
                     : "Action",
                 className: "action-w",
                 render: (row, item) => {
-                  rowid = rowid + 1;
                   return (
                     <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
                         <>
-                          <Popover
-                            content={
+                          <Popconfirm
+                            title={
                               <div className="pickuppending-table">
                                 <table>
                                   <tbody>
@@ -628,7 +632,7 @@ class ShipmentTab extends Component {
                                                 .pickupdone
                                             : "Pickup Done"}
                                         </label>
-                                        <button
+                                        {/* <button
                                           type="button"
                                           className="popbtn"
                                           onClick={this.handleUpdateDateandTime.bind(
@@ -639,9 +643,9 @@ class ShipmentTab extends Component {
                                           {TranslationContext !== undefined
                                             ? TranslationContext.button.yes
                                             : "Yes"}
-                                        </button>
+                                        </button> */}
                                       </td>
-                                      <td>
+                                      {/* <td>
                                         <label style={{ visibility: "hidden" }}>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
@@ -656,22 +660,26 @@ class ShipmentTab extends Component {
                                             ? TranslationContext.button.no
                                             : "No"}
                                         </button>
-                                      </td>
+                                      </td> */}
                                     </tr>
                                   </tbody>
                                 </table>
                               </div>
                             }
-                            trigger="click"
-                            overlayClassName="order-popover order-popover-butns"
+                            overlayClassName="order-popover order-popover-butns popbtn"
                             placement="bottomRight"
-                            // onVisibleChange={(visible) =>
-                            //   this.setState({ orderPopoverOverlay: visible })
-                            // }
-                            id={item.actionTypeName + rowid}
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                            icon={false}
+                            okText="Yes"
+                            onConfirm={this.handleUpdateDateandTime.bind(
+                              this,
+                              item.id
+                            )}
+                            cancelText="No"
                           >
                             <button
-                              id={item.actionTypeName + rowid}
                               className={
                                 item.actionTypeName === "Pickup Pending"
                                   ? "butn order-grid-butn order-grid-butn-green"
@@ -680,7 +688,7 @@ class ShipmentTab extends Component {
                             >
                               {item.actionTypeName}
                             </button>
-                          </Popover>
+                          </Popconfirm>
                         </>
                       ) : null}
                       {item.actionTypeName === "Create Shipment" ? (
@@ -963,7 +971,11 @@ class ShipmentTab extends Component {
                         </button>
                         <button
                           style={{ marginRight: "0px" }}
-                          className="btn-shipment-saveNext"
+                          className={
+                            this.state.createShipmentBtnDisbaled
+                              ? "btnClickDisabled btn-shipment-saveNext"
+                              : "btn-shipment-saveNext"
+                          }
                           onClick={this.handleCreateShipmentAWB.bind(this)}
                         >
                           Save &amp; Next
