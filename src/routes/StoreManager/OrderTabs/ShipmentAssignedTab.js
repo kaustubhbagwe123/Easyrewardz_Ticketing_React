@@ -35,7 +35,6 @@ class ShipmentAssignedTab extends Component {
     }
   }
   handleGetShipmentAssignedData() {
-    debugger;
     let self = this;
     var pageNumber = this.state.assignCurrentPage;
     this.setState({
@@ -53,7 +52,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -155,7 +153,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
@@ -184,7 +181,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
@@ -213,7 +209,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
@@ -241,7 +236,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           window.location.href = res.data.responseData.manifestUrl;
@@ -265,7 +259,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           window.location.href = res.data.responseData.label_url;
@@ -480,7 +473,6 @@ class ShipmentAssignedTab extends Component {
               },
             ]}
             expandedRowRender={(row) => {
-              debugger;
               return (
                 <div className="innertabcollapse">
                   <div className="">
