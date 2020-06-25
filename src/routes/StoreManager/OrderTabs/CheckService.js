@@ -80,7 +80,7 @@ class CheckService extends Component {
               btnSubmitData: false,
             });
           } else {
-            NotificationManager.error("Delivery Not Available.");
+            NotificationManager.error("Service not available on entered Pincode.");
             self.setState({
               btnSubmitData: false,
             });
