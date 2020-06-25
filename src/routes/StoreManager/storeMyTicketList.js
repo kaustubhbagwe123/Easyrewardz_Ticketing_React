@@ -11,13 +11,9 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
-import * as translationHI from "../../translations/hindi";
-import * as translationMA from "../../translations/marathi";
-// import Twitter from "./../../assets/Images/twitter.png";
-// import HeadPhone3 from "./../../assets/Images/headphone3.png";
-// import MailImg from "./../../assets/Images/msg.png";
-// import FacebookImg from "./../../assets/Images/facebook.png";
-// import Chat from "./../../assets/Images/chat.png";
+import * as translationHI from '../../translations/hindi';
+import * as translationMA from '../../translations/marathi';
+
 class storeMyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -105,7 +101,6 @@ class storeMyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {

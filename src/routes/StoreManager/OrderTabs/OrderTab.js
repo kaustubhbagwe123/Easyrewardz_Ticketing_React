@@ -62,7 +62,6 @@ class OrderTab extends Component {
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
-    debugger;
     let self = this;
     this.setState({
       OrderTabLoading: true,
@@ -79,7 +78,6 @@ class OrderTab extends Component {
       },
     })
       .then(function (res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -120,7 +118,6 @@ class OrderTab extends Component {
   }
   /// handle Get Order status filter data
   handleGetOrderStatusFilterData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -149,7 +146,6 @@ class OrderTab extends Component {
   }
   /// handle Sent Payment Link
   handleSentPaymentLink(item) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -162,7 +158,6 @@ class OrderTab extends Component {
       },
     })
       .then(function (res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
@@ -216,7 +211,6 @@ class OrderTab extends Component {
       },
     })
       .then(function (res) {
-        debugger;
         let status = res.data.responseData.available;
         if (status === "false") {
           self.setState({
@@ -282,7 +276,6 @@ class OrderTab extends Component {
   };
   /// handle check individual status
   handleCheckDeliIndividualStatus() {
-    debugger;
     var checkboxes = document.getElementsByName("orderStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -315,7 +308,6 @@ class OrderTab extends Component {
       },
     })
       .then(function (res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
@@ -341,7 +333,6 @@ class OrderTab extends Component {
   }
 
   handleAddressPending(orderId) {
-    debugger;
     if (this.state.shippingAddress === "") {
       NotificationManager.error("Please enter address.");
       return false;
@@ -384,7 +375,6 @@ class OrderTab extends Component {
   };
   /// handle Pin code change
   handlePinCodeCheck(ordId, e) {
-    debugger;
     var reg = /^[0-9\b]+$/;
 
     if (e.target.value === "" || reg.test(e.target.value)) {

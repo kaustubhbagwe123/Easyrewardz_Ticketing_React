@@ -164,6 +164,7 @@ class ChatSettings extends Component {
   handleSessionDuration(e) {
     this.setState({ chatSessionDuration: e });
   }
+  ///handle chat display duration hour
   handleChatDisplayDurationHour(e) {
     this.setState({ chatDisplayDurationHour: e });
   }
@@ -281,6 +282,8 @@ class ChatSettings extends Component {
       [name]: value,
     });
   };
+
+  ////handle change type
   handleTypeChange = (e) => {
     var id = e.target.id;
 

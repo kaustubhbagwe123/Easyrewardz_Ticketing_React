@@ -25,7 +25,7 @@ class LanguageSelection extends Component {
   componentDidMount() {
     this.handleGetSelectedLanguageDetails();
   }
-
+////handle crm role 
   handleCRMRole() {
     debugger;
     let self = this;
@@ -107,7 +107,7 @@ class LanguageSelection extends Component {
         console.log(data);
       });
   }
-
+////handle continue button click 
   handleContinue() {
     let language = this.state.language;
     if (language === "hindi") {
@@ -125,15 +125,16 @@ class LanguageSelection extends Component {
     }
     this.handleCRMRole();
   }
+  ////handle skip button click 
   handleSkip() {
     this.handleCRMRole();
   }
-
+////handle on change 
   handleOnChange(e) {
     debugger;
     this.setState({ language: e.target.value });
   }
-
+////handle get seleted language details
   handleGetSelectedLanguageDetails() {
     debugger;
     let self = this;

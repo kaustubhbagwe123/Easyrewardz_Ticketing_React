@@ -209,9 +209,9 @@ class Header extends Component {
 
       let pageName, lastOne, lastValue, arr;
       arr = [...this.state.cont];
-      debugger;
+
       setTimeout(
-        function () {
+        function() {
           pageName = window.location.pathname;
           lastOne = pageName.split("/");
           lastValue = lastOne[lastOne.length - 1];
@@ -235,24 +235,27 @@ class Header extends Component {
       this.state.translateLanguage = {};
     }
   }
-
+  ////handle scroll right
   handleScrollRight(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft += 20;
   }
-
+  ////handle scroll left
   handleScrollLeft(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
+  ////handle show menu
   handleShowMenu() {
     this.setState({
       visible: true,
     });
   }
+  ////handle close manu
   handleCloseManu() {
     this.setState({
       visible: false,
     });
   }
+  /////handle toggle filter data
   toggleFilter(e) {
     this.setState({
       toggle: {
@@ -260,7 +263,7 @@ class Header extends Component {
       },
     });
   }
-
+  ////handle set access user
   setAccessUser(data) {
     var path = window.location.pathname;
     var page = path.split("/").pop();
@@ -432,7 +435,7 @@ class Header extends Component {
         }
       }
     }
-    debugger;
+
     for (let i = 0; i < accessdata.length; i++) {
       if (accessdata[i].activeClass === "active single-menu") {
         this.setState({
@@ -459,7 +462,7 @@ class Header extends Component {
       this.historyMessageScrollToBottom();
     }
   }
-
+  ////handle crm role data
   handleCRMRole() {
     let self = this;
     axios({
@@ -467,7 +470,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -478,7 +481,7 @@ class Header extends Component {
         console.log(data);
       });
   }
-
+  ////handle get user profile data
   handleGetUserProfileData() {
     let self = this;
     axios({
@@ -486,7 +489,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUserProfileDetail",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;
@@ -512,19 +515,19 @@ class Header extends Component {
         console.log(data);
       });
   }
-
+  ////handle opne modal
   onOpenModal = () => {
     this.setState({ open: true });
   };
-
+  ////handle close modal
   onCloseModal = () => {
     this.setState({ open: false });
   };
-
+  ////handle opne modal
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-
+  ////handle close modal
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -537,7 +540,7 @@ class Header extends Component {
     this.setState({ notificationModal: false });
     this.handleGetReadStoreNotification(typeId, type);
   }
-
+  ////handle logged in user deatils
   handleLoggedInUserDetails = () => {
     let self = this;
     axios({
@@ -545,8 +548,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreDashboard/StoreLoggedInAccountDetails",
       headers: authHeader(),
     })
-      .then(function (res) {
-        debugger;
+      .then(function(res) {
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -592,7 +594,7 @@ class Header extends Component {
         console.log(data);
       });
   };
-
+  ////handle get store agent details by agent id
   handleGetStoreAgentDetailsById(agentID) {
     let self = this;
     axios({
@@ -624,7 +626,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreAccount/Logout",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         var status = res.data.status;
         if (status === true) {
           localStorage.clear();
@@ -645,7 +647,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         var Noticount = responseData.notiCount;
@@ -676,7 +678,7 @@ class Header extends Component {
         NotificatonType: type,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -689,7 +691,6 @@ class Header extends Component {
   };
 
   actives = (e) => {
-    debugger;
     const contDummy = [...this.state.cont];
     contDummy.forEach((i) => {
       i.activeClass = "single-menu";
@@ -729,7 +730,7 @@ class Header extends Component {
         five: false,
       },
       activeTab: 1,
-      isScroll:true
+      isScroll: true,
     });
 
     this.handleGetNewChat();
@@ -760,10 +761,9 @@ class Header extends Component {
       headers: authHeader(),
       params: { Search: search, StoreManagerID: this.state.sAgentId },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-        debugger;
         if (message === "Success") {
           if (ongoingChatsData) {
             var chatData = ongoingChatsData.filter(
@@ -798,7 +798,7 @@ class Header extends Component {
         console.log(response, "---handleGetOngoingChat");
       });
   }
-
+  ////handle clear chat search
   handleClearChatSearch = async () => {
     await this.setState({ searchChat: "" });
     this.handleGetOngoingChat();
@@ -813,7 +813,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetNewChat",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
@@ -839,7 +839,7 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -853,6 +853,7 @@ class Header extends Component {
         console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
+  ////handle update customer chat status
   handleUpdateCustomerChatStatus(
     id,
     storeManagerId,
@@ -909,8 +910,7 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function (response) {
-        debugger;
+      .then(function(response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -941,7 +941,7 @@ class Header extends Component {
         ForRecentChat: forRecentChat,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var messageData = response.data.responseData;
         if (message === "Success" && messageData) {
@@ -997,7 +997,7 @@ class Header extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
@@ -1039,7 +1039,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetChatNotificationCount",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var chatMessageCount = response.data.responseData;
         self.setState({ chatMessageCount });
       })
@@ -1060,7 +1060,7 @@ class Header extends Component {
         ProgramCode: this.state.programCode,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var searchCardData = response.data.responseData;
 
@@ -1096,7 +1096,7 @@ class Header extends Component {
         storeID: 1,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
         var availableSlot = 0;
@@ -1160,7 +1160,7 @@ class Header extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           var timeSlotData = response.data.responseData;
           if (message == "Success" && timeSlotData) {
@@ -1205,7 +1205,7 @@ class Header extends Component {
         });
     }
   }
-
+  ////handle send message to customer
   handleSendMessageToCustomer(
     Message,
     index,
@@ -1237,7 +1237,7 @@ class Header extends Component {
           headers: authHeader(),
           params: inputParam,
         })
-          .then(function (response) {
+          .then(function(response) {
             var message = response.data.message;
             if (message == "Success") {
               self.setState({
@@ -1285,7 +1285,7 @@ class Header extends Component {
       remainingCount: remLength,
     });
   };
-
+  ////handle message suggestion
   handleMessageSuggestion = () => {
     setTimeout(() => {
       if (this.state.message.length > 0) {
@@ -1299,7 +1299,7 @@ class Header extends Component {
       }
     }, 1);
   };
-
+  ////handle get message suggestion list
   handleGetMessageSuggestionList() {
     let self = this;
     axios({
@@ -1310,7 +1310,7 @@ class Header extends Component {
         SearchText: this.state.message,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let messageSuggestionData = res.data.responseData;
         if (status === "Success") {
@@ -1340,7 +1340,7 @@ class Header extends Component {
         console.log(res);
       });
   }
-
+  ////handle appand message suggestion
   handleAppendMessageSuggestion = (e) => {
     this.setState({ toggleTitle: true });
     var startPoint = this.state.message.length;
@@ -1356,7 +1356,7 @@ class Header extends Component {
 
     this.setState({ message });
   };
-
+  ////handle on change message text
   handleSetMessage = (messageData) => {
     this.setState({ messageData });
   };
@@ -1373,7 +1373,6 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
-    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1507,10 +1506,11 @@ class Header extends Component {
     }
     this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
-
+  ////handle close card modal
   onCloseCardModal = () => {
     this.setState({ cardModal: false, searchCardData: [], selectedCard: 0 });
   };
+  ////handle opne card modal
   onOpenCardModal = () => {
     this.setState({ cardModal: true });
   };
@@ -1520,7 +1520,6 @@ class Header extends Component {
   };
   ////handle got to message scroll down
   scrollToBottom() {
-    debugger;
     if (this.messageList) {
       const scrollHeight = this.messageList.scrollHeight;
       const height = this.messageList.clientHeight;
@@ -1570,7 +1569,7 @@ class Header extends Component {
       });
     }
   };
-
+  ////handle close schedule modal
   onCloseScheduleModal = () => {
     this.setState({
       scheduleModal: false,
@@ -1581,21 +1580,24 @@ class Header extends Component {
       noOfPeopleMax: "",
     });
   };
+  ////handle open chedule modal
   onOpenScheduleModal = () => {
     this.setState({ scheduleModal: true });
     this.handleGetTimeSlot();
   };
-
+  ////handle close recommended list modal
   onCloseRecommendedModal = () => {
     this.setState({ recommendedModal: false });
   };
+  ////handle open recommended list modal
   onOpenRecommendedModal = () => {
     this.setState({ recommendedModal: true });
   };
-
+  ////handle close payment modal
   onClosePaymentModal = () => {
     this.setState({ paymentModal: false });
   };
+  ////handle open payment modal
   onOpenPaymentModal = () => {
     this.setState({ paymentModal: true });
   };
@@ -1620,37 +1622,37 @@ class Header extends Component {
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
         (messagewhatsAppData[0].brandName !== "" &&
-          messagewhatsAppData[0].brandName !== null
+        messagewhatsAppData[0].brandName !== null
           ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
           : "") +
         (messagewhatsAppData[0].categoryName !== "" &&
-          messagewhatsAppData[0].categoryName !== null
+        messagewhatsAppData[0].categoryName !== null
           ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
           : "") +
         (messagewhatsAppData[0].subCategoryName !== "" &&
-          messagewhatsAppData[0].subCategoryName !== null
+        messagewhatsAppData[0].subCategoryName !== null
           ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
           : "") +
         (messagewhatsAppData[0].color !== "" &&
-          messagewhatsAppData[0].color !== null
+        messagewhatsAppData[0].color !== null
           ? ", Color: " + messagewhatsAppData[0].color.trim()
           : "") +
         (messagewhatsAppData[0].size !== "" &&
-          messagewhatsAppData[0].size !== null
+        messagewhatsAppData[0].size !== null
           ? ", Size: " + messagewhatsAppData[0].size.trim()
           : "") +
         (messagewhatsAppData[0].uniqueItemCode !== "" &&
-          messagewhatsAppData[0].uniqueItemCode !== null
+        messagewhatsAppData[0].uniqueItemCode !== null
           ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
           : "") +
         (messagewhatsAppData[0].discount !== "" &&
-          parseFloat(messagewhatsAppData[0].discount) !== 0 &&
-          messagewhatsAppData[0].discount !== null
+        parseFloat(messagewhatsAppData[0].discount) !== 0 &&
+        messagewhatsAppData[0].discount !== null
           ? ", Discount: " + messagewhatsAppData[0].discount.trim()
           : "") +
         (messagewhatsAppData[0].price !== "" &&
-          parseFloat(messagewhatsAppData[0].price) !== 0 &&
-          messagewhatsAppData[0].price !== null
+        parseFloat(messagewhatsAppData[0].price) !== 0 &&
+        messagewhatsAppData[0].price !== null
           ? ", Price: " + messagewhatsAppData[0].price.trim()
           : "") +
         "\n" +
@@ -1665,7 +1667,7 @@ class Header extends Component {
       );
     }
   }
-
+  ////handle tabl click
   handleTabClick = (tabIndex, e) => {
     if (tabIndex == 1) {
       this.setState({ isDownbtn: true, activeTab: 1 });
@@ -1696,6 +1698,7 @@ class Header extends Component {
       isSelectSlot: "",
     });
   };
+  ////handle send recommended list
   handleSendRecommendedList() {
     let self = this;
     this.setState({ isSendRecomended: true });
@@ -1708,7 +1711,7 @@ class Header extends Component {
         MobileNumber: this.state.mobileNo,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           self.setState({ isSendRecomended: false, noRecommendedFound: "" });
@@ -1727,7 +1730,7 @@ class Header extends Component {
         console.log(res);
       });
   }
-
+  ////handle open suggestion list modal
   onOpenSuggestionModal(suggestionText, index) {
     if (index > 0) {
       this.state.chkSuggestion = [];
@@ -1739,9 +1742,8 @@ class Header extends Component {
       });
     }
   }
-
+  ////handle opne mobile suggestion list modal
   onOpenMobSuggestionModal(suggestionText, index) {
-    debugger;
     if (index > 0) {
       this.setState({
         suggestionModalMob: true,
@@ -1750,15 +1752,15 @@ class Header extends Component {
       });
     }
   }
-
+  ////handle close suggestion list modal
   onCloseSuggestionModal = () => {
     this.setState({ suggestionModal: false });
   };
-
+  ////handle close mobile suggestion list modal
   onCloseMobSuggestionModal = () => {
     this.setState({ suggestionModalMob: false });
   };
-
+  ////handle change tab click
   handleHistTabClick = () => {
     this.setState({
       isHistoricalChat: true,
@@ -1780,7 +1782,7 @@ class Header extends Component {
       headers: authHeader(),
       params: { CustomerID: customerId },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var agentRecentChatData = response.data.responseData;
 
@@ -1804,7 +1806,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetAgentList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var agentData = response.data.responseData;
         if (message === "Success" && agentData) {
@@ -1842,7 +1844,7 @@ class Header extends Component {
       this.handleGetOngoingChat();
     }, 10);
   }
-
+  ////handle get agent chat history
   handleGetAgentChatHistory() {
     let self = this;
     this.setState({ isHistoricalChatLoading: true });
@@ -1851,7 +1853,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetAgentChatHistory",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var historicalChatData = response.data.responseData;
         if (message === "Success" && historicalChatData) {
@@ -1868,23 +1870,6 @@ class Header extends Component {
       });
   }
 
-  /// Pagination Onchange
-  PaginationOnChange = async (numPage) => {
-    var tempmessageSuggestionData = [];
-    if (this.state.messageSuggestionData.length < 10) {
-      tempmessageSuggestionData = this.state.messageSuggestionData;
-    } else {
-      for (let i = numPage * 10; i < numPage * 10 + 10; i++) {
-        if (this.state.messageSuggestionData[i]) {
-          tempmessageSuggestionData.push(this.state.messageSuggestionData[i]);
-        }
-      }
-    }
-    await this.setState({
-      selectedSugpage: numPage,
-      tempmessageSuggestionData,
-    });
-  };
   ////handle create socket connection
   handleCreateSocketConnection(programCode, storeCode) {
     let self = this;
@@ -1896,10 +1881,9 @@ class Header extends Component {
     socket.on("connect", () => {
       socket.send("hi");
       if (programCode !== "" && programCode !== "") {
-        socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function (
+        socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
           data
         ) {
-          debugger;
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
@@ -1935,7 +1919,7 @@ class Header extends Component {
       }
     });
   }
-
+  ////handle insert card image upload
   handleInsertCardImageUpload(itemcode, e) {
     if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
       NotificationManager.error("Please select valid image file JPG,JPEG,PNG,");
@@ -1955,7 +1939,7 @@ class Header extends Component {
       headers: authHeader(),
       data: formData,
     })
-      .then(function (response) {
+      .then(function(response) {
         var messgae = response.data.message;
         if (messgae === "Success") {
           NotificationManager.success("Add image successfully.");
@@ -1975,6 +1959,7 @@ class Header extends Component {
   handleActionClose = () => {
     this.setState({ actionBtn: false });
   };
+  ////handle update store manage chat status
   handleUpdateStoreManagerChatStatus(id) {
     if (this.state.isCustEndChat) {
       let self = this;
@@ -2041,7 +2026,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetChatSession",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -2076,10 +2061,10 @@ class Header extends Component {
                 <img src={BellIcon} alt="bell icon" />
               </div>
             ) : (
-                <div className="er">
-                  <label className="er-label">ER</label>
-                </div>
-              )}
+              <div className="er">
+                <label className="er-label">ER</label>
+              </div>
+            )}
 
             <div className="hamb-menu">
               <img
@@ -2373,97 +2358,97 @@ class Header extends Component {
             {this.state.notificationCount === 0 ? (
               <span>No Notification Found</span>
             ) : (
-                this.state.notificationData !== null &&
-                this.state.notificationData.map((item, i) => {
-                  return (
-                    <div className="row rowpadding" key={i}>
-                      <div className="md-2 rectangle-2 lable05 noti-count">
-                        <label className="labledata">
-                          {item.notificationCount}
-                        </label>
-                      </div>
-                      <div className="md-6 new-tickets-assigned tic-noti">
-                        <label>
-                          <span>{item.notificationName}</span>
-                        </label>
-                      </div>
-                      <div className="viewticketspeadding">
-                        <Popover
-                          content={
-                            <div className="notification-popover">
-                              {item.customTaskNotificationModels.map(
-                                (data, j) => {
-                                  //
-                                  return (
-                                    <p key={j}>
-                                      {data.notificatonType == 1 ? (
-                                        <>
-                                          {data.notificatonTypeName + " No:"}
-                                          <Link
-                                            to={{
-                                              pathname: "/store/editStoreTask",
-                                              state: {
-                                                TaskID: data.notificatonTypeID,
-                                              },
-                                            }}
-                                            style={{ color: "#2561A8" }}
-                                            onClick={this.handleNotificationModalClose.bind(
-                                              this,
-                                              data.notificatonTypeID,
-                                              data.notificatonType
-                                            )}
-                                          >
-                                            {" " + data.notificatonTypeID}
-                                          </Link>
-                                        </>
-                                      ) : (
-                                          <>
-                                            {data.notificatonTypeName + " No:"}
-                                            <Link
-                                              to={{
-                                                pathname:
-                                                  "/store/claimApproveReject",
-                                                state: {
-                                                  ClaimID: data.notificatonTypeID,
-                                                },
-                                              }}
-                                              style={{ color: "#2561A8" }}
-                                              onClick={this.handleNotificationModalClose.bind(
-                                                this,
-                                                data.notificatonTypeID,
-                                                data.notificatonType
-                                              )}
-                                            >
-                                              {" " + data.notificatonTypeID}
-                                            </Link>
-                                          </>
-                                        )}
-                                    </p>
-                                  );
-                                }
-                              )}
-                            </div>
-                          }
-                          placement="bottom"
-                          trigger="click"
-                        >
-                          <div
-                            className={
-                              item.alertID !== ""
-                                ? "md-4 view-tickets"
-                                : "text-disabled"
-                            }
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.div.view
-                              : "VIEW"}
-                          </div>
-                        </Popover>
-                      </div>
+              this.state.notificationData !== null &&
+              this.state.notificationData.map((item, i) => {
+                return (
+                  <div className="row rowpadding" key={i}>
+                    <div className="md-2 rectangle-2 lable05 noti-count">
+                      <label className="labledata">
+                        {item.notificationCount}
+                      </label>
                     </div>
-                  );
-                })
-              )}
+                    <div className="md-6 new-tickets-assigned tic-noti">
+                      <label>
+                        <span>{item.notificationName}</span>
+                      </label>
+                    </div>
+                    <div className="viewticketspeadding">
+                      <Popover
+                        content={
+                          <div className="notification-popover">
+                            {item.customTaskNotificationModels.map(
+                              (data, j) => {
+                                //
+                                return (
+                                  <p key={j}>
+                                    {data.notificatonType == 1 ? (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          to={{
+                                            pathname: "/store/editStoreTask",
+                                            state: {
+                                              TaskID: data.notificatonTypeID,
+                                            },
+                                          }}
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handleNotificationModalClose.bind(
+                                            this,
+                                            data.notificatonTypeID,
+                                            data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    ) : (
+                                      <>
+                                        {data.notificatonTypeName + " No:"}
+                                        <Link
+                                          to={{
+                                            pathname:
+                                              "/store/claimApproveReject",
+                                            state: {
+                                              ClaimID: data.notificatonTypeID,
+                                            },
+                                          }}
+                                          style={{ color: "#2561A8" }}
+                                          onClick={this.handleNotificationModalClose.bind(
+                                            this,
+                                            data.notificatonTypeID,
+                                            data.notificatonType
+                                          )}
+                                        >
+                                          {" " + data.notificatonTypeID}
+                                        </Link>
+                                      </>
+                                    )}
+                                  </p>
+                                );
+                              }
+                            )}
+                          </div>
+                        }
+                        placement="bottom"
+                        trigger="click"
+                      >
+                        <div
+                          className={
+                            item.alertID !== ""
+                              ? "md-4 view-tickets"
+                              : "text-disabled"
+                          }
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.div.view
+                            : "VIEW"}
+                        </div>
+                      </Popover>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </Modal>
         <Drawer
@@ -2571,9 +2556,7 @@ class Header extends Component {
                       value={this.state.searchChat}
                       onChange={this.handleGetOngoingChat.bind(this)}
                     />
-                    <span
-                      className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span"
-                    >
+                    <span className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span">
                       {this.state.searchChat === "" ? (
                         <img
                           src={SearchBlueImg}
@@ -2581,14 +2564,14 @@ class Header extends Component {
                           className="srch-imge"
                         />
                       ) : (
-                          <img
-                            src={CancelBlueImg}
-                            alt="SearchBlueImg"
-                            className="srch-imge"
-                            style={{ width: "35%" }}
-                            onClick={this.handleClearChatSearch.bind(this)}
-                          />
-                        )}
+                        <img
+                          src={CancelBlueImg}
+                          alt="SearchBlueImg"
+                          className="srch-imge"
+                          style={{ width: "35%" }}
+                          onClick={this.handleClearChatSearch.bind(this)}
+                        />
+                      )}
                     </span>
                   </div>
                   <div className="chat-cntr">
@@ -2607,9 +2590,7 @@ class Header extends Component {
                         value={this.state.sAgentId}
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value={0}>
-                          All Store Member
-                        </Option>
+                        <Option value={0}>All Store Member</Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
@@ -2626,64 +2607,64 @@ class Header extends Component {
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData
                         ? this.state.ongoingChatsData.map((chat, i) => (
-                          <div
-                            id={chat.chatID}
-                            key={i}
-                            className={
-                              this.state.chatId === chat.chatID
-                                ? "chat-info active"
-                                : "chat-info"
-                            }
-                            onClick={this.handleOngoingChatClick.bind(
-                              this,
-                              chat.chatID,
-                              chat.cumtomerName,
-                              chat.messageCount,
-                              chat.mobileNo,
-                              chat.customerID,
-                              chat.programCode,
-                              chat.storeID,
-                              chat.isCustEndChat,
-                              chat.storeManagerId
-                            )}
-                          >
-                            <div className="d-flex align-items-center overflow-hidden">
-                              <span className="dark-blue-ini initial">
-                                {chat.cumtomerName.charAt(0)}
-                              </span>
-                              <div className="name-num mx-2">
-                                <p className="chat-name">
-                                  {chat.cumtomerName}
-                                </p>
-                                <p className="num">{chat.mobileNo}</p>
+                            <div
+                              id={chat.chatID}
+                              key={i}
+                              className={
+                                this.state.chatId === chat.chatID
+                                  ? "chat-info active"
+                                  : "chat-info"
+                              }
+                              onClick={this.handleOngoingChatClick.bind(
+                                this,
+                                chat.chatID,
+                                chat.cumtomerName,
+                                chat.messageCount,
+                                chat.mobileNo,
+                                chat.customerID,
+                                chat.programCode,
+                                chat.storeID,
+                                chat.isCustEndChat,
+                                chat.storeManagerId
+                              )}
+                            >
+                              <div className="d-flex align-items-center overflow-hidden">
+                                <span className="dark-blue-ini initial">
+                                  {chat.cumtomerName.charAt(0)}
+                                </span>
+                                <div className="name-num mx-2">
+                                  <p className="chat-name">
+                                    {chat.cumtomerName}
+                                  </p>
+                                  <p className="num">{chat.mobileNo}</p>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="mess-time">
+                                  <p
+                                    className={"chat-storemng "}
+                                    title="Store Manager"
+                                  >
+                                    {chat.storeManagerName}
+                                  </p>
+                                  <p
+                                    style={{
+                                      fontWeight:
+                                        chat.messageCount > 0 ? "bold" : "400",
+                                    }}
+                                  >
+                                    {chat.messageCount === 0
+                                      ? "No"
+                                      : chat.messageCount}{" "}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.newmessages
+                                      : "New Messages"}
+                                  </p>
+                                  <p>{chat.timeAgo}</p>
+                                </div>
                               </div>
                             </div>
-                            <div>
-                              <div className="mess-time">
-                                <p
-                                  className={"chat-storemng "}
-                                  title="Store Manager"
-                                >
-                                  {chat.storeManagerName}
-                                </p>
-                                <p
-                                  style={{
-                                    fontWeight:
-                                      chat.messageCount > 0 ? "bold" : "400",
-                                  }}
-                                >
-                                  {chat.messageCount === 0
-                                    ? "No"
-                                    : chat.messageCount}{" "}
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.newmessages
-                                    : "New Messages"}
-                                </p>
-                                <p>{chat.timeAgo}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))
+                          ))
                         : null}
                     </div>
                   </div>
@@ -3092,11 +3073,11 @@ class Header extends Component {
                                 >
                                   {this.state.agentRecentChatData.length < 9
                                     ? "Past Chat(0" +
-                                    this.state.agentRecentChatData.length +
-                                    ")"
+                                      this.state.agentRecentChatData.length +
+                                      ")"
                                     : "Past Chat(" +
-                                    this.state.agentRecentChatData.length +
-                                    ")"}
+                                      this.state.agentRecentChatData.length +
+                                      ")"}
                                 </a>
                               </li>
                             </>
@@ -3143,76 +3124,76 @@ class Header extends Component {
                               >
                                 {this.state.messageData !== null
                                   ? this.state.messageData.map((item, i) => {
-                                    return (
-                                      <div
-                                        key={i}
-                                        className={
-                                          item.byCustomer === true &&
+                                      return (
+                                        <div
+                                          key={i}
+                                          className={
+                                            item.byCustomer === true &&
                                             item.isBotReply !== true
-                                            ? "chat-trail-cntr"
-                                            : "chat-trail-cntr chat-trail-cntr-right"
-                                        }
-                                      >
-                                        <div className="chat-trail-img">
-                                          <span
-                                            className="chat-initial"
-                                            alt="face image"
-                                            title={
-                                              item.byCustomer
+                                              ? "chat-trail-cntr"
+                                              : "chat-trail-cntr chat-trail-cntr-right"
+                                          }
+                                        >
+                                          <div className="chat-trail-img">
+                                            <span
+                                              className="chat-initial"
+                                              alt="face image"
+                                              title={
+                                                item.byCustomer
+                                                  ? item.customerName
+                                                  : this.state.UserName
+                                              }
+                                            >
+                                              {item.byCustomer
                                                 ? item.customerName
-                                                : this.state.UserName
-                                            }
-                                          >
-                                            {item.byCustomer
-                                              ? item.customerName
-                                                .split(" ")
-                                                .map((n) => n[0])
-                                                .join("")
-                                                .toUpperCase()
-                                              : this.state.UserName.split(" ")
-                                                .map((n) => n[0])
-                                                .join("")
-                                                .toUpperCase()}
-                                          </span>
-                                        </div>
-                                        <div className="chat-trail-chat-cntr">
-                                          {item.isBotReply && (
-                                            <p className="bot-mark">
-                                              {TranslationContext !==
+                                                    .split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()
+                                                : this.state.UserName.split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()}
+                                            </span>
+                                          </div>
+                                          <div className="chat-trail-chat-cntr">
+                                            {item.isBotReply && (
+                                              <p className="bot-mark">
+                                                {TranslationContext !==
                                                 undefined
-                                                ? TranslationContext.p.bot
-                                                : "BOT"}
-                                            </p>
-                                          )}
-                                          <p className="chat-trail-chat pd-0">
-                                            {ReactHtmlParser(
-                                              item.message
-                                                .replace(
-                                                  "col-md-2",
-                                                  "col-md-4"
-                                                )
-                                                .replace(
-                                                  "col-md-10",
-                                                  "col-md-8"
-                                                )
+                                                  ? TranslationContext.p.bot
+                                                  : "BOT"}
+                                              </p>
                                             )}
-                                          </p>
-                                          <span className="chat-trail-time">
-                                            {item.chatDate + " "}
-                                            {item.chatTime}
-                                          </span>
+                                            <p className="chat-trail-chat pd-0">
+                                              {ReactHtmlParser(
+                                                item.message
+                                                  .replace(
+                                                    "col-md-2",
+                                                    "col-md-4"
+                                                  )
+                                                  .replace(
+                                                    "col-md-10",
+                                                    "col-md-8"
+                                                  )
+                                              )}
+                                            </p>
+                                            <span className="chat-trail-time">
+                                              {item.chatDate + " "}
+                                              {item.chatTime}
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    );
-                                  })
+                                      );
+                                    })
                                   : null}
                               </div>
                               {this.state.isCustEndChat &&
-                                this.state.customerName !== "" ? (
-                                  <label className="endchatlbl">
-                                    Customer has end chat
-                                  </label>
-                                ) : null}
+                              this.state.customerName !== "" ? (
+                                <label className="endchatlbl">
+                                  Customer has end chat
+                                </label>
+                              ) : null}
                             </div>
                           ) : null}
                           <div
@@ -3334,7 +3315,7 @@ class Header extends Component {
                               <div
                                 className={
                                   this.state.customerName !== "" &&
-                                    this.state.toggle.one
+                                  this.state.toggle.one
                                     ? "tab-pane fade active show"
                                     : "tab-pane fade"
                                 }
@@ -3371,9 +3352,9 @@ class Header extends Component {
                                   )}
                                   {this.state.messageSuggestionData !== null &&
                                     this.state.messageSuggestionData.length >
-                                    0 &&
+                                      0 &&
                                     this.state.messageSuggestionData.length >
-                                    0 && (
+                                      0 && (
                                       <div
                                         className="suggestions-cntr setpagination"
                                         style={{ width: "100%" }}
@@ -3387,13 +3368,12 @@ class Header extends Component {
                                               dataIndex: "suggestionText",
                                               render: (row, rowData) => {
                                                 i = i + 1;
-                                                debugger;
                                                 return (
                                                   <div
                                                     className={
                                                       this.state
                                                         .chkSuggestion ===
-                                                        rowData.suggestionID
+                                                      rowData.suggestionID
                                                         ? "suggestions-tick"
                                                         : ""
                                                     }
@@ -3432,35 +3412,35 @@ class Header extends Component {
                                     )}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                    this.state.storeAgentDetail[0].suggestion ===
+                                  this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
-                                      <div
-                                        className="mobile-ck-send"
-                                        onClick={this.handleMessageSuggestion.bind(
-                                          this
-                                        )}
-                                        title={"Search"}
-                                      >
-                                        <img src={SuggSearch} alt="send img" />
-                                      </div>
-                                    ) : null}
+                                    <div
+                                      className="mobile-ck-send"
+                                      onClick={this.handleMessageSuggestion.bind(
+                                        this
+                                      )}
+                                      title={"Search"}
+                                    >
+                                      <img src={SuggSearch} alt="send img" />
+                                    </div>
+                                  ) : null}
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                    this.state.storeAgentDetail[0].freeText ===
+                                  this.state.storeAgentDetail[0].freeText ===
                                     1 ? (
-                                      <div
-                                        className="mobile-ck-send-btn"
-                                        onClick={this.handleSaveChatMessages.bind(
-                                          this,
-                                          this.state.message,
-                                          0,
-                                          "",
-                                          ""
-                                        )}
-                                        title={"Send"}
-                                      >
-                                        <img src={Assign} alt="send img" />
-                                      </div>
-                                    ) : null}
+                                    <div
+                                      className="mobile-ck-send-btn"
+                                      onClick={this.handleSaveChatMessages.bind(
+                                        this,
+                                        this.state.message,
+                                        0,
+                                        "",
+                                        ""
+                                      )}
+                                      title={"Send"}
+                                    >
+                                      <img src={Assign} alt="send img" />
+                                    </div>
+                                  ) : null}
                                 </div>
                               </div>
                               {/* --------Card Tab----- */}
@@ -3485,7 +3465,7 @@ class Header extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .searchitemidarticleskuid
+                                              .searchitemidarticleskuid
                                           : "Search ItemId/artcile/SKU ID"
                                       }
                                       name="Search"
@@ -3535,10 +3515,10 @@ class Header extends Component {
                                   >
                                     {this.state.searchCardData !== null
                                       ? this.state.searchCardData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div className="col-md-6" key={i}>
-                                              {item.itemID ===
+                                          (item, i) => {
+                                            return (
+                                              <div className="col-md-6" key={i}>
+                                                {item.itemID ===
                                                 this.state.selectedCard ? (
                                                   <div className="selectdot">
                                                     <img
@@ -3547,24 +3527,24 @@ class Header extends Component {
                                                     />
                                                   </div>
                                                 ) : null}
-                                              <div
-                                                className="card"
-                                                id={"card" + item.itemID}
-                                              >
-                                                <div className="card-body position-relative">
-                                                  <div
-                                                    className="row"
-                                                    style={{
-                                                      margin: "0",
-                                                    }}
-                                                  >
+                                                <div
+                                                  className="card"
+                                                  id={"card" + item.itemID}
+                                                >
+                                                  <div className="card-body position-relative">
                                                     <div
-                                                      className="col-md-4 mb-md-0 mb-2"
+                                                      className="row"
                                                       style={{
-                                                        alignSelf: "center",
+                                                        margin: "0",
                                                       }}
                                                     >
-                                                      {item.imageURL !==
+                                                      <div
+                                                        className="col-md-4 mb-md-0 mb-2"
+                                                        style={{
+                                                          alignSelf: "center",
+                                                        }}
+                                                      >
+                                                        {item.imageURL !==
                                                         "" ? (
                                                           <img
                                                             className="chat-product-img"
@@ -3587,179 +3567,179 @@ class Header extends Component {
                                                               getRootProps,
                                                               getInputProps,
                                                             }) => (
-                                                                <div
-                                                                  {...getRootProps()}
-                                                                >
+                                                              <div
+                                                                {...getRootProps()}
+                                                              >
+                                                                <input
+                                                                  {...getInputProps()}
+                                                                  className="file-upload d-none"
+                                                                />
+                                                                <span className="addimg">
                                                                   <input
-                                                                    {...getInputProps()}
-                                                                    className="file-upload d-none"
+                                                                    type="image"
+                                                                    alt="Add Image"
+                                                                    src={addimg}
                                                                   />
-                                                                  <span className="addimg">
-                                                                    <input
-                                                                      type="image"
-                                                                      alt="Add Image"
-                                                                      src={addimg}
-                                                                    />
-                                                                  </span>
-                                                                </div>
-                                                              )}
+                                                                </span>
+                                                              </div>
+                                                            )}
                                                           </Dropzone>
                                                         )}
-                                                    </div>
-                                                    <div
-                                                      className="col-md-8 bkcprdt"
-                                                      onClick={this.handleSelectCard.bind(
-                                                        this,
-                                                        item.itemID,
-                                                        item.imageURL
-                                                      )}
-                                                    >
-                                                      {item.productName ? (
+                                                      </div>
+                                                      <div
+                                                        className="col-md-8 bkcprdt"
+                                                        onClick={this.handleSelectCard.bind(
+                                                          this,
+                                                          item.itemID,
+                                                          item.imageURL
+                                                        )}
+                                                      >
+                                                        {item.productName ? (
+                                                          <div>
+                                                            <label className="chat-product-name">
+                                                              {item.productName}
+                                                            </label>
+                                                          </div>
+                                                        ) : null}
                                                         <div>
-                                                          <label className="chat-product-name">
-                                                            {item.productName}
-                                                          </label>
-                                                        </div>
-                                                      ) : null}
-                                                      <div>
-                                                        {item.brandName !==
-                                                          "" &&
+                                                          {item.brandName !==
+                                                            "" &&
                                                           item.brandName !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label.brand
+                                                                    .label.brand
                                                                 : "Brand"}{" "}
                                                               :
                                                               {" " +
                                                                 item.brandName}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.categoryName !==
-                                                          "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.categoryName !==
+                                                            "" &&
                                                           item.categoryName !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label
-                                                                  .category
+                                                                    .label
+                                                                    .category
                                                                 : "Category"}{" "}
                                                               :
                                                               {" " +
                                                                 item.categoryName}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.subCategoryName !==
-                                                          "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.subCategoryName !==
+                                                            "" &&
                                                           item.subCategoryName !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label
-                                                                  .subcategory
+                                                                    .label
+                                                                    .subcategory
                                                                 : "SubCategory"}{" "}
                                                               :
                                                               {" " +
                                                                 item.subCategoryName}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.color !== "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.color !== "" &&
                                                           item.color !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label.color
+                                                                    .label.color
                                                                 : "Color"}{" "}
                                                               :
                                                               {" " + item.color}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.size !== "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.size !== "" &&
                                                           item.size !== null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label.color
+                                                                    .label.color
                                                                 : "Size"}{" "}
                                                               :{" " + item.size}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.uniqueItemCode !==
-                                                          "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.uniqueItemCode !==
+                                                            "" &&
                                                           item.uniqueItemCode !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label
-                                                                  .itemcode
+                                                                    .label
+                                                                    .itemcode
                                                                 : "Item Code"}{" "}
                                                               :
                                                               {" " +
                                                                 item.uniqueItemCode}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.discount !==
-                                                          "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.discount !==
+                                                            "" &&
                                                           parseFloat(
                                                             item.discount
                                                           ) !== 0 &&
                                                           item.discount !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label
-                                                                  .discount
+                                                                    .label
+                                                                    .discount
                                                                 : "Discount"}{" "}
                                                               :
                                                               {" " +
                                                                 item.discount}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      <div>
-                                                        {item.price !== "" &&
+                                                        </div>
+                                                        <div>
+                                                          {item.price !== "" &&
                                                           parseFloat(
                                                             item.price
                                                           ) !== 0 &&
                                                           item.price !==
-                                                          null ? (
+                                                            null ? (
                                                             <label className="chat-product-prize">
                                                               {TranslationContext !==
-                                                                undefined
+                                                              undefined
                                                                 ? TranslationContext
-                                                                  .label.price
+                                                                    .label.price
                                                                 : "Price"}{" "}
                                                               :
                                                               {" " + item.price}
                                                             </label>
                                                           ) : null}
-                                                      </div>
-                                                      {item.url !== null &&
+                                                        </div>
+                                                        {item.url !== null &&
                                                         item.url !== "" ? (
                                                           <div>
                                                             <a
@@ -3773,14 +3753,14 @@ class Header extends Component {
                                                         ) : (
                                                           ""
                                                         )}
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          );
-                                        }
-                                      )
+                                            );
+                                          }
+                                        )
                                       : null}
                                   </div>
                                   {this.state.searchCardData.length > 0 ? (
@@ -3797,8 +3777,8 @@ class Header extends Component {
                                             alt="down-arrow"
                                           />
                                         ) : (
-                                            <img src={UpBlue} alt="up-arrow" />
-                                          )}
+                                          <img src={UpBlue} alt="up-arrow" />
+                                        )}
                                       </button>
                                       <button
                                         className="butn"
@@ -3819,8 +3799,8 @@ class Header extends Component {
                                             spin
                                           />
                                         ) : (
-                                            ""
-                                          )}
+                                          ""
+                                        )}
                                       </button>
                                     </div>
                                   ) : null}
@@ -3847,7 +3827,7 @@ class Header extends Component {
                                   >
                                     {TranslationContext !== undefined
                                       ? TranslationContext.button
-                                        .sendrecommendedlist
+                                          .sendrecommendedlist
                                       : "Send Recommended List"}
 
                                     <img
@@ -3862,8 +3842,8 @@ class Header extends Component {
                                         spin
                                       />
                                     ) : (
-                                        ""
-                                      )}
+                                      ""
+                                    )}
                                   </button>
 
                                   <p
@@ -3892,9 +3872,9 @@ class Header extends Component {
                                     <div className="col-md-7 schedule-left-cntr">
                                       {this.state.timeSlotData !== null
                                         ? this.state.timeSlotData.map(
-                                          (item, i) => {
-                                            return item.alreadyScheduleDetails
-                                              .length > 0 ? (
+                                            (item, i) => {
+                                              return item.alreadyScheduleDetails
+                                                .length > 0 ? (
                                                 <div key={i}>
                                                   <label className="s-lable">
                                                     {item.day}:{item.dates}
@@ -3928,7 +3908,7 @@ class Header extends Component {
                                                               this.state
                                                                 .timeSlotData[i]
                                                                 .alreadyScheduleDetails[
-                                                              k
+                                                                k
                                                               ] ===
                                                               this.state
                                                                 .selectedSlot
@@ -3969,7 +3949,7 @@ class Header extends Component {
                                                             if (
                                                               data.visitedCount >=
                                                               (1 / 2) *
-                                                              data.maxCapacity
+                                                                data.maxCapacity
                                                             ) {
                                                               return (
                                                                 <Tooltip
@@ -3990,8 +3970,8 @@ class Header extends Component {
                                                                       data.isDisabled
                                                                         ? "s-red-active"
                                                                         : selectSlot
-                                                                          ? "s-yellow-active"
-                                                                          : "s-yellow-btn"
+                                                                        ? "s-yellow-active"
+                                                                        : "s-yellow-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
@@ -4019,7 +3999,7 @@ class Header extends Component {
                                                             if (
                                                               data.visitedCount <
                                                               (1 / 2) *
-                                                              data.maxCapacity
+                                                                data.maxCapacity
                                                             ) {
                                                               return (
                                                                 <Tooltip
@@ -4040,8 +4020,8 @@ class Header extends Component {
                                                                       data.isDisabled
                                                                         ? "s-red-active"
                                                                         : selectSlot
-                                                                          ? "s-green-active"
-                                                                          : "s-green-btn"
+                                                                        ? "s-green-active"
+                                                                        : "s-green-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
@@ -4084,8 +4064,8 @@ class Header extends Component {
                                                   </div>
                                                 </div>
                                               ) : null;
-                                          }
-                                        )
+                                            }
+                                          )
                                         : null}
                                     </div>
                                     <div className="col-md-5">
@@ -4095,40 +4075,39 @@ class Header extends Component {
                                             <label className="s-lable">
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.label
-                                                  .selectedslot
+                                                    .selectedslot
                                                 : "Selected Slot"}
                                             </label>
                                             {Object.keys(
                                               this.state.selectedSlot
                                             ).length !== 0 ? (
-                                                <button
-                                                  className={
+                                              <button
+                                                className={
+                                                  this.state.selectedSlot
+                                                    .visitedCount <
+                                                  (1 / 2) *
                                                     this.state.selectedSlot
-                                                      .visitedCount <
-                                                      (1 / 2) *
+                                                      .maxCapacity
+                                                    ? "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                    : this.state.selectedSlot
+                                                        .visitedCount <
                                                       this.state.selectedSlot
                                                         .maxCapacity
-                                                      ?
-                                                      "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                      : this.state.selectedSlot
-                                                        .visitedCount <
-                                                        this.state.selectedSlot
-                                                          .maxCapacity
-                                                        ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                        : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                  }
-                                                >
-                                                  {
-                                                    this.state.selectedSlot
-                                                      .timeSlot
-                                                  }
-                                                  <img
-                                                    className="s-img-select"
-                                                    src={CircleRight}
-                                                    alt="circle-right"
-                                                  />
-                                                </button>
-                                              ) : null}
+                                                    ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                    : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                }
+                                              >
+                                                {
+                                                  this.state.selectedSlot
+                                                    .timeSlot
+                                                }
+                                                <img
+                                                  className="s-img-select"
+                                                  src={CircleRight}
+                                                  alt="circle-right"
+                                                />
+                                              </button>
+                                            ) : null}
                                             {this.state.isSelectSlot !== "" && (
                                               <p
                                                 style={{
@@ -4153,16 +4132,16 @@ class Header extends Component {
                                             />
                                             {this.state.noOfPeopleMax !==
                                               "" && (
-                                                <p
-                                                  style={{
-                                                    color: "red",
-                                                    marginBottom: "0px",
-                                                    width: "131px",
-                                                  }}
-                                                >
-                                                  {this.state.noOfPeopleMax}
-                                                </p>
-                                              )}
+                                              <p
+                                                style={{
+                                                  color: "red",
+                                                  marginBottom: "0px",
+                                                  width: "131px",
+                                                }}
+                                              >
+                                                {this.state.noOfPeopleMax}
+                                              </p>
+                                            )}
                                           </div>
                                         </div>
                                         <button
@@ -4188,22 +4167,22 @@ class Header extends Component {
                                               spin
                                             />
                                           ) : (
-                                              ""
-                                            )}
+                                            ""
+                                          )}
                                         </button>
                                       </div>
                                     </div>
                                   </div>
                                 ) : (
-                                    <div>
-                                      <span className="slot-span">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.span
+                                  <div>
+                                    <span className="slot-span">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span
                                             .noslotaddedforthisstore
-                                          : "No slot added for this store"}
-                                      </span>
-                                    </div>
-                                  )}
+                                        : "No slot added for this store"}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                               {/* --------Generate Payment Link Tab----- */}
                               <div
@@ -4220,25 +4199,21 @@ class Header extends Component {
                                   className="input-group searchtxt-new"
                                   style={{ background: "none" }}
                                 >
-                                  <form
-                                    style={{ width: "100%" }}
-                                  >
+                                  <form style={{ width: "100%" }}>
                                     <input
                                       type="text"
                                       className="search-customerAddSrch searchtxt"
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .searchorderid
+                                              .searchorderid
                                           : "Search Order Id"
                                       }
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
                                     />
-                                    <span
-                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                    >
+                                    <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
                                       <img
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
@@ -4259,7 +4234,7 @@ class Header extends Component {
                                   <button className="butn">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.button
-                                        .sendpaymentlink
+                                          .sendpaymentlink
                                       : "Send Payment Link"}
                                     <img
                                       src={SendUp}
@@ -4413,91 +4388,91 @@ class Header extends Component {
                                   </p>
 
                                   {this.state.messageSuggestionData !== null &&
-                                    this.state.messageSuggestionData.length > 0 &&
-                                    this.state.messageSuggestionData.length >
+                                  this.state.messageSuggestionData.length > 0 &&
+                                  this.state.messageSuggestionData.length >
                                     0 ? (
-                                      <div className="suggestions-cntr">
-                                        <Table
-                                          noDataContent="No Record Found"
-                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
-                                          columns={[
-                                            {
-                                              dataIndex: "suggestionText",
-                                              className: "textnowrap-table",
-                                              render: (row, rowData) => {
-                                                i = i + 1;
-                                                return (
-                                                  <div
-                                                    className={
-                                                      this.state.chkSuggestion[
-                                                        i
-                                                      ] === i
-                                                        ? "suggestions-tick"
-                                                        : ""
-                                                    }
-                                                    id={i}
-                                                    onClick={this.onOpenMobSuggestionModal.bind(
-                                                      this,
-                                                      rowData.suggestionText,
+                                    <div className="suggestions-cntr">
+                                      <Table
+                                        noDataContent="No Record Found"
+                                        className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                        columns={[
+                                          {
+                                            dataIndex: "suggestionText",
+                                            className: "textnowrap-table",
+                                            render: (row, rowData) => {
+                                              i = i + 1;
+                                              return (
+                                                <div
+                                                  className={
+                                                    this.state.chkSuggestion[
                                                       i
-                                                    )}
+                                                    ] === i
+                                                      ? "suggestions-tick"
+                                                      : ""
+                                                  }
+                                                  id={i}
+                                                  onClick={this.onOpenMobSuggestionModal.bind(
+                                                    this,
+                                                    rowData.suggestionText,
+                                                    i
+                                                  )}
+                                                >
+                                                  <Tooltip
+                                                    placement="left"
+                                                    title={
+                                                      rowData.suggestionText
+                                                    }
                                                   >
-                                                    <Tooltip
-                                                      placement="left"
-                                                      title={
-                                                        rowData.suggestionText
-                                                      }
-                                                    >
-                                                      <span>
-                                                        {rowData.suggestionText}
-                                                      </span>
-                                                    </Tooltip>
-                                                  </div>
-                                                );
-                                              },
+                                                    <span>
+                                                      {rowData.suggestionText}
+                                                    </span>
+                                                  </Tooltip>
+                                                </div>
+                                              );
                                             },
-                                          ]}
-                                          dataSource={
-                                            this.state.messageSuggestionData
-                                          }
-                                          pagination={{
-                                            pageSize: 10,
-                                            defaultPageSize: 10,
-                                          }}
-                                        ></Table>
-                                      </div>
-                                    ) : null}
+                                          },
+                                        ]}
+                                        dataSource={
+                                          this.state.messageSuggestionData
+                                        }
+                                        pagination={{
+                                          pageSize: 10,
+                                          defaultPageSize: 10,
+                                        }}
+                                      ></Table>
+                                    </div>
+                                  ) : null}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                    this.state.storeAgentDetail[0].suggestion ===
+                                  this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
-                                      <div
-                                        className="mobile-ck-send"
-                                        onClick={this.handleMessageSuggestion.bind(
-                                          this
-                                        )}
-                                        title={"Search"}
-                                      >
-                                        <img src={SuggSearch} alt="send img" />
-                                      </div>
-                                    ) : null}
+                                    <div
+                                      className="mobile-ck-send"
+                                      onClick={this.handleMessageSuggestion.bind(
+                                        this
+                                      )}
+                                      title={"Search"}
+                                    >
+                                      <img src={SuggSearch} alt="send img" />
+                                    </div>
+                                  ) : null}
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                    this.state.storeAgentDetail[0].freeText ===
+                                  this.state.storeAgentDetail[0].freeText ===
                                     1 ? (
-                                      <div
-                                        className="mobile-ck-send-btn"
-                                        onClick={this.handleSaveChatMessages.bind(
-                                          this,
-                                          this.state.message,
-                                          0,
-                                          "",
-                                          ""
-                                        )}
-                                        title={"Send"}
-                                      >
-                                        <img src={Assign} alt="send img" />
-                                      </div>
-                                    ) : null}
+                                    <div
+                                      className="mobile-ck-send-btn"
+                                      onClick={this.handleSaveChatMessages.bind(
+                                        this,
+                                        this.state.message,
+                                        0,
+                                        "",
+                                        ""
+                                      )}
+                                      title={"Send"}
+                                    >
+                                      <img src={Assign} alt="send img" />
+                                    </div>
+                                  ) : null}
                                 </div>
                               </div>
                               {/* -------- Card Modal ----- */}
@@ -4551,18 +4526,18 @@ class Header extends Component {
                                   <div className="product-card">
                                     {this.state.searchCardData !== null
                                       ? this.state.searchCardData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div
-                                              className="card"
-                                              key={i}
-                                              onClick={this.handleSelectCard.bind(
-                                                this,
-                                                item.itemID
-                                              )}
-                                            >
-                                              <div className="card-body position-relative">
-                                                {item.itemID ===
+                                          (item, i) => {
+                                            return (
+                                              <div
+                                                className="card"
+                                                key={i}
+                                                onClick={this.handleSelectCard.bind(
+                                                  this,
+                                                  item.itemID
+                                                )}
+                                              >
+                                                <div className="card-body position-relative">
+                                                  {item.itemID ===
                                                   this.state.selectedCard ? (
                                                     <div className="selectdot">
                                                       <img
@@ -4571,18 +4546,18 @@ class Header extends Component {
                                                       />
                                                     </div>
                                                   ) : null}
-                                                <div className="mobile-card-cntr">
-                                                  <div className="mobile-card-img">
-                                                    {item.imageURL ? (
-                                                      <img
-                                                        className="chat-product-img"
-                                                        src={item.imageURL}
-                                                        alt="Product Image"
-                                                        title={
-                                                          item.productName
-                                                        }
-                                                      />
-                                                    ) : (
+                                                  <div className="mobile-card-cntr">
+                                                    <div className="mobile-card-img">
+                                                      {item.imageURL ? (
+                                                        <img
+                                                          className="chat-product-img"
+                                                          src={item.imageURL}
+                                                          alt="Product Image"
+                                                          title={
+                                                            item.productName
+                                                          }
+                                                        />
+                                                      ) : (
                                                         <Dropzone
                                                           onDrop={this.handleInsertCardImageUpload.bind(
                                                             this,
@@ -4593,54 +4568,54 @@ class Header extends Component {
                                                             getRootProps,
                                                             getInputProps,
                                                           }) => (
-                                                              <div
-                                                                {...getRootProps()}
-                                                              >
+                                                            <div
+                                                              {...getRootProps()}
+                                                            >
+                                                              <input
+                                                                {...getInputProps()}
+                                                                className="file-upload d-none"
+                                                              />
+                                                              <span className="addimg">
                                                                 <input
-                                                                  {...getInputProps()}
-                                                                  className="file-upload d-none"
+                                                                  type="image"
+                                                                  alt="Add Image"
+                                                                  src={addimg}
                                                                 />
-                                                                <span className="addimg">
-                                                                  <input
-                                                                    type="image"
-                                                                    alt="Add Image"
-                                                                    src={addimg}
-                                                                  />
-                                                                </span>
-                                                              </div>
-                                                            )}
+                                                              </span>
+                                                            </div>
+                                                          )}
                                                         </Dropzone>
                                                       )}
-                                                  </div>
-                                                  <div className="bkcprdt">
-                                                    {item.productName ? (
-                                                      <label className="chat-product-name">
-                                                        {item.productName}
-                                                      </label>
-                                                    ) : null}
-                                                    {item.brandName !== "" &&
+                                                    </div>
+                                                    <div className="bkcprdt">
+                                                      {item.productName ? (
+                                                        <label className="chat-product-name">
+                                                          {item.productName}
+                                                        </label>
+                                                      ) : null}
+                                                      {item.brandName !== "" &&
                                                       item.brandName !==
-                                                      null ? (
+                                                        null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.brand
+                                                                .label.brand
                                                             : "Brand"}{" "}
                                                           :
                                                           {" " + item.brandName}
                                                         </label>
                                                       ) : null}
 
-                                                    {item.categoryName !==
-                                                      "" &&
+                                                      {item.categoryName !==
+                                                        "" &&
                                                       item.categoryName !==
-                                                      null ? (
+                                                        null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.category
+                                                                .label.category
                                                             : "Category"}{" "}
                                                           :
                                                           {" " +
@@ -4648,16 +4623,16 @@ class Header extends Component {
                                                         </label>
                                                       ) : null}
 
-                                                    {item.subCategoryName !==
-                                                      "" &&
+                                                      {item.subCategoryName !==
+                                                        "" &&
                                                       item.subCategoryName !==
-                                                      null ? (
+                                                        null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label
-                                                              .subcategory
+                                                                .label
+                                                                .subcategory
                                                             : "SubCategory"}{" "}
                                                           :
                                                           {" " +
@@ -4665,39 +4640,39 @@ class Header extends Component {
                                                         </label>
                                                       ) : null}
 
-                                                    {item.color !== "" &&
+                                                      {item.color !== "" &&
                                                       item.color !== null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.color
+                                                                .label.color
                                                             : "Color"}{" "}
                                                           :{" " + item.color}
                                                         </label>
                                                       ) : null}
 
-                                                    {item.size !== "" &&
+                                                      {item.size !== "" &&
                                                       item.size !== null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.color
+                                                                .label.color
                                                             : "Size"}{" "}
                                                           :{" " + item.size}
                                                         </label>
                                                       ) : null}
 
-                                                    {item.uniqueItemCode !==
-                                                      "" &&
+                                                      {item.uniqueItemCode !==
+                                                        "" &&
                                                       item.uniqueItemCode !==
-                                                      null ? (
+                                                        null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.itemcode
+                                                                .label.itemcode
                                                             : "Item Code"}{" "}
                                                           :
                                                           {" " +
@@ -4705,35 +4680,35 @@ class Header extends Component {
                                                         </label>
                                                       ) : null}
 
-                                                    {item.discount !== "" &&
+                                                      {item.discount !== "" &&
                                                       parseFloat(
                                                         item.discount
                                                       ) !== 0 &&
                                                       item.discount !== null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.discount
+                                                                .label.discount
                                                             : "Discount"}{" "}
                                                           :{" " + item.discount}
                                                         </label>
                                                       ) : null}
 
-                                                    {item.price !== "" &&
+                                                      {item.price !== "" &&
                                                       parseFloat(item.price) !==
-                                                      0 &&
+                                                        0 &&
                                                       item.price !== null ? (
                                                         <label className="chat-product-prize">
                                                           {TranslationContext !==
-                                                            undefined
+                                                          undefined
                                                             ? TranslationContext
-                                                              .label.price
+                                                                .label.price
                                                             : "Price"}{" "}
                                                           :{" " + item.price}
                                                         </label>
                                                       ) : null}
-                                                    {item.url !== null &&
+                                                      {item.url !== null &&
                                                       item.url !== "" ? (
                                                         <label className="chat-product-url">
                                                           {item.url !== null
@@ -4743,13 +4718,13 @@ class Header extends Component {
                                                       ) : (
                                                         ""
                                                       )}
+                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          );
-                                        }
-                                      )
+                                            );
+                                          }
+                                        )
                                       : null}
                                   </div>
                                   <div className="chat-btn-cntr">
@@ -4780,8 +4755,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                          ""
-                                        )}
+                                        ""
+                                      )}
                                     </button>
                                   </div>
                                 </div>
@@ -4807,7 +4782,7 @@ class Header extends Component {
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.button
-                                          .sendrecommendedlist
+                                            .sendrecommendedlist
                                         : "Send Recommended List"}
 
                                       <img
@@ -4822,8 +4797,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                          ""
-                                        )}
+                                        ""
+                                      )}
                                     </button>
                                     <p
                                       style={{
@@ -4862,10 +4837,10 @@ class Header extends Component {
                                         <div className="schedule-left-cntr">
                                           {this.state.timeSlotData !== null
                                             ? this.state.timeSlotData.map(
-                                              (item, i) => {
-                                                return item
-                                                  .alreadyScheduleDetails
-                                                  .length > 0 ? (
+                                                (item, i) => {
+                                                  return item
+                                                    .alreadyScheduleDetails
+                                                    .length > 0 ? (
                                                     <div key={i}>
                                                       <label className="s-lable">
                                                         {item.day}:{item.dates}
@@ -4884,7 +4859,7 @@ class Header extends Component {
                                                                     i
                                                                   ]
                                                                     .alreadyScheduleDetails[
-                                                                  k
+                                                                    k
                                                                   ] ===
                                                                   this.state
                                                                     .selectedSlot
@@ -4925,7 +4900,7 @@ class Header extends Component {
                                                                 if (
                                                                   data.visitedCount >=
                                                                   (1 / 2) *
-                                                                  data.maxCapacity
+                                                                    data.maxCapacity
                                                                 ) {
                                                                   return (
                                                                     <Tooltip
@@ -4946,8 +4921,8 @@ class Header extends Component {
                                                                           data.isDisabled
                                                                             ? "s-red-active"
                                                                             : selectSlot
-                                                                              ? "s-yellow-active"
-                                                                              : "s-yellow-btn"
+                                                                            ? "s-yellow-active"
+                                                                            : "s-yellow-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
@@ -4975,7 +4950,7 @@ class Header extends Component {
                                                                 if (
                                                                   data.visitedCount <
                                                                   (1 / 2) *
-                                                                  data.maxCapacity
+                                                                    data.maxCapacity
                                                                 ) {
                                                                   return (
                                                                     <Tooltip
@@ -4996,8 +4971,8 @@ class Header extends Component {
                                                                           data.isDisabled
                                                                             ? "s-red-active"
                                                                             : selectSlot
-                                                                              ? "s-green-active"
-                                                                              : "s-green-btn"
+                                                                            ? "s-green-active"
+                                                                            : "s-green-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
@@ -5034,8 +5009,8 @@ class Header extends Component {
                                                       </div>
                                                     </div>
                                                   ) : null;
-                                              }
-                                            )
+                                                }
+                                              )
                                             : null}
                                         </div>
                                       </div>
@@ -5044,36 +5019,35 @@ class Header extends Component {
                                           <label className="s-lable">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label
-                                                .selectedslot
+                                                  .selectedslot
                                               : "Selected Slot"}
                                           </label>
                                           {Object.keys(this.state.selectedSlot)
                                             .length !== 0 ? (
-                                              <button
-                                                className={
+                                            <button
+                                              className={
+                                                this.state.selectedSlot
+                                                  .visitedCount <
+                                                (1 / 2) *
                                                   this.state.selectedSlot
-                                                    .visitedCount <
-                                                    (1 / 2) *
+                                                    .maxCapacity
+                                                  ? "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                  : this.state.selectedSlot
+                                                      .visitedCount <
                                                     this.state.selectedSlot
                                                       .maxCapacity
-                                                    ?
-                                                    "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                    : this.state.selectedSlot
-                                                      .visitedCount <
-                                                      this.state.selectedSlot
-                                                        .maxCapacity
-                                                      ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                      : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                }
-                                              >
-                                                {this.state.selectedSlot.timeSlot}
-                                                <img
-                                                  className="s-img-select"
-                                                  src={CircleRight}
-                                                  alt="circle-right"
-                                                />
-                                              </button>
-                                            ) : null}
+                                                  ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                  : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                              }
+                                            >
+                                              {this.state.selectedSlot.timeSlot}
+                                              <img
+                                                className="s-img-select"
+                                                src={CircleRight}
+                                                alt="circle-right"
+                                              />
+                                            </button>
+                                          ) : null}
                                           {this.state.isSelectSlot !== "" && (
                                             <p
                                               style={{
@@ -5089,7 +5063,7 @@ class Header extends Component {
                                           <label className="s-lable">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label
-                                                .noofpeople
+                                                  .noofpeople
                                               : "No of People"}
                                           </label>
                                           <input
@@ -5141,21 +5115,21 @@ class Header extends Component {
                                             spin
                                           />
                                         ) : (
-                                            ""
-                                          )}
+                                          ""
+                                        )}
                                       </button>
                                     </div>
                                   </div>
                                 ) : (
-                                    <div>
-                                      <span className="slot-span">
-                                        {TranslationContext !== undefined
-                                          ? TranslationContext.span
+                                  <div>
+                                    <span className="slot-span">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.span
                                             .noslotaddedforthisstore
-                                          : "No slot added for this store"}
-                                      </span>
-                                    </div>
-                                  )}
+                                        : "No slot added for this store"}
+                                    </span>
+                                  </div>
+                                )}
                               </Modal>
                               {/* -------- Generate Payment Link Modal ----- */}
                               <Modal
@@ -5183,9 +5157,7 @@ class Header extends Component {
                                           maxLength="100"
                                           autoComplete="off"
                                         />
-                                        <span
-                                          className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                        >
+                                        <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
                                           <img
                                             src={SearchBlueImg}
                                             alt="SearchBlueImg"
@@ -5231,8 +5203,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                          ""
-                                        )}
+                                        ""
+                                      )}
                                     </button>
                                   </div>
                                 </div>
@@ -5253,7 +5225,7 @@ class Header extends Component {
                                     <p className="cls-p-conf">
                                       {TranslationContext !== undefined
                                         ? TranslationContext.p
-                                          .areyousureandwanttosend
+                                            .areyousureandwanttosend
                                         : "Are you sure & want to send"}
                                       ?
                                     </p>
@@ -5299,8 +5271,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                          ""
-                                        )}
+                                        ""
+                                      )}
                                     </button>
                                   </div>
                                 </div>
@@ -5321,7 +5293,7 @@ class Header extends Component {
                                     <p className="cls-p-conf-mob">
                                       {TranslationContext !== undefined
                                         ? TranslationContext.p
-                                          .areyousureandwanttosend
+                                            .areyousureandwanttosend
                                         : "Are you sure & want to send"}
                                       ?
                                     </p>
@@ -5367,8 +5339,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                          ""
-                                        )}
+                                        ""
+                                      )}
                                     </button>
                                   </div>
                                 </div>
@@ -5444,15 +5416,15 @@ class Header extends Component {
                                           title={
                                             rowData.customerMobile
                                               ? rowData.customerMobile.substring(
-                                                2
-                                              )
+                                                  2
+                                                )
                                               : ""
                                           }
                                         >
                                           {rowData.customerMobile
                                             ? rowData.customerMobile.substring(
-                                              2
-                                            )
+                                                2
+                                              )
                                             : ""}
                                         </p>
                                       );
@@ -5576,262 +5548,8 @@ class Header extends Component {
                                   }}
                                 >
                                   {this.state.messageHistoryChatData !== null &&
-                                    this.state.messageHistoryChatData.length >
+                                  this.state.messageHistoryChatData.length >
                                     0 ? (
-                                      this.state.messageHistoryChatData.map(
-                                        (item, i) => {
-                                          return (
-                                            <div
-                                              key={i}
-                                              className={
-                                                item.byCustomer === true &&
-                                                  item.isBotReply !== true
-                                                  ? "chat-trail-cntr"
-                                                  : "chat-trail-cntr chat-trail-cntr-right"
-                                              }
-                                            >
-                                              <div className="chat-trail-img">
-                                                <span
-                                                  className="chat-initial"
-                                                  alt="face image"
-                                                  title={
-                                                    item.byCustomer
-                                                      ? item.customerName
-                                                      : this.state.UserName
-                                                  }
-                                                >
-                                                  {item.byCustomer
-                                                    ? item.customerName
-                                                      .split(" ")
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()
-                                                    : this.state.UserName.split(
-                                                      " "
-                                                    )
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()}
-                                                </span>
-                                              </div>
-                                              <div className="chat-trail-chat-cntr">
-                                                {item.isBotReply && (
-                                                  <p className="bot-mark">
-                                                    {TranslationContext !==
-                                                      undefined
-                                                      ? TranslationContext.p.bot
-                                                      : "BOT"}
-                                                  </p>
-                                                )}
-                                                <p className="chat-trail-chat pd-0">
-                                                  {ReactHtmlParser(
-                                                    item.message
-                                                      .replace(
-                                                        "col-md-2",
-                                                        "col-md-4"
-                                                      )
-                                                      .replace(
-                                                        "col-md-10",
-                                                        "col-md-8"
-                                                      )
-                                                  )}
-                                                </p>
-                                                <span className="chat-trail-time">
-                                                  {item.chatDate + " "}
-                                                  {item.chatTime}
-                                                </span>
-                                              </div>
-                                            </div>
-                                          );
-                                        }
-                                      )
-                                    ) : (
-                                      <p style={{ margin: "10" }}>
-                                        No record found
-                                      </p>
-                                    )}
-                                </div>
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                      <div className="row" style={{ margin: "0" }}>
-                        <div className="chatdivtitle">
-                          <label
-                            className="chattitlelbl"
-                            style={{ color: "Black" }}
-                          >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.label.myhistoricalchat
-                              : "My Historical Chat"}
-                          </label>
-                        </div>
-                        <div className="chathistory-tbl">
-                          <div
-                            className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
-                            style={{ margin: "10px" }}
-                          >
-                            <Table
-                              loading={this.state.isHistoricalChatLoading}
-                              noDataContent="No Record Found"
-                              className="components-table-demo-nested antd-table-campaign custom-antd-table add-cursor"
-                              columns={[
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.chatid
-                                      : "Chat ID",
-                                  dataIndex: "chatID",
-                                  width: "10%",
-                                  className: "textnowrap-table",
-                                  render: (row, rowData) => {
-                                    return (
-                                      <>{rowData.chatID ? rowData.chatID : ""}</>
-                                    );
-                                  },
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.customername
-                                      : "Customer Name",
-                                  dataIndex: "customerName",
-                                  width: "20%",
-                                  className: "textnowrap-table",
-                                  render: (row, rowData) => {
-                                    return (
-                                      <>
-                                        {rowData.customerName
-                                          ? rowData.customerName
-                                          : ""}
-                                      </>
-                                    );
-                                  },
-                                },
-                                {
-                                  title: "Mobile No",
-                                  dataIndex: "customerMobile",
-                                  width: "20%",
-                                  className: "textnowrap-table",
-                                  render: (row, rowData) => {
-                                    return (
-                                      <>
-                                        {rowData.customerMobile
-                                          ? rowData.customerMobile.substring(2)
-                                          : ""}
-                                      </>
-                                    );
-                                  },
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.time
-                                      : "Time",
-                                  dataIndex: "timeAgo",
-                                  width: "20%",
-                                  className: "textnowrap-table",
-                                  render: (row, rowData) => {
-                                    return (
-                                      <>
-                                        {rowData.timeAgo ? rowData.timeAgo : ""}
-                                      </>
-                                    );
-                                  },
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.time
-                                      : "Status",
-                                  dataIndex: "chatStatus",
-                                  width: "20%",
-                                  className: "textnowrap-table",
-                                  render: (row, rowData) => {
-                                    return (
-                                      <>
-                                        {rowData.chatStatus
-                                          ? rowData.chatStatus
-                                          : ""}
-                                      </>
-                                    );
-                                  },
-                                },
-                                {
-                                  title:
-                                    TranslationContext !== undefined
-                                      ? TranslationContext.title.message
-                                      : "Message",
-                                  dataIndex: "message",
-                                  width: "30%",
-                                  className: "textnowrap-table",
-                                  render: (row) => {
-                                    return (
-                                      <>
-                                        <p
-                                          className="msg-text-overlap"
-                                          title={row ? row : ""}
-                                        >
-                                          {row ? row : ""}
-                                        </p>
-                                      </>
-                                    );
-                                  },
-                                },
-                              ]}
-                              dataSource={this.state.historicalChatData}
-                              onRow={(record, index) => ({
-                                onClick: (event) => {
-                                  this.handleHistoricalTableRow(
-                                    record,
-                                    index,
-                                    event
-                                  );
-                                },
-                              })}
-                              pagination={{
-                                pageSize: 5,
-                                defaultPageSize: 5,
-                              }}
-                              rowKey={(record) => {
-                                if (record.chatID) {
-                                  uid = uid + 1;
-                                  return record.chatID + "g" + uid;
-                                } else {
-                                  uid = uid + 1;
-                                  return "h" + uid;
-                                }
-                              }}
-                              rowClassName={this.setRowClassName}
-                            ></Table>
-                          </div>
-                        </div>
-                        <div className="chathistory-tbl">
-                          {this.state.showHistoricalChat ? (
-                            <div className="historychatcontnet">
-                              <div className="chathistory-div add-bord">
-                                <label className="chat-on-tuesday-jul">
-                                  {" "}
-                                Chat On {this.state.chatTimeAgo}
-                                </label>
-                                <img
-                                  onClick={this.handleHistoryChatClose.bind(this)}
-                                  src={CancelBlack}
-                                  alt="close-icon"
-                                  style={{ float: "right", cursor: "pointer" }}
-                                />
-                              </div>
-                              <div
-                                className="chatcontentDiv"
-                                ref={(div) => {
-                                  this.historyMessageList = div;
-                                }}
-                              >
-                                {this.state.messageHistoryChatData !== null &&
-                                  this.state.messageHistoryChatData.length > 0 ? (
                                     this.state.messageHistoryChatData.map(
                                       (item, i) => {
                                         return (
@@ -5839,7 +5557,7 @@ class Header extends Component {
                                             key={i}
                                             className={
                                               item.byCustomer === true &&
-                                                item.isBotReply !== true
+                                              item.isBotReply !== true
                                                 ? "chat-trail-cntr"
                                                 : "chat-trail-cntr chat-trail-cntr-right"
                                             }
@@ -5856,20 +5574,23 @@ class Header extends Component {
                                               >
                                                 {item.byCustomer
                                                   ? item.customerName
-                                                    .split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()
-                                                  : this.state.UserName.split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()}
+                                                      .split(" ")
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()
+                                                  : this.state.UserName.split(
+                                                      " "
+                                                    )
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()}
                                               </span>
                                             </div>
                                             <div className="chat-trail-chat-cntr">
                                               {item.isBotReply && (
                                                 <p className="bot-mark">
-                                                  {TranslationContext !== undefined
+                                                  {TranslationContext !==
+                                                  undefined
                                                     ? TranslationContext.p.bot
                                                     : "BOT"}
                                                 </p>
@@ -5877,7 +5598,10 @@ class Header extends Component {
                                               <p className="chat-trail-chat pd-0">
                                                 {ReactHtmlParser(
                                                   item.message
-                                                    .replace("col-md-2", "col-md-4")
+                                                    .replace(
+                                                      "col-md-2",
+                                                      "col-md-4"
+                                                    )
                                                     .replace(
                                                       "col-md-10",
                                                       "col-md-8"
@@ -5894,16 +5618,264 @@ class Header extends Component {
                                       }
                                     )
                                   ) : (
-                                    <p style={{ margin: "10px" }}>
+                                    <p style={{ margin: "10" }}>
                                       No record found
                                     </p>
                                   )}
+                                </div>
                               </div>
-                            </div>
-                          ) : null}
+                            ) : null}
+                          </div>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  ) : (
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="chatdivtitle">
+                        <label
+                          className="chattitlelbl"
+                          style={{ color: "Black" }}
+                        >
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.myhistoricalchat
+                            : "My Historical Chat"}
+                        </label>
+                      </div>
+                      <div className="chathistory-tbl">
+                        <div
+                          className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
+                          style={{ margin: "10px" }}
+                        >
+                          <Table
+                            loading={this.state.isHistoricalChatLoading}
+                            noDataContent="No Record Found"
+                            className="components-table-demo-nested antd-table-campaign custom-antd-table add-cursor"
+                            columns={[
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.chatid
+                                    : "Chat ID",
+                                dataIndex: "chatID",
+                                width: "10%",
+                                className: "textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>{rowData.chatID ? rowData.chatID : ""}</>
+                                  );
+                                },
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.customername
+                                    : "Customer Name",
+                                dataIndex: "customerName",
+                                width: "20%",
+                                className: "textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.customerName
+                                        ? rowData.customerName
+                                        : ""}
+                                    </>
+                                  );
+                                },
+                              },
+                              {
+                                title: "Mobile No",
+                                dataIndex: "customerMobile",
+                                width: "20%",
+                                className: "textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.customerMobile
+                                        ? rowData.customerMobile.substring(2)
+                                        : ""}
+                                    </>
+                                  );
+                                },
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.time
+                                    : "Time",
+                                dataIndex: "timeAgo",
+                                width: "20%",
+                                className: "textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.timeAgo ? rowData.timeAgo : ""}
+                                    </>
+                                  );
+                                },
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.time
+                                    : "Status",
+                                dataIndex: "chatStatus",
+                                width: "20%",
+                                className: "textnowrap-table",
+                                render: (row, rowData) => {
+                                  return (
+                                    <>
+                                      {rowData.chatStatus
+                                        ? rowData.chatStatus
+                                        : ""}
+                                    </>
+                                  );
+                                },
+                              },
+                              {
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.message
+                                    : "Message",
+                                dataIndex: "message",
+                                width: "30%",
+                                className: "textnowrap-table",
+                                render: (row) => {
+                                  return (
+                                    <>
+                                      <p
+                                        className="msg-text-overlap"
+                                        title={row ? row : ""}
+                                      >
+                                        {row ? row : ""}
+                                      </p>
+                                    </>
+                                  );
+                                },
+                              },
+                            ]}
+                            dataSource={this.state.historicalChatData}
+                            onRow={(record, index) => ({
+                              onClick: (event) => {
+                                this.handleHistoricalTableRow(
+                                  record,
+                                  index,
+                                  event
+                                );
+                              },
+                            })}
+                            pagination={{
+                              pageSize: 5,
+                              defaultPageSize: 5,
+                            }}
+                            rowKey={(record) => {
+                              if (record.chatID) {
+                                uid = uid + 1;
+                                return record.chatID + "g" + uid;
+                              } else {
+                                uid = uid + 1;
+                                return "h" + uid;
+                              }
+                            }}
+                            rowClassName={this.setRowClassName}
+                          ></Table>
+                        </div>
+                      </div>
+                      <div className="chathistory-tbl">
+                        {this.state.showHistoricalChat ? (
+                          <div className="historychatcontnet">
+                            <div className="chathistory-div add-bord">
+                              <label className="chat-on-tuesday-jul">
+                                {" "}
+                                Chat On {this.state.chatTimeAgo}
+                              </label>
+                              <img
+                                onClick={this.handleHistoryChatClose.bind(this)}
+                                src={CancelBlack}
+                                alt="close-icon"
+                                style={{ float: "right", cursor: "pointer" }}
+                              />
+                            </div>
+                            <div
+                              className="chatcontentDiv"
+                              ref={(div) => {
+                                this.historyMessageList = div;
+                              }}
+                            >
+                              {this.state.messageHistoryChatData !== null &&
+                              this.state.messageHistoryChatData.length > 0 ? (
+                                this.state.messageHistoryChatData.map(
+                                  (item, i) => {
+                                    return (
+                                      <div
+                                        key={i}
+                                        className={
+                                          item.byCustomer === true &&
+                                          item.isBotReply !== true
+                                            ? "chat-trail-cntr"
+                                            : "chat-trail-cntr chat-trail-cntr-right"
+                                        }
+                                      >
+                                        <div className="chat-trail-img">
+                                          <span
+                                            className="chat-initial"
+                                            alt="face image"
+                                            title={
+                                              item.byCustomer
+                                                ? item.customerName
+                                                : this.state.UserName
+                                            }
+                                          >
+                                            {item.byCustomer
+                                              ? item.customerName
+                                                  .split(" ")
+                                                  .map((n) => n[0])
+                                                  .join("")
+                                                  .toUpperCase()
+                                              : this.state.UserName.split(" ")
+                                                  .map((n) => n[0])
+                                                  .join("")
+                                                  .toUpperCase()}
+                                          </span>
+                                        </div>
+                                        <div className="chat-trail-chat-cntr">
+                                          {item.isBotReply && (
+                                            <p className="bot-mark">
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.p.bot
+                                                : "BOT"}
+                                            </p>
+                                          )}
+                                          <p className="chat-trail-chat pd-0">
+                                            {ReactHtmlParser(
+                                              item.message
+                                                .replace("col-md-2", "col-md-4")
+                                                .replace(
+                                                  "col-md-10",
+                                                  "col-md-8"
+                                                )
+                                            )}
+                                          </p>
+                                          <span className="chat-trail-time">
+                                            {item.chatDate + " "}
+                                            {item.chatTime}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                )
+                              ) : (
+                                <p style={{ margin: "10px" }}>
+                                  No record found
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

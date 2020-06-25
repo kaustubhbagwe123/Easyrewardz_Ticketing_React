@@ -78,7 +78,6 @@ class DeliveredTab extends Component {
       });
   }
   handleGetOrderStatusFilterData() {
-    debugger;
     let self = this;
 
     axios({
@@ -90,7 +89,6 @@ class DeliveredTab extends Component {
       },
     })
       .then(function (res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -106,7 +104,6 @@ class DeliveredTab extends Component {
       });
   }
   PaginationOnChange = async (numPage) => {
-    debugger;
     await this.setState({
       currentPage: numPage,
     });
@@ -123,7 +120,6 @@ class DeliveredTab extends Component {
     this.handleGetOrderDeliveredData();
   };
   handleCheckDeliIndividualStatus() {
-    debugger;
     var checkboxes = document.getElementsByName("DeliveredStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -325,7 +321,6 @@ class DeliveredTab extends Component {
               },
             ]}
             expandedRowRender={(row) => {
-              debugger;
               return (
                 <div className="innertabcollapse">
                   <div className="">
