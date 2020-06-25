@@ -20,22 +20,14 @@ import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 import OrderLogoBlue from "./../../assets/Images/order-icon-blue.png";
 import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
-// import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import SendUp from "./../../assets/Images/send-up.png";
 import DownWhiteImg from "./../../assets/Images/down-white.png";
-import DashboardIco from "./../../assets/Images/store-black.png";
-import TaskIco from "./../../assets/Images/ticket.png";
-import ClaimIco from "./../../assets/Images/icon9.svg";
-import CampaignIco from "./../../assets/Images/campaign.svg";
-import AppointmentIco from "./../../assets/Images/appointments.svg";
-import OrdersIco from "./../../assets/Images/order.png";
-import TodoIco from "./../../assets/Images/ticket.png";
 import Logout from "./../../assets/Images/logout.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/mobile-back.svg";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
 import PencilImg from "./../../assets/Images/pencil.png";
@@ -47,12 +39,8 @@ import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
-import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
-import Bata from "./../../assets/Images/Bata2.jpg";
 import SchRight from "./../../assets/Images/sch-right.png";
-import DownArrow from "./../../assets/Images/down.png";
-import RightBlue from "./../../assets/Images/rightblue.png";
 import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
@@ -65,15 +53,13 @@ import BellIcon from "./../../assets/Images/bell-icon.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
-import { ItemMeta } from "semantic-ui-react";
 import CancelBlueImg from "./../../assets/Images/CancelBlue.png";
 import CancelBlack from "./../../assets/Images/cancel.png";
 import moment from "moment";
 import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { Table, Select, Spin } from "antd";
-import Pagination from "react-pagination-js";
+import { Table, Select } from "antd";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
@@ -225,7 +211,7 @@ class Header extends Component {
       arr = [...this.state.cont];
       debugger;
       setTimeout(
-        function() {
+        function () {
           pageName = window.location.pathname;
           lastOne = pageName.split("/");
           lastValue = lastOne[lastOne.length - 1];
@@ -462,11 +448,8 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
-    // console.clear();
   }
   componentDidUpdate() {
-    // console.clear();
-
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
@@ -477,14 +460,14 @@ class Header extends Component {
     }
   }
 
-  handleCRMRole(id) {
+  handleCRMRole() {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCRMRole/GetStoreRolesByUserID",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let msg = res.data.message;
         let data = res.data.responseData.modules;
         if (msg === "Success") {
@@ -503,7 +486,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreUser/GetStoreUserProfileDetail",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         var status = res.data.message;
         if (status === "Success") {
           var id = res.data.responseData[0].userId;
@@ -518,7 +501,7 @@ class Header extends Component {
               selectedUserProfilePicture: userdata,
             });
           }
-          self.handleCRMRole(id);
+          self.handleCRMRole();
         } else {
           self.setState({
             selectedUserProfilePicture: "",
@@ -547,9 +530,7 @@ class Header extends Component {
   };
   ////handle notification modal open
   handleNotificationModalOpen() {
-    // if (this.state.notificationCount > 0) {
     this.setState({ notificationModal: true });
-    // }
   }
   ////handle notification modal close
   handleNotificationModalClose(typeId, type) {
@@ -564,7 +545,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreDashboard/StoreLoggedInAccountDetails",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var data = res.data.responseData;
         var status = res.data.message;
@@ -605,8 +586,6 @@ class Header extends Component {
           if (data.programCode !== "" && data.storeCode !== "") {
             self.handleCreateSocketConnection(data.programCode, data.storeCode);
           }
-
-          // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
       .catch((data) => {
@@ -640,17 +619,14 @@ class Header extends Component {
 
   ////handle logout method
   handleLogoutMethod() {
-    // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreAccount/Logout",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         var status = res.data.status;
-        // var Msg=res.data.message
         if (status === true) {
-          //NotificationManager.success(Msg);
           localStorage.clear();
 
           window.location.href = "/";
@@ -669,7 +645,7 @@ class Header extends Component {
       url: config.apiUrl + "/StoreNotification/GetStoreNotifications",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         var Noticount = responseData.notiCount;
@@ -700,7 +676,7 @@ class Header extends Component {
         NotificatonType: type,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -744,7 +720,6 @@ class Header extends Component {
       selectSlot: {},
       scheduleModal: false,
       selectedSlot: {},
-      // isScroll: true,
       mainTabSelect: 1,
       toggle: {
         one: true,
@@ -784,29 +759,41 @@ class Header extends Component {
       headers: authHeader(),
       params: { Search: search, StoreManagerID: this.state.sAgentId },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-
-        if (message === "Success" && ongoingChatsData) {
-          var chatData = ongoingChatsData.filter(
-            (x) => x.chatID === self.state.chatId
-          );
-          if (chatData.length == 0) {
+        debugger;
+        if (message === "Success") {
+          if (ongoingChatsData) {
+            var chatData = ongoingChatsData.filter(
+              (x) => x.chatID === self.state.chatId
+            );
+            if (chatData.length == 0) {
+              self.setState({
+                customerName: "",
+                messageData: [],
+                isMainLoader: false,
+              });
+            }
+            self.setState({
+              ongoingChatsData,
+            });
+          } else {
             self.setState({
               customerName: "",
               messageData: [],
               isMainLoader: false,
             });
+            self.setState({
+              ongoingChatsData,
+            });
           }
-          self.setState({
-            ongoingChatsData,
-          });
         } else {
           self.setState({ ongoingChatsData: [] });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetOngoingChat");
       });
   }
@@ -825,26 +812,22 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetNewChat",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
           self.setState({ newChatsData, isMainLoader: false });
-          // setInterval(() => {
-          // if (self.state.chatModal) {
-          //   self.handleGetNewChat();
-          // }
-          // }, 40000);
         } else {
           self.setState({ newChatsData: [], isMainLoader: false });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetNewChat");
       });
   }
   ////handle Make As Read On Going Chat
-  async handleMakeAsReadOnGoingChat(id, isNew) {
+  async handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
     await axios({
@@ -855,11 +838,10 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          // self.setState({ chatMessageCount: self.state.chatMessageCount - 1 });
           self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
           self.handleGetChatNotificationCount();
@@ -926,17 +908,18 @@ class Header extends Component {
         chatID: id,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           self.handleGetAgentRecentChat(customerId);
-          self.handleMakeAsReadOnGoingChat(id, true);
+          self.handleMakeAsReadOnGoingChat(id);
           self.handleGetNewChat();
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleUpdateCustomerChatStatus");
       });
   }
@@ -957,7 +940,7 @@ class Header extends Component {
         ForRecentChat: forRecentChat,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var messageData = response.data.responseData;
         if (message === "Success" && messageData) {
@@ -974,12 +957,12 @@ class Header extends Component {
               isMainLoader: false,
             });
           }
-          // self.handleGetChatNotificationCount();
         } else {
           self.setState({ messageData: [] });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetChatMessagesList");
       });
   }
@@ -1013,7 +996,7 @@ class Header extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function(response) {
+        .then(function (response) {
           var message = response.data.message;
           var responseData = response.data.responseData;
           if (message === "Success" && responseData) {
@@ -1042,6 +1025,7 @@ class Header extends Component {
           }
         })
         .catch((response) => {
+          self.setState({ isMainLoader: false });
           console.log(response, "---saveChatMessages");
         });
     }
@@ -1054,13 +1038,9 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetChatNotificationCount",
       headers: authHeader(),
     })
-      .then(function(response) {
-        var message = response.data.message;
+      .then(function (response) {
         var chatMessageCount = response.data.responseData;
         self.setState({ chatMessageCount });
-        // setInterval(() => {
-        // self.handleGetChatNotificationCount();
-        // }, 30000);
       })
       .catch((response) => {
         console.log(response, "---handleGetChatNotificationCount");
@@ -1079,7 +1059,7 @@ class Header extends Component {
         ProgramCode: this.state.programCode,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var searchCardData = response.data.responseData;
 
@@ -1113,10 +1093,9 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         storeID: 1,
-        // storeID: this.state.storeID,
       },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var timeSlotData = response.data.responseData;
         var availableSlot = 0;
@@ -1171,7 +1150,6 @@ class Header extends Component {
       inputParam.SlotID = this.state.selectedSlot.timeSlotId;
       inputParam.NOofPeople = Number(this.state.noOfPeople);
       inputParam.MobileNo = this.state.mobileNo;
-      // inputParam.StoreID = this.state.storeID;
       inputParam.StoreID = 1;
 
       this.setState({ isSendClick: true, isSendRecomended: true });
@@ -1181,7 +1159,7 @@ class Header extends Component {
         headers: authHeader(),
         data: inputParam,
       })
-        .then(function(response) {
+        .then(function (response) {
           var message = response.data.message;
           var timeSlotData = response.data.responseData;
           if (message == "Success" && timeSlotData) {
@@ -1237,15 +1215,6 @@ class Header extends Component {
     var inputParam = {};
     if (Message.trim() !== "") {
       if (index > 0) {
-        // if (this.state.chkSuggestion.length > 0) {
-        //   if (this.state.chkSuggestion[index] === 1) {
-        //     this.state.chkSuggestion[index] = 0;
-        //   } else {
-        //     this.state.chkSuggestion[index] = 1;
-        //   }
-        // } else {
-        //   this.state.chkSuggestion[index] = 1;
-        // }
         this.setState({
           chkSuggestion: 0,
         });
@@ -1267,7 +1236,7 @@ class Header extends Component {
           headers: authHeader(),
           params: inputParam,
         })
-          .then(function(response) {
+          .then(function (response) {
             var message = response.data.message;
             if (message == "Success") {
               self.setState({
@@ -1303,9 +1272,6 @@ class Header extends Component {
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
     var message = evt.target.value;
-    // var message = evt.editor.getData();
-    // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
-    // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     var remLength = 0;
     remLength = this.state.tempRemainingCount - parseInt(message.length);
     if (remLength < 0) {
@@ -1316,11 +1282,10 @@ class Header extends Component {
     this.setState({
       message,
       remainingCount: remLength,
-      // messageSuggestion,
     });
   };
 
-  handleMessageSuggestion = (evt) => {
+  handleMessageSuggestion = () => {
     setTimeout(() => {
       if (this.state.message.length > 0) {
         this.handleGetMessageSuggestionList();
@@ -1344,7 +1309,7 @@ class Header extends Component {
         SearchText: this.state.message,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let messageSuggestionData = res.data.responseData;
         if (status === "Success") {
@@ -1385,15 +1350,10 @@ class Header extends Component {
     textBeforeArr.push(e.currentTarget.textContent);
     textBefore = textBeforeArr.join(" ");
     var textAfter = this.state.message.substring(startPoint, textLength);
-    // alert(textBefore + "....." + textAfter);
-    // let clickedInfo = e.currentTarget.innerText;
-    let clickedInfo = e.currentTarget.textContent;
     let message = this.state.message;
-    //titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
     message = "<p>" + textBefore + " " + textAfter + "</p>";
 
     this.setState({ message });
-    // this.searchInput.focus();
   };
 
   handleSetMessage = (messageData) => {
@@ -1611,7 +1571,6 @@ class Header extends Component {
   };
 
   onCloseScheduleModal = () => {
-    // this.handleScheduleVisit();
     this.setState({
       scheduleModal: false,
       selectedSlot: {},
@@ -1660,44 +1619,43 @@ class Header extends Component {
       var messagewhatsAppContent =
         messagewhatsAppData[0].productName +
         (messagewhatsAppData[0].brandName !== "" &&
-        messagewhatsAppData[0].brandName !== null
+          messagewhatsAppData[0].brandName !== null
           ? "\nBrand: " + messagewhatsAppData[0].brandName.trim()
           : "") +
         (messagewhatsAppData[0].categoryName !== "" &&
-        messagewhatsAppData[0].categoryName !== null
+          messagewhatsAppData[0].categoryName !== null
           ? ", Category: " + messagewhatsAppData[0].categoryName.trim()
           : "") +
         (messagewhatsAppData[0].subCategoryName !== "" &&
-        messagewhatsAppData[0].subCategoryName !== null
+          messagewhatsAppData[0].subCategoryName !== null
           ? ", Sub Category: " + messagewhatsAppData[0].subCategoryName.trim()
           : "") +
         (messagewhatsAppData[0].color !== "" &&
-        messagewhatsAppData[0].color !== null
+          messagewhatsAppData[0].color !== null
           ? ", Color: " + messagewhatsAppData[0].color.trim()
           : "") +
         (messagewhatsAppData[0].size !== "" &&
-        messagewhatsAppData[0].size !== null
+          messagewhatsAppData[0].size !== null
           ? ", Size: " + messagewhatsAppData[0].size.trim()
           : "") +
         (messagewhatsAppData[0].uniqueItemCode !== "" &&
-        messagewhatsAppData[0].uniqueItemCode !== null
+          messagewhatsAppData[0].uniqueItemCode !== null
           ? ", Item Code: " + messagewhatsAppData[0].uniqueItemCode.trim()
           : "") +
         (messagewhatsAppData[0].discount !== "" &&
-        parseFloat(messagewhatsAppData[0].discount) !== 0 &&
-        messagewhatsAppData[0].discount !== null
+          parseFloat(messagewhatsAppData[0].discount) !== 0 &&
+          messagewhatsAppData[0].discount !== null
           ? ", Discount: " + messagewhatsAppData[0].discount.trim()
           : "") +
         (messagewhatsAppData[0].price !== "" &&
-        parseFloat(messagewhatsAppData[0].price) !== 0 &&
-        messagewhatsAppData[0].price !== null
+          parseFloat(messagewhatsAppData[0].price) !== 0 &&
+          messagewhatsAppData[0].price !== null
           ? ", Price: " + messagewhatsAppData[0].price.trim()
           : "") +
         "\n" +
         (messagewhatsAppData[0].url !== null ? messagewhatsAppData[0].url : "");
 
       var imageURL = messagewhatsAppData[0].imageURL;
-      // this.setState({ message: messageStringData });
       this.setState({ isSendRecomended: true });
       this.handleSaveChatMessages(
         messageStringData,
@@ -1749,19 +1707,9 @@ class Header extends Component {
         MobileNumber: this.state.mobileNo,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
-        let data = res.data.responseData;
         if (status === "Success") {
-          // self.handleOngoingChatClick(
-          //   self.state.chatId,
-          //   self.state.customerName,
-          //   0,
-          //   self.state.mobileNo,
-          //   self.state.customerId,
-          //   self.state.programCode,
-          //   self.state.storeID
-          // );
           self.setState({ isSendRecomended: false, noRecommendedFound: "" });
           self.handleGetChatMessagesList(self.state.chatId);
           self.onCloseRecommendedModal();
@@ -1781,11 +1729,6 @@ class Header extends Component {
 
   onOpenSuggestionModal(suggestionText, index) {
     if (index > 0) {
-      // if (this.state.chkSuggestion.length > 0) {
-      // if (this.state.chkSuggestion[index] === 1) {
-      //   this.state.chkSuggestion = [];
-      //   this.state.chkSuggestion[index] = 0;
-      // } else {
       this.state.chkSuggestion = [];
       this.state.chkSuggestion[index] = 1;
       this.setState({
@@ -1793,37 +1736,17 @@ class Header extends Component {
         chkSuggestion: this.state.chkSuggestion,
         suggestionText: suggestionText,
       });
-      // }
-      // } else {
-      //   this.state.chkSuggestion[index] = 1;
-      // }
-      // this.setState({
-      //   chkSuggestion: this.state.chkSuggestion,
-      // });
     }
   }
 
   onOpenMobSuggestionModal(suggestionText, index) {
     debugger;
     if (index > 0) {
-      // if (this.state.chkSuggestion.length > 0) {
-      // if (this.state.chkSuggestion[index] === 1) {
-      //   this.state.chkSuggestion = [];
-      //   this.state.chkSuggestion[index] = 0;
-      // } else {
-
       this.setState({
         suggestionModalMob: true,
         chkSuggestion: index,
         suggestionText: suggestionText,
       });
-      // }
-      // } else {
-      //   this.state.chkSuggestion[index] = 1;
-      // }
-      // this.setState({
-      //   chkSuggestion: this.state.chkSuggestion,
-      // });
     }
   }
 
@@ -1835,7 +1758,7 @@ class Header extends Component {
     this.setState({ suggestionModalMob: false });
   };
 
-  handleHistTabClick = (e) => {
+  handleHistTabClick = () => {
     this.setState({
       isHistoricalChat: true,
       isDownbtn: false,
@@ -1856,7 +1779,7 @@ class Header extends Component {
       headers: authHeader(),
       params: { CustomerID: customerId },
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var agentRecentChatData = response.data.responseData;
 
@@ -1880,7 +1803,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetAgentList",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var agentData = response.data.responseData;
         if (message === "Success" && agentData) {
@@ -1897,7 +1820,6 @@ class Header extends Component {
   handleMainTabChange(e) {
     this.setState({ mainTabSelect: e });
     if (e === 2) {
-      // this.handleGetAgentRecentChat();
       this.setState({
         messageData: [],
         showHistoricalChat: false,
@@ -1928,7 +1850,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetAgentChatHistory",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var historicalChatData = response.data.responseData;
         if (message === "Success" && historicalChatData) {
@@ -1973,7 +1895,7 @@ class Header extends Component {
     socket.on("connect", () => {
       socket.send("hi");
       if (programCode !== "" && programCode !== "") {
-        socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
+        socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function (
           data
         ) {
           debugger;
@@ -1994,16 +1916,11 @@ class Header extends Component {
                       (x) => x.mobileNo === self.state.mobileNo
                     )[0].chatID;
                   }
-                  // self.handleMakeAsReadOnGoingChat(chatId);
                   self.handleGetChatMessagesList(chatId);
                   self.handleGetNewChat();
                 } else {
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
-                  var messageCount = 0;
-                  messageCount = self.state.ongoingChatsData.filter(
-                    (x) => x.mobileNo === data[3].substring(2)
-                  )[0].messageCount;
 
                   self.handleGetChatNotificationCount();
                 }
@@ -2037,9 +1954,8 @@ class Header extends Component {
       headers: authHeader(),
       data: formData,
     })
-      .then(function(response) {
+      .then(function (response) {
         var messgae = response.data.message;
-        var responseData = response.data.responseData;
         if (messgae === "Success") {
           NotificationManager.success("Add image successfully.");
         } else {
@@ -2086,10 +2002,9 @@ class Header extends Component {
     }
   }
   ////handle historical table row click
-  handleHistoricalTableRow = (e, e1, e2) => {
+  handleHistoricalTableRow = (e) => {
     this.setState({
       rowChatId: e.chatID,
-      // customerName: e.customerName,
       showHistoricalChat: true,
       chatTimeAgo: e.timeAgo,
     });
@@ -2125,7 +2040,7 @@ class Header extends Component {
       url: config.apiUrl + "/CustomerChat/GetChatSession",
       headers: authHeader(),
     })
-      .then(function(response) {
+      .then(function (response) {
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -2160,10 +2075,10 @@ class Header extends Component {
                 <img src={BellIcon} alt="bell icon" />
               </div>
             ) : (
-              <div className="er">
-                <label className="er-label">ER</label>
-              </div>
-            )}
+                <div className="er">
+                  <label className="er-label">ER</label>
+                </div>
+              )}
 
             <div className="hamb-menu">
               <img
@@ -2435,10 +2350,6 @@ class Header extends Component {
                 </p>
                 <p className="font-weight-bold">{this.state.SLAScore}</p>
               </div>
-              {/* <div>
-                <p className="logout-label">CSAT SCORE</p>
-                <p className="font-weight-bold">{this.state.CSatScore}</p>
-              </div> */}
               <div>
                 <p className="logout-label">
                   {TranslationContext !== undefined
@@ -2461,101 +2372,100 @@ class Header extends Component {
             {this.state.notificationCount === 0 ? (
               <span>No Notification Found</span>
             ) : (
-              this.state.notificationData !== null &&
-              this.state.notificationData.map((item, i) => {
-                return (
-                  <div className="row rowpadding" key={i}>
-                    <div className="md-2 rectangle-2 lable05 noti-count">
-                      <label className="labledata">
-                        {item.notificationCount}
-                      </label>
-                    </div>
-                    <div className="md-6 new-tickets-assigned tic-noti">
-                      <label>
-                        <span>{item.notificationName}</span>
-                      </label>
-                    </div>
-                    <div className="viewticketspeadding">
-                      <Popover
-                        content={
-                          <div className="notification-popover">
-                            {item.customTaskNotificationModels.map(
-                              (data, j) => {
-                                //
-                                return (
-                                  <p key={j}>
-                                    {data.notificatonType == 1 ? (
-                                      <>
-                                        {data.notificatonTypeName + " No:"}
-                                        <Link
-                                          to={{
-                                            pathname: "/store/editStoreTask",
-                                            state: {
-                                              TaskID: data.notificatonTypeID,
-                                            },
-                                          }}
-                                          style={{ color: "#2561A8" }}
-                                          onClick={this.handleNotificationModalClose.bind(
-                                            this,
-                                            data.notificatonTypeID,
-                                            data.notificatonType
-                                          )}
-                                        >
-                                          {" " + data.notificatonTypeID}
-                                        </Link>
-                                      </>
-                                    ) : (
-                                      <>
-                                        {data.notificatonTypeName + " No:"}
-                                        <Link
-                                          to={{
-                                            pathname:
-                                              "/store/claimApproveReject",
-                                            state: {
-                                              ClaimID: data.notificatonTypeID,
-                                            },
-                                          }}
-                                          style={{ color: "#2561A8" }}
-                                          onClick={this.handleNotificationModalClose.bind(
-                                            this,
-                                            data.notificatonTypeID,
-                                            data.notificatonType
-                                          )}
-                                        >
-                                          {" " + data.notificatonTypeID}
-                                        </Link>
-                                      </>
-                                    )}
-                                  </p>
-                                );
-                              }
-                            )}
-                          </div>
-                        }
-                        placement="bottom"
-                        trigger="click"
-                      >
-                        <div
-                          className={
-                            item.alertID !== ""
-                              ? "md-4 view-tickets"
-                              : "text-disabled"
+                this.state.notificationData !== null &&
+                this.state.notificationData.map((item, i) => {
+                  return (
+                    <div className="row rowpadding" key={i}>
+                      <div className="md-2 rectangle-2 lable05 noti-count">
+                        <label className="labledata">
+                          {item.notificationCount}
+                        </label>
+                      </div>
+                      <div className="md-6 new-tickets-assigned tic-noti">
+                        <label>
+                          <span>{item.notificationName}</span>
+                        </label>
+                      </div>
+                      <div className="viewticketspeadding">
+                        <Popover
+                          content={
+                            <div className="notification-popover">
+                              {item.customTaskNotificationModels.map(
+                                (data, j) => {
+                                  //
+                                  return (
+                                    <p key={j}>
+                                      {data.notificatonType == 1 ? (
+                                        <>
+                                          {data.notificatonTypeName + " No:"}
+                                          <Link
+                                            to={{
+                                              pathname: "/store/editStoreTask",
+                                              state: {
+                                                TaskID: data.notificatonTypeID,
+                                              },
+                                            }}
+                                            style={{ color: "#2561A8" }}
+                                            onClick={this.handleNotificationModalClose.bind(
+                                              this,
+                                              data.notificatonTypeID,
+                                              data.notificatonType
+                                            )}
+                                          >
+                                            {" " + data.notificatonTypeID}
+                                          </Link>
+                                        </>
+                                      ) : (
+                                          <>
+                                            {data.notificatonTypeName + " No:"}
+                                            <Link
+                                              to={{
+                                                pathname:
+                                                  "/store/claimApproveReject",
+                                                state: {
+                                                  ClaimID: data.notificatonTypeID,
+                                                },
+                                              }}
+                                              style={{ color: "#2561A8" }}
+                                              onClick={this.handleNotificationModalClose.bind(
+                                                this,
+                                                data.notificatonTypeID,
+                                                data.notificatonType
+                                              )}
+                                            >
+                                              {" " + data.notificatonTypeID}
+                                            </Link>
+                                          </>
+                                        )}
+                                    </p>
+                                  );
+                                }
+                              )}
+                            </div>
                           }
+                          placement="bottom"
+                          trigger="click"
                         >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.div.view
-                            : "VIEW"}
-                        </div>
-                      </Popover>
+                          <div
+                            className={
+                              item.alertID !== ""
+                                ? "md-4 view-tickets"
+                                : "text-disabled"
+                            }
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.view
+                              : "VIEW"}
+                          </div>
+                        </Popover>
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            )}
+                  );
+                })
+              )}
           </div>
         </Modal>
         <Drawer
-          //title="Basic Drawer"
           placement="left"
           closable={false}
           onClose={this.handleCloseManu.bind(this)}
@@ -2606,50 +2516,6 @@ class Header extends Component {
                   </li>
                 ))}
               </ul>
-              {/* <ul>
-                <li>
-                  <span>
-                    <img src={DashboardIco} alt="Dashboard" />
-                  </span>
-                  Dashboard
-                </li>
-                <li>
-                  <span>
-                    <img src={TaskIco} alt="Task" />
-                  </span>
-                  Task
-                </li>
-                <li>
-                  <span>
-                    <img src={ClaimIco} alt="Claim" />
-                  </span>
-                  Claim
-                </li>
-                <li>
-                  <span>
-                    <img src={CampaignIco} alt="Campaign" />
-                  </span>
-                  Campaign
-                </li>
-                <li>
-                  <span>
-                    <img src={AppointmentIco} alt="Appointment" />
-                  </span>
-                  Appointment
-                </li>
-                <li>
-                  <span>
-                    <img src={OrdersIco} alt="Orders" />
-                  </span>
-                  Orders
-                </li>
-                <li>
-                  <span>
-                    <img src={TodoIco} alt="To-do" />
-                  </span>
-                  To-do's
-                </li>
-              </ul> */}
             </div>
             <div className="logoutbox">
               <ul>
@@ -2702,16 +2568,9 @@ class Header extends Component {
                       maxLength="100"
                       autoComplete="off"
                       value={this.state.searchChat}
-                      // onChange={this.handleSearchItemChange.bind(
-                      //   this
-                      // )}
-                      // onKeyPress={this.enterPressed.bind(this)}
                       onChange={this.handleGetOngoingChat.bind(this)}
                     />
                     <span
-                      // onClick={this.handleSearchChatItemDetails.bind(
-                      //   this
-                      // )}
                       className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span"
                     >
                       {this.state.searchChat === "" ? (
@@ -2719,17 +2578,16 @@ class Header extends Component {
                           src={SearchBlueImg}
                           alt="SearchBlueImg"
                           className="srch-imge"
-                          // onClick={this.handleSearchCustomer}
                         />
                       ) : (
-                        <img
-                          src={CancelBlueImg}
-                          alt="SearchBlueImg"
-                          className="srch-imge"
-                          style={{ width: "35%" }}
-                          onClick={this.handleClearChatSearch.bind(this)}
-                        />
-                      )}
+                          <img
+                            src={CancelBlueImg}
+                            alt="SearchBlueImg"
+                            className="srch-imge"
+                            style={{ width: "35%" }}
+                            onClick={this.handleClearChatSearch.bind(this)}
+                          />
+                        )}
                     </span>
                   </div>
                   <div className="chat-cntr">
@@ -2749,9 +2607,6 @@ class Header extends Component {
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
                         <Option value={0}>
-                          {/* {TranslationContext !== undefined
-                            ? TranslationContext.option.all
-                            : "All"} */}
                           All Store Member
                         </Option>
                         {this.state.agentData !== null &&
@@ -2770,64 +2625,64 @@ class Header extends Component {
                     <div className="chat-left-height">
                       {this.state.ongoingChatsData
                         ? this.state.ongoingChatsData.map((chat, i) => (
-                            <div
-                              id={chat.chatID}
-                              key={i}
-                              className={
-                                this.state.chatId === chat.chatID
-                                  ? "chat-info active"
-                                  : "chat-info"
-                              }
-                              onClick={this.handleOngoingChatClick.bind(
-                                this,
-                                chat.chatID,
-                                chat.cumtomerName,
-                                chat.messageCount,
-                                chat.mobileNo,
-                                chat.customerID,
-                                chat.programCode,
-                                chat.storeID,
-                                chat.isCustEndChat,
-                                chat.storeManagerId
-                              )}
-                            >
-                              <div className="d-flex align-items-center overflow-hidden">
-                                <span className="dark-blue-ini initial">
-                                  {chat.cumtomerName.charAt(0)}
-                                </span>
-                                <div className="name-num mx-2">
-                                  <p className="chat-name">
-                                    {chat.cumtomerName}
-                                  </p>
-                                  <p className="num">{chat.mobileNo}</p>
-                                </div>
-                              </div>
-                              <div>
-                                <div className="mess-time">
-                                  <p
-                                    className={"chat-storemng "}
-                                    title="Store Manager"
-                                  >
-                                    {chat.storeManagerName}
-                                  </p>
-                                  <p
-                                    style={{
-                                      fontWeight:
-                                        chat.messageCount > 0 ? "bold" : "400",
-                                    }}
-                                  >
-                                    {chat.messageCount === 0
-                                      ? "No"
-                                      : chat.messageCount}{" "}
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.p.newmessages
-                                      : "New Messages"}
-                                  </p>
-                                  <p>{chat.timeAgo}</p>
-                                </div>
+                          <div
+                            id={chat.chatID}
+                            key={i}
+                            className={
+                              this.state.chatId === chat.chatID
+                                ? "chat-info active"
+                                : "chat-info"
+                            }
+                            onClick={this.handleOngoingChatClick.bind(
+                              this,
+                              chat.chatID,
+                              chat.cumtomerName,
+                              chat.messageCount,
+                              chat.mobileNo,
+                              chat.customerID,
+                              chat.programCode,
+                              chat.storeID,
+                              chat.isCustEndChat,
+                              chat.storeManagerId
+                            )}
+                          >
+                            <div className="d-flex align-items-center overflow-hidden">
+                              <span className="dark-blue-ini initial">
+                                {chat.cumtomerName.charAt(0)}
+                              </span>
+                              <div className="name-num mx-2">
+                                <p className="chat-name">
+                                  {chat.cumtomerName}
+                                </p>
+                                <p className="num">{chat.mobileNo}</p>
                               </div>
                             </div>
-                          ))
+                            <div>
+                              <div className="mess-time">
+                                <p
+                                  className={"chat-storemng "}
+                                  title="Store Manager"
+                                >
+                                  {chat.storeManagerName}
+                                </p>
+                                <p
+                                  style={{
+                                    fontWeight:
+                                      chat.messageCount > 0 ? "bold" : "400",
+                                  }}
+                                >
+                                  {chat.messageCount === 0
+                                    ? "No"
+                                    : chat.messageCount}{" "}
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.newmessages
+                                    : "New Messages"}
+                                </p>
+                                <p>{chat.timeAgo}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
                         : null}
                     </div>
                   </div>
@@ -2928,22 +2783,9 @@ class Header extends Component {
                     </li>
                   </div>
                 </div>
-                {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
               </div>
               <div className="mobile-chat-tabs">
                 <div className="position-relative">
-                  {/* <div className="mobile-search-cntr">
-                    <div className="mobile-search-img">
-                      <img src={SearchBlueImg} alt="SearchBlueImg" />
-                    </div>
-                    <div className="mobile-search-input w-100">
-                      <input
-                        type="text"
-                        placeholder="Enter your Search terms here..."
-                      />
-                    </div>
-                  </div> */}
-
                   <ul className="nav nav-tabs" role="tablist">
                     <li className="nav-item">
                       <a
@@ -3078,11 +2920,6 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    {/* <img
-                                      src={DummyFace1}
-                                      alt="face image"
-                                      title={chat.cumtomerName}
-                                    /> */}
                                     <span className="chat-initial">
                                       {chat.cumtomerName
                                         .split(" ")
@@ -3166,7 +3003,6 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    {/* <img src={DummyFace1} alt="face image" /> */}
                                     <span className="chat-initial">
                                       {chat.cumtomerName
                                         .split(" ")
@@ -3255,11 +3091,11 @@ class Header extends Component {
                                 >
                                   {this.state.agentRecentChatData.length < 9
                                     ? "Past Chat(0" +
-                                      this.state.agentRecentChatData.length +
-                                      ")"
+                                    this.state.agentRecentChatData.length +
+                                    ")"
                                     : "Past Chat(" +
-                                      this.state.agentRecentChatData.length +
-                                      ")"}
+                                    this.state.agentRecentChatData.length +
+                                    ")"}
                                 </a>
                               </li>
                             </>
@@ -3306,78 +3142,76 @@ class Header extends Component {
                               >
                                 {this.state.messageData !== null
                                   ? this.state.messageData.map((item, i) => {
-                                      return (
-                                        <div
-                                          key={i}
-                                          className={
-                                            item.byCustomer === true &&
+                                    return (
+                                      <div
+                                        key={i}
+                                        className={
+                                          item.byCustomer === true &&
                                             item.isBotReply !== true
-                                              ? "chat-trail-cntr"
-                                              : "chat-trail-cntr chat-trail-cntr-right"
-                                          }
-                                        >
-                                          <div className="chat-trail-img">
-                                            <span
-                                              className="chat-initial"
-                                              alt="face image"
-                                              title={
-                                                item.byCustomer
-                                                  ? item.customerName
-                                                  : this.state.UserName
-                                              }
-                                            >
-                                              {item.byCustomer
+                                            ? "chat-trail-cntr"
+                                            : "chat-trail-cntr chat-trail-cntr-right"
+                                        }
+                                      >
+                                        <div className="chat-trail-img">
+                                          <span
+                                            className="chat-initial"
+                                            alt="face image"
+                                            title={
+                                              item.byCustomer
                                                 ? item.customerName
-                                                    .split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()
-                                                : this.state.UserName.split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")
-                                                    .toUpperCase()}
-                                            </span>
-                                          </div>
-                                          <div className="chat-trail-chat-cntr">
-                                            {item.isBotReply && (
-                                              <p className="bot-mark">
-                                                {TranslationContext !==
-                                                undefined
-                                                  ? TranslationContext.p.bot
-                                                  : "BOT"}
-                                              </p>
-                                            )}
-                                            <p className="chat-trail-chat pd-0">
-                                              {ReactHtmlParser(
-                                                item.message
-                                                  .replace(
-                                                    "col-md-2",
-                                                    "col-md-4"
-                                                  )
-                                                  .replace(
-                                                    "col-md-10",
-                                                    "col-md-8"
-                                                  )
-                                              )}
-                                            </p>
-                                            <span className="chat-trail-time">
-                                              {item.chatDate + " "}
-                                              {item.chatTime}
-                                            </span>
-                                          </div>
+                                                : this.state.UserName
+                                            }
+                                          >
+                                            {item.byCustomer
+                                              ? item.customerName
+                                                .split(" ")
+                                                .map((n) => n[0])
+                                                .join("")
+                                                .toUpperCase()
+                                              : this.state.UserName.split(" ")
+                                                .map((n) => n[0])
+                                                .join("")
+                                                .toUpperCase()}
+                                          </span>
                                         </div>
-                                      );
-                                    })
+                                        <div className="chat-trail-chat-cntr">
+                                          {item.isBotReply && (
+                                            <p className="bot-mark">
+                                              {TranslationContext !==
+                                                undefined
+                                                ? TranslationContext.p.bot
+                                                : "BOT"}
+                                            </p>
+                                          )}
+                                          <p className="chat-trail-chat pd-0">
+                                            {ReactHtmlParser(
+                                              item.message
+                                                .replace(
+                                                  "col-md-2",
+                                                  "col-md-4"
+                                                )
+                                                .replace(
+                                                  "col-md-10",
+                                                  "col-md-8"
+                                                )
+                                            )}
+                                          </p>
+                                          <span className="chat-trail-time">
+                                            {item.chatDate + " "}
+                                            {item.chatTime}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })
                                   : null}
-
-                                {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
                               </div>
                               {this.state.isCustEndChat &&
-                              this.state.customerName !== "" ? (
-                                <label className="endchatlbl">
-                                  Customer has end chat
-                                </label>
-                              ) : null}
+                                this.state.customerName !== "" ? (
+                                  <label className="endchatlbl">
+                                    Customer has end chat
+                                  </label>
+                                ) : null}
                             </div>
                           ) : null}
                           <div
@@ -3464,7 +3298,6 @@ class Header extends Component {
                                     role="tab"
                                     aria-controls="schedule-visit-tab"
                                     aria-selected="false"
-                                    // onClick={this.handleGetTimeSlot.bind(this)}
                                     onClick={this.handleTabClick.bind(this, 4)}
                                     id="four"
                                   >
@@ -3500,7 +3333,7 @@ class Header extends Component {
                               <div
                                 className={
                                   this.state.customerName !== "" &&
-                                  this.state.toggle.one
+                                    this.state.toggle.one
                                     ? "tab-pane fade active show"
                                     : "tab-pane fade"
                                 }
@@ -3525,38 +3358,6 @@ class Header extends Component {
                                     {this.state.remainingCount +
                                       " characters remaining..."}
                                   </p>
-                                  {/* <CKEditor
-                              onBeforeLoad={(CKEDITOR) =>
-                                (CKEDITOR.disableAutoInline = true)
-                              }
-                              data={this.state.message}
-                              onChange={this.handleOnChangeCKEditor.bind(this)}
-                              config={{
-                                toolbar: [
-                                  {
-                                    name: "basicstyles",
-                                    items: ["Bold", "Italic", "Strike"],
-                                  },
-
-                                  {
-                                    name: "paragraph",
-                                    items: ["NumberedList", "BulletedList"],
-                                  },
-                                  {
-                                    name: "links",
-                                    items: ["Link", "Unlink"],
-                                  },
-                                  {
-                                    name: "insert",
-                                    items: ["Image", "Table"],
-                                  },
-                                  {
-                                    name: "editing",
-                                    items: ["Scayt"],
-                                  },
-                                ],
-                              }}
-                            /> */}
                                   {this.state.isMessage !== "" && (
                                     <p
                                       style={{
@@ -3569,9 +3370,9 @@ class Header extends Component {
                                   )}
                                   {this.state.messageSuggestionData !== null &&
                                     this.state.messageSuggestionData.length >
-                                      0 &&
+                                    0 &&
                                     this.state.messageSuggestionData.length >
-                                      0 && (
+                                    0 && (
                                       <div
                                         className="suggestions-cntr setpagination"
                                         style={{ width: "100%" }}
@@ -3591,7 +3392,7 @@ class Header extends Component {
                                                     className={
                                                       this.state
                                                         .chkSuggestion ===
-                                                      rowData.suggestionID
+                                                        rowData.suggestionID
                                                         ? "suggestions-tick"
                                                         : ""
                                                     }
@@ -3625,42 +3426,40 @@ class Header extends Component {
                                             pageSize: 10,
                                             defaultPageSize: 10,
                                           }}
-                                          // rowClassName={this.setRowClassName}
                                         ></Table>
                                       </div>
                                     )}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].suggestion ===
+                                    this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
-                                    <div
-                                      className="mobile-ck-send"
-                                      onClick={this.handleMessageSuggestion.bind(
-                                        this
-                                      )}
-                                      title={"Search"}
-                                    >
-                                      {/* <img src={Assign} alt="send img" /> */}
-                                      <img src={SuggSearch} alt="send img" />
-                                    </div>
-                                  ) : null}
+                                      <div
+                                        className="mobile-ck-send"
+                                        onClick={this.handleMessageSuggestion.bind(
+                                          this
+                                        )}
+                                        title={"Search"}
+                                      >
+                                        <img src={SuggSearch} alt="send img" />
+                                      </div>
+                                    ) : null}
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].freeText ===
+                                    this.state.storeAgentDetail[0].freeText ===
                                     1 ? (
-                                    <div
-                                      className="mobile-ck-send-btn"
-                                      onClick={this.handleSaveChatMessages.bind(
-                                        this,
-                                        this.state.message,
-                                        0,
-                                        "",
-                                        ""
-                                      )}
-                                      title={"Send"}
-                                    >
-                                      <img src={Assign} alt="send img" />
-                                    </div>
-                                  ) : null}
+                                      <div
+                                        className="mobile-ck-send-btn"
+                                        onClick={this.handleSaveChatMessages.bind(
+                                          this,
+                                          this.state.message,
+                                          0,
+                                          "",
+                                          ""
+                                        )}
+                                        title={"Send"}
+                                      >
+                                        <img src={Assign} alt="send img" />
+                                      </div>
+                                    ) : null}
                                 </div>
                               </div>
                               {/* --------Card Tab----- */}
@@ -3685,7 +3484,7 @@ class Header extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .searchitemidarticleskuid
+                                            .searchitemidarticleskuid
                                           : "Search ItemId/artcile/SKU ID"
                                       }
                                       name="Search"
@@ -3707,7 +3506,6 @@ class Header extends Component {
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                     {this.state.searchCardData.length === 0 && (
@@ -3736,10 +3534,10 @@ class Header extends Component {
                                   >
                                     {this.state.searchCardData !== null
                                       ? this.state.searchCardData.map(
-                                          (item, i) => {
-                                            return (
-                                              <div className="col-md-6" key={i}>
-                                                {item.itemID ===
+                                        (item, i) => {
+                                          return (
+                                            <div className="col-md-6" key={i}>
+                                              {item.itemID ===
                                                 this.state.selectedCard ? (
                                                   <div className="selectdot">
                                                     <img
@@ -3748,25 +3546,25 @@ class Header extends Component {
                                                     />
                                                   </div>
                                                 ) : null}
-                                                <div
-                                                  className="card"
-                                                  id={"card" + item.itemID}
-                                                >
-                                                  <div className="card-body position-relative">
-                                                    {/* <div className="container"> */}
+                                              <div
+                                                className="card"
+                                                id={"card" + item.itemID}
+                                              >
+                                                <div className="card-body position-relative">
+                                                  <div
+                                                    className="row"
+                                                    style={{
+                                                      margin: "0",
+                                                    }}
+                                                  >
                                                     <div
-                                                      className="row"
+                                                      className="col-md-4 mb-md-0 mb-2"
                                                       style={{
-                                                        margin: "0",
+                                                        alignSelf: "center",
                                                       }}
                                                     >
-                                                      <div
-                                                        className="col-md-4 mb-md-0 mb-2"
-                                                        style={{
-                                                          alignSelf: "center",
-                                                        }}
-                                                      >
-                                                        {item.imageURL ? (
+                                                      {item.imageURL !==
+                                                        "" ? (
                                                           <img
                                                             className="chat-product-img"
                                                             src={item.imageURL}
@@ -3788,179 +3586,179 @@ class Header extends Component {
                                                               getRootProps,
                                                               getInputProps,
                                                             }) => (
-                                                              <div
-                                                                {...getRootProps()}
-                                                              >
-                                                                <input
-                                                                  {...getInputProps()}
-                                                                  className="file-upload d-none"
-                                                                />
-                                                                <span className="addimg">
+                                                                <div
+                                                                  {...getRootProps()}
+                                                                >
                                                                   <input
-                                                                    type="image"
-                                                                    alt="Add Image"
-                                                                    src={addimg}
+                                                                    {...getInputProps()}
+                                                                    className="file-upload d-none"
                                                                   />
-                                                                </span>
-                                                              </div>
-                                                            )}
+                                                                  <span className="addimg">
+                                                                    <input
+                                                                      type="image"
+                                                                      alt="Add Image"
+                                                                      src={addimg}
+                                                                    />
+                                                                  </span>
+                                                                </div>
+                                                              )}
                                                           </Dropzone>
                                                         )}
-                                                      </div>
-                                                      <div
-                                                        className="col-md-8 bkcprdt"
-                                                        onClick={this.handleSelectCard.bind(
-                                                          this,
-                                                          item.itemID,
-                                                          item.imageURL
-                                                        )}
-                                                      >
-                                                        {item.productName ? (
-                                                          <div>
-                                                            <label className="chat-product-name">
-                                                              {item.productName}
-                                                            </label>
-                                                          </div>
-                                                        ) : null}
+                                                    </div>
+                                                    <div
+                                                      className="col-md-8 bkcprdt"
+                                                      onClick={this.handleSelectCard.bind(
+                                                        this,
+                                                        item.itemID,
+                                                        item.imageURL
+                                                      )}
+                                                    >
+                                                      {item.productName ? (
                                                         <div>
-                                                          {item.brandName !==
-                                                            "" &&
+                                                          <label className="chat-product-name">
+                                                            {item.productName}
+                                                          </label>
+                                                        </div>
+                                                      ) : null}
+                                                      <div>
+                                                        {item.brandName !==
+                                                          "" &&
                                                           item.brandName !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label.brand
+                                                                  .label.brand
                                                                 : "Brand"}{" "}
                                                               :
                                                               {" " +
                                                                 item.brandName}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.categoryName !==
-                                                            "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.categoryName !==
+                                                          "" &&
                                                           item.categoryName !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label
-                                                                    .category
+                                                                  .label
+                                                                  .category
                                                                 : "Category"}{" "}
                                                               :
                                                               {" " +
                                                                 item.categoryName}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.subCategoryName !==
-                                                            "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.subCategoryName !==
+                                                          "" &&
                                                           item.subCategoryName !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label
-                                                                    .subcategory
+                                                                  .label
+                                                                  .subcategory
                                                                 : "SubCategory"}{" "}
                                                               :
                                                               {" " +
                                                                 item.subCategoryName}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.color !== "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.color !== "" &&
                                                           item.color !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label.color
+                                                                  .label.color
                                                                 : "Color"}{" "}
                                                               :
                                                               {" " + item.color}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.size !== "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.size !== "" &&
                                                           item.size !== null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label.color
+                                                                  .label.color
                                                                 : "Size"}{" "}
                                                               :{" " + item.size}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.uniqueItemCode !==
-                                                            "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.uniqueItemCode !==
+                                                          "" &&
                                                           item.uniqueItemCode !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label
-                                                                    .itemcode
+                                                                  .label
+                                                                  .itemcode
                                                                 : "Item Code"}{" "}
                                                               :
                                                               {" " +
                                                                 item.uniqueItemCode}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.discount !==
-                                                            "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.discount !==
+                                                          "" &&
                                                           parseFloat(
                                                             item.discount
                                                           ) !== 0 &&
                                                           item.discount !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-code">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label
-                                                                    .discount
+                                                                  .label
+                                                                  .discount
                                                                 : "Discount"}{" "}
                                                               :
                                                               {" " +
                                                                 item.discount}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        <div>
-                                                          {item.price !== "" &&
+                                                      </div>
+                                                      <div>
+                                                        {item.price !== "" &&
                                                           parseFloat(
                                                             item.price
                                                           ) !== 0 &&
                                                           item.price !==
-                                                            null ? (
+                                                          null ? (
                                                             <label className="chat-product-prize">
                                                               {TranslationContext !==
-                                                              undefined
+                                                                undefined
                                                                 ? TranslationContext
-                                                                    .label.price
+                                                                  .label.price
                                                                 : "Price"}{" "}
                                                               :
                                                               {" " + item.price}
                                                             </label>
                                                           ) : null}
-                                                        </div>
-                                                        {item.url !== null &&
+                                                      </div>
+                                                      {item.url !== null &&
                                                         item.url !== "" ? (
                                                           <div>
                                                             <a
@@ -3974,14 +3772,14 @@ class Header extends Component {
                                                         ) : (
                                                           ""
                                                         )}
-                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            );
-                                          }
-                                        )
+                                            </div>
+                                          );
+                                        }
+                                      )
                                       : null}
                                   </div>
                                   {this.state.searchCardData.length > 0 ? (
@@ -3998,8 +3796,8 @@ class Header extends Component {
                                             alt="down-arrow"
                                           />
                                         ) : (
-                                          <img src={UpBlue} alt="up-arrow" />
-                                        )}
+                                            <img src={UpBlue} alt="up-arrow" />
+                                          )}
                                       </button>
                                       <button
                                         className="butn"
@@ -4020,8 +3818,8 @@ class Header extends Component {
                                             spin
                                           />
                                         ) : (
-                                          ""
-                                        )}
+                                            ""
+                                          )}
                                       </button>
                                     </div>
                                   ) : null}
@@ -4048,7 +3846,7 @@ class Header extends Component {
                                   >
                                     {TranslationContext !== undefined
                                       ? TranslationContext.button
-                                          .sendrecommendedlist
+                                        .sendrecommendedlist
                                       : "Send Recommended List"}
 
                                     <img
@@ -4063,8 +3861,8 @@ class Header extends Component {
                                         spin
                                       />
                                     ) : (
-                                      ""
-                                    )}
+                                        ""
+                                      )}
                                   </button>
 
                                   <p
@@ -4093,9 +3891,9 @@ class Header extends Component {
                                     <div className="col-md-7 schedule-left-cntr">
                                       {this.state.timeSlotData !== null
                                         ? this.state.timeSlotData.map(
-                                            (item, i) => {
-                                              return item.alreadyScheduleDetails
-                                                .length > 0 ? (
+                                          (item, i) => {
+                                            return item.alreadyScheduleDetails
+                                              .length > 0 ? (
                                                 <div key={i}>
                                                   <label className="s-lable">
                                                     {item.day}:{item.dates}
@@ -4129,7 +3927,7 @@ class Header extends Component {
                                                               this.state
                                                                 .timeSlotData[i]
                                                                 .alreadyScheduleDetails[
-                                                                k
+                                                              k
                                                               ] ===
                                                               this.state
                                                                 .selectedSlot
@@ -4168,11 +3966,9 @@ class Header extends Component {
                                                               );
                                                             }
                                                             if (
-                                                              // data.remaining <
-                                                              // data.maxCapacity
                                                               data.visitedCount >=
                                                               (1 / 2) *
-                                                                data.maxCapacity
+                                                              data.maxCapacity
                                                             ) {
                                                               return (
                                                                 <Tooltip
@@ -4193,8 +3989,8 @@ class Header extends Component {
                                                                       data.isDisabled
                                                                         ? "s-red-active"
                                                                         : selectSlot
-                                                                        ? "s-yellow-active"
-                                                                        : "s-yellow-btn"
+                                                                          ? "s-yellow-active"
+                                                                          : "s-yellow-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
@@ -4220,11 +4016,9 @@ class Header extends Component {
                                                               );
                                                             }
                                                             if (
-                                                              // data.maxCapacity ===
-                                                              // data.remaining
                                                               data.visitedCount <
                                                               (1 / 2) *
-                                                                data.maxCapacity
+                                                              data.maxCapacity
                                                             ) {
                                                               return (
                                                                 <Tooltip
@@ -4245,8 +4039,8 @@ class Header extends Component {
                                                                       data.isDisabled
                                                                         ? "s-red-active"
                                                                         : selectSlot
-                                                                        ? "s-green-active"
-                                                                        : "s-green-btn"
+                                                                          ? "s-green-active"
+                                                                          : "s-green-btn"
                                                                     }
                                                                     onClick={this.handleSelectSlot.bind(
                                                                       this,
@@ -4289,8 +4083,8 @@ class Header extends Component {
                                                   </div>
                                                 </div>
                                               ) : null;
-                                            }
-                                          )
+                                          }
+                                        )
                                         : null}
                                     </div>
                                     <div className="col-md-5">
@@ -4300,41 +4094,40 @@ class Header extends Component {
                                             <label className="s-lable">
                                               {TranslationContext !== undefined
                                                 ? TranslationContext.label
-                                                    .selectedslot
+                                                  .selectedslot
                                                 : "Selected Slot"}
                                             </label>
                                             {Object.keys(
                                               this.state.selectedSlot
                                             ).length !== 0 ? (
-                                              <button
-                                                className={
-                                                  this.state.selectedSlot
-                                                    .visitedCount <
-                                                  (1 / 2) *
+                                                <button
+                                                  className={
                                                     this.state.selectedSlot
-                                                      .maxCapacity
-                                                    ? // this.state.selectedSlot.maxCapacity ==
-                                                      //   this.state.selectedSlot.remaining
-                                                      "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                    : this.state.selectedSlot
-                                                        .visitedCount <
+                                                      .visitedCount <
+                                                      (1 / 2) *
                                                       this.state.selectedSlot
                                                         .maxCapacity
-                                                    ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                    : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                }
-                                              >
-                                                {
-                                                  this.state.selectedSlot
-                                                    .timeSlot
-                                                }
-                                                <img
-                                                  className="s-img-select"
-                                                  src={CircleRight}
-                                                  alt="circle-right"
-                                                />
-                                              </button>
-                                            ) : null}
+                                                      ?
+                                                      "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                      : this.state.selectedSlot
+                                                        .visitedCount <
+                                                        this.state.selectedSlot
+                                                          .maxCapacity
+                                                        ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                        : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                  }
+                                                >
+                                                  {
+                                                    this.state.selectedSlot
+                                                      .timeSlot
+                                                  }
+                                                  <img
+                                                    className="s-img-select"
+                                                    src={CircleRight}
+                                                    alt="circle-right"
+                                                  />
+                                                </button>
+                                              ) : null}
                                             {this.state.isSelectSlot !== "" && (
                                               <p
                                                 style={{
@@ -4359,16 +4152,16 @@ class Header extends Component {
                                             />
                                             {this.state.noOfPeopleMax !==
                                               "" && (
-                                              <p
-                                                style={{
-                                                  color: "red",
-                                                  marginBottom: "0px",
-                                                  width: "131px",
-                                                }}
-                                              >
-                                                {this.state.noOfPeopleMax}
-                                              </p>
-                                            )}
+                                                <p
+                                                  style={{
+                                                    color: "red",
+                                                    marginBottom: "0px",
+                                                    width: "131px",
+                                                  }}
+                                                >
+                                                  {this.state.noOfPeopleMax}
+                                                </p>
+                                              )}
                                           </div>
                                         </div>
                                         <button
@@ -4394,22 +4187,22 @@ class Header extends Component {
                                               spin
                                             />
                                           ) : (
-                                            ""
-                                          )}
+                                              ""
+                                            )}
                                         </button>
                                       </div>
                                     </div>
                                   </div>
                                 ) : (
-                                  <div>
-                                    <span className="slot-span">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span
+                                    <div>
+                                      <span className="slot-span">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span
                                             .noslotaddedforthisstore
-                                        : "No slot added for this store"}
-                                    </span>
-                                  </div>
-                                )}
+                                          : "No slot added for this store"}
+                                      </span>
+                                    </div>
+                                  )}
                               </div>
                               {/* --------Generate Payment Link Tab----- */}
                               <div
@@ -4428,9 +4221,6 @@ class Header extends Component {
                                 >
                                   <form
                                     style={{ width: "100%" }}
-                                    // onSubmit={this.handleSearchChatItemDetails.bind(
-                                    //   this
-                                    // )}
                                   >
                                     <input
                                       type="text"
@@ -4438,28 +4228,20 @@ class Header extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .searchorderid
+                                            .searchorderid
                                           : "Search Order Id"
                                       }
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
-                                      // value={this.state.searchItem}
-                                      // onChange={this.handleSearchItemChange.bind(
-                                      //   this
-                                      // )}
                                     />
                                     <span
-                                      // onClick={this.handleSearchChatItemDetails.bind(
-                                      //   this
-                                      // )}
                                       className="input-group-addon seacrh-img-addsearch searchtxt-span"
                                     >
                                       <img
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                   </form>
@@ -4476,7 +4258,7 @@ class Header extends Component {
                                   <button className="butn">
                                     {TranslationContext !== undefined
                                       ? TranslationContext.button
-                                          .sendpaymentlink
+                                        .sendpaymentlink
                                       : "Send Payment Link"}
                                     <img
                                       src={SendUp}
@@ -4630,93 +4412,91 @@ class Header extends Component {
                                   </p>
 
                                   {this.state.messageSuggestionData !== null &&
-                                  this.state.messageSuggestionData.length > 0 &&
-                                  this.state.messageSuggestionData.length >
+                                    this.state.messageSuggestionData.length > 0 &&
+                                    this.state.messageSuggestionData.length >
                                     0 ? (
-                                    <div className="suggestions-cntr">
-                                      <Table
-                                        noDataContent="No Record Found"
-                                        className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
-                                        columns={[
-                                          {
-                                            dataIndex: "suggestionText",
-                                            className: "textnowrap-table",
-                                            render: (row, rowData) => {
-                                              i = i + 1;
-                                              return (
-                                                <div
-                                                  className={
-                                                    this.state.chkSuggestion[
-                                                      i
-                                                    ] === i
-                                                      ? "suggestions-tick"
-                                                      : ""
-                                                  }
-                                                  id={i}
-                                                  onClick={this.onOpenMobSuggestionModal.bind(
-                                                    this,
-                                                    rowData.suggestionText,
-                                                    i
-                                                  )}
-                                                >
-                                                  <Tooltip
-                                                    placement="left"
-                                                    title={
-                                                      rowData.suggestionText
+                                      <div className="suggestions-cntr">
+                                        <Table
+                                          noDataContent="No Record Found"
+                                          className="components-table-demo-nested antd-table-campaign custom-antd-table rm-header"
+                                          columns={[
+                                            {
+                                              dataIndex: "suggestionText",
+                                              className: "textnowrap-table",
+                                              render: (row, rowData) => {
+                                                i = i + 1;
+                                                return (
+                                                  <div
+                                                    className={
+                                                      this.state.chkSuggestion[
+                                                        i
+                                                      ] === i
+                                                        ? "suggestions-tick"
+                                                        : ""
                                                     }
+                                                    id={i}
+                                                    onClick={this.onOpenMobSuggestionModal.bind(
+                                                      this,
+                                                      rowData.suggestionText,
+                                                      i
+                                                    )}
                                                   >
-                                                    <span>
-                                                      {rowData.suggestionText}
-                                                    </span>
-                                                  </Tooltip>
-                                                </div>
-                                              );
+                                                    <Tooltip
+                                                      placement="left"
+                                                      title={
+                                                        rowData.suggestionText
+                                                      }
+                                                    >
+                                                      <span>
+                                                        {rowData.suggestionText}
+                                                      </span>
+                                                    </Tooltip>
+                                                  </div>
+                                                );
+                                              },
                                             },
-                                          },
-                                        ]}
-                                        dataSource={
-                                          this.state.messageSuggestionData
-                                        }
-                                        pagination={{
-                                          pageSize: 10,
-                                          defaultPageSize: 10,
-                                        }}
-                                        // rowClassName={this.setRowClassName}
-                                      ></Table>
-                                    </div>
-                                  ) : null}
+                                          ]}
+                                          dataSource={
+                                            this.state.messageSuggestionData
+                                          }
+                                          pagination={{
+                                            pageSize: 10,
+                                            defaultPageSize: 10,
+                                          }}
+                                        ></Table>
+                                      </div>
+                                    ) : null}
 
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].suggestion ===
+                                    this.state.storeAgentDetail[0].suggestion ===
                                     1 ? (
-                                    <div
-                                      className="mobile-ck-send"
-                                      onClick={this.handleMessageSuggestion.bind(
-                                        this
-                                      )}
-                                      title={"Search"}
-                                    >
-                                      {/* <img src={Assign} alt="send img" /> */}
-                                      <img src={SuggSearch} alt="send img" />
-                                    </div>
-                                  ) : null}
+                                      <div
+                                        className="mobile-ck-send"
+                                        onClick={this.handleMessageSuggestion.bind(
+                                          this
+                                        )}
+                                        title={"Search"}
+                                      >
+                                        <img src={SuggSearch} alt="send img" />
+                                      </div>
+                                    ) : null}
                                   {this.state.storeAgentDetail.length !== 0 &&
-                                  this.state.storeAgentDetail[0].freeText ===
+                                    this.state.storeAgentDetail[0].freeText ===
                                     1 ? (
-                                    <div
-                                      className="mobile-ck-send-btn"
-                                      onClick={this.handleSaveChatMessages.bind(
-                                        this,
-                                        this.state.message,
-                                        0,
-                                        "",
-                                        ""
-                                      )}
-                                      title={"Send"}
-                                    >
-                                      <img src={Assign} alt="send img" />
-                                    </div>
-                                  ) : null}
+                                      <div
+                                        className="mobile-ck-send-btn"
+                                        onClick={this.handleSaveChatMessages.bind(
+                                          this,
+                                          this.state.message,
+                                          0,
+                                          "",
+                                          ""
+                                        )}
+                                        title={"Send"}
+                                      >
+                                        <img src={Assign} alt="send img" />
+                                      </div>
+                                    ) : null}
                                 </div>
                               </div>
                               {/* -------- Card Modal ----- */}
@@ -4754,7 +4534,6 @@ class Header extends Component {
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                     {this.state.searchCardData.length === 0 && (
@@ -4771,18 +4550,18 @@ class Header extends Component {
                                   <div className="product-card">
                                     {this.state.searchCardData !== null
                                       ? this.state.searchCardData.map(
-                                          (item, i) => {
-                                            return (
-                                              <div
-                                                className="card"
-                                                key={i}
-                                                onClick={this.handleSelectCard.bind(
-                                                  this,
-                                                  item.itemID
-                                                )}
-                                              >
-                                                <div className="card-body position-relative">
-                                                  {item.itemID ===
+                                        (item, i) => {
+                                          return (
+                                            <div
+                                              className="card"
+                                              key={i}
+                                              onClick={this.handleSelectCard.bind(
+                                                this,
+                                                item.itemID
+                                              )}
+                                            >
+                                              <div className="card-body position-relative">
+                                                {item.itemID ===
                                                   this.state.selectedCard ? (
                                                     <div className="selectdot">
                                                       <img
@@ -4791,18 +4570,18 @@ class Header extends Component {
                                                       />
                                                     </div>
                                                   ) : null}
-                                                  <div className="mobile-card-cntr">
-                                                    <div className="mobile-card-img">
-                                                      {item.imageURL ? (
-                                                        <img
-                                                          className="chat-product-img"
-                                                          src={item.imageURL}
-                                                          alt="Product Image"
-                                                          title={
-                                                            item.productName
-                                                          }
-                                                        />
-                                                      ) : (
+                                                <div className="mobile-card-cntr">
+                                                  <div className="mobile-card-img">
+                                                    {item.imageURL ? (
+                                                      <img
+                                                        className="chat-product-img"
+                                                        src={item.imageURL}
+                                                        alt="Product Image"
+                                                        title={
+                                                          item.productName
+                                                        }
+                                                      />
+                                                    ) : (
                                                         <Dropzone
                                                           onDrop={this.handleInsertCardImageUpload.bind(
                                                             this,
@@ -4813,54 +4592,54 @@ class Header extends Component {
                                                             getRootProps,
                                                             getInputProps,
                                                           }) => (
-                                                            <div
-                                                              {...getRootProps()}
-                                                            >
-                                                              <input
-                                                                {...getInputProps()}
-                                                                className="file-upload d-none"
-                                                              />
-                                                              <span className="addimg">
+                                                              <div
+                                                                {...getRootProps()}
+                                                              >
                                                                 <input
-                                                                  type="image"
-                                                                  alt="Add Image"
-                                                                  src={addimg}
+                                                                  {...getInputProps()}
+                                                                  className="file-upload d-none"
                                                                 />
-                                                              </span>
-                                                            </div>
-                                                          )}
+                                                                <span className="addimg">
+                                                                  <input
+                                                                    type="image"
+                                                                    alt="Add Image"
+                                                                    src={addimg}
+                                                                  />
+                                                                </span>
+                                                              </div>
+                                                            )}
                                                         </Dropzone>
                                                       )}
-                                                    </div>
-                                                    <div className="bkcprdt">
-                                                      {item.productName ? (
-                                                        <label className="chat-product-name">
-                                                          {item.productName}
-                                                        </label>
-                                                      ) : null}
-                                                      {item.brandName !== "" &&
+                                                  </div>
+                                                  <div className="bkcprdt">
+                                                    {item.productName ? (
+                                                      <label className="chat-product-name">
+                                                        {item.productName}
+                                                      </label>
+                                                    ) : null}
+                                                    {item.brandName !== "" &&
                                                       item.brandName !==
-                                                        null ? (
+                                                      null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.brand
+                                                              .label.brand
                                                             : "Brand"}{" "}
                                                           :
                                                           {" " + item.brandName}
                                                         </label>
                                                       ) : null}
 
-                                                      {item.categoryName !==
-                                                        "" &&
+                                                    {item.categoryName !==
+                                                      "" &&
                                                       item.categoryName !==
-                                                        null ? (
+                                                      null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.category
+                                                              .label.category
                                                             : "Category"}{" "}
                                                           :
                                                           {" " +
@@ -4868,16 +4647,16 @@ class Header extends Component {
                                                         </label>
                                                       ) : null}
 
-                                                      {item.subCategoryName !==
-                                                        "" &&
+                                                    {item.subCategoryName !==
+                                                      "" &&
                                                       item.subCategoryName !==
-                                                        null ? (
+                                                      null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label
-                                                                .subcategory
+                                                              .label
+                                                              .subcategory
                                                             : "SubCategory"}{" "}
                                                           :
                                                           {" " +
@@ -4885,39 +4664,39 @@ class Header extends Component {
                                                         </label>
                                                       ) : null}
 
-                                                      {item.color !== "" &&
+                                                    {item.color !== "" &&
                                                       item.color !== null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.color
+                                                              .label.color
                                                             : "Color"}{" "}
                                                           :{" " + item.color}
                                                         </label>
                                                       ) : null}
 
-                                                      {item.size !== "" &&
+                                                    {item.size !== "" &&
                                                       item.size !== null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.color
+                                                              .label.color
                                                             : "Size"}{" "}
                                                           :{" " + item.size}
                                                         </label>
                                                       ) : null}
 
-                                                      {item.uniqueItemCode !==
-                                                        "" &&
+                                                    {item.uniqueItemCode !==
+                                                      "" &&
                                                       item.uniqueItemCode !==
-                                                        null ? (
+                                                      null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.itemcode
+                                                              .label.itemcode
                                                             : "Item Code"}{" "}
                                                           :
                                                           {" " +
@@ -4925,35 +4704,35 @@ class Header extends Component {
                                                         </label>
                                                       ) : null}
 
-                                                      {item.discount !== "" &&
+                                                    {item.discount !== "" &&
                                                       parseFloat(
                                                         item.discount
                                                       ) !== 0 &&
                                                       item.discount !== null ? (
                                                         <label className="chat-product-code">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.discount
+                                                              .label.discount
                                                             : "Discount"}{" "}
                                                           :{" " + item.discount}
                                                         </label>
                                                       ) : null}
 
-                                                      {item.price !== "" &&
+                                                    {item.price !== "" &&
                                                       parseFloat(item.price) !==
-                                                        0 &&
+                                                      0 &&
                                                       item.price !== null ? (
                                                         <label className="chat-product-prize">
                                                           {TranslationContext !==
-                                                          undefined
+                                                            undefined
                                                             ? TranslationContext
-                                                                .label.price
+                                                              .label.price
                                                             : "Price"}{" "}
                                                           :{" " + item.price}
                                                         </label>
                                                       ) : null}
-                                                      {item.url !== null &&
+                                                    {item.url !== null &&
                                                       item.url !== "" ? (
                                                         <label className="chat-product-url">
                                                           {item.url !== null
@@ -4963,13 +4742,13 @@ class Header extends Component {
                                                       ) : (
                                                         ""
                                                       )}
-                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            );
-                                          }
-                                        )
+                                            </div>
+                                          );
+                                        }
+                                      )
                                       : null}
                                   </div>
                                   <div className="chat-btn-cntr">
@@ -5000,8 +4779,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                        ""
-                                      )}
+                                          ""
+                                        )}
                                     </button>
                                   </div>
                                 </div>
@@ -5027,7 +4806,7 @@ class Header extends Component {
                                     >
                                       {TranslationContext !== undefined
                                         ? TranslationContext.button
-                                            .sendrecommendedlist
+                                          .sendrecommendedlist
                                         : "Send Recommended List"}
 
                                       <img
@@ -5042,8 +4821,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                        ""
-                                      )}
+                                          ""
+                                        )}
                                     </button>
                                     <p
                                       style={{
@@ -5082,10 +4861,10 @@ class Header extends Component {
                                         <div className="schedule-left-cntr">
                                           {this.state.timeSlotData !== null
                                             ? this.state.timeSlotData.map(
-                                                (item, i) => {
-                                                  return item
-                                                    .alreadyScheduleDetails
-                                                    .length > 0 ? (
+                                              (item, i) => {
+                                                return item
+                                                  .alreadyScheduleDetails
+                                                  .length > 0 ? (
                                                     <div key={i}>
                                                       <label className="s-lable">
                                                         {item.day}:{item.dates}
@@ -5104,7 +4883,7 @@ class Header extends Component {
                                                                     i
                                                                   ]
                                                                     .alreadyScheduleDetails[
-                                                                    k
+                                                                  k
                                                                   ] ===
                                                                   this.state
                                                                     .selectedSlot
@@ -5145,7 +4924,7 @@ class Header extends Component {
                                                                 if (
                                                                   data.visitedCount >=
                                                                   (1 / 2) *
-                                                                    data.maxCapacity
+                                                                  data.maxCapacity
                                                                 ) {
                                                                   return (
                                                                     <Tooltip
@@ -5166,8 +4945,8 @@ class Header extends Component {
                                                                           data.isDisabled
                                                                             ? "s-red-active"
                                                                             : selectSlot
-                                                                            ? "s-yellow-active"
-                                                                            : "s-yellow-btn"
+                                                                              ? "s-yellow-active"
+                                                                              : "s-yellow-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
@@ -5195,7 +4974,7 @@ class Header extends Component {
                                                                 if (
                                                                   data.visitedCount <
                                                                   (1 / 2) *
-                                                                    data.maxCapacity
+                                                                  data.maxCapacity
                                                                 ) {
                                                                   return (
                                                                     <Tooltip
@@ -5216,8 +4995,8 @@ class Header extends Component {
                                                                           data.isDisabled
                                                                             ? "s-red-active"
                                                                             : selectSlot
-                                                                            ? "s-green-active"
-                                                                            : "s-green-btn"
+                                                                              ? "s-green-active"
+                                                                              : "s-green-btn"
                                                                         }
                                                                         onClick={this.handleSelectSlot.bind(
                                                                           this,
@@ -5254,8 +5033,8 @@ class Header extends Component {
                                                       </div>
                                                     </div>
                                                   ) : null;
-                                                }
-                                              )
+                                              }
+                                            )
                                             : null}
                                         </div>
                                       </div>
@@ -5264,37 +5043,36 @@ class Header extends Component {
                                           <label className="s-lable">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label
-                                                  .selectedslot
+                                                .selectedslot
                                               : "Selected Slot"}
                                           </label>
                                           {Object.keys(this.state.selectedSlot)
                                             .length !== 0 ? (
-                                            <button
-                                              className={
-                                                this.state.selectedSlot
-                                                  .visitedCount <
-                                                (1 / 2) *
+                                              <button
+                                                className={
                                                   this.state.selectedSlot
-                                                    .maxCapacity
-                                                  ? // this.state.selectedSlot.maxCapacity ==
-                                                    //   this.state.selectedSlot.remaining
-                                                    "s-green-btn s-green-active select-slot-cntr mx-0"
-                                                  : this.state.selectedSlot
-                                                      .visitedCount <
+                                                    .visitedCount <
+                                                    (1 / 2) *
                                                     this.state.selectedSlot
                                                       .maxCapacity
-                                                  ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                                  : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
-                                              }
-                                            >
-                                              {this.state.selectedSlot.timeSlot}
-                                              <img
-                                                className="s-img-select"
-                                                src={CircleRight}
-                                                alt="circle-right"
-                                              />
-                                            </button>
-                                          ) : null}
+                                                    ?
+                                                    "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                    : this.state.selectedSlot
+                                                      .visitedCount <
+                                                      this.state.selectedSlot
+                                                        .maxCapacity
+                                                      ? "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                      : "s-yellow-btn s-yellow-active select-slot-cntr mx-0"
+                                                }
+                                              >
+                                                {this.state.selectedSlot.timeSlot}
+                                                <img
+                                                  className="s-img-select"
+                                                  src={CircleRight}
+                                                  alt="circle-right"
+                                                />
+                                              </button>
+                                            ) : null}
                                           {this.state.isSelectSlot !== "" && (
                                             <p
                                               style={{
@@ -5310,7 +5088,7 @@ class Header extends Component {
                                           <label className="s-lable">
                                             {TranslationContext !== undefined
                                               ? TranslationContext.label
-                                                  .noofpeople
+                                                .noofpeople
                                               : "No of People"}
                                           </label>
                                           <input
@@ -5362,21 +5140,21 @@ class Header extends Component {
                                             spin
                                           />
                                         ) : (
-                                          ""
-                                        )}
+                                            ""
+                                          )}
                                       </button>
                                     </div>
                                   </div>
                                 ) : (
-                                  <div>
-                                    <span className="slot-span">
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.span
+                                    <div>
+                                      <span className="slot-span">
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span
                                             .noslotaddedforthisstore
-                                        : "No slot added for this store"}
-                                    </span>
-                                  </div>
-                                )}
+                                          : "No slot added for this store"}
+                                      </span>
+                                    </div>
+                                  )}
                               </Modal>
                               {/* -------- Generate Payment Link Modal ----- */}
                               <Modal
@@ -5403,22 +5181,14 @@ class Header extends Component {
                                           name="Search"
                                           maxLength="100"
                                           autoComplete="off"
-                                          // value={this.state.searchItem}
-                                          // onChange={this.handleSearchItemChange.bind(
-                                          //   this
-                                          // )}
                                         />
                                         <span
-                                          // onClick={this.handleSearchChatItemDetails.bind(
-                                          //   this
-                                          // )}
                                           className="input-group-addon seacrh-img-addsearch searchtxt-span"
                                         >
                                           <img
                                             src={SearchBlueImg}
                                             alt="SearchBlueImg"
                                             className="srch-imge"
-                                            // onClick={this.handleSearchCustomer}
                                           />
                                         </span>
                                       </div>
@@ -5460,8 +5230,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                        ""
-                                      )}
+                                          ""
+                                        )}
                                     </button>
                                   </div>
                                 </div>
@@ -5482,7 +5252,7 @@ class Header extends Component {
                                     <p className="cls-p-conf">
                                       {TranslationContext !== undefined
                                         ? TranslationContext.p
-                                            .areyousureandwanttosend
+                                          .areyousureandwanttosend
                                         : "Are you sure & want to send"}
                                       ?
                                     </p>
@@ -5528,8 +5298,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                        ""
-                                      )}
+                                          ""
+                                        )}
                                     </button>
                                   </div>
                                 </div>
@@ -5550,7 +5320,7 @@ class Header extends Component {
                                     <p className="cls-p-conf-mob">
                                       {TranslationContext !== undefined
                                         ? TranslationContext.p
-                                            .areyousureandwanttosend
+                                          .areyousureandwanttosend
                                         : "Are you sure & want to send"}
                                       ?
                                     </p>
@@ -5596,8 +5366,8 @@ class Header extends Component {
                                           spin
                                         />
                                       ) : (
-                                        ""
-                                      )}
+                                          ""
+                                        )}
                                     </button>
                                   </div>
                                 </div>
@@ -5673,15 +5443,15 @@ class Header extends Component {
                                           title={
                                             rowData.customerMobile
                                               ? rowData.customerMobile.substring(
-                                                  2
-                                                )
+                                                2
+                                              )
                                               : ""
                                           }
                                         >
                                           {rowData.customerMobile
                                             ? rowData.customerMobile.substring(
-                                                2
-                                              )
+                                              2
+                                            )
                                             : ""}
                                         </p>
                                       );
@@ -5805,8 +5575,262 @@ class Header extends Component {
                                   }}
                                 >
                                   {this.state.messageHistoryChatData !== null &&
-                                  this.state.messageHistoryChatData.length >
+                                    this.state.messageHistoryChatData.length >
                                     0 ? (
+                                      this.state.messageHistoryChatData.map(
+                                        (item, i) => {
+                                          return (
+                                            <div
+                                              key={i}
+                                              className={
+                                                item.byCustomer === true &&
+                                                  item.isBotReply !== true
+                                                  ? "chat-trail-cntr"
+                                                  : "chat-trail-cntr chat-trail-cntr-right"
+                                              }
+                                            >
+                                              <div className="chat-trail-img">
+                                                <span
+                                                  className="chat-initial"
+                                                  alt="face image"
+                                                  title={
+                                                    item.byCustomer
+                                                      ? item.customerName
+                                                      : this.state.UserName
+                                                  }
+                                                >
+                                                  {item.byCustomer
+                                                    ? item.customerName
+                                                      .split(" ")
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()
+                                                    : this.state.UserName.split(
+                                                      " "
+                                                    )
+                                                      .map((n) => n[0])
+                                                      .join("")
+                                                      .toUpperCase()}
+                                                </span>
+                                              </div>
+                                              <div className="chat-trail-chat-cntr">
+                                                {item.isBotReply && (
+                                                  <p className="bot-mark">
+                                                    {TranslationContext !==
+                                                      undefined
+                                                      ? TranslationContext.p.bot
+                                                      : "BOT"}
+                                                  </p>
+                                                )}
+                                                <p className="chat-trail-chat pd-0">
+                                                  {ReactHtmlParser(
+                                                    item.message
+                                                      .replace(
+                                                        "col-md-2",
+                                                        "col-md-4"
+                                                      )
+                                                      .replace(
+                                                        "col-md-10",
+                                                        "col-md-8"
+                                                      )
+                                                  )}
+                                                </p>
+                                                <span className="chat-trail-time">
+                                                  {item.chatDate + " "}
+                                                  {item.chatTime}
+                                                </span>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      )
+                                    ) : (
+                                      <p style={{ margin: "10" }}>
+                                        No record found
+                                      </p>
+                                    )}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                      <div className="row" style={{ margin: "0" }}>
+                        <div className="chatdivtitle">
+                          <label
+                            className="chattitlelbl"
+                            style={{ color: "Black" }}
+                          >
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.myhistoricalchat
+                              : "My Historical Chat"}
+                          </label>
+                        </div>
+                        <div className="chathistory-tbl">
+                          <div
+                            className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
+                            style={{ margin: "10px" }}
+                          >
+                            <Table
+                              loading={this.state.isHistoricalChatLoading}
+                              noDataContent="No Record Found"
+                              className="components-table-demo-nested antd-table-campaign custom-antd-table add-cursor"
+                              columns={[
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.chatid
+                                      : "Chat ID",
+                                  dataIndex: "chatID",
+                                  width: "10%",
+                                  className: "textnowrap-table",
+                                  render: (row, rowData) => {
+                                    return (
+                                      <>{rowData.chatID ? rowData.chatID : ""}</>
+                                    );
+                                  },
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.customername
+                                      : "Customer Name",
+                                  dataIndex: "customerName",
+                                  width: "20%",
+                                  className: "textnowrap-table",
+                                  render: (row, rowData) => {
+                                    return (
+                                      <>
+                                        {rowData.customerName
+                                          ? rowData.customerName
+                                          : ""}
+                                      </>
+                                    );
+                                  },
+                                },
+                                {
+                                  title: "Mobile No",
+                                  dataIndex: "customerMobile",
+                                  width: "20%",
+                                  className: "textnowrap-table",
+                                  render: (row, rowData) => {
+                                    return (
+                                      <>
+                                        {rowData.customerMobile
+                                          ? rowData.customerMobile.substring(2)
+                                          : ""}
+                                      </>
+                                    );
+                                  },
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.time
+                                      : "Time",
+                                  dataIndex: "timeAgo",
+                                  width: "20%",
+                                  className: "textnowrap-table",
+                                  render: (row, rowData) => {
+                                    return (
+                                      <>
+                                        {rowData.timeAgo ? rowData.timeAgo : ""}
+                                      </>
+                                    );
+                                  },
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.time
+                                      : "Status",
+                                  dataIndex: "chatStatus",
+                                  width: "20%",
+                                  className: "textnowrap-table",
+                                  render: (row, rowData) => {
+                                    return (
+                                      <>
+                                        {rowData.chatStatus
+                                          ? rowData.chatStatus
+                                          : ""}
+                                      </>
+                                    );
+                                  },
+                                },
+                                {
+                                  title:
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.title.message
+                                      : "Message",
+                                  dataIndex: "message",
+                                  width: "30%",
+                                  className: "textnowrap-table",
+                                  render: (row) => {
+                                    return (
+                                      <>
+                                        <p
+                                          className="msg-text-overlap"
+                                          title={row ? row : ""}
+                                        >
+                                          {row ? row : ""}
+                                        </p>
+                                      </>
+                                    );
+                                  },
+                                },
+                              ]}
+                              dataSource={this.state.historicalChatData}
+                              onRow={(record, index) => ({
+                                onClick: (event) => {
+                                  this.handleHistoricalTableRow(
+                                    record,
+                                    index,
+                                    event
+                                  );
+                                },
+                              })}
+                              pagination={{
+                                pageSize: 5,
+                                defaultPageSize: 5,
+                              }}
+                              rowKey={(record) => {
+                                if (record.chatID) {
+                                  uid = uid + 1;
+                                  return record.chatID + "g" + uid;
+                                } else {
+                                  uid = uid + 1;
+                                  return "h" + uid;
+                                }
+                              }}
+                              rowClassName={this.setRowClassName}
+                            ></Table>
+                          </div>
+                        </div>
+                        <div className="chathistory-tbl">
+                          {this.state.showHistoricalChat ? (
+                            <div className="historychatcontnet">
+                              <div className="chathistory-div add-bord">
+                                <label className="chat-on-tuesday-jul">
+                                  {" "}
+                                Chat On {this.state.chatTimeAgo}
+                                </label>
+                                <img
+                                  onClick={this.handleHistoryChatClose.bind(this)}
+                                  src={CancelBlack}
+                                  alt="close-icon"
+                                  style={{ float: "right", cursor: "pointer" }}
+                                />
+                              </div>
+                              <div
+                                className="chatcontentDiv"
+                                ref={(div) => {
+                                  this.historyMessageList = div;
+                                }}
+                              >
+                                {this.state.messageHistoryChatData !== null &&
+                                  this.state.messageHistoryChatData.length > 0 ? (
                                     this.state.messageHistoryChatData.map(
                                       (item, i) => {
                                         return (
@@ -5814,7 +5838,7 @@ class Header extends Component {
                                             key={i}
                                             className={
                                               item.byCustomer === true &&
-                                              item.isBotReply !== true
+                                                item.isBotReply !== true
                                                 ? "chat-trail-cntr"
                                                 : "chat-trail-cntr chat-trail-cntr-right"
                                             }
@@ -5831,23 +5855,20 @@ class Header extends Component {
                                               >
                                                 {item.byCustomer
                                                   ? item.customerName
-                                                      .split(" ")
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()
-                                                  : this.state.UserName.split(
-                                                      " "
-                                                    )
-                                                      .map((n) => n[0])
-                                                      .join("")
-                                                      .toUpperCase()}
+                                                    .split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()
+                                                  : this.state.UserName.split(" ")
+                                                    .map((n) => n[0])
+                                                    .join("")
+                                                    .toUpperCase()}
                                               </span>
                                             </div>
                                             <div className="chat-trail-chat-cntr">
                                               {item.isBotReply && (
                                                 <p className="bot-mark">
-                                                  {TranslationContext !==
-                                                  undefined
+                                                  {TranslationContext !== undefined
                                                     ? TranslationContext.p.bot
                                                     : "BOT"}
                                                 </p>
@@ -5855,10 +5876,7 @@ class Header extends Component {
                                               <p className="chat-trail-chat pd-0">
                                                 {ReactHtmlParser(
                                                   item.message
-                                                    .replace(
-                                                      "col-md-2",
-                                                      "col-md-4"
-                                                    )
+                                                    .replace("col-md-2", "col-md-4")
                                                     .replace(
                                                       "col-md-10",
                                                       "col-md-8"
@@ -5875,265 +5893,16 @@ class Header extends Component {
                                       }
                                     )
                                   ) : (
-                                    <p style={{ margin: "10" }}>
+                                    <p style={{ margin: "10px" }}>
                                       No record found
                                     </p>
                                   )}
-                                  {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
-                                </div>
                               </div>
-                            ) : null}
-                          </div>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="row" style={{ margin: "0" }}>
-                      <div className="chatdivtitle">
-                        <label
-                          className="chattitlelbl"
-                          style={{ color: "Black" }}
-                        >
-                          {TranslationContext !== undefined
-                            ? TranslationContext.label.myhistoricalchat
-                            : "My Historical Chat"}
-                        </label>
-                      </div>
-                      <div className="chathistory-tbl">
-                        <div
-                          className="table-cntr store chat-history mg-rm now-rap-tbl-txt chatabcus"
-                          style={{ margin: "10px" }}
-                        >
-                          <Table
-                            loading={this.state.isHistoricalChatLoading}
-                            noDataContent="No Record Found"
-                            className="components-table-demo-nested antd-table-campaign custom-antd-table add-cursor"
-                            columns={[
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.chatid
-                                    : "Chat ID",
-                                dataIndex: "chatID",
-                                width: "10%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>{rowData.chatID ? rowData.chatID : ""}</>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.customername
-                                    : "Customer Name",
-                                dataIndex: "customerName",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.customerName
-                                        ? rowData.customerName
-                                        : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title: "Mobile No",
-                                dataIndex: "customerMobile",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.customerMobile
-                                        ? rowData.customerMobile.substring(2)
-                                        : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.time
-                                    : "Time",
-                                dataIndex: "timeAgo",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.timeAgo ? rowData.timeAgo : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.time
-                                    : "Status",
-                                dataIndex: "chatStatus",
-                                width: "20%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      {rowData.chatStatus
-                                        ? rowData.chatStatus
-                                        : ""}
-                                    </>
-                                  );
-                                },
-                              },
-                              {
-                                title:
-                                  TranslationContext !== undefined
-                                    ? TranslationContext.title.message
-                                    : "Message",
-                                dataIndex: "message",
-                                width: "30%",
-                                className: "textnowrap-table",
-                                render: (row, rowData) => {
-                                  return (
-                                    <>
-                                      <p
-                                        className="msg-text-overlap"
-                                        title={row ? row : ""}
-                                      >
-                                        {row ? row : ""}
-                                      </p>
-                                    </>
-                                  );
-                                },
-                              },
-                            ]}
-                            dataSource={this.state.historicalChatData}
-                            onRow={(record, index) => ({
-                              onClick: (event) => {
-                                this.handleHistoricalTableRow(
-                                  record,
-                                  index,
-                                  event
-                                );
-                              },
-                            })}
-                            pagination={{
-                              pageSize: 5,
-                              defaultPageSize: 5,
-                            }}
-                            rowKey={(record) => {
-                              if (record.chatID) {
-                                uid = uid + 1;
-                                return record.chatID + "g" + uid;
-                              } else {
-                                uid = uid + 1;
-                                return "h" + uid;
-                              }
-                            }}
-                            rowClassName={this.setRowClassName}
-                          ></Table>
-                        </div>
-                      </div>
-                      <div className="chathistory-tbl">
-                        {this.state.showHistoricalChat ? (
-                          <div className="historychatcontnet">
-                            <div className="chathistory-div add-bord">
-                              <label className="chat-on-tuesday-jul">
-                                {" "}
-                                Chat On {this.state.chatTimeAgo}
-                              </label>
-                              <img
-                                onClick={this.handleHistoryChatClose.bind(this)}
-                                src={CancelBlack}
-                                alt="close-icon"
-                                style={{ float: "right", cursor: "pointer" }}
-                              />
-                            </div>
-                            <div
-                              className="chatcontentDiv"
-                              ref={(div) => {
-                                this.historyMessageList = div;
-                              }}
-                            >
-                              {this.state.messageHistoryChatData !== null &&
-                              this.state.messageHistoryChatData.length > 0 ? (
-                                this.state.messageHistoryChatData.map(
-                                  (item, i) => {
-                                    return (
-                                      <div
-                                        key={i}
-                                        className={
-                                          item.byCustomer === true &&
-                                          item.isBotReply !== true
-                                            ? "chat-trail-cntr"
-                                            : "chat-trail-cntr chat-trail-cntr-right"
-                                        }
-                                      >
-                                        <div className="chat-trail-img">
-                                          <span
-                                            className="chat-initial"
-                                            alt="face image"
-                                            title={
-                                              item.byCustomer
-                                                ? item.customerName
-                                                : this.state.UserName
-                                            }
-                                          >
-                                            {item.byCustomer
-                                              ? item.customerName
-                                                  .split(" ")
-                                                  .map((n) => n[0])
-                                                  .join("")
-                                                  .toUpperCase()
-                                              : this.state.UserName.split(" ")
-                                                  .map((n) => n[0])
-                                                  .join("")
-                                                  .toUpperCase()}
-                                          </span>
-                                        </div>
-                                        <div className="chat-trail-chat-cntr">
-                                          {item.isBotReply && (
-                                            <p className="bot-mark">
-                                              {TranslationContext !== undefined
-                                                ? TranslationContext.p.bot
-                                                : "BOT"}
-                                            </p>
-                                          )}
-                                          <p className="chat-trail-chat pd-0">
-                                            {ReactHtmlParser(
-                                              item.message
-                                                .replace("col-md-2", "col-md-4")
-                                                .replace(
-                                                  "col-md-10",
-                                                  "col-md-8"
-                                                )
-                                            )}
-                                          </p>
-                                          <span className="chat-trail-time">
-                                            {item.chatDate + " "}
-                                            {item.chatTime}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-                                )
-                              ) : (
-                                <p style={{ margin: "10px" }}>
-                                  No record found
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
             </div>
@@ -6163,15 +5932,6 @@ class Header extends Component {
                 Close Chat
               </label>
             </div>
-            {/* <div className="row">
-              <label className={"actionmodallbl"}>Hold Chat</label>
-            </div>
-            <div className="row">
-              <label className={"actionmodallbl"}>Ban Visitor</label>
-            </div>
-            <div className="row">
-              <label className={"actionmodallbl"}>Create Ticket</label>
-            </div> */}
           </div>
         </Modal>
       </React.Fragment>

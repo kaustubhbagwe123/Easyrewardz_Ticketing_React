@@ -899,7 +899,7 @@ class OrderTab extends Component {
                               </div> */}
                             </>
                           }
-                          overlayClassName="order-popover order-popover-butns order-popover-address"
+                          overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
                           placement="bottomRight"
                           onVisibleChange={(visible) =>
                             this.setState({ orderPopoverOverlay: visible })
