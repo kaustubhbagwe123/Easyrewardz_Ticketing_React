@@ -1139,6 +1139,7 @@ class StoreCampaign extends Component {
               showLastTransactiondtab: true,
             });
           }
+
           if (data.campaignrecommended[0].itemCode !== "") {
             self.setState({
               showRecommandedtab: true,
@@ -2870,76 +2871,96 @@ class StoreCampaign extends Component {
                     aria-labelledby="lastTransaction-tab"
                   >
                     <div>
-                      {this.state.lasttransactiondetails.amount !== "" ? (
-                        <div className="transactionbox">
-                          <table>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <h5>Bill No.</h5>
-                                  <label>
-                                    {this.state.lasttransactiondetails.billNo}
-                                  </label>
-                                </td>
-                                <td>
-                                  <h5>Amount</h5>
-                                  <label>
-                                    {this.state.lasttransactiondetails.amount}
-                                  </label>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <h5>Store</h5>
-                                  <label>
-                                    {
-                                      this.state.lasttransactiondetails
-                                        .storeName
-                                    }
-                                  </label>
-                                </td>
-                                <td>
-                                  <h5>Date</h5>
-                                  <label>
-                                    {this.state.lasttransactiondetails.billDate}
-                                  </label>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <div className="trasactablist">
-                            <div className="myTicket-table remov agentlist last-trans-table">
-                              <ReactTable
-                                className="limit-react-table-body tabscrol"
-                                data={this.state.lastTransactionItem}
-                                columns={[
-                                  {
-                                    Header: <span>Article</span>,
-                                    accessor: "article",
-                                  },
-                                  {
-                                    Header: <span>Qty.</span>,
-                                    accessor: "quantity",
-                                    width: 60,
-                                  },
-                                  {
-                                    Header: <span>Amount</span>,
-                                    accessor: "amount",
-                                    width: 80,
-                                  },
-                                ]}
-                                minRows={2}
-                                showPagination={false}
-                                resizable={false}
-                              />
+                      {this.state.lasttransactiondetails !== null ? (
+                        <>
+                          {this.state.lasttransactiondetails.amount !== "" ? (
+                            <div className="transactionbox">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h5>Bill No.</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billNo
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>Amount</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .amount
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <h5>Store</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .storeName
+                                        }
+                                      </label>
+                                    </td>
+                                    <td>
+                                      <h5>Date</h5>
+                                      <label>
+                                        {
+                                          this.state.lasttransactiondetails
+                                            .billDate
+                                        }
+                                      </label>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div className="trasactablist">
+                                <div className="myTicket-table remov agentlist last-trans-table">
+                                  <ReactTable
+                                    className="limit-react-table-body tabscrol"
+                                    data={this.state.lastTransactionItem}
+                                    columns={[
+                                      {
+                                        Header: <span>Article</span>,
+                                        accessor: "article",
+                                      },
+                                      {
+                                        Header: <span>Qty.</span>,
+                                        accessor: "quantity",
+                                        width: 60,
+                                      },
+                                      {
+                                        Header: <span>Amount</span>,
+                                        accessor: "amount",
+                                        width: 80,
+                                      },
+                                    ]}
+                                    minRows={2}
+                                    // defaultPageSize={5}
+                                    showPagination={false}
+                                    resizable={false}
+                                  />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          ) : (
+                            <label className="ChecknoDataCamp">
+                              No Record Found
+                            </label>
+                          )}{" "}
+                        </>
                       ) : (
+                        <>
                           <label className="ChecknoDataCamp">
                             No Record Found
                           </label>
-                        )}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

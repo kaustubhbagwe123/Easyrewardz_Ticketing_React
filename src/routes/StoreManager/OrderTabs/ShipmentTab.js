@@ -263,10 +263,10 @@ class ShipmentTab extends Component {
         itemIDs: itemIds,
       },
     })
-      .then(function (res) {
-        let status = res.data.message;
+      .then(function(res) {
+        let CheckStatus = res.data.status;
         let data = res.data.responseData;
-        if (status === "Success") {
+        if (CheckStatus) {
           if (data.status) {
             self.setState({
               AirwayBillAWBNo: data.awbNumber,
@@ -274,17 +274,17 @@ class ShipmentTab extends Component {
               createdShoppingTabs: true,
               createShipmentBtnDisbaled: false,
             });
-            self.handleGetShipmentTabGridData();
             if (data.isStoreDelivery) {
               self.setState({
                 IsStoreDelivery: true,
               });
             }
           } else {
-            NotificationManager.error(data.status);
+            NotificationManager.error(data.statusMessge);
           }
+          self.handleGetShipmentTabGridData();
         } else {
-          NotificationManager.error(status);
+          NotificationManager.error(CheckStatus);
           self.setState({
             createdShoppingTabs: false,
             createShipmentBtnDisbaled: false,
