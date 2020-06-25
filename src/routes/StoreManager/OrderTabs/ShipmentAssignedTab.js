@@ -37,7 +37,6 @@ class ShipmentAssignedTab extends Component {
   handleGetShipmentAssignedData() {
     debugger;
     let self = this;
-    var pageNumber = this.state.assignCurrentPage;
     this.setState({
       ShipAssignLoading: true,
     });
@@ -47,7 +46,7 @@ class ShipmentAssignedTab extends Component {
       headers: authHeader(),
       data: {
         SearchText: "",
-        PageNo: pageNumber,
+        PageNo: this.state.assignCurrentPage,
         PageSize: this.state.assignPostsPerPage,
         FilterReferenceNo: "",
       },
@@ -85,6 +84,7 @@ class ShipmentAssignedTab extends Component {
   handleAssignedPageItemchange = async (e) => {
     await this.setState({
       assignPostsPerPage: e.target.value,
+      assignCurrentPage:1
     });
 
     this.handleGetShipmentAssignedData();
