@@ -78,7 +78,7 @@ class CardAssets extends Component {
         console.log(response, "---handleGetCardImageUploadlog");
       });
   }
-
+////handle approve and reject card image
   handleApproveRejectCardImage(imageUploadLogID, itemID, status) {
     let self = this;
     debugger;
