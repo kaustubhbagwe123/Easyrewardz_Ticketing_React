@@ -76,7 +76,6 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function(res) {
-        debugger
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -104,7 +103,6 @@ class storeMyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
