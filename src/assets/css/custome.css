@@ -30,7 +30,7 @@ a {
 
 .btnClickDisabled{
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: .6;
 }
 .cls-hide {
   display: none;
