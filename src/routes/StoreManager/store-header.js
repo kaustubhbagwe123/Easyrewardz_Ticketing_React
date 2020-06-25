@@ -754,6 +754,7 @@ class Header extends Component {
         five: false,
       },
       activeTab: 1,
+      isScroll:true
     });
 
     this.handleGetNewChat();
