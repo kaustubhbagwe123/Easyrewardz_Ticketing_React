@@ -787,26 +787,38 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-
-        if (message === "Success" && ongoingChatsData) {
-          var chatData = ongoingChatsData.filter(
-            (x) => x.chatID === self.state.chatId
-          );
-          if (chatData.length == 0) {
+        debugger;
+        if (message === "Success") {
+          if (ongoingChatsData) {
+            var chatData = ongoingChatsData.filter(
+              (x) => x.chatID === self.state.chatId
+            );
+            if (chatData.length == 0) {
+              self.setState({
+                customerName: "",
+                messageData: [],
+                isMainLoader: false,
+              });
+            }
+            self.setState({
+              ongoingChatsData,
+            });
+          } else {
             self.setState({
               customerName: "",
               messageData: [],
               isMainLoader: false,
             });
+            self.setState({
+              ongoingChatsData,
+            });
           }
-          self.setState({
-            ongoingChatsData,
-          });
         } else {
           self.setState({ ongoingChatsData: [] });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetOngoingChat");
       });
   }
@@ -840,6 +852,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetNewChat");
       });
   }
@@ -937,6 +950,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleUpdateCustomerChatStatus");
       });
   }
@@ -980,6 +994,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetChatMessagesList");
       });
   }
@@ -1042,6 +1057,7 @@ class Header extends Component {
           }
         })
         .catch((response) => {
+          self.setState({ isMainLoader: false });
           console.log(response, "---saveChatMessages");
         });
     }
