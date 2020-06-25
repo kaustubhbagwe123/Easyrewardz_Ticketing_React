@@ -13,11 +13,7 @@ import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
 import * as translationHI from '../../translations/hindi';
 import * as translationMA from '../../translations/marathi';
-// import Twitter from "./../../assets/Images/twitter.png";
-// import HeadPhone3 from "./../../assets/Images/headphone3.png";
-// import MailImg from "./../../assets/Images/msg.png";
-// import FacebookImg from "./../../assets/Images/facebook.png";
-// import Chat from "./../../assets/Images/chat.png";
+
 class storeMyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +76,6 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function(res) {
-        debugger
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -108,7 +103,6 @@ class storeMyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -750,51 +744,6 @@ class storeMyTicketList extends Component {
                                               "i" + row.original.ticketID
                                             }
                                           >
-                                            {/* {row.original.ticketSourceType ===
-                                            "Calls" ? (
-                                              <img
-                                                src={HeadPhone3}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Calls"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Mails" ? (
-                                              <img
-                                                src={MailImg}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Mails"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Facebook" ? (
-                                              <img
-                                                src={FacebookImg}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Facebook"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "ChatBot" ? (
-                                              <img
-                                                src={Chat}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="ChatBot"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Twitter" ? (
-                                              <img
-                                                src={Twitter}
-                                                alt="HeadPhone"
-                                                className="headPhone3 black-twitter"
-                                                title="Twitter"
-                                              />
-                                            ) : null} */}
 
                                             {row.original.ticketID}
                                           </label>

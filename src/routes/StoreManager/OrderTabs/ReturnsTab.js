@@ -42,7 +42,6 @@ class ReturnTab extends Component {
   }
 
   handleGetOrderReturnsData() {
-    debugger;
     let self = this;
     var pageNumber = this.state.currentPage;
     this.setState({
@@ -61,7 +60,6 @@ class ReturnTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -84,7 +82,6 @@ class ReturnTab extends Component {
   }
 
   ReturnPaginationOnChange = async (numPage) => {
-    debugger;
     await this.setState({
       currentPage: numPage,
     });
@@ -101,7 +98,6 @@ class ReturnTab extends Component {
   };
 
   handleGetOrderStatusFilterData() {
-    debugger;
     let self = this;
 
     axios({
@@ -113,7 +109,6 @@ class ReturnTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -128,7 +123,6 @@ class ReturnTab extends Component {
   }
 
   handleCheckReturnsIndividualStatus() {
-    debugger;
     var checkboxes = document.getElementsByName("ReturnStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -294,7 +288,6 @@ class ReturnTab extends Component {
               {
                 title:  TranslationContext!==undefined?TranslationContext.title.actions:"Action",
                 render: () => {
-                  debugger;
                   return (
                     <div className="d-flex">
                       <button className="butn order-grid-butn order-grid-butn-orange">
@@ -311,7 +304,6 @@ class ReturnTab extends Component {
               },
             ]}
             expandedRowRender={(row) => {
-              debugger;
               return (
                 <div className="order-expanded-cntr">
                   <div className="row">

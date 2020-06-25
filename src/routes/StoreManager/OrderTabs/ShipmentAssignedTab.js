@@ -35,9 +35,7 @@ class ShipmentAssignedTab extends Component {
     }
   }
   handleGetShipmentAssignedData() {
-    debugger;
     let self = this;
-    var pageNumber = this.state.assignCurrentPage;
     this.setState({
       ShipAssignLoading: true,
     });
@@ -47,13 +45,12 @@ class ShipmentAssignedTab extends Component {
       headers: authHeader(),
       data: {
         SearchText: "",
-        PageNo: pageNumber,
+        PageNo: this.state.assignCurrentPage,
         PageSize: this.state.assignPostsPerPage,
         FilterReferenceNo: "",
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -85,6 +82,7 @@ class ShipmentAssignedTab extends Component {
   handleAssignedPageItemchange = async (e) => {
     await this.setState({
       assignPostsPerPage: e.target.value,
+      assignCurrentPage:1
     });
 
     this.handleGetShipmentAssignedData();
@@ -155,7 +153,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
@@ -184,7 +181,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
@@ -213,7 +209,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
@@ -241,7 +236,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           window.location.href = res.data.responseData.manifestUrl;
@@ -265,7 +259,6 @@ class ShipmentAssignedTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           window.location.href = res.data.responseData.label_url;
@@ -480,7 +473,6 @@ class ShipmentAssignedTab extends Component {
               },
             ]}
             expandedRowRender={(row) => {
-              debugger;
               return (
                 <div className="innertabcollapse">
                   <div className="">

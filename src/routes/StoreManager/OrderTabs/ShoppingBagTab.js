@@ -69,7 +69,6 @@ class ShoppingBagTab extends Component {
       },
     })
       .then(function (res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -169,7 +168,6 @@ class ShoppingBagTab extends Component {
 
   /// handle cancel and comment for Shopping bag
   handleCancleAndCommnetShopBag(ShopId) {
-    debugger;
     let self = this;
     if (this.state.ShopCancelComment !== "") {
       axios({

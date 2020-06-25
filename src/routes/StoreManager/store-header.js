@@ -209,7 +209,7 @@ class Header extends Component {
 
       let pageName, lastOne, lastValue, arr;
       arr = [...this.state.cont];
-      debugger;
+
       setTimeout(
         function() {
           pageName = window.location.pathname;
@@ -235,11 +235,11 @@ class Header extends Component {
       this.state.translateLanguage = {};
     }
   }
-////handle scroll right
+  ////handle scroll right
   handleScrollRight(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft += 20;
   }
-////handle scroll left
+  ////handle scroll left
   handleScrollLeft(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
@@ -263,7 +263,7 @@ class Header extends Component {
       },
     });
   }
-////handle set access user 
+  ////handle set access user
   setAccessUser(data) {
     var path = window.location.pathname;
     var page = path.split("/").pop();
@@ -435,7 +435,7 @@ class Header extends Component {
         }
       }
     }
-    debugger;
+
     for (let i = 0; i < accessdata.length; i++) {
       if (accessdata[i].activeClass === "active single-menu") {
         this.setState({
@@ -462,7 +462,7 @@ class Header extends Component {
       this.historyMessageScrollToBottom();
     }
   }
-////handle crm role data
+  ////handle crm role data
   handleCRMRole() {
     let self = this;
     axios({
@@ -481,7 +481,7 @@ class Header extends Component {
         console.log(data);
       });
   }
-////handle get user profile data
+  ////handle get user profile data
   handleGetUserProfileData() {
     let self = this;
     axios({
@@ -549,7 +549,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -692,7 +691,6 @@ class Header extends Component {
   };
 
   actives = (e) => {
-    debugger;
     const contDummy = [...this.state.cont];
     contDummy.forEach((i) => {
       i.activeClass = "single-menu";
@@ -766,7 +764,6 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-        debugger;
         if (message === "Success") {
           if (ongoingChatsData) {
             var chatData = ongoingChatsData.filter(
@@ -914,7 +911,6 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
@@ -1377,7 +1373,6 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
-    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1525,7 +1520,6 @@ class Header extends Component {
   };
   ////handle got to message scroll down
   scrollToBottom() {
-    debugger;
     if (this.messageList) {
       const scrollHeight = this.messageList.scrollHeight;
       const height = this.messageList.clientHeight;
@@ -1750,7 +1744,6 @@ class Header extends Component {
   }
   ////handle opne mobile suggestion list modal
   onOpenMobSuggestionModal(suggestionText, index) {
-    debugger;
     if (index > 0) {
       this.setState({
         suggestionModalMob: true,
@@ -1891,7 +1884,6 @@ class Header extends Component {
         socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
           data
         ) {
-          debugger;
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
@@ -3376,7 +3368,6 @@ class Header extends Component {
                                               dataIndex: "suggestionText",
                                               render: (row, rowData) => {
                                                 i = i + 1;
-                                                debugger;
                                                 return (
                                                   <div
                                                     className={
