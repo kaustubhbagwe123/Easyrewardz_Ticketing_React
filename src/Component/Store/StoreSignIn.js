@@ -45,7 +45,7 @@ class StoreSignIn extends Component {
 
   componentDidMount() {
     debugger;
-    
+
     if (this.props.location.encProgramCode) {
       var finalEncProgramCode = this.props.location.encProgramCode;
 

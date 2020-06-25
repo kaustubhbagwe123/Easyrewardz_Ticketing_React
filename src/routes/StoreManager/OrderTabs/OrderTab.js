@@ -3,7 +3,7 @@ import axios from "axios";
 import { Table, Popover, Popconfirm } from "antd";
 import Modal from "react-responsive-modal";
 import NoPayment from "./../../../assets/Images/no-payment.png";
-import CreditCard from "./../../../assets/Images/credit-card.png";
+// import CreditCard from "./../../../assets/Images/credit-card.png";
 import OrderInfo from "./../../../assets/Images/order-info.png";
 import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../../assets/Images/order-bag.png";
@@ -326,6 +326,8 @@ class OrderTab extends Component {
             landmark: "",
           });
           NotificationManager.success("Record Updated Successfully.");
+        } else {
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -881,7 +883,7 @@ class OrderTab extends Component {
                               </div> */}
                             </>
                           }
-                          overlayClassName="order-popover order-popover-butns order-popover-address"
+                          overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
                           placement="bottomRight"
                           onVisibleChange={(visible) =>
                             this.setState({ orderPopoverOverlay: visible })

@@ -172,7 +172,7 @@ class Header extends Component {
       reportAccess: "none",
       mobileHeading: "",
       messageHistoryChatData: [],
-      isMainLoader: false
+      isMainLoader: false,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -762,25 +762,38 @@ class Header extends Component {
       .then(function (response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-        var chatData = ongoingChatsData.filter(
-          (x) => x.chatID === self.state.chatId
-        );
-        if (chatData.length == 0) {
-          self.setState({
-            customerName: "",
-            messageData: [],
-            isMainLoader: false
-          });
-        }
-        if (message === "Success" && ongoingChatsData) {
-          self.setState({
-            ongoingChatsData,
-          });
+        debugger;
+        if (message === "Success") {
+          if (ongoingChatsData) {
+            var chatData = ongoingChatsData.filter(
+              (x) => x.chatID === self.state.chatId
+            );
+            if (chatData.length == 0) {
+              self.setState({
+                customerName: "",
+                messageData: [],
+                isMainLoader: false,
+              });
+            }
+            self.setState({
+              ongoingChatsData,
+            });
+          } else {
+            self.setState({
+              customerName: "",
+              messageData: [],
+              isMainLoader: false,
+            });
+            self.setState({
+              ongoingChatsData,
+            });
+          }
         } else {
           self.setState({ ongoingChatsData: [] });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetOngoingChat");
       });
   }
@@ -792,7 +805,7 @@ class Header extends Component {
 
   ////handle Get New Chat
   async handleGetNewChat() {
-    this.setState({ isMainLoader: true })
+    this.setState({ isMainLoader: true });
     let self = this;
     await axios({
       method: "post",
@@ -809,6 +822,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetNewChat");
       });
   }
@@ -905,6 +919,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleUpdateCustomerChatStatus");
       });
   }
@@ -915,7 +930,7 @@ class Header extends Component {
     if (RecentChat) {
       forRecentChat = 1;
     }
-    this.setState({ isMainLoader: true })
+    this.setState({ isMainLoader: true });
     axios({
       method: "post",
       url: config.apiUrl + "/CustomerChat/getChatMessagesList",
@@ -932,14 +947,14 @@ class Header extends Component {
           if (self.state.showHistoricalChat) {
             self.setState({
               messageHistoryChatData: messageData,
-              isMainLoader: false
+              isMainLoader: false,
             });
           } else {
             self.setState({
               ...messageData,
               messageData,
               isScroll: true,
-              isMainLoader: false
+              isMainLoader: false,
             });
           }
         } else {
@@ -947,6 +962,7 @@ class Header extends Component {
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetChatMessagesList");
       });
   }
@@ -971,7 +987,7 @@ class Header extends Component {
 
       this.setState({
         message: "",
-        isMainLoader: true
+        isMainLoader: true,
       });
 
       axios({
@@ -1005,10 +1021,11 @@ class Header extends Component {
               imageURL
             );
           } else {
-            self.setState({ isSendRecomended: false, isMainLoader: false, });
+            self.setState({ isSendRecomended: false, isMainLoader: false });
           }
         })
         .catch((response) => {
+          self.setState({ isMainLoader: false });
           console.log(response, "---saveChatMessages");
         });
     }
@@ -1999,10 +2016,12 @@ class Header extends Component {
   };
   ////handle history messge scrool to bottom
   historyMessageScrollToBottom() {
-    const scrollHeight = this.historyMessageList.scrollHeight;
-    const height = this.historyMessageList.clientHeight;
-    const maxScrollTop = scrollHeight - height;
-    this.historyMessageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    if (this.historyMessageList) {
+      const scrollHeight = this.historyMessageList.scrollHeight;
+      const height = this.historyMessageList.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      this.historyMessageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
   }
   ////handle history chat close
   handleHistoryChatClose() {
@@ -2527,9 +2546,7 @@ class Header extends Component {
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat window"}
             </h3>
-            {this.state.isMainLoader ? (
-              <div class="loader"></div>
-            ) : null}
+            {this.state.isMainLoader ? <div class="loader"></div> : null}
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>
@@ -2583,7 +2600,6 @@ class Header extends Component {
                         ? "0" + this.state.ongoingChatsData.length
                         : this.state.ongoingChatsData.length}
                       )
-
                       <Select
                         className="agentchatdrop-down"
                         showArrow={true}
@@ -2668,10 +2684,7 @@ class Header extends Component {
                           </div>
                         ))
                         : null}
-
-
                     </div>
-
                   </div>
                   {this.state.ongoingChatsData.length === 0 && (
                     <p className="no-record" style={{ marginTop: "0px" }}>
@@ -4559,7 +4572,7 @@ class Header extends Component {
                                                   ) : null}
                                                 <div className="mobile-card-cntr">
                                                   <div className="mobile-card-img">
-                                                    {item.imageURL !== "" ? (
+                                                    {item.imageURL ? (
                                                       <img
                                                         className="chat-product-img"
                                                         src={item.imageURL}

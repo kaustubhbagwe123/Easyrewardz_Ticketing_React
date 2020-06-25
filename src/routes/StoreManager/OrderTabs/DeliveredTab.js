@@ -100,6 +100,8 @@ class DeliveredTab extends Component {
           self.setState({
             statusFilterData: data,
           });
+        }else{
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -140,27 +142,29 @@ class DeliveredTab extends Component {
     });
   }
 
-  handleUpdateMarkAsDelivered(orderId) {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/UpdateMarkAsDelivered",
-      headers: authHeader(),
-      params: {
-        orderID: orderId,
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetOrderDeliveredData();
-          NotificationManager.success("Record Updated Successfully.");
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-      });
-  }
+  // handleUpdateMarkAsDelivered(orderId) {
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/HSOrder/UpdateMarkAsDelivered",
+  //     headers: authHeader(),
+  //     params: {
+  //       orderID: orderId,
+  //     },
+  //   })
+  //     .then(function(res) {
+  //       let status = res.data.message;
+  //       if (status === "Success") {
+  //         self.handleGetOrderDeliveredData();
+  //         NotificationManager.success("Record Updated Successfully.");
+  //       }else{
+  //         NotificationManager.error(status);
+  //       }
+  //     })
+  //     .catch((data) => {
+  //       console.log(data);
+  //     });
+  // }
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
