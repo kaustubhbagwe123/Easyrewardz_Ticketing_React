@@ -2532,7 +2532,7 @@ class Header extends Component {
                 ? TranslationContext.h3.storechatwindow
                 : "Store chat window"}
             </h3>
-            {this.state.isMainLoader ? <div class="loader"></div> : null}
+            {this.state.isMainLoader ? <div className="loader"></div> : null}
             <span className="rounded-cross" onClick={this.handleChatModalClose}>
               &times;
             </span>

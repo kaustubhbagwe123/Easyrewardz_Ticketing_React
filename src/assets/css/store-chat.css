@@ -975,6 +975,20 @@ p {
 
 /* Responsive starts */
 @media all and (max-width: 576px) {
+
+  .loader {
+    margin-left: 15px;
+    margin-right: 0% !important;
+    margin-top: 0px !important;
+    font-size: 4px;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    animation: load5 1.1s infinite ease;
+    transform: translateZ(0);
+}
   .ant-pagination-item a {
     color: #4a4a4a !important;
   }
@@ -1001,7 +1015,7 @@ p {
     display: inline-block;
   }
   .chatdivtitle ul {
-    width: 55% !important;
+    width: 100% !important;
   }
   .chatactionbtn {
     display: none !important;
