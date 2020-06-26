@@ -28,9 +28,9 @@ a {
   text-align: left;
 }
 
-.btnClickDisabled{
+.btnClickDisabled {
   cursor: not-allowed;
-  opacity: .6;
+  opacity: 0.6;
 }
 .cls-hide {
   display: none;
@@ -4015,7 +4015,7 @@ table tr th:last-child {
 .placeholder-dropdown-tktSys {
   top: 45px;
   right: -245px;
-  width: 128px;
+  width: 135px;
 }
 .placeholder-dropdown {
   right: 410px;
@@ -11288,6 +11288,9 @@ table tr th:last-child {
     top: 45px;
     width: 130px;
   }
+  .placeholder-dropdown-tktSys {
+    right: -275px;
+  }
 }
 @media only screen and (max-width: 1200px) {
   .colladrow label {
@@ -11978,15 +11981,20 @@ table tr th:last-child {
   .order-popover .antd-table-order .ant-table-tbody > tr > td {
     padding: 15px 5px !important;
     width: 70px !important;
-}
-.order-popover .custom-antd-table.antd-table-campaign.antd-table-order .ant-table-thead > tr > th {
-  padding: 5px 5px !important;
-  height: 30px;
-  width: 70px;
-}
-.order-popover .ant-table-thead > tr > th:nth-child(2), .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
-  width: 75px !important;
-}
+  }
+  .order-popover
+    .custom-antd-table.antd-table-campaign.antd-table-order
+    .ant-table-thead
+    > tr
+    > th {
+    padding: 5px 5px !important;
+    height: 30px;
+    width: 70px;
+  }
+  .order-popover .ant-table-thead > tr > th:nth-child(2),
+  .order-popover-table .ant-table-tbody > tr > td:nth-child(2) {
+    width: 75px !important;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -12501,7 +12509,7 @@ table tr th:last-child {
 .ord-m-t20 {
   margin-top: 20px !important;
 }
-.ordPayment1{
+.ordPayment1 {
   position: absolute;
   width: 250px;
   right: -249px;
