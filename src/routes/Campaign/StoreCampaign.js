@@ -163,7 +163,7 @@ class StoreCampaign extends Component {
       url: config.apiUrl + "/StoreCampaign/GetCampaignDetails",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         for (let obj of data) obj.key = obj.campaignID;
@@ -217,7 +217,7 @@ class StoreCampaign extends Component {
             CallReScheduledTo: calculatedCallReScheduledTo,
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -255,7 +255,7 @@ class StoreCampaign extends Component {
             CallReScheduledTo: "",
           },
         })
-          .then(function (res) {
+          .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
               NotificationManager.success("Record Updated Successfully.");
@@ -295,7 +295,7 @@ class StoreCampaign extends Component {
         IsClosed: 1,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Campaign closed successFully.");
@@ -394,7 +394,7 @@ class StoreCampaign extends Component {
           headers: authHeader(),
           data: formData,
         })
-          .then(function (res) {
+          .then(function(res) {
             let Msg = res.data.status;
             if (Msg) {
               NotificationManager.success(res.data.message);
@@ -454,7 +454,7 @@ class StoreCampaign extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -478,7 +478,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
       params: { BrandID: Number(brandID) },
     })
-      .then(function (response) {
+      .then(function(response) {
         var categoryData = response.data;
         if (categoryData.length > 0) {
           self.setState({ categoryData });
@@ -501,7 +501,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
       params: { CategoryID: categoryID },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var subCategoryData = response.data.responseData;
         if (message == "Success" && subCategoryData.length > 0) {
@@ -525,7 +525,7 @@ class StoreCampaign extends Component {
       headers: authHeader(),
       params: { SubCategoryID: subCategoryId },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var issueTypeData = response.data.responseData;
         if (message == "Success" && issueTypeData.length > 0) {
@@ -804,7 +804,7 @@ class StoreCampaign extends Component {
         statusId: filterIds,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -899,7 +899,7 @@ class StoreCampaign extends Component {
           MobileNumber: this.state.filterCustNO,
         },
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           var data = response.data.responseData;
           if (message == "Success") {
@@ -953,7 +953,7 @@ class StoreCampaign extends Component {
         CampaignScriptID: data.campaignScriptID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
@@ -1017,7 +1017,7 @@ class StoreCampaign extends Component {
         CampaignScriptID: data.campaignScriptID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
@@ -1069,7 +1069,7 @@ class StoreCampaign extends Component {
         CampaignScriptID: data.campaignScriptID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
 
@@ -1115,7 +1115,7 @@ class StoreCampaign extends Component {
         campaignID: rowData.campaignScriptID,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1126,20 +1126,25 @@ class StoreCampaign extends Component {
           } else {
             sortName += strTag[1].charAt(0).toUpperCase();
           }
-          if (
-            data.lasttransactiondetails.itemDetails !== null
-          ) {
-            self.setState({
-              lastTransactionItem: data.lasttransactiondetails.itemDetails,
-              showLastTransactiondtab: false,
-            });
+          if (data.lasttransactiondetails !== null) {
+            if (data.lasttransactiondetails.itemDetails !== null) {
+              self.setState({
+                lastTransactionItem: data.lasttransactiondetails.itemDetails,
+                showLastTransactiondtab: false,
+              });
+            } else {
+              self.setState({
+                lastTransactionItem: [],
+                showLastTransactiondtab: true,
+              });
+            }
           } else {
             self.setState({
               lastTransactionItem: [],
               showLastTransactiondtab: true,
             });
           }
-
+       
           if (data.campaignrecommended[0].itemCode !== "") {
             self.setState({
               showRecommandedtab: true,
@@ -1297,7 +1302,6 @@ class StoreCampaign extends Component {
       e.target.value = "";
     }
 
-
     if (this.state.filterCustNO.length > 2) {
       setTimeout(() => {
         this.handleGetCampaignCustomer(campaignID, customerCount, "filter");
@@ -1346,7 +1350,7 @@ class StoreCampaign extends Component {
         MobileNumber: this.state.filterCustNO,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1382,7 +1386,7 @@ class StoreCampaign extends Component {
         campaignCode: campaign_Code,
       },
     })
-      .then(function (response) {
+      .then(function(response) {
         var message = response.data.message;
         var data = response.data.responseData;
         if (message == "Success") {
@@ -1421,7 +1425,7 @@ class StoreCampaign extends Component {
           channelType: this.state.broadcastChannel,
         },
       })
-        .then(function (response) {
+        .then(function(response) {
           var message = response.data.message;
           if (message == "Success") {
             NotificationManager.success("Sent Successfully.");
@@ -1750,7 +1754,7 @@ class StoreCampaign extends Component {
                             <label className="broadcasttitle">
                               {TranslationContext !== undefined
                                 ? TranslationContext.label
-                                  .broadcastcampaigntocustomers
+                                    .broadcastcampaigntocustomers
                                 : "Broadcast Campaign to Customers"}
                             </label>
                             <label className="broadcastsubtitle">
@@ -1793,19 +1797,19 @@ class StoreCampaign extends Component {
                                 ) : null}
                                 {this.state.broadcastConfiguration
                                   .whatsappFlag ? (
-                                    <Radio
-                                      className="broadChannel"
-                                      value="Whatsapp"
-                                      disabled={
-                                        this.state.broadcastConfiguration
-                                          .disableWhatsapp
-                                      }
-                                    >
-                                      {TranslationContext !== undefined
-                                        ? TranslationContext.radio.whatsapp
-                                        : "Whatsapp"}
-                                    </Radio>
-                                  ) : null}
+                                  <Radio
+                                    className="broadChannel"
+                                    value="Whatsapp"
+                                    disabled={
+                                      this.state.broadcastConfiguration
+                                        .disableWhatsapp
+                                    }
+                                  >
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.radio.whatsapp
+                                      : "Whatsapp"}
+                                  </Radio>
+                                ) : null}
                               </Radio.Group>
 
                               {this.state.broadcastChannel === "" && (
@@ -2164,12 +2168,12 @@ class StoreCampaign extends Component {
                                   )}
                                   className={
                                     item.responseID === 3 &&
-                                      item.dateTimeHighlight &&
-                                      !item.callRescheduledTo
+                                    item.dateTimeHighlight &&
+                                    !item.callRescheduledTo
                                       ? "txtStore dateTimeStore dateTimeStore-highlight"
                                       : item.responseID === 3
-                                        ? "txtStore dateTimeStore"
-                                        : "txtStore dateTimeStore disabled-link"
+                                      ? "txtStore dateTimeStore"
+                                      : "txtStore dateTimeStore disabled-link"
                                   }
                                   placeholderText="Select Date &amp; Time"
                                 />
@@ -2347,12 +2351,12 @@ class StoreCampaign extends Component {
                                         )}
                                         className={
                                           row.responseID === 3 &&
-                                            row.dateTimeHighlight &&
-                                            !row.callRescheduledTo
+                                          row.dateTimeHighlight &&
+                                          !row.callRescheduledTo
                                             ? "txtStore dateTimeStore dateTimeStore-highlight"
                                             : row.responseID === 3
-                                              ? "txtStore dateTimeStore"
-                                              : "txtStore dateTimeStore disabled-link"
+                                            ? "txtStore dateTimeStore"
+                                            : "txtStore dateTimeStore disabled-link"
                                         }
                                         placeholderText="Select Date &amp; Time"
                                       />
@@ -2520,11 +2524,11 @@ class StoreCampaign extends Component {
                           <h4>Lifetime Value</h4>
                           <label>
                             {this.state.useratvdetails.lifeTimeValue !==
-                              null ? (
-                                <> ₹{this.state.useratvdetails.lifeTimeValue}</>
-                              ) : (
-                                "₹0"
-                              )}
+                            null ? (
+                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
+                            ) : (
+                              "₹0"
+                            )}
                           </label>
                         </td>
                         <td>
@@ -2537,8 +2541,8 @@ class StoreCampaign extends Component {
                                   : this.state.useratvdetails.visitCount}
                               </>
                             ) : (
-                                "0"
-                              )}
+                              "0"
+                            )}
                           </label>
                         </td>
                       </tr>
@@ -2546,40 +2550,40 @@ class StoreCampaign extends Component {
                   </table>
                 </div>
               ) : (
-                  <div className="lifetimevalue">
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <h4>Lifetime Value</h4>
-                            <label>
-                              {this.state.useratvdetails.lifeTimeValue !==
-                                null ? (
-                                  <> ₹{this.state.useratvdetails.lifeTimeValue}</>
-                                ) : (
-                                  "₹0"
-                                )}
-                            </label>
-                          </td>
-                          <td>
-                            <h4>Visit Count</h4>
-                            <label>
-                              {this.state.useratvdetails.visitCount !== null ? (
-                                <>
-                                  {this.state.useratvdetails.visitCount < 9
-                                    ? "0" + this.state.useratvdetails.visitCount
-                                    : this.state.useratvdetails.visitCount}
-                                </>
-                              ) : (
-                                  "0"
-                                )}
-                            </label>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                <div className="lifetimevalue">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h4>Lifetime Value</h4>
+                          <label>
+                            {this.state.useratvdetails.lifeTimeValue !==
+                            null ? (
+                              <> ₹{this.state.useratvdetails.lifeTimeValue}</>
+                            ) : (
+                              "₹0"
+                            )}
+                          </label>
+                        </td>
+                        <td>
+                          <h4>Visit Count</h4>
+                          <label>
+                            {this.state.useratvdetails.visitCount !== null ? (
+                              <>
+                                {this.state.useratvdetails.visitCount < 9
+                                  ? "0" + this.state.useratvdetails.visitCount
+                                  : this.state.useratvdetails.visitCount}
+                              </>
+                            ) : (
+                              "0"
+                            )}
+                          </label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
 
               {this.state.campaignkeyinsight.insightText !== "" ? (
                 <div
@@ -2621,7 +2625,7 @@ class StoreCampaign extends Component {
                   <ul
                     className={
                       this.state.showRecommandedtab === false ||
-                        this.state.showLastTransactiondtab === true
+                      this.state.showLastTransactiondtab === true
                         ? "nav alert-nav-tabs3 store-nav-tabs tab-single"
                         : "nav alert-nav-tabs3 store-nav-tabs"
                     }
@@ -2717,68 +2721,68 @@ class StoreCampaign extends Component {
                                                             <td>
                                                               <ul>
                                                                 {item.color ===
-                                                                  "Blue" ? (
-                                                                    <li>
-                                                                      <a className="colorblue">
-                                                                        <span>
-                                                                          1
+                                                                "Blue" ? (
+                                                                  <li>
+                                                                    <a className="colorblue">
+                                                                      <span>
+                                                                        1
                                                                       </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
 
                                                                 {item.color ===
-                                                                  "Black" ? (
-                                                                    <li>
-                                                                      <a className="colorblack">
-                                                                        <span>
-                                                                          1
+                                                                "Black" ? (
+                                                                  <li>
+                                                                    <a className="colorblack">
+                                                                      <span>
+                                                                        1
                                                                       </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
 
                                                                 {item.color ===
-                                                                  "Grey" ? (
-                                                                    <li>
-                                                                      <a className="colorgrey">
-                                                                        <span>
-                                                                          1
+                                                                "Grey" ? (
+                                                                  <li>
+                                                                    <a className="colorgrey">
+                                                                      <span>
+                                                                        1
                                                                       </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
 
                                                                 {item.color ===
-                                                                  "Red" ? (
-                                                                    <li>
-                                                                      <a className="colorRed">
-                                                                        <span>
-                                                                          1
+                                                                "Red" ? (
+                                                                  <li>
+                                                                    <a className="colorRed">
+                                                                      <span>
+                                                                        1
                                                                       </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
                                                                 {item.color ===
-                                                                  "Yellow" ? (
-                                                                    <li>
-                                                                      <a className="colorYellow">
-                                                                        <span>
-                                                                          1
+                                                                "Yellow" ? (
+                                                                  <li>
+                                                                    <a className="colorYellow">
+                                                                      <span>
+                                                                        1
                                                                       </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
                                                                 {item.color ===
-                                                                  "Green" ? (
-                                                                    <li>
-                                                                      <a className="colorGreen">
-                                                                        <span>
-                                                                          1
+                                                                "Green" ? (
+                                                                  <li>
+                                                                    <a className="colorGreen">
+                                                                      <span>
+                                                                        1
                                                                       </span>
-                                                                      </a>
-                                                                    </li>
-                                                                  ) : null}
+                                                                    </a>
+                                                                  </li>
+                                                                ) : null}
                                                               </ul>
                                                             </td>
                                                           </tr>
@@ -2799,26 +2803,26 @@ class StoreCampaign extends Component {
                                                                   FinalSize
                                                                 )
                                                               ) === false ? (
-                                                                  <ul className="sizes">
-                                                                    <li>
-                                                                      <a>
-                                                                        {
-                                                                          item.size
-                                                                        }
-                                                                      </a>
-                                                                    </li>
-                                                                  </ul>
-                                                                ) : (
-                                                                  <ul>
-                                                                    <li>
-                                                                      <a>
-                                                                        {
-                                                                          item.size
-                                                                        }
-                                                                      </a>
-                                                                    </li>
-                                                                  </ul>
-                                                                )}
+                                                                <ul className="sizes">
+                                                                  <li>
+                                                                    <a>
+                                                                      {
+                                                                        item.size
+                                                                      }
+                                                                    </a>
+                                                                  </li>
+                                                                </ul>
+                                                              ) : (
+                                                                <ul>
+                                                                  <li>
+                                                                    <a>
+                                                                      {
+                                                                        item.size
+                                                                      }
+                                                                    </a>
+                                                                  </li>
+                                                                </ul>
+                                                              )}
                                                             </td>
                                                           </tr>
                                                         </>
@@ -2990,37 +2994,37 @@ class StoreCampaign extends Component {
                     </li>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.emailFlag ===
-                    true ? (
-                      <li
-                        className={
-                          this.state.shareCampaignViaSettingModal.emailClickable
-                            ? ""
-                            : "dis-btns"
-                        }
-                      >
-                        <img className="emailico" src={Email} alt="Email Icon" />
+                  true ? (
+                    <li
+                      className={
+                        this.state.shareCampaignViaSettingModal.emailClickable
+                          ? ""
+                          : "dis-btns"
+                      }
+                    >
+                      <img className="emailico" src={Email} alt="Email Icon" />
                       Email
-                      </li>
-                    ) : null}
+                    </li>
+                  ) : null}
                   {this.state.shareCampaignViaSettingModal.messengerFlag ===
-                    true ? (
-                      <li
-                        onClick={this.handleSendViaMessanger.bind(
-                          this,
-                          this.state.customerModalDetails
-                        )}
-                        className={
-                          this.state.shareCampaignViaSettingModal
-                            .messengerClickable
-                            ? ""
-                            : "dis-btns"
-                        }
-                        id={this.state.msngrDisable ? "dis-msngr" : ""}
-                      >
-                        <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
+                  true ? (
+                    <li
+                      onClick={this.handleSendViaMessanger.bind(
+                        this,
+                        this.state.customerModalDetails
+                      )}
+                      className={
+                        this.state.shareCampaignViaSettingModal
+                          .messengerClickable
+                          ? ""
+                          : "dis-btns"
+                      }
+                      id={this.state.msngrDisable ? "dis-msngr" : ""}
+                    >
+                      <img className="ico" src={Whatsapp} alt="Whatsapp Icon" />
                       Send Via Messenger
-                      </li>
-                    ) : null}
+                    </li>
+                  ) : null}
                   {this.state.shareCampaignViaSettingModal.botFlag === true ? (
                     <li
                       onClick={this.handleSendViaBotData.bind(
@@ -3091,22 +3095,22 @@ class StoreCampaign extends Component {
                 <div className="loader-icon"></div>
               </div>
             ) : (
-                <>
-                  {this.state.campaignExecutionDetails.length > 0 ? (
-                    <label className="broadcasttitle">Recent Campaigns</label>
-                  ) : null}
+              <>
+                {this.state.campaignExecutionDetails.length > 0 ? (
+                  <label className="broadcasttitle">Recent Campaigns</label>
+                ) : null}
 
-                  {this.state.campaignExecutionDetails !== null &&
-                    this.state.campaignExecutionDetails.map((item, b) => (
-                      <div className="broembox clearfix" key={b}>
-                        <p>
-                          <label>{item.channelType}</label>
-                          <span>Executed Date: {item.executionDate}</span>
-                        </p>
-                      </div>
-                    ))}
-                </>
-              )}
+                {this.state.campaignExecutionDetails !== null &&
+                  this.state.campaignExecutionDetails.map((item, b) => (
+                    <div className="broembox clearfix" key={b}>
+                      <p>
+                        <label>{item.channelType}</label>
+                        <span>Executed Date: {item.executionDate}</span>
+                      </p>
+                    </div>
+                  ))}
+              </>
+            )}
             <>
               <label className="broadcasttitle">
                 {TranslationContext !== undefined
@@ -3188,37 +3192,37 @@ class StoreCampaign extends Component {
               <tbody>
                 <tr>
                   {this.state.shareCampaignViaSettingModal.messengerFlag ===
-                    true ? (
-                      <td>
-                        <a
-                          href={Demo.BLANK_LINK}
-                          className={
-                            this.state.shareCampaignViaSettingModal
-                              .messengerClickable
-                              ? ""
-                              : "dis-btns"
-                          }
+                  true ? (
+                    <td>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        className={
+                          this.state.shareCampaignViaSettingModal
+                            .messengerClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "Messenger"
+                          )}
                         >
-                          <div
-                            className="chatbox"
-                            onClick={this.handleSelectChannelsOnchange.bind(
-                              this,
-                              "Messenger"
-                            )}
-                          >
-                            <img
-                              className="ico"
-                              src={Whatsapp}
-                              alt="Whatsapp Icon"
-                            />
-                            {this.state.Respo_ChannelMessanger === true ? (
-                              <img className="tick" src={Tick} alt="Tick Icon" />
-                            ) : null}
+                          <img
+                            className="ico"
+                            src={Whatsapp}
+                            alt="Whatsapp Icon"
+                          />
+                          {this.state.Respo_ChannelMessanger === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
                           Send Via Messenger
                         </div>
-                        </a>
-                      </td>
-                    ) : null}
+                      </a>
+                    </td>
+                  ) : null}
                   {this.state.shareCampaignViaSettingModal.botFlag === true ? (
                     <td>
                       <a
@@ -3278,32 +3282,32 @@ class StoreCampaign extends Component {
                     </td>
                   ) : null}
                   {this.state.shareCampaignViaSettingModal.emailFlag ===
-                    true ? (
-                      <td>
-                        <a
-                          href={Demo.BLANK_LINK}
-                          className={
-                            this.state.shareCampaignViaSettingModal.emailClickable
-                              ? ""
-                              : "dis-btns"
-                          }
+                  true ? (
+                    <td>
+                      <a
+                        href={Demo.BLANK_LINK}
+                        className={
+                          this.state.shareCampaignViaSettingModal.emailClickable
+                            ? ""
+                            : "dis-btns"
+                        }
+                      >
+                        <div
+                          className="chatbox"
+                          onClick={this.handleSelectChannelsOnchange.bind(
+                            this,
+                            "Email"
+                          )}
                         >
-                          <div
-                            className="chatbox"
-                            onClick={this.handleSelectChannelsOnchange.bind(
-                              this,
-                              "Email"
-                            )}
-                          >
-                            <img className="ico" src={Email} alt="Email Icon" />
-                            {this.state.Respo_ChannelEmail === true ? (
-                              <img className="tick" src={Tick} alt="Tick Icon" />
-                            ) : null}
+                          <img className="ico" src={Email} alt="Email Icon" />
+                          {this.state.Respo_ChannelEmail === true ? (
+                            <img className="tick" src={Tick} alt="Tick Icon" />
+                          ) : null}
                           Email
                         </div>
-                        </a>
-                      </td>
-                    ) : null}
+                      </a>
+                    </td>
+                  ) : null}
                 </tr>
               </tbody>
             </table>
