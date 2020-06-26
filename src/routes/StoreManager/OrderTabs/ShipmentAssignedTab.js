@@ -480,7 +480,8 @@ class ShipmentAssignedTab extends Component {
                       <tr>
                         <td>
                           <label>
-                            <b>Courier Partner</b>
+                            <b>{TranslationContext !== undefined ?
+                            TranslationContext.title.courierpartner : "Courier Partner"}</b>
                           </label>
                           <label>{row.courierPartner}</label>
                         </td>

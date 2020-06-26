@@ -2471,7 +2471,7 @@ class Header extends Component {
                   <img src={BellIcon} alt="Icon" />
                 </li>
                 <li>
-                  <h3>HomeEshop</h3>
+                  <h3>{this.state.UserName}</h3>
                   <p>{this.state.storeCode}</p>
                 </li>
               </ul>
@@ -2507,7 +2507,9 @@ class Header extends Component {
               <ul>
                 <li>
                   <img src={Logout} alt="Logout" />
-                  Logout
+                  {TranslationContext !== undefined
+                    ? TranslationContext.span.logout
+                    : "Logout"}
                 </li>
               </ul>
             </div>

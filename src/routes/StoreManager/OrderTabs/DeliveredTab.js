@@ -328,14 +328,16 @@ class DeliveredTab extends Component {
                       <tr>
                         <td>
                           <label>
-                            <b>Date</b>
+                            <b>{TranslationContext !== undefined ?
+                            TranslationContext.label.date : "Date"}</b>
                           </label>
                           <label>{row.date}</label>
                           <label className="order-small-font">{row.time}</label>
                         </td>
                         <td>
                           <label>
-                            <b>Customer Name</b>
+                            <b>{TranslationContext !== undefined ?
+                            TranslationContext.label.customername : "Customer Name"}</b>
                           </label>
                           <label>
                             <p>{row.customerName}</p>
@@ -344,7 +346,8 @@ class DeliveredTab extends Component {
                         </td>
                         <td>
                           <label>
-                            <b>Status</b>
+                            <b>{TranslationContext !== undefined ?
+                            TranslationContext.label.status : "Status"}</b>
                           </label>
                           <label>{row.statusName}</label>
                         </td>

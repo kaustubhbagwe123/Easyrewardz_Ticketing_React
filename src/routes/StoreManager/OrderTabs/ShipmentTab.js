@@ -688,7 +688,10 @@ class ShipmentTab extends Component {
                     <tr>
                       <td>
                         <label>
-                          <b>Customer Name</b>
+                          <b>
+                            {TranslationContext !== undefined ?
+                            TranslationContext.label.customername : "Customer Name"}
+                          </b>
                         </label>
                         <label>
                           <p>{row.customerName}</p>
@@ -697,7 +700,11 @@ class ShipmentTab extends Component {
                       </td>
                       <td>
                         <label>
-                          <b>Shipping Address</b>
+                          <b>
+                            
+                          {TranslationContext !== undefined ?
+                            TranslationContext.p.shippingaddress : "Shipping Address"}
+                            </b>
                         </label>
                         <label style={{ whiteSpace: "initial" }}>
                           {row.shippingAddress}
@@ -707,13 +714,18 @@ class ShipmentTab extends Component {
                     <tr>
                       <td>
                         <label>
-                          <b>Delivery Type</b>
+                          <b>
+
+                          {TranslationContext !== undefined ?
+                            TranslationContext.title.deliverytype : "Delivery Type"}
+                          </b>
                         </label>
                         <label>{row.deliveryTypeName}</label>
                       </td>
                       <td>
                         <label>
-                          <b>Status</b>
+                          <b>{TranslationContext !== undefined ?
+                            TranslationContext.label.status : "Status"}</b>
                         </label>
                         <label>{row.statusName}</label>
                       </td>
@@ -721,7 +733,8 @@ class ShipmentTab extends Component {
                     <tr>
                       <td>
                         <label>
-                          <b>Partner</b>
+                          <b>{TranslationContext !== undefined ?
+                            TranslationContext.title.partner : "Partner"}</b>
                         </label>
                         <label>{row.courierPartner}</label>
                       </td>

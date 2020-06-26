@@ -275,7 +275,10 @@ class Orders extends Component {
                   aria-selected="false"
                   onClick={this.handleChanageNavTabs.bind(this, 7)}
                 >
-                  Check Service
+                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.checkservice
+                    : "Check Service"}
                 </a>
               ) : null}
             </Option>

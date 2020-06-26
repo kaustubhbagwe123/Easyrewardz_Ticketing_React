@@ -68,7 +68,7 @@ class ShoppingBagTab extends Component {
         FilterDelivery: this.state.deliveryStrStatus,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -120,7 +120,7 @@ class ShoppingBagTab extends Component {
         pageID: 1,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -148,7 +148,7 @@ class ShoppingBagTab extends Component {
         pageID: 1,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -179,7 +179,7 @@ class ShoppingBagTab extends Component {
           CancelComment: this.state.ShopCancelComment,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -212,7 +212,7 @@ class ShoppingBagTab extends Component {
           Amount: this.state.amountNo,
         },
       })
-        .then(function (res) {
+        .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
             self.setState({
@@ -472,8 +472,8 @@ class ShoppingBagTab extends Component {
                           <img src={OrderInfo} className="order-info" />
                         </Popover>
                       ) : (
-                          ""
-                        )}
+                        ""
+                      )}
                     </div>
                   );
                 },
@@ -543,11 +543,7 @@ class ShoppingBagTab extends Component {
                 className:
                   "camp-status-header camp-status-header-statusFilter order-status-header shopping-delivery-header order-desktop",
                 render: (row, item) => {
-                  return (
-                    <p>
-                      {item.deliveryTypeName}
-                    </p>
-                  );
+                  return <p>{item.deliveryTypeName}</p>;
                 },
                 filterDropdown: (data, row) => {
                   return (
@@ -618,13 +614,13 @@ class ShoppingBagTab extends Component {
                       {item.pickupDate === "" && item.pickupTime === "" ? (
                         <p className="order-clr-blue">-NIL-</p>
                       ) : (
-                          <>
-                            <p className="order-clr-blue">{item.pickupDate},</p>
-                            <p className="order-clr-blue order-more-small-font">
-                              {item.pickupTime}
-                            </p>
-                          </>
-                        )}
+                        <>
+                          <p className="order-clr-blue">{item.pickupDate},</p>
+                          <p className="order-clr-blue order-more-small-font">
+                            {item.pickupTime}
+                          </p>
+                        </>
+                      )}
                     </div>
                   );
                 },
@@ -684,7 +680,7 @@ class ShoppingBagTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .amount
+                                              .amount
                                           : "Enter Amount"
                                       }
                                       name="amountNo"
@@ -728,7 +724,7 @@ class ShoppingBagTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .entercomment
+                                              .entercomment
                                           : "Enter Comment"
                                       }
                                       value={this.state.ShopCancelComment}
@@ -768,12 +764,20 @@ class ShoppingBagTab extends Component {
                 <div className="order-expanded-cntr">
                   <div className="row">
                     <div className="col-6">
-                      <p className="order-expanded-title">Customer</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.customer
+                          : "Customer"}
+                      </p>
                       <p>{row.customerName},</p>
                       <p className="order-small-font">{row.mobileNumber}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Status</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.status
+                          : "Status"}
+                      </p>
                       <div className="d-flex align-items-center">
                         <p
                           className={
@@ -808,37 +812,56 @@ class ShoppingBagTab extends Component {
                             <img src={OrderInfo} className="order-info" />
                           </Popover>
                         ) : (
-                            ""
-                          )}
+                          ""
+                        )}
                       </div>
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
-                        Pickup Date &amp; Time
+                        <label>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.pickupdate
+                            : "Pickup Date"}
+                        </label>
+                        &amp;
+                        <label>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.time
+                            : "Time"}
+                        </label>
                       </p>
                       {row.pickupDate === "" && row.pickupTime === "" ? (
                         <p className="order-clr-blue">-NIL-</p>
                       ) : (
-                          <>
-                            <p className="order-clr-blue">{row.pickupDate},</p>
-                            <p className="order-clr-blue order-small-font">
-                              {row.pickupTime}
-                            </p>
-                          </>
-                        )}
+                        <>
+                          <p className="order-clr-blue">{row.pickupDate},</p>
+                          <p className="order-clr-blue order-small-font">
+                            {row.pickupTime}
+                          </p>
+                        </>
+                      )}
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Delivery Type</p>
-                      <p>
-                        {row.deliveryTypeName}
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.deliverytype
+                          : "Delivery Type"}
                       </p>
+                      <p>{row.deliveryTypeName}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Address</p>
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.address
+                          : "Address"}
+                        
+                      </p>
                       <p>{row.address === "" ? "-NIL-" : row.address}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">Date</p>
+                      <p className="order-expanded-title">{TranslationContext !== undefined
+                          ? TranslationContext.p.date
+                          : "Date"}</p>
                       <p>{row.date}</p>
                       <p className="order-small-font">{row.time}</p>
                     </div>
