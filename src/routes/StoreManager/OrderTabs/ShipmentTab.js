@@ -70,7 +70,7 @@ class ShipmentTab extends Component {
         FilterStatus: this.state.strStatus,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -120,7 +120,7 @@ class ShipmentTab extends Component {
         pageID: 3,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -148,7 +148,7 @@ class ShipmentTab extends Component {
         OrderID: OrderId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Success.");
@@ -172,7 +172,7 @@ class ShipmentTab extends Component {
         orderID: ordId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -210,7 +210,7 @@ class ShipmentTab extends Component {
         orderID: orderId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -574,7 +574,7 @@ class ShipmentTab extends Component {
                                         <label>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                              .pickupdate
+                                                .pickupdate
                                             : "Pickup Date"}
                                           :
                                         </label>
@@ -589,7 +589,7 @@ class ShipmentTab extends Component {
                                         <label>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                              .pickuptime
+                                                .pickuptime
                                             : "Pickup Time"}
                                           :
                                         </label>
@@ -606,7 +606,7 @@ class ShipmentTab extends Component {
                                         <label>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                              .pickupdone
+                                                .pickupdone
                                             : "Pickup Done"}
                                         </label>
                                       </td>
@@ -828,8 +828,8 @@ class ShipmentTab extends Component {
                       this.state.airWayBill2ndTab
                         ? "tab-pane fade"
                         : this.state.createdShoppingTabs
-                          ? "tab-pane fade"
-                          : "tab-pane fade show active"
+                        ? "tab-pane fade"
+                        : "tab-pane fade show active"
                     }
                     id="article-Map-tab"
                     role="tabpanel"
@@ -840,7 +840,7 @@ class ShipmentTab extends Component {
                         <span style={{ marginBottom: "30px" }}>
                           {TranslationContext !== undefined
                             ? TranslationContext.span
-                              .itemidshownbelowmappedtothisorder
+                                .itemidshownbelowmappedtothisorder
                             : "Item id shown below mapped to this Order"}
                           &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
                           {TranslationContext !== undefined
@@ -923,8 +923,8 @@ class ShipmentTab extends Component {
                       this.state.airWayBill2ndTab
                         ? "tab-pane fade show active"
                         : this.state.createdShoppingTabs
-                          ? "tab-pane fade show active"
-                          : "tab-pane fade"
+                        ? "tab-pane fade show active"
+                        : "tab-pane fade"
                     }
                     id="airwayBill-tab"
                     role="tabpanel"
@@ -942,8 +942,8 @@ class ShipmentTab extends Component {
                             {this.state.IsStoreDelivery ? (
                               "Courier Partner - Store"
                             ) : (
-                                <> AWB No - {this.state.AirwayBillAWBNo}</>
-                              )}
+                              <> AWB No - {this.state.AirwayBillAWBNo}</>
+                            )}
                           </h2>
                           <p>
                             {TranslationContext !== undefined
