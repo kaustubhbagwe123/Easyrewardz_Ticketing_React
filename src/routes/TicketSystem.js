@@ -2245,9 +2245,9 @@ class TicketSystem extends Component {
                                   </span>
                                 </div>
                               </label>
-                            </li>
+                              {/* </li>
 
-                            <li>
+                            <li> */}
                               <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
@@ -2338,7 +2338,7 @@ class TicketSystem extends Component {
                           <label
                           // onClick={this.HandleKbLinkModalOpen.bind(this)}
                           >
-                            KB
+                            KB Link
                           </label>
                         </a>
 
@@ -2438,7 +2438,7 @@ class TicketSystem extends Component {
                       <label
                       // onClick={this.HandleKbLinkModalOpen.bind(this)}
                       >
-                        KB
+                        KB Link
                       </label>
                     </a>
                     {/* )} */}
@@ -2606,9 +2606,9 @@ class TicketSystem extends Component {
                                   </span>
                                 </div>
                               </label>
-                            </li>
+                              {/* </li>
 
-                            <li>
+                            <li> */}
                               <label className="">
                                 <div className="input-group">
                                   <span className="input-group-addon inputcc">
