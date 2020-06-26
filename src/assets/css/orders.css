@@ -584,6 +584,10 @@
   width: 100%;
   margin: 10px 0 15px;
 }
+.customaddpop textarea,
+.customaddpop input {
+  margin: 5px 0 5px;
+}
 .order-popover-butns textarea {
   height: 130px;
   resize: none;
@@ -596,6 +600,10 @@
   max-height: 200px;
   overflow: hidden auto;
   padding-right: 10px;
+}
+.customaddpop .ant-popover-message {
+  max-height: inherit;
+  overflow: hidden;
 }
 .order-popover-address .ant-popover-inner-content {
   padding-right: 20px;

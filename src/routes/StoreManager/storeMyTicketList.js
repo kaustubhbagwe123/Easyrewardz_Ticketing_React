@@ -13,11 +13,7 @@ import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
 import * as translationHI from '../../translations/hindi';
 import * as translationMA from '../../translations/marathi';
-// import Twitter from "./../../assets/Images/twitter.png";
-// import HeadPhone3 from "./../../assets/Images/headphone3.png";
-// import MailImg from "./../../assets/Images/msg.png";
-// import FacebookImg from "./../../assets/Images/facebook.png";
-// import Chat from "./../../assets/Images/chat.png";
+
 class storeMyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +38,7 @@ class storeMyTicketList extends Component {
       cSelectedRow: {},
       ticketDetailID: 0,
       TicketSearchCount: 0,
-      translateLanguage: {}
+      translateLanguage: {},
     };
     this.handleTabChange = this.handleTabChange.bind(this);
   }
@@ -52,16 +48,13 @@ class storeMyTicketList extends Component {
     this.handleGetStoreTicketTabCount();
     this.handleGetCategoryList();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   //// --------------------------------API Call Start ----------------------------------
@@ -80,7 +73,7 @@ class storeMyTicketList extends Component {
       },
     })
       .then(function(res) {
-        debugger
+        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -108,7 +101,6 @@ class storeMyTicketList extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -327,61 +319,65 @@ class storeMyTicketList extends Component {
       }, 100);
     }
   }
+  /// --------------Don't remove Commented code----------------------
   /// Check all checkbox
-  checkAllCheckbox = async (event) => {
-    var obj = this.state.cSelectedRow;
-    var strIds = "";
-    const allCheckboxChecked = event.target.checked;
-    var checkboxes = document.getElementsByName("ListCheckbox");
-    if (allCheckboxChecked) {
-      for (var i in checkboxes) {
-        if (checkboxes[i].checked === false) {
-          checkboxes[i].checked = true;
-          if (checkboxes[i].getAttribute("attrIds") !== null)
-            strIds += checkboxes[i].getAttribute("attrIds") + ",";
-          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
-            obj[this.state.SearchTicketData[i].ticketID] = true;
-          }
-        }
-      }
-    } else {
-      for (var J in checkboxes) {
-        if (checkboxes[J].checked === true) {
-          checkboxes[J].checked = false;
-          for (let i = 0; i < this.state.SearchTicketData.length; i++) {
-            obj[this.state.SearchTicketData[i].ticketID] = false;
-          }
-        }
-      }
-      strIds = "";
-    }
-    this.setState({
-      cSelectedRow: obj,
-    });
-    await this.setState({
-      ticketIds: strIds,
-    });
-  };
-  /// handle perticular select check box
-  handelCheckBoxCheckedChange = async (ticketID) => {
-    var checkboxes = document.getElementsByName("ListCheckbox");
-    var strIds = "";
-    for (var i in checkboxes) {
-      if (isNaN(i) === false) {
-        if (checkboxes[i].checked === true) {
-          if (checkboxes[i].getAttribute("attrIds") !== null)
-            strIds += checkboxes[i].getAttribute("attrIds") + ",";
-        }
-      }
-    }
-    const newSelected = Object.assign({}, this.state.cSelectedRow);
-    newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
+  // checkAllCheckbox = async (event) => {
+  //   var obj = this.state.cSelectedRow;
+  //   var strIds = "";
+  //   const allCheckboxChecked = event.target.checked;
+  //   var checkboxes = document.getElementsByName("ListCheckbox");
+  //   if (allCheckboxChecked) {
+  //     for (var i in checkboxes) {
+  //       if (checkboxes[i].checked === false) {
+  //         checkboxes[i].checked = true;
+  //         if (checkboxes[i].getAttribute("attrIds") !== null)
+  //           strIds += checkboxes[i].getAttribute("attrIds") + ",";
+  //         for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+  //           obj[this.state.SearchTicketData[i].ticketID] = true;
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     for (var J in checkboxes) {
+  //       if (checkboxes[J].checked === true) {
+  //         checkboxes[J].checked = false;
+  //         for (let i = 0; i < this.state.SearchTicketData.length; i++) {
+  //           obj[this.state.SearchTicketData[i].ticketID] = false;
+  //         }
+  //       }
+  //     }
+  //     strIds = "";
+  //   }
+  //   this.setState({
+  //     cSelectedRow: obj,
+  //   });
+  //   await this.setState({
+  //     ticketIds: strIds,
+  //   });
+  // };
 
-    await this.setState({
-      cSelectedRow: ticketID ? newSelected : false,
-      ticketIds: strIds,
-    });
-  };
+  /// handle perticular select check box
+  // handelCheckBoxCheckedChange = async (ticketID) => {
+  //   var checkboxes = document.getElementsByName("ListCheckbox");
+  //   var strIds = "";
+  //   for (var i in checkboxes) {
+  //     if (isNaN(i) === false) {
+  //       if (checkboxes[i].checked === true) {
+  //         if (checkboxes[i].getAttribute("attrIds") !== null)
+  //           strIds += checkboxes[i].getAttribute("attrIds") + ",";
+  //       }
+  //     }
+  //   }
+  //   const newSelected = Object.assign({}, this.state.cSelectedRow);
+  //   newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
+
+  //   await this.setState({
+  //     cSelectedRow: ticketID ? newSelected : false,
+  //     ticketIds: strIds,
+  //   });
+  // };
+
+  /// --------------Don't remove Commented code----------------------
   /// handle Clear search function
   handleClearSearchData() {
     this.setState({
@@ -410,7 +406,7 @@ class storeMyTicketList extends Component {
             >
               <li className="nav-item">
                 <a
-                  className="nav-link"
+                  className="nav-link active"
                   data-toggle="tab"
                   href="#Escalation-tab"
                   role="tab"
@@ -421,7 +417,10 @@ class storeMyTicketList extends Component {
                     this.handleTabChange("New");
                   }}
                 >
-                  {TranslationContext!==undefined?TranslationContext.a.new:"New"}:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.new
+                    : "New"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byNewCount < 9
                       ? "0" + this.state.byNewCount
@@ -442,7 +441,10 @@ class storeMyTicketList extends Component {
                     this.handleTabChange("Open");
                   }}
                 >
-                  {TranslationContext!==undefined?TranslationContext.a.open:"Open"}:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.open
+                    : "Open"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byOpenCount < 9
                       ? "0" + this.state.byOpenCount
@@ -463,7 +465,10 @@ class storeMyTicketList extends Component {
                     this.handleTabChange("Resolved");
                   }}
                 >
-                   {TranslationContext!==undefined?TranslationContext.a.resolved:"Resolved"}:
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.resolved
+                    : "Resolved"}
+                  :
                   <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
@@ -490,9 +495,13 @@ class storeMyTicketList extends Component {
                       onClick={this.HandleToggleSearch.bind(this)}
                     >
                       <small>
-                            {this.state.collapseSearch
-                          ? TranslationContext!==undefined?TranslationContext.small.closesearch:"Close Search"
-                          : TranslationContext!==undefined?TranslationContext.small.searchtickets:"Search Tickets"}
+                        {this.state.collapseSearch
+                          ? TranslationContext !== undefined
+                            ? TranslationContext.small.closesearch
+                            : "Close Search"
+                          : TranslationContext !== undefined
+                          ? TranslationContext.small.searchtickets
+                          : "Search Tickets"}
                       </small>
                       {this.state.collapseSearch ? (
                         <img
@@ -527,8 +536,9 @@ class storeMyTicketList extends Component {
                                       aria-controls="category-tab"
                                       aria-selected="false"
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.a.bycategory:"By Category"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.bycategory
+                                        : "By Category"}
                                     </a>
                                   </li>
                                 </ul>
@@ -538,8 +548,9 @@ class storeMyTicketList extends Component {
                                     className="btn-inv"
                                     onClick={this.handleTicketSearch.bind(this)}
                                   >
-                                    {TranslationContext!==undefined?TranslationContext.button.viewsearch:"View Search"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.viewsearch
+                                      : "View Search"}
                                   </button>
                                 </div>
                               </div>
@@ -562,7 +573,10 @@ class storeMyTicketList extends Component {
                                           )}
                                         >
                                           <option value={0}>
-                                          {TranslationContext!==undefined?TranslationContext.option.category:"Category"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .category
+                                              : "Category"}
                                           </option>
                                           {this.state.CategoryData !== null &&
                                             this.state.CategoryData.map(
@@ -586,8 +600,10 @@ class storeMyTicketList extends Component {
                                           )}
                                         >
                                           <option value={0}>
-                                          {TranslationContext!==undefined?TranslationContext.option.subcategory:"Sub Category"}
-                                            
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .subcategory
+                                              : "Sub Category"}
                                           </option>
                                           {this.state.SubCategoryData !==
                                             null &&
@@ -612,7 +628,10 @@ class storeMyTicketList extends Component {
                                           )}
                                         >
                                           <option value="0">
-                                          {TranslationContext!==undefined?TranslationContext.option.issuetype:"Issue Type"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .issuetype
+                                              : "Issue Type"}
                                           </option>
                                           {this.state.IssueTypeData !== null &&
                                             this.state.IssueTypeData.map(
@@ -638,8 +657,10 @@ class storeMyTicketList extends Component {
                                           )}
                                         >
                                           <option value="0">
-                                          {TranslationContext!==undefined?TranslationContext.option.ticketstatus:"Ticket Status"}
-                                            
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.option
+                                                  .ticketstatus
+                                              : "Ticket Status"}
                                           </option>
                                           {this.state.TicketStatusData !==
                                             null &&
@@ -669,8 +690,9 @@ class storeMyTicketList extends Component {
                                           : this.state.TicketSearchCount}
                                         &nbsp;
                                       </span>
-                                      {TranslationContext!==undefined?TranslationContext.p.results:"Results"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.results
+                                        : "Results"}
                                     </p>
                                     <label
                                       className="blue-clr fs-14"
@@ -678,8 +700,9 @@ class storeMyTicketList extends Component {
                                         this
                                       )}
                                     >
-                                       {TranslationContext!==undefined?TranslationContext.label.clearsearch:"CLEAR SEARCH"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.clearsearch
+                                        : "CLEAR SEARCH"}
                                     </label>
                                   </div>
                                 </div>
@@ -700,34 +723,41 @@ class storeMyTicketList extends Component {
                             data={this.state.SearchTicketData}
                             columns={[
                               {
+                                // Header: (
+                                //   <span>
+                                //     <div className="filter-type pink1 pinkmyticket">
+                                //       <div className="filter-checkbox pink2 pinkmargin">
+                                //         <input
+                                //           type="checkbox"
+                                //           id="fil-aball"
+                                //           name="ListCheckbox"
+                                //           onChange={this.checkAllCheckbox.bind(
+                                //             this
+                                //           )}
+                                //         />
+                                //         <label
+                                //           htmlFor="fil-aball"
+                                //           className="ticketid"
+                                //         >
+                                //           {TranslationContext!==undefined?TranslationContext.label.id:"ID"}
+
+                                //         </label>
+                                //       </div>
+                                //     </div>
+                                //   </span>
+                                // ),
                                 Header: (
                                   <span>
-                                    <div className="filter-type pink1 pinkmyticket">
-                                      <div className="filter-checkbox pink2 pinkmargin">
-                                        <input
-                                          type="checkbox"
-                                          id="fil-aball"
-                                          name="ListCheckbox"
-                                          onChange={this.checkAllCheckbox.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label
-                                          htmlFor="fil-aball"
-                                          className="ticketid"
-                                        >
-                                          {TranslationContext!==undefined?TranslationContext.label.id:"ID"}
-                                          
-                                        </label>
-                                      </div>
-                                    </div>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.id
+                                      : "ID"}
                                   </span>
                                 ),
                                 accessor: "ticketID",
                                 Cell: (row) => {
                                   return (
                                     <span>
-                                      <div className="filter-type pink1 pinkmyticket">
+                                      {/* <div className="filter-type pink1 pinkmyticket">
                                         <div className="filter-checkbox pink2 pinkmargin">
                                           <input
                                             type="checkbox"
@@ -750,56 +780,11 @@ class storeMyTicketList extends Component {
                                               "i" + row.original.ticketID
                                             }
                                           >
-                                            {/* {row.original.ticketSourceType ===
-                                            "Calls" ? (
-                                              <img
-                                                src={HeadPhone3}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Calls"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Mails" ? (
-                                              <img
-                                                src={MailImg}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Mails"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Facebook" ? (
-                                              <img
-                                                src={FacebookImg}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Facebook"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "ChatBot" ? (
-                                              <img
-                                                src={Chat}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="ChatBot"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Twitter" ? (
-                                              <img
-                                                src={Twitter}
-                                                alt="HeadPhone"
-                                                className="headPhone3 black-twitter"
-                                                title="Twitter"
-                                              />
-                                            ) : null} */}
-
                                             {row.original.ticketID}
                                           </label>
                                         </div>
-                                      </div>
+                                      </div> */}
+                                      {row.original.ticketID}
                                     </span>
                                   );
                                 },
@@ -807,8 +792,10 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                      {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.status
+                                      : "Status"}
+
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -846,16 +833,22 @@ class storeMyTicketList extends Component {
                                 },
                               },
                               {
-                                Header: <span>
-                                   {TranslationContext!==undefined?TranslationContext.span.subject:"Subject"}
-                                </span>,
+                                Header: (
+                                  <span>
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.subject
+                                      : "Subject"}
+                                  </span>
+                                ),
                                 accessor: "ticketTitle",
                               },
                               {
                                 Header: (
                                   <span>
-                                     {TranslationContext!==undefined?TranslationContext.span.category:"Category"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.category
+                                      : "Category"}
+
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -872,19 +865,30 @@ class storeMyTicketList extends Component {
                                           <ul className="dash-category-popup dashnewpopup">
                                             <li>
                                               <p>
-                                              {TranslationContext!==undefined?TranslationContext.p.category:"Category"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .category
+                                                  : "Category"}
                                               </p>
                                               <p>{row.original.category}</p>
                                             </li>
                                             <li>
                                               <p>
-                                              {TranslationContext!==undefined?TranslationContext.p.subcategory:"Sub Category"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p
+                                                      .subcategory
+                                                  : "Sub Category"}
                                               </p>
                                               <p>{row.original.subCategory}</p>
                                             </li>
                                             <li>
                                               <p>
-                                              {TranslationContext!==undefined?TranslationContext.p.type:"Type"}
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.p.type
+                                                  : "Type"}
                                               </p>
                                               <p>{row.original.issueType}</p>
                                             </li>
@@ -905,8 +909,10 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                     {TranslationContext!==undefined?TranslationContext.span.priority:"Priority"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.priority
+                                      : "Priority"}
+
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -916,8 +922,10 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                      {TranslationContext!==undefined?TranslationContext.span.assignee:"Assignee"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.assignee
+                                      : "Assignee"}
+
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -926,8 +934,10 @@ class storeMyTicketList extends Component {
                               {
                                 Header: (
                                   <span>
-                                     {TranslationContext!==undefined?TranslationContext.span.creationon:"Creation On"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.span.creationon
+                                      : "Creation On"}
+
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
@@ -943,14 +953,21 @@ class storeMyTicketList extends Component {
                                           <div className="insertpop1">
                                             <ul className="dash-creation-popup">
                                               <li className="title">
-                                              {TranslationContext!==undefined?TranslationContext.li.creationdetails:"Creation details"}
-                                                
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.li
+                                                      .creationdetails
+                                                  : "Creation details"}
                                               </li>
                                               <li>
                                                 <p>
                                                   {row.original.createdBy}
-                                                  &nbsp; {TranslationContext!==undefined?TranslationContext.p.created:"Created"}
-                                                
+                                                  &nbsp;{" "}
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .created
+                                                    : "Created"}
                                                 </p>
                                                 <p>
                                                   {row.original.createdDate}
@@ -960,7 +977,12 @@ class storeMyTicketList extends Component {
                                               <li>
                                                 <p>
                                                   {row.original.updatedBy}
-                                                  &nbsp;{TranslationContext!==undefined?TranslationContext.p.updated:"Updated"}
+                                                  &nbsp;
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.p
+                                                        .updated
+                                                    : "Updated"}
                                                 </p>
                                                 <p>
                                                   {row.original.updatedDate}

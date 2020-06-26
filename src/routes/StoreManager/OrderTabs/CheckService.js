@@ -72,7 +72,6 @@ class CheckService extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.responseData.available;
           if (status === "true") {
             NotificationManager.success("Delivery Available.");
@@ -80,7 +79,7 @@ class CheckService extends Component {
               btnSubmitData: false,
             });
           } else {
-            NotificationManager.error("Delivery Not Available.");
+            NotificationManager.error("Service not available on entered Pincode.");
             self.setState({
               btnSubmitData: false,
             });
@@ -169,7 +168,6 @@ class CheckService extends Component {
                 ? "check-svcBtn order-grid-btn-disable"
                 : "check-svcBtn"
             }
-            // className="check-svcBtn"
             onClick={this.handleUpdateCheckServiceData.bind(this)}
           >
             {TranslationContext !== undefined

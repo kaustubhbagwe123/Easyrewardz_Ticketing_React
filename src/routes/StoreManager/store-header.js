@@ -20,22 +20,14 @@ import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 import OrderLogoBlue from "./../../assets/Images/order-icon-blue.png";
 import OrderLogoBlack from "./../../assets/Images/order-icon-black.png";
-// import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import StatusLogo from "./../../assets/Images/status.png";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import SendUp from "./../../assets/Images/send-up.png";
 import DownWhiteImg from "./../../assets/Images/down-white.png";
-import DashboardIco from "./../../assets/Images/store-black.png";
-import TaskIco from "./../../assets/Images/ticket.png";
-import ClaimIco from "./../../assets/Images/icon9.svg";
-import CampaignIco from "./../../assets/Images/campaign.svg";
-import AppointmentIco from "./../../assets/Images/appointments.svg";
-import OrdersIco from "./../../assets/Images/order.png";
-import TodoIco from "./../../assets/Images/ticket.png";
 import Logout from "./../../assets/Images/logout.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import BackArrow from "./../../assets/Images/mobile-back.svg";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { authHeader } from "../../helpers/authHeader";
 import PencilImg from "./../../assets/Images/pencil.png";
@@ -47,12 +39,8 @@ import { Drawer } from "antd";
 import { ProgressBar } from "react-bootstrap";
 import { transferData } from "./../../helpers/transferData";
 import "./../../assets/css/store-chat.css";
-import CKEditor from "ckeditor4-react";
 import SearchBlueImg from "./../../assets/Images/search-blue.png";
-import Bata from "./../../assets/Images/Bata2.jpg";
 import SchRight from "./../../assets/Images/sch-right.png";
-import DownArrow from "./../../assets/Images/down.png";
-import RightBlue from "./../../assets/Images/rightblue.png";
 import CardTick from "./../../assets/Images/card-tick.png";
 import UpBlue from "./../../assets/Images/new-Up.png";
 import DownBlue from "./../../assets/Images/new-Down.png";
@@ -65,15 +53,13 @@ import BellIcon from "./../../assets/Images/bell-icon.svg";
 import CircleRight from "./../../assets/Images/circle-right.png";
 import ReactHtmlParser from "react-html-parser";
 import { Tooltip } from "antd";
-import { ItemMeta } from "semantic-ui-react";
 import CancelBlueImg from "./../../assets/Images/CancelBlue.png";
 import CancelBlack from "./../../assets/Images/cancel.png";
 import moment from "moment";
 import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { Table, Select, Spin } from "antd";
-import Pagination from "react-pagination-js";
+import { Table, Select } from "antd";
 import "react-pagination-js/dist/styles.css";
 import * as translationHI from "../../translations/hindi";
 import * as translationMA from "../../translations/marathi";
@@ -223,7 +209,7 @@ class Header extends Component {
 
       let pageName, lastOne, lastValue, arr;
       arr = [...this.state.cont];
-      debugger;
+
       setTimeout(
         function() {
           pageName = window.location.pathname;
@@ -249,24 +235,27 @@ class Header extends Component {
       this.state.translateLanguage = {};
     }
   }
-
+  ////handle scroll right
   handleScrollRight(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft += 20;
   }
-
+  ////handle scroll left
   handleScrollLeft(num) {
     document.getElementById("schedule-btn-cntr" + num).scrollLeft -= 20;
   }
+  ////handle show menu
   handleShowMenu() {
     this.setState({
       visible: true,
     });
   }
+  ////handle close manu
   handleCloseManu() {
     this.setState({
       visible: false,
     });
   }
+  /////handle toggle filter data
   toggleFilter(e) {
     this.setState({
       toggle: {
@@ -274,7 +263,7 @@ class Header extends Component {
       },
     });
   }
-
+  ////handle set access user
   setAccessUser(data) {
     var path = window.location.pathname;
     var page = path.split("/").pop();
@@ -446,7 +435,7 @@ class Header extends Component {
         }
       }
     }
-    debugger;
+
     for (let i = 0; i < accessdata.length; i++) {
       if (accessdata[i].activeClass === "active single-menu") {
         this.setState({
@@ -462,11 +451,8 @@ class Header extends Component {
   componentWillUnmount() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
-    // console.clear();
   }
   componentDidUpdate() {
-    // console.clear();
-
     if (this.state.chatModal && this.state.isDownbtn && this.state.isScroll) {
       this.setState({ isScroll: false });
       this.scrollToBottom();
@@ -476,8 +462,8 @@ class Header extends Component {
       this.historyMessageScrollToBottom();
     }
   }
-
-  handleCRMRole(id) {
+  ////handle crm role data
+  handleCRMRole() {
     let self = this;
     axios({
       method: "post",
@@ -495,7 +481,7 @@ class Header extends Component {
         console.log(data);
       });
   }
-
+  ////handle get user profile data
   handleGetUserProfileData() {
     let self = this;
     axios({
@@ -518,7 +504,7 @@ class Header extends Component {
               selectedUserProfilePicture: userdata,
             });
           }
-          self.handleCRMRole(id);
+          self.handleCRMRole();
         } else {
           self.setState({
             selectedUserProfilePicture: "",
@@ -529,34 +515,32 @@ class Header extends Component {
         console.log(data);
       });
   }
-
+  ////handle opne modal
   onOpenModal = () => {
     this.setState({ open: true });
   };
-
+  ////handle close modal
   onCloseModal = () => {
     this.setState({ open: false });
   };
-
+  ////handle opne modal
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-
+  ////handle close modal
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
   ////handle notification modal open
   handleNotificationModalOpen() {
-    // if (this.state.notificationCount > 0) {
     this.setState({ notificationModal: true });
-    // }
   }
   ////handle notification modal close
   handleNotificationModalClose(typeId, type) {
     this.setState({ notificationModal: false });
     this.handleGetReadStoreNotification(typeId, type);
   }
-
+  ////handle logged in user deatils
   handleLoggedInUserDetails = () => {
     let self = this;
     axios({
@@ -565,7 +549,6 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         var status = res.data.message;
         if (status === "Success") {
@@ -605,15 +588,13 @@ class Header extends Component {
           if (data.programCode !== "" && data.storeCode !== "") {
             self.handleCreateSocketConnection(data.programCode, data.storeCode);
           }
-
-          // self.handleGetStoreAgentDetailsById(data.agentId);
         }
       })
       .catch((data) => {
         console.log(data);
       });
   };
-
+  ////handle get store agent details by agent id
   handleGetStoreAgentDetailsById(agentID) {
     let self = this;
     axios({
@@ -640,7 +621,6 @@ class Header extends Component {
 
   ////handle logout method
   handleLogoutMethod() {
-    // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreAccount/Logout",
@@ -648,9 +628,7 @@ class Header extends Component {
     })
       .then(function(res) {
         var status = res.data.status;
-        // var Msg=res.data.message
         if (status === true) {
-          //NotificationManager.success(Msg);
           localStorage.clear();
 
           window.location.href = "/";
@@ -713,7 +691,6 @@ class Header extends Component {
   };
 
   actives = (e) => {
-    debugger;
     const contDummy = [...this.state.cont];
     contDummy.forEach((i) => {
       i.activeClass = "single-menu";
@@ -744,7 +721,6 @@ class Header extends Component {
       selectSlot: {},
       scheduleModal: false,
       selectedSlot: {},
-      // isScroll: true,
       mainTabSelect: 1,
       toggle: {
         one: true,
@@ -754,6 +730,7 @@ class Header extends Component {
         five: false,
       },
       activeTab: 1,
+      isScroll: true,
     });
 
     this.handleGetNewChat();
@@ -787,30 +764,41 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-
-        if (message === "Success" && ongoingChatsData) {
-          var chatData = ongoingChatsData.filter(
-            (x) => x.chatID === self.state.chatId
-          );
-          if (chatData.length == 0) {
+        if (message === "Success") {
+          if (ongoingChatsData) {
+            var chatData = ongoingChatsData.filter(
+              (x) => x.chatID === self.state.chatId
+            );
+            if (chatData.length == 0) {
+              self.setState({
+                customerName: "",
+                messageData: [],
+                isMainLoader: false,
+              });
+            }
+            self.setState({
+              ongoingChatsData,
+            });
+          } else {
             self.setState({
               customerName: "",
               messageData: [],
               isMainLoader: false,
             });
+            self.setState({
+              ongoingChatsData,
+            });
           }
-          self.setState({
-            ongoingChatsData,
-          });
         } else {
           self.setState({ ongoingChatsData: [] });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetOngoingChat");
       });
   }
-
+  ////handle clear chat search
   handleClearChatSearch = async () => {
     await this.setState({ searchChat: "" });
     this.handleGetOngoingChat();
@@ -830,21 +818,17 @@ class Header extends Component {
         var newChatsData = response.data.responseData;
         if (message === "Success" && newChatsData) {
           self.setState({ newChatsData, isMainLoader: false });
-          // setInterval(() => {
-          // if (self.state.chatModal) {
-          //   self.handleGetNewChat();
-          // }
-          // }, 40000);
         } else {
           self.setState({ newChatsData: [], isMainLoader: false });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetNewChat");
       });
   }
   ////handle Make As Read On Going Chat
-  async handleMakeAsReadOnGoingChat(id, isNew) {
+  async handleMakeAsReadOnGoingChat(id) {
     let self = this;
     this.setState({ chatId: id });
     await axios({
@@ -859,7 +843,6 @@ class Header extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
-          // self.setState({ chatMessageCount: self.state.chatMessageCount - 1 });
           self.handleGetOngoingChat();
           self.handleGetChatMessagesList(id);
           self.handleGetChatNotificationCount();
@@ -870,6 +853,7 @@ class Header extends Component {
         console.log(response, "---handleMakeAsReadOnGoingChat");
       });
   }
+  ////handle update customer chat status
   handleUpdateCustomerChatStatus(
     id,
     storeManagerId,
@@ -927,16 +911,16 @@ class Header extends Component {
       },
     })
       .then(function(response) {
-        debugger;
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success" && responseData) {
           self.handleGetAgentRecentChat(customerId);
-          self.handleMakeAsReadOnGoingChat(id, true);
+          self.handleMakeAsReadOnGoingChat(id);
           self.handleGetNewChat();
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleUpdateCustomerChatStatus");
       });
   }
@@ -974,12 +958,12 @@ class Header extends Component {
               isMainLoader: false,
             });
           }
-          // self.handleGetChatNotificationCount();
         } else {
           self.setState({ messageData: [] });
         }
       })
       .catch((response) => {
+        self.setState({ isMainLoader: false });
         console.log(response, "---handleGetChatMessagesList");
       });
   }
@@ -1042,6 +1026,7 @@ class Header extends Component {
           }
         })
         .catch((response) => {
+          self.setState({ isMainLoader: false });
           console.log(response, "---saveChatMessages");
         });
     }
@@ -1055,12 +1040,8 @@ class Header extends Component {
       headers: authHeader(),
     })
       .then(function(response) {
-        var message = response.data.message;
         var chatMessageCount = response.data.responseData;
         self.setState({ chatMessageCount });
-        // setInterval(() => {
-        // self.handleGetChatNotificationCount();
-        // }, 30000);
       })
       .catch((response) => {
         console.log(response, "---handleGetChatNotificationCount");
@@ -1113,7 +1094,6 @@ class Header extends Component {
       headers: authHeader(),
       params: {
         storeID: 1,
-        // storeID: this.state.storeID,
       },
     })
       .then(function(response) {
@@ -1171,7 +1151,6 @@ class Header extends Component {
       inputParam.SlotID = this.state.selectedSlot.timeSlotId;
       inputParam.NOofPeople = Number(this.state.noOfPeople);
       inputParam.MobileNo = this.state.mobileNo;
-      // inputParam.StoreID = this.state.storeID;
       inputParam.StoreID = 1;
 
       this.setState({ isSendClick: true, isSendRecomended: true });
@@ -1226,7 +1205,7 @@ class Header extends Component {
         });
     }
   }
-
+  ////handle send message to customer
   handleSendMessageToCustomer(
     Message,
     index,
@@ -1237,15 +1216,6 @@ class Header extends Component {
     var inputParam = {};
     if (Message.trim() !== "") {
       if (index > 0) {
-        // if (this.state.chkSuggestion.length > 0) {
-        //   if (this.state.chkSuggestion[index] === 1) {
-        //     this.state.chkSuggestion[index] = 0;
-        //   } else {
-        //     this.state.chkSuggestion[index] = 1;
-        //   }
-        // } else {
-        //   this.state.chkSuggestion[index] = 1;
-        // }
         this.setState({
           chkSuggestion: 0,
         });
@@ -1303,9 +1273,6 @@ class Header extends Component {
   ////handle on change ck editor
   handleOnChangeCKEditor = (evt) => {
     var message = evt.target.value;
-    // var message = evt.editor.getData();
-    // var messageSuggestion = message.replace(/<\/?p[^>]*>/g, "");
-    // messageSuggestion = messageSuggestion.replace("&nbsp;", "").trim();
     var remLength = 0;
     remLength = this.state.tempRemainingCount - parseInt(message.length);
     if (remLength < 0) {
@@ -1316,11 +1283,10 @@ class Header extends Component {
     this.setState({
       message,
       remainingCount: remLength,
-      // messageSuggestion,
     });
   };
-
-  handleMessageSuggestion = (evt) => {
+  ////handle message suggestion
+  handleMessageSuggestion = () => {
     setTimeout(() => {
       if (this.state.message.length > 0) {
         this.handleGetMessageSuggestionList();
@@ -1333,7 +1299,7 @@ class Header extends Component {
       }
     }, 1);
   };
-
+  ////handle get message suggestion list
   handleGetMessageSuggestionList() {
     let self = this;
     axios({
@@ -1374,7 +1340,7 @@ class Header extends Component {
         console.log(res);
       });
   }
-
+  ////handle appand message suggestion
   handleAppendMessageSuggestion = (e) => {
     this.setState({ toggleTitle: true });
     var startPoint = this.state.message.length;
@@ -1385,17 +1351,12 @@ class Header extends Component {
     textBeforeArr.push(e.currentTarget.textContent);
     textBefore = textBeforeArr.join(" ");
     var textAfter = this.state.message.substring(startPoint, textLength);
-    // alert(textBefore + "....." + textAfter);
-    // let clickedInfo = e.currentTarget.innerText;
-    let clickedInfo = e.currentTarget.textContent;
     let message = this.state.message;
-    //titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
     message = "<p>" + textBefore + " " + textAfter + "</p>";
 
     this.setState({ message });
-    // this.searchInput.focus();
   };
-
+  ////handle on change message text
   handleSetMessage = (messageData) => {
     this.setState({ messageData });
   };
@@ -1412,7 +1373,6 @@ class Header extends Component {
     isCustEndChat,
     storeManagerId
   ) => {
-    debugger;
     if (this.state.messageData.length == 0 || this.state.chatId != id) {
       if (this.state.chatId === id) {
         this.setState({
@@ -1546,10 +1506,11 @@ class Header extends Component {
     }
     this.setState({ isHistoricalChat: false, isDownbtn: true });
   };
-
+  ////handle close card modal
   onCloseCardModal = () => {
     this.setState({ cardModal: false, searchCardData: [], selectedCard: 0 });
   };
+  ////handle opne card modal
   onOpenCardModal = () => {
     this.setState({ cardModal: true });
   };
@@ -1559,7 +1520,6 @@ class Header extends Component {
   };
   ////handle got to message scroll down
   scrollToBottom() {
-    debugger;
     if (this.messageList) {
       const scrollHeight = this.messageList.scrollHeight;
       const height = this.messageList.clientHeight;
@@ -1609,9 +1569,8 @@ class Header extends Component {
       });
     }
   };
-
+  ////handle close schedule modal
   onCloseScheduleModal = () => {
-    // this.handleScheduleVisit();
     this.setState({
       scheduleModal: false,
       selectedSlot: {},
@@ -1621,21 +1580,24 @@ class Header extends Component {
       noOfPeopleMax: "",
     });
   };
+  ////handle open chedule modal
   onOpenScheduleModal = () => {
     this.setState({ scheduleModal: true });
     this.handleGetTimeSlot();
   };
-
+  ////handle close recommended list modal
   onCloseRecommendedModal = () => {
     this.setState({ recommendedModal: false });
   };
+  ////handle open recommended list modal
   onOpenRecommendedModal = () => {
     this.setState({ recommendedModal: true });
   };
-
+  ////handle close payment modal
   onClosePaymentModal = () => {
     this.setState({ paymentModal: false });
   };
+  ////handle open payment modal
   onOpenPaymentModal = () => {
     this.setState({ paymentModal: true });
   };
@@ -1697,7 +1659,6 @@ class Header extends Component {
         (messagewhatsAppData[0].url !== null ? messagewhatsAppData[0].url : "");
 
       var imageURL = messagewhatsAppData[0].imageURL;
-      // this.setState({ message: messageStringData });
       this.setState({ isSendRecomended: true });
       this.handleSaveChatMessages(
         messageStringData,
@@ -1706,7 +1667,7 @@ class Header extends Component {
       );
     }
   }
-
+  ////handle tabl click
   handleTabClick = (tabIndex, e) => {
     if (tabIndex == 1) {
       this.setState({ isDownbtn: true, activeTab: 1 });
@@ -1737,6 +1698,7 @@ class Header extends Component {
       isSelectSlot: "",
     });
   };
+  ////handle send recommended list
   handleSendRecommendedList() {
     let self = this;
     this.setState({ isSendRecomended: true });
@@ -1751,17 +1713,7 @@ class Header extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
-        let data = res.data.responseData;
         if (status === "Success") {
-          // self.handleOngoingChatClick(
-          //   self.state.chatId,
-          //   self.state.customerName,
-          //   0,
-          //   self.state.mobileNo,
-          //   self.state.customerId,
-          //   self.state.programCode,
-          //   self.state.storeID
-          // );
           self.setState({ isSendRecomended: false, noRecommendedFound: "" });
           self.handleGetChatMessagesList(self.state.chatId);
           self.onCloseRecommendedModal();
@@ -1778,14 +1730,9 @@ class Header extends Component {
         console.log(res);
       });
   }
-
+  ////handle open suggestion list modal
   onOpenSuggestionModal(suggestionText, index) {
     if (index > 0) {
-      // if (this.state.chkSuggestion.length > 0) {
-      // if (this.state.chkSuggestion[index] === 1) {
-      //   this.state.chkSuggestion = [];
-      //   this.state.chkSuggestion[index] = 0;
-      // } else {
       this.state.chkSuggestion = [];
       this.state.chkSuggestion[index] = 1;
       this.setState({
@@ -1793,49 +1740,28 @@ class Header extends Component {
         chkSuggestion: this.state.chkSuggestion,
         suggestionText: suggestionText,
       });
-      // }
-      // } else {
-      //   this.state.chkSuggestion[index] = 1;
-      // }
-      // this.setState({
-      //   chkSuggestion: this.state.chkSuggestion,
-      // });
     }
   }
-
+  ////handle opne mobile suggestion list modal
   onOpenMobSuggestionModal(suggestionText, index) {
-    debugger;
     if (index > 0) {
-      // if (this.state.chkSuggestion.length > 0) {
-      // if (this.state.chkSuggestion[index] === 1) {
-      //   this.state.chkSuggestion = [];
-      //   this.state.chkSuggestion[index] = 0;
-      // } else {
-
       this.setState({
         suggestionModalMob: true,
         chkSuggestion: index,
         suggestionText: suggestionText,
       });
-      // }
-      // } else {
-      //   this.state.chkSuggestion[index] = 1;
-      // }
-      // this.setState({
-      //   chkSuggestion: this.state.chkSuggestion,
-      // });
     }
   }
-
+  ////handle close suggestion list modal
   onCloseSuggestionModal = () => {
     this.setState({ suggestionModal: false });
   };
-
+  ////handle close mobile suggestion list modal
   onCloseMobSuggestionModal = () => {
     this.setState({ suggestionModalMob: false });
   };
-
-  handleHistTabClick = (e) => {
+  ////handle change tab click
+  handleHistTabClick = () => {
     this.setState({
       isHistoricalChat: true,
       isDownbtn: false,
@@ -1897,7 +1823,6 @@ class Header extends Component {
   handleMainTabChange(e) {
     this.setState({ mainTabSelect: e });
     if (e === 2) {
-      // this.handleGetAgentRecentChat();
       this.setState({
         messageData: [],
         showHistoricalChat: false,
@@ -1919,7 +1844,7 @@ class Header extends Component {
       this.handleGetOngoingChat();
     }, 10);
   }
-
+  ////handle get agent chat history
   handleGetAgentChatHistory() {
     let self = this;
     this.setState({ isHistoricalChatLoading: true });
@@ -1945,23 +1870,6 @@ class Header extends Component {
       });
   }
 
-  /// Pagination Onchange
-  PaginationOnChange = async (numPage) => {
-    var tempmessageSuggestionData = [];
-    if (this.state.messageSuggestionData.length < 10) {
-      tempmessageSuggestionData = this.state.messageSuggestionData;
-    } else {
-      for (let i = numPage * 10; i < numPage * 10 + 10; i++) {
-        if (this.state.messageSuggestionData[i]) {
-          tempmessageSuggestionData.push(this.state.messageSuggestionData[i]);
-        }
-      }
-    }
-    await this.setState({
-      selectedSugpage: numPage,
-      tempmessageSuggestionData,
-    });
-  };
   ////handle create socket connection
   handleCreateSocketConnection(programCode, storeCode) {
     let self = this;
@@ -1976,7 +1884,6 @@ class Header extends Component {
         socket.on(storeCode.toLowerCase() + programCode.toLowerCase(), function(
           data
         ) {
-          debugger;
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
@@ -1994,16 +1901,11 @@ class Header extends Component {
                       (x) => x.mobileNo === self.state.mobileNo
                     )[0].chatID;
                   }
-                  // self.handleMakeAsReadOnGoingChat(chatId);
                   self.handleGetChatMessagesList(chatId);
                   self.handleGetNewChat();
                 } else {
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
-                  var messageCount = 0;
-                  messageCount = self.state.ongoingChatsData.filter(
-                    (x) => x.mobileNo === data[3].substring(2)
-                  )[0].messageCount;
 
                   self.handleGetChatNotificationCount();
                 }
@@ -2017,7 +1919,7 @@ class Header extends Component {
       }
     });
   }
-
+  ////handle insert card image upload
   handleInsertCardImageUpload(itemcode, e) {
     if (!e[0].name.match(/\.(jpg|jpeg|png)$/)) {
       NotificationManager.error("Please select valid image file JPG,JPEG,PNG,");
@@ -2039,7 +1941,6 @@ class Header extends Component {
     })
       .then(function(response) {
         var messgae = response.data.message;
-        var responseData = response.data.responseData;
         if (messgae === "Success") {
           NotificationManager.success("Add image successfully.");
         } else {
@@ -2058,6 +1959,7 @@ class Header extends Component {
   handleActionClose = () => {
     this.setState({ actionBtn: false });
   };
+  ////handle update store manage chat status
   handleUpdateStoreManagerChatStatus(id) {
     if (this.state.isCustEndChat) {
       let self = this;
@@ -2086,10 +1988,9 @@ class Header extends Component {
     }
   }
   ////handle historical table row click
-  handleHistoricalTableRow = (e, e1, e2) => {
+  handleHistoricalTableRow = (e) => {
     this.setState({
       rowChatId: e.chatID,
-      // customerName: e.customerName,
       showHistoricalChat: true,
       chatTimeAgo: e.timeAgo,
     });
@@ -2435,10 +2336,6 @@ class Header extends Component {
                 </p>
                 <p className="font-weight-bold">{this.state.SLAScore}</p>
               </div>
-              {/* <div>
-                <p className="logout-label">CSAT SCORE</p>
-                <p className="font-weight-bold">{this.state.CSatScore}</p>
-              </div> */}
               <div>
                 <p className="logout-label">
                   {TranslationContext !== undefined
@@ -2555,7 +2452,6 @@ class Header extends Component {
           </div>
         </Modal>
         <Drawer
-          //title="Basic Drawer"
           placement="left"
           closable={false}
           onClose={this.handleCloseManu.bind(this)}
@@ -2606,50 +2502,6 @@ class Header extends Component {
                   </li>
                 ))}
               </ul>
-              {/* <ul>
-                <li>
-                  <span>
-                    <img src={DashboardIco} alt="Dashboard" />
-                  </span>
-                  Dashboard
-                </li>
-                <li>
-                  <span>
-                    <img src={TaskIco} alt="Task" />
-                  </span>
-                  Task
-                </li>
-                <li>
-                  <span>
-                    <img src={ClaimIco} alt="Claim" />
-                  </span>
-                  Claim
-                </li>
-                <li>
-                  <span>
-                    <img src={CampaignIco} alt="Campaign" />
-                  </span>
-                  Campaign
-                </li>
-                <li>
-                  <span>
-                    <img src={AppointmentIco} alt="Appointment" />
-                  </span>
-                  Appointment
-                </li>
-                <li>
-                  <span>
-                    <img src={OrdersIco} alt="Orders" />
-                  </span>
-                  Orders
-                </li>
-                <li>
-                  <span>
-                    <img src={TodoIco} alt="To-do" />
-                  </span>
-                  To-do's
-                </li>
-              </ul> */}
             </div>
             <div className="logoutbox">
               <ul>
@@ -2702,24 +2554,14 @@ class Header extends Component {
                       maxLength="100"
                       autoComplete="off"
                       value={this.state.searchChat}
-                      // onChange={this.handleSearchItemChange.bind(
-                      //   this
-                      // )}
-                      // onKeyPress={this.enterPressed.bind(this)}
                       onChange={this.handleGetOngoingChat.bind(this)}
                     />
-                    <span
-                      // onClick={this.handleSearchChatItemDetails.bind(
-                      //   this
-                      // )}
-                      className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span"
-                    >
+                    <span className="input-group-addon seacrh-img-chatsearch chatsearchtxt-span">
                       {this.state.searchChat === "" ? (
                         <img
                           src={SearchBlueImg}
                           alt="SearchBlueImg"
                           className="srch-imge"
-                          // onClick={this.handleSearchCustomer}
                         />
                       ) : (
                         <img
@@ -2748,12 +2590,7 @@ class Header extends Component {
                         value={this.state.sAgentId}
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value={0}>
-                          {/* {TranslationContext !== undefined
-                            ? TranslationContext.option.all
-                            : "All"} */}
-                          All Store Member
-                        </Option>
+                        <Option value={0}>All Store Member</Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
@@ -2928,22 +2765,9 @@ class Header extends Component {
                     </li>
                   </div>
                 </div>
-                {/* <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button> */}
               </div>
               <div className="mobile-chat-tabs">
                 <div className="position-relative">
-                  {/* <div className="mobile-search-cntr">
-                    <div className="mobile-search-img">
-                      <img src={SearchBlueImg} alt="SearchBlueImg" />
-                    </div>
-                    <div className="mobile-search-input w-100">
-                      <input
-                        type="text"
-                        placeholder="Enter your Search terms here..."
-                      />
-                    </div>
-                  </div> */}
-
                   <ul className="nav nav-tabs" role="tablist">
                     <li className="nav-item">
                       <a
@@ -3078,11 +2902,6 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    {/* <img
-                                      src={DummyFace1}
-                                      alt="face image"
-                                      title={chat.cumtomerName}
-                                    /> */}
                                     <span className="chat-initial">
                                       {chat.cumtomerName
                                         .split(" ")
@@ -3166,7 +2985,6 @@ class Header extends Component {
                                         </>
                                       ) : null}
                                     </div>
-                                    {/* <img src={DummyFace1} alt="face image" /> */}
                                     <span className="chat-initial">
                                       {chat.cumtomerName
                                         .split(" ")
@@ -3369,8 +3187,6 @@ class Header extends Component {
                                       );
                                     })
                                   : null}
-
-                                {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
                               </div>
                               {this.state.isCustEndChat &&
                               this.state.customerName !== "" ? (
@@ -3464,7 +3280,6 @@ class Header extends Component {
                                     role="tab"
                                     aria-controls="schedule-visit-tab"
                                     aria-selected="false"
-                                    // onClick={this.handleGetTimeSlot.bind(this)}
                                     onClick={this.handleTabClick.bind(this, 4)}
                                     id="four"
                                   >
@@ -3525,38 +3340,6 @@ class Header extends Component {
                                     {this.state.remainingCount +
                                       " characters remaining..."}
                                   </p>
-                                  {/* <CKEditor
-                              onBeforeLoad={(CKEDITOR) =>
-                                (CKEDITOR.disableAutoInline = true)
-                              }
-                              data={this.state.message}
-                              onChange={this.handleOnChangeCKEditor.bind(this)}
-                              config={{
-                                toolbar: [
-                                  {
-                                    name: "basicstyles",
-                                    items: ["Bold", "Italic", "Strike"],
-                                  },
-
-                                  {
-                                    name: "paragraph",
-                                    items: ["NumberedList", "BulletedList"],
-                                  },
-                                  {
-                                    name: "links",
-                                    items: ["Link", "Unlink"],
-                                  },
-                                  {
-                                    name: "insert",
-                                    items: ["Image", "Table"],
-                                  },
-                                  {
-                                    name: "editing",
-                                    items: ["Scayt"],
-                                  },
-                                ],
-                              }}
-                            /> */}
                                   {this.state.isMessage !== "" && (
                                     <p
                                       style={{
@@ -3585,7 +3368,6 @@ class Header extends Component {
                                               dataIndex: "suggestionText",
                                               render: (row, rowData) => {
                                                 i = i + 1;
-                                                debugger;
                                                 return (
                                                   <div
                                                     className={
@@ -3625,7 +3407,6 @@ class Header extends Component {
                                             pageSize: 10,
                                             defaultPageSize: 10,
                                           }}
-                                          // rowClassName={this.setRowClassName}
                                         ></Table>
                                       </div>
                                     )}
@@ -3640,7 +3421,6 @@ class Header extends Component {
                                       )}
                                       title={"Search"}
                                     >
-                                      {/* <img src={Assign} alt="send img" /> */}
                                       <img src={SuggSearch} alt="send img" />
                                     </div>
                                   ) : null}
@@ -3707,7 +3487,6 @@ class Header extends Component {
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                     {this.state.searchCardData.length === 0 && (
@@ -3753,7 +3532,6 @@ class Header extends Component {
                                                   id={"card" + item.itemID}
                                                 >
                                                   <div className="card-body position-relative">
-                                                    {/* <div className="container"> */}
                                                     <div
                                                       className="row"
                                                       style={{
@@ -3766,7 +3544,8 @@ class Header extends Component {
                                                           alignSelf: "center",
                                                         }}
                                                       >
-                                                        {item.imageURL ? (
+                                                        {item.imageURL !==
+                                                        "" ? (
                                                           <img
                                                             className="chat-product-img"
                                                             src={item.imageURL}
@@ -4168,8 +3947,6 @@ class Header extends Component {
                                                               );
                                                             }
                                                             if (
-                                                              // data.remaining <
-                                                              // data.maxCapacity
                                                               data.visitedCount >=
                                                               (1 / 2) *
                                                                 data.maxCapacity
@@ -4220,8 +3997,6 @@ class Header extends Component {
                                                               );
                                                             }
                                                             if (
-                                                              // data.maxCapacity ===
-                                                              // data.remaining
                                                               data.visitedCount <
                                                               (1 / 2) *
                                                                 data.maxCapacity
@@ -4313,9 +4088,7 @@ class Header extends Component {
                                                   (1 / 2) *
                                                     this.state.selectedSlot
                                                       .maxCapacity
-                                                    ? // this.state.selectedSlot.maxCapacity ==
-                                                      //   this.state.selectedSlot.remaining
-                                                      "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                    ? "s-green-btn s-green-active select-slot-cntr mx-0"
                                                     : this.state.selectedSlot
                                                         .visitedCount <
                                                       this.state.selectedSlot
@@ -4426,12 +4199,7 @@ class Header extends Component {
                                   className="input-group searchtxt-new"
                                   style={{ background: "none" }}
                                 >
-                                  <form
-                                    style={{ width: "100%" }}
-                                    // onSubmit={this.handleSearchChatItemDetails.bind(
-                                    //   this
-                                    // )}
-                                  >
+                                  <form style={{ width: "100%" }}>
                                     <input
                                       type="text"
                                       className="search-customerAddSrch searchtxt"
@@ -4444,22 +4212,12 @@ class Header extends Component {
                                       name="Search"
                                       maxLength="100"
                                       autoComplete="off"
-                                      // value={this.state.searchItem}
-                                      // onChange={this.handleSearchItemChange.bind(
-                                      //   this
-                                      // )}
                                     />
-                                    <span
-                                      // onClick={this.handleSearchChatItemDetails.bind(
-                                      //   this
-                                      // )}
-                                      className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                    >
+                                    <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
                                       <img
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                   </form>
@@ -4681,7 +4439,6 @@ class Header extends Component {
                                           pageSize: 10,
                                           defaultPageSize: 10,
                                         }}
-                                        // rowClassName={this.setRowClassName}
                                       ></Table>
                                     </div>
                                   ) : null}
@@ -4696,7 +4453,6 @@ class Header extends Component {
                                       )}
                                       title={"Search"}
                                     >
-                                      {/* <img src={Assign} alt="send img" /> */}
                                       <img src={SuggSearch} alt="send img" />
                                     </div>
                                   ) : null}
@@ -4754,7 +4510,6 @@ class Header extends Component {
                                         src={SearchBlueImg}
                                         alt="SearchBlueImg"
                                         className="srch-imge"
-                                        // onClick={this.handleSearchCustomer}
                                       />
                                     </span>
                                     {this.state.searchCardData.length === 0 && (
@@ -5276,9 +5031,7 @@ class Header extends Component {
                                                 (1 / 2) *
                                                   this.state.selectedSlot
                                                     .maxCapacity
-                                                  ? // this.state.selectedSlot.maxCapacity ==
-                                                    //   this.state.selectedSlot.remaining
-                                                    "s-green-btn s-green-active select-slot-cntr mx-0"
+                                                  ? "s-green-btn s-green-active select-slot-cntr mx-0"
                                                   : this.state.selectedSlot
                                                       .visitedCount <
                                                     this.state.selectedSlot
@@ -5403,22 +5156,12 @@ class Header extends Component {
                                           name="Search"
                                           maxLength="100"
                                           autoComplete="off"
-                                          // value={this.state.searchItem}
-                                          // onChange={this.handleSearchItemChange.bind(
-                                          //   this
-                                          // )}
                                         />
-                                        <span
-                                          // onClick={this.handleSearchChatItemDetails.bind(
-                                          //   this
-                                          // )}
-                                          className="input-group-addon seacrh-img-addsearch searchtxt-span"
-                                        >
+                                        <span className="input-group-addon seacrh-img-addsearch searchtxt-span">
                                           <img
                                             src={SearchBlueImg}
                                             alt="SearchBlueImg"
                                             className="srch-imge"
-                                            // onClick={this.handleSearchCustomer}
                                           />
                                         </span>
                                       </div>
@@ -5879,7 +5622,6 @@ class Header extends Component {
                                       No record found
                                     </p>
                                   )}
-                                  {/* {this.state.messageData.length===0?<Spin size="large" />:null} */}
                                 </div>
                               </div>
                             ) : null}
@@ -5998,7 +5740,7 @@ class Header extends Component {
                                 dataIndex: "message",
                                 width: "30%",
                                 className: "textnowrap-table",
-                                render: (row, rowData) => {
+                                render: (row) => {
                                   return (
                                     <>
                                       <p
@@ -6163,15 +5905,6 @@ class Header extends Component {
                 Close Chat
               </label>
             </div>
-            {/* <div className="row">
-              <label className={"actionmodallbl"}>Hold Chat</label>
-            </div>
-            <div className="row">
-              <label className={"actionmodallbl"}>Ban Visitor</label>
-            </div>
-            <div className="row">
-              <label className={"actionmodallbl"}>Create Ticket</label>
-            </div> */}
           </div>
         </Modal>
       </React.Fragment>

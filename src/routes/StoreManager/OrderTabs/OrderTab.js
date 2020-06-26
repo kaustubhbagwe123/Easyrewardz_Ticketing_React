@@ -3,7 +3,6 @@ import axios from "axios";
 import { Table, Popover, Popconfirm } from "antd";
 import Modal from "react-responsive-modal";
 import NoPayment from "./../../../assets/Images/no-payment.png";
-import CreditCard from "./../../../assets/Images/credit-card.png";
 import OrderInfo from "./../../../assets/Images/order-info.png";
 import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
 import OrderBag from "./../../../assets/Images/order-bag.png";
@@ -43,6 +42,7 @@ class OrderTab extends Component {
       PincodeMdl: false,
       orderId: 0,
       AddressConf: false,
+      pincodeChecAvaibility: false,
     };
   }
 
@@ -62,7 +62,6 @@ class OrderTab extends Component {
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
-    debugger;
     let self = this;
     this.setState({
       OrderTabLoading: true,
@@ -78,8 +77,7 @@ class OrderTab extends Component {
         FilterStatus: this.state.strStatus,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -120,7 +118,6 @@ class OrderTab extends Component {
   }
   /// handle Get Order status filter data
   handleGetOrderStatusFilterData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -130,7 +127,7 @@ class OrderTab extends Component {
         pageID: 2,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -149,7 +146,6 @@ class OrderTab extends Component {
   }
   /// handle Sent Payment Link
   handleSentPaymentLink(item) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -161,8 +157,7 @@ class OrderTab extends Component {
         SentPaymentLinkCount: item.countSendPaymentLink,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
@@ -183,7 +178,7 @@ class OrderTab extends Component {
       url: config.apiUrl + "/HSOrder/GetStorePinCodeByUserID",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -202,6 +197,9 @@ class OrderTab extends Component {
   }
   /// handle Submit Check service data
   handleUpdateCheckServiceData(ordId) {
+    this.setState({
+      pincodeChecAvaibility: true,
+    });
     var self = this;
     axios({
       method: "post",
@@ -212,12 +210,12 @@ class OrderTab extends Component {
         Delivery_postcode: parseInt(this.state.pincode),
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.responseData.available;
         if (status === "false") {
           self.setState({
             PincodeMdl: true,
+            pincodeChecAvaibility: false,
             orderId: ordId,
           });
         } else {
@@ -240,7 +238,7 @@ class OrderTab extends Component {
         orderID: this.state.orderId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           self.setState({
@@ -278,7 +276,6 @@ class OrderTab extends Component {
   };
   /// handle check individual status
   handleCheckDeliIndividualStatus() {
-    debugger;
     var checkboxes = document.getElementsByName("orderStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -310,11 +307,11 @@ class OrderTab extends Component {
         Country: this.state.country,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
+          self.handleGetCheckServiceData();
           self.setState({
             orderId: 0,
             AddressConf: false,
@@ -336,7 +333,6 @@ class OrderTab extends Component {
   }
 
   handleAddressPending(orderId) {
-    debugger;
     if (this.state.shippingAddress === "") {
       NotificationManager.error("Please enter address.");
       return false;
@@ -379,7 +375,6 @@ class OrderTab extends Component {
   };
   /// handle Pin code change
   handlePinCodeCheck(ordId, e) {
-    debugger;
     var reg = /^[0-9\b]+$/;
 
     if (e.target.value === "" || reg.test(e.target.value)) {
@@ -440,19 +435,19 @@ class OrderTab extends Component {
                             item.sourceOfOrder === "FTP"
                               ? OrderShopingGreen
                               : item.sourceOfOrder === "POS"
-                              ? OrderBag
-                              : item.sourceOfOrder === "Wbot"
-                              ? OrderShopingBlack
-                              : null
+                                ? OrderBag
+                                : item.sourceOfOrder === "Wbot"
+                                  ? OrderShopingBlack
+                                  : null
                           }
                           className={
                             item.sourceOfOrder === "FTP"
                               ? "order-shoping"
                               : item.sourceOfOrder === "POS"
-                              ? "order-bag"
-                              : item.sourceOfOrder === "Wbot"
-                              ? "order-shoping"
-                              : null
+                                ? "order-bag"
+                                : item.sourceOfOrder === "Wbot"
+                                  ? "order-shoping"
+                                  : null
                           }
                         />
                       </div>
@@ -584,7 +579,6 @@ class OrderTab extends Component {
                                         ? TranslationContext.title.itemname
                                         : "Item Name",
                                     dataIndex: "itemName",
-                                    // width: 150,
                                   },
                                   {
                                     title:
@@ -613,10 +607,6 @@ class OrderTab extends Component {
                                       );
                                     },
                                   },
-                                  // {
-                                  //   title: "AWB. No",
-                                  //   dataIndex: "itemID",
-                                  // },
                                 ]}
                                 scroll={{ y: 240 }}
                                 pagination={false}
@@ -659,9 +649,6 @@ class OrderTab extends Component {
                   return (
                     <>
                       <p>{item.statusName}</p>
-                      {/* {item.selfPickUp && (
-                        <p className="order-clr-orange">(Self Pickup)</p>
-                      )} */}
                     </>
                   );
                 },
@@ -679,7 +666,6 @@ class OrderTab extends Component {
                                 onChange={this.handleCheckDeliIndividualStatus.bind(
                                   this
                                 )}
-                                // checked={this.state.CheckBoxAllStatus}
                                 name="orderStatus"
                                 attrIds={item.statusID}
                               />
@@ -770,7 +756,7 @@ class OrderTab extends Component {
                                     placeholder={
                                       TranslationContext !== undefined
                                         ? TranslationContext.placeholder
-                                            .enterlandmark
+                                          .enterlandmark
                                         : "Enter Landmark"
                                     }
                                     autoComplete="off"
@@ -790,7 +776,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .enterpincode
+                                            .enterpincode
                                           : "Enter Pin Code"
                                       }
                                       name="pincode"
@@ -802,6 +788,16 @@ class OrderTab extends Component {
                                         item.id
                                       )}
                                     />
+                                    {this.state.pincodeChecAvaibility && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px",
+                                        }}
+                                      >
+                                        Checking your availability.
+                                      </p>
+                                    )}
                                   </div>
                                   <div className="col-md-6">
                                     <p>
@@ -814,7 +810,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .entercity
+                                            .entercity
                                           : "Enter City"
                                       }
                                       autoComplete="off"
@@ -849,7 +845,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .entercountry
+                                            .entercountry
                                           : "Enter Country"
                                       }
                                       name="country"
@@ -859,31 +855,9 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
-                              {/* <div className="popover-radio-cntr">
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="store-deli"
-                                    name="address-options"
-                                  />
-                                  <label htmlFor="store-deli">
-                                    Store Delivery
-                                  </label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="self-picked"
-                                    name="address-options"
-                                  />
-                                  <label htmlFor="self-picked">
-                                    Self Picked up
-                                  </label>
-                                </div>
-                              </div> */}
                             </>
                           }
-                          overlayClassName="order-popover order-popover-butns order-popover-address"
+                          overlayClassName="order-popover order-popover-butns order-popover-address customaddpop"
                           placement="bottomRight"
                           onVisibleChange={(visible) =>
                             this.setState({ orderPopoverOverlay: visible })
@@ -927,15 +901,11 @@ class OrderTab extends Component {
                             <div className="order-tab-popover">
                               <div className="pay-done">
                                 <p>
-                                  {/* {TranslationContext !== undefined
-                                    ? TranslationContext.p.modeofpayment
-                                    : "Mode of Payment"} */}{" "}
+                                  {" "}
                                   Payment Date :
                                 </p>
                                 <span>
-                                  {/* {TranslationContext !== undefined
-                                    ? TranslationContext.span.online
-                                    : "Online"} */}{" "}
+                                  {" "}
                                   {item.paymentBillDate}
                                 </span>
                               </div>
@@ -948,25 +918,6 @@ class OrderTab extends Component {
                                 </p>
                                 <span>{item.amount}</span>
                               </div>
-                              {/* -----------Don't remove commented code------------------ */}
-                              {/* <div className="pay-done">
-                                <p>
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.paymentvia
-                                    : "Payment via "}
-                                  :
-                                </p>
-                                <span>
-                                  <img
-                                    src={CreditCard}
-                                    alt="credit card icon"
-                                    className="credit-card-icon"
-                                  />
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.span.creditcard
-                                    : "Credit Card"}
-                                </span>
-                              </div> */}
                             </div>
                           }
                           trigger="click"
@@ -1075,10 +1026,6 @@ class OrderTab extends Component {
                           : "Status"}
                       </p>
                       <p>{row.statusName}</p>
-                      {/* <p className="order-clr-blue">{row.statusName}</p> */}
-                      {/* {row.selfPickUp && (
-                        <p className="order-clr-orange">(Self Pickup)</p>
-                      )} */}
                     </div>
                     <div className="col-6">
                       <p className="order-expanded-title">
@@ -1140,7 +1087,7 @@ class OrderTab extends Component {
                                     placeholder={
                                       TranslationContext !== undefined
                                         ? TranslationContext.placeholder
-                                            .enterlandmark
+                                          .enterlandmark
                                         : "Enter Landmark"
                                     }
                                     name="landmark"
@@ -1159,7 +1106,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .enterpincode
+                                            .enterpincode
                                           : "Enter Pin Code"
                                       }
                                       name="pincode"
@@ -1183,7 +1130,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .entercity
+                                            .entercity
                                           : "Enter City"
                                       }
                                       name="city"
@@ -1203,7 +1150,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .enterstate
+                                            .enterstate
                                           : "Enter State"
                                       }
                                       name="state"
@@ -1221,7 +1168,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                              .entercountry
+                                            .entercountry
                                           : "Enter Country"
                                       }
                                       name="country"
@@ -1230,28 +1177,6 @@ class OrderTab extends Component {
                                   </div>
                                 </div>
                               </div>
-                              {/* <div className="popover-radio-cntr">
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="store-deli"
-                                    name="address-options"
-                                  />
-                                  <label htmlFor="store-deli">
-                                    Store Delivery
-                                  </label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="self-picked"
-                                    name="address-options"
-                                  />
-                                  <label htmlFor="self-picked">
-                                    Self Picked up
-                                  </label>
-                                </div>
-                              </div> */}
                             </>
                           }
                           overlayClassName="order-popover order-popover-butns order-popover-address"
@@ -1292,7 +1217,6 @@ class OrderTab extends Component {
           <Pagination
             currentPage={this.state.currentPage}
             totalSize={this.state.totalCount}
-            // totalSize={row.customerCount}
             sizePerPage={this.state.postsPerPage}
             changeCurrentPage={this.PaginationOnChange}
             theme="bootstrap"

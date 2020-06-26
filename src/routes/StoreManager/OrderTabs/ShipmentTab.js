@@ -1,16 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover } from "antd";
+import { Table, Popover, Popconfirm } from "antd";
 import Modal from "react-responsive-modal";
-// import NoPayment from "./../../../assets/Images/no-payment.png";
-// import CreditCard from "./../../../assets/Images/credit-card.png";
-// import OrderInfo from "./../../../assets/Images/order-info.png";
-// import OrderShopingBlack from "./../../../assets/Images/order-shoping-black.png";
-// import OrderBag from "./../../../assets/Images/order-bag.png";
 import OrderHamb from "./../../../assets/Images/order-hamb.png";
 import CancelImg from "./../../../assets/Images/cancel.png";
 import CardTick from "./../../../assets/Images/card-tick.png";
-// import OrderDel from "./../../../assets/Images/order-del.png";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
@@ -18,7 +12,6 @@ import "react-pagination-js/dist/styles.css";
 import { NotificationManager } from "react-notifications";
 import * as translationHI from "../../../translations/hindi";
 import * as translationMA from "../../../translations/marathi";
-var rowid = 0;
 
 class ShipmentTab extends Component {
   constructor(props) {
@@ -44,6 +37,7 @@ class ShipmentTab extends Component {
       createdShoppingTabs: false,
       airWayBill2ndTab: false,
       IsStoreDelivery: false,
+      createShipmentBtnDisbaled: false,
     };
   }
 
@@ -76,8 +70,7 @@ class ShipmentTab extends Component {
         FilterStatus: this.state.strStatus,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -127,7 +120,7 @@ class ShipmentTab extends Component {
         pageID: 3,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -146,7 +139,6 @@ class ShipmentTab extends Component {
   }
   /// handle Update Date and Time
   handleUpdateDateandTime(OrderId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -156,7 +148,7 @@ class ShipmentTab extends Component {
         OrderID: OrderId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Success.");
@@ -180,8 +172,7 @@ class ShipmentTab extends Component {
         orderID: ordId,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -209,7 +200,6 @@ class ShipmentTab extends Component {
 
   /// handle get AWB Invoice data by order id
   handleGetAWBInvoiceDetailsOrderId(orderId) {
-    debugger;
     let self = this;
 
     axios({
@@ -220,8 +210,7 @@ class ShipmentTab extends Component {
         orderID: orderId,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -262,6 +251,9 @@ class ShipmentTab extends Component {
         itemIds += this.state.ShipmentOrderItem[i].id + ",";
       }
     }
+    this.setState({
+      createShipmentBtnDisbaled: true,
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/HSOrder/CreateShipmentAWB",
@@ -272,29 +264,30 @@ class ShipmentTab extends Component {
       },
     })
       .then(function(res) {
-        debugger;
-        let status = res.data.message;
+        let CheckStatus = res.data.status;
         let data = res.data.responseData;
-        if (status === "Success") {
+        if (CheckStatus) {
           if (data.status) {
             self.setState({
               AirwayBillAWBNo: data.awbNumber,
               AirwayItemIds: data.itemIDs,
               createdShoppingTabs: true,
+              createShipmentBtnDisbaled: false,
             });
-            self.handleGetShipmentTabGridData();
             if (data.isStoreDelivery) {
               self.setState({
                 IsStoreDelivery: true,
               });
             }
           } else {
-            NotificationManager.error(data.status);
+            NotificationManager.error(data.statusMessge);
           }
+          self.handleGetShipmentTabGridData();
         } else {
-          NotificationManager.error(status);
+          NotificationManager.error(CheckStatus);
           self.setState({
             createdShoppingTabs: false,
+            createShipmentBtnDisbaled: false,
           });
         }
       })
@@ -306,7 +299,6 @@ class ShipmentTab extends Component {
 
   //// shipment Modale Close
   handleShipmentModalClose(e) {
-    debugger;
     e.stopPropagation();
     this.setState({
       ShipmentMdlbtn: false,
@@ -316,7 +308,6 @@ class ShipmentTab extends Component {
   }
   /// handle check individual status
   handleCheckDeliIndividualStatus() {
-    debugger;
     var checkboxes = document.getElementsByName("ShipmentStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -440,10 +431,6 @@ class ShipmentTab extends Component {
                                     : "Quantity",
                                 dataIndex: "quantity",
                               },
-                              // {
-                              //   title: "AWB. No",
-                              //   dataIndex: "AWBNo",
-                              // },
                             ]}
                             scroll={{ y: 240 }}
                             pagination={false}
@@ -496,10 +483,6 @@ class ShipmentTab extends Component {
                   return (
                     <>
                       <p>{item.statusName}</p>
-                      {/* <p className="order-clr-blue">{item.statusName}</p> */}
-                      {/* {item.selfPickUp && (
-                        <p className="order-clr-orange">(Self Pickup)</p>
-                      )} */}
                     </>
                   );
                 },
@@ -517,7 +500,6 @@ class ShipmentTab extends Component {
                                 onChange={this.handleCheckDeliIndividualStatus.bind(
                                   this
                                 )}
-                                // checked={this.state.CheckBoxAllStatus}
                                 name="ShipmentStatus"
                                 attrIds={item.statusID}
                               />
@@ -578,13 +560,12 @@ class ShipmentTab extends Component {
                     : "Action",
                 className: "action-w",
                 render: (row, item) => {
-                  rowid = rowid + 1;
                   return (
                     <div className="pickuppendingcustom">
                       {item.actionTypeName === "Pickup Pending" ? (
                         <>
-                          <Popover
-                            content={
+                          <Popconfirm
+                            title={
                               <div className="pickuppending-table">
                                 <table>
                                   <tbody>
@@ -593,7 +574,7 @@ class ShipmentTab extends Component {
                                         <label>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                                .pickupdate
+                                              .pickupdate
                                             : "Pickup Date"}
                                           :
                                         </label>
@@ -608,7 +589,7 @@ class ShipmentTab extends Component {
                                         <label>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                                .pickuptime
+                                              .pickuptime
                                             : "Pickup Time"}
                                           :
                                         </label>
@@ -625,53 +606,29 @@ class ShipmentTab extends Component {
                                         <label>
                                           {TranslationContext !== undefined
                                             ? TranslationContext.label
-                                                .pickupdone
+                                              .pickupdone
                                             : "Pickup Done"}
                                         </label>
-                                        <button
-                                          type="button"
-                                          className="popbtn"
-                                          onClick={this.handleUpdateDateandTime.bind(
-                                            this,
-                                            item.id
-                                          )}
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.yes
-                                            : "Yes"}
-                                        </button>
-                                      </td>
-                                      <td>
-                                        <label style={{ visibility: "hidden" }}>
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.label
-                                                .pickupdone
-                                            : "Pickup Done"}
-                                        </label>
-                                        <button
-                                          type="button"
-                                          className="popbtnno"
-                                        >
-                                          {TranslationContext !== undefined
-                                            ? TranslationContext.button.no
-                                            : "No"}
-                                        </button>
                                       </td>
                                     </tr>
                                   </tbody>
                                 </table>
                               </div>
                             }
-                            trigger="click"
-                            overlayClassName="order-popover order-popover-butns"
+                            overlayClassName="order-popover order-popover-butns popbtn"
                             placement="bottomRight"
-                            // onVisibleChange={(visible) =>
-                            //   this.setState({ orderPopoverOverlay: visible })
-                            // }
-                            id={item.actionTypeName + rowid}
+                            onVisibleChange={(visible) =>
+                              this.setState({ orderPopoverOverlay: visible })
+                            }
+                            icon={false}
+                            okText="Yes"
+                            onConfirm={this.handleUpdateDateandTime.bind(
+                              this,
+                              item.id
+                            )}
+                            cancelText="No"
                           >
                             <button
-                              id={item.actionTypeName + rowid}
                               className={
                                 item.actionTypeName === "Pickup Pending"
                                   ? "butn order-grid-butn order-grid-butn-green"
@@ -680,7 +637,7 @@ class ShipmentTab extends Component {
                             >
                               {item.actionTypeName}
                             </button>
-                          </Popover>
+                          </Popconfirm>
                         </>
                       ) : null}
                       {item.actionTypeName === "Create Shipment" ? (
@@ -784,7 +741,6 @@ class ShipmentTab extends Component {
           <Pagination
             currentPage={this.state.currentPage}
             totalSize={this.state.totalCount}
-            // totalSize={row.customerCount}
             sizePerPage={this.state.postsPerPage}
             changeCurrentPage={this.PaginationOnChange}
             theme="bootstrap"
@@ -872,14 +828,9 @@ class ShipmentTab extends Component {
                       this.state.airWayBill2ndTab
                         ? "tab-pane fade"
                         : this.state.createdShoppingTabs
-                        ? "tab-pane fade"
-                        : "tab-pane fade show active"
+                          ? "tab-pane fade"
+                          : "tab-pane fade show active"
                     }
-                    // className={
-                    //   this.state.createdShoppingTabs
-                    //     ? "tab-pane fade"
-                    //     : "tab-pane fade show active"
-                    // }
                     id="article-Map-tab"
                     role="tabpanel"
                     aria-labelledby="article-Map-tab"
@@ -889,17 +840,13 @@ class ShipmentTab extends Component {
                         <span style={{ marginBottom: "30px" }}>
                           {TranslationContext !== undefined
                             ? TranslationContext.span
-                                .itemidshownbelowmappedtothisorder
+                              .itemidshownbelowmappedtothisorder
                             : "Item id shown below mapped to this Order"}
                           &nbsp;<b> {this.state.ShipmentOrderId}</b>&nbsp;
                           {TranslationContext !== undefined
                             ? TranslationContext.span.only
                             : "only."}
                           <br />
-                          {/* {TranslationContext !== undefined
-                            ? TranslationContext.span
-                                .selectanyitemidyouwanttosendforshipment
-                            : "Select any item id, you want to send for shipment."} */}
                         </span>
                         <div className="table-responsive">
                           <Table
@@ -939,10 +886,6 @@ class ShipmentTab extends Component {
                                 dataIndex: "itemPrice",
                               },
                               {
-                                // title:
-                                //   TranslationContext !== undefined
-                                //     ? TranslationContext.title.quantity
-                                //     : "Price Paid",
                                 title: "Article Quantity",
                                 dataIndex: "quantity",
                               },
@@ -963,7 +906,11 @@ class ShipmentTab extends Component {
                         </button>
                         <button
                           style={{ marginRight: "0px" }}
-                          className="btn-shipment-saveNext"
+                          className={
+                            this.state.createShipmentBtnDisbaled
+                              ? "btnClickDisabled btn-shipment-saveNext"
+                              : "btn-shipment-saveNext"
+                          }
                           onClick={this.handleCreateShipmentAWB.bind(this)}
                         >
                           Save &amp; Next
@@ -976,14 +923,9 @@ class ShipmentTab extends Component {
                       this.state.airWayBill2ndTab
                         ? "tab-pane fade show active"
                         : this.state.createdShoppingTabs
-                        ? "tab-pane fade show active"
-                        : "tab-pane fade"
+                          ? "tab-pane fade show active"
+                          : "tab-pane fade"
                     }
-                    // className={
-                    //   this.state.createdShoppingTabs
-                    //     ? "tab-pane fade show active"
-                    //     : "tab-pane fade"
-                    // }
                     id="airwayBill-tab"
                     role="tabpanel"
                     aria-labelledby="airwayBill-tab"
@@ -1000,8 +942,8 @@ class ShipmentTab extends Component {
                             {this.state.IsStoreDelivery ? (
                               "Courier Partner - Store"
                             ) : (
-                              <> AWB No - {this.state.AirwayBillAWBNo}</>
-                            )}
+                                <> AWB No - {this.state.AirwayBillAWBNo}</>
+                              )}
                           </h2>
                           <p>
                             {TranslationContext !== undefined

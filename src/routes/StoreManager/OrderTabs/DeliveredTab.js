@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import axios from "axios";
-import { Table, Popover, Popconfirm, Select } from "antd";
-import Modal from "react-responsive-modal";
+import { Table, Popover } from "antd";
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import Pagination from "react-pagination-js";
@@ -40,7 +39,6 @@ class DeliveredTab extends Component {
     }
   }
   handleGetOrderDeliveredData() {
-    debugger;
     let self = this;
     var pageNumber = this.state.currentPage;
     this.setState({
@@ -58,8 +56,7 @@ class DeliveredTab extends Component {
         FilterStatus: this.state.strStatus,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -81,7 +78,6 @@ class DeliveredTab extends Component {
       });
   }
   handleGetOrderStatusFilterData() {
-    debugger;
     let self = this;
 
     axios({
@@ -92,15 +88,14 @@ class DeliveredTab extends Component {
         pageID: 4,
       },
     })
-      .then(function(res) {
-        debugger;
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
           self.setState({
             statusFilterData: data,
           });
-        }else{
+        } else {
           NotificationManager.error(status);
         }
       })
@@ -109,7 +104,6 @@ class DeliveredTab extends Component {
       });
   }
   PaginationOnChange = async (numPage) => {
-    debugger;
     await this.setState({
       currentPage: numPage,
     });
@@ -120,13 +114,12 @@ class DeliveredTab extends Component {
   handlePageItemchange = async (e) => {
     await this.setState({
       postsPerPage: e.target.value,
-      currentPage:1
+      currentPage: 1
     });
 
     this.handleGetOrderDeliveredData();
   };
   handleCheckDeliIndividualStatus() {
-    debugger;
     var checkboxes = document.getElementsByName("DeliveredStatus");
     var strStatus = "";
     for (var i in checkboxes) {
@@ -140,30 +133,6 @@ class DeliveredTab extends Component {
     this.setState({
       strStatus,
     });
-  }
-
-  handleUpdateMarkAsDelivered(orderId) {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/HSOrder/UpdateMarkAsDelivered",
-      headers: authHeader(),
-      params: {
-        orderID: orderId,
-      },
-    })
-      .then(function(res) {
-        let status = res.data.message;
-        if (status === "Success") {
-          self.handleGetOrderDeliveredData();
-          NotificationManager.success("Record Updated Successfully.");
-        }else{
-          NotificationManager.error(status);
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-      });
   }
 
   render() {
@@ -183,7 +152,7 @@ class DeliveredTab extends Component {
                     ? TranslationContext.title.invoiceno
                     : "Invoice no.",
                 dataIndex: "invoiceNo",
-                key:"invoiceNo"
+                key: "invoiceNo"
               },
               {
                 className: "table-coloum-hide",
@@ -293,7 +262,7 @@ class DeliveredTab extends Component {
                     </div>
                   );
                 },
-                filterDropdown: (data, row) => {
+                filterDropdown: () => {
                   return (
                     <div className="campaign-status-drpdwn">
                       <ul>
@@ -307,7 +276,6 @@ class DeliveredTab extends Component {
                                 onChange={this.handleCheckDeliIndividualStatus.bind(
                                   this
                                 )}
-                                // checked={this.state.CheckBoxAllStatus}
                                 name="DeliveredStatus"
                                 attrIds={item.statusID}
                               />
@@ -352,8 +320,7 @@ class DeliveredTab extends Component {
                 ),
               },
             ]}
-            expandedRowRender={(row, item) => {
-              debugger;
+            expandedRowRender={(row) => {
               return (
                 <div className="innertabcollapse">
                   <div className="">
@@ -388,7 +355,6 @@ class DeliveredTab extends Component {
               );
             }}
             expandIconColumnIndex={2}
-            // expandIconColumnIndex={5}
             expandIconAsCell={false}
             pagination={false}
             showSizeChanger={true}
@@ -399,7 +365,6 @@ class DeliveredTab extends Component {
           <Pagination
             currentPage={this.state.currentPage}
             totalSize={this.state.totalCount}
-            // totalSize={row.customerCount}
             sizePerPage={this.state.postsPerPage}
             changeCurrentPage={this.PaginationOnChange}
             theme="bootstrap"
