@@ -2365,7 +2365,9 @@ class StoreModule extends Component {
                           value={this.state.selectedFileFormat}
                           onChange={this.setClaimTabData}
                         >
-                          <option value={0}>Select File Format</option>
+                          <option value={0}>
+                          {TranslationContext!==undefined?TranslationContext.option.selectfileformat:"Select File Format"}
+                          </option>
                           {this.state.fileFormat !== null &&
                             this.state.fileFormat.map((item, i) => (
                               <option key={i} value={item.formatID}>

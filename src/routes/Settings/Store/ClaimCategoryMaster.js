@@ -2563,7 +2563,7 @@ class ClaimCategoryMaster extends Component {
                           getOptionLabel={(option) => option.brandName}
                           getOptionValue={(option) => option.brandID}
                           options={this.state.brandData}
-                          placeholder="Please Select Brand"
+                          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.pleaseselectbrand:"Please Select Brand"}
                           closeMenuOnSelect={false}
                           name="selectBrandMulti"
                           onChange={this.handleBrandChange.bind(this)}
@@ -2589,7 +2589,7 @@ class ClaimCategoryMaster extends Component {
                           showSearch={true}
                           value={this.state.list1Value}
                           onChange={this.handleCategoryChange}
-                          placeholder="Please select claim cateogry"
+                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.pleaseselectclaimcategory:"Please select claim category"}
                           onSearch={this.handleGetCategoryList.bind(this)}
                           notFoundContent="No Data Found"
                         >
@@ -2622,7 +2622,7 @@ class ClaimCategoryMaster extends Component {
                           text="Enter new Category"
                           showCancelButton
                           type="input"
-                          inputPlaceholder="Enter Category Name"
+                          inputPlaceholder={TranslationContext!==undefined?TranslationContext.placeholder.entercategoryname:"Enter Category Name"}
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={(inputValue) => {
@@ -2816,7 +2816,9 @@ class ClaimCategoryMaster extends Component {
                           value={this.state.selectStatus}
                           onChange={this.handleStatusChange}
                         >
-                          <option value={0}>Select</option>
+                          <option value={0}>
+                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                          </option>
                           {this.state.activeData !== null &&
                             this.state.activeData.map((item, j) => (
                               <option key={j} value={item.ActiveID}>

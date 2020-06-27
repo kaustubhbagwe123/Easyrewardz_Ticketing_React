@@ -1029,6 +1029,7 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.statusValidate) {
       let self = this;
@@ -1056,7 +1057,7 @@ class MyTicket extends Component {
             if (self.state.isaddKnowledge) {
               self.handleAddKnwoldgeBase();
             } else {
-              NotificationManager.success("Ticket updated successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketupdatedsuccessfully:"Ticket updated successfully.");
               self.props.history.push("myTicketlist");
             }
           } else {
@@ -1600,6 +1601,7 @@ class MyTicket extends Component {
     }, 100);
   }
   handleNoteAddComments() {
+    const TranslationContext = this.state.translateLanguage.default;
     ////
     if (this.state.NoteAddComment.length > 0) {
       let self = this;
@@ -1620,7 +1622,7 @@ class MyTicket extends Component {
           if (status === true) {
             var id = self.state.ticket_Id;
             self.handleGetNotesTabDetails(id);
-            NotificationManager.success("Comment added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.commentaddedsuccessfully:"Comment added successfully.");
             self.setState({
               NoteAddComment: "",
               notesCommentCompulsion: "",
@@ -2208,6 +2210,7 @@ class MyTicket extends Component {
     }
   }
   handleSendMailData(isSend) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     // var str = this.state.mailBodyData;
     // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
@@ -2375,7 +2378,7 @@ class MyTicket extends Component {
           .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Comment Added successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.commentaddedsuccessfully:"Comment Added successfully.");
               self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2471,7 +2474,7 @@ class MyTicket extends Component {
           .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Comment Added successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.commentaddedsuccessfully:"Comment added successfully.");
               self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -3290,6 +3293,7 @@ class MyTicket extends Component {
   }
 
   handleAddKnwoldgeBase() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     var tempDescription = "";
@@ -3323,7 +3327,7 @@ class MyTicket extends Component {
         debugger;
         var status = res.data.status;
         if (status) {
-          NotificationManager.success("Ticket updated successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketupdatedsuccessfully:"Ticket updated successfully.");
           NotificationManager.success("Ticket Added in knowledgebase.");
           self.props.history.push("myTicketlist");
         } else {

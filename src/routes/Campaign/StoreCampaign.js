@@ -196,6 +196,7 @@ class StoreCampaign extends Component {
     callRescheduledTo,
     campaignScriptID
   ) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this,
       calculatedCallReScheduledTo;
     var Updatecheck = "";
@@ -218,9 +219,10 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
+           
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Record Updated Successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
@@ -256,9 +258,10 @@ class StoreCampaign extends Component {
           },
         })
           .then(function(res) {
+            
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Record Updated Successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
               self.handleGetCampaignCustomerData(
                 true,
                 Updatecheck,
@@ -954,6 +957,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        const TranslationContext = this.state.translateLanguage.default;
         var message = response.data.message;
         if (self.state.Respo_ChannelBot === true) {
           if (message === "Success") {
@@ -985,7 +989,7 @@ class StoreCampaign extends Component {
               ""
             );
           } else {
-            NotificationManager.error("Failed");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed");
           }
         }
         self.setState({
@@ -1018,6 +1022,7 @@ class StoreCampaign extends Component {
       },
     })
       .then(function(response) {
+        const TranslationContext = this.state.translateLanguage.default;
         var message = response.data.message;
         if (self.state.Respo_ChannelSMS === true) {
           if (message === "Success") {
@@ -1035,7 +1040,7 @@ class StoreCampaign extends Component {
             self.setState({
               custNameModal: false,
             });
-            NotificationManager.success("SMS Sent Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.button.viewsearch:"SMS Sent Successfully.");
           } else {
             NotificationManager.error("SMS Send Failed.");
           }
@@ -2175,7 +2180,7 @@ class StoreCampaign extends Component {
                                       ? "txtStore dateTimeStore"
                                       : "txtStore dateTimeStore disabled-link"
                                   }
-                                  placeholderText="Select Date &amp; Time"
+                                  placeholderText={TranslationContext!==undefined?TranslationContext.placeholder.selecttimeanddate:"Select Date &amp; Time"}
                                 />
                               </div>
                             </div>
