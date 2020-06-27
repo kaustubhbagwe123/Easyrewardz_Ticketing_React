@@ -1892,8 +1892,6 @@ class Header extends Component {
 
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
-                  self.handleGetChatNotificationCount();
-                  self.handleGetOngoingChat();
                   var chatId = 0;
                   self.setState({ isCustEndChat: data[6] });
                   if (self.state.ongoingChatsData.length > 0) {
@@ -1902,13 +1900,11 @@ class Header extends Component {
                     )[0].chatID;
                   }
                   self.handleGetChatMessagesList(chatId);
-                  self.handleGetNewChat();
                 } else {
-                  self.handleGetOngoingChat();
-                  self.handleGetNewChat();
-
-                  self.handleGetChatNotificationCount();
                 }
+                self.handleGetNewChat();
+                self.handleGetChatNotificationCount();
+                self.handleGetOngoingChat();
               } else {
                 self.handleGetNewChat();
                 self.handleGetChatNotificationCount();

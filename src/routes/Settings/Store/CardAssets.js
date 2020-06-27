@@ -648,8 +648,8 @@ class CardAssets extends Component {
                                       >
                                         {TranslationContext !== undefined
                                           ? TranslationContext.label
-                                              .rejecteddata
-                                          : "Rejected Data"}
+                                              .approverejecteddata
+                                          : "Approved/Rejected Data"}
                                       </label>
                                       <p style={{ display: "inline" }}>
                                         {rowdata.modifyDate}
