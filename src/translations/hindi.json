@@ -1442,7 +1442,15 @@
     "smssentsuccessfully":"एसएमएस सफलतापूर्वक भेजा गया।",
     "pleaseselectstatus":"कृपया पहले स्टेटस चुने।",
     "ticketupdatedsuccessfully":"टिकट सफलतापूर्वक अपडेट किया गया।",
-    "commentaddedsuccessfully":"टिप्पणी सफलतापूर्वक जोड़ी गई।"
+    "commentaddedsuccessfully":"टिप्पणी सफलतापूर्वक जोड़ी गई।",
+    "fileuploadedsuccessfully":"फाईल सफलता पूर्वक अपलोड हुई",
+    "filenotuploaded":"फ़ाइल अपलोड नहीं की गई।",
+    "filedeletedsuccessfully":"फ़ाइल सफलतापूर्वक हटा दी गई।",
+    "designationdeletedsuccessfully":"पदनाम सफलतापूर्वक हटा दिया गया।",
+    "hierarchyupdatesuccessfully":"पदानुक्रम अद्यतन सफलतापूर्वक।",
+    "recordalreadyexists":"रिकॉर्ड पहले से ही मौजूद है।",
+    "hierarchynotupdate":"पदानुक्रम अद्यतन नहीं।",
+    "hierarchyaddedsuccessfully":"पदानुक्रम सफलतापूर्वक जोड़ा गया।"
   }
 
 }

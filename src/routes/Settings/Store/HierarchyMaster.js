@@ -311,6 +311,7 @@ class HierarchyMaster extends Component {
   }
 
   handleBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
       const formData = new FormData();
@@ -330,14 +331,14 @@ class HierarchyMaster extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetItem();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
             self.setState({ isShowProgress: false });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((response) => {
@@ -975,6 +976,7 @@ class HierarchyMaster extends Component {
   }
 
   DeleteBulkUploadFile = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       file: {},
@@ -983,11 +985,12 @@ class HierarchyMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   // delete item
   handleDeleteHierarchy(hierarchy_Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     axios({
       method: "post",
@@ -1002,7 +1005,7 @@ class HierarchyMaster extends Component {
         let status = response.data.message;
         if (status === "Success") {
           this.handleGetItem();
-          NotificationManager.success("Designation deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.designationdeletedsuccessfully:"Designation deleted successfully.");
           this.hanldeGetReportListDropDown();
         } else {
           NotificationManager.error(response.data.message);
@@ -1014,6 +1017,7 @@ class HierarchyMaster extends Component {
   }
 
   handleUpdateHierarchyData(e, designationID) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.updateDesignation.length > 0 &&
@@ -1047,22 +1051,22 @@ class HierarchyMaster extends Component {
           let status = response.data.message;
           if (status === "Success") {
             this.handleGetItem();
-            NotificationManager.success("Hierarchy update successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchyupdatesuccessfully:"Hierarchy update successfully.");
             this.hanldeGetReportListDropDown();
             this.setState({ editSaveLoading: false });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
             this.setState({ editSaveLoading: false });
           } else {
             this.setState({ editSaveLoading: false });
-            NotificationManager.error("Hierarchy not update.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchynotupdate:"Hierarchy not update.");
           }
         })
         .catch((response) => {
           console.log(response);
         });
     } else {
-      NotificationManager.error("Hierarchy not update.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchynotupdate:"Hierarchy not update.");
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -1182,6 +1186,7 @@ class HierarchyMaster extends Component {
   }
 
   handleSubmitData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.designation_name.length > 0 &&
@@ -1218,7 +1223,7 @@ class HierarchyMaster extends Component {
           let status = response.data.message;
           if (status === "Success") {
             this.handleGetItem();
-            NotificationManager.success("Hierarchy added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchyaddedsuccessfully:"Hierarchy added successfully.");
             this.hanldeGetReportListDropDown();
             this.setState({
               designation_name: "",
@@ -1230,7 +1235,7 @@ class HierarchyMaster extends Component {
               addSaveLoading: false,
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
             this.setState({ addSaveLoading: false });
           }
         })
