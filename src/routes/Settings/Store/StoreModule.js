@@ -33,8 +33,6 @@ import * as translationMA from "./../../../translations/marathi";
 import { Table, Select } from "antd";
 import "antd/dist/antd.css";
 
- 
-
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -1824,15 +1822,14 @@ class StoreModule extends Component {
             });
           } else {
             debugger;
-            if(status.trim().toLowerCase()==="Record Already Exists".trim().toLowerCase())
-            {
+            if (
+              status.trim().toLowerCase() ===
+              "Record Already Exists".trim().toLowerCase()
+            ) {
               NotificationManager.error("Appointment Record Already Exists");
-            }
-            else
-            {
+            } else {
               NotificationManager.error("Time Slot Not Updated.");
             }
-            
           }
         })
         .catch((data) => {
@@ -1969,7 +1966,7 @@ class StoreModule extends Component {
           });
         }
       }
-    }else{
+    } else {
       if (e.length > 0) {
         this.setState({
           selectedStoreCode: e,
@@ -4310,7 +4307,93 @@ class StoreModule extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12">
-                              <ReactTable
+                              <Table
+                                loading={this.state.loading}
+                                noDataContent="No Record Found"
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                columns={[
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.languagename
+                                        : "Language Name",
+                                    dataIndex: "language",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.status
+                                        : "Status",
+                                    dataIndex: "isActive",
+                                    render: (row) => {
+                                      debugger;
+                                      return (
+                                        <>
+                                          {row===true ? "Active" : "Inactive"}
+                                        </>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.actions
+                                        : "Actions",
+                                    render: (row, rowData) => {
+                                      debugger;
+                                      var ids = rowData["slotId"];
+
+                                      if (rowData.language) {
+                                        var langage = rowData.language.split(
+                                          " "
+                                        )[0];
+                                        if (
+                                          langage.toLowerCase() ==
+                                          "English".toLowerCase()
+                                        ) {
+                                          return <></>;
+                                        } else {
+                                          return (
+                                            <div className="chrdioclr switch switch-primary d-inline m-r-10">
+                                              <input
+                                                type="checkbox"
+                                                id={"lang" + rowData.id}
+                                                name="allModules"
+                                                checked={row.isActive}
+                                                onClick={this.handleDeleteLanguage.bind(
+                                                  this,
+                                                  rowData
+                                                )}
+                                              />
+                                              <label
+                                                htmlFor={"lang" + row.id}
+                                                className="cr cr-float-auto"
+                                                style={{
+                                                  float: "inherit",
+                                                }}
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
+                                      } else {
+                                        return <></>;
+                                      }
+                                    },
+                                  },
+                                ]}
+                                rowKey={(record) => {
+                                  if (record.id) {
+                                    uid = uid + 1;
+                                    return record.id + "l" + uid;
+                                  } else {
+                                    uid = uid + 1;
+                                    return "l" + uid;
+                                  }
+                                }}
+                                pagination={{ defaultPageSize: 10 }}
+                                dataSource={this.state.languageGridData}
+                              ></Table>
+                              {/* <ReactTable
                                 data={this.state.languageGridData}
                                 columns={[
                                   {
@@ -4348,58 +4431,7 @@ class StoreModule extends Component {
                                     sortable: false,
                                     Cell: (row) => {
                                       var ids = row.original["slotId"];
-                                      // return (
-                                      //   <>
-                                      //     <span>
-                                      //       <Popover
-                                      //         content={
-                                      //           <div className="d-flex general-popover popover-body">
-                                      //             <div className="del-big-icon">
-                                      //               <img
-                                      //                 src={DelBigIcon}
-                                      //                 alt="del-icon"
-                                      //               />
-                                      //             </div>
-                                      //             <div>
-                                      //               <p className="font-weight-bold blak-clr">
-                                      //                 Delete file?
-                                      //               </p>
-                                      //               <p className="mt-1 fs-12">
-                                      //                 Are you sure you want to
-                                      //                 delete this file?
-                                      //               </p>
-                                      //               <div className="del-can">
-                                      //                 <a href={Demo.BLANK_LINK}>
-                                      //                   CANCEL
-                                      //                 </a>
-                                      //                 <button
-                                      //                   className="butn"
-                                      //                   onClick={this.handleDeleteLanguage.bind(
-                                      //                     this,
-                                      //                     row.original.id
-                                      //                   )}
-                                      //                 >
-                                      //                   Delete
-                                      //                 </button>
-                                      //               </div>
-                                      //             </div>
-                                      //           </div>
-                                      //         }
-                                      //         placement="bottom"
-                                      //         trigger="click"
-                                      //       >
-                                      //         <img
-                                      //           src={RedDeleteIcon}
-                                      //           alt="del-icon"
-                                      //           className="del-btn"
-                                      //           id={ids}
-                                      //         />
-                                      //       </Popover>
-                                      //     </span>
-                                      //   </>
-                                      // );
-                                      // debugger;
-                                      // var isDisable = false;
+
                                       if (row.original.language) {
                                         var langage = row.original.language.split(
                                           " "
@@ -4416,13 +4448,6 @@ class StoreModule extends Component {
                                                 type="checkbox"
                                                 id={"lang" + row.index}
                                                 name="allModules"
-                                                //attrIds={item.moduleId}
-                                                // checked={
-                                                //   row.original.isActive ===
-                                                //   false
-                                                //     ? true
-                                                //     : false
-                                                // }
                                                 onClick={this.handleDeleteLanguage.bind(
                                                   this,
                                                   row.original
@@ -4442,11 +4467,11 @@ class StoreModule extends Component {
                                     },
                                   },
                                 ]}
-                                // resizable={false}
+                                
                                 minRows={2}
                                 defaultPageSize={10}
                                 showPagination={true}
-                              />
+                              /> */}
                             </div>
                           </div>
                         </div>

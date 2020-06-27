@@ -115,9 +115,9 @@ class ChatSettings extends Component {
         .then((response) => {
           var message = response.data.message;
           if (message === "Success") {
-            NotificationManager.success("Recode update successfully!");
+            NotificationManager.success("Record Updated Successfully");
           } else {
-            NotificationManager.console.error("Recode not update!");
+            NotificationManager.console.error("Record Not Updated");
           }
         })
         .catch((response) => {
@@ -345,11 +345,11 @@ class ChatSettings extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.success("Update successfully!");
+          NotificationManager.success("Updated Successfully");
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.error("Not update successfully!");
+          NotificationManager.error("Not Updated Successfully");
         }
       })
       .catch((response) => {

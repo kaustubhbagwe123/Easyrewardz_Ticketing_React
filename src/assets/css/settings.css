@@ -3661,3 +3661,9 @@
   margin-top: 0 !important;
   margin-left: 30px;
 }
+.chrdioclr.switch input[type="checkbox"] + .cr:before{
+  background: #C8C8C8;
+}
+.chrdioclr.switch.switch-primary input[type="checkbox"]:checked + .cr:before{
+  background: #50d462;
+}

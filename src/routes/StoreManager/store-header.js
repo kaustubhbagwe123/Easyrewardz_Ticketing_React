@@ -790,7 +790,7 @@ class Header extends Component {
             });
           }
         } else {
-          self.setState({ ongoingChatsData: [] });
+          self.setState({ ongoingChatsData: [] ,isMainLoader: false});
         }
       })
       .catch((response) => {
