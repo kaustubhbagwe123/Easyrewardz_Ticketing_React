@@ -413,12 +413,12 @@ class ChatSettings extends Component {
                             className="row"
                             style={{ width: "100%", margin: "0" }}
                           >
-                            <div className="col-md-3">Program Code</div>
+                            <div className="col-md-3">{TranslationContext!==undefined?TranslationContext.div.programcode:"Program Code"}</div>
                             <div className="col-md-3">
                               <Select
                                 showArrow={true}
                                 style={{ width: "100%" ,marginBottom:"10px"}}
-                                placeholder="Select program code"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.selectprogramcode:"Select program code"}
                                 value={this.state.programCode}
                                 disabled={true}
                               >
@@ -436,13 +436,15 @@ class ChatSettings extends Component {
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
-                          <div className="col-md-3">Chat Session Time Out</div>
+                          <div className="col-md-3">
+                          {TranslationContext!==undefined?TranslationContext.div.chatsessiontimeout:"Chat Session Time Out"}
+                          </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
                                 type="text"
                                 className="chatsetngtxt"
-                                placeholder="Enter value"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
                                 name="chatSessionValue"
                                 onChange={this.handleOnChange.bind(this)}
                                 value={this.state.chatSessionValue}
@@ -501,13 +503,15 @@ class ChatSettings extends Component {
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
-                          <div className="col-md-3">Historical Chat Time</div>
+                          <div className="col-md-3">
+                          {TranslationContext!==undefined?TranslationContext.div.historicalchattime:"Historical Chat Time"}
+                          </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
                                 type="text"
                                 className="chatsetngtxt"
-                                placeholder="Enter value"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
                                 onChange={this.handleOnChange.bind(this)}
                                 value={this.state.chatDisplayValue}
                                 maxLength={2}
@@ -566,13 +570,14 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
-                            Set Limit Type box of Chat Window
+                          {TranslationContext!==undefined?TranslationContext.div.setlimittypeboxofchatwindow:"Set Limit Type box of Chat Window"}
+                            
                           </div>
                           <div className="col-md-3">
                             <input
                               type="text"
                               className="chatsetngtxt"
-                              placeholder="Enter value"
+                              placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
                               name="limitText"
                               onChange={this.handleOnChange.bind(this)}
                               value={this.state.limitText}

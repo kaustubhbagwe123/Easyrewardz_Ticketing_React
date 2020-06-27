@@ -1122,7 +1122,7 @@ class Campaign extends Component {
                                   ? "txtStore dateTimeStore"
                                   : "txtStore dateTimeStore disabled-link"
                               }
-                              placeholderText="Select Date &amp; Time"
+                              placeholderText={TranslationContext!==undefined?TranslationContext.placeholder.selecttimeanddate:"Select Date &amp; Time"}
                             />
                           </div>
                         );

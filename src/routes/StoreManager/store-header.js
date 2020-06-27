@@ -2588,7 +2588,9 @@ class Header extends Component {
                         value={this.state.sAgentId}
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value={0}>All Store Member</Option>
+                        <Option value={0}>
+                        {TranslationContext!==undefined?TranslationContext.option.allstoremember:"All Store Member"}
+                        </Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
@@ -3070,10 +3072,10 @@ class Header extends Component {
                                   )}
                                 >
                                   {this.state.agentRecentChatData.length < 9
-                                    ? "Past Chat(0" +
+                                    ? TranslationContext!==undefined?TranslationContext.lable.pastchat0:"Past Chat(0" +
                                       this.state.agentRecentChatData.length +
                                       ")"
-                                    : "Past Chat(" +
+                                    :  TranslationContext!==undefined?TranslationContext.lable.pastchat:"Past Chat(" +
                                       this.state.agentRecentChatData.length +
                                       ")"}
                                 </a>
@@ -3088,7 +3090,8 @@ class Header extends Component {
                             onClick={this.handleActionOpen.bind(this)}
                           >
                             <label className="myticket-submit-solve-button-text">
-                              Action
+                            {TranslationContext!==undefined?TranslationContext.label.action:"Action"}
+                              
                             </label>
                             <img
                               src={DownWhiteImg}
@@ -3189,7 +3192,8 @@ class Header extends Component {
                               {this.state.isCustEndChat &&
                               this.state.customerName !== "" ? (
                                 <label className="endchatlbl">
-                                  Customer has end chat
+                                  {TranslationContext!==undefined?TranslationContext.label.customerhasendchat:"Customer has end chat"}
+                                  
                                 </label>
                               ) : null}
                             </div>
@@ -5449,7 +5453,7 @@ class Header extends Component {
                                   {
                                     title:
                                       TranslationContext !== undefined
-                                        ? TranslationContext.title.time
+                                        ? TranslationContext.title.status
                                         : "Status",
                                     dataIndex: "chatStatus",
                                     width: "20%",
