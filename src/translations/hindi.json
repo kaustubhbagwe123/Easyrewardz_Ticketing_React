@@ -1509,7 +1509,18 @@
     "alertupdatedsuccessfully":"चेतावनी सफलतापूर्वक अपडेट की गई।",
     "alertnotupdated":"चेतावनी अपडेट नहीं की गई।",
     "imageaddedsuccessfully":"चित्र सफलतापूर्वक जोड़ा गया।",
-    "imagerejectedsuccessfully":"चित्र सफलतापूर्वक अस्वीकार।"
+    "imagerejectedsuccessfully":"चित्र सफलतापूर्वक अस्वीकार।",
+    "campaigndeletedsuccessfully":"अभियान सफलतापूर्वक हटा दिया गया।",
+    "campaignnotdeleted":"अभियान हटाया नहीं गया",
+    "recordnotdeleted":"रिकॉर्ड हटाया नहीं गया",
+    "attachmentsavesuccessfully":"अनुलग्नक सफलतापूर्वक सहेजा गया।",
+    "campaignsavedsuccessfully":"अभियान सफलतापूर्वक सहेजा गया।",
+    "campaignnotsaved":"अभियान सहेजा नहीं गया।",
+    "campaignupdatedsuccessfully":"अभियान सफलतापूर्वक अपडेट किया गया।",
+    "appointmentupdatedsuccessfully":"नियुक्ति अद्यतन सफलतापूर्वक",
+    "broadcastupdatedsuccessfully":"सफलतापूर्वक प्रसारण प्रसारित करें",
+    "timeslotaddedsuccessfully":"समय स्लॉट सफलतापूर्वक जोड़ा गया",
+    "timeslotnotadded":"टाइम स्लॉट नहीं जोड़ा गया।"
   }
 
 }
