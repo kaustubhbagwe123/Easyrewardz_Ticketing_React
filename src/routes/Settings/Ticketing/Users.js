@@ -1002,6 +1002,7 @@ class Users extends Component {
 
     var data = this.state.userEditData;
     data[name] = value;
+    data.reportee_ID = 0;
 
     this.setState({
       EditTemp: data,
@@ -2078,7 +2079,7 @@ class Users extends Component {
         if (Msg === "Record In use") {
           NotificationManager.error("Record in use.");
         } else if (Msg === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success("Record Deleted Successfully.");
           self.handleGetUserList();
         }
       })
@@ -2337,7 +2338,9 @@ class Users extends Component {
       (this.state.userEditData.reporteeDesignation_ID > 0 ||
         this.state.userEditData.reporteeDesignation_ID == -1) &&
       (this.state.userEditData.reportee_ID > 0 ||
-        this.state.userEditData.reportee_ID == -1)
+        this.state.userEditData.reportee_ID == -1 ||
+        (this.state.userEditData.reportee_ID !== 0 &&
+          this.state.userEditData.reportee_ID !== "0"))
     ) {
       this.setState({
         selTab: "Mapped Category",
@@ -2492,7 +2495,11 @@ class Users extends Component {
         .catch((data) => {
           debugger;
           if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true,bulkuploadLoading: false, });
+            this.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              bulkuploadLoading: false,
+            });
           }
           console.log(data);
         });
@@ -2894,11 +2901,16 @@ class Users extends Component {
                           </option>
                         ))}
                     </select>
-                    {this.state.userEditData.reportee_ID == 0 && (
+
+                    {this.state.userEditData.reportee_ID === 0 ? (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.editreportToCompulsion}
                       </p>
-                    )}
+                    ) : this.state.userEditData.reportee_ID === "0" ? (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.editreportToCompulsion}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
                 <div
