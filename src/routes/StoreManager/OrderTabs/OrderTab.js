@@ -958,8 +958,8 @@ class OrderTab extends Component {
                           icon={false}
                           okText={
                             item.countSendPaymentLink === 0
-                              ? "Send Link"
-                              : "Send Link Again"
+                              ? TranslationContext!==undefined?TranslationContext.button.sendlink:"Send Link"
+                              : TranslationContext!==undefined?TranslationContext.button.sendlinkagain:"Send Link Again"
                           }
                           onConfirm={this.handleSentPaymentLink.bind(
                             this,
@@ -979,29 +979,29 @@ class OrderTab extends Component {
                                 : "butn order-grid-butn disabled-link"
                             }
                           >
-                            {item.actionTypeName}
+                            {TranslationContext!==undefined?TranslationContext.button.collectpayment:item.actionTypeName}
                           </button>
                         </Popconfirm>
                       )}
                       {item.actionTypeName === "Sync Order" && (
                         <button className="butn order-grid-butn order-grid-butn-yellow">
-                          {item.actionTypeName}
+                          {TranslationContext!==undefined?TranslationContext.button.syncorder:item.actionTypeName}
                         </button>
                       )}
                       {item.actionTypeName === "Get Address" && (
                         <button className="butn order-grid-butn pickedbutn">
-                          {item.actionTypeName}
+                           {TranslationContext!==undefined?TranslationContext.button.getaddress:item.actionTypeName}
                         </button>
                       )}
                       {item.actionTypeName === "Ready to Ship" && (
                         <button className="butn order-grid-butn delibutn">
-                          {item.actionTypeName}
+                           {TranslationContext!==undefined?TranslationContext.button.readytoship:item.actionTypeName}
                         </button>
                       )}
 
                       {item.actionTypeName === "Update Payment" && (
                         <button className="butn order-grid-butn order-grid-butn-yellow">
-                          {item.actionTypeName}
+                           {TranslationContext!==undefined?TranslationContext.button.updatepayment:item.actionTypeName}
                         </button>
                       )}
                     </div>

@@ -1050,7 +1050,16 @@
     "printlabel":"प्रिंट लेबल",
     "printinvoice":"चालान छापें",
     "rto":"आर टी ओ",
-    "delivered":"पहुंचा दिया"
+    "delivered":"पहुंचा दिया",
+    "syncorder":"सिंक ऑर्डर",
+    "getaddress":"पता प्राप्त करें",
+    "readytoship":"बेचने के लिए तैयार",
+    "updatepayment":"भुगतान अपडेट करें",
+    "createshipment":"शिपमेंट बनाएँ",
+    "shipmentcreated":"शिपमेंट बनाया",
+    "pickuppending":"पिकअप लंबित है",
+    "sendlink":"लिंक भेजें",
+    "sendlinkagain":"फिर लिंक भेजें"
   },
   "strong": {
     "hierarchy": "अनुक्रम",
@@ -1156,7 +1165,9 @@
     "customer": "ग्राहक",
     "internal": "अंदर का",
     "store": "दुकान",
-    "ticketing": "टिकिट लेना"
+    "ticketing": "टिकिट लेना",
+    "articlemapping":"लेख मानचित्रण",
+    "AirwayBillNo":"एयरवेबिल संख्या"
   },
   "link": {
     "setting": "समायोजन",
@@ -1411,7 +1422,7 @@
     "customer": "ग्राहक",
     "items": "आइटम",
     "itemid": "सामान आईडी",
-    "itemname": "वस्तु का नाम",
+    "itemname": "सामान का नाम",
     "itemprice": "सामान की क़ीमत",
     "quantity": "मात्रा",
     "pickupdateandtime": "पिकअप तारीख और समय",
@@ -1426,7 +1437,8 @@
     "courierpartner": "कुरियर पार्टनर",
     "referenceno": "संदर्भ संख्या।",
     "addnewdepartment":"नया विभाग जोड़ें",
-    "addnewfunction":"नया फ़ंक्शन जोड़ें"
+    "addnewfunction":"नया फ़ंक्शन जोड़ें",
+    "itemquantity":"सामान की मात्रा"
     
     
   },
