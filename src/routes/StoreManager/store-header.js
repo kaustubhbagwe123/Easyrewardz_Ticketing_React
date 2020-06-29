@@ -2065,7 +2065,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/EndCustomerChat",
       headers: authHeader(),
-      ChatID: chatId,
+      params:{ChatID: chatId},
     })
       .then(function(response) {
         var message = response.data.message;
@@ -2088,7 +2088,7 @@ class Header extends Component {
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    console.log(this.state.isCustEndChat, "-------------isCustEndChat");
+    
     return (
       <React.Fragment>
         <div
