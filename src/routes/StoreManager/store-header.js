@@ -764,6 +764,7 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
+        debugger;
         if (message === "Success") {
           if (ongoingChatsData) {
             var chatData = ongoingChatsData.filter(
@@ -790,7 +791,12 @@ class Header extends Component {
             });
           }
         } else {
-          self.setState({ ongoingChatsData: [] ,isMainLoader: false});
+          self.setState({
+            ongoingChatsData: [],
+            customerName: "",
+            messageData: [],
+            isMainLoader: false,
+          });
         }
       })
       .catch((response) => {
@@ -1886,8 +1892,11 @@ class Header extends Component {
         ) {
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
+              debugger;
               var isMobileNoExist = self.state.ongoingChatsData.filter(
-                (x) => x.mobileNo === data[3].substring(2)
+                (x) =>
+                  x.mobileNo === data[3].substring(2) &&
+                  x.isCustEndChat === false
               );
 
               if (isMobileNoExist.length > 0) {
@@ -1899,12 +1908,19 @@ class Header extends Component {
                       (x) => x.mobileNo === self.state.mobileNo
                     )[0].chatID;
                   }
+                  if (data[6]) {
+                    self.handleEndCustomerChat(chatId);
+                  } else {
+                    self.handleGetOngoingChat();
+                    self.handleGetNewChat();
+                  }
+
                   self.handleGetChatMessagesList(chatId);
                 } else {
+                  self.handleGetOngoingChat();
+                  self.handleGetNewChat();
+                  self.handleGetChatNotificationCount();
                 }
-                self.handleGetNewChat();
-                self.handleGetChatNotificationCount();
-                self.handleGetOngoingChat();
               } else {
                 self.handleGetNewChat();
                 self.handleGetChatNotificationCount();
@@ -2042,9 +2058,37 @@ class Header extends Component {
         console.log(response, "---handleGetChatSession");
       });
   }
+  ////handle end customer chat
+  handleEndCustomerChat(chatId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/EndCustomerChat",
+      headers: authHeader(),
+      ChatID: chatId,
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message === "Success" && data) {
+          self.setState({
+            isCustEndChat: true,
+          });
+          self.handleGetOngoingChat();
+          self.handleGetNewChat();
+        } else {
+          self.setState({
+            isCustEndChat: false,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleEndCustomerChat");
+      });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
+    console.log(this.state.isCustEndChat, "-------------isCustEndChat");
     return (
       <React.Fragment>
         <div
@@ -2589,7 +2633,9 @@ class Header extends Component {
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
                         <Option value={0}>
-                        {TranslationContext!==undefined?TranslationContext.option.allstoremember:"All Store Member"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.allstoremember
+                            : "All Store Member"}
                         </Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
@@ -3072,10 +3118,14 @@ class Header extends Component {
                                   )}
                                 >
                                   {this.state.agentRecentChatData.length < 9
-                                    ? TranslationContext!==undefined?TranslationContext.lable.pastchat0:"Past Chat(0" +
-                                      this.state.agentRecentChatData.length +
-                                      ")"
-                                    :  TranslationContext!==undefined?TranslationContext.lable.pastchat:"Past Chat(" +
+                                    ? TranslationContext !== undefined
+                                      ? TranslationContext.lable.pastchat0
+                                      : "Past Chat(0" +
+                                        this.state.agentRecentChatData.length +
+                                        ")"
+                                    : TranslationContext !== undefined
+                                    ? TranslationContext.lable.pastchat
+                                    : "Past Chat(" +
                                       this.state.agentRecentChatData.length +
                                       ")"}
                                 </a>
@@ -3090,8 +3140,9 @@ class Header extends Component {
                             onClick={this.handleActionOpen.bind(this)}
                           >
                             <label className="myticket-submit-solve-button-text">
-                            {TranslationContext!==undefined?TranslationContext.label.action:"Action"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.action
+                                : "Action"}
                             </label>
                             <img
                               src={DownWhiteImg}
@@ -3192,8 +3243,10 @@ class Header extends Component {
                               {this.state.isCustEndChat &&
                               this.state.customerName !== "" ? (
                                 <label className="endchatlbl">
-                                  {TranslationContext!==undefined?TranslationContext.label.customerhasendchat:"Customer has end chat"}
-                                  
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label
+                                        .customerhasendchat
+                                    : "Customer has end chat"}
                                 </label>
                               ) : null}
                             </div>

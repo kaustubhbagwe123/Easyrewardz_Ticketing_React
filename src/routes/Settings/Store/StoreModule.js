@@ -3700,9 +3700,9 @@ class StoreModule extends Component {
                                 >
                                   <div
                                     className="strdrp-dwn"
-                                    style={{ width: "15%", padding: "0" }}
+                                    style={{ width: "15%", padding: "0",marginTop:"20px" }}
                                   >
-                                    <label>
+                                    <label style={{marginBottom:"10px"}}>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.label.selectstore
                                         : "Select Store"}
@@ -3889,7 +3889,7 @@ class StoreModule extends Component {
                                     )}
                                   </div>
                                 </div>
-                                <label className="slt-non-op-hr-lbl">
+                                <label className="slt-non-op-hr-lbl" style={{fontWeight:"400",marginLeft:"30px"}}>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label
                                         .storenonoperationalhours
@@ -3898,7 +3898,7 @@ class StoreModule extends Component {
 
                                 <div
                                   className="row cmpaign-channel-table lbl-fnt-w-400"
-                                  style={{ margin: "0px", marginLeft: "30px" }}
+                                  style={{ margin: "0px", marginLeft: "15px" }}
                                 >
                                   <div>
                                     <label
