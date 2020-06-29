@@ -622,12 +622,12 @@ class ShipmentTab extends Component {
                               this.setState({ orderPopoverOverlay: visible })
                             }
                             icon={false}
-                            okText="Yes"
+                            okText={TranslationContext!==undefined?TranslationContext.button.yes:"Yes"}
                             onConfirm={this.handleUpdateDateandTime.bind(
                               this,
                               item.id
                             )}
-                            cancelText="No"
+                            cancelText={TranslationContext!==undefined?TranslationContext.button.no:"No"}
                           >
                             <button
                               className={
@@ -636,7 +636,7 @@ class ShipmentTab extends Component {
                                   : "butn order-grid-butn"
                               }
                             >
-                              {item.actionTypeName}
+                             {TranslationContext!==undefined?TranslationContext.button.pickuppending:item.actionTypeName}
                             </button>
                           </Popconfirm>
                         </>
@@ -655,7 +655,7 @@ class ShipmentTab extends Component {
                               item.id
                             )}
                           >
-                            {item.actionTypeName}
+                            {TranslationContext!==undefined?TranslationContext.button.createshipment:item.actionTypeName}
                           </button>
                         </>
                       ) : null}
@@ -673,7 +673,7 @@ class ShipmentTab extends Component {
                               item.id
                             )}
                           >
-                            {item.actionTypeName}
+                           {TranslationContext!==undefined?TranslationContext.button.shipmentcreated:item.actionTypeName}
                           </button>
                         </>
                       ) : null}
@@ -810,7 +810,7 @@ class ShipmentTab extends Component {
                         className="arti-check"
                         checked={true}
                       />
-                      Article Mapping
+                      {TranslationContext!==undefined?TranslationContext.checkbox.articlemapping:"Article Mapping"}
                     </a>
                   </li>
                   <li className="nav-item">
@@ -831,7 +831,7 @@ class ShipmentTab extends Component {
                         className="arti-check"
                         checked={this.state.createdShoppingTabs}
                       />
-                      Airway Bill No
+                       {TranslationContext!==undefined?TranslationContext.checkbox.AirwayBillNo:"Article Mapping"}
                     </a>
                   </li>
                 </ul>
@@ -900,7 +900,9 @@ class ShipmentTab extends Component {
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: "Article Quantity",
+                                title: TranslationContext !== undefined
+                                ? TranslationContext.title.itemquantity
+                                : "Article Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -916,7 +918,8 @@ class ShipmentTab extends Component {
                           style={{ marginRight: "10px" }}
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >
-                          Cancel
+                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          
                         </button>
                         <button
                           style={{ marginRight: "0px" }}
@@ -927,7 +930,7 @@ class ShipmentTab extends Component {
                           }
                           onClick={this.handleCreateShipmentAWB.bind(this)}
                         >
-                          Save &amp; Next
+                          {TranslationContext!==undefined?TranslationContext.button.saveandnext:"Save &amp; Next"}
                         </button>
                       </div>
                     </div>
@@ -986,14 +989,15 @@ class ShipmentTab extends Component {
                           style={{ marginRight: "10px" }}
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >
-                          Cancel
+                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
+                          
                         </button>
                         <button
                           style={{ marginRight: "0px" }}
                           className="btn-shipment-saveNext"
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >
-                          Done
+                           {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
                         </button>
                       </div>
                     </div>
