@@ -5460,7 +5460,7 @@ class Header extends Component {
                                   {
                                     title:
                                       TranslationContext !== undefined
-                                        ? TranslationContext.title.agent
+                                        ? TranslationContext.title.mobilenumber
                                         : "Mobile No",
                                     dataIndex: "customerMobile",
                                     width: "20%",
@@ -5739,7 +5739,9 @@ class Header extends Component {
                                 },
                               },
                               {
-                                title: "Mobile No",
+                                title: TranslationContext !== undefined
+                                ? TranslationContext.title.mobilenumber
+                                : "Mobile No",
                                 dataIndex: "customerMobile",
                                 width: "20%",
                                 className: "textnowrap-table",
@@ -5772,7 +5774,7 @@ class Header extends Component {
                               {
                                 title:
                                   TranslationContext !== undefined
-                                    ? TranslationContext.title.time
+                                    ? TranslationContext.title.status
                                     : "Status",
                                 dataIndex: "chatStatus",
                                 width: "20%",

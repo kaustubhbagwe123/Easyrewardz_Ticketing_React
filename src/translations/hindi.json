@@ -471,7 +471,7 @@
     "addthisticket": "इस टिकट को नॉलेज बेस में जोड़ें?",
     "varunkumar": "वरुण कुमार",
     "newmessages": "नए संदेश",
-    "nonewmessages": "कोई नया संदेश नहीं",
+    "nonewmessages": "शुन्य नए सन्देश",
     "mohitverma": "मोहित वर्मा",
     "ankitgupta": "अंकित गुप्ता",
     "vipinkumar": "विपिन कुमार",
@@ -604,7 +604,8 @@
     "pincode": "पिन कोड",
     "successfullymappedto": "सफलतापूर्वक मैप किया गया",
     "updated": "अद्यतन",
-    "invoiceno": "चालान नंबर"
+    "invoiceno": "चालान नंबर",
+    "paymentdate":"भुगतान तिथि"
   },
   "small": {
     "moreinsights": "अधिक जानकारी देखें",
@@ -1046,7 +1047,9 @@
     "retry": "पुन: प्रयास करें",
     "printmanifest":"प्रिंट मेनीफेस्ट",
     "printlabel":"प्रिंट लेबल",
-    "printinvoice":"चालान छापें"
+    "printinvoice":"चालान छापें",
+    "rto":"आर टी ओ",
+    "delivered":"पहुंचा दिया"
   },
   "strong": {
     "hierarchy": "अनुक्रम",
@@ -1424,6 +1427,7 @@
     "addnewdepartment":"नया विभाग जोड़ें",
     "addnewfunction":"नया फ़ंक्शन जोड़ें"
     
+    
   },
   "content": {
     "howmanydaystoshowchathistory": "चैट हिस्ट्री दिखाने के लिए कितने दिन चाहिए ।"
@@ -1437,7 +1441,13 @@
     "order": "गण",
     "createdname": "बनाया हुआ नाम",
     "languagename": "भाषा का नाम",
-    "status": "स्थिति"
+    "status": "स्थिति",
+    "storetiming":"स्टोर टाइमिंग",
+    "nonoperationalhours":"गैर परिचालन घंटे",
+    "slotduration":"स्लॉट अवधि",
+    "maxcapacity":"अधिकतम क्षमता",
+    "totalslot":"कुल स्लॉट",
+    "appointmentdays":"नियुक्ति के दिन"
   },
   "validation":{
     "designationnamefieldiscompulsory":"पदनाम नाम फ़ील्ड अनिवार्य है।"

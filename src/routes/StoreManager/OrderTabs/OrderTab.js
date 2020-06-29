@@ -905,7 +905,8 @@ class OrderTab extends Component {
                               <div className="pay-done">
                                 <p>
                                   {" "}
-                                  Payment Date :
+                                  
+                                  {TranslationContext!==undefined?TranslationContext.p.viewsearch:"Payment Date"}:
                                 </p>
                                 <span>
                                   {" "}

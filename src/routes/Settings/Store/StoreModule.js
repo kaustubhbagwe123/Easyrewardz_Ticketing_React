@@ -4077,7 +4077,7 @@ class StoreModule extends Component {
                                       this
                                     )}
                                   >
-                                    <option value={0}>All</option>
+                                    <option value={0}>{TranslationContext!==undefined?TranslationContext.option.all:"All"}</option>
                                     {this.state.storeCodeData !== null &&
                                       this.state.storeCodeData.map(
                                         (item, s) => (
@@ -4118,27 +4118,39 @@ class StoreModule extends Component {
                                     dataIndex: "storeCode",
                                   },
                                   {
-                                    title: "Store Timing",
+                                    title:  TranslationContext !== undefined
+                                    ? TranslationContext.header.storetiming
+                                    : "Store Timing",
                                     dataIndex: "storeTimimg",
                                   },
                                   {
-                                    title: "Non Operational Hour",
+                                    title:TranslationContext !== undefined
+                                    ? TranslationContext.header.nonoperationalhours
+                                    : "Non Operational Hour",
                                     dataIndex: "nonOperationalTimimg",
                                   },
                                   {
-                                    title: "Slot Duration",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.slotduration
+                                    : "Slot Duration",
                                     dataIndex: "storeSlotDuration",
                                   },
                                   {
-                                    title: "Max Capacity",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.maxcapacity
+                                    : "Max Capacity",
                                     dataIndex: "maxCapacity",
                                   },
                                   {
-                                    title: "Total Slot",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.totalslot
+                                    : "Total Slot",
                                     dataIndex: "totalSlot",
                                   },
                                   {
-                                    title: "Appointment Days",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.appointmentdays
+                                    : "Appointment Days",
                                     dataIndex: "appointmentDays",
                                   },
                                   {

@@ -445,7 +445,8 @@ class ShipmentAssignedTab extends Component {
                             : true
                         }
                       >
-                        RTO
+                        {TranslationContext!==undefined?TranslationContext.button.rto:"RTO"}
+                        
                       </button>
                       <button
                         className={
@@ -467,7 +468,8 @@ class ShipmentAssignedTab extends Component {
                             : true
                         }
                       >
-                        Delivered
+                         {TranslationContext!==undefined?TranslationContext.button.delivered:"Delivered"}
+                        
                       </button>
                     </div>
                   );
