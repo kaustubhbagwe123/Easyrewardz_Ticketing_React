@@ -1790,6 +1790,7 @@ class StoreModule extends Component {
 
   /// Handle Update TimeSlot data
   handleUpdateTimeSlotData() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (this.state.editstoreCode !== "0" && this.state.editmaxCapacity !== "") {
       debugger;
@@ -1816,7 +1817,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Time Slot Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotupdatesuccessfully:"Time Slot Updated Successfully.");
             self.handleGetTimeslotGridData();
             self.setState({
               editSlotModal: false,
@@ -1838,9 +1839,9 @@ class StoreModule extends Component {
               status.trim().toLowerCase() ===
               "Record Already Exists".trim().toLowerCase()
             ) {
-              NotificationManager.error("Appointment Record Already Exists");
+              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.appointmentrecordalreadyexists:"Appointment Record Already Exists");
             } else {
-              NotificationManager.error("Time Slot Not Updated.");
+              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotnotupdated:"Time Slot Not Updated.");
             }
           }
         })
@@ -1857,6 +1858,7 @@ class StoreModule extends Component {
   }
 
   handleSubmitLanguageDate() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (parseInt(this.state.selectLanguage) !== 0) {
       axios({
@@ -1870,13 +1872,13 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Language Added Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.languageaddedsuccessfully:"Language Added Successfully.");
             self.handleGetLanguageGridData();
             self.setState({
               selectLanguage: 0,
             });
           } else {
-            NotificationManager.error(status);
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.languagenotadded:status);
           }
         })
         .catch((data) => {
@@ -1958,13 +1960,14 @@ class StoreModule extends Component {
     this.handleGetTimeslotGridData(0, e.target.value);
   }
   handleStoreChangeChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.TimeSlotGridData.length > 0) {
       var isExits = this.state.TimeSlotGridData.filter(
         (x) => x.storeId === e[e.length - 1]
       );
       if (isExits.length > 0) {
-        NotificationManager.error("Slot already created of this store code.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.slotalreadycreatedofthisstorecode:"Slot already created of this store code.");
       } else {
         if (e.length > 0) {
           this.setState({

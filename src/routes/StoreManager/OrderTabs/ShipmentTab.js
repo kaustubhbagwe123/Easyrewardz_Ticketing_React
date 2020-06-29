@@ -139,6 +139,7 @@ class ShipmentTab extends Component {
   }
   /// handle Update Date and Time
   handleUpdateDateandTime(OrderId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -151,10 +152,10 @@ class ShipmentTab extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Success.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.success:"Success.");
           self.handleGetShipmentTabGridData();
         } else {
-          NotificationManager.error("Failed.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed.");
         }
       })
       .catch((data) => {

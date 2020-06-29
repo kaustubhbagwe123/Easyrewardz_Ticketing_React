@@ -239,7 +239,7 @@ class StoreCampaign extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Please Select Date and Time.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectdateandtime:"Please Select Date and Time.");
       }
     } else {
       if (responseID !== 0) {
@@ -278,12 +278,13 @@ class StoreCampaign extends Component {
             console.log(data);
           });
       } else {
-        NotificationManager.error("Please Select Response.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectresponse:"Please Select Response.");
       }
     }
   }
 
   handleCloseCampaign(campaignTypeID, e) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     this.setState({
       loading: true,
@@ -301,7 +302,7 @@ class StoreCampaign extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Campaign closed successFully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignclosedsuccessfully:"Campaign closed successfully.");
           self.handleGetCampaignGridData();
         } else {
           self.setState({
@@ -315,6 +316,7 @@ class StoreCampaign extends Component {
   }
 
   handleCreateTicket() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.modalData.tiketTitle === "") {
       this.setState({ isTiketTitle: "Please Enter Ticket Title." });
     } else {
@@ -974,11 +976,11 @@ class StoreCampaign extends Component {
               ""
             );
           } else {
-            NotificationManager.error("Server temporarily not available.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
           }
         } else {
           if (message === "Success") {
-            NotificationManager.success("Sent Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
             self.setState({
               custNameModal: false,
             });
@@ -1033,16 +1035,16 @@ class StoreCampaign extends Component {
               responsiveShareVia: false,
             });
           } else {
-            NotificationManager.error("Server temporarily not available.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.servertemporarilynotavailable:"Server temporarily not available.");
           }
         } else {
           if (message === "Success") {
             self.setState({
               custNameModal: false,
             });
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.button.viewsearch:"SMS Sent Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.smssentsuccessfully:"SMS Sent Successfully.");
           } else {
-            NotificationManager.error("SMS Send Failed.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.smssentfailed:"SMS Send Failed.");
           }
         }
         self.setState({
@@ -1057,6 +1059,7 @@ class StoreCampaign extends Component {
 
   /// Send Via Messenger data
   handleSendViaMessanger(data) {
+    const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       msngrDisable: true,
     });
@@ -1083,7 +1086,7 @@ class StoreCampaign extends Component {
             custNameModal: false,
           });
           if (self.state.Respo_ChannelMessanger === false) {
-            NotificationManager.success("Sent Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
           }
           window.open("//" + data, "_blank");
           if (self.state.Respo_ChannelMessanger === true) {
@@ -1095,7 +1098,7 @@ class StoreCampaign extends Component {
             });
           }
         } else {
-          NotificationManager.error("Server temporarily not available.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.servertemporarilynotavailable:"Server temporarily not available.");
         }
         self.setState({
           msngrDisable: false,
@@ -1418,6 +1421,7 @@ class StoreCampaign extends Component {
   }
   /// handle Broadcast execute
   handleBroadcastExecute(store_Code, campaign_Code) {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (this.state.broadcastChannel !== "") {
       axios({
@@ -1433,14 +1437,14 @@ class StoreCampaign extends Component {
         .then(function(response) {
           var message = response.data.message;
           if (message == "Success") {
-            NotificationManager.success("Sent Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Successfully.");
             self.handleGetBroadcastConfiguration(store_Code, campaign_Code);
             self.setState({
               broadcastChannel: "",
               broadChannelValidation: "",
             });
           } else {
-            NotificationManager.error("Sent Failed.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.sentsuccessfully:"Sent Failed.");
           }
         })
         .catch((response) => {

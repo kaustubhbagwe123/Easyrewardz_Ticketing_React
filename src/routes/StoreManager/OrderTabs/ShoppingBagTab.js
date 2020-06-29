@@ -168,6 +168,7 @@ class ShoppingBagTab extends Component {
 
   /// handle cancel and comment for Shopping bag
   handleCancleAndCommnetShopBag(ShopId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.ShopCancelComment !== "") {
       axios({
@@ -185,20 +186,21 @@ class ShoppingBagTab extends Component {
             self.setState({
               ShopCancelComment: "",
             });
-            NotificationManager.success("Success.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.success:"Success.");
             self.handleGetShoppingBagGridData();
           } else {
-            NotificationManager.error("Failed.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed.");
           }
         })
         .catch((data) => {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please Enter Comment.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentercomment:"Please Enter Comment.");
     }
   }
   handleConvertToOrder(ShopId, e) {
+    const TranslationContext = this.state.translateLanguage.default;
     e.stopPropagation();
     let self = this;
     if (this.state.invoiceNo !== "" && this.state.amountNo !== "") {
@@ -219,10 +221,10 @@ class ShoppingBagTab extends Component {
               invoiceNo: "",
               amountNo: "",
             });
-            NotificationManager.success("Success.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.success:"Success.");
             self.handleGetShoppingBagGridData();
           } else {
-            NotificationManager.error("Failed.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed.");
           }
         })
         .catch((data) => {
@@ -230,9 +232,9 @@ class ShoppingBagTab extends Component {
         });
     } else {
       if (this.state.invoiceNo === "") {
-        NotificationManager.error("Please Enter Order Id.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterorderid:"Please Enter Order Id.");
       } else {
-        NotificationManager.error("Please Enter Amount.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenteramount:"Please Enter Amount.");
       }
     }
   }

@@ -146,6 +146,7 @@ class OrderTab extends Component {
   }
   /// handle Sent Payment Link
   handleSentPaymentLink(item) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -161,9 +162,9 @@ class OrderTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
-          NotificationManager.success("Link Send Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.linksendsuccessfully:"Link Send Successfully.");
         } else {
-          NotificationManager.error(status);
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.linknotsendsuccessfully:status);
         }
       })
       .catch((data) => {
@@ -292,6 +293,7 @@ class OrderTab extends Component {
   }
 
   handleUpdateAddressPending(orderId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -322,9 +324,9 @@ class OrderTab extends Component {
             country: "",
             landmark: "",
           });
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
         } else {
-          NotificationManager.error(status);
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:status);
         }
       })
       .catch((data) => {
@@ -333,33 +335,34 @@ class OrderTab extends Component {
   }
 
   handleAddressPending(orderId) {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.shippingAddress === "") {
-      NotificationManager.error("Please enter address.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenteraddress:"Please enter address.");
       return false;
     }
 
     if (this.state.pincode === "") {
-      NotificationManager.error("Please enter pincode.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterpincode:"Please enter pincode.");
       return false;
     } else {
       if (this.state.pincode.length < 6) {
-        NotificationManager.error("Please enter 6 digits pincode");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentersixdigitpinoce:"Please enter 6 digits pincode");
         return false;
       }
     }
 
     if (this.state.city === "") {
-      NotificationManager.error("Please enter city.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentercity:"Please enter city.");
       return false;
     }
 
     if (this.state.state === "") {
-      NotificationManager.error("Please enter state.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstate:"Please enter state.");
       return false;
     }
 
     if (this.state.country === "") {
-      NotificationManager.error("Please enter country.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentercountry:"Please enter country.");
       return false;
     }
 

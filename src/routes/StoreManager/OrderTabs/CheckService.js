@@ -57,6 +57,7 @@ class CheckService extends Component {
   }
   /// handle Submit Check service data
   handleUpdateCheckServiceData() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (this.state.pin_code !== "") {
       this.setState({
@@ -74,12 +75,12 @@ class CheckService extends Component {
         .then(function(res) {
           let status = res.data.responseData.available;
           if (status === "true") {
-            NotificationManager.success("Delivery Available.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.viewsearch:"Delivery Available.");
             self.setState({
               btnSubmitData: false,
             });
           } else {
-            NotificationManager.error("Service not available on entered Pincode.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.servicenotavailableonenteredpincode:"Service not available on entered Pincode.");
             self.setState({
               btnSubmitData: false,
             });

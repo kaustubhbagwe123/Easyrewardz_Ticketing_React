@@ -60,6 +60,7 @@ class OrderSetting extends Component {
   }
 
   handleUpdateModConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     axios({
       method: "post",
@@ -75,7 +76,7 @@ class OrderSetting extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Module Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.moduleupdatedsuccessfully:"Module Updated Successfully.");
         }
       })
       .catch((data) => {
@@ -126,6 +127,7 @@ class OrderSetting extends Component {
   }
 
   handleUpdateOrderConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     axios({
       method: "post",
@@ -170,9 +172,9 @@ class OrderSetting extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Order Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.orderupdatedsuccessfully:"Order Updated Successfully.");
         } else {
-          NotificationManager.error("Order Not Updated.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.ordernotupdated:"Order Not Updated.");
         }
       })
       .catch((data) => {

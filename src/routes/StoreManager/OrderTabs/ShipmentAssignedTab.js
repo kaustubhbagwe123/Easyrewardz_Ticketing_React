@@ -322,7 +322,8 @@ class ShipmentAssignedTab extends Component {
                           item.courierPartnerOrderID
                         )}
                       >
-                        Print Manifest
+                         {TranslationContext!==undefined?TranslationContext.button.printmanifest:"Print Manifest"}
+                        
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
@@ -331,12 +332,14 @@ class ShipmentAssignedTab extends Component {
                           item.courierPartnerShipmentID
                         )}
                       >
-                        Print Label
+                         {TranslationContext!==undefined?TranslationContext.button.printlabel:"Print Label"}
+                        
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
                       >
-                        Print Invoice
+                        {TranslationContext!==undefined?TranslationContext.button.printinvoice:"Print Invoice"}
+                        
                       </button>
                     </div>
                   ) : (
