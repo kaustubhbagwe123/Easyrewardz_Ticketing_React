@@ -725,7 +725,7 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label={TranslationContext!==undefined?TranslationContext.label.smsandwhatsapp:"SMS &amp; WhatsApp"}>
+                <Tab label={TranslationContext!==undefined?TranslationContext.label.smsandwhatsapp:"SMS & WhatsApp"}>
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -733,7 +733,7 @@ class OrderSetting extends Component {
                           <div className="row">
                             <div className="col-md-5">
                               <div className="right-sect-div">
-                                <h3>{TranslationContext!==undefined?TranslationContext.h3.smsandwhatsapp:"SMS &amp; WhatsApp"}</h3>
+                                <h3>{TranslationContext!==undefined?TranslationContext.h3.smsandwhatsapp:"SMS & WhatsApp"}</h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
