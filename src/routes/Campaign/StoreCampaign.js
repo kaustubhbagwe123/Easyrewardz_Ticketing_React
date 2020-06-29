@@ -2035,7 +2035,7 @@ class StoreCampaign extends Component {
                                   name="allStatus"
                                 />
                                 <label htmlFor="all-status">
-                                  <span className="ch1-text">All</span>
+                                  <span className="ch1-text">{TranslationContext!==undefined?TranslationContext.option.all:"All"}</span>
                                 </label>
                               </li>
                               <li>
@@ -2052,7 +2052,7 @@ class StoreCampaign extends Component {
                                   attrIds={100}
                                 />
                                 <label htmlFor="status100">
-                                  <span className="ch1-text">Contacted</span>
+                                  <span className="ch1-text">{TranslationContext!==undefined?TranslationContext.span.Contacted:"Contacted"}</span>
                                 </label>
                               </li>
                               <li>
@@ -2070,7 +2070,7 @@ class StoreCampaign extends Component {
                                 />
                                 <label htmlFor="status101">
                                   <span className="ch1-text">
-                                    Not Contacted
+                                  {TranslationContext!==undefined?TranslationContext.span.NotContacted:"Not Contacted"}
                                   </span>
                                 </label>
                               </li>
@@ -2088,7 +2088,9 @@ class StoreCampaign extends Component {
                                   attrIds={102}
                                 />
                                 <label htmlFor="status102">
-                                  <span className="ch1-text">Follow Up</span>
+                                  <span className="ch1-text">
+                                  {TranslationContext!==undefined?TranslationContext.span.FollowUp:"Follow Up"}
+                                  </span>
                                 </label>
                               </li>
                               <li>
@@ -2105,7 +2107,9 @@ class StoreCampaign extends Component {
                                   attrIds={103}
                                 />
                                 <label htmlFor="status103">
-                                  <span className="ch1-text">Converted</span>
+                                  <span className="ch1-text">
+                                  {TranslationContext!==undefined?TranslationContext.span.Converted:"Converted"}
+                                  </span>
                                 </label>
                               </li>
                               <li>
@@ -2122,7 +2126,9 @@ class StoreCampaign extends Component {
                                   attrIds={104}
                                 />
                                 <label htmlFor="status104">
-                                  <span className="ch1-text">Conversation</span>
+                                  <span className="ch1-text">
+                                  {TranslationContext!==undefined?TranslationContext.span.Conversation:"Conversation"}
+                                  </span>
                                 </label>
                               </li>
                             </ul>
@@ -2222,7 +2228,8 @@ class StoreCampaign extends Component {
                                     type="button"
                                   >
                                     <label className="raise-ticketLbl">
-                                      Raise Ticket
+                                    {TranslationContext!==undefined?TranslationContext.span.RaiseTicket:"Raise Ticket"}
+                                      
                                     </label>
                                   </button>
                                 </div>

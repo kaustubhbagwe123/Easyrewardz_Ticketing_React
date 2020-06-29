@@ -361,7 +361,7 @@ class Appointment extends Component {
                           return (
                             <div className="appt-status">
                               <Select
-                                placeholder="Select Status"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.selectstatus:"Select Status"}
                                 onChange={(e) =>
                                   this.handleOnChange(e, row.appointmentID)
                                 }

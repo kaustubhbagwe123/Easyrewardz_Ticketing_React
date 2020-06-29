@@ -4292,12 +4292,9 @@ class StoreUsers extends Component {
                             onClick={this.handleUpdateStoreDetails.bind(this)}
                           >
                             {TranslationContext !== undefined
-                              ? TranslationContext.button.update
-                              : "Update"}{" "}
-                            &amp;
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.next
-                              : "Next"}
+                              ? TranslationContext.button.updateandnext
+                              : "Update &; Next"}{" "}
+                           
                           </button>
                         </div>
                       ) : (
@@ -4306,13 +4303,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSaveStoreDetails.bind(this)}
                           >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.save
-                              : "SAVE"}{" "}
-                            &amp;
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.next
-                              : "Next"}
+                             {TranslationContext !== undefined
+                              ? TranslationContext.button.saveandnext
+                              : "SAVE & Next"}{" "}
                           </button>
                         </div>
                       )}
@@ -4464,12 +4457,9 @@ class StoreUsers extends Component {
                             )}
                           >
                             {TranslationContext !== undefined
-                              ? TranslationContext.button.update
-                              : "Update"}{" "}
-                            &amp;{" "}
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.next
-                              : "Next"}
+                              ? TranslationContext.button.updateandnext
+                              : "Update & Next"}{" "}
+                          
                           </button>
                         </div>
                       ) : (
@@ -4478,13 +4468,9 @@ class StoreUsers extends Component {
                             className="butn"
                             onClick={this.handleSavePersonalDetails.bind(this)}
                           >
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.update
-                              : "Update"}{" "}
-                            &amp;{" "}
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.next
-                              : "Next"}
+                             {TranslationContext !== undefined
+                              ? TranslationContext.button.updateandnext
+                              : "Update & Next"}{" "}
                           </button>
                         </div>
                       )}
@@ -4743,12 +4729,9 @@ class StoreUsers extends Component {
                             onClick={this.handleSaveProfileDetails.bind(this)}
                           >
                             {TranslationContext !== undefined
-                              ? TranslationContext.button.save
-                              : "SAVE"}{" "}
-                            &amp;{" "}
-                            {TranslationContext !== undefined
-                              ? TranslationContext.button.next
-                              : "Next"}
+                              ? TranslationContext.button.saveandnext
+                              : "SAVE &amp Next"}{" "}
+                           
                           </button>
                         </div>
                       )}

@@ -154,7 +154,7 @@
     "brandname": "ब्रांड का नाम",
     "editcategory": "श्रेणी संपादित करें",
     "slatargets": "एस एल ए लक्ष्य",
-    "persla": "% एस एल ए",
+    "persla": "एस एल ए",
     "respond": "जवाब",
     "resolve": "संकल्प",
     "createsla": "एस एल ए बनाएँ",
@@ -268,7 +268,7 @@
     "signin": "साइन इन करें",
     "departmentname": "विभाग का नाम",
     "functionname": "समारोह का नाम",
-    "sla": "% एस एल ए",
+    "sla": "एस एल ए",
     "ordropfilehere": "या फ़ाइल यहाँ छोड़ें",
     "rolename": "रोल्स का नाम",
     "editcampignscript": "संपादित शिविर स्क्रिप्ट",
@@ -380,7 +380,7 @@
     "editpriorty": "प्राथमिकता संपादित करें",
     "uploadeddata": "अपलोड किया गया डेटा",
     "rejecteddata": "अस्वीकृत डेटा",
-    "approverejecteddata": "मंजूर की/अस्वीकृत डेटा",
+    "approverejecteddata": "मंजूर की/अस्वीकृत डेट",
     "pickupdate": "तारीख ले लो",
     "pickuptime": "समय लेने",
     "pickupdone": "पिकअप हो गया",
@@ -943,7 +943,13 @@
     "only": "केवल।",
     "selectanyitemidyouwanttosendforshipment": "किसी भी आइटम आईडी का चयन करें, जिसे आप शिपमेंट के लिए भेजना चाहते हैं।",
     "campaignname": "अभियान का नाम",
-    "paymentsendlinkbutton":"भुगतान लिंक बटन भेजें"
+    "paymentsendlinkbutton":"भुगतान लिंक बटन भेजें",
+    "Contacted":"संपर्क",
+    "NotContacted":"संपर्क नहीं किया गया",
+    "FollowUp":"जाँच करना",
+    "Conversation":"बातचीत",
+    "Converted":"परिवर्तित",
+    "RaiseTicket":"टिकट उठाएं"
   },
   "div": {
     "viewtickets": "टिकट देखें",
@@ -1058,7 +1064,8 @@
     "shipmentcreated":"शिपमेंट बनाया",
     "pickuppending":"पिकअप लंबित है",
     "sendlink":"लिंक भेजें",
-    "sendlinkagain":"फिर लिंक भेजें"
+    "sendlinkagain":"फिर लिंक भेजें",
+    "updateandnext":"अपडेट और आगे"
   },
   "strong": {
     "hierarchy": "अनुक्रम",
@@ -1387,7 +1394,8 @@
     "pleaseselectbrand":"कृपया ब्रांड चुनें",
     "pleaseselectclaimcategory":"कृपया दावा श्रेणी चुनें",
     "entercategoryname":"श्रेणी का नाम दर्ज करें",
-    "selecttimeanddate":"दिनांक एवं समय चुने"
+    "selecttimeanddate":"दिनांक एवं समय चुने",
+    "selectstatus":"स्थिति का चयन करें"
    
   },
   "title": {

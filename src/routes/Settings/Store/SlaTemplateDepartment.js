@@ -2075,9 +2075,9 @@ class SlaTemplateDepartment extends Component {
                                   value={item.ResolveType}
                                   onChange={this.handleSlaTargets.bind(this, i)}
                                 >
-                                  <option value="M">M</option>
-                                  <option value="H">H</option>
-                                  <option value="D">D</option>
+                                  <option value="M">{TranslationContext!==undefined?TranslationContext.option.m:"M"}</option>
+                                  <option value="H">{TranslationContext!==undefined?TranslationContext.option.h:"H"}</option>
+                                  <option value="D">{TranslationContext!==undefined?TranslationContext.option.d:"D"}</option>
                                 </select>
                               </div>
                             </div>
