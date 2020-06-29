@@ -24,8 +24,9 @@ import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
 import matchSorter from "match-sorter";
 import { CSVLink } from "react-csv";
-import * as translationHI from './../../../translations/hindi';
-import * as translationMA from './../../../translations/marathi';
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
+import { Spin } from "antd";
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -67,7 +68,8 @@ class ItemMaster extends Component {
       tempitemData: [],
       isortA: false,
       isATOZ: true,
-      translateLanguage: {}
+      translateLanguage: {},
+      bulkuploadLoading: false,
     };
 
     this.handleGetItem = this.handleGetItem.bind(this);
@@ -77,15 +79,13 @@ class ItemMaster extends Component {
 
   componentDidMount() {
     this.handleGetItem();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   fileUpload = (file) => {
     debugger;
@@ -240,6 +240,9 @@ class ItemMaster extends Component {
     debugger;
     let self = this;
     if (this.state.fileName) {
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
       formData.append("file", this.state.file);
       // this.setState({ isShowProgress: true });
@@ -257,18 +260,31 @@ class ItemMaster extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
             self.setState({ fileName: "", fileSize: "" });
             self.handleGetItem();
             //self.setState(itemData);
-            self.setState({ isErrorBulkUpload: false, isShowProgress: false });
+            self.setState({
+              isErrorBulkUpload: false,
+              isShowProgress: false,
+              bulkuploadLoading: false,
+            });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
+            self.setState({ bulkuploadLoading: false });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((response) => {
-          self.setState({ isErrorBulkUpload: true });
+          self.setState({ isErrorBulkUpload: true, bulkuploadLoading: false });
           console.log(response);
         });
     } else {
@@ -285,7 +301,11 @@ class ItemMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   sortStatusZtoA() {
@@ -1316,7 +1336,9 @@ class ItemMaster extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -1328,7 +1350,9 @@ class ItemMaster extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -1341,12 +1365,15 @@ class ItemMaster extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -1601,8 +1628,9 @@ class ItemMaster extends Component {
           </Modal>
 
           <Link to="/store/settings" className="header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1612,13 +1640,15 @@ class ItemMaster extends Component {
             }}
             className="header-path"
           >
-            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.itemmaster:"Item Master"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.itemmaster
+              : "Item Master"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1640,11 +1670,15 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "brandName",
-                              TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.brandname
+                                : "Brand Name"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.brandname
+                              : "Brand Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1669,11 +1703,15 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCode",
-                              TranslationContext!==undefined?TranslationContext.span.itemcode:"Item Code"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.itemcode
+                                : "Item Code"
                             )}
                           >
-                              {TranslationContext!==undefined?TranslationContext.span.itemcode:"Item Code"}
-                           
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemcode
+                              : "Item Code"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1698,10 +1736,14 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemName",
-                              TranslationContext!==undefined?TranslationContext.span.itemname:"Item Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.itemname
+                                : "Item Name"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.itemname:"Item Name"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemname
+                              : "Item Name"}
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1726,11 +1768,15 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "departmentName",
-                              TranslationContext!==undefined?TranslationContext.span.departmentname:"Department Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.departmentname
+                                : "Department Name"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.departmentname:"Department Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.departmentname
+                              : "Department Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1755,11 +1801,15 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemCategory",
-                              TranslationContext!==undefined?TranslationContext.span.itemcat:"Item Cat"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.itemcat
+                                : "Item Cat"
                             )}
                           >
-                              {TranslationContext!==undefined?TranslationContext.span.itemcat:"Item Cat"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemcat
+                              : "Item Cat"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1784,11 +1834,15 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemSubCategory",
-                              TranslationContext!==undefined?TranslationContext.span.itemsubcat:"Item Sub Cat"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.itemsubcat
+                                : "Item Sub Cat"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.itemsubcat:"Item Sub Cat"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemsubcat
+                              : "Item Sub Cat"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1813,11 +1867,15 @@ class ItemMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "itemGroup",
-                              TranslationContext!==undefined?TranslationContext.span.itemgroup:"Item Group"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.itemgroup
+                                : "Item Group"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.itemgroup:"Item Group"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.itemgroup
+                              : "Item Group"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ === false &&
@@ -1842,11 +1900,15 @@ class ItemMaster extends Component {
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
                     <h3 className="pb-0">
-                    {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.h3.bulkupload
+                        : "Bulk Upload"}
                     </h3>
                     <div className="down-excel">
                       <p>
-                      {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.template
+                          : "Template"}
                       </p>
                       <CSVLink
                         filename={"ItemMaster.csv"}
@@ -1856,118 +1918,146 @@ class ItemMaster extends Component {
                       </CSVLink>
                     </div>
                   </div>
-                  <div className="mainfileUpload">
-                    <Dropzone onDrop={this.fileUpload}>
-                      {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps()}>
-                          <input
-                            {...getInputProps()}
-                            className="file-upload d-none"
-                          />
-                          <div className="file-icon">
-                            <img src={FileUpload} alt="file-upload" />
+                  <Spin
+                    tip="Please wait..."
+                    spinning={this.state.bulkuploadLoading}
+                  >
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.addfile
+                                : "Add File"}
+                            </span>{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.or
+                              : "or"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.dropfilehere
+                              : "Drop File here"}
                           </div>
-                          <span className={"fileupload-span"}>{TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
-                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
-                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
-                        </div>
-                      )}
-                    </Dropzone>
-                  </div>
+                        )}
+                      </Dropzone>
+                    </div>
 
-                  {this.state.fileValidation ? (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.fileValidation}
-                    </p>
-                  ) : null}
-                  {this.state.fileName && (
-                    <div className="file-info">
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
-                          </div>
-                          <UncontrolledPopover
-                            trigger="legacy"
-                            placement="auto"
-                            target="del-file-1"
-                            className="general-popover delete-popover"
-                          >
-                            <PopoverBody className="d-flex">
-                              <div className="del-big-icon">
-                                <img src={DelBigIcon} alt="del-icon" />
-                              </div>
-                              <div>
-                                <p className="font-weight-bold blak-clr">
-                                {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
-                                </p>
-                                <p className="mt-1 fs-12">
-                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                </p>
-                                <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>
-                                  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                  </a>
-                                  <button
-                                    className="butn"
-                                    onClick={this.DeleteBulkUploadFile}
-                                  >
-                                     {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                    
-                                  </button>
-                                </div>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                        <div>
-                          <span className="file-size">
-                            {this.state.fileSize}
-                          </span>
-                        </div>
-                      </div>
-                      {this.state.isErrorBulkUpload ? (
+                    {this.state.fileValidation ? (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.fileValidation}
+                      </p>
+                    ) : null}
+                    {this.state.fileName && (
+                      <div className="file-info">
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <span
-                              className="file-retry"
-                              onClick={this.handleBulkUpload.bind(this)}
+                            <div className="del-file" id="del-file-1">
+                              <img src={DelBlack} alt="delete-black" />
+                            </div>
+                            <UncontrolledPopover
+                              trigger="legacy"
+                              placement="auto"
+                              target="del-file-1"
+                              className="general-popover delete-popover"
                             >
-                              Retry
+                              <PopoverBody className="d-flex">
+                                <div className="del-big-icon">
+                                  <img src={DelBigIcon} alt="del-icon" />
+                                </div>
+                                <div>
+                                  <p className="font-weight-bold blak-clr">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.deletefile
+                                      : "Delete file"}
+                                    ?
+                                  </p>
+                                  <p className="mt-1 fs-12">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p
+                                          .areyousureyouwanttodeletethisfile
+                                      : "Are you sure you want to delete this file"}
+                                    ?
+                                  </p>
+                                  <div className="del-can">
+                                    <a href={Demo.BLANK_LINK}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.cancel
+                                        : "CANCEL"}
+                                    </a>
+                                    <button
+                                      className="butn"
+                                      onClick={this.DeleteBulkUploadFile}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.delete
+                                        : "Delete"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </PopoverBody>
+                            </UncontrolledPopover>
+                          </div>
+                          <div>
+                            <span className="file-size">
+                              {this.state.fileSize}
                             </span>
                           </div>
-                          <div>
-                            <span className="file-failed">Failed</span>
-                          </div>
                         </div>
-                      ) : null}
-                      {this.state.isShowProgress ? (
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name pr-0">
-                              {this.state.fileName}
-                            </p>
+                        {this.state.isErrorBulkUpload ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <span
+                                className="file-retry"
+                                onClick={this.handleBulkUpload.bind(this)}
+                              >
+                                Retry
+                              </span>
+                            </div>
+                            <div>
+                              <span className="file-failed">Failed</span>
+                            </div>
                           </div>
-                          <div>
-                            <div className="d-flex align-items-center mt-2">
-                              <ProgressBar className="file-progress" now={60} />
-                              <div className="cancel-upload">
-                                <img src={UploadCancel} alt="upload cancel" />
+                        ) : null}
+                        {this.state.isShowProgress ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name pr-0">
+                                {this.state.fileName}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="d-flex align-items-center mt-2">
+                                <ProgressBar
+                                  className="file-progress"
+                                  now={60}
+                                />
+                                <div className="cancel-upload">
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                  <button
-                    className="butn"
-                    onClick={this.handleBulkUpload.bind(this)}
-                  >
-                    {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                  </button>
+                        ) : null}
+                      </div>
+                    )}
+                    <button
+                      className="butn"
+                      onClick={this.handleBulkUpload.bind(this)}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.add
+                        : "ADD"}
+                    </button>
+                  </Spin>
                 </div>
               </div>
             </div>

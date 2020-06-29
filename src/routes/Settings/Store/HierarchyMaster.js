@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import ReactTable from "react-table";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -207,7 +207,8 @@ class HierarchyMaster extends Component {
       temphierarchyData: [],
       isortA: false,
       isATOZ: true,
-      translateLanguage: {}
+      translateLanguage: {},
+      bulkuploadLoading: false,
     };
 
     this.togglePopover = this.togglePopover.bind(this);
@@ -223,16 +224,13 @@ class HierarchyMaster extends Component {
     this.handleGetItem();
     this.hanldeGetReportListDropDown();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   StatusCloseModel() {
@@ -314,6 +312,9 @@ class HierarchyMaster extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
       formData.append("file", this.state.file);
       // this.setState({ isShowProgress: true });
@@ -331,18 +332,31 @@ class HierarchyMaster extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
             self.handleGetItem();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            self.setState({ isShowProgress: false });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
+            self.setState({ isShowProgress: false, bulkuploadLoading: false });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((response) => {
-          self.setState({ isErrorBulkUpload: true });
+          self.setState({ isErrorBulkUpload: true, bulkuploadLoading: false });
           console.log(response);
         });
     } else {
@@ -985,7 +999,11 @@ class HierarchyMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   // delete item
@@ -1005,7 +1023,11 @@ class HierarchyMaster extends Component {
         let status = response.data.message;
         if (status === "Success") {
           this.handleGetItem();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.designationdeletedsuccessfully:"Designation deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.designationdeletedsuccessfully
+              : "Designation deleted successfully."
+          );
           this.hanldeGetReportListDropDown();
         } else {
           NotificationManager.error(response.data.message);
@@ -1051,22 +1073,38 @@ class HierarchyMaster extends Component {
           let status = response.data.message;
           if (status === "Success") {
             this.handleGetItem();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchyupdatesuccessfully:"Hierarchy update successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.hierarchyupdatesuccessfully
+                : "Hierarchy update successfully."
+            );
             this.hanldeGetReportListDropDown();
             this.setState({ editSaveLoading: false });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
             this.setState({ editSaveLoading: false });
           } else {
             this.setState({ editSaveLoading: false });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchynotupdate:"Hierarchy not update.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.hierarchynotupdate
+                : "Hierarchy not update."
+            );
           }
         })
         .catch((response) => {
           console.log(response);
         });
     } else {
-      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchynotupdate:"Hierarchy not update.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.hierarchynotupdate
+          : "Hierarchy not update."
+      );
       this.setState({
         editdesignationNameCompulsion: "Designation Name field is compulsory.",
         editreportToCompulsion: "ReportTo field is compulsory.",
@@ -1223,7 +1261,11 @@ class HierarchyMaster extends Component {
           let status = response.data.message;
           if (status === "Success") {
             this.handleGetItem();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.hierarchyaddedsuccessfully:"Hierarchy added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.hierarchyaddedsuccessfully
+                : "Hierarchy added successfully."
+            );
             this.hanldeGetReportListDropDown();
             this.setState({
               designation_name: "",
@@ -1235,7 +1277,11 @@ class HierarchyMaster extends Component {
               addSaveLoading: false,
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
             this.setState({ addSaveLoading: false });
           }
         })
@@ -1273,8 +1319,9 @@ class HierarchyMaster extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1284,13 +1331,15 @@ class HierarchyMaster extends Component {
             }}
             className="header-path"
           >
-             {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
-            
-            {TranslationContext!==undefined?TranslationContext.link.hierarchymaster:"Hierarchy Master"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.hierarchymaster
+              : "Hierarchy Master"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1314,8 +1363,9 @@ class HierarchyMaster extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -1327,8 +1377,9 @@ class HierarchyMaster extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -1341,12 +1392,15 @@ class HierarchyMaster extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type ">
                 <p>
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -1423,9 +1477,12 @@ class HierarchyMaster extends Component {
                               name="filter-type"
                               id={"fil-open" + item.reportTo}
                               value={item.reportTo}
-                              checked={this.state.sreportToFilterCheckbox
-                                .split(",")
-                                .find((word) => word === item.reportTo)|| false}
+                              checked={
+                                this.state.sreportToFilterCheckbox
+                                  .split(",")
+                                  .find((word) => word === item.reportTo) ||
+                                false
+                              }
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "reportTo",
@@ -1451,9 +1508,13 @@ class HierarchyMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.createdbyperson}
                             value={item.createdbyperson}
-                            checked={this.state.screatedbypersonFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.createdbyperson)|| false}
+                            checked={
+                              this.state.screatedbypersonFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.createdbyperson
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "createdbyperson",
@@ -1478,9 +1539,11 @@ class HierarchyMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.status}
                             value={item.status}
-                            checked={this.state.sstatusFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.status)|| false}
+                            checked={
+                              this.state.sstatusFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.status) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "status",
@@ -1519,11 +1582,15 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "designationName",
-                              TranslationContext!==undefined?TranslationContext.span.designation:"Designation"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.designation
+                                : "Designation"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.designation:"Designation"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.designation
+                              : "Designation"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1548,11 +1615,15 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "reportTo",
-                              TranslationContext!==undefined?TranslationContext.span.reportto:"Report To"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.reportto
+                                : "Report To"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.reportto:"Report To"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.reportto
+                              : "Report To"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1577,11 +1648,15 @@ class HierarchyMaster extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdbyperson",
-                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created By"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.createdby
+                              : "Created By"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1606,24 +1681,36 @@ class HierarchyMaster extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}:&nbsp;
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createdby
+                                              : "Created By"}
+                                            :&nbsp;
                                             {row.original["createdbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:&nbsp;
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}
+                                          :&nbsp;
                                           {row.original["createdateformat"]}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                            {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:&nbsp;
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                            :&nbsp;
                                             {row.original["updatedbyperson"]}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                          {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:&nbsp;
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                          :&nbsp;
                                           {row.original["updateddateformat"]}
                                         </p>
                                       </div>
@@ -1656,8 +1743,10 @@ class HierarchyMaster extends Component {
                               "Status"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.status
+                              : "Status"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1672,9 +1761,13 @@ class HierarchyMaster extends Component {
                         accessor: "status",
                       },
                       {
-                        Header: <span>
-                          {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
-                        </span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["designationID"];
@@ -1692,16 +1785,23 @@ class HierarchyMaster extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                          {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file"}
+                                          ?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                          
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>
-                                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                          
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
                                           </a>
                                           <button
                                             className="butn"
@@ -1711,9 +1811,9 @@ class HierarchyMaster extends Component {
                                               ids
                                             )}
                                           >
-                                        {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                          
-                                            
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1771,7 +1871,9 @@ class HierarchyMaster extends Component {
                                   </button> */}
                                   <label className="Table-action-edit-button-text">
                                     <MyButton>
-                                   {TranslationContext!==undefined?TranslationContext.mybutton.edit:"EDIT"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.mybutton.edit
+                                        : "EDIT"}
                                     </MyButton>
                                   </label>
                                 </Popover>
@@ -1792,18 +1894,25 @@ class HierarchyMaster extends Component {
                 <div className="createHierarchyMask">
                   <div className="createSpace">
                     <label className="create-department">
-                      
-                      {TranslationContext!==undefined?TranslationContext.label.createhierarchy:"CREATE HIERARCHY"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createhierarchy
+                        : "CREATE HIERARCHY"}
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                        
-                        {TranslationContext!==undefined?TranslationContext.label.designationname:"Designation Name"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.designationname
+                          : "Designation Name"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterdesignationname:"Enter Designation Name"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder
+                                .enterdesignationname
+                            : "Enter Designation Name"
+                        }
                         maxLength={25}
                         name="designation_name"
                         value={this.state.designation_name}
@@ -1818,7 +1927,9 @@ class HierarchyMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">
-                        {TranslationContext!==undefined?TranslationContext.label.reportto:"Reports To"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.reportto
+                            : "Reports To"}
                         </label>
                         <select
                           className="form-control dropdown-setting"
@@ -1826,7 +1937,9 @@ class HierarchyMaster extends Component {
                           onChange={this.handleOnReportToChange}
                         >
                           <option value="0">
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           <option value={-1}>Root</option>
                           {this.state.reportToData !== null &&
@@ -1845,7 +1958,9 @@ class HierarchyMaster extends Component {
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">
-                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.status
+                          : "Status"}
                       </label>
                       <select
                         className="form-control dropdown-setting"
@@ -1882,8 +1997,10 @@ class HierarchyMaster extends Component {
                           ) : (
                             ""
                           )}
-                          
-                          {TranslationContext!==undefined?TranslationContext.label.add:"ADD"}
+
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.add
+                            : "ADD"}
                         </label>
                       </button>
                     </div>
@@ -1893,11 +2010,15 @@ class HierarchyMaster extends Component {
                 <div className="right-sect-div">
                   <div className="d-flex justify-content-between align-items-center pb-2">
                     <h3 className="pb-0">
-                    {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.h3.bulkupload
+                        : "Bulk Upload"}
                     </h3>
                     <div className="down-excel">
                       <p>
-                      {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.p.template
+                          : "Template"}
                       </p>
                       <CSVLink
                         filename={"Hierarchy.csv"}
@@ -1907,125 +2028,152 @@ class HierarchyMaster extends Component {
                       </CSVLink>
                     </div>
                   </div>
-                  <div className="mainfileUpload">
-                    <Dropzone onDrop={this.fileUpload}>
-                      {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps()}>
-                          <input
-                            {...getInputProps()}
-                            className="file-upload d-none"
-                          />
-                          <div className="file-icon">
-                            <img src={FileUpload} alt="file-upload" />
+                  <Spin
+                    tip="Please wait..."
+                    spinning={this.state.bulkuploadLoading}
+                  >
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.addfile
+                                : "Add File"}
+                            </span>{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.or
+                              : "or"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.dropfilehere
+                              : "Drop File here"}
                           </div>
-                          <span className={"fileupload-span"}>
-                          {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
-                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
-                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
-                        </div>
-                      )}
-                    </Dropzone>
-                  </div>
+                        )}
+                      </Dropzone>
+                    </div>
 
-                  {this.state.fileValidation ? (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.fileValidation}
-                    </p>
-                  ) : null}
-                  {this.state.fileName && (
-                    <div className="file-info">
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
-                          </div>
-                          <UncontrolledPopover
-                            trigger="legacy"
-                            placement="auto"
-                            target="del-file-1"
-                            className="general-popover delete-popover"
-                          >
-                            <PopoverBody className="d-flex">
-                              <div className="del-big-icon">
-                                <img src={DelBigIcon} alt="del-icon" />
-                              </div>
-                              <div>
-                                <p className="font-weight-bold blak-clr">
-                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
-                                </p>
-                                <p className="mt-1 fs-12">
-                                {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
-                                </p>
-                                <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>
-                                  
-                                  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                  </a>
-                                  <button
-                                    className="butn"
-                                    onClick={this.DeleteBulkUploadFile}
-                                  >
-                                     {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                    
-                                  </button>
-                                </div>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                        <div>
-                          <span className="file-size">
-                            {this.state.fileSize}
-                          </span>
-                        </div>
-                      </div>
-                      {this.state.isErrorBulkUpload ? (
+                    {this.state.fileValidation ? (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.fileValidation}
+                      </p>
+                    ) : null}
+                    {this.state.fileName && (
+                      <div className="file-info">
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <span
-                              className="file-retry"
-                              onClick={this.handleBulkUpload.bind(this)}
+                            <div className="del-file" id="del-file-1">
+                              <img src={DelBlack} alt="delete-black" />
+                            </div>
+                            <UncontrolledPopover
+                              trigger="legacy"
+                              placement="auto"
+                              target="del-file-1"
+                              className="general-popover delete-popover"
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
-                              
-                            </span>
+                              <PopoverBody className="d-flex">
+                                <div className="del-big-icon">
+                                  <img src={DelBigIcon} alt="del-icon" />
+                                </div>
+                                <div>
+                                  <p className="font-weight-bold blak-clr">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.deletefile
+                                      : "Delete file"}
+                                    ?
+                                  </p>
+                                  <p className="mt-1 fs-12">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p
+                                          .areyousureyouwanttodeletethisfile
+                                      : "Are you sure you want to delete this file"}
+                                    ?
+                                  </p>
+                                  <div className="del-can">
+                                    <a href={Demo.BLANK_LINK}>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.cancel
+                                        : "CANCEL"}
+                                    </a>
+                                    <button
+                                      className="butn"
+                                      onClick={this.DeleteBulkUploadFile}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.delete
+                                        : "Delete"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </PopoverBody>
+                            </UncontrolledPopover>
                           </div>
                           <div>
-                            <span className="file-failed">
-                            {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}
+                            <span className="file-size">
+                              {this.state.fileSize}
                             </span>
                           </div>
                         </div>
-                      ) : null}
-                      {this.state.isShowProgress ? (
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name pr-0">
-                              {this.state.fileName}
-                            </p>
+                        {this.state.isErrorBulkUpload ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <span
+                                className="file-retry"
+                                onClick={this.handleBulkUpload.bind(this)}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.retry
+                                  : "Retry"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="file-failed">
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.failed
+                                  : "Failed"}
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <div className="d-flex align-items-center mt-2">
-                              <ProgressBar className="file-progress" now={60} />
-                              <div className="cancel-upload">
-                                <img src={UploadCancel} alt="upload cancel" />
+                        ) : null}
+                        {this.state.isShowProgress ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name pr-0">
+                                {this.state.fileName}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="d-flex align-items-center mt-2">
+                                <ProgressBar
+                                  className="file-progress"
+                                  now={60}
+                                />
+                                <div className="cancel-upload">
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                  <button
-                    className="butn"
-                    onClick={this.handleBulkUpload.bind(this)}
-                  >
-                    {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                    
-                  </button>
+                        ) : null}
+                      </div>
+                    )}
+                    <button
+                      className="butn"
+                      onClick={this.handleBulkUpload.bind(this)}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.add
+                        : "ADD"}
+                    </button>
+                  </Spin>
                 </div>
               </div>
             </div>
