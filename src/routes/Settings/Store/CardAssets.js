@@ -80,6 +80,7 @@ class CardAssets extends Component {
   }
 ////handle approve and reject card image
   handleApproveRejectCardImage(imageUploadLogID, itemID, status) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     debugger;
     axios({
@@ -98,9 +99,9 @@ class CardAssets extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           if (status) {
-            NotificationManager.success("Image added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imageaddedsuccessfully:"Image added successfully.");
           } else {
-            NotificationManager.success("Image rejected successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imagerejectedsuccessfully:"Image rejected successfully.");
           }
         }
         self.handleGetCardImageUploadlog(1);
@@ -172,7 +173,7 @@ class CardAssets extends Component {
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             {TranslationContext !== undefined
-              ? TranslationContext.link.crmroles
+              ? TranslationContext.link.cardassets
               : "Card Assets"}
           </Link>
         </div>

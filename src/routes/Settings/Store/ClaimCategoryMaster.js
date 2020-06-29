@@ -968,6 +968,7 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleSearchSubCategoryList(data, check) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.categoryDropData.length > 0) {
       if (data.length > 2) {
@@ -1018,11 +1019,12 @@ class ClaimCategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error("Please Select Claim Category.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectclaimcategory:"Please Select Claim Category.");
     }
   }
 
   handleSearchIssueTypeList(data, check) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.SubCategoryDropData.length > 0) {
       if (data.length > 2) {
@@ -1070,7 +1072,7 @@ class ClaimCategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error("Please Select Claim Sub Category.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectclaimsubcategory:"Please Select Claim Sub Category.");
     }
   }
 
@@ -1150,6 +1152,7 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleDeleteCategoryData(category_Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -1165,7 +1168,7 @@ class ClaimCategoryMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetCategoryGridData();
-          NotificationManager.success("Category deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categorydeletedsuccessfully:"Category deleted successfully.");
         }
       })
       .catch((data) => {
@@ -1174,8 +1177,9 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleAddCategory(value, check) {
+    
     debugger;
-
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -1191,7 +1195,7 @@ class ClaimCategoryMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Category added successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categoryaddedsuccessfully:"Category added successfully.");
           if (check == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["categoryID"] = data;
@@ -1220,7 +1224,7 @@ class ClaimCategoryMaster extends Component {
             self.handleGetCategoryList(value);
           }
         } else {
-          NotificationManager.error("Category not added.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.categorynotadded:"Category not added.");
         }
       })
       .catch((data) => {
@@ -1228,6 +1232,7 @@ class ClaimCategoryMaster extends Component {
       });
   }
   handleAddSubCategory(value, check) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     var finalId = 0;
@@ -1279,9 +1284,9 @@ class ClaimCategoryMaster extends Component {
             });
             self.handleGetSubCategoryList();
           }
-          NotificationManager.success("SubCategory added successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.subcategoryaddedsuccessfully:"SubCategory added successfully.");
         } else {
-          NotificationManager.error("SubCategory not added.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.subcategorynotadded:"SubCategory not added.");
         }
       })
       .catch((data) => {
@@ -1290,6 +1295,7 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleAddIssueType(value, type) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     var finalId = 0;
@@ -1321,7 +1327,7 @@ class ClaimCategoryMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Issue Type added successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.issuetypeaddedsuccessfully:"Issue Type added successfully.");
           if (type == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["issueTypeID"] = data;
@@ -1339,7 +1345,7 @@ class ClaimCategoryMaster extends Component {
             self.handleGetIssueTypeList();
           }
         } else {
-          NotificationManager.error("Issue Type not added.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.issuetypenotadded:"Issue Type not added.");
         }
       })
       .catch((data) => {
@@ -1348,6 +1354,7 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleSubmitData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.selectBrandMulti.length > 0 &&
@@ -1405,7 +1412,7 @@ class ClaimCategoryMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
-            NotificationManager.success("Category added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categoryaddedsuccessfully:"Category added successfully.");
             self.setState({
               selectBrandMulti: [],
               categoryDropData: [],
@@ -1425,7 +1432,7 @@ class ClaimCategoryMaster extends Component {
               showAddSubCategory: false,
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
           } else {
             NotificationManager.error(status);
           }
@@ -1446,6 +1453,7 @@ class ClaimCategoryMaster extends Component {
 
   // Update category
   handleUpdateCategory() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -1525,7 +1533,7 @@ class ClaimCategoryMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
-            NotificationManager.success("Category updated successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categoryupdatedsuccessfully:"Category updated successfully.");
             self.setState({
               list1Value: "",
               ListOfSubCate: "",
@@ -1544,7 +1552,7 @@ class ClaimCategoryMaster extends Component {
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ editmodel: false, editSaveLoading: false });
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
           } else {
             NotificationManager.error(status);
             self.setState({ editmodel: false, editSaveLoading: false });
@@ -1937,6 +1945,7 @@ class ClaimCategoryMaster extends Component {
 
   ////handle delete selected file of bulk upload
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
@@ -1945,11 +1954,12 @@ class ClaimCategoryMaster extends Component {
       showProgress: false,
       isFileUploadFail: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   ////handle bulk upload
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
@@ -1973,7 +1983,7 @@ class ClaimCategoryMaster extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({
               fileName: "",
               fileSize: "",
@@ -1988,7 +1998,7 @@ class ClaimCategoryMaster extends Component {
               // isFileUploadFail: true,
               progressValue: 0,
             });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((data) => {

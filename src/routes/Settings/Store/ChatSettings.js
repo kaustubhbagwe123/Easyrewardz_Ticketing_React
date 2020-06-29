@@ -95,6 +95,7 @@ class ChatSettings extends Component {
 
   ////handle update chate session
   handleUpdateChatSession() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (
       this.state.isChatDisplayValue === "" &&
@@ -115,9 +116,9 @@ class ChatSettings extends Component {
         .then((response) => {
           var message = response.data.message;
           if (message === "Success") {
-            NotificationManager.success("Record Updated Successfully");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
           } else {
-            NotificationManager.console.error("Record Not Updated");
+            NotificationManager.console.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
           }
         })
         .catch((response) => {
@@ -203,6 +204,7 @@ class ChatSettings extends Component {
   }
   ////handle update card item configuration
   handleUpdateCardItemConfiguration() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var enabledCardItems = "";
     var disabledCardItems = "";
@@ -227,12 +229,12 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
-          NotificationManager.success("Update successfully!");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.updatedsuccessfully:"Update successfully!");
           self.setState({ isLoadingUpdate: false });
           self.handleGetCardConfiguration();
         } else {
           self.setState({ isLoadingUpdate: false });
-          NotificationManager.error("Not update successfully!");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.notupdatedsuccessfully:"Not update successfully!");
         }
       })
       .catch((response) => {
@@ -242,6 +244,7 @@ class ChatSettings extends Component {
 
   ////handle card item insert configuration
   handleInsertCardItemConfiguration() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var cardItem = this.state.cardConfigName;
     var isEnabled = this.state.cardConfigStatus;
@@ -261,12 +264,12 @@ class ChatSettings extends Component {
           var responseData = response.data.responseData;
           if (message === "Success") {
             NotificationManager.success(
-              "Card item configuration add successfully!"
+              TranslationContext!==undefined?TranslationContext.alertmessage.carditemconfigurationaddsuccessfully:"Card item configuration add successfully!"
             );
             self.setState({ isLoadingAdd: false });
             self.handleGetCardConfiguration();
           } else {
-            NotificationManager.error("Card item configuration not add");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.carditemconfigurationnotadded:"Card item configuration not add");
             self.setState({ isLoadingAdd: false });
           }
         })
@@ -329,6 +332,7 @@ class ChatSettings extends Component {
 
   ////handle update card image approval
   handleUpdateCardImageApproval() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var id = this.state.approvalTypeData.filter((x) => x.isEnabled === true)[0]
       .id;
@@ -345,11 +349,11 @@ class ChatSettings extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.success("Updated Successfully");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.updatedsuccessfully:"Updated Successfully");
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.error("Not Updated Successfully");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.notupdatedsuccessfully:"Not Updated Successfully");
         }
       })
       .catch((response) => {

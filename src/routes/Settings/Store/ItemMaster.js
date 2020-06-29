@@ -236,6 +236,7 @@ class ItemMaster extends Component {
   }
 
   handleBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (this.state.fileName) {
@@ -256,14 +257,14 @@ class ItemMaster extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "" });
             self.handleGetItem();
             //self.setState(itemData);
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((response) => {
@@ -275,6 +276,7 @@ class ItemMaster extends Component {
     }
   }
   DeleteBulkUploadFile = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       file: {},
@@ -283,7 +285,7 @@ class ItemMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   sortStatusZtoA() {

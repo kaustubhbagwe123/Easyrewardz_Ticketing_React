@@ -288,6 +288,7 @@ class StoreCRMRole extends Component {
   };
   //// delete CRM role
   handleDeleteCrmRole(Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -302,9 +303,9 @@ class StoreCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordinuse:"Record in use.");
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recorddeletedsuccessfully:"Record deleted Successfully.");
           self.handleGetCRMGridData();
         }
       })
@@ -315,6 +316,7 @@ class StoreCRMRole extends Component {
 
   //// hanlde Create and Update function
   hanldeCreateUpdateCrmRole(e, addUpdate, crmRoleId) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     let RoleisActive,
@@ -390,7 +392,7 @@ class StoreCRMRole extends Component {
         let status = res.data.message;
         if (status === "Success") {
           if (e === "add") {
-            NotificationManager.success("CRM Role added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.crmroleaddedsuccessfully:"CRM Role added successfully.");
             self.setState({
               RoleName: "",
               RoleisActive: 0,
@@ -410,21 +412,21 @@ class StoreCRMRole extends Component {
               editSaveLoading: false,
               editRoleNameValidMsg: "",
             });
-            NotificationManager.success("CRM Role updated successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.crmroleupdatedsuccessfully:"CRM Role updated successfully.");
             self.handleGetCRMGridData();
           }
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
-            NotificationManager.error("Record Already Exists ");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists ");
           } else {
-            NotificationManager.error("Record Already Exists ");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists ");
           }
         } else {
           if (e === "add") {
-            NotificationManager.error("CRM Role not added.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.crmrolenotadded:"CRM Role not added.");
           } else if (e === "update") {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error("CRM Role not updated.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.crmrolenotupdated:"CRM Role not updated.");
           }
         }
       })
@@ -434,6 +436,7 @@ class StoreCRMRole extends Component {
   }
   //// CRM Bulk uploading
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
@@ -457,7 +460,7 @@ class StoreCRMRole extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetCRMGridData();
           } else {
@@ -466,7 +469,7 @@ class StoreCRMRole extends Component {
             //   isFileUploadFail: true,
             //   progressValue: 0,
             // });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((data) => {
@@ -980,12 +983,13 @@ class StoreCRMRole extends Component {
   }
   /// Delete file on bulk uploading
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   handleGetStoreCrmModule() {

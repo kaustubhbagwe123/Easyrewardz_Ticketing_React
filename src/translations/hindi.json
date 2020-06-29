@@ -629,7 +629,7 @@
     "fivecolongold": "०५: सोना",
     "sixcolonplatinum": "0६: प्लैटिनम",
     "onecolonsilver": "0१: स्लिवर",
-    "closesearch": "नज़दीकी खोज",
+    "closesearch": "बंद करे",
     "searchtickets": "टिकट खोजें"
   },
   "a": {
@@ -1191,7 +1191,8 @@
     "slatemplatedepartment": "एस एल ए टेम्पलेट-विभाग",
     "all": "सब",
     "fileuploadlogs": "फ़ाइल अपलोड लॉग",
-    "order": "गण"
+    "order": "गण",
+    "cardassets":"कार्ड एसेट्स"
   },
   "mybutton": {
     "edit": "संपादित करें"
@@ -1300,7 +1301,8 @@
     "ticketstatus": "टिकट की स्थिति",
     "selectcategory": "श्रेणी का चयन करें",
     "selectissuetype": "समस्या का प्रकार चुनें",
-    "allstoremember":"सभी स्टोर सदस्य"
+    "allstoremember":"सभी स्टोर सदस्य",
+    "brand":"ब्रांड"
   },
   "radio": {
     "email": "ईमेल",
@@ -1415,7 +1417,9 @@
     "partner": "साथी",
     "awbno": "ए डब्लू बी नंबर",
     "courierpartner": "कुरियर पार्टनर",
-    "referenceno": "संदर्भ संख्या।"
+    "referenceno": "संदर्भ संख्या।",
+    "addnewdepartment":"नया विभाग जोड़ें",
+    "addnewfunction":"नया फ़ंक्शन जोड़ें"
     
   },
   "content": {
@@ -1450,7 +1454,62 @@
     "hierarchyupdatesuccessfully":"पदानुक्रम अद्यतन सफलतापूर्वक।",
     "recordalreadyexists":"रिकॉर्ड पहले से ही मौजूद है।",
     "hierarchynotupdate":"पदानुक्रम अद्यतन नहीं।",
-    "hierarchyaddedsuccessfully":"पदानुक्रम सफलतापूर्वक जोड़ा गया।"
+    "hierarchyaddedsuccessfully":"पदानुक्रम सफलतापूर्वक जोड़ी गई।",
+    "departmentaddedsuccessfully":"विभाग ने सफलतापूर्वक जोड़ा।",
+    "departmentnotadded":"विभाग नहीं जोड़ा गया।",
+    "functionaddedsuccessfully":"फ़ंक्शन सफलतापूर्वक जोड़ी गई।",
+    "functionnotadded":"फ़ंक्शन नहीं जोड़ा गया",
+    "departmentupdatedsuccessfully":"विभाग सफलतापूर्वक अपडेट किया",
+    "departmentnotdelete":"विभाग नहीं हटाया गया",
+    "pleaseselectdepartment":"कृपया विभाग चुनें",
+    "pleaseenteradepartment":"कृपया एक विभाग दर्ज करें!",
+    "pleaseenterfunction":"कृपया फ़ंक्शन दर्ज करें!",
+    "sorrywedontsortrowoflist":"क्षमा करें, हम सूची में क्रमबद्ध नहीं हैं",
+    "priorityaddedsuccessfully":"प्राथमिकता सफलतापूर्वक जोड़ी गई।",
+    "prioritydeletesuccessfully":"प्राथमिकता सफलतापूर्वक हटा दी गई।",
+    "priorityupdatedsuccessfully":"प्राथमिकता सफलतापूर्वक अपडेट की गई।",
+    "recordinuse":"उपयोग में रिकॉर्ड",
+    "slaaddeddsuccessfully":"एस एल ए सफलतापूर्वक जोड़ी गई",
+    "sladeletedsuccessfully":"एस एल ए सफलतापूर्वक हटा दिया गया।",
+    "slanotdeleted":"एस एल ए हटाया नहीं गया।",
+    "slaupdatesuccessfully":"एस एल ए सफलतापूर्वक अपडेट हो गया है।",
+    "slanotupdated":"एस एल ए अपडेट नहीं किया गया",
+    "pleaseselectclaimcategory":"कृपया क्लेम श्रेणी का चयन करें।",
+    "pleaseselectclaimsubcategory":"कृपया दावा उप श्रेणी का चयन करें।",
+    "categorydeletedsuccessfully":"श्रेणी को सफलतापूर्वक हटा दिया गया।",
+    "categoryaddedsuccessfully":"श्रेणी को सफलतापूर्वक जोड़ा गया।",
+    "categorynotadded":"श्रेणी नहीं जोड़ी गई।",
+    "subcategoryaddedsuccessfully":"उपश्रेणी को सफलतापूर्वक जोड़ा गया।",
+    "subcategorynotadded":"उपश्रेणी नहीं जोड़ी गई।",
+    "issuetypeaddedsuccessfully":"समस्या प्रकार सफलतापूर्वक जोड़ा गया।",
+    "issuetypenotadded":"समस्या प्रकार जोड़ा नहीं गया।",
+    "categoryupdatedsuccessfully":"श्रेणी को सफलतापूर्वक अपडेट किया गया।",
+    "recordnotupdated":"रिकॉर्ड नहीं अद्यतन",
+    "updatedsuccessfully":"अपडेट सफलतापूर्ण हो गया",
+    "notupdatedsuccessfully":"सफलतापूर्वक अपडेट नहीं किया गया",
+    "carditemconfigurationaddsuccessfully":"कार्ड आइटम कॉन्फ़िगरेशन सफलतापूर्वक जोड़ें!",
+    "carditemconfigurationnotadded":"कार्ड आइटम कॉन्फ़िगरेशन नहीं जोड़ा गया",
+    "recorddeletedsuccessfully":"रिकॉर्ड हटाया गया सफलतापूर्वक",
+    "crmroleaddedsuccessfully":"सी आर एम रोल सफलतापूर्वक जोड़ा गया",
+    "crmrolenotadded":"सी आर एम रोल्स नहीं जोड़ी गई।",
+    "crmrolenotupdated":"सी आर एम रोल्स अपडेट नहीं की गई।",
+    "crmroleupdatedsuccessfully":"सी आर एम रोल्स सफलतापूर्वक अपडेट हो गया है।",
+    "filenotupdated":"फ़ाइल अपलोड नहीं की गई।",
+    "userdeletedsuccessfully":"उपयोगकर्ता को सफलतापूर्वक हटा दिया गया।",
+    "recordsavedsuccessfully":"रिकॉर्ड सफलतापूर्वक सहेजा गया।",
+    "recordnotsaved":"रिकॉर्ड नहीं बचा।",
+    "pleaseenterstoredetails":"कृपया स्टोर विवरण दर्ज करें।",
+    "pleaseenterpersonaldetails":"कृपया व्यक्तिगत विवरण दर्ज करें।",
+    "pleasecheckemail":"कृपया ईमेल की जाँच करें।",
+    "mailsentfailed":"मेल भेजा विफल।",
+    "userupdatedsuccessfully":"उपयोगकर्ता अद्यतन सफलतापूर्वक।",
+    "userupdatedfailed":"उपयोगकर्ता अद्यतन विफल।",
+    "alertdeletedsuccessfully":"अलर्ट सफलतापूर्वक हटा दिया गया।",
+    "alertnotdeleted":"अलर्ट हटाया नहीं गया",
+    "alertupdatedsuccessfully":"चेतावनी सफलतापूर्वक अपडेट की गई।",
+    "alertnotupdated":"चेतावनी अपडेट नहीं की गई।",
+    "imageaddedsuccessfully":"चित्र सफलतापूर्वक जोड़ा गया।",
+    "imagerejectedsuccessfully":"चित्र सफलतापूर्वक अस्वीकार।"
   }
 
 }

@@ -140,6 +140,7 @@ class HomeShopSetting extends Component {
       }
 
       checkSuggestionFreeText = async (row, type) => {
+        const TranslationContext = this.state.translateLanguage.default;
         debugger;
         let storeAgentData = [...this.state.storeAgentData],
         suggestion,
@@ -182,7 +183,7 @@ class HomeShopSetting extends Component {
               let status = res.data.message;
               let data = res.data.responseData;
               if (status === "Success") {
-                NotificationManager.success("Record updated Successfully.");
+                NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record updated Successfully.");
               } else {
                 NotificationManager.error(status);
               }
@@ -252,7 +253,9 @@ class HomeShopSetting extends Component {
                                                                     value={this.state.brandID}
                                                                     onChange={this.handleOnBrandChangeData}
                                                                     >
-                                                                    <option value="">Brand</option>
+                                                                    <option value="">
+                                                                    {TranslationContext!==undefined?TranslationContext.option.brand:"Brand"}
+                                                                    </option>
                                                                     {this.state.brandData !== null &&
                                                                     this.state.brandData.map((item, i) => (
                                                                         <option value={item.brandID}>{item.brandName}</option>
@@ -274,7 +277,9 @@ class HomeShopSetting extends Component {
                                                                     value={this.state.storeCode}
                                                                     onChange={this.handleOnStoreCodeChangeData}
                                                                     >
-                                                                    <option value="">Store Code</option>
+                                                                    <option value="">
+                                                                    {TranslationContext!==undefined?TranslationContext.option.storecode:"Store Code"}
+                                                                    </option>
                                                                     {this.state.StoreCodeData !== null &&
                                                                     this.state.StoreCodeData.map((item, i) => (
                                                                         <option value={item.storeID}>{item.storeCode}</option>
@@ -308,7 +313,7 @@ class HomeShopSetting extends Component {
                                         onClick={this.handleFilterCollapse.bind(this)}
                                     >
                                         <small>
-                                            {this.state.FilterCollapse ? "Close Search" : "Search"}
+                                            {this.state.FilterCollapse ?  TranslationContext!==undefined?TranslationContext.small.closesearch:"Close Search" : TranslationContext!==undefined?TranslationContext.small.search:"Search"}
                                         </small>
                                         <img
                                             className="search-icon"
