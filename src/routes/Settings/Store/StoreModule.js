@@ -3926,7 +3926,7 @@ class StoreModule extends Component {
                                     </label>
                                     <label style={{ marginLeft: "80px" }}>
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.label.to
+                                        ? TranslationContext.label.ToTime
                                         : "To"}
                                     </label>
                                     <div className="slot-timings">

@@ -1967,7 +1967,9 @@ class HierarchyMaster extends Component {
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option value="0">Select</option>
+                        <option value="0">{TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
