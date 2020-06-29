@@ -764,7 +764,6 @@ class Header extends Component {
       .then(function(response) {
         var message = response.data.message;
         var ongoingChatsData = response.data.responseData;
-        debugger;
         if (message === "Success") {
           if (ongoingChatsData) {
             var chatData = ongoingChatsData.filter(
@@ -1892,7 +1891,6 @@ class Header extends Component {
         ) {
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
-              debugger;
               var isMobileNoExist = self.state.ongoingChatsData.filter(
                 (x) =>
                   x.mobileNo === data[3].substring(2) &&
@@ -2065,7 +2063,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/CustomerChat/EndCustomerChat",
       headers: authHeader(),
-      ChatID: chatId,
+      params: { ChatID: chatId },
     })
       .then(function(response) {
         var message = response.data.message;
@@ -2088,7 +2086,6 @@ class Header extends Component {
   }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-    console.log(this.state.isCustEndChat, "-------------isCustEndChat");
     return (
       <React.Fragment>
         <div
@@ -3119,12 +3116,16 @@ class Header extends Component {
                                 >
                                   {this.state.agentRecentChatData.length < 9
                                     ? TranslationContext !== undefined
-                                      ? TranslationContext.lable.pastchat0
+                                      ? TranslationContext.label.pastchat0 +
+                                        this.state.agentRecentChatData.length +
+                                        ")"
                                       : "Past Chat(0" +
                                         this.state.agentRecentChatData.length +
                                         ")"
                                     : TranslationContext !== undefined
-                                    ? TranslationContext.lable.pastchat
+                                    ? TranslationContext.label.pastchat +
+                                      this.state.agentRecentChatData.length +
+                                      ")"
                                     : "Past Chat(" +
                                       this.state.agentRecentChatData.length +
                                       ")"}
