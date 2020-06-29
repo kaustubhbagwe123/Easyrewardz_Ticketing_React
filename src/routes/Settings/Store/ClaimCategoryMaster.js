@@ -8,7 +8,7 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Select as Aselect } from "antd";
+import { Select as Aselect, Spin } from "antd";
 import Select from "react-select";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
@@ -30,12 +30,11 @@ import Sorting from "./../../../assets/Images/sorting.png";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
-import * as translationHI from './../../../translations/hindi';
-import * as translationMA from './../../../translations/marathi';
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 import Dropzone from "react-dropzone";
 const { Option } = Aselect;
 const NEW_ITEM = "NEW_ITEM";
-
 
 class ClaimCategoryMaster extends Component {
   constructor(props) {
@@ -119,7 +118,8 @@ class ClaimCategoryMaster extends Component {
       showEditAddCategory: false,
       showEditAddSubCategory: false,
       showEditAddIssue: false,
-      translateLanguage: {}
+      translateLanguage: {},
+      bulkuploadLoading: false,
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -137,16 +137,13 @@ class ClaimCategoryMaster extends Component {
   componentDidMount() {
     this.handleGetCategoryGridData();
     this.handleGetBrandList();
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   sortStatusZtoA() {
     debugger;
@@ -1019,7 +1016,11 @@ class ClaimCategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectclaimcategory:"Please Select Claim Category.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectclaimcategory
+          : "Please Select Claim Category."
+      );
     }
   }
 
@@ -1072,7 +1073,11 @@ class ClaimCategoryMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectclaimsubcategory:"Please Select Claim Sub Category.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseselectclaimsubcategory
+          : "Please Select Claim Sub Category."
+      );
     }
   }
 
@@ -1168,7 +1173,11 @@ class ClaimCategoryMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetCategoryGridData();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categorydeletedsuccessfully:"Category deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.categorydeletedsuccessfully
+              : "Category deleted successfully."
+          );
         }
       })
       .catch((data) => {
@@ -1177,7 +1186,6 @@ class ClaimCategoryMaster extends Component {
   }
 
   handleAddCategory(value, check) {
-    
     debugger;
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
@@ -1195,7 +1203,11 @@ class ClaimCategoryMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categoryaddedsuccessfully:"Category added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.categoryaddedsuccessfully
+              : "Category added successfully."
+          );
           if (check == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["categoryID"] = data;
@@ -1224,7 +1236,11 @@ class ClaimCategoryMaster extends Component {
             self.handleGetCategoryList(value);
           }
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.categorynotadded:"Category not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.categorynotadded
+              : "Category not added."
+          );
         }
       })
       .catch((data) => {
@@ -1284,9 +1300,17 @@ class ClaimCategoryMaster extends Component {
             });
             self.handleGetSubCategoryList();
           }
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.subcategoryaddedsuccessfully:"SubCategory added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.subcategoryaddedsuccessfully
+              : "SubCategory added successfully."
+          );
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.subcategorynotadded:"SubCategory not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.subcategorynotadded
+              : "SubCategory not added."
+          );
         }
       })
       .catch((data) => {
@@ -1327,7 +1351,11 @@ class ClaimCategoryMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.issuetypeaddedsuccessfully:"Issue Type added successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.issuetypeaddedsuccessfully
+              : "Issue Type added successfully."
+          );
           if (type == "edit") {
             var editCategory = self.state.editCategory;
             editCategory["issueTypeID"] = data;
@@ -1345,7 +1373,11 @@ class ClaimCategoryMaster extends Component {
             self.handleGetIssueTypeList();
           }
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.issuetypenotadded:"Issue Type not added.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.issuetypenotadded
+              : "Issue Type not added."
+          );
         }
       })
       .catch((data) => {
@@ -1412,7 +1444,11 @@ class ClaimCategoryMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categoryaddedsuccessfully:"Category added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.categoryaddedsuccessfully
+                : "Category added successfully."
+            );
             self.setState({
               selectBrandMulti: [],
               categoryDropData: [],
@@ -1432,7 +1468,11 @@ class ClaimCategoryMaster extends Component {
               showAddSubCategory: false,
             });
           } else if (status === "Record Already Exists ") {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
           } else {
             NotificationManager.error(status);
           }
@@ -1533,7 +1573,11 @@ class ClaimCategoryMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetCategoryGridData();
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.categoryupdatedsuccessfully:"Category updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.categoryupdatedsuccessfully
+                : "Category updated successfully."
+            );
             self.setState({
               list1Value: "",
               ListOfSubCate: "",
@@ -1552,7 +1596,11 @@ class ClaimCategoryMaster extends Component {
             });
           } else if (status === "Record Already Exists ") {
             self.setState({ editmodel: false, editSaveLoading: false });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists."
+            );
           } else {
             NotificationManager.error(status);
             self.setState({ editmodel: false, editSaveLoading: false });
@@ -1954,7 +2002,11 @@ class ClaimCategoryMaster extends Component {
       showProgress: false,
       isFileUploadFail: false,
     });
-    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   ////handle bulk upload
@@ -1963,7 +2015,9 @@ class ClaimCategoryMaster extends Component {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -1983,28 +2037,42 @@ class ClaimCategoryMaster extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
             self.setState({
               fileName: "",
               fileSize: "",
               fileN: [],
               showProgress: false,
               isFileUploadFail: false,
+              bulkuploadLoading: false,
             });
             self.handleGetCategoryGridData();
           } else {
             self.setState({
               showProgress: false,
               // isFileUploadFail: true,
+              bulkuploadLoading: false,
               progressValue: 0,
             });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((data) => {
           debugger;
           if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true });
+            this.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              bulkuploadLoading: false,
+            });
           }
           console.log(data);
         });
@@ -2069,8 +2137,9 @@ class ClaimCategoryMaster extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -2080,14 +2149,15 @@ class ClaimCategoryMaster extends Component {
             }}
             className="header-path"
           >
-            
-            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.claimcategorymaster:"Claim Category Master"}
-
+            {TranslationContext !== undefined
+              ? TranslationContext.link.claimcategorymaster
+              : "Claim Category Master"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -2111,8 +2181,9 @@ class ClaimCategoryMaster extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -2124,8 +2195,9 @@ class ClaimCategoryMaster extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -2138,13 +2210,15 @@ class ClaimCategoryMaster extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -2187,9 +2261,12 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.brandName}
                             value={item.brandName}
-                            checked={this.state.sbrandNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.brandName)||false}
+                            checked={
+                              this.state.sbrandNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.brandName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "brandName",
@@ -2214,9 +2291,12 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.categoryName}
                             value={item.categoryName}
-                            checked={this.state.scategoryNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.categoryName)||false}
+                            checked={
+                              this.state.scategoryNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.categoryName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "categoryName",
@@ -2241,9 +2321,13 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.subCategoryName}
                             value={item.subCategoryName}
-                            checked={this.state.ssubCategoryNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.subCategoryName)||false}
+                            checked={
+                              this.state.ssubCategoryNameFilterCheckbox
+                                .split(",")
+                                .find(
+                                  (word) => word === item.subCategoryName
+                                ) || false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "subCategoryName",
@@ -2268,9 +2352,12 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.issueTypeName}
                             value={item.issueTypeName}
-                            checked={this.state.sissueTypeNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.issueTypeName)||false}
+                            checked={
+                              this.state.sissueTypeNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.issueTypeName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "issueTypeName",
@@ -2295,9 +2382,12 @@ class ClaimCategoryMaster extends Component {
                             name="filter-type"
                             id={"fil-open" + item.statusName}
                             value={item.statusName}
-                            checked={this.state.sstatusNameFilterCheckbox
-                              .split(",")
-                              .find((word) => word === item.statusName)||false}
+                            checked={
+                              this.state.sstatusNameFilterCheckbox
+                                .split(",")
+                                .find((word) => word === item.statusName) ||
+                              false
+                            }
                             onChange={this.setSortCheckStatus.bind(
                               this,
                               "statusName",
@@ -2339,11 +2429,15 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "brandName",
-                                TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.brandname
+                                  : "Brand Name"
                               )}
                             >
-                            {TranslationContext!==undefined?TranslationContext.span.brandname:"Brand Name"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.brandname
+                                : "Brand Name"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2371,8 +2465,10 @@ class ClaimCategoryMaster extends Component {
                                 "Category"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.claimcategory:"Claim Category"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.claimcategory
+                                : "Claim Category"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2397,11 +2493,15 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "subCategoryName",
-                                TranslationContext!==undefined?TranslationContext.span.subcategory:"SubCategory"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.subcategory
+                                  : "SubCategory"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.subcategory:"SubCategory"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.subcategory
+                                : "SubCategory"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2426,11 +2526,15 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "issueTypeName",
-                                TranslationContext!==undefined?TranslationContext.span.claimissuetype:"Claim Issue Type"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.claimissuetype
+                                  : "Claim Issue Type"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.claimissuetype:"Claim Issue Type"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.claimissuetype
+                                : "Claim Issue Type"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2455,11 +2559,15 @@ class ClaimCategoryMaster extends Component {
                               onClick={this.StatusOpenModel.bind(
                                 this,
                                 "statusName",
-                                TranslationContext!==undefined?TranslationContext.span.status:"Status"
+                                TranslationContext !== undefined
+                                  ? TranslationContext.span.status
+                                  : "Status"
                               )}
                             >
-                              {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
-                              
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"}
+
                               <FontAwesomeIcon
                                 icon={
                                   this.state.isATOZ == false &&
@@ -2474,9 +2582,13 @@ class ClaimCategoryMaster extends Component {
                           accessor: "statusName",
                         },
                         {
-                          Header: <span>
-                            {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
-                          </span>,
+                          Header: (
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.actions
+                                : "Actions"}
+                            </span>
+                          ),
                           accessor: "actiondept",
                           sortable: false,
                           Cell: (row) => {
@@ -2495,16 +2607,23 @@ class ClaimCategoryMaster extends Component {
                                         </div>
                                         <div>
                                           <p className="font-weight-bold blak-clr">
-                                          {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.deletefile
+                                              : "Delete file"}
+                                            ?
                                           </p>
                                           <p className="mt-1 fs-12">
-                                          {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                          
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p
+                                                  .areyousureyouwanttodeletethisfile
+                                              : "Are you sure you want to delete this file"}
+                                            ?
                                           </p>
                                           <div className="del-can">
                                             <a href={Demo.BLANK_LINK}>
-                                            {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                          
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.a.cancel
+                                                : "CANCEL"}
                                             </a>
                                             <button
                                               className="butn"
@@ -2514,8 +2633,10 @@ class ClaimCategoryMaster extends Component {
                                                 ids
                                               )}
                                             >
-                                               {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                              
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.button
+                                                    .delete
+                                                : "Delete"}
                                             </button>
                                           </div>
                                         </div>
@@ -2539,9 +2660,9 @@ class ClaimCategoryMaster extends Component {
                                       row.original
                                     )}
                                   >
-                                     {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
-                                              
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.edit
+                                      : "EDIT"}
                                   </button>
                                 </span>
                               </>
@@ -2561,19 +2682,26 @@ class ClaimCategoryMaster extends Component {
                 <div className="store-col-2">
                   <div className="createSpace cus-cs">
                     <label className="Create-store-text">
-                      
-                      {TranslationContext!==undefined?TranslationContext.label.createclaimcategory:"CREATE CLAIM CATEGORY"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createclaimcategory
+                        : "CREATE CLAIM CATEGORY"}
                     </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">
-                        {TranslationContext!==undefined?TranslationContext.label.brandname:"Brand Name"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.brandname
+                            : "Brand Name"}
                         </label>
                         <Select
                           getOptionLabel={(option) => option.brandName}
                           getOptionValue={(option) => option.brandID}
                           options={this.state.brandData}
-                          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.pleaseselectbrand:"Please Select Brand"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.pleaseselectbrand
+                              : "Please Select Brand"
+                          }
                           closeMenuOnSelect={false}
                           name="selectBrandMulti"
                           onChange={this.handleBrandChange.bind(this)}
@@ -2591,15 +2719,21 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace ClaimPlaceHolder">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
-                          
-                          {TranslationContext!==undefined?TranslationContext.label.claimcategory:"Claim Category"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimcategory
+                            : "Claim Category"}
                         </label>
                         <Aselect
                           className="store-create-select showborder-select"
                           showSearch={true}
                           value={this.state.list1Value}
                           onChange={this.handleCategoryChange}
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.pleaseselectclaimcategory:"Please select claim category"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder
+                                  .pleaseselectclaimcategory
+                              : "Please select claim category"
+                          }
                           onSearch={this.handleGetCategoryList.bind(this)}
                           notFoundContent="No Data Found"
                         >
@@ -2616,7 +2750,10 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleCategoryAdd.bind(this)}
                           >
-                            +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"} 
+                            +
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.addnew
+                              : "ADD NEW"}
                           </span>
                         ) : null}
                         {this.state.list1Value === "" && (
@@ -2632,7 +2769,11 @@ class ClaimCategoryMaster extends Component {
                           text="Enter new Category"
                           showCancelButton
                           type="input"
-                          inputPlaceholder={TranslationContext!==undefined?TranslationContext.placeholder.entercategoryname:"Enter Category Name"}
+                          inputPlaceholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.entercategoryname
+                              : "Enter Category Name"
+                          }
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={(inputValue) => {
@@ -2671,9 +2812,9 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
-                          
-                          {TranslationContext!==undefined?TranslationContext.label.claimsubcategory:"Claim Sub Category"} 
-
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimsubcategory
+                            : "Claim Sub Category"}
                         </label>
                         <Aselect
                           showSearch={true}
@@ -2697,7 +2838,10 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleSubCategoryAdd.bind(this)}
                           >
-                            +{TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
+                            +
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.addnew
+                              : "ADD NEW"}
                           </span>
                         ) : null}
                         {this.state.ListOfSubCate === "" && (
@@ -2747,7 +2891,9 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">
-                        {TranslationContext!==undefined?TranslationContext.label.claimissuetype:"Claim Issue Type"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.claimissuetype
+                            : "Claim Issue Type"}
                         </label>
                         <Aselect
                           showSearch={true}
@@ -2771,7 +2917,10 @@ class ClaimCategoryMaster extends Component {
                             style={{ marginTop: "-68px" }}
                             onClick={this.handleToggleIssueTypeAdd.bind(this)}
                           >
-                            + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
+                            +{" "}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.addnew
+                              : "ADD NEW"}
                           </span>
                         ) : null}
                         {this.state.ListOfIssue === "" && (
@@ -2819,7 +2968,9 @@ class ClaimCategoryMaster extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">
-                        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.status
+                            : "Status"}
                         </label>
                         <select
                           className="form-control dropdown-setting"
@@ -2827,7 +2978,9 @@ class ClaimCategoryMaster extends Component {
                           onChange={this.handleStatusChange}
                         >
                           <option value={0}>
-                          {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
                           </option>
                           {this.state.activeData !== null &&
                             this.state.activeData.map((item, j) => (
@@ -2849,8 +3002,9 @@ class ClaimCategoryMaster extends Component {
                         type="button"
                         onClick={this.handleSubmitData.bind(this)}
                       >
-                         {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
                       </button>
                     </div>
                     <br />
@@ -2862,12 +3016,15 @@ class ClaimCategoryMaster extends Component {
                     <br />
                     <div className="d-flex justify-content-between align-items-center pb-2">
                       <h3 className="pb-0">
-                      {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h3.bulkupload
+                          : "Bulk Upload"}
                       </h3>
                       <div className="down-excel">
                         <p>
-
-                        {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"}
                         </p>
                         <CSVLink
                           filename={"ClaimCategory.csv"}
@@ -2877,124 +3034,151 @@ class ClaimCategoryMaster extends Component {
                         </CSVLink>
                       </div>
                     </div>
-                    <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload.bind(this)}>
-                        {({ getRootProps, getInputProps }) => (
-                          <div {...getRootProps()}>
-                            <input
-                              {...getInputProps()}
-                              className="file-upload d-none"
-                            />
-                            <div className="file-icon">
-                              <img src={FileUpload} alt="file-upload" />
+                    <Spin
+                      tip="Please wait..."
+                      spinning={this.state.bulkuploadLoading}
+                    >
+                      <div className="mainfileUpload">
+                        <Dropzone onDrop={this.fileUpload.bind(this)}>
+                          {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                              <input
+                                {...getInputProps()}
+                                className="file-upload d-none"
+                              />
+                              <div className="file-icon">
+                                <img src={FileUpload} alt="file-upload" />
+                              </div>
+                              <span className={"fileupload-span"}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.addfile
+                                  : "Add File"}
+                              </span>{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.or
+                                : "or"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.dropfilehere
+                                : "Drop File here"}
                             </div>
-                            <span className={"fileupload-span"}>
-                            {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
-                            </span>{" "}
-                            {TranslationContext!==undefined?TranslationContext.div.or:"or"}   
-                            {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
-                          </div>
-                        )}
-                      </Dropzone>
-                    </div>
-                    {this.state.fileN.length === 0 && (
-                      <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.bulkuploadCompulsion}
-                      </p>
-                    )}
-                    {this.state.fileName && (
-                      <div className="file-info">
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <div className="del-file" id="del-file-1">
-                              <img src={DelBlack} alt="delete-black" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="auto"
-                              target="del-file-1"
-                              className="general-popover delete-popover"
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={DelBigIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                  {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>
-                                    {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                    </a>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleDeleteBulkupload}
-                                    >
-                                       {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                    </button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                          </div>
-                          <div>
-                            <span className="file-size">
-                              {this.state.fileSize}
-                            </span>
-                          </div>
-                        </div>
-                        {this.state.fileN.length > 0 &&
-                        this.state.isFileUploadFail ? (
+                          )}
+                        </Dropzone>
+                      </div>
+                      {this.state.fileN.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.bulkuploadCompulsion}
+                        </p>
+                      )}
+                      {this.state.fileName && (
+                        <div className="file-info">
                           <div className="file-cntr">
                             <div className="file-dtls">
                               <p className="file-name">{this.state.fileName}</p>
-                              <a
-                                className="file-retry"
-                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              <div className="del-file" id="del-file-1">
+                                <img src={DelBlack} alt="delete-black" />
+                              </div>
+                              <UncontrolledPopover
+                                trigger="legacy"
+                                placement="auto"
+                                target="del-file-1"
+                                className="general-popover delete-popover"
                               >
-                                Retry
-                              </a>
+                                <PopoverBody className="d-flex">
+                                  <div className="del-big-icon">
+                                    <img src={DelBigIcon} alt="del-icon" />
+                                  </div>
+                                  <div>
+                                    <p className="font-weight-bold blak-clr">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deletefile
+                                        : "Delete file"}
+                                      ?
+                                    </p>
+                                    <p className="mt-1 fs-12">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureyouwanttodeletethisfile
+                                        : "Are you sure you want to delete this file"}
+                                      ?
+                                    </p>
+                                    <div className="del-can">
+                                      <a href={Demo.BLANK_LINK}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.cancel
+                                          : "CANCEL"}
+                                      </a>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleDeleteBulkupload}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.delete
+                                          : "Delete"}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </PopoverBody>
+                              </UncontrolledPopover>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-size">
+                                {this.state.fileSize}
+                              </span>
                             </div>
                           </div>
-                        ) : null}
-                        {this.state.showProgress ? (
-                          <div className="file-cntr">
-                            <div className="file-dtls">
-                              <p className="file-name pr-0">
-                                {this.state.fileName}
-                              </p>
+                          {this.state.fileN.length > 0 &&
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  Retry
+                                </a>
+                              </div>
+                              <div>
+                                <span className="file-failed">Failed</span>
+                              </div>
                             </div>
-                            <div>
-                              <div className="d-flex align-items-center mt-2">
-                                <ProgressBar
-                                  className="file-progress"
-                                  now={this.state.progressValue}
-                                />
-                                <div className="cancel-upload">
-                                  <img src={UploadCancel} alt="upload cancel" />
+                          ) : null}
+                          {this.state.showProgress ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name pr-0">
+                                  {this.state.fileName}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="d-flex align-items-center mt-2">
+                                  <ProgressBar
+                                    className="file-progress"
+                                    now={this.state.progressValue}
+                                  />
+                                  <div className="cancel-upload">
+                                    <img
+                                      src={UploadCancel}
+                                      alt="upload cancel"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
-                    <button
-                      className="butn"
-                      onClick={this.hanldeAddBulkUpload.bind(this)}
-                    >
-                       {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                      
-                    </button>
+                          ) : null}
+                        </div>
+                      )}
+                      <button
+                        className="butn"
+                        onClick={this.hanldeAddBulkUpload.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
+                      </button>
+                    </Spin>
                     <br />
                   </div>
                 </div>
@@ -3008,11 +3192,15 @@ class ClaimCategoryMaster extends Component {
           >
             <div className="edtpadding cus-cs">
               <label className="popover-header-text">
-              {TranslationContext!==undefined?TranslationContext.label.editclaimcategory:"EDIT CLAIM CATEGORY"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.editclaimcategory
+                  : "EDIT CLAIM CATEGORY"}
               </label>
               <div className="pop-over-div">
                 <label className="edit-label-1">
-                {TranslationContext!==undefined?TranslationContext.label.brandname:"Brand Name"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.label.brandname
+                    : "Brand Name"}
                 </label>
                 <select
                   className="store-create-select"
@@ -3043,7 +3231,9 @@ class ClaimCategoryMaster extends Component {
                 <div className="divSpace">
                   <div className="dropDrownSpace">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.claimcategory:"Claim Category"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.claimcategory
+                        : "Claim Category"}
                     </label>
                     <Aselect
                       showSearch={true}
@@ -3066,7 +3256,10 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditCategoryAdd.bind(this)}
                       >
-                        + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
+                        +{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.addnew
+                          : "ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.editCategory.categoryName === "" && (
@@ -3119,7 +3312,9 @@ class ClaimCategoryMaster extends Component {
                 <div className="divSpace">
                   <div className="dropDrownSpace">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.claimsubcategory:"Claim Sub Category"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.claimsubcategory
+                        : "Claim Sub Category"}
                     </label>
                     <Aselect
                       showSearch={true}
@@ -3142,7 +3337,10 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditSubCategoryAdd.bind(this)}
                       >
-                        + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
+                        +{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.addnew
+                          : "ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.editCategory.subCategoryName === "" && (
@@ -3222,7 +3420,10 @@ class ClaimCategoryMaster extends Component {
                         style={{ marginTop: "-68px" }}
                         onClick={this.handleToggleEditIssueAdd.bind(this)}
                       >
-                        + {TranslationContext!==undefined?TranslationContext.span.addnew:"ADD NEW"}
+                        +{" "}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.addnew
+                          : "ADD NEW"}
                       </span>
                     ) : null}
                     {this.state.editCategory.issueTypeName === "" && (
@@ -3280,18 +3481,23 @@ class ClaimCategoryMaster extends Component {
                   onChange={this.handleModalStatusChange.bind(this)}
                 >
                   <option value="Active">
-                  {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.active
+                      : "Active"}
                   </option>
                   <option value="Inactive">
-                  {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.option.inactive
+                      : "Inactive"}
                   </option>
                 </select>
               </div>
               <br />
               <div className="text-center">
                 <a className="pop-over-cancle" onClick={this.toggleEditModal}>
-                {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.cancel
+                    : "CANCEL"}
                 </a>
 
                 <button
@@ -3309,8 +3515,10 @@ class ClaimCategoryMaster extends Component {
                     ) : (
                       ""
                     )}
-                    
-                    {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.save
+                      : "SAVE"}
                   </label>
                 </button>
               </div>

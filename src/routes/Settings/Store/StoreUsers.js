@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
 import ReactTable from "react-table";
 import { authHeader } from "../../../helpers/authHeader";
 import axios from "axios";
@@ -164,6 +164,7 @@ class StoreUsers extends Component {
       EditmappedisActive: "",
       isATOZ: true,
       translateLanguage: {},
+      bulkuploadLoading: false,
     };
     this.handleGetBrandData = this.handleGetBrandData.bind(this);
     this.handleGetstoreCodeData = this.handleGetstoreCodeData.bind(this);
@@ -253,7 +254,11 @@ class StoreUsers extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   editStoreMethod() {
@@ -284,6 +289,9 @@ class StoreUsers extends Component {
     const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
       formData.append("file", this.state.file);
       // this.setState({ isShowProgress: true });
@@ -301,17 +309,31 @@ class StoreUsers extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
             self.handleGetStoreUserGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotupdated:"File not uploaded.");
+            self.setState({ bulkuploadLoading: false });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotupdated
+                : "File not uploaded."
+            );
           }
         })
         .catch((response) => {
-          self.setState({ isErrorBulkUpload: true });
+          self.setState({ isErrorBulkUpload: true, bulkuploadLoading: false });
           console.log(response);
         });
     } else {
@@ -2428,7 +2450,11 @@ class StoreUsers extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreUserGridData();
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.userdeletedsuccessfully:"User Deleted Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.userdeletedsuccessfully
+              : "User Deleted Successfully."
+          );
         }
       })
       .catch((data) => {
@@ -2481,13 +2507,21 @@ class StoreUsers extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordsavedsuccessfully
+                : "Record Saved Successfully."
+            );
             self.setState({
               user_ID: data,
               StoreReadOnly: true,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotsaved:"Record Not Save.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordnotsaved
+                : "Record Not Save."
+            );
           }
         })
         .catch((data) => {
@@ -2522,13 +2556,21 @@ class StoreUsers extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record Updated Successfully."
+            );
             self.setState({
               // user_ID: data,
               StoreReadOnly: true,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordnotupdated
+                : "Record Not Updated."
+            );
           }
         })
         .catch((response) => {
@@ -2573,7 +2615,11 @@ class StoreUsers extends Component {
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordsavedsuccessfully
+                  : "Record Saved Successfully."
+              );
               self.setState({
                 // user_ID: data,
                 personalReadOnly: true,
@@ -2586,7 +2632,11 @@ class StoreUsers extends Component {
             console.log(response);
           });
       } else {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstoredetails:"Please Enter Store Details.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterstoredetails
+            : "Please Enter Store Details."
+        );
       }
     } else {
       this.setState({
@@ -2629,7 +2679,11 @@ class StoreUsers extends Component {
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                  : "Record Updated Successfully."
+              );
               self.setState({
                 // user_ID: data,
                 personalReadOnly: true,
@@ -2642,7 +2696,11 @@ class StoreUsers extends Component {
             console.log(response);
           });
       } else {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstoredetails:"Please Enter Store Details.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterstoredetails
+            : "Please Enter Store Details."
+        );
       }
     } else {
       this.setState({
@@ -2693,12 +2751,20 @@ class StoreUsers extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordsavedsuccessfully
+                : "Record Saved Successfully."
+            );
             self.setState({
               profileReadOnly: true,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotsaved:"Record Not Saved.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordnotsaved
+                : "Record Not Saved."
+            );
           }
         })
         .catch((response) => {
@@ -2750,12 +2816,20 @@ class StoreUsers extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record Updated Successfully."
+            );
             self.setState({
               profileReadOnly: true,
             });
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Update.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordnotupdated
+                : "Record Not Update."
+            );
           }
         })
         .catch((response) => {
@@ -2848,7 +2922,11 @@ class StoreUsers extends Component {
             debugger;
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordsavedsuccessfully
+                  : "Record Saved Successfully."
+              );
               self.handleGetStoreUserGridData();
               self.handleSendMail(self.state.user_ID);
               self.handleGetstoreCodeData();
@@ -2884,14 +2962,22 @@ class StoreUsers extends Component {
                 activeData: [],
               });
             } else {
-              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotsaved:"Record Not Saved.");
+              NotificationManager.error(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.recordnotsaved
+                  : "Record Not Saved."
+              );
             }
           })
           .catch((response) => {
             console.log(response);
           });
       } else {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterpersonaldetails:"Please Enter Personal Details.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterpersonaldetails
+            : "Please Enter Personal Details."
+        );
       }
     } else {
       this.setState({
@@ -2928,9 +3014,17 @@ class StoreUsers extends Component {
         debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.pleasecheckemail:"Please Check Email.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.pleasecheckemail
+              : "Please Check Email."
+          );
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.mailsentfailed:"Mail Sent Failed.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.mailsentfailed
+              : "Mail Sent Failed."
+          );
         }
       })
       .catch((res) => {
@@ -3067,11 +3161,19 @@ class StoreUsers extends Component {
           var responseData = response.data.responseData;
 
           if (message === "Success" && responseData) {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.userupdatedsuccessfully:"User Updated Successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.userupdatedsuccessfully
+                : "User Updated Successfully."
+            );
             self.handleGetStoreUserGridData();
             self.closeEditModals();
           } else {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.userupdatedfailed:"User Updated Fail.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.userupdatedfailed
+                : "User Updated Fail."
+            );
           }
         })
         .catch((response) => {
@@ -4454,7 +4556,11 @@ class StoreUsers extends Component {
                           getOptionLabel={(option) => option.funcationName}
                           getOptionValue={(option) => option.functionID}
                           options={this.state.functionData}
-                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
+                          placeholder={
+                            TranslationContext !== undefined
+                              ? TranslationContext.placeholder.select
+                              : "Select"
+                          }
                           closeMenuOnSelect={false}
                           name="selectedFunction"
                           onChange={this.handleFunctionOnChange.bind(this)}
@@ -4913,145 +5019,153 @@ class StoreUsers extends Component {
                       </CSVLink>
                     </div>
                   </div>
-                  <div className="mainfileUpload">
-                    <Dropzone onDrop={this.fileUpload}>
-                      {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps()}>
-                          <input
-                            {...getInputProps()}
-                            className="file-upload d-none"
-                          />
-                          <div className="file-icon">
-                            <img src={FileUpload} alt="file-upload" />
-                          </div>
-                          <span className={"fileupload-span"}>
+                  <Spin
+                    tip="Please wait..."
+                    spinning={this.state.bulkuploadLoading}
+                  >
+                    <div className="mainfileUpload">
+                      <Dropzone onDrop={this.fileUpload}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()}>
+                            <input
+                              {...getInputProps()}
+                              className="file-upload d-none"
+                            />
+                            <div className="file-icon">
+                              <img src={FileUpload} alt="file-upload" />
+                            </div>
+                            <span className={"fileupload-span"}>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.addfile
+                                : "Add File"}
+                            </span>{" "}
                             {TranslationContext !== undefined
-                              ? TranslationContext.span.addfile
-                              : "Add File"}
-                          </span>{" "}
-                          {TranslationContext !== undefined
-                            ? TranslationContext.div.or
-                            : "or"}
-                          {TranslationContext !== undefined
-                            ? TranslationContext.div.dropfilehere
-                            : "Drop File here"}
-                        </div>
-                      )}
-                    </Dropzone>
-                  </div>
-                  {this.state.fileValidation ? (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.fileValidation}
-                    </p>
-                  ) : null}
-                  {this.state.fileName && (
-                    <div className="file-info">
-                      <div className="file-cntr">
-                        <div className="file-dtls">
-                          <p className="file-name">{this.state.fileName}</p>
-                          <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
+                              ? TranslationContext.div.or
+                              : "or"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.dropfilehere
+                              : "Drop File here"}
                           </div>
-                          <UncontrolledPopover
-                            trigger="legacy"
-                            placement="auto"
-                            target="del-file-1"
-                            className="general-popover delete-popover"
-                          >
-                            <PopoverBody className="d-flex">
-                              <div className="del-big-icon">
-                                <img src={DelBigIcon} alt="del-icon" />
-                              </div>
-                              <div>
-                                <p className="font-weight-bold blak-clr">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p.deletefile
-                                    : "Delete file"}
-                                  ?
-                                </p>
-                                <p className="mt-1 fs-12">
-                                  {TranslationContext !== undefined
-                                    ? TranslationContext.p
-                                        .areyousureyouwanttodeletethisfile
-                                    : "Are you sure you want to delete this file"}
-                                  ?
-                                </p>
-                                <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>
-                                    {" "}
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.a.cancel
-                                      : "CANCEL"}
-                                  </a>
-                                  <button
-                                    className="butn"
-                                    onClick={this.DeleteBulkUploadFile}
-                                  >
-                                    {TranslationContext !== undefined
-                                      ? TranslationContext.button.delete
-                                      : "Delete"}
-                                  </button>
-                                </div>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </div>
-                        <div>
-                          <span className="file-size">
-                            {this.state.fileSize}
-                          </span>
-                        </div>
-                      </div>
-                      {this.state.isErrorBulkUpload ? (
+                        )}
+                      </Dropzone>
+                    </div>
+                    {this.state.fileValidation ? (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.fileValidation}
+                      </p>
+                    ) : null}
+                    {this.state.fileName && (
+                      <div className="file-info">
                         <div className="file-cntr">
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
-                            <span
-                              className="file-retry"
-                              onClick={this.handleBulkUpload.bind(this)}
+                            <div className="del-file" id="del-file-1">
+                              <img src={DelBlack} alt="delete-black" />
+                            </div>
+                            <UncontrolledPopover
+                              trigger="legacy"
+                              placement="auto"
+                              target="del-file-1"
+                              className="general-popover delete-popover"
                             >
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.retry
-                                : "Retry"}
-                            </span>
+                              <PopoverBody className="d-flex">
+                                <div className="del-big-icon">
+                                  <img src={DelBigIcon} alt="del-icon" />
+                                </div>
+                                <div>
+                                  <p className="font-weight-bold blak-clr">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p.deletefile
+                                      : "Delete file"}
+                                    ?
+                                  </p>
+                                  <p className="mt-1 fs-12">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.p
+                                          .areyousureyouwanttodeletethisfile
+                                      : "Are you sure you want to delete this file"}
+                                    ?
+                                  </p>
+                                  <div className="del-can">
+                                    <a href={Demo.BLANK_LINK}>
+                                      {" "}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.a.cancel
+                                        : "CANCEL"}
+                                    </a>
+                                    <button
+                                      className="butn"
+                                      onClick={this.DeleteBulkUploadFile}
+                                    >
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.button.delete
+                                        : "Delete"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </PopoverBody>
+                            </UncontrolledPopover>
                           </div>
                           <div>
-                            <span className="file-failed">
-                              {" "}
-                              {TranslationContext !== undefined
-                                ? TranslationContext.span.failed
-                                : "Failed"}
+                            <span className="file-size">
+                              {this.state.fileSize}
                             </span>
                           </div>
                         </div>
-                      ) : null}
-                      {this.state.isShowProgress ? (
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name pr-0">
-                              {this.state.fileName}
-                            </p>
+                        {this.state.isErrorBulkUpload ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name">{this.state.fileName}</p>
+                              <span
+                                className="file-retry"
+                                onClick={this.handleBulkUpload.bind(this)}
+                              >
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.retry
+                                  : "Retry"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="file-failed">
+                                {" "}
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.failed
+                                  : "Failed"}
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <div className="d-flex align-items-center mt-2">
-                              <ProgressBar className="file-progress" now={60} />
-                              <div className="cancel-upload">
-                                <img src={UploadCancel} alt="upload cancel" />
+                        ) : null}
+                        {this.state.isShowProgress ? (
+                          <div className="file-cntr">
+                            <div className="file-dtls">
+                              <p className="file-name pr-0">
+                                {this.state.fileName}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="d-flex align-items-center mt-2">
+                                <ProgressBar
+                                  className="file-progress"
+                                  now={60}
+                                />
+                                <div className="cancel-upload">
+                                  <img src={UploadCancel} alt="upload cancel" />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                  <button
-                    className="butn"
-                    onClick={this.handleBulkUpload.bind(this)}
-                  >
-                    {TranslationContext !== undefined
-                      ? TranslationContext.button.add
-                      : "ADD"}
-                  </button>
+                        ) : null}
+                      </div>
+                    )}
+                    <button
+                      className="butn"
+                      onClick={this.handleBulkUpload.bind(this)}
+                    >
+                      {TranslationContext !== undefined
+                        ? TranslationContext.button.add
+                        : "ADD"}
+                    </button>
+                  </Spin>
                 </div>
               </div>
             </div>
