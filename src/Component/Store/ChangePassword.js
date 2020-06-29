@@ -34,8 +34,6 @@ class StoreChangePassword extends Component {
   }
 
   handleGetUserProfileData() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -43,7 +41,6 @@ class StoreChangePassword extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var status = res.data.message;
         var userdata = res.data.responseData;
         if (status === "Success") {
@@ -61,14 +58,12 @@ class StoreChangePassword extends Component {
       });
   }
   handlechange(e) {
-    debugger;
     this.setState({
       [e.target.name]: e.target.value,
     });
   }
 
   handleCheckPassword(e) {
-    debugger;
     e.preventDefault();
 
     if (this.validator.allValid()) {
