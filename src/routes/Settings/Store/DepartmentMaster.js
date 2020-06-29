@@ -1313,6 +1313,7 @@ class DepartmentMaster extends Component {
 
   ///hanlde Add new Department
   handleAddDepartment(value) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -1326,13 +1327,13 @@ class DepartmentMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Department added successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.departmentaddedsuccessfully:"Department added successfully.");
           self.setState({
             department_Id: data,
           });
           self.handleGetDepartmentList(value);
         } else {
-          NotificationManager.error("Department not added.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.departmentnotadded:"Department not added.");
         }
       })
       .catch((data) => {
@@ -1341,6 +1342,7 @@ class DepartmentMaster extends Component {
   }
   ////handle Get function by Department Id
   handleGetFunction(check) {
+    
     let self = this;
     var finalDepartmentId = 0;
     if (check === "Add") {
@@ -1371,6 +1373,7 @@ class DepartmentMaster extends Component {
   }
   ////handle add function base on Department Id
   handleAddFunction(value) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var finalId = 0;
     if (this.state.department_Id === 0) {
@@ -1391,7 +1394,7 @@ class DepartmentMaster extends Component {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
-          NotificationManager.success("Function added successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.functionaddedsuccessfully:"Function added successfully.");
           self.handleGetFunction("Add");
           self.setState({
             function_Id: data,
@@ -1399,7 +1402,7 @@ class DepartmentMaster extends Component {
             showFuncation: false,
           });
         } else {
-          NotificationManager.error("Function not added.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.functionnotadded:"Function not added.");
         }
       })
       .catch((data) => {
@@ -1408,6 +1411,7 @@ class DepartmentMaster extends Component {
   }
   /// handle create Department
   handleCreateDepartment() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -1467,7 +1471,7 @@ class DepartmentMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetDepartmentGridData();
-            NotificationManager.success("Department added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.departmentaddedsuccessfully:"Department added successfully.");
             self.setState({
               selectedBrand: [],
               selectedStoreCode: [],
@@ -1486,7 +1490,7 @@ class DepartmentMaster extends Component {
               functionData: [],
             });
           } else if (status === "Record Already Exists") {
-            NotificationManager.error("Record Already Exists.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
           } else {
             NotificationManager.error(status);
           }
@@ -1506,6 +1510,7 @@ class DepartmentMaster extends Component {
   }
   //// handle update department
   handleUpdateDepartment() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -1538,7 +1543,7 @@ class DepartmentMaster extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleGetDepartmentGridData();
-            NotificationManager.success("Department updated successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.departmentupdatedsuccessfully:"Department updated successfully.");
             self.toggleEditModal();
             self.setState({
               editSaveLoading: false,
@@ -1559,6 +1564,7 @@ class DepartmentMaster extends Component {
   }
   //// delete Department by DepartmentId
   handleDeleteDepartmentData(department_Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -1574,9 +1580,9 @@ class DepartmentMaster extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetDepartmentGridData();
-          NotificationManager.success("Department deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.departmentupdatedsuccessfully:"Department deleted successfully.");
         } else {
-          NotificationManager.error("Department not deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.departmentnotdelete:"Department not deleted.");
         }
       })
       .catch((data) => {
@@ -1585,6 +1591,7 @@ class DepartmentMaster extends Component {
   }
 
   handleSearchFunctionData(data) {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.department_Id > 0 || this.state.list1Value > 0) {
       let self = this;
       if (data.length >= 3) {
@@ -1627,7 +1634,7 @@ class DepartmentMaster extends Component {
           });
       }
     } else {
-      NotificationManager.error("Please Select Department.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectdepartment:"Please Select Department.");
     }
   }
   fileUpload = (file) => {
@@ -1648,6 +1655,7 @@ class DepartmentMaster extends Component {
   }
 
   handleBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
       const formData = new FormData();
@@ -1667,14 +1675,14 @@ class DepartmentMaster extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetDepartmentGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             self.setState({ isShowProgress: false });
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((response) => {
@@ -1687,6 +1695,7 @@ class DepartmentMaster extends Component {
   }
 
   DeleteBulkUploadFile = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       file: {},
       fileName: "",
@@ -1694,7 +1703,7 @@ class DepartmentMaster extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   handleClearSearch() {
@@ -2363,7 +2372,7 @@ class DepartmentMaster extends Component {
                       getOptionLabel={(option) => option.brandName}
                       getOptionValue={(option) => option.brandID}
                       options={this.state.brandData}
-                      placeholder="Select"
+                      placeholder={TranslationContext!==undefined?TranslationContext.option.select:"Select"}
                       // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       name="selectedBrand"
@@ -2386,7 +2395,7 @@ class DepartmentMaster extends Component {
                       getOptionLabel={(option) => option.storeCode}
                       getOptionValue={(option) => option.storeID}
                       options={this.state.StoreCode}
-                      placeholder="Select"
+                      placeholder={TranslationContext!==undefined?TranslationContext.option.select:"Select"}
                       // menuIsOpen={true}
                       closeMenuOnSelect={false}
                       name="selectedStoreCode"
@@ -2443,13 +2452,14 @@ class DepartmentMaster extends Component {
                     <SweetAlert
                       show={this.state.showList1}
                       style={{ width: "320px" }}
-                      title="Add New Department"
+                      title={TranslationContext!==undefined?TranslationContext.title.addnewdepartment:"Add New Department"}
+                      
                       text="Enter new Department"
                       showCancelButton
                       type="input"
                       inputPlaceholder="Enter Department Name"
                       animation="slide-from-top"
-                      validationMsg="Please enter a department!"
+                      validationMsg={TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenteradepartment:"Please enter a department!"}
                       onConfirm={(inputValue) => {
                         inputValue = inputValue.trim();
                         if (inputValue.length >= 0 && inputValue.length <= 50) {
@@ -2525,13 +2535,13 @@ class DepartmentMaster extends Component {
                     <SweetAlert
                       show={this.state.ShowFunction}
                       style={{ width: "320px" }}
-                      title="Add New Function"
+                      title={TranslationContext!==undefined?TranslationContext.title.addnewfunction:"Add New Function"}
                       text="Enter new Function"
                       showCancelButton
                       type="input"
                       inputPlaceholder="Enter Function"
                       animation="slide-from-top"
-                      validationMsg="Please Enter Function!"
+                      validationMsg={TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterfunction:"Please Enter Function!"}
                       onConfirm={(inputValue) => {
                         inputValue = inputValue.trim();
                         if (inputValue !== "") {
@@ -2563,7 +2573,7 @@ class DepartmentMaster extends Component {
                       value={this.state.selectStatus}
                       onChange={this.handleStatusChange}
                     >
-                      <option value={0}>Select</option>
+                      <option value={0}>{TranslationContext!==undefined?TranslationContext.option.select:"Select"}</option>
                       {this.state.activeData !== null &&
                         this.state.activeData.map((item, j) => (
                           <option key={j} value={item.ActiveID}>

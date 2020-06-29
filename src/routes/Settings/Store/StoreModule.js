@@ -204,6 +204,7 @@ class StoreModule extends Component {
   }
 
   handleBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
       const formData = new FormData();
@@ -223,13 +224,13 @@ class StoreModule extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleCampaignScriptGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((response) => {
@@ -242,6 +243,7 @@ class StoreModule extends Component {
   }
 
   DeleteBulkUploadFile = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       file: {},
       fileName: "",
@@ -249,7 +251,7 @@ class StoreModule extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   handleEditModal() {
@@ -272,6 +274,7 @@ class StoreModule extends Component {
   }
 
   deleteCampaign(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -284,10 +287,10 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Campaign deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaigndeletedsuccessfully:"Campaign deleted successfully.");
           self.handleCampaignScriptGridData();
         } else {
-          NotificationManager.error("Campaign not deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.campaignnotdeleted:"Campaign not deleted.");
         }
       })
       .catch((data) => {
@@ -682,6 +685,7 @@ class StoreModule extends Component {
   }
   //// handle table record deleted
   handleDeleteTimeSlot(slotId) {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     axios({
       method: "post",
@@ -694,10 +698,10 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Record Deleted Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recorddeletedsuccessfully:"Record Deleted Successfully.");
           self.handleGetTimeslotGridData();
         } else {
-          NotificationManager.error("Record Not Deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotdeleted:"Record Not Deleted.");
         }
       })
       .catch((data) => {
@@ -706,6 +710,7 @@ class StoreModule extends Component {
   }
   /// handle Delete Language record
   handleDeleteLanguage = (row, type) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let languageGridData = [...this.state.languageGridData],
       isActive;
@@ -734,10 +739,10 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.handleGetLanguageGridData();
         } else {
-          NotificationManager.error(status);
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:status);
         }
       })
       .catch((data) => {
@@ -896,6 +901,7 @@ class StoreModule extends Component {
   }
 
   handleAttachmentSave() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       parseInt(this.state.selectedMaxAttachSize) != 0 &&
       parseInt(this.state.selectedFileFormat) != 0
@@ -918,7 +924,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Attachment saved successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.attachmentsavesuccessfully:"Attachment saved successfully.");
             self.setState({
               selectedMaxAttachSize: "0",
               selectedFileFormat: "0",
@@ -940,6 +946,7 @@ class StoreModule extends Component {
   }
 
   handleCreateCampaignScript() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.indiCampaign.length != 0 &&
       this.state.scriptDetails.length != 0
@@ -968,7 +975,7 @@ class StoreModule extends Component {
           if (status === "Success") {
             self.handleCampaignScriptGridData();
             self.selectNoCampaign();
-            NotificationManager.success("Campaign saved successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignsavedsuccessfully:"Campaign saved successfully.");
             document.getElementById("campaignNameValue").textContent = "Select";
             self.setState({
               indiCampaign: "",
@@ -978,7 +985,7 @@ class StoreModule extends Component {
               addCampaignLoading: false,
             });
           } else {
-            NotificationManager.error("Campaign not saved.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.campaignnotsaved:"Campaign not saved.");
             self.setState({
               addCampaignLoading: false,
             });
@@ -996,6 +1003,7 @@ class StoreModule extends Component {
   }
 
   handleUpdateCampaignScript() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.updateScriptDetails.length != 0) {
       let self = this;
       this.setState({
@@ -1017,7 +1025,7 @@ class StoreModule extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
-            NotificationManager.success("Campaign updated successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignupdatedsuccessfully:"Campaign updated successfully.");
             self.setState({
               // campaignCompulsion: "",
               updateScriptDetailsCompulsion: "",
@@ -1593,6 +1601,7 @@ class StoreModule extends Component {
   }
   /// handle Campaign Channerl update data
   handleUpdateCampChannelData() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.campaignChannelData.maxClickAllowed !== "" &&
       this.state.campaignChannelData.enableClickAfterValue !== ""
@@ -1621,7 +1630,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Campaign Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignupdatedsuccessfully:"Campaign Updated Successfully.");
           }
         })
         .catch((data) => {
@@ -1636,6 +1645,7 @@ class StoreModule extends Component {
   }
   /// handle Appointment Configuration update data
   handleUpdateAppointmentConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/UpdateAppointmentConfiguration",
@@ -1651,7 +1661,7 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Appointment Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.appointmentupdatedsuccessfully:"Appointment Updated Successfully.");
         }
       })
       .catch((data) => {
@@ -1673,6 +1683,7 @@ class StoreModule extends Component {
   }
   /// handle Broad cast Configuration update data
   handleUpdateBroadCastConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.BroadCastConfigData.maxClickAllowed !== "" &&
       this.state.BroadCastConfigData.enableClickAfterValue !== ""
@@ -1697,7 +1708,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Broadcast Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.broadcastupdatedsuccessfully:"Broadcast Updated Successfully.");
           }
         })
         .catch((data) => {
@@ -1713,6 +1724,7 @@ class StoreModule extends Component {
 
   /// handle Timeslot add data
   handleSubmitTimeSlotDate() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (
       this.state.selectedStoreCode.length > 0 &&
@@ -1759,10 +1771,10 @@ class StoreModule extends Component {
               slotduration: "0.5",
               maxCapacity: "",
             });
-            NotificationManager.success("Time Slot Added Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotaddedsuccessfully:"Time Slot Added Successfully.");
             self.handleGetTimeslotGridData();
           } else {
-            NotificationManager.error("Time Slot Not Added.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotnotadded:"Time Slot Not Added.");
           }
         })
         .catch((data) => {
@@ -3700,9 +3712,9 @@ class StoreModule extends Component {
                                 >
                                   <div
                                     className="strdrp-dwn"
-                                    style={{ width: "15%", padding: "0" }}
+                                    style={{ width: "15%", padding: "0",marginTop:"20px" }}
                                   >
-                                    <label>
+                                    <label style={{marginBottom:"10px"}}>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.label.selectstore
                                         : "Select Store"}
@@ -3889,7 +3901,7 @@ class StoreModule extends Component {
                                     )}
                                   </div>
                                 </div>
-                                <label className="slt-non-op-hr-lbl">
+                                <label className="slt-non-op-hr-lbl" style={{fontWeight:"400",marginLeft:"30px"}}>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label
                                         .storenonoperationalhours
@@ -3898,7 +3910,7 @@ class StoreModule extends Component {
 
                                 <div
                                   className="row cmpaign-channel-table lbl-fnt-w-400"
-                                  style={{ margin: "0px", marginLeft: "30px" }}
+                                  style={{ margin: "0px", marginLeft: "15px" }}
                                 >
                                   <div>
                                     <label

@@ -1255,6 +1255,7 @@ class Alerts extends Component {
 
   // delete alert
   deleteAlert(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -1269,10 +1270,10 @@ class Alerts extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Alert deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.alertdeletedsuccessfully:"Alert deleted successfully.");
           self.handleGetAlert();
         } else {
-          NotificationManager.error("Alert not deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.alertnotdeleted:"Alert not deleted.");
         }
       })
       .catch((data) => {
@@ -1280,6 +1281,7 @@ class Alerts extends Component {
       });
   }
   handleUpdateAlert() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.alertEdit.selectedAlertType) {
       let AlertisActive;
@@ -1458,7 +1460,7 @@ class Alerts extends Component {
               debugger;
               let status = res.data.message;
               if (status === "Success") {
-                NotificationManager.success("Alert updated successfully.");
+                NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.alertupdatedsuccessfully:"Alert updated successfully.");
                 self.handleGetAlert();
                 self.setState({
                   AddAlertTabsPopup: false,
@@ -1484,7 +1486,7 @@ class Alerts extends Component {
                   editSaveLoading: false,
                   AddAlertTabsPopup: false,
                 });
-                NotificationManager.error("Alert not updated.");
+                NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.alertnotupdated:"Alert not updated.");
               }
             })
             .catch((data) => {
@@ -1497,7 +1499,7 @@ class Alerts extends Component {
         }
       }, 10);
     } else {
-      NotificationManager.error("Alert not updated.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.alertnotupdated:"Alert not updated.");
       this.setState({
         editAlertNameCopulsion: "Please enter alerttype name.",
       });
@@ -1684,6 +1686,7 @@ class Alerts extends Component {
     }
   }
   handleInsertAlert() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
 
     let self = this;
@@ -1778,7 +1781,7 @@ class Alerts extends Component {
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
-          NotificationManager.success("Record Saved successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved successfully.");
           self.handleGetAlert();
           self.setState({
             selectedAlertTypeName: 0,
@@ -1822,7 +1825,7 @@ class Alerts extends Component {
             selectedNotifTicketingContent: "",
           });
         } else if (status === "Record Already Exists ") {
-          NotificationManager.error("Record Already Exists.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:"Record Already Exists.");
         }
         self.handleAddAlertTabsClose();
       })
@@ -2025,6 +2028,7 @@ class Alerts extends Component {
     }
   }
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
@@ -2048,7 +2052,7 @@ class Alerts extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleAlertData();
           } else {
@@ -2057,7 +2061,7 @@ class Alerts extends Component {
               isFileUploadFail: true,
               progressValue: 0,
             });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((data) => {
@@ -2077,12 +2081,13 @@ class Alerts extends Component {
     this.setState({ progressValue: value });
   }
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
   handleClearSearch() {
     this.setState({

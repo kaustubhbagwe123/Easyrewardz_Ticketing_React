@@ -898,6 +898,7 @@ class SlaTemplateDepartment extends Component {
       });
   }
   handleCreateSlaTemplate() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     var array = this.state.finalData;
     var valid = false;
@@ -951,7 +952,7 @@ class SlaTemplateDepartment extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("SLA added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.slaaddeddsuccessfully:"SLA added successfully.");
             self.setState({
               SlaIsActive: "true",
               SearchText: "",
@@ -963,7 +964,7 @@ class SlaTemplateDepartment extends Component {
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error(status);
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordalreadyexists:status);
           }
         })
         .catch((data) => {
@@ -978,6 +979,7 @@ class SlaTemplateDepartment extends Component {
   }
 
   handleDeleteSLA(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -992,10 +994,10 @@ class SlaTemplateDepartment extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
-          NotificationManager.success("SLA deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.sladeletedsuccessfully:"SLA deleted successfully.");
           self.handleGetSLATemplateGrid();
         } else {
-          NotificationManager.error("SLA not deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.slanotdeleted:"SLA not deleted.");
         }
       })
       .catch((data) => {
@@ -1069,6 +1071,7 @@ class SlaTemplateDepartment extends Component {
   }
   ////handle update slaTemplateGrid details by id
   handleUpdareSLADetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     var inputParamter = {};
@@ -1109,16 +1112,16 @@ class SlaTemplateDepartment extends Component {
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Updated Successfully");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.slaupdatesuccessfully:"SLA Updated Successfully.");
           self.handleGetSLATemplateGrid();
         } else {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.error("SLA Not Updated");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.slanotupdated:"SLA Not Updated");
         }
       })
       .catch((response) => {
         self.setState({ editSaveLoading: false, editmodel: false });
-        NotificationManager.error("SLA Not Updated");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.slanotupdated:"SLA Not Updated");
         console.log(response);
       });
   }
@@ -1172,6 +1175,7 @@ class SlaTemplateDepartment extends Component {
   }
 
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN) {
       let self = this;
@@ -1195,7 +1199,7 @@ class SlaTemplateDepartment extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetSLATemplateGrid();
           } else {
@@ -1204,7 +1208,7 @@ class SlaTemplateDepartment extends Component {
               // isFileUploadFail: true,
               progressValue: 0,
             });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((data) => {
@@ -1225,12 +1229,13 @@ class SlaTemplateDepartment extends Component {
     this.setState({ progressValue: value });
   }
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   handleClearSearch() {

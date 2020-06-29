@@ -244,6 +244,7 @@ class StoreUsers extends Component {
   };
 
   DeleteBulkUploadFile = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       file: {},
@@ -252,7 +253,7 @@ class StoreUsers extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   editStoreMethod() {
@@ -280,6 +281,7 @@ class StoreUsers extends Component {
   }
 
   handleBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
       const formData = new FormData();
@@ -299,13 +301,13 @@ class StoreUsers extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleGetStoreUserGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             // self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotupdated:"File not uploaded.");
           }
         })
         .catch((response) => {
@@ -2410,6 +2412,7 @@ class StoreUsers extends Component {
   }
   /// Delete store user by user id
   handleDeleteStoreUser(Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -2425,7 +2428,7 @@ class StoreUsers extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetStoreUserGridData();
-          NotificationManager.success("User Deleted Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.userdeletedsuccessfully:"User Deleted Successfully.");
         }
       })
       .catch((data) => {
@@ -2460,6 +2463,7 @@ class StoreUsers extends Component {
   }
   //// handle Save Store Details
   handleSaveStoreDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
       let self = this;
@@ -2477,13 +2481,13 @@ class StoreUsers extends Component {
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Record Saved Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
             self.setState({
               user_ID: data,
               StoreReadOnly: true,
             });
           } else {
-            NotificationManager.error("Record Not Save.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotsaved:"Record Not Save.");
           }
         })
         .catch((data) => {
@@ -2499,6 +2503,7 @@ class StoreUsers extends Component {
 
   //// handle Update Store details
   handleUpdateStoreDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.selectBrand > 0 && this.state.selectStore > 0) {
       let self = this;
@@ -2517,13 +2522,13 @@ class StoreUsers extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Record Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
             self.setState({
               // user_ID: data,
               StoreReadOnly: true,
             });
           } else {
-            NotificationManager.error("Record Not Updated.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated.");
           }
         })
         .catch((response) => {
@@ -2538,6 +2543,7 @@ class StoreUsers extends Component {
   }
   //// handle Save Personal Details
   handleSavePersonalDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -2567,7 +2573,7 @@ class StoreUsers extends Component {
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
-              NotificationManager.success("Record Saved Successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
               self.setState({
                 // user_ID: data,
                 personalReadOnly: true,
@@ -2580,7 +2586,7 @@ class StoreUsers extends Component {
             console.log(response);
           });
       } else {
-        NotificationManager.error("Please Enter Store Details.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstoredetails:"Please Enter Store Details.");
       }
     } else {
       this.setState({
@@ -2593,6 +2599,7 @@ class StoreUsers extends Component {
 
   //// update Personal details
   handleUpdatePersonalDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -2622,7 +2629,7 @@ class StoreUsers extends Component {
             let status = res.data.message;
             // let data = res.data.responseData;
             if (status === "Success") {
-              NotificationManager.success("Record Updated Successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
               self.setState({
                 // user_ID: data,
                 personalReadOnly: true,
@@ -2635,7 +2642,7 @@ class StoreUsers extends Component {
             console.log(response);
           });
       } else {
-        NotificationManager.error("Please Enter Store Details.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstoredetails:"Please Enter Store Details.");
       }
     } else {
       this.setState({
@@ -2647,6 +2654,7 @@ class StoreUsers extends Component {
   }
   //// handle save profile details
   handleSaveProfileDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -2685,12 +2693,12 @@ class StoreUsers extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("Record Saved Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
             self.setState({
               profileReadOnly: true,
             });
           } else {
-            NotificationManager.error("Record Not Saved.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotsaved:"Record Not Saved.");
           }
         })
         .catch((response) => {
@@ -2708,6 +2716,7 @@ class StoreUsers extends Component {
   }
   /// handle update Profile details
   handleUpdateProfileDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -2741,12 +2750,12 @@ class StoreUsers extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Record Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
             self.setState({
               profileReadOnly: true,
             });
           } else {
-            NotificationManager.error("Record Not Update.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Update.");
           }
         })
         .catch((response) => {
@@ -2764,6 +2773,7 @@ class StoreUsers extends Component {
   }
   //// final save User data
   handleFinalSaveUserData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (
       this.state.selectedClaimBrand.length > 0 &&
@@ -2838,7 +2848,7 @@ class StoreUsers extends Component {
             debugger;
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Record Saved Successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordsavedsuccessfully:"Record Saved Successfully.");
               self.handleGetStoreUserGridData();
               self.handleSendMail(self.state.user_ID);
               self.handleGetstoreCodeData();
@@ -2874,14 +2884,14 @@ class StoreUsers extends Component {
                 activeData: [],
               });
             } else {
-              NotificationManager.error("Record Not Saved.");
+              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotsaved:"Record Not Saved.");
             }
           })
           .catch((response) => {
             console.log(response);
           });
       } else {
-        NotificationManager.error("Please Enter Personal Details.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterpersonaldetails:"Please Enter Personal Details.");
       }
     } else {
       this.setState({
@@ -2896,6 +2906,7 @@ class StoreUsers extends Component {
     }
   }
   handleSendMail(user_Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
     var _token = window.localStorage.getItem("token");
@@ -2917,9 +2928,9 @@ class StoreUsers extends Component {
         debugger;
         let reportto = res.data.responseData;
         if (reportto === "Mail sent successfully") {
-          NotificationManager.success("Please Check Email.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.pleasecheckemail:"Please Check Email.");
         } else {
-          NotificationManager.error("Mail Sent Failed.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.mailsentfailed:"Mail Sent Failed.");
         }
       })
       .catch((res) => {
@@ -2961,6 +2972,7 @@ class StoreUsers extends Component {
   }
   ////handle update user
   handleUpdateUser() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     var inputParam = {};
     if (
@@ -3055,11 +3067,11 @@ class StoreUsers extends Component {
           var responseData = response.data.responseData;
 
           if (message === "Success" && responseData) {
-            NotificationManager.success("User Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.userupdatedsuccessfully:"User Updated Successfully.");
             self.handleGetStoreUserGridData();
             self.closeEditModals();
           } else {
-            NotificationManager.success("User Updated Fail.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.userupdatedfailed:"User Updated Fail.");
           }
         })
         .catch((response) => {
@@ -4442,7 +4454,7 @@ class StoreUsers extends Component {
                           getOptionLabel={(option) => option.funcationName}
                           getOptionValue={(option) => option.functionID}
                           options={this.state.functionData}
-                          placeholder="Select"
+                          placeholder={TranslationContext!==undefined?TranslationContext.placeholder.select:"Select"}
                           closeMenuOnSelect={false}
                           name="selectedFunction"
                           onChange={this.handleFunctionOnChange.bind(this)}
