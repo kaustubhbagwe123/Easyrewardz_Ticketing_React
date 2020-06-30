@@ -229,12 +229,12 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.updatedsuccessfully:"Update successfully!");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
           self.setState({ isLoadingUpdate: false });
           self.handleGetCardConfiguration();
         } else {
           self.setState({ isLoadingUpdate: false });
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.notupdatedsuccessfully:"Not update successfully!");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
         }
       })
       .catch((response) => {
@@ -349,11 +349,11 @@ class ChatSettings extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.updatedsuccessfully:"Updated Successfully");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.notupdatedsuccessfully:"Not Updated Successfully");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
         }
       })
       .catch((response) => {
