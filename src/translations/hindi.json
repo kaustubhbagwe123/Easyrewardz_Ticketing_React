@@ -439,7 +439,8 @@
     "storedetails":"विवरण स्टोर करें",
     "personaldetails":"व्यक्तिगत विवरण",
     "profiledetails":"प्रोफ़ाइल विवरण",
-    "mappedclaimcategory":"मैप्ड क्लियाम श्रेणी"    
+    "mappedclaimcategory":"मैप्ड क्लियाम श्रेणी",
+    "closechat":"चैट बंद करे"    
   },
   "text": {
     "brand": "ब्रांड :",
@@ -625,7 +626,8 @@
     "updated": "अद्यतन",
     "invoiceno": "चालान नंबर",
     "paymentdate":"भुगतान तिथि",
-    "lasttransaction":"अंतिम लेन-देन"
+    "lasttransaction":"अंतिम लेन-देन",
+    "No":"शुन्य"
   },
   "small": {
     "moreinsights": "अधिक जानकारी देखें",

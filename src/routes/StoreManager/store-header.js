@@ -2697,7 +2697,9 @@ class Header extends Component {
                                     }}
                                   >
                                     {chat.messageCount === 0
-                                      ? "No"
+                                      ? TranslationContext !== undefined
+                                      ? TranslationContext.p.No
+                                      : "No"
                                       : chat.messageCount}{" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
@@ -5960,7 +5962,7 @@ class Header extends Component {
                 disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
               >
-                Close Chat
+                {TranslationContext!==undefined?TranslationContext.label.closechat:"Close Chat"}
               </label>
             </div>
           </div>
