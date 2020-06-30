@@ -75,7 +75,6 @@ class Orders extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -128,7 +127,6 @@ class Orders extends Component {
           <Select
             value={this.state.shoppingBagVisible}
             className="order-mobile-dropdown"
-            // open={true}
             dropdownClassName="order-mobile-dropdown-menu"
             onSelect={this.changeOrderDropdown.bind(this)}
             onDropdownVisibleChange={(open) =>
@@ -234,7 +232,6 @@ class Orders extends Component {
                   {TranslationContext !== undefined
                     ? TranslationContext.a.shipmentassigned
                     : "Shipment Assigned"}
-                  
                 </a>
               ) : null}
             </Option>
@@ -256,7 +253,6 @@ class Orders extends Component {
                   {TranslationContext !== undefined
                     ? TranslationContext.a.returns
                     : "Returns"}
-                  
                 </a>
               ) : null}
             </Option>
@@ -275,7 +271,6 @@ class Orders extends Component {
                   aria-selected="false"
                   onClick={this.handleChanageNavTabs.bind(this, 7)}
                 >
-                  
                   {TranslationContext !== undefined
                     ? TranslationContext.a.checkservice
                     : "Check Service"}
@@ -396,9 +391,9 @@ class Orders extends Component {
                     aria-selected="false"
                     onClick={this.handleChanageNavTabs.bind(this, 6)}
                   >
-                     {TranslationContext !== undefined
-                    ? TranslationContext.a.returns
-                    : "Returns"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.returns
+                      : "Returns"}
                   </a>
                 </li>
                 <li className="nav-item">
@@ -415,10 +410,9 @@ class Orders extends Component {
                     aria-selected="false"
                     onClick={this.handleChanageNavTabs.bind(this, 7)}
                   >
-                     {TranslationContext !== undefined
-                    ? TranslationContext.a.checkservice
-                    : "Check Service"}
-                    
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.checkservice
+                      : "Check Service"}
                   </a>
                 </li>
               </>
@@ -432,6 +426,12 @@ class Orders extends Component {
                   ? TranslationContext.placeholder.searchdot
                   : "Search..."
               }
+              name="orderAllSearch"
+              value={this.state.orderAllSearch}
+              onChange={(e) =>
+                this.setState({ [e.target.name]: e.target.value })
+              }
+              autoComplete="off"
             />
             <img src={OrderSearch} alt="search icon" />
           </div>

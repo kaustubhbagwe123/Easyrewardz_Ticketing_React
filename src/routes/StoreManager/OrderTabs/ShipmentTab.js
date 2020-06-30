@@ -152,10 +152,18 @@ class ShipmentTab extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.success:"Success.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.success
+              : "Success."
+          );
           self.handleGetShipmentTabGridData();
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.failed
+              : "Failed."
+          );
         }
       })
       .catch((data) => {
@@ -622,12 +630,20 @@ class ShipmentTab extends Component {
                               this.setState({ orderPopoverOverlay: visible })
                             }
                             icon={false}
-                            okText={TranslationContext!==undefined?TranslationContext.button.yes:"Yes"}
+                            okText={
+                              TranslationContext !== undefined
+                                ? TranslationContext.button.yes
+                                : "Yes"
+                            }
                             onConfirm={this.handleUpdateDateandTime.bind(
                               this,
                               item.id
                             )}
-                            cancelText={TranslationContext!==undefined?TranslationContext.button.no:"No"}
+                            cancelText={
+                              TranslationContext !== undefined
+                                ? TranslationContext.button.no
+                                : "No"
+                            }
                           >
                             <button
                               className={
@@ -636,7 +652,9 @@ class ShipmentTab extends Component {
                                   : "butn order-grid-butn"
                               }
                             >
-                             {TranslationContext!==undefined?TranslationContext.button.pickuppending:item.actionTypeName}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.pickuppending
+                                : item.actionTypeName}
                             </button>
                           </Popconfirm>
                         </>
@@ -655,7 +673,9 @@ class ShipmentTab extends Component {
                               item.id
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.button.createshipment:item.actionTypeName}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.createshipment
+                              : item.actionTypeName}
                           </button>
                         </>
                       ) : null}
@@ -673,7 +693,9 @@ class ShipmentTab extends Component {
                               item.id
                             )}
                           >
-                           {TranslationContext!==undefined?TranslationContext.button.shipmentcreated:item.actionTypeName}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.shipmentcreated
+                              : item.actionTypeName}
                           </button>
                         </>
                       ) : null}
@@ -690,8 +712,9 @@ class ShipmentTab extends Component {
                       <td>
                         <label>
                           <b>
-                            {TranslationContext !== undefined ?
-                            TranslationContext.label.customername : "Customer Name"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.customername
+                              : "Customer Name"}
                           </b>
                         </label>
                         <label>
@@ -702,10 +725,10 @@ class ShipmentTab extends Component {
                       <td>
                         <label>
                           <b>
-                            
-                          {TranslationContext !== undefined ?
-                            TranslationContext.p.shippingaddress : "Shipping Address"}
-                            </b>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.p.shippingaddress
+                              : "Shipping Address"}
+                          </b>
                         </label>
                         <label style={{ whiteSpace: "initial" }}>
                           {row.shippingAddress}
@@ -716,17 +739,20 @@ class ShipmentTab extends Component {
                       <td>
                         <label>
                           <b>
-
-                          {TranslationContext !== undefined ?
-                            TranslationContext.title.deliverytype : "Delivery Type"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.title.deliverytype
+                              : "Delivery Type"}
                           </b>
                         </label>
                         <label>{row.deliveryTypeName}</label>
                       </td>
                       <td>
                         <label>
-                          <b>{TranslationContext !== undefined ?
-                            TranslationContext.label.status : "Status"}</b>
+                          <b>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.status
+                              : "Status"}
+                          </b>
                         </label>
                         <label>{row.statusName}</label>
                       </td>
@@ -734,8 +760,11 @@ class ShipmentTab extends Component {
                     <tr>
                       <td>
                         <label>
-                          <b>{TranslationContext !== undefined ?
-                            TranslationContext.title.partner : "Partner"}</b>
+                          <b>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.title.partner
+                              : "Partner"}
+                          </b>
                         </label>
                         <label>{row.courierPartner}</label>
                       </td>
@@ -810,7 +839,9 @@ class ShipmentTab extends Component {
                         className="arti-check"
                         checked={true}
                       />
-                      {TranslationContext!==undefined?TranslationContext.checkbox.articlemapping:"Article Mapping"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.articlemapping
+                        : "Article Mapping"}
                     </a>
                   </li>
                   <li className="nav-item">
@@ -831,7 +862,9 @@ class ShipmentTab extends Component {
                         className="arti-check"
                         checked={this.state.createdShoppingTabs}
                       />
-                       {TranslationContext!==undefined?TranslationContext.checkbox.AirwayBillNo:"Article Mapping"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.checkbox.AirwayBillNo
+                        : "Article Mapping"}
                     </a>
                   </li>
                 </ul>
@@ -900,9 +933,10 @@ class ShipmentTab extends Component {
                                 dataIndex: "itemPrice",
                               },
                               {
-                                title: TranslationContext !== undefined
-                                ? TranslationContext.title.itemquantity
-                                : "Article Quantity",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.itemquantity
+                                    : "Article Quantity",
                                 dataIndex: "quantity",
                               },
                             ]}
@@ -918,8 +952,9 @@ class ShipmentTab extends Component {
                           style={{ marginRight: "10px" }}
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                         <button
                           style={{ marginRight: "0px" }}
@@ -930,7 +965,9 @@ class ShipmentTab extends Component {
                           }
                           onClick={this.handleCreateShipmentAWB.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.saveandnext:"Save &amp; Next"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.saveandnext
+                            : "Save & Next"}
                         </button>
                       </div>
                     </div>
@@ -989,15 +1026,18 @@ class ShipmentTab extends Component {
                           style={{ marginRight: "10px" }}
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >
-                          {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                          
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.cancel
+                            : "Cancel"}
                         </button>
                         <button
                           style={{ marginRight: "0px" }}
                           className="btn-shipment-saveNext"
                           onClick={this.handleShipmentModalClose.bind(this)}
                         >
-                           {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.done
+                            : "Done"}
                         </button>
                       </div>
                     </div>
