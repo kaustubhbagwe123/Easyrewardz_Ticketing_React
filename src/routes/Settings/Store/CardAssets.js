@@ -99,9 +99,9 @@ class CardAssets extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           if (status) {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imageaddedsuccessfully:"Image added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imageaddedsuccessfully:"Image Added Successfully");
           } else {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imagerejectedsuccessfully:"Image rejected successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.imagerejectedsuccessfully:"Image Rejected Successfully");
           }
         }
         self.handleGetCardImageUploadlog(1);

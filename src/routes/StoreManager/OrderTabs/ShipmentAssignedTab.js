@@ -116,25 +116,26 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateShipmentAssignedData(row, IsProceed) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (row.awbNo !== "" && row.courierPartner.toLowerCase() !== "store") {
       if (row.referenceNo === "") {
-        NotificationManager.error("Please enter POD.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterpod:"Please enter POD.");
         return false;
       }
     } else {
       if (row.storeName === "") {
-        NotificationManager.error("Please enter store name.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstorename:"Please enter store name.");
         return false;
       }
 
       if (row.staffName === "") {
-        NotificationManager.error("Please enter staff name.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstaffname:"Please enter staff name.");
         return false;
       }
 
       if (row.mobileNumber === "") {
-        NotificationManager.error("Please enter mobile number.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentermobilenumber:"Please enter mobile number.");
         return false;
       }
     }
@@ -156,7 +157,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.setState({
             orderPopoverOverlay: false,
           });
@@ -170,6 +171,7 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateDeliveredByShipAssigned(orderID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
 
     axios({
@@ -184,7 +186,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.setState({
             orderPopoverOverlay: false,
           });
@@ -198,6 +200,7 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateShipmentAssignedRTO(orderID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
 
     axios({
@@ -212,7 +215,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.setState({
             orderPopoverOverlay: false,
           });

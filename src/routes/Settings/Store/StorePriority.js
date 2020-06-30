@@ -2120,7 +2120,9 @@ class CreatePriority extends Component {
                 value={this.state.rowData.isActive}
                 onChange={this.handelEditChange.bind(this)}
               >
-                <option value="">select</option>
+                <option value="">
+                {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+                </option>
                 {this.state.activeData !== null &&
                   this.state.activeData.map((item, j) => (
                     <option key={j} value={item.ActiveID}>

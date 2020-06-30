@@ -75,7 +75,7 @@ class CheckService extends Component {
         .then(function(res) {
           let status = res.data.responseData.available;
           if (status === "true") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.viewsearch:"Delivery Available.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.deliveryavailable:"Delivery Available.");
             self.setState({
               btnSubmitData: false,
             });

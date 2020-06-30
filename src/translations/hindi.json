@@ -421,7 +421,25 @@
     "undelivered":"नहीं पहुंचा पाए",
     "pastchat0":"पुरानी चैट(0",
     "pastchat":"पुरानी चैट(",
-    "customerhasendchat":"ग्राहक की चैट समाप्त हो गई है"
+    "customerhasendchat":"ग्राहक की चैट समाप्त हो गई है",
+    "edithierarchy":"पदानुक्रम संपादित करें",
+    "DesignationName":"पदनाम नाम",
+    "ChatbotScript":"चैटबॉट स्क्रिप्ट",
+    "ExecutedDate":"निष्पादित दिनांक",
+    "CustomerName":"ग्राहक का नाम",
+    "Response":"प्रतिक्रिया",
+    "ReportTo":"सूचित करना",
+    "StoreName":"स्टोर नाम",
+    "DepartmentName":"विभाग का नाम",
+    "FunctionName":"कार्य का नाम",
+    "recentcampaign":"हालिया अभियान",
+    "sharenow":"अब साझा करें",
+    "claimsissuetype":"दावे प्रकार जारी करते हैं",
+    "editclaimcategory":"एडिट क्लैम श्रेणी",
+    "storedetails":"विवरण स्टोर करें",
+    "personaldetails":"व्यक्तिगत विवरण",
+    "profiledetails":"प्रोफ़ाइल विवरण",
+    "mappedclaimcategory":"मैप्ड क्लियाम श्रेणी"    
   },
   "text": {
     "brand": "ब्रांड :",
@@ -606,7 +624,8 @@
     "successfullymappedto": "सफलतापूर्वक मैप किया गया",
     "updated": "अद्यतन",
     "invoiceno": "चालान नंबर",
-    "paymentdate":"भुगतान तिथि"
+    "paymentdate":"भुगतान तिथि",
+    "lasttransaction":"अंतिम लेन-देन"
   },
   "small": {
     "moreinsights": "अधिक जानकारी देखें",
@@ -950,7 +969,9 @@
     "FollowUp":"जाँच करना",
     "Conversation":"बातचीत",
     "Converted":"परिवर्तित",
-    "RaiseTicket":"टिकट उठाएं"
+    "RaiseTicket":"टिकट उठाएं",
+    "qty":"मात्रा",
+    "executeddate":"निष्पादित दिनांक"
   },
   "div": {
     "viewtickets": "टिकट देखें",
@@ -976,7 +997,8 @@
     "programcode":"प्रोग्राम कोड",
     "chatsessiontimeout":"चैट सत्र समय समाप्त",
     "historicalchattime":"ऐतिहासिक चैट समय",
-    "setlimittypeboxofchatwindow":"चैट विंडो में लिखने की अधिकतम सीमा"
+    "setlimittypeboxofchatwindow":"चैट विंडो में लिखने की अधिकतम सीमा",
+    "sendviamessenger":"संदेशवाहक के माध्यम से भेजें"
   },
   "button": {
     "logout": "लॉगआउट",
@@ -1117,7 +1139,8 @@
     "sendviamessage": "वाया मैसेंजर भेजें",
     "sendviabot": "वाया बॉट भेजें",
     "invoiceno": "चालान नंबर",
-    "itemid": "सामान आईडी"
+    "itemid": "सामान आईडी",
+    "sharevia":"के माध्यम से बाँटे"
   },
   "h5": {
     "knowledgebase": "ज्ञानधार",
@@ -1144,7 +1167,9 @@
     "orderconfiguration": "आदेश विन्यास",
     "charditemconfiguration": "कार्ड की सूचना",
     "cardassestsconfiguration": "कार्ड संपत्ति विन्यास",
-    "smsandwhatsapp":"एसएमएस एवं व्हाट्सप्प"
+    "smsandwhatsapp":"एसएमएस एवं व्हाट्सप्प",
+    "inr":"मैं एन आर",
+    "yourmessagehasbeensharedsuccessfully":"आपका संदेश सफलतापूर्वक साझा किया गया है"
   },
   "h4": {
     "personaldetails": "व्यक्तिगत विवरण",
@@ -1160,6 +1185,7 @@
     "choosechannel": "चैनल चुनें",
     "storedetails": "विवरण स्टोर करें",
     "mappedcliamcategory": "मैप्ड क्लियाम श्रेणी"
+ 
   },
   "checkbox": {
     "mon": "सोम",
@@ -1317,17 +1343,22 @@
     "selectsize": "माप चुनिये",
     "fileformat": "फाइल प्रारूप",
     "sec": "सेकंड",
-    "selectlanguage": "भाषा का चयन करें",
+    "selectlanguage": "भाषा चुनें",
     "storecode": "स्टोर कोड",
     "storetimings": "स्टोर टाइमिंग",
     "category": "वर्ग",
     "subcategory": "उप श्रेणी",
     "issuetype": "समस्या का प्रकार",
     "ticketstatus": "टिकट की स्थिति",
-    "selectcategory": "श्रेणी का चयन करें",
+    "selectcategory": "श्रेणी चुनें",
     "selectissuetype": "समस्या का प्रकार चुनें",
     "allstoremember":"सभी स्टोर सदस्य",
-    "brand":"ब्रांड"
+    "brand":"ब्रांड",
+    "SelectResponse":"प्रतिक्रिया चुनें",
+    "days":"दिन",
+    "am":"ए एम",
+    "pm":"पी एम"
+    
   },
   "radio": {
     "email": "ईमेल",
@@ -1396,7 +1427,10 @@
     "pleaseselectclaimcategory":"कृपया दावा श्रेणी चुनें",
     "entercategoryname":"श्रेणी का नाम दर्ज करें",
     "selecttimeanddate":"दिनांक एवं समय चुने",
-    "selectstatus":"स्थिति का चयन करें"
+    "selectstatus":"स्थिति का चयन करें",
+    "EnterDesignationName":"पदनाम नाम दर्ज करें",
+    "selectdateandtime":"दिनांक और समय का चयन करें",
+    "maxcpty":"अधिकतम क्षमता"
    
   },
   "title": {
@@ -1589,7 +1623,13 @@
     "pleaseenterstate":"कृपया राज्य में प्रवेश करें",
     "pleaseentercountry":"कृपया देश में प्रवेश करें।",
     "deliveryavailable":"वितरण उपलब्ध है।",
-    "servicenotavailableonenteredpincode":"दर्ज किए गए पिनकोड पर सेवा उपलब्ध नहीं है।"
+    "servicenotavailableonenteredpincode":"दर्ज किए गए पिनकोड पर सेवा उपलब्ध नहीं है।",
+    "commentnotadded":"टिप्पणी नहीं जोड़ी गई।",
+    "ticketnotupdated":"टिकट अपडेट नहीं।",
+    "pleaseentermobilenumber":"कृपया मोबाइल नंबर दर्ज करें।",
+    "pleaseenterstaffname":"कृपया कर्मचारियों का नाम दर्ज करें।",
+    "pleaseenterstorename":"कृपया स्टोर का नाम दर्ज करें।",
+    "pleaseenterpod":"कृपया पी ओ डी दर्ज करें।"
     
   }
 

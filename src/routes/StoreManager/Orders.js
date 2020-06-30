@@ -428,7 +428,7 @@ class Orders extends Component {
               }
               name="orderAllSearch"
               value={this.state.orderAllSearch}
-              onChange={() =>
+              onChange={(e) =>
                 this.setState({ [e.target.name]: e.target.value })
               }
               autoComplete="off"

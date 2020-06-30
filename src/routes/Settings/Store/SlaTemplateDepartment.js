@@ -2324,17 +2324,20 @@ class SlaTemplateDepartment extends Component {
         >
           <div className="edtpadding">
             <label className="Create-store-text" style={{ paddingTop: "0" }}>
-              EDIT SLA
+            {TranslationContext!==undefined?TranslationContext.label.editsla:"EDIT SLA"}
+              
             </label>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Brand Name: </label>
+                <label className="createhead-text-new">
+                {TranslationContext!==undefined?TranslationContext.label.brandname:"Brand Name"}: </label>
                 <label className="createhead-text-1">
                   {this.state.brandName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Store Name: </label>
+                <label className="createhead-text-new">
+                {TranslationContext!==undefined?TranslationContext.label.StoreName:"Store Name"}: </label>
                 <label className="createhead-text-1">
                   {this.state.storeName}
                 </label>
@@ -2342,13 +2345,15 @@ class SlaTemplateDepartment extends Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Department Name:</label>
+                <label className="createhead-text-new">{TranslationContext!==undefined?TranslationContext.label.DepartmentName:"Department Name"}:</label>
                 <label className="createhead-text-1">
                   {this.state.departmentName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Function Name: </label>
+                <label className="createhead-text-new"> 
+                {TranslationContext!==undefined?TranslationContext.label.FunctionName:"Function Name"}:
+                </label>
                 <label className="createhead-text-1">
                   {this.state.functionName}
                 </label>
@@ -2357,9 +2362,15 @@ class SlaTemplateDepartment extends Component {
             <br />
 
             <div className="slatargetRow-3 ma">
-              <label className="createhead-text-new-1">Priority</label>
-              <label className="createhead-text-5">% SLA</label>
-              <label className="createhead-text-6">Resolve</label>
+              <label className="createhead-text-new-1">
+              {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+              </label>
+              <label className="createhead-text-5"> 
+              %{TranslationContext!==undefined?TranslationContext.label.sla:"SLA"}
+              </label>
+              <label className="createhead-text-6">
+              {TranslationContext!==undefined?TranslationContext.label.resolve:"Resolve"}
+              </label>
             </div>
             {this.state.finalEditData !== null &&
               this.state.finalEditData.map((item, i) => (
@@ -2413,9 +2424,15 @@ class SlaTemplateDepartment extends Component {
                           value={item.ResolveType}
                           onChange={this.handleEditSlaTargets.bind(this, i)}
                         >
-                          <option value="M">M</option>
-                          <option value="H">H</option>
-                          <option value="D">D</option>
+                          <option value="M">
+                          {TranslationContext!==undefined?TranslationContext.option.m:"M"}
+                          </option>
+                          <option value="H">
+                          {TranslationContext!==undefined?TranslationContext.option.h:"H"}
+                          </option>
+                          <option value="D">
+                          {TranslationContext!==undefined?TranslationContext.option.d:"D"}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -2430,7 +2447,9 @@ class SlaTemplateDepartment extends Component {
 
             <div className="divSpace-3">
               <div className="dropDrownSpace">
-                <label className="reports-to">Status</label>
+                <label className="reports-to">
+                {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                </label>
                 <select
                   className="store-create-select"
                   value={
@@ -2438,8 +2457,12 @@ class SlaTemplateDepartment extends Component {
                   }
                   onChange={this.handleEditSlaIsActive}
                 >
-                  <option value={"Active"}>Active</option>
-                  <option value={"Inactive"}>Inactive</option>
+                  <option value={"Active"}>
+                  {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                  </option>
+                  <option value={"Inactive"}>
+                  {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                  </option>
                 </select>
               </div>
             </div>
@@ -2448,7 +2471,8 @@ class SlaTemplateDepartment extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                 {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2465,7 +2489,9 @@ class SlaTemplateDepartment extends Component {
                 ) : (
                   ""
                 )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                <label className="pop-over-btnsave-text">
+                {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+                </label>
               </button>
             </div>
           </div>
