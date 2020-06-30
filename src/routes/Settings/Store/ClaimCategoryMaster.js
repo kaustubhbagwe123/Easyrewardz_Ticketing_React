@@ -3398,7 +3398,9 @@ class ClaimCategoryMaster extends Component {
               <div className="pop-over-div">
                 <div className="divSpace">
                   <div className="dropDrownSpace">
-                    <label className="edit-label-1">Claim Issue Type</label>
+                    <label className="edit-label-1">
+                    {TranslationContext!==undefined?TranslationContext.label.claimsissuetype:"Claim Issue Type"}
+                    </label>
                     <Aselect
                       showSearch={true}
                       value={this.state.editCategory.issueTypeName}
@@ -3472,7 +3474,9 @@ class ClaimCategoryMaster extends Component {
                 </div>
               </div>
               <div className="pop-over-div">
-                <label className="edit-label-1">Status</label>
+                <label className="edit-label-1">
+                {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                </label>
                 <select
                   id="inputStatus"
                   className="edit-dropDwon dropdown-setting"

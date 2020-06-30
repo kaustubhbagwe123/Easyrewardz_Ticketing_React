@@ -164,7 +164,7 @@ class OrderTab extends Component {
           self.handleGetOrderTabGridData();
           NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.linksendsuccessfully:"Link Send Successfully.");
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.linknotsendsuccessfully:status);
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {
@@ -326,7 +326,7 @@ class OrderTab extends Component {
           });
           NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
         } else {
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:status);
+          NotificationManager.error(status);
         }
       })
       .catch((data) => {

@@ -5162,7 +5162,7 @@ class StoreUsers extends Component {
                   onSelect={(index, label) => this.setState({ selTab: label })}
                   selected={this.state.selTab}
                 >
-                  <Tab label="Store Details">
+                  <Tab label={TranslationContext!==undefined?TranslationContext.label.storedetails:"Store Details"}>
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5262,7 +5262,7 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label="Personal Details">
+                  <Tab label={TranslationContext!==undefined?TranslationContext.label.personaldetails:"Personal Details"}>
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5386,7 +5386,7 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label="Profile Details">
+                  <Tab label={TranslationContext!==undefined?TranslationContext.label.profiledetails:"Profile Details"}>
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
@@ -5608,12 +5608,12 @@ class StoreUsers extends Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab label="Mapped Cliam Category">
+                  <Tab label={TranslationContext!==undefined?TranslationContext.label.mappedclaimcategory:"Mapped Claim Category"}>
                     <div>
                       <h4 style={{ textAlign: "center" }}>
                         {TranslationContext !== undefined
                           ? TranslationContext.h4.mappedcliamcategory
-                          : " Mapped Cliam Category"}
+                          : " Mapped Claim Category"}
                       </h4>
                       <div className="right-sect-div right-sect-div-edit">
                         <div className="div-cntr cus-drp">

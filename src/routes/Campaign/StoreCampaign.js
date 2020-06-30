@@ -3277,7 +3277,9 @@ class StoreCampaign extends Component {
             onClick={this.handleShareViaModalClose.bind(this)}
           />
           <div>
-            <h4>Choose Channel</h4>
+            <h4>
+            {TranslationContext!==undefined?TranslationContext.h4.choosechannel:"Choose Channel"}
+            </h4>
             <table className="w-100">
               <tbody>
                 <tr>
@@ -3308,7 +3310,8 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelMessanger === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Send Via Messenger
+                          {TranslationContext!==undefined?TranslationContext.div.sendviamessenger:"Send Via Messenger"}
+                          
                         </div>
                       </a>
                     </td>
@@ -3338,7 +3341,8 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelBot === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Send Via Bot
+                          
+                          {TranslationContext!==undefined?TranslationContext.div.sendviabot:"Send Via Bot"}
                         </div>
                       </a>
                     </td>
@@ -3366,7 +3370,8 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelSMS === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          SMS
+                          
+                          {TranslationContext!==undefined?TranslationContext.div.sms:"SMS"}
                         </div>
                       </a>
                     </td>
@@ -3393,7 +3398,8 @@ class StoreCampaign extends Component {
                           {this.state.Respo_ChannelEmail === true ? (
                             <img className="tick" src={Tick} alt="Tick Icon" />
                           ) : null}
-                          Email
+                          
+                          {TranslationContext!==undefined?TranslationContext.div.email:"Email"}
                         </div>
                       </a>
                     </td>
@@ -3407,7 +3413,8 @@ class StoreCampaign extends Component {
                 onClick={this.handleShareNowOpenModal.bind(this)}
                 id={this.state.shareDisable ? "dis-share" : ""}
               >
-                Share Now
+                 {TranslationContext!==undefined?TranslationContext.label.sharenow:"Share Now"}
+                
               </label>
             </div>
           </div>
@@ -3428,7 +3435,9 @@ class StoreCampaign extends Component {
           />
           <div className="raise-ticket-popup">
             <div className="d-flex justify-content-between mb-2">
-              <p className="blak-clr font-weight-bold m-0">Customer Details</p>
+              <p className="blak-clr font-weight-bold m-0">
+              {TranslationContext!==undefined?TranslationContext.p.customerdetails:"Customer Details"}
+              </p>
               <p className="m-0">
                 Source:<span>Store</span>
               </p>

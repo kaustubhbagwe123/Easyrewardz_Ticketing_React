@@ -181,6 +181,7 @@ class storeMyTicket extends Component {
   }
   /// Handle Add Note comment
   handleNoteAddComments() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.NoteAddComment.length > 0) {
       axios({
@@ -201,9 +202,9 @@ class storeMyTicket extends Component {
               NoteAddComment: "",
               AddNoteValidation: "",
             });
-            NotificationManager.success("Comment added successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.commentaddedsuccessfully:"Comment added successfully.");
           } else {
-            NotificationManager.error("Comment not added.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.commentnotadded:"Comment not added.");
           }
         })
         .catch((data) => {
@@ -247,6 +248,7 @@ class storeMyTicket extends Component {
   }
   /// handle Update ticket function
   handleUpdateTicketDetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     axios({
       method: "post",
@@ -262,10 +264,10 @@ class storeMyTicket extends Component {
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
-          NotificationManager.success("Ticket Updated successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketupdatedsuccessfully:"Ticket Updated successfully.");
           self.handleGetTicketDetails(self.state.ticketDetailsData.ticketID);
         } else {
-          NotificationManager.error("Ticket Not Updated.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.ticketnotupdated:"Ticket Not Updated.");
         }
       })
       .catch((data) => {

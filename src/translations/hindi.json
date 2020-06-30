@@ -432,8 +432,14 @@
     "StoreName":"स्टोर नाम",
     "DepartmentName":"विभाग का नाम",
     "FunctionName":"कार्य का नाम",
-    "recentcampaign":"हालिया अभियान"
-    
+    "recentcampaign":"हालिया अभियान",
+    "sharenow":"अब साझा करें",
+    "claimsissuetype":"दावे प्रकार जारी करते हैं",
+    "editclaimcategory":"एडिट क्लैम श्रेणी",
+    "storedetails":"विवरण स्टोर करें",
+    "personaldetails":"व्यक्तिगत विवरण",
+    "profiledetails":"प्रोफ़ाइल विवरण",
+    "mappedclaimcategory":"मैप्ड क्लियाम श्रेणी"    
   },
   "text": {
     "brand": "ब्रांड :",
@@ -991,7 +997,8 @@
     "programcode":"प्रोग्राम कोड",
     "chatsessiontimeout":"चैट सत्र समय समाप्त",
     "historicalchattime":"ऐतिहासिक चैट समय",
-    "setlimittypeboxofchatwindow":"चैट विंडो में लिखने की अधिकतम सीमा"
+    "setlimittypeboxofchatwindow":"चैट विंडो में लिखने की अधिकतम सीमा",
+    "sendviamessenger":"संदेशवाहक के माध्यम से भेजें"
   },
   "button": {
     "logout": "लॉगआउट",
@@ -1336,18 +1343,18 @@
     "selectsize": "माप चुनिये",
     "fileformat": "फाइल प्रारूप",
     "sec": "सेकंड",
-    "selectlanguage": "भाषा का चयन करें",
+    "selectlanguage": "भाषा चुनें",
     "storecode": "स्टोर कोड",
     "storetimings": "स्टोर टाइमिंग",
     "category": "वर्ग",
     "subcategory": "उप श्रेणी",
     "issuetype": "समस्या का प्रकार",
     "ticketstatus": "टिकट की स्थिति",
-    "selectcategory": "श्रेणी का चयन करें",
+    "selectcategory": "श्रेणी चुनें",
     "selectissuetype": "समस्या का प्रकार चुनें",
     "allstoremember":"सभी स्टोर सदस्य",
     "brand":"ब्रांड",
-    "SelectResponse":"प्रतिक्रिया का चयन करें",
+    "SelectResponse":"प्रतिक्रिया चुनें",
     "days":"दिन",
     "am":"ए एम",
     "pm":"पी एम"
@@ -1616,7 +1623,13 @@
     "pleaseenterstate":"कृपया राज्य में प्रवेश करें",
     "pleaseentercountry":"कृपया देश में प्रवेश करें।",
     "deliveryavailable":"वितरण उपलब्ध है।",
-    "servicenotavailableonenteredpincode":"दर्ज किए गए पिनकोड पर सेवा उपलब्ध नहीं है।"
+    "servicenotavailableonenteredpincode":"दर्ज किए गए पिनकोड पर सेवा उपलब्ध नहीं है।",
+    "commentnotadded":"टिप्पणी नहीं जोड़ी गई।",
+    "ticketnotupdated":"टिकट अपडेट नहीं।",
+    "pleaseentermobilenumber":"कृपया मोबाइल नंबर दर्ज करें।",
+    "pleaseenterstaffname":"कृपया कर्मचारियों का नाम दर्ज करें।",
+    "pleaseenterstorename":"कृपया स्टोर का नाम दर्ज करें।",
+    "pleaseenterpod":"कृपया पी ओ डी दर्ज करें।"
     
   }
 
