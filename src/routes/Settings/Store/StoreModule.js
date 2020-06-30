@@ -4058,7 +4058,7 @@ class StoreModule extends Component {
                                           disabled={true}
                                           style={{ width: "50px" }}
                                         >
-                                          <option value="D">Days</option>
+                                          <option value="D"> {TranslationContext!==undefined?TranslationContext.option.days:"Days"}</option>
                                         </select>
                                       </div>
                                     </div>
