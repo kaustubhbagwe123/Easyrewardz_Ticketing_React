@@ -49,16 +49,21 @@ const Content = (props) => {
   const [status, setStatusValue] = useState(rowData.status);
   const [designationID] = useState(rowData.designationID);
   debugger;
+  const TranslationContext = props.translateLanguage.default;
   props.callBackEdit(designationName, reportTo, status, designationID);
   return (
     <div className="edtpadding">
-      <label className="popover-header-text">EDIT HIERARCHY</label>
+      <label className="popover-header-text">
+      {TranslationContext!==undefined?TranslationContext.label.edithierarchy:"EDIT HIERARCHY"}
+        </label>
       <div className="pop-over-div">
-        <label className="edit-label-1">Designation Name</label>
+        <label className="edit-label-1">
+        {TranslationContext!==undefined?TranslationContext.label.DesignationName:"Designation Name"}
+        </label>
         <input
           type="text"
           className="txt-edit-popover"
-          placeholder="Enter Designation Name"
+          placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.EnterDesignationName:"Enter Designation Name"}
           maxLength={25}
           name="designation_Name"
           value={designationName}
@@ -71,7 +76,9 @@ const Content = (props) => {
         )}
       </div>
       <div className="pop-over-div">
-        <label className="edit-label-1">Report To</label>
+        <label className="edit-label-1">
+        {TranslationContext!==undefined?TranslationContext.label.ReportTo:"Report To"}
+        </label>
         <select
           className="edit-dropDwon dropdown-setting"
           name="report_To"
@@ -79,8 +86,12 @@ const Content = (props) => {
           //onChange={this.handleOnChangeData}
           onChange={(e) => setreportToValue(e.target.value)}
         >
-          <option>select</option>
-          <option value={0}>Root</option>
+          <option>
+          {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+          </option>
+          <option value={0}>
+          {TranslationContext!==undefined?TranslationContext.option.root:"Root"}
+          </option>
           {props.reportToData !== null &&
             props.reportToData.map((item, i) => (
               <option key={i} value={item.designationID}>
@@ -95,14 +106,18 @@ const Content = (props) => {
         )}
       </div>
       <div className="pop-over-div">
-        <label className="edit-label-1">Status</label>
+        <label className="edit-label-1">
+        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+        </label>
         <select
           className="edit-dropDwon dropdown-setting"
           name="designation_status"
           value={status}
           onChange={(e) => setStatusValue(e.target.value)}
         >
-          <option>select</option>
+          <option>
+          {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+          </option>
           {props.activeData !== null &&
             props.activeData.map((item, j) => (
               <option key={j} value={item.ActiveID}>
@@ -119,7 +134,8 @@ const Content = (props) => {
       <br />
       <div>
         <a className="pop-over-cancle canblue" href={Demo.BLANK_LINK}>
-          CANCEL
+        {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+          
         </a>
         <button
           className="pop-over-button"
@@ -138,7 +154,8 @@ const Content = (props) => {
             ) : (
               ""
             )}
-            SAVE
+            {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+            
           </label>
         </button>
       </div>
@@ -1836,6 +1853,7 @@ class HierarchyMaster extends Component {
                                   content={
                                     <Content
                                       rowData={row.original}
+                                      translateLanguage={this.state.translateLanguage}
                                       reportToData={this.state.reportToData}
                                       activeData={this.state.activeData}
                                       editdesignationNameCompulsion={

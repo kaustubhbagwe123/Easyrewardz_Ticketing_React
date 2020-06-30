@@ -3725,7 +3725,9 @@ class StoreModule extends Component {
                                     <Select
                                       mode="multiple"
                                       style={{ width: "100%" }}
-                                      placeholder="Select store Code"
+                                      placeholder={TranslationContext !== undefined
+                                        ? TranslationContext.label.selectstorecode
+                                        : "Select Store Code"}
                                       onChange={this.handleStoreChangeChange.bind(
                                         this
                                       )}
@@ -3799,8 +3801,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                           <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                       <span className="slot-to">
@@ -3837,8 +3843,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                          <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                     </div>
@@ -3870,7 +3880,7 @@ class StoreModule extends Component {
                                           style={{ width: "30px !important" }}
                                           disabled={true}
                                         >
-                                          <option value="H">Hr</option>
+                                          <option value="H"> {TranslationContext!==undefined?TranslationContext.option.h:"Hr"}</option>
                                         </select>
                                       </div>
                                     </div>
@@ -3885,7 +3895,7 @@ class StoreModule extends Component {
                                     <input
                                       className="mx-slt-txt"
                                       type="text"
-                                      placeholder="Max Cpty"
+                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.maxcpty:"Max Cpty"}
                                       name="maxCapacity"
                                       autoComplete="off"
                                       maxLength={2}
@@ -3959,8 +3969,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                       <span className="slot-to">
@@ -3997,8 +4011,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                     </div>
@@ -4590,8 +4608,12 @@ class StoreModule extends Component {
                           value={this.state.editSelectAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
                       <span className="slot-to">TO</span>
@@ -4615,17 +4637,24 @@ class StoreModule extends Component {
                           value={this.state.editSelectAmPm2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                          <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Slot Duration</label>
+                    <label className="edit-slot-lbl">
+                    {TranslationContext!==undefined?TranslationContext.label.slotduration:"Slot Duration"}
+                    </label>
                     <label
                       className="edit-slot-lbl"
                       style={{ marginLeft: "48px" }}
                     >
-                      Maximum Capacity
+                      {TranslationContext!==undefined?TranslationContext.label.maximumcapacity:"Maximum Capacity"}
+                      
                     </label>
                     <div className="slot-timings">
                       <div className="d-flex">
@@ -4645,14 +4674,16 @@ class StoreModule extends Component {
                           style={{ background: "none" }}
                           disabled={true}
                         >
-                          <option value="H">Hr</option>
+                          <option value="H">
+                          {TranslationContext!==undefined?TranslationContext.option.h:"Hr"}
+                          </option>
                         </select>
                       </div>
 
                       <input
                         style={{ width: "93px", marginLeft: "34px" }}
                         type="text"
-                        placeholder="Max Cpty"
+                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.maxcpty:"Max Cpty"}
                         name="editmaxCapacity"
                         autoComplete="off"
                         maxLength={2}
@@ -4671,11 +4702,16 @@ class StoreModule extends Component {
                       )}
                     </div>
                     <label className="edit-slot-lbl">
-                      Store Non-Oprational Hours
+                    {TranslationContext!==undefined?TranslationContext.label.storenonoperationalhours:"Store Non-Oprational Hours"}
+                      
                     </label>
                     <br />
-                    <label className="edit-slot-lbl edit-slot-lbl2">From</label>
-                    <label className="edit-slot-lbl edit-slot-lbl1">To</label>
+                    <label className="edit-slot-lbl edit-slot-lbl2">
+                    {TranslationContext!==undefined?TranslationContext.label.from:"From"}
+                    </label>
+                    <label className="edit-slot-lbl edit-slot-lbl1">
+                    {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <select
@@ -4697,11 +4733,17 @@ class StoreModule extends Component {
                           value={this.state.editSelectNOAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
-                      <span className="slot-to">TO</span>
+                      <span className="slot-to">
+                      {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                      </span>
                       <div className="d-flex">
                         <select
                           className="slot-hour"
@@ -4722,12 +4764,18 @@ class StoreModule extends Component {
                           value={this.state.editSelectNOAmPm2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Appointment Days</label>
+                    <label className="edit-slot-lbl">
+                    {TranslationContext!==undefined?TranslationContext.label.appointmentdays:"Appointment Days"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <select
@@ -4750,7 +4798,9 @@ class StoreModule extends Component {
                           style={{ background: "none", padding: "5px 7px" }}
                           disabled={true}
                         >
-                          <option value="D">Days</option>
+                          <option value="D">
+                          {TranslationContext!==undefined?TranslationContext.option.days:"Days"}
+                          </option>
                         </select>
                       </div>
                     </div>

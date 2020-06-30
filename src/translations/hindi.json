@@ -421,7 +421,19 @@
     "undelivered":"नहीं पहुंचा पाए",
     "pastchat0":"पुरानी चैट(0",
     "pastchat":"पुरानी चैट(",
-    "customerhasendchat":"ग्राहक की चैट समाप्त हो गई है"
+    "customerhasendchat":"ग्राहक की चैट समाप्त हो गई है",
+    "edithierarchy":"पदानुक्रम संपादित करें",
+    "DesignationName":"पदनाम नाम",
+    "ChatbotScript":"चैटबॉट स्क्रिप्ट",
+    "ExecutedDate":"निष्पादित दिनांक",
+    "CustomerName":"ग्राहक का नाम",
+    "Response":"प्रतिक्रिया",
+    "ReportTo":"सूचित करना",
+    "StoreName":"स्टोर नाम",
+    "DepartmentName":"विभाग का नाम",
+    "FunctionName":"कार्य का नाम",
+    "recentcampaign":"हालिया अभियान"
+    
   },
   "text": {
     "brand": "ब्रांड :",
@@ -606,7 +618,8 @@
     "successfullymappedto": "सफलतापूर्वक मैप किया गया",
     "updated": "अद्यतन",
     "invoiceno": "चालान नंबर",
-    "paymentdate":"भुगतान तिथि"
+    "paymentdate":"भुगतान तिथि",
+    "lasttransaction":"अंतिम लेन-देन"
   },
   "small": {
     "moreinsights": "अधिक जानकारी देखें",
@@ -950,7 +963,9 @@
     "FollowUp":"जाँच करना",
     "Conversation":"बातचीत",
     "Converted":"परिवर्तित",
-    "RaiseTicket":"टिकट उठाएं"
+    "RaiseTicket":"टिकट उठाएं",
+    "qty":"मात्रा",
+    "executeddate":"निष्पादित दिनांक"
   },
   "div": {
     "viewtickets": "टिकट देखें",
@@ -1117,7 +1132,8 @@
     "sendviamessage": "वाया मैसेंजर भेजें",
     "sendviabot": "वाया बॉट भेजें",
     "invoiceno": "चालान नंबर",
-    "itemid": "सामान आईडी"
+    "itemid": "सामान आईडी",
+    "sharevia":"के माध्यम से बाँटे"
   },
   "h5": {
     "knowledgebase": "ज्ञानधार",
@@ -1144,7 +1160,9 @@
     "orderconfiguration": "आदेश विन्यास",
     "charditemconfiguration": "कार्ड की सूचना",
     "cardassestsconfiguration": "कार्ड संपत्ति विन्यास",
-    "smsandwhatsapp":"एसएमएस एवं व्हाट्सप्प"
+    "smsandwhatsapp":"एसएमएस एवं व्हाट्सप्प",
+    "inr":"मैं एन आर",
+    "yourmessagehasbeensharedsuccessfully":"आपका संदेश सफलतापूर्वक साझा किया गया है"
   },
   "h4": {
     "personaldetails": "व्यक्तिगत विवरण",
@@ -1160,6 +1178,7 @@
     "choosechannel": "चैनल चुनें",
     "storedetails": "विवरण स्टोर करें",
     "mappedcliamcategory": "मैप्ड क्लियाम श्रेणी"
+ 
   },
   "checkbox": {
     "mon": "सोम",
@@ -1327,7 +1346,12 @@
     "selectcategory": "श्रेणी का चयन करें",
     "selectissuetype": "समस्या का प्रकार चुनें",
     "allstoremember":"सभी स्टोर सदस्य",
-    "brand":"ब्रांड"
+    "brand":"ब्रांड",
+    "SelectResponse":"प्रतिक्रिया का चयन करें",
+    "days":"दिन",
+    "am":"ए एम",
+    "pm":"पी एम"
+    
   },
   "radio": {
     "email": "ईमेल",
@@ -1396,7 +1420,10 @@
     "pleaseselectclaimcategory":"कृपया दावा श्रेणी चुनें",
     "entercategoryname":"श्रेणी का नाम दर्ज करें",
     "selecttimeanddate":"दिनांक एवं समय चुने",
-    "selectstatus":"स्थिति का चयन करें"
+    "selectstatus":"स्थिति का चयन करें",
+    "EnterDesignationName":"पदनाम नाम दर्ज करें",
+    "selectdateandtime":"दिनांक और समय का चयन करें",
+    "maxcpty":"अधिकतम क्षमता"
    
   },
   "title": {
