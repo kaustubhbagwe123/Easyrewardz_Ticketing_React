@@ -6345,6 +6345,9 @@ progress::-webkit-progress-bar {
   top: 2px;
   margin-left: 115px;
 }
+.cr-tick {
+  top: 10px !important;
+}
 .switch input[type="checkbox"] + .cr:after,
 .switch input[type="checkbox"] + .cr:before {
   content: "";
@@ -12369,7 +12372,8 @@ table tr th:last-child {
 /* Responsive ends */
 
 #DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-input {
-  width: 40%;
+  width: 41%;
+  /* width: 40%; */
   height: 99%;
   text-align: left;
   float: left;

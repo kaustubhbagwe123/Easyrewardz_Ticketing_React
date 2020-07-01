@@ -764,7 +764,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
