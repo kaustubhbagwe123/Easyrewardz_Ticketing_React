@@ -1108,7 +1108,7 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger
+        debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
         var OrderSubItem = [];
@@ -1812,6 +1812,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
+    debugger
     let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       for (let k = 0; k < this.state.SelectedAllOrder.length; k++) {
@@ -2732,7 +2733,7 @@ class MyTicket extends Component {
   };
   /// Handle get Order Item data
   handleGetOderItemData(invoiceNumber, rowData, e) {
-    debugger
+    debugger;
     if (e.target.checked) {
       this.setState({
         SelectedAllOrder: [],
@@ -3064,6 +3065,7 @@ class MyTicket extends Component {
   // }
 
   checkIndividualItem(articleNumber, rowData) {
+    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
@@ -3078,8 +3080,17 @@ class MyTicket extends Component {
     } else {
       if (newSelected[articleNumber] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
-          selectedRow = this.state.SelectedAllItem;
-          selectedRow.push(rowData);
+          if (
+            this.state.SelectedAllItem[i].orderItemID !==
+            this.state.SelectedAllItem[i].orderItemID
+          ) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.push(rowData);
+          } else {
+            selectedRow = [];
+            selectedRow.push(rowData);
+          }
+
           var Order_Master = this.state.OrderSubItem.filter(
             (x) =>
               x.articleNumber === this.state.SelectedAllItem[i].articleNumber
