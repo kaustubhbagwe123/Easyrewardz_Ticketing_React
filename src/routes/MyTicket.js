@@ -3065,7 +3065,6 @@ class MyTicket extends Component {
   // }
 
   checkIndividualItem(articleNumber, rowData) {
-    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
@@ -3160,7 +3159,7 @@ class MyTicket extends Component {
     }
     this.setState({
       SelectedAllItem: selectedRow,
-      SelectedAllOrder: selectedRow,
+      // SelectedAllOrder: selectedRow,
     });
   }
   // -------------------------------Check box selected all code end-------------------------------

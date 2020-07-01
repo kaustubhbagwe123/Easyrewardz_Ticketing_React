@@ -77,7 +77,7 @@ class Dashboard extends Component {
       ByAllLastDate: "",
       selectScheduleDate: 0,
       ScheduleOption: ScheduleDateDropDown(),
-      TotalNoOfChatShow: true,
+      TotalNoOfChatShow: false,
       date: [new Date(), new Date()],
       range: "",
       CSVDownload: [],
@@ -2231,7 +2231,10 @@ class Dashboard extends Component {
     });
   };
   handleMouseHover() {
-    this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
+    this.setState({ TotalNoOfChatShow: true });
+  }
+  handleMouseLeave() {
+    this.setState({ TotalNoOfChatShow: false });
   }
   handleScheduleDateChange = (e) => {
     debugger;
@@ -4661,8 +4664,8 @@ class Dashboard extends Component {
                             <span
                               className={
                                 this.state.TotalNoOfChatShow
-                                  ? "dash-res"
-                                  : "dash-res dash-res-opac"
+                                  ? "dash-res dash-res-opac"
+                                  : "dash-res"
                               }
                               style={{ marginTop: "-3px" }}
                             >
@@ -4860,8 +4863,9 @@ class Dashboard extends Component {
                         <div className="col-lg-3">
                           <div
                             className="dash-top-cards"
-                            onMouseOver={this.handleMouseHover.bind(this)}
-                            onMouseLeave={this.handleMouseHover.bind(this)}
+                            // onMouseOver={this.handleMouseHover.bind(this)}
+                            onMouseLeave={this.handleMouseLeave.bind(this)}
+                            onMouseEnter={this.handleMouseHover.bind(this)}
                           >
                             <p className="card-head">SLA</p>
                             {this.state.DashboardNumberData !== null ? (
@@ -4885,8 +4889,8 @@ class Dashboard extends Component {
                                     <span
                                       className={
                                         this.state.TotalNoOfChatShow
-                                          ? "dash-res"
-                                          : "dash-res dash-res-opac"
+                                          ? "dash-res dash-res-opac"
+                                          : "dash-res"
                                       }
                                       style={{ marginTop: "-5px" }}
                                     >
@@ -4915,8 +4919,8 @@ class Dashboard extends Component {
                                     <span
                                       className={
                                         this.state.TotalNoOfChatShow
-                                          ? "dash-res"
-                                          : "dash-res dash-res-opac"
+                                          ? "dash-res dash-res-opac"
+                                          : "dash-res"
                                       }
                                     >
                                       Avg. Resolution TAT &nbsp;
