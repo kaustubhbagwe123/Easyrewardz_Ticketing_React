@@ -733,6 +733,7 @@ class MyTicket extends Component {
   }
   // onchange on User Drop down list
   setAssignedToValue(check, e) {
+    debugger;
     if (check === "freeCmd") {
       let followUpIds = this.state.followUpIds;
       let assign = e.currentTarget.value;
@@ -775,7 +776,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
@@ -829,7 +830,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -889,7 +890,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -948,7 +949,7 @@ class MyTicket extends Component {
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      (x) => x.mailParameterID === e.currentTarget.value
+      (x) => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     // ck += placeholderName;
@@ -1812,7 +1813,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger
+    debugger;
     let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       for (let k = 0; k < this.state.SelectedAllOrder.length; k++) {
