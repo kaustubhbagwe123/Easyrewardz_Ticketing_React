@@ -173,6 +173,8 @@ class Header extends Component {
       mobileHeading: "",
       messageHistoryChatData: [],
       isMainLoader: false,
+      messageSuggestionTagsData: [],
+      selectedTags: 0,
     };
     this.handleNotificationModalClose = this.handleNotificationModalClose.bind(
       this
@@ -885,6 +887,8 @@ class Header extends Component {
       programCode: ProgramCode,
       message: "",
       messageSuggestionData: [],
+      messageSuggestionTagsData:[],
+      selectedTags:0,
       chkSuggestion: 0,
       toggle: {
         one: true,
@@ -1010,7 +1014,8 @@ class Header extends Component {
               isSendRecomended: false,
               message: "",
               messageSuggestionData: [],
-              tempmessageSuggestionData: [],
+              messageSuggestionTagsData:[],
+              selectedTags:0,
               cardModal: false,
               selectedCard: 0,
               remainingCount: self.state.tempRemainingCount,
@@ -1249,7 +1254,8 @@ class Header extends Component {
                 chkSuggestion: [],
                 message: "",
                 messageSuggestionData: [],
-                tempmessageSuggestionData: [],
+                messageSuggestionTagsData:[],
+                selectedTags:0,
               });
               self.handleGetChatMessagesList(self.state.chatId);
             }
@@ -1298,7 +1304,8 @@ class Header extends Component {
       } else {
         this.setState({
           messageSuggestionData: [],
-          tempmessageSuggestionData: [],
+          messageSuggestionTagsData:[],
+          selectedTags:0,
           chkSuggestion: [],
         });
       }
@@ -1317,27 +1324,22 @@ class Header extends Component {
     })
       .then(function(res) {
         let status = res.data.message;
-        let messageSuggestionData = res.data.responseData;
+        let responseData = res.data.responseData;
         if (status === "Success") {
-          var tempmessageSuggestionData = [];
-          if (messageSuggestionData.length > 10) {
-            for (let index = 0; index < 10; index++) {
-              tempmessageSuggestionData.push(messageSuggestionData[index]);
-            }
-          } else {
-            tempmessageSuggestionData = messageSuggestionData;
-          }
-
+          debugger;
           self.setState({
-            tempmessageSuggestionData,
-            messageSuggestionData,
+            messageSuggestionTagsData: responseData[0],
+            selectedTags:
+              responseData[0].length > 0 ? responseData[0][0].tagID : 0,
+            messageSuggestionData: responseData[1],
             chkSuggestion: [],
           });
         } else {
           self.setState({
             messageSuggestionData: [],
             chkSuggestion: [],
-            tempmessageSuggestionData: [],
+            messageSuggestionTagsData: [],
+            selectedTags: 0,
           });
         }
       })
@@ -1726,6 +1728,8 @@ class Header extends Component {
           self.setState({ isSendRecomended: false });
           self.setState({
             messageSuggestionData: [],
+            messageSuggestionTagsData:[],
+            selectedTags:0,
             chkSuggestion: [],
             noRecommendedFound: "No Record Found",
           });
@@ -2084,6 +2088,11 @@ class Header extends Component {
         console.log(response, "---handleEndCustomerChat");
       });
   }
+
+  handleTagsButtonClick = (tagsId) => {
+    
+    this.setState({ selectedTags: tagsId });
+  };
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     return (
@@ -2698,8 +2707,8 @@ class Header extends Component {
                                   >
                                     {chat.messageCount === 0
                                       ? TranslationContext !== undefined
-                                      ? TranslationContext.p.No
-                                      : "No"
+                                        ? TranslationContext.p.No
+                                        : "No"
                                       : chat.messageCount}{" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
@@ -3408,6 +3417,29 @@ class Header extends Component {
                                       {this.state.isMessage}
                                     </p>
                                   )}
+                                  {this.state.messageSuggestionTagsData !== null
+                                    ? this.state.messageSuggestionTagsData.map(
+                                        (item, i) => {
+                                          return (
+                                            <button
+                                              onClick={this.handleTagsButtonClick.bind(
+                                                this,
+                                                item.tagID
+                                              )}
+                                              className={
+                                                this.state.selectedTags ===
+                                                item.tagID
+                                                  ? "tagsbtn-active"
+                                                  : "tagsbtn"
+                                              }
+                                              id={item.tagID}
+                                            >
+                                              {item.tagName}
+                                            </button>
+                                          );
+                                        }
+                                      )
+                                    : null}
                                   {this.state.messageSuggestionData !== null &&
                                     this.state.messageSuggestionData.length >
                                       0 &&
@@ -3458,9 +3490,9 @@ class Header extends Component {
                                               },
                                             },
                                           ]}
-                                          dataSource={
-                                            this.state.messageSuggestionData
-                                          }
+                                          dataSource={this.state.messageSuggestionData.filter(
+                                            (x) => x.tagID == this.state.selectedTags
+                                          )}
                                           pagination={{
                                             pageSize: 10,
                                             defaultPageSize: 10,
@@ -5742,9 +5774,10 @@ class Header extends Component {
                                 },
                               },
                               {
-                                title: TranslationContext !== undefined
-                                ? TranslationContext.title.mobilenumber
-                                : "Mobile No",
+                                title:
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.title.mobilenumber
+                                    : "Mobile No",
                                 dataIndex: "customerMobile",
                                 width: "20%",
                                 className: "textnowrap-table",
@@ -5962,7 +5995,9 @@ class Header extends Component {
                 disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
               >
-                {TranslationContext!==undefined?TranslationContext.label.closechat:"Close Chat"}
+                {TranslationContext !== undefined
+                  ? TranslationContext.label.closechat
+                  : "Close Chat"}
               </label>
             </div>
           </div>
