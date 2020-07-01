@@ -186,17 +186,29 @@ class ShoppingBagTab extends Component {
             self.setState({
               ShopCancelComment: "",
             });
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.success:"Success.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.success
+                : "Success."
+            );
             self.handleGetShoppingBagGridData();
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.failed
+                : "Failed."
+            );
           }
         })
         .catch((data) => {
           console.log(data);
         });
     } else {
-      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentercomment:"Please Enter Comment.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseentercomment
+          : "Please Enter Comment."
+      );
     }
   }
   handleConvertToOrder(ShopId, e) {
@@ -221,10 +233,18 @@ class ShoppingBagTab extends Component {
               invoiceNo: "",
               amountNo: "",
             });
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.success:"Success.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.success
+                : "Success."
+            );
             self.handleGetShoppingBagGridData();
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.failed:"Failed.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.failed
+                : "Failed."
+            );
           }
         })
         .catch((data) => {
@@ -232,9 +252,17 @@ class ShoppingBagTab extends Component {
         });
     } else {
       if (this.state.invoiceNo === "") {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterorderid:"Please Enter Order Id.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenterorderid
+            : "Please Enter Order Id."
+        );
       } else {
-        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenteramount:"Please Enter Amount.");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseenteramount
+            : "Please Enter Amount."
+        );
       }
     }
   }
@@ -856,14 +884,15 @@ class ShoppingBagTab extends Component {
                         {TranslationContext !== undefined
                           ? TranslationContext.p.address
                           : "Address"}
-                        
                       </p>
                       <p>{row.address === "" ? "-NIL-" : row.address}</p>
                     </div>
                     <div className="col-6">
-                      <p className="order-expanded-title">{TranslationContext !== undefined
+                      <p className="order-expanded-title">
+                        {TranslationContext !== undefined
                           ? TranslationContext.p.date
-                          : "Date"}</p>
+                          : "Date"}
+                      </p>
                       <p>{row.date}</p>
                       <p className="order-small-font">{row.time}</p>
                     </div>

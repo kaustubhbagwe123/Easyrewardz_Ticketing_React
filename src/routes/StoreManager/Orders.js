@@ -113,7 +113,18 @@ class Orders extends Component {
         console.log(data);
       });
   }
+  handleSeachAllData(e) {
+    e.preventDefault();
+    if (this.state.selectedTabs === 1) {
+      alert(this.state.orderAllSearch);
+    } else if (this.state.selectedTabs === 2) {
+     
+    } else if (this.state.selectedTabs === 3) {
 
+    } else if (this.state.selectedTabs === 4) {
+      
+    }
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
     const { Option } = Select;
@@ -418,23 +429,29 @@ class Orders extends Component {
               </>
             ) : null}
           </ul>
-          <div className="order-search">
-            <input
-              type="text"
-              placeholder={
-                TranslationContext !== undefined
-                  ? TranslationContext.placeholder.searchdot
-                  : "Search..."
-              }
-              name="orderAllSearch"
-              value={this.state.orderAllSearch}
-              onChange={(e) =>
-                this.setState({ [e.target.name]: e.target.value })
-              }
-              autoComplete="off"
-            />
-            <img src={OrderSearch} alt="search icon" />
-          </div>
+          <form name="form" onSubmit={this.handleSeachAllData.bind(this)}>
+            <div className="order-search">
+              <input
+                type="text"
+                placeholder={
+                  TranslationContext !== undefined
+                    ? TranslationContext.placeholder.searchdot
+                    : "Search..."
+                }
+                name="orderAllSearch"
+                value={this.state.orderAllSearch}
+                // onChange={(e) =>
+                //   this.setState({ [e.target.name]: e.target.value })
+                // }
+                autoComplete="off"
+              />
+              <img
+                src={OrderSearch}
+                alt="search icon"
+                onClick={this.handleSeachAllData.bind(this)}
+              />
+            </div>
+          </form>
         </div>
         <div className="tab-content store-task-tab-cont orders-tab-cont">
           <div
@@ -459,7 +476,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            {this.state.selectedTabs === 2 ? <OrderTab /> : null}
+            {this.state.selectedTabs === 2 ? (
+              <OrderTab />
+            ) : null}
           </div>
           <div
             className={
