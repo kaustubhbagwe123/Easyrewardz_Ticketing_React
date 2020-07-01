@@ -4476,7 +4476,29 @@ class Header extends Component {
                                     {this.state.remainingCount +
                                       " characters remaining..."}
                                   </p>
-
+                                  {this.state.messageSuggestionTagsData !== null
+                                    ? this.state.messageSuggestionTagsData.map(
+                                        (item, i) => {
+                                          return (
+                                            <button
+                                              onClick={this.handleTagsButtonClick.bind(
+                                                this,
+                                                item.tagID
+                                              )}
+                                              className={
+                                                this.state.selectedTags ===
+                                                item.tagID
+                                                  ? "tagsbtn-active"
+                                                  : "tagsbtn"
+                                              }
+                                              id={item.tagID}
+                                            >
+                                              {item.tagName}
+                                            </button>
+                                          );
+                                        }
+                                      )
+                                    : null}
                                   {this.state.messageSuggestionData !== null &&
                                   this.state.messageSuggestionData.length > 0 &&
                                   this.state.messageSuggestionData.length >
@@ -4523,7 +4545,7 @@ class Header extends Component {
                                           },
                                         ]}
                                         dataSource={
-                                          this.state.messageSuggestionData
+                                          this.state.messageSuggestionData.filter(x=>x.tagID===this.state.selectedTags)
                                         }
                                         pagination={{
                                           pageSize: 10,
