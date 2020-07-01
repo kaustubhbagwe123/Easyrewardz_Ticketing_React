@@ -2888,7 +2888,7 @@ table tr th:last-child {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 60px;
-  margin-left: -18px;
+  margin-left: 0px;
   padding: 0 !important;
   margin-top: -2px;
 }
@@ -5112,7 +5112,7 @@ progress::-webkit-progress-bar {
 }
 
 .obpml {
-  margin-left: -36px;
+  margin-left: 0px;
 }
 .textbhead {
   display: inline;

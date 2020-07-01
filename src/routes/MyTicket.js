@@ -1108,9 +1108,9 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
+        debugger
         let Msg = res.data.message;
         let mainData = res.data.responseData;
-
         var OrderSubItem = [];
 
         for (let i = 0; i < mainData.length; i++) {
@@ -2732,8 +2732,8 @@ class MyTicket extends Component {
   };
   /// Handle get Order Item data
   handleGetOderItemData(invoiceNumber, rowData, e) {
+    debugger
     if (e.target.checked) {
-      var selectproduct = [];
       this.setState({
         SelectedAllOrder: [],
         SelectedAllItem: [],
