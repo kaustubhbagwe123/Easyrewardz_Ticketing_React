@@ -117,11 +117,8 @@ class Orders extends Component {
   handleSeachAllData(e) {
     debugger;
     e.preventDefault();
-    this.callhandleTextSearch();
+  
   }
-  callhandleTextSearch = () => {
-    this.handleTextSearch();
-  };
 
   render() {
     const TranslationContext = this.state.translateLanguage.default;
@@ -474,7 +471,9 @@ class Orders extends Component {
             role="tabpanel"
             aria-labelledby="order-tab"
           >
-            {this.state.selectedTabs === 2 ? <OrderTab /> : null}
+            {this.state.selectedTabs === 2 ? (
+              <OrderTab />
+            ) : null}
           </div>
           <div
             className={

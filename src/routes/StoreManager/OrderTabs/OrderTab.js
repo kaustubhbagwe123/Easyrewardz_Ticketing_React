@@ -61,9 +61,6 @@ class OrderTab extends Component {
     }
   }
 
-  handleTextSearch = () => {
-    alert("hello");
-  };
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
