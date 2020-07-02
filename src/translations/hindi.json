@@ -1654,5 +1654,8 @@
     "avgResolutionTAT":"औसत। संकल्प TAT",
     "givenametoyoursearch":"अपनी खोज को नाम दें",
     "slaDue":"SLA देय"
+  },
+  "tip":{
+    "pleasewait":"कृपया प्रतीक्षा करें..."
   }
 }
