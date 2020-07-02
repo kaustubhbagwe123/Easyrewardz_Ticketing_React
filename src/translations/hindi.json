@@ -445,7 +445,9 @@
     "newsubmission":"नया सबमिशन",
     "items":"आइटम",
     "details":"विवरण",
-    "similartypeoftickets":"इसी प्रकार के टिकट"
+    "similartypeoftickets":"इसी प्रकार के टिकट",
+    "contactdetailsemails":"संपर्क विवरण: ईमेल",
+    "contactdetailsphones":"संपर्क विवरण: फोन"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -632,7 +634,8 @@
     "invoiceno": "चालान नंबर",
     "paymentdate":"भुगतान तिथि",
     "lasttransaction":"अंतिम लेन-देन",
-    "No":"शुन्य"
+    "No":"शुन्य",
+    "pleaseentervalidpincode":"कृपया मान्य पिन कोड दर्ज करें।"
   },
   "small": {
     "moreinsights": "अधिक जानकारी देखें",
@@ -1439,7 +1442,10 @@
     "selectdateandtime":"दिनांक और समय का चयन करें",
     "maxcpty":"अधिकतम क्षमता",
     "writesubjecthere":"यहाँ विषय लिखें",
-    "canipurchaseadomainthroughgoogle":"क्या मैं गूगल के माध्यम से डोमेन खरीद सकता हूं?"
+    "canipurchaseadomainthroughgoogle":"क्या मैं गूगल के माध्यम से डोमेन खरीद सकता हूं?",
+    "enterstorecode":"स्टोर कोड दर्ज करें",
+    "enteraddress":"पता लिखिए",
+    "enterphoneno":"फ़ोन नंबर दर्ज करें"
    
   },
   "title": {
@@ -1640,7 +1646,11 @@
     "pleaseenterstorename":"कृपया स्टोर का नाम दर्ज करें।",
     "pleaseenterpod":"कृपया पी ओ डी दर्ज करें।",
     "recordrejectedsuccessfully":"सफलतापूर्वक रिकॉर्ड किया गया",
-    "recordapprovedsuccessfully":"रिकॉर्ड सफलतापूर्वक स्वीकृत।"
+    "recordapprovedsuccessfully":"रिकॉर्ड सफलतापूर्वक स्वीकृत।",
+    "storedeletedsuccessfully":"स्टोर सफलतापूर्वक हटा दिया गया।",
+    "storeaddedsuccessfully":"स्टोर सफलतापूर्वक जोड़ा गया",
+    "storenotadded":"स्टोर नहीं जोड़ा गया।",
+    "storeupdatedsuccessfully":"स्टोर सफलतापूर्वक अपडेट किया गया।"
     
   },
   "ticketingDashboard":{
