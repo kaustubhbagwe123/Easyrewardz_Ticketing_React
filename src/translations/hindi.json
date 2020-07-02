@@ -1658,6 +1658,24 @@
     "avgResponseTAT":"औसत। प्रतिक्रिया TAT",
     "avgResolutionTAT":"औसत। संकल्प TAT",
     "givenametoyoursearch":"अपनी खोज को नाम दें",
-    "slaDue":"SLA देय"
-  }
+    "slaDue":"SLA देय",
+    "customerMobileNo":"ग्राहक मोबाइल नं",
+    "ticketIdtitle":"टिकट आईडी / शीर्षक",
+    "invoiceNumberSubOrderNo":"चालान संख्या / उप क्रम सं",
+    "didvisitstoreall":"क्या स्टोर पर जाएँ: सभी",
+    "didvisitstoreyes":"क्या स्टोर पर जाएँ: हाँ",
+    "didvisitstoreno":"डिड विजिट स्टोर: नहीं",
+    "wantvisitstoreall":"स्टोर पर जाना चाहते हैं: सभी",
+    "wantvisitstoreyes":"स्टोर पर जाना चाहते हैं: हाँ",
+    "wantvisitstoreno":"स्टोर पर जाना चाहते हैं: नहीं",
+    "wanttovisitStoreCodeAddress":"स्टोर कोड / पते पर जाना चाहते हैं",
+    "WithClaimNo":"दावे के साथ: नहीं",
+    "WithClaimyes":"दावे के साथ: हाँ",
+    "claimstatus":"दावा की स्थिति",
+    "claimcategory":"दावा श्रेणी",
+    "claimsubcategory":"दावा उप श्रेणी"
+  },
+  "tip":{
+    "pleasewait":"कृपया प्रतीक्षा करें..."
+    }
 }
