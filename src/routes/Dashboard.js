@@ -395,7 +395,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
     // this.ViewSearchData();
@@ -427,7 +426,6 @@ class Dashboard extends Component {
   }
 
   handleTicketsOnLoad() {
-    debugger;
     let self = this;
     this.setState({ loading: true });
 
@@ -623,7 +621,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         let CSVData = data;
@@ -666,7 +663,6 @@ class Dashboard extends Component {
   }
 
   handleWeeklyDays = async (e) => {
-    debugger;
     let check = e.target.checked;
     let val = e.target.value;
     let finalWeekList = "";
@@ -768,8 +764,6 @@ class Dashboard extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var sticketStatusFilterCheckbox = this.state.sticketStatusFilterCheckbox;
@@ -779,7 +773,6 @@ class Dashboard extends Component {
     var sassignedToFilterCheckbox = this.state.sassignedToFilterCheckbox;
 
     if (column === "status" || column === "all") {
-      debugger;
       if (type === "value" && type !== "All") {
         sticketStatusFilterCheckbox = sticketStatusFilterCheckbox.replace(
           "all",
@@ -798,11 +791,9 @@ class Dashboard extends Component {
           sticketStatusFilterCheckbox += e.currentTarget.value + ",";
         }
       } else {
-        debugger;
         if (sticketStatusFilterCheckbox.includes("all")) {
           sticketStatusFilterCheckbox = "";
         } else {
-          debugger;
           if (this.state.sortColumnName === "status") {
             for (let i = 0; i < this.state.sortTicketData.length; i++) {
               sticketStatusFilterCheckbox +=
@@ -1039,8 +1030,6 @@ class Dashboard extends Component {
       });
     }
 
-    debugger;
-
     this.setState({
       tempSearchTicketData: itemsArray,
     });
@@ -1048,7 +1037,6 @@ class Dashboard extends Component {
   };
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
 
@@ -1062,7 +1050,6 @@ class Dashboard extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
     itemsArray.sort((a, b) => {
@@ -1074,26 +1061,23 @@ class Dashboard extends Component {
     this.StatusCloseModel();
   }
   handleGetModulesNames() {
-    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Module/GetModules",
       headers: authHeader(),
     }).then(function(res) {
-      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (data) {
         let moduleID = data[0].moduleID;
-        let selTab = data[0].moduleName;
-        let moduleIDMyticket = data[1].moduleID;
+        // let selTab = data[0].moduleName;
+        // let moduleIDMyticket = data[1].moduleID;
         self.handleAdvanceSearchOption(moduleID);
       }
     });
   }
   handleAdvanceSearchOption(id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1104,7 +1088,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data1 = res.data.responseData;
         if (status === "Success") {
@@ -1119,7 +1102,6 @@ class Dashboard extends Component {
       });
   }
   setAdvanceSearch(data1) {
-    debugger;
     var data = [];
     data = data1;
     if (data.length > 0) {
@@ -1260,7 +1242,7 @@ class Dashboard extends Component {
   }
   handleGetDashboardNumberData() {
     this.setState({ loadingAbove: true });
-    debugger;
+
     let self = this;
     var fromdate = moment(this.state.start).format("YYYY-MM-DD");
     var todate = moment(this.state.end).format("YYYY-MM-DD");
@@ -1284,7 +1266,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1305,7 +1286,7 @@ class Dashboard extends Component {
   }
   handleGetDashboardGraphData() {
     this.setState({ loadingAbove: true });
-    debugger;
+
     let self = this;
     var fromdate = moment(new Date(this.state.start)).format("YYYY-MM-DD");
     var todate = moment(new Date(this.state.end)).format("YYYY-MM-DD");
@@ -1329,7 +1310,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         if (res.data.responseData !== null) {
           let DashboardGraphData = res.data.responseData;
           let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
@@ -1396,7 +1376,6 @@ class Dashboard extends Component {
   }
 
   checkAllAgentStart(event) {
-    debugger;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds = "";
     for (var i in checkboxes) {
@@ -1420,7 +1399,6 @@ class Dashboard extends Component {
     }
   }
   checkAllBrandStart(event) {
-    debugger;
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds = "";
     for (var i in checkboxes) {
@@ -1444,7 +1422,6 @@ class Dashboard extends Component {
     }
   }
   checkIndividualAgent = (event) => {
-    debugger;
     var agentcount = 0;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds = "";
@@ -1484,7 +1461,6 @@ class Dashboard extends Component {
     );
   };
   checkIndividualBrand = (event) => {
-    debugger;
     var brandcount = 0;
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds = "";
@@ -1526,7 +1502,6 @@ class Dashboard extends Component {
     );
   };
   checkAllAgent = async (event) => {
-    debugger;
     this.setState((state) => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
     var strAgentIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -1557,8 +1532,6 @@ class Dashboard extends Component {
     this.ViewSearchData();
   };
   checkAllBrand = async (event) => {
-    debugger;
-
     this.setState((state) => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strBrandIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -1589,7 +1562,6 @@ class Dashboard extends Component {
     this.ViewSearchData();
   };
   handleGetAgentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1597,7 +1569,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1620,7 +1591,6 @@ class Dashboard extends Component {
       });
   }
   handleGetBrandList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1628,7 +1598,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1644,7 +1613,6 @@ class Dashboard extends Component {
       });
   }
   handelCheckBoxCheckedChange = async (ticketID) => {
-    debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     var strIds = "";
     for (var i in checkboxes) {
@@ -1670,7 +1638,6 @@ class Dashboard extends Component {
     const index = column ? column.index : -1;
     return {
       onClick: (e) => {
-        debugger;
         this.selectedRow = index;
         var agentId = column.original["user_ID"];
         this.setState({ agentId, agentSelection: "" });
@@ -1716,7 +1683,6 @@ class Dashboard extends Component {
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
   applyCallback = async (startDate, endDate) => {
-    debugger;
     var startArr = endDate[0].split("-");
     var dummyStart = startArr[0];
     startArr[0] = startArr[1];
@@ -1777,13 +1743,11 @@ class Dashboard extends Component {
     this.setState({ selectedWantToVisitStoreAll: wantToVisitStoreAllValue });
   };
   handleScheduleTime(e) {
-    debugger;
     this.setState({
       selectedScheduleTime: e,
     });
   }
   handleAssignRemark(e) {
-    debugger;
     this.setState({
       agentRemark: e.currentTarget.value,
     });
@@ -1796,7 +1760,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1815,8 +1778,6 @@ class Dashboard extends Component {
     });
   }
   handleGetFunctionList() {
-    debugger;
-
     let self = this;
     self.setState({ FunctionData: [], selectedFunction: 0 });
 
@@ -1829,7 +1790,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let FunctionData = res.data.responseData;
         self.setState({ FunctionData: FunctionData });
       })
@@ -1838,7 +1798,6 @@ class Dashboard extends Component {
       });
   }
   handleGetDepartmentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1846,7 +1805,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1864,7 +1822,6 @@ class Dashboard extends Component {
     this.setState({ selectedWithTaskAll: withTaskAllValue });
   };
   handleAdvSearchFlag(e) {
-    debugger;
     let currentActive = e.currentTarget.innerText;
     if (currentActive === "By Date") {
       this.setState({
@@ -1914,7 +1871,6 @@ class Dashboard extends Component {
     }
   }
   handleAssignSearchData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1928,7 +1884,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let SearchAssignData = res.data.responseData;
         self.setState({
           SearchAssignData: SearchAssignData,
@@ -1943,7 +1898,6 @@ class Dashboard extends Component {
       });
   }
   handleAssignClearData() {
-    debugger;
     this.setState({
       assignFirstName: "",
       assignLastName: "",
@@ -1956,7 +1910,6 @@ class Dashboard extends Component {
     this.setState({ selectedFunction: functionValue });
   };
   handleGetTicketPriorityList() {
-    debugger;
     let self = this;
     axios({
       method: "get",
@@ -1964,7 +1917,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2009,8 +1961,6 @@ class Dashboard extends Component {
     this.setState({ modalIsOpen: false });
   };
   StatusOpenModel(data, header) {
-    debugger;
-
     this.setState({
       StatusModel: true,
       sortColumnName: data,
@@ -2018,7 +1968,6 @@ class Dashboard extends Component {
     });
   }
   StatusCloseModel() {
-    debugger;
     this.setState({
       sortFilterTicketData: this.state.sortTicketData,
       sortFilterCategoryData: this.state.sortCategoryData,
@@ -2206,7 +2155,6 @@ class Dashboard extends Component {
   onChange = (date) => this.setState({ date });
 
   checkAllCheckbox = async (event) => {
-    debugger;
     var obj = this.state.cSelectedRow;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
@@ -2247,7 +2195,6 @@ class Dashboard extends Component {
     this.setState({ TotalNoOfChatShow: false });
   }
   handleScheduleDateChange = (e) => {
-    debugger;
     let SelectData = e.currentTarget.value;
     if (SelectData === "230") {
       this.setState({
@@ -2372,7 +2319,6 @@ class Dashboard extends Component {
   };
 
   setNameOfDayForWeek = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -2384,14 +2330,12 @@ class Dashboard extends Component {
     });
   };
   handleDaysForMonth(e) {
-    debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value,
     });
   }
 
   handleWeekly(e) {
-    debugger;
     this.setState({
       selectedNoOfWeek: e.currentTarget.value,
     });
@@ -2406,7 +2350,6 @@ class Dashboard extends Component {
     this.setState({ selectedPriorityAll: priorityAllValue });
   };
   handleDailyDay(e) {
-    debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value,
     });
@@ -2496,7 +2439,6 @@ class Dashboard extends Component {
     this.setState({ selectedVisitStoreAll: visitStoreAllValue });
   };
   handleGetDesignationList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2504,7 +2446,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2518,16 +2459,15 @@ class Dashboard extends Component {
       });
   }
   handleSchedulePopup() {
-    debugger;
-    // if (this.state.selectedTeamMember.length > 0 && ) {
-
-    // }
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.selectScheduleDate === 0 ||
       this.state.selectScheduleDate === "100"
     ) {
       this.setState({
-        scheduleRequired: "All fields are required",
+        scheduleRequired: TranslationContext !== undefined
+        ? TranslationContext.ticketingDashboard.allfieldsarerequired
+        : "All fields are required."
       });
     } else if (this.state.selectScheduleDate === "230") {
       if (
@@ -2536,7 +2476,9 @@ class Dashboard extends Component {
         this.state.selectedNoOfDay === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2549,7 +2491,9 @@ class Dashboard extends Component {
         this.state.selectedWeeklyDays === ""
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2562,7 +2506,9 @@ class Dashboard extends Component {
         this.state.selectedNoOfMonthForMonth === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2576,7 +2522,9 @@ class Dashboard extends Component {
         this.state.selectedNameOfDayForWeek.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2589,7 +2537,9 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.allfieldsarerequired
+          : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2603,7 +2553,9 @@ class Dashboard extends Component {
         this.state.selectedNameOfMonthForDailyYear.length === 0
       ) {
         this.setState({
-          scheduleRequired: "All fields are required",
+          scheduleRequired: TranslationContext !== undefined
+            ? TranslationContext.ticketingDashboard.allfieldsarerequired
+            : "All fields are required."
         });
       } else {
         this.handleSchedulePopupSuccess();
@@ -2611,9 +2563,8 @@ class Dashboard extends Component {
     }
   }
   handleSchedulePopupSuccess() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
-
     var month, day, year, hours, minutes, seconds;
     var date = new Date(this.state.selectedScheduleTime),
       month = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -2659,10 +2610,13 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
-          NotificationManager.success("Scheduled successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.scheduledsuccessfully
+              : "Scheduled successfully."
+          );
           self.ScheduleCloseModel();
           self.setState({
             scheduleRequired: "",
@@ -2675,13 +2629,11 @@ class Dashboard extends Component {
       });
   }
   handleWeekForYear(e) {
-    debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value,
     });
   }
   setNameOfMonthForDailyYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -2693,7 +2645,6 @@ class Dashboard extends Component {
     });
   };
   setTeamMember = (e) => {
-    debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
         .call(e, (s) => s.userID)
@@ -2702,13 +2653,11 @@ class Dashboard extends Component {
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
   };
   handleWeekForWeek(e) {
-    debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value,
     });
   }
   setNameOfDayForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.days)
@@ -2720,19 +2669,16 @@ class Dashboard extends Component {
     });
   };
   handleMonthForWeek(e) {
-    debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value,
     });
   }
   handleDayForYear(e) {
-    debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value,
     });
   }
   setNameOfMonthForYear = (e) => {
-    debugger;
     if (e !== null) {
       var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
         .call(e, (s) => s.month)
@@ -2744,7 +2690,7 @@ class Dashboard extends Component {
     });
   };
   handleAssignTickets() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.agentId !== 0) {
       let self = this;
       var ticketIdsComma = this.state.ticketIds;
@@ -2760,11 +2706,14 @@ class Dashboard extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success("Tickets assigned successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.ticketsassignedsuccessfully
+                : "Tickets assigned successfully."
+            );
             // self.handleSearchTicketEscalation();
             self.ViewSearchData();
           }
@@ -2774,13 +2723,13 @@ class Dashboard extends Component {
         });
     } else {
       this.setState({
-        agentSelection: "Agent Selection is required",
+        agentSelection: TranslationContext !== undefined
+          ? TranslationContext.ticketingDashboard.agentselectionisrequired
+          : "Agent Selection is required.",
       });
     }
   }
   handleGetSlaStatusList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2788,7 +2737,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2806,8 +2754,6 @@ class Dashboard extends Component {
       });
   }
   handleGetTicketSourceList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -2815,7 +2761,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -2848,7 +2793,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let ClaimIssueTypeData = res.data.responseData;
         self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
       })
@@ -2902,7 +2846,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         // if (self.state.byCategoryFlag === 4) {
         //   var IssueTypeData = res.data.responseData;
         //   self.setState({
@@ -2936,7 +2879,6 @@ class Dashboard extends Component {
       });
   }
   handleGetCategoryList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2944,7 +2886,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let data = res.data;
         let CategoryData = res.data;
         if (data.length > 0) {
@@ -2963,7 +2904,6 @@ class Dashboard extends Component {
       });
   }
   handleGetClaimSubCategoryList() {
-    debugger;
     let self = this;
     self.setState({
       ClaimSubCategoryData: [],
@@ -2981,7 +2921,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let ClaimSubCategoryData = res.data.responseData;
         self.setState({
           ClaimSubCategoryData: ClaimSubCategoryData,
@@ -2992,7 +2931,6 @@ class Dashboard extends Component {
       });
   }
   handleGetSubCategoryList(param) {
-    debugger;
     let self = this;
     // self.setState({
     //   SubCategoryData: [],
@@ -3048,7 +2986,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         // if (self.state.byCategoryFlag === 4) {
         //   var SubCategoryData = res.data.responseData;
         //   self.setState({
@@ -3082,7 +3019,6 @@ class Dashboard extends Component {
       });
   }
   clearSearch() {
-    debugger;
     if (this.state.byDateFlag === 1) {
       this.setState(
         {
@@ -3192,7 +3128,6 @@ class Dashboard extends Component {
   }
 
   ViewSearchData(Shwcheck) {
-    debugger;
     let self = this;
     this.setState({ loading: true });
 
@@ -3387,7 +3322,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
 
@@ -3514,7 +3448,7 @@ class Dashboard extends Component {
       });
   }
   SaveSearchData() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.SearchName.length > 0) {
       axios({
@@ -3527,11 +3461,13 @@ class Dashboard extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              "Your search has been saved successfully."
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage
+                    .yoursearchhasbeensavedsuccessfully
+                : "Your search has been saved successfully."
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -3553,7 +3489,6 @@ class Dashboard extends Component {
     if ((rowInfo, column)) {
       return {
         onClick: (e) => {
-          debugger;
           let Id = column.original["ticketID"];
           let self = this;
           self.setState({
@@ -3582,7 +3517,6 @@ class Dashboard extends Component {
   };
 
   handleGetSaveSearchList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -3590,7 +3524,6 @@ class Dashboard extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -3604,7 +3537,6 @@ class Dashboard extends Component {
       });
   }
   handleSearchTicketEscalation() {
-    debugger;
     this.setState({ loading: true });
     let self = this;
     axios({
@@ -3620,7 +3552,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         let Status = res.data.message;
         let CSVData = data;
@@ -3662,7 +3593,6 @@ class Dashboard extends Component {
     });
   };
   handleClaimStatus = (e) => {
-    debugger;
     let claimStatusValue = e.currentTarget.value;
     this.setState({ selectedClaimStatus: claimStatusValue });
   };
@@ -3679,7 +3609,7 @@ class Dashboard extends Component {
     this.setState({ selectedWithClaimAll: withClaimAllValue });
   };
   hadleSearchDeleteData(searchDeletId) {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -3690,11 +3620,13 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully."
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage
+                  .savedsearchdatadeletedsuccessfully
+              : "Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }
@@ -3708,7 +3640,6 @@ class Dashboard extends Component {
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
   handleMonthForMonth(e) {
-    debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value,
     });
@@ -3723,7 +3654,6 @@ class Dashboard extends Component {
   };
 
   handleApplySearch(paramsID) {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     self.onCloseModal();
@@ -3736,7 +3666,6 @@ class Dashboard extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData.dashboardTicketList;
         let count = 0;
@@ -3780,7 +3709,6 @@ class Dashboard extends Component {
               selectedTicketStatusByDate: 0,
             });
           } else {
-            debugger;
             if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
               let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
               let createdDateArray = createdDate.split("-");
@@ -4090,7 +4018,6 @@ class Dashboard extends Component {
   }
 
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
     // if (e.target.value !== "") {
     if (this.state.sortColumnName === "status") {
@@ -4232,7 +4159,11 @@ class Dashboard extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY A TO Z</p>
+                  <p>
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
+                  </p>
                 </div>
                 <div className="d-flex">
                   <a
@@ -4242,11 +4173,20 @@ class Dashboard extends Component {
                   >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
-                  <p>SORT BY Z TO A</p>
+                  <p>
+                    {" "}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
+                  </p>
                 </div>
               </div>
               <div className="filter-type ">
-                <p>FILTER BY TYPE</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
+                </p>
 
                 <div className="FTypeScroll">
                   <input
@@ -4273,7 +4213,11 @@ class Dashboard extends Component {
                       onChange={this.setSortCheckStatus.bind(this, "all")}
                     />
                     <label htmlFor={"fil-open"}>
-                      <span className="table-btn table-blue-btn">ALL</span>
+                      <span className="table-btn table-blue-btn">
+                        {TranslationContext !== undefined
+                          ? TranslationContext.span.all
+                          : "ALL"}
+                      </span>
                     </label>
                   </div>
                   {this.state.sortColumnName === "status"
@@ -4414,7 +4358,11 @@ class Dashboard extends Component {
               </div>
 
               <div className="filter-type filter-color">
-                <p>FILTER BY COLOR</p>
+                <p>
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbycolor
+                    : "FILTER BY COLOR"}
+                </p>
                 <div className="filter-checkbox">
                   <input
                     type="checkbox"
@@ -6202,7 +6150,12 @@ class Dashboard extends Component {
                                   <input
                                     className="no-bg"
                                     type="text"
-                                    placeholder="Purchase Store Code/Address"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .purchasestorecodeaddress
+                                        : "Purchase Store Code/Address"
+                                    }
                                     value={
                                       this.state
                                         .selectedPurchaseStoreCodeAddressAll
@@ -6221,7 +6174,6 @@ class Dashboard extends Component {
                                     onChange={this.setIssueTypeAllValue}
                                   >
                                     <option value="0">
-                                      {" "}
                                       {TranslationContext !== undefined
                                         ? TranslationContext.label.issuetype
                                         : "Issue Type"}
@@ -6416,7 +6368,7 @@ class Dashboard extends Component {
                                               }
                                             >
                                               <option value="0">
-                                              {TranslationContext !==
+                                                {TranslationContext !==
                                                 undefined
                                                   ? TranslationContext
                                                       .ticketingDashboard
@@ -6450,7 +6402,12 @@ class Dashboard extends Component {
                                               }
                                             >
                                               <option value="0">
-                                                Claim Issue Type
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext
+                                                      .ticketingDashboard
+                                                      .claimissueType
+                                                  : "Claim Issue Type"}
                                               </option>
                                               {this.state.ClaimIssueTypeData !==
                                                 null &&
@@ -6476,10 +6433,17 @@ class Dashboard extends Component {
                                           onChange={this.handleWithTaskAll}
                                         >
                                           <option value="no">
-                                            With Task : No
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard.withtaskno
+                                              : "With Task : No"}
                                           </option>
                                           <option value="yes">
-                                            With Task : Yes
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext
+                                                  .ticketingDashboard
+                                                  .withtaskyes
+                                              : "With Task : Yes"}
                                           </option>
                                         </select>
                                       </div>
@@ -6494,7 +6458,13 @@ class Dashboard extends Component {
                                               }
                                               onChange={this.handleTaskStatus}
                                             >
-                                              <option>Task Status</option>
+                                              <option>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.option
+                                                      .taskstatus
+                                                  : "Task Status"}
+                                              </option>
                                               {this.state.TaskStatusData !==
                                                 null &&
                                                 this.state.TaskStatusData.map(
@@ -6517,7 +6487,13 @@ class Dashboard extends Component {
                                               }
                                               onChange={this.setDepartmentValue}
                                             >
-                                              <option>Task Department</option>
+                                              <option>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .taskdepartment
+                                                  : "Task Department"}
+                                              </option>
                                               {this.state.DepartmentData !==
                                                 null &&
                                                 this.state.DepartmentData.map(
@@ -6540,7 +6516,13 @@ class Dashboard extends Component {
                                               }
                                               onChange={this.setFunctionValue}
                                             >
-                                              <option>Task Function</option>
+                                              <option>
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.label
+                                                      .taskfunction
+                                                  : "Task Function"}
+                                              </option>
                                               {this.state.FunctionData !==
                                                 null &&
                                                 this.state.FunctionData.map(
@@ -6573,14 +6555,18 @@ class Dashboard extends Component {
                                     ? "0" + this.state.resultCount
                                     : this.state.resultCount}
                                 </span>
-                                Results
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.p.results
+                                  : "Results"}
                               </p>
                               <a
                                 href="#!"
                                 className="blue-clr fs-14"
                                 onClick={this.clearSearch}
                               >
-                                CLEAR SEARCH
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.label.clearsearch
+                                  : "CLEAR SEARCH"}
                               </a>
                               &nbsp; &nbsp; &nbsp;
                               <a
@@ -6591,7 +6577,9 @@ class Dashboard extends Component {
                                   "all"
                                 )}
                               >
-                                CLEAR FILTER
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.a.clearfilter
+                                  : "CLEAR FILTER"}
                               </a>
                             </div>
                             <div className="col-auto mob-mar-btm">
@@ -6610,7 +6598,9 @@ class Dashboard extends Component {
                                   src={csv}
                                   alt="csv-icon"
                                 />
-                                CSV
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.ticketingDashboard.csv
+                                  : "CSV"}
                               </CSVLink>
                               <button
                                 type="button"
@@ -6621,7 +6611,9 @@ class Dashboard extends Component {
                                   src={Schedule}
                                   alt="schedule-icon"
                                 />
-                                Schedule
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.schedule
+                                  : "Schedule"}
                               </button>
                               <Modal
                                 onClose={this.ScheduleCloseModel}
@@ -6635,7 +6627,12 @@ class Dashboard extends Component {
                               >
                                 <div>
                                   <label>
-                                    <b>Schedule date to</b>
+                                    <b>
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label
+                                            .scheduledateto
+                                        : "Schedule date to"}
+                                    </b>
                                   </label>
                                   <div>
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -6647,7 +6644,11 @@ class Dashboard extends Component {
                                           (option) => option.userID //id
                                         }
                                         options={this.state.TeamMemberData}
-                                        placeholder="Team Member"
+                                        placeholder={
+                                          TranslationContext !== undefined
+                                            ? TranslationContext.p.teammember
+                                            : "Team Member"
+                                        }
                                         // menuIsOpen={true}
                                         closeMenuOnSelect={false}
                                         onChange={this.setTeamMember.bind(this)}
@@ -6678,7 +6679,9 @@ class Dashboard extends Component {
                                       <div className="ScheduleDate-to">
                                         <span>
                                           <label className="every1">
-                                            Every
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.every
+                                              : "Every"}
                                           </label>
                                           <input
                                             type="text"
@@ -6686,7 +6689,11 @@ class Dashboard extends Component {
                                             placeholder="1"
                                             onChange={this.handleDailyDay}
                                           />
-                                          <label className="every1">Day</label>
+                                          <label className="every1">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.day
+                                              : "Day"}
+                                          </label>
                                         </span>
                                       </div>
                                     ) : null}
@@ -6694,7 +6701,9 @@ class Dashboard extends Component {
                                       <div className="ScheduleDate-to">
                                         <span>
                                           <label className="every1">
-                                            Every
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.every
+                                              : "Every"}
                                           </label>
                                           <input
                                             type="text"
@@ -6703,7 +6712,9 @@ class Dashboard extends Component {
                                             onChange={this.handleWeekly}
                                           />
                                           <label className="every1">
-                                            Week on
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.weekon
+                                              : "Week on"}
                                           </label>
                                         </span>
                                         <div
@@ -6715,43 +6726,57 @@ class Dashboard extends Component {
                                             onChange={this.handleWeeklyDays}
                                             value="Mon"
                                           >
-                                            Mon
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.mon
+                                              : "Mon"}
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Tue"
                                           >
-                                            Tue
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.tue
+                                              : "Tue"}
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Wed"
                                           >
-                                            Wed
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.wed
+                                              : "Wed"}
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Thu"
                                           >
-                                            Thu
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.thu
+                                              : "Thu"}
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Fri"
                                           >
-                                            Fri
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.fri
+                                              : "Fri"}
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Sat"
                                           >
-                                            Sat
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.sat
+                                              : "Sat"}
                                           </Checkbox>
                                           <Checkbox
                                             onChange={this.handleWeeklyDays}
                                             value="Sun"
                                           >
-                                            Sun
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.checkbox.sun
+                                              : "Sun"}
                                           </Checkbox>
                                         </div>
                                       </div>
@@ -6759,7 +6784,11 @@ class Dashboard extends Component {
                                     {this.state.selectScheduleDate === "232" ? (
                                       <div className="ScheduleDate-to">
                                         <span>
-                                          <label className="every1">Day</label>
+                                          <label className="every1">
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.day
+                                              : "Day"}
+                                          </label>
                                           <input
                                             type="text"
                                             className="Every"
@@ -6767,7 +6796,9 @@ class Dashboard extends Component {
                                             onChange={this.handleDaysForMonth}
                                           />
                                           <label className="every1">
-                                            of every
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.ofevery
+                                              : "of every"}
                                           </label>
                                           <input
                                             type="text"
@@ -6776,7 +6807,9 @@ class Dashboard extends Component {
                                             onChange={this.handleMonthForMonth}
                                           />
                                           <label className="every1">
-                                            months
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.months
+                                              : "months"}
                                           </label>
                                         </span>
                                       </div>
@@ -6785,7 +6818,9 @@ class Dashboard extends Component {
                                       <div className="ScheduleDate-to">
                                         <span>
                                           <label className="every1">
-                                            Every
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.every
+                                              : "Every"}
                                           </label>
                                           <input
                                             type="text"
@@ -6794,7 +6829,10 @@ class Dashboard extends Component {
                                             onChange={this.handleMonthForWeek}
                                           />
                                           <label className="every1">
-                                            month on the
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .monthonthe
+                                              : "month on the"}
                                           </label>
                                         </span>
                                         <div className="row mt-3">
@@ -6808,9 +6846,26 @@ class Dashboard extends Component {
                                                   .selectedNoOfWeekForWeek
                                               }
                                             >
-                                              <option value="0">Select</option>
-                                              <option value="2">Second</option>
-                                              <option value="4">Four</option>
+                                              <option value="0">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.button
+                                                      .select
+                                                  : "Select"}
+                                              </option>
+                                              <option value="2">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.option
+                                                      .second
+                                                  : "Second"}
+                                              </option>
+                                              <option value="4">
+                                                {TranslationContext !==
+                                                undefined
+                                                  ? TranslationContext.a.four
+                                                  : "Four"}
+                                              </option>
                                             </select>
                                           </div>
                                           <div className="col-md-6">
@@ -6825,7 +6880,13 @@ class Dashboard extends Component {
                                                 options={
                                                   this.state.NameOfDayForWeek
                                                 }
-                                                placeholder="Select"
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.button
+                                                        .select
+                                                    : "Select"
+                                                }
                                                 // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfDayForWeek.bind(
@@ -6852,7 +6913,9 @@ class Dashboard extends Component {
                                               lineHeight: "40px",
                                             }}
                                           >
-                                            on
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.on
+                                              : "on"}
                                           </label>
                                           <div className="col-md-7">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -6866,7 +6929,13 @@ class Dashboard extends Component {
                                                 options={
                                                   this.state.NameOfMonthForYear
                                                 }
-                                                placeholder="Select"
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.button
+                                                        .select
+                                                    : "Select"
+                                                }
                                                 // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfMonthForYear.bind(
@@ -6900,7 +6969,9 @@ class Dashboard extends Component {
                                                 lineHeight: "40px",
                                               }}
                                             >
-                                              on the
+                                              {TranslationContext !== undefined
+                                                ? TranslationContext.label.onthe
+                                                : "on the"}
                                             </label>
                                             <div className="col-md-7">
                                               <select
@@ -6915,12 +6986,25 @@ class Dashboard extends Component {
                                                 }
                                               >
                                                 <option value="0">
-                                                  Select
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.button
+                                                        .select
+                                                    : "Select"}
                                                 </option>
                                                 <option value="2">
-                                                  Second
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.option
+                                                        .second
+                                                    : "Second"}
                                                 </option>
-                                                <option value="4">Four</option>
+                                                <option value="4">
+                                                  {TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.a.four
+                                                    : "Four"}
+                                                </option>
                                               </select>
                                             </div>
                                           </div>
@@ -6941,7 +7025,13 @@ class Dashboard extends Component {
                                                 options={
                                                   this.state.NameOfDayForYear
                                                 }
-                                                placeholder="Select"
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.button
+                                                        .select
+                                                    : "Select"
+                                                }
                                                 // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfDayForYear.bind(
@@ -6962,7 +7052,9 @@ class Dashboard extends Component {
                                               lineHeight: "40px",
                                             }}
                                           >
-                                            to
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.to
+                                              : "to"}
                                           </label>
                                           <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
@@ -6977,7 +7069,13 @@ class Dashboard extends Component {
                                                   this.state
                                                     .NameOfMonthForDailyYear
                                                 }
-                                                placeholder="Select"
+                                                placeholder={
+                                                  TranslationContext !==
+                                                  undefined
+                                                    ? TranslationContext.button
+                                                        .select
+                                                    : "Select"
+                                                }
                                                 // menuIsOpen={true}
                                                 closeMenuOnSelect={false}
                                                 onChange={this.setNameOfMonthForDailyYear.bind(
@@ -7037,7 +7135,9 @@ class Dashboard extends Component {
                                         onClick={this.handleSchedulePopup}
                                       >
                                         <label className="addLable">
-                                          SCHEDULE
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.button.schedule
+                                            : "SCHEDULE"}
                                         </label>
                                       </button>
                                     </div>
@@ -7046,7 +7146,9 @@ class Dashboard extends Component {
                                         type="button"
                                         className="scheduleBtncancel"
                                       >
-                                        CANCEL
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.option.cancel
+                                          : "CANCEL"}
                                       </button>
                                     </div>
                                   </div>
@@ -7069,7 +7171,9 @@ class Dashboard extends Component {
                                   className="assign-icon"
                                   alt="assign-icon"
                                 />
-                                Assign
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.button.assign
+                                  : "Assign"}
                               </button>
                               <Modal
                                 onClose={this.handleAssignModalClose.bind(this)}
@@ -7093,7 +7197,9 @@ class Dashboard extends Component {
                                     />
                                   </a>
                                   <label className="claim-details">
-                                    Assign Tickets To
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.assignticketsto
+                                      : "Assign Tickets To"}
                                   </label>
                                   <img
                                     src={SearchBlackImg}
@@ -7105,7 +7211,11 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="txt-1 txt-btmSpace"
-                                    placeholder="First Name"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.firstname
+                                        : "First Name"
+                                    }
                                     name="assignFirstName"
                                     value={this.state.assignFirstName}
                                     onChange={this.handelOnchangeData}
@@ -7113,7 +7223,11 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="txt-1 txt-btmSpace"
-                                    placeholder="Last Name"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.lastname
+                                        : "Last Name"
+                                    }
                                     name="assignLastName"
                                     value={this.state.assignLastName}
                                     onChange={this.handelOnchangeData}
@@ -7121,7 +7235,11 @@ class Dashboard extends Component {
                                   <input
                                     type="text"
                                     className="txt-1 txt-btmSpace"
-                                    placeholder="Email"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.label.email
+                                        : "Email"
+                                    }
                                     name="assignEmail"
                                     value={this.state.assignEmail}
                                     onChange={this.handelOnchangeData}
@@ -7134,7 +7252,11 @@ class Dashboard extends Component {
                                       onChange={this.setDesignationValue}
                                     >
                                       {/* <option>Select</option> */}
-                                      <option>Designation</option>
+                                      <option>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.designation
+                                          : "Designation"}
+                                      </option>
                                       {this.state.DesignationData !== null &&
                                         this.state.DesignationData.map(
                                           (item, i) => (
@@ -7155,7 +7277,9 @@ class Dashboard extends Component {
                                       this
                                     )}
                                   >
-                                    SEARCH
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.search
+                                      : "SEARCH"}
                                   </button>
                                   <a
                                     href="#!"
@@ -7164,7 +7288,9 @@ class Dashboard extends Component {
                                       this
                                     )}
                                   >
-                                    CLEAR
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.clear
+                                      : "CLEAR"}
                                   </a>
                                 </div>
                                 <div className="assign-modal-body">
@@ -7172,7 +7298,13 @@ class Dashboard extends Component {
                                     data={SearchAssignData}
                                     columns={[
                                       {
-                                        Header: <span>Agent</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.agent
+                                              : "Agent"}
+                                          </span>
+                                        ),
                                         accessor: "agent",
                                         Cell: (row) => {
                                           var ids = row.original["user_ID"];
@@ -7192,11 +7324,24 @@ class Dashboard extends Component {
                                         },
                                       },
                                       {
-                                        Header: <span>Designation</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .designation
+                                              : "Designation"}
+                                          </span>
+                                        ),
                                         accessor: "designation",
                                       },
                                       {
-                                        Header: <span>Email</span>,
+                                        Header: (
+                                          <span>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.email
+                                              : "Email"}
+                                          </span>
+                                        ),
                                         accessor: "email",
                                       },
                                     ]}
@@ -7222,7 +7367,12 @@ class Dashboard extends Component {
                                   </p>
                                   <textarea
                                     className="assign-modal-textArea"
-                                    placeholder="Add Remarks"
+                                    placeholder={
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.ticketingDashboard
+                                            .addremarks
+                                        : "Add Remarks"
+                                    }
                                     onChange={this.handleAssignRemark}
                                   ></textarea>
                                   <button
@@ -7230,7 +7380,9 @@ class Dashboard extends Component {
                                     type="button"
                                     onClick={this.handleAssignTickets}
                                   >
-                                    ASSIGN TICKETS
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.assigntickets
+                                      : "ASSIGN TICKETS"}
                                   </button>
                                 </div>
                               </Modal>
@@ -7267,7 +7419,9 @@ class Dashboard extends Component {
                                   />
                                 ) : null}
                                 <label htmlFor="fil-aball" className="ticketid">
-                                  ID
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label.id
+                                    : "ID"}
                                 </label>
                               </div>
                             </div>
@@ -7354,11 +7508,16 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "status",
-                              "Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.label.status
+                                : "Status"
                             )}
                             className={this.state.statusColor}
                           >
-                            Status <FontAwesomeIcon icon={faCaretDown} />
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.status
+                              : "Status"}
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "ticketStatus",
@@ -7409,10 +7568,13 @@ class Dashboard extends Component {
                                     <div className="dash-task-popup-new">
                                       <div className="d-flex justify-content-between align-items-center">
                                         <p className="m-b-0">
-                                          CLAIM:{row.original.claimStatus}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.label.claim
+                                            : "CLAIM"}
+                                          :{row.original.claimStatus}
                                         </p>
                                         <div className="d-flex align-items-center">
-                                          2 NEW
+                                          {/* 2 NEW */}
                                           <div className="nw-chat">
                                             <img src={Chat} alt="chat" />
                                           </div>
@@ -7460,12 +7622,17 @@ class Dashboard extends Component {
                                     <div className="dash-task-popup-new">
                                       <div className="d-flex justify-content-between align-items-center">
                                         <p className="m-b-0">
-                                          TASK:{row.original.taskStatus}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.nav.task
+                                            : "TASK"}
+                                          :{row.original.taskStatus}
                                         </p>
                                         {row.original.ticketCommentCount > 0 ? (
                                           <div className="d-flex align-items-center">
                                             {row.original.ticketCommentCount}
-                                            NEW
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.new
+                                              : "NEW"}
                                             <div className="nw-chat">
                                               <img src={Chat} alt="chat" />
                                             </div>
@@ -7504,9 +7671,16 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <label className="ticketid">
-                            <span>Subject/</span>
+                            <span>
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.subject
+                                : "Subject"}
+                              /
+                            </span>
                             <span style={{ fontSize: "10px !important" }}>
-                              Latest Message
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.latestmessage
+                                : "Latest Message"}
                             </span>
                           </label>
                         ),
@@ -7529,10 +7703,15 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "category",
-                              "Category"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.category
+                                : "Category"
                             )}
                           >
-                            Category <FontAwesomeIcon icon={faCaretDown} />
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.category
+                              : "Category"}
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "category",
@@ -7547,15 +7726,27 @@ class Dashboard extends Component {
                                 <div className="dash-creation-popup-cntr">
                                   <ul className="dash-category-popup dashnewpopup">
                                     <li>
-                                      <p>Category</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.category
+                                          : "Category"}
+                                      </p>
                                       <p>{row.original.category}</p>
                                     </li>
                                     <li>
-                                      <p>Sub Category</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.subcategory
+                                          : "Sub Category"}
+                                      </p>
                                       <p>{row.original.subCategory}</p>
                                     </li>
                                     <li>
-                                      <p>Type</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.span.type
+                                          : "Type"}
+                                      </p>
                                       <p>{row.original.issueType}</p>
                                     </li>
                                   </ul>
@@ -7579,10 +7770,15 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "priority",
-                              "Priority"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.priority
+                                : "Priority"
                             )}
                           >
-                            Priority <FontAwesomeIcon icon={faCaretDown} />
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.priority
+                              : "Priority"}
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "priority",
@@ -7595,10 +7791,15 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "assignedTo",
-                              "Assign To"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.assignee
+                                : "Assignee"
                             )}
                           >
-                            Assignee <FontAwesomeIcon icon={faCaretDown} />
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.assignee
+                              : "Assignee"}
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "assignee",
@@ -7610,10 +7811,15 @@ class Dashboard extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdOn",
-                              " Creation On"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.creationon
+                                : "Creation On"
                             )}
                           >
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.creationon
+                              : "Creation On"}
+                            <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
                         accessor: "createdOn",
@@ -7627,33 +7833,65 @@ class Dashboard extends Component {
                               content={
                                 <div className="insertpop1 new-insertpop1">
                                   <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
+                                    <li className="title">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.li.creationdetails
+                                        : "Creation details"}
+                                    </li>
                                     <li>
-                                      <p>Created by {row.original.createdBy}</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.createdby
+                                          : "Created by"}
+                                        {row.original.createdBy}
+                                      </p>
                                       <p>{row.original.createdago}</p>
                                     </li>
                                     <li>
                                       <p>
-                                        Assigned to {row.original.assignedTo}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.label.assignedto
+                                          : "Assigned to"}
+                                        {row.original.assignedTo}
                                       </p>
                                       <p>{row.original.assignedago}</p>
                                     </li>
                                     <li>
-                                      <p>Updated by {row.original.updatedBy}</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p.updatedby
+                                          : "Updated by"}
+                                        {row.original.updatedBy}
+                                      </p>
                                       <p>{row.original.updatedago}</p>
                                     </li>
                                     <li>
-                                      <p>Response time remaining by</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p
+                                              .responsetimeremainingby
+                                          : "Response time remaining by"}
+                                      </p>
                                       <p>
                                         {row.original.responseTimeRemainingBy}
                                       </p>
                                     </li>
                                     <li>
-                                      <p>Response overdue by</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p
+                                              .responseoverdueby
+                                          : "Response overdue by"}
+                                      </p>
                                       <p>{row.original.responseOverdueBy}</p>
                                     </li>
                                     <li>
-                                      <p>Resolution overdue by</p>
+                                      <p>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.p
+                                              .resolutionoverdueby
+                                          : "Resolution overdue by"}
+                                      </p>
                                       <p>{row.original.resolutionOverdueBy}</p>
                                     </li>
                                   </ul>

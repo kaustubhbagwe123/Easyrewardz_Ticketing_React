@@ -218,7 +218,11 @@ class Settings extends Component {
                           <img src={storeSettings} alt="store-settings" />
                         </div>
                         <div className="setting-desc">
-                          <strong>Store</strong>
+                          <strong>
+
+                          {TranslationContext!==undefined?TranslationContext.strong.store:"Store"}
+
+                          </strong>
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
@@ -232,7 +236,10 @@ class Settings extends Component {
                           <img src={category} alt="category" />
                         </div>
                         <div className="setting-desc">
-                          <strong>Category</strong>
+                          <strong>
+                          {TranslationContext!==undefined?TranslationContext.strong.category:"Category"}
+
+                          </strong>
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
