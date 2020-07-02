@@ -31,6 +31,8 @@ import config from "../helpers/config";
 import axios from "axios";
 import PencilImg from "./../assets/Images/pencil.png";
 import { transferData } from "./../helpers/transferData";
+import * as translationHI from "../translations/hindi";
+import * as translationMA from "../translations/marathi";
 
 class Header extends Component {
   constructor(props) {
@@ -95,6 +97,7 @@ class Header extends Component {
         // }
       ],
       reportAccess: "none",
+      translateLanguage: {}
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
@@ -138,6 +141,14 @@ class Header extends Component {
         1
       );
       this.handleGetNotificationList();
+    }
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
     }
   }
 
@@ -291,11 +302,12 @@ class Header extends Component {
 
   setAccessUser(data) {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     var path = window.location.pathname;
     var page = path.split("/").pop();
     var accessdata = [];
     var dashboard = {
-      data: "Dashboards",
+      data: TranslationContext!==undefined?TranslationContext.nav.dashboard:"Dashboards",
       urls: "dashboard",
       logoBlack: DashboardLogo,
       logoBlue: DashboardLogoBlue,
@@ -304,7 +316,7 @@ class Header extends Component {
       activeClass: page === "dashboard" ? "active single-menu" : "single-menu",
     };
     var myticket = {
-      data: "My Tickets",
+      data: TranslationContext!==undefined?TranslationContext.nav.myticket:"My Tickets",
       urls: "myTicketlist",
       logoBlack: TicketLogo,
       logoBlue: TicketLogoBlue,
@@ -314,7 +326,7 @@ class Header extends Component {
         page === "myTicketlist" ? "active single-menu" : "single-menu",
     };
     var knowledgebase = {
-      data: "Knowledge Base",
+      data: TranslationContext!==undefined?TranslationContext.nav.knowledge:"Knowledge Base",
       urls: "knowledgebase",
       logoBlack: KnowledgeLogo,
       logoBlue: KnowledgeLogoBlue,
@@ -487,6 +499,7 @@ class Header extends Component {
   }
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const TransferCall = (
       <>
         <div>
@@ -521,7 +534,9 @@ class Header extends Component {
           <input type="hidden" value={this.state.reportAccess} id="isReport" />
           <div className="d-flex">
             <div className="er">
-              <label className="er-label">ER</label>
+            <label className="er-label">
+              {TranslationContext !== undefined? TranslationContext.label.er:"ER"}
+            </label>
             </div>
             <div className="hamb-menu">
               <div className="dropdown">
@@ -1195,7 +1210,7 @@ class Header extends Component {
                     className="logout"
                     onClick={this.handleLogoutMethod.bind(this)}
                   >
-                    LOGOUT
+                    {TranslationContext !== undefined? TranslationContext.span.logout:"LOGOUT"}
                   </button>
                 </div>
               </div>
@@ -1228,7 +1243,7 @@ class Header extends Component {
               <div className="d-block">
                 <div className="d-flex justify-content-between">
                   <div>
-                    <p className="logout-label">Login Time</p>
+                    <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.logintime:"Login Time"}</p>
                     <p
                       className="font-weight-bold"
                       style={{ fontSize: "16px" }}
@@ -1238,7 +1253,7 @@ class Header extends Component {
                     </p>
                   </div>
                   <div>
-                    <p className="logout-label">Logout Time</p>
+                    <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.logouttime:"Logout Time"}</p>
                     <p
                       className="font-weight-bold"
                       style={{ fontSize: "16px", float: "right" }}
@@ -1264,7 +1279,7 @@ class Header extends Component {
               </div>
               <div>
                 <div>
-                  <p className="logout-label">SLA SCORE</p>
+                  <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.slascore:"SLA SCORE"}</p>
                   <p className="font-weight-bold">{this.state.SLAScore}</p>
                 </div>
                 {/* <div>
@@ -1272,7 +1287,7 @@ class Header extends Component {
                   <p className="font-weight-bold">{this.state.CSatScore}</p>
                 </div> */}
                 <div>
-                  <p className="logout-label">Avg Response time</p>
+                  <p className="logout-label">{TranslationContext !== undefined? TranslationContext.p.avgresponsetime:"Avg Response time"}</p>
                   <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
               </div>
