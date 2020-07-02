@@ -450,12 +450,9 @@
     "items":"आइटम",
     "details":"विवरण",
     "similartypeoftickets":"इसी प्रकार के टिकट",
-<<<<<<< HEAD
     "contactdetailsemails":"संपर्क विवरण: ईमेल",
-    "contactdetailsphones":"संपर्क विवरण: फोन"
-=======
+    "contactdetailsphones":"संपर्क विवरण: फोन",
     "customerwanttoattachorder": "ग्राहक आदेश संलग्न करना चाहते हैं"
->>>>>>> b12adb4d7ae15ce8a01100230418a465b0b9cd98
   },
   "text": {
     "brand": "ब्रांड :",
