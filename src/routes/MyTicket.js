@@ -61,7 +61,7 @@ import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { withRouter } from "react-router";
 import ReactHtmlParser from "react-html-parser";
 import Demo from "../store/Hashtag";
-import * as translationHI from "./../translations/hindi"; 
+import * as translationHI from "./../translations/hindi";
 import * as translationMA from "./../translations/marathi";
 
 class MyTicket extends Component {
@@ -775,7 +775,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
@@ -829,7 +829,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -889,7 +889,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -948,7 +948,7 @@ class MyTicket extends Component {
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      (x) => x.mailParameterID === e.currentTarget.value
+      (x) => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     // ck += placeholderName;
@@ -1812,7 +1812,7 @@ class MyTicket extends Component {
   }
 
   handleAttachProductData() {
-    debugger
+    debugger;
     let self = this;
     if (this.state.SelectedAllOrder.length > 0) {
       for (let k = 0; k < this.state.SelectedAllOrder.length; k++) {
