@@ -233,12 +233,15 @@ class TicketSystem extends Component {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }
   handleCopyToaster() {
+    const TranslationContext = this.state.translateLanguage.default;
     setTimeout(() => {
       if (
         this.state.copiedNumber &&
         this.state.customerData.customerPhoneNumber
       ) {
-        NotificationManager.success("Copied.");
+        NotificationManager.success(TranslationContext !== undefined
+          ? TranslationContext.span.copied
+          : "Copied.");
       }
     }, 100);
   }
@@ -274,7 +277,7 @@ class TicketSystem extends Component {
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
   }
-  handleTaskMasterChange = (taskData) => { 
+  handleTaskMasterChange = (taskData) => {
     this.setState({
       taskMaster: taskData,
     });
@@ -349,7 +352,7 @@ class TicketSystem extends Component {
         AlertID: 8,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -498,7 +501,7 @@ class TicketSystem extends Component {
             IsActive: 1,
           },
         })
-          .then(function(res) {
+          .then(function (res) {
             let Message = res.data.message;
             if (Message === "Success") {
               NotificationManager.success("Record updated successfully.");
@@ -525,7 +528,7 @@ class TicketSystem extends Component {
         TikcketTitle: this.state.titleSuggValue,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -548,7 +551,7 @@ class TicketSystem extends Component {
         IssueTypeID: this.state.selectedIssueType,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data.responseData;
         self.setState({ CkEditorTemplateData: data });
       })
@@ -566,7 +569,7 @@ class TicketSystem extends Component {
         TemplateId: tempId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data.responseData.templateBody;
         let bodyData = res.data.responseData.templateBody;
         self.setState({
@@ -597,7 +600,7 @@ class TicketSystem extends Component {
           SubCategor_ID: this.state.selectedSubCategoryKB,
         },
       })
-        .then(function(res) {
+        .then(function (res) {
           let KbPopupData = res.data.responseData;
           if (KbPopupData.length === 0 || KbPopupData === null) {
             NotificationManager.error("No Record Found.");
@@ -622,7 +625,7 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data.responseData;
         self.setState({ BrandData: data });
       })
@@ -642,7 +645,7 @@ class TicketSystem extends Component {
         BrandID: brand_Id,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data;
         self.setState({ CategoryData: data });
       })
@@ -664,7 +667,7 @@ class TicketSystem extends Component {
         CategoryID: cateId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data.responseData;
         self.setState({ SubCategoryData: data });
       })
@@ -686,7 +689,7 @@ class TicketSystem extends Component {
         SubCategoryID: subCateId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data.responseData;
         self.setState({ IssueTypeData: data });
       })
@@ -701,7 +704,7 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -721,7 +724,7 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader(),
     })
-      .then(function(res) {
+      .then(function (res) {
         let data = res.data.responseData;
         self.setState({ ChannelOfPurchaseData: data });
       })
@@ -740,7 +743,7 @@ class TicketSystem extends Component {
         TicketID: 0, // Don't remove this Zexo
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -770,7 +773,7 @@ class TicketSystem extends Component {
         CustomerID: CustId,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         var CustMsg = res.data.message;
         var customerData = res.data.responseData;
@@ -876,7 +879,7 @@ class TicketSystem extends Component {
         FollowUPUserID: followUpIds,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.status;
         if (status) {
@@ -1286,7 +1289,7 @@ class TicketSystem extends Component {
             headers: authHeader(),
             data: DRAFTFromData,
           })
-            .then(function(res) {
+            .then(function (res) {
               debugger;
               let Msg = res.data.status;
               let TID = res.data.responseData;
@@ -1296,7 +1299,7 @@ class TicketSystem extends Component {
                 if (self.state.followUpIds !== "") {
                   self.handleTicketAssignFollowUp(TID);
                 }
-                setTimeout(function() {
+                setTimeout(function () {
                   self.props.history.push("myTicketlist");
                 }, 1000);
               } else {
@@ -1313,7 +1316,7 @@ class TicketSystem extends Component {
             headers: authHeader(),
             data: formData,
           })
-            .then(function(res) {
+            .then(function (res) {
               debugger;
               let Msg = res.data.status;
               let TID = res.data.responseData;
@@ -1323,7 +1326,7 @@ class TicketSystem extends Component {
                 if (self.state.followUpIds !== "") {
                   self.handleTicketAssignFollowUp(TID);
                 }
-                setTimeout(function() {
+                setTimeout(function () {
                   self.props.history.push("myTicketlist");
                 }, 1000);
               } else {
@@ -1495,7 +1498,7 @@ class TicketSystem extends Component {
         ticketID: Id,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         debugger;
         let status = res.data.message;
         let data = res.data.responseData;
@@ -1608,7 +1611,7 @@ class TicketSystem extends Component {
         TicketId: Id,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData[0].note;
@@ -1652,8 +1655,8 @@ class TicketSystem extends Component {
                     <img src={ArrowLeftCircleBlue} alt="arrow-circle-left" />
                   </a>
                   <label className="source">{TranslationContext !== undefined
-                        ? TranslationContext.label.source
-                        : "Source"}</label>
+                    ? TranslationContext.label.source
+                    : "Source"}</label>
                   <img
                     src={RedHeadPhoneIcon}
                     alt="headphone"
@@ -1690,8 +1693,8 @@ class TicketSystem extends Component {
                     onClick={this.handleCREATE_TICKET.bind(this, "100")}
                   >
                     {TranslationContext !== undefined
-                        ? TranslationContext.button.saveasdraft
-                        : "SAVE AS DRAFT"}
+                      ? TranslationContext.button.saveasdraft
+                      : "SAVE AS DRAFT"}
                   </button>
                   <button
                     className="rectanglecreateticket create-ticket"
@@ -1719,401 +1722,336 @@ class TicketSystem extends Component {
           {this.state.loading === true ? (
             <div className="loader-icon"></div>
           ) : (
-            <div className="row marginsystem">
-              <div className="column marginsystem1">
-                <div className="paddingsystem">
-                  <div className="row m-b-10">
-                    <div className="col-md-12">
-                      <label className="category">{TranslationContext !== undefined
-                        ? TranslationContext.label.tickettitle
-                        : "Ticket Title"}</label>
+              <div className="row marginsystem">
+                <div className="column marginsystem1">
+                  <div className="paddingsystem">
+                    <div className="row m-b-10">
+                      <div className="col-md-12">
+                        <label className="category">{TranslationContext !== undefined
+                          ? TranslationContext.label.tickettitle
+                          : "Ticket Title"}</label>
 
-                      <div
-                        className="custom-ticket-title"
-                        onClick={() => this.toggleTitleSuggestion()}
-                        ref={this.setWrapperRef}
-                      >
-                        <input
-                          placeholder="Suggestions"
-                          value={this.state.titleSuggValue}
-                          type="text"
-                          onChange={this.handleTicSugg}
-                          ref={(input) => {
-                            this.searchInput = input;
-                          }}
-                          id="titleSuggestion"
-                          autoComplete="off"
-                          style={{ marginBottom: "5px" }}
-                        />
-                        {this.state.titleSuggValue.length === 0 && (
+                        <div
+                          className="custom-ticket-title"
+                          onClick={() => this.toggleTitleSuggestion()}
+                          ref={this.setWrapperRef}
+                        >
+                          <input
+                            placeholder={TranslationContext !== undefined
+                              ? TranslationContext.span.suggestion
+                              : "Suggestions"}
+                            value={this.state.titleSuggValue}
+                            type="text"
+                            onChange={this.handleTicSugg}
+                            ref={(input) => {
+                              this.searchInput = input;
+                            }}
+                            id="titleSuggestion"
+                            autoComplete="off"
+                            style={{ marginBottom: "5px" }}
+                          />
+                          {this.state.titleSuggValue.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.ticketTitleCompulsion}
+                            </p>
+                          )}
+
+                          {this.state.TicketTitleData !== null &&
+                            this.state.TicketTitleData.length > 0 &&
+                            this.state.titleSuggValue.length > 0 && (
+                              <div className="custom-ticket-title-suggestions">
+                                {this.state.TicketTitleData !== null &&
+                                  this.state.TicketTitleData.map((item, i) => (
+                                    <span
+                                      key={i}
+                                      onClick={this.handleAppendTicketSuggestion}
+                                      title={item.ticketTitleToolTip}
+                                    >
+                                      {item.ticketTitle}
+                                    </span>
+                                  ))}
+                              </div>
+                            )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row m-b-10">
+                      <div className="col-md-12">
+                        <label className="category">
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.ticketdetails
+                            : "Ticket Details"}
+                        </label>
+                        <textarea
+                          className="ticket-details-textarea-system"
+                          placeholder={TranslationContext !== undefined
+                            ? TranslationContext.label.ticketdetails
+                            : "Write your title here"}
+                          name="ticketDetails"
+                          value={this.state.ticketDetails}
+                          onChange={this.handleTicketChange}
+                          maxLength={250}
+                        ></textarea>
+                        {this.state.ticketDetails.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
-                            {this.state.ticketTitleCompulsion}
+                            {this.state.ticketDetailsCompulsion}
                           </p>
                         )}
-
-                        {this.state.TicketTitleData !== null &&
-                          this.state.TicketTitleData.length > 0 &&
-                          this.state.titleSuggValue.length > 0 && (
-                            <div className="custom-ticket-title-suggestions">
-                              {this.state.TicketTitleData !== null &&
-                                this.state.TicketTitleData.map((item, i) => (
-                                  <span
-                                    key={i}
-                                    onClick={this.handleAppendTicketSuggestion}
-                                    title={item.ticketTitleToolTip}
-                                  >
-                                    {item.ticketTitle}
-                                  </span>
-                                ))}
-                            </div>
-                          )}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="row m-b-10">
-                    <div className="col-md-12">
-                      <label className="category">{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketdetails
-                        : "Ticket Details"}</label>
-                      <textarea
-                        className="ticket-details-textarea-system"
-                        placeholder="Write your title here"
-                        name="ticketDetails"
-                        value={this.state.ticketDetails}
-                        onChange={this.handleTicketChange}
-                        maxLength={250}
-                      ></textarea>
-                      {this.state.ticketDetails.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.ticketDetailsCompulsion}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10">
-                    <div className="col-md-6">
-                      <label className="category">{TranslationContext !== undefined
-                        ? TranslationContext.label.brand
-                        : "Brand"}</label>
-                      <select
-                        className="category-select-system dropdown-label"
-                        value={this.state.selectedBrand}
-                        onChange={this.setBrandValue}
-                      >
-                        <option
-                          value=""
-                          className="select-category-placeholder"
+                    <div className="row m-b-10">
+                      <div className="col-md-6">
+                        <label className="category">{TranslationContext !== undefined
+                          ? TranslationContext.label.brand
+                          : "Brand"}</label>
+                        <select
+                          className="category-select-system dropdown-label"
+                          value={this.state.selectedBrand}
+                          onChange={this.setBrandValue}
                         >
-                          Select Brand
+                          <option
+                            value=""
+                            className="select-category-placeholder"
+                          >
+                            Select Brand
                         </option>
-                        {this.state.BrandData !== null &&
-                          this.state.BrandData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.brandID}
-                              className="select-category-placeholder"
-                            >
-                              {item.brandName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedBrand.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.ticketBrandCompulsion}
-                        </p>
-                      )}
-                    </div>
-                    <div className="col-md-6">
-                      <label className="sub-category">{TranslationContext !== undefined
-                        ? TranslationContext.label.category
-                        : "Category"}</label>
-                      <select
-                        value={this.state.selectedCategory}
-                        onChange={this.setCategoryValue}
-                        className="category-select-system dropdown-label"
-                      >
-                        <option
-                          // value=""
-                          className="select-category-placeholder"
-                        >
-                          Select Category
-                        </option>
-                        {this.state.CategoryData !== null &&
-                          this.state.CategoryData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.categoryID}
-                              className="select-category-placeholder"
-                            >
-                              {item.categoryName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedCategory.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.ticketCategoryCompulsion}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10">
-                    <div className="col-md-6">
-                      <label className="category">{TranslationContext !== undefined
-                        ? TranslationContext.label.subcategory
-                        : "Sub Category"}</label>
-                      <select
-                        value={this.state.selectedSubCategory}
-                        onChange={this.setSubCategoryValue}
-                        className="category-select-system dropdown-label"
-                      >
-                        <option
-                          // value=""
-                          className="select-category-placeholder"
-                        >
-                          Select Sub Category
-                        </option>
-                        {this.state.SubCategoryData !== null &&
-                          this.state.SubCategoryData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.subCategoryID}
-                              className="select-category-placeholder"
-                            >
-                              {item.subCategoryName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedSubCategory.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.ticketSubCategoryCompulsion}
-                        </p>
-                      )}
-                    </div>
-                    <div className="col-md-6">
-                      <label className="sub-category">{TranslationContext !== undefined
-                        ? TranslationContext.label.issuetype
-                        : "Issue Type"}</label>
-                      <select
-                        value={this.state.selectedIssueType}
-                        onChange={this.setIssueTypeValue}
-                        className="category-select-system dropdown-label"
-                      >
-                        <option
-                          // value=""
-                          className="select-sub-category-placeholder"
-                        >
-                          Select Issue Type
-                        </option>
-                        {this.state.IssueTypeData !== null &&
-                          this.state.IssueTypeData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.issueTypeID}
-                              className="select-category-placeholder"
-                            >
-                              {item.issueTypeName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedIssueType.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.ticketIssueTypeCompulsion}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10">
-                    <div className="col-md-6">
-                      <label className="category">{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketpriority
-                        : "Ticket Priority"}</label>
-                      <div className="priority-butns-cntr">
-                        {this.state.TicketPriorityData !== null &&
-                          this.state.TicketPriorityData.map((item, i) => (
-                            <div key={i} className="priority-butns">
-                              <input
-                                type="radio"
-                                name="ticket-priority"
-                                id={item.priortyName}
-                                value={item.priorityID}
-                                onChange={this.setTicketPriorityValue}
-                                checked={
-                                  item.priorityID ===
-                                  this.state.selectedTicketPriority
-                                }
-                              />
-                              <label
-                                htmlFor={item.priortyName}
-                                className={
-                                  item.priortyName === "Auto"
-                                    ? "autopriority"
-                                    : null
-                                }
+                          {this.state.BrandData !== null &&
+                            this.state.BrandData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.brandID}
+                                className="select-category-placeholder"
                               >
-                                {item.priortyName}
-                              </label>
-                            </div>
-                          ))}
+                                {item.brandName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectedBrand.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ticketBrandCompulsion}
+                          </p>
+                        )}
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <label className="sub-category">{TranslationContext !== undefined
-                        ? TranslationContext.label.ticketactiontype
-                        : "Ticket Action Type"}</label>
-                      <div className="action-type-butns-cntr">
-                        <div className="action-type-butns">
-                          <input
-                            type="radio"
-                            name="ticket-action-type"
-                            id="qc"
-                            value="200"
-                            onChange={this.setTicketActionTypeValue}
-                            checked={
-                              this.state.selectedTicketActionType === "200"
-                            }
-                          />
-                          <label htmlFor="qc">{TranslationContext !== undefined
-                        ? TranslationContext.label.qc
-                        : "QC"}</label>
-                        </div>
-                        <div className="action-type-butns">
-                          <input
-                            type="radio"
-                            name="ticket-action-type"
-                            id="etb"
-                            value="201"
-                            onChange={this.setTicketActionTypeValue}
-                            checked={
-                              this.state.selectedTicketActionType === "201"
-                            }
-                          />
-                          <label htmlFor="etb">{TranslationContext !== undefined
-                        ? TranslationContext.label.etb
-                        : "ETB"}</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10">
-                    <div className="col-md-6">
-                      <label className="category">{TranslationContext !== undefined
-                        ? TranslationContext.label.channelofpurchase
-                        : "Channel Of Purchase"}</label>
-                      <select
-                        value={this.state.selectedChannelOfPurchase}
-                        onChange={this.setChannelOfPurchaseValue}
-                        className="category-select-system dropdown-label"
-                      >
-                        <option
-                          value=""
-                          className="select-category-placeholder"
+                      <div className="col-md-6">
+                        <label className="sub-category">{TranslationContext !== undefined
+                          ? TranslationContext.label.category
+                          : "Category"}</label>
+                        <select
+                          value={this.state.selectedCategory}
+                          onChange={this.setCategoryValue}
+                          className="category-select-system dropdown-label"
                         >
-                          Select Channel Of Purchase
+                          <option
+                            // value=""
+                            className="select-category-placeholder"
+                          >
+                            Select Category
                         </option>
-                        {this.state.ChannelOfPurchaseData !== null &&
-                          this.state.ChannelOfPurchaseData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.channelOfPurchaseID}
-                              className="select-category-placeholder"
-                            >
-                              {item.nameOfChannel}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedChannelOfPurchase === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.channelPurchaseCompulsion}
-                        </p>
-                      )}
+                          {this.state.CategoryData !== null &&
+                            this.state.CategoryData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.categoryID}
+                                className="select-category-placeholder"
+                              >
+                                {item.categoryName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectedCategory.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ticketCategoryCompulsion}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="row my-3 mx-1">
-                    {/* <img
+                    <div className="row m-b-10">
+                      <div className="col-md-6">
+                        <label className="category">{TranslationContext !== undefined
+                          ? TranslationContext.label.subcategory
+                          : "Sub Category"}</label>
+                        <select
+                          value={this.state.selectedSubCategory}
+                          onChange={this.setSubCategoryValue}
+                          className="category-select-system dropdown-label"
+                        >
+                          <option
+                            // value=""
+                            className="select-category-placeholder"
+                          >
+                            Select Sub Category
+                        </option>
+                          {this.state.SubCategoryData !== null &&
+                            this.state.SubCategoryData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.subCategoryID}
+                                className="select-category-placeholder"
+                              >
+                                {item.subCategoryName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectedSubCategory.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ticketSubCategoryCompulsion}
+                          </p>
+                        )}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="sub-category">{TranslationContext !== undefined
+                          ? TranslationContext.label.issuetype
+                          : "Issue Type"}</label>
+                        <select
+                          value={this.state.selectedIssueType}
+                          onChange={this.setIssueTypeValue}
+                          className="category-select-system dropdown-label"
+                        >
+                          <option
+                            // value=""
+                            className="select-sub-category-placeholder"
+                          >
+                            Select Issue Type
+                        </option>
+                          {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                                className="select-category-placeholder"
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectedIssueType.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ticketIssueTypeCompulsion}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="row m-b-10">
+                      <div className="col-md-6">
+                        <label className="category">{TranslationContext !== undefined
+                          ? TranslationContext.label.ticketpriority
+                          : "Ticket Priority"}</label>
+                        <div className="priority-butns-cntr">
+                          {this.state.TicketPriorityData !== null &&
+                            this.state.TicketPriorityData.map((item, i) => (
+                              <div key={i} className="priority-butns">
+                                <input
+                                  type="radio"
+                                  name="ticket-priority"
+                                  id={item.priortyName}
+                                  value={item.priorityID}
+                                  onChange={this.setTicketPriorityValue}
+                                  checked={
+                                    item.priorityID ===
+                                    this.state.selectedTicketPriority
+                                  }
+                                />
+                                <label
+                                  htmlFor={item.priortyName}
+                                  className={
+                                    item.priortyName === "Auto"
+                                      ? "autopriority"
+                                      : null
+                                  }
+                                >
+                                  {item.priortyName}
+                                </label>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="sub-category">{TranslationContext !== undefined
+                          ? TranslationContext.label.ticketactiontype
+                          : "Ticket Action Type"}</label>
+                        <div className="action-type-butns-cntr">
+                          <div className="action-type-butns">
+                            <input
+                              type="radio"
+                              name="ticket-action-type"
+                              id="qc"
+                              value="200"
+                              onChange={this.setTicketActionTypeValue}
+                              checked={
+                                this.state.selectedTicketActionType === "200"
+                              }
+                            />
+                            <label htmlFor="qc">{TranslationContext !== undefined
+                              ? TranslationContext.label.qc
+                              : "QC"}</label>
+                          </div>
+                          <div className="action-type-butns">
+                            <input
+                              type="radio"
+                              name="ticket-action-type"
+                              id="etb"
+                              value="201"
+                              onChange={this.setTicketActionTypeValue}
+                              checked={
+                                this.state.selectedTicketActionType === "201"
+                              }
+                            />
+                            <label htmlFor="etb">{TranslationContext !== undefined
+                              ? TranslationContext.label.etb
+                              : "ETB"}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row m-b-10">
+                      <div className="col-md-6">
+                        <label className="category">{TranslationContext !== undefined
+                          ? TranslationContext.label.channelofpurchase
+                          : "Channel Of Purchase"}</label>
+                        <select
+                          value={this.state.selectedChannelOfPurchase}
+                          onChange={this.setChannelOfPurchaseValue}
+                          className="category-select-system dropdown-label"
+                        >
+                          <option
+                            value=""
+                            className="select-category-placeholder"
+                          >
+                            Select Channel Of Purchase
+                        </option>
+                          {this.state.ChannelOfPurchaseData !== null &&
+                            this.state.ChannelOfPurchaseData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.channelOfPurchaseID}
+                                className="select-category-placeholder"
+                              >
+                                {item.nameOfChannel}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectedChannelOfPurchase === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.channelPurchaseCompulsion}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="row my-3 mx-1">
+                      {/* <img
                       src={this.state.imageView}
                       alt="thumb"
                       className="thumbtick"
                     /> */}
 
-                    {this.state.file.map((item, i) =>
-                      i < 5 ? (
-                        <div style={{ position: "relative" }} key={i}>
-                          <div>
-                            <img
-                              src={CircleCancel}
-                              alt="thumb"
-                              className="circleCancle"
-                              onClick={() => {
-                                this.handleRemoveImage(i);
-                              }}
-                            />
-                          </div>
-
-                          <div>
-                            <a href={item.value} target="_blank">
-                              <img
-                                src={
-                                  item.Type === "docx"
-                                    ? require("./../assets/Images/word.png")
-                                    : item.Type === "xlsx"
-                                    ? require("./../assets/Images/excel.png")
-                                    : item.Type === "pdf"
-                                    ? require("./../assets/Images/pdf.png")
-                                    : item.Type === "txt"
-                                    ? require("./../assets/Images/TxtIcon.png")
-                                    : require("./../assets/Images/thumbticket.png")
-                                }
-                                title={item.name}
-                                alt="thumb"
-                                className="thumbtick"
-                              />
-                            </a>
-                          </div>
-                        </div>
-                      ) : (
-                        ""
-                      )
-                    )}
-
-                    {this.state.file.length > 4 ? (
-                      <img
-                        src={PlusImg}
-                        alt="thumb"
-                        className="thumbtick-plus"
-                        onClick={this.handleThumbModalOpen.bind(this)}
-                      />
-                    ) : (
-                      <img
-                        style={{ display: "none" }}
-                        src={PlusImg}
-                        alt="thumb"
-                        className="thumbtick-plus"
-                        onClick={this.handleThumbModalOpen.bind(this)}
-                      />
-                    )}
-                  </div>
-                  <Modal
-                    open={this.state.Plus}
-                    onClose={this.handleThumbModalClose.bind(this)}
-                    modalId="thumb-modal-popup"
-                    overlayId="logout-ovrlykb"
-                  >
-                    <div>
-                      <div className="close">
-                        <img
-                          src={CancelImg}
-                          alt="cross-icon"
-                          onClick={this.handleThumbModalClose.bind(this)}
-                        />
-                      </div>
-                      <div className="row my-3 mx-1">
-                        {this.state.file.map((item, i) => (
+                      {this.state.file.map((item, i) =>
+                        i < 5 ? (
                           <div style={{ position: "relative" }} key={i}>
                             <div>
                               <img
@@ -2127,242 +2065,313 @@ class TicketSystem extends Component {
                             </div>
 
                             <div>
-                              <img
-                                src={
-                                  item.Type === "docx"
-                                    ? require("./../assets/Images/word.png")
-                                    : item.Type === "xlsx"
-                                    ? require("./../assets/Images/excel.png")
-                                    : item.Type === "pdf"
-                                    ? require("./../assets/Images/pdf.png")
-                                    : item.Type === "txt"
-                                    ? require("./../assets/Images/TxtIcon.png")
-                                    : require("./../assets/Images/thumbticket.png")
-                                }
-                                title={item.name}
-                                alt="thumb"
-                                className="thumbtick"
-                              />
+                              <a href={item.value} target="_blank">
+                                <img
+                                  src={
+                                    item.Type === "docx"
+                                      ? require("./../assets/Images/word.png")
+                                      : item.Type === "xlsx"
+                                        ? require("./../assets/Images/excel.png")
+                                        : item.Type === "pdf"
+                                          ? require("./../assets/Images/pdf.png")
+                                          : item.Type === "txt"
+                                            ? require("./../assets/Images/TxtIcon.png")
+                                            : require("./../assets/Images/thumbticket.png")
+                                  }
+                                  title={item.name}
+                                  alt="thumb"
+                                  className="thumbtick"
+                                />
+                              </a>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  </Modal>
+                        ) : (
+                            ""
+                          )
+                      )}
 
-                  <Modal
-                    open={this.state.CkOpen}
-                    onClose={this.handleExpandedCkClose.bind(this)}
-                    modalId="thumb-modal-popup"
-                    overlayId="logout-ovrlykb"
-                    classNames={{
-                      modal: "ck-exp-width",
-                    }}
-                  >
-                    <div className="ck-det-cntr">
-                      <CKEditor
-                        data={this.state.editorTemplateDetails}
-                        onChange={this.onAddCKEditorChange}
-                        onBlur={this.onCkBlur}
-                        config={{
-                          toolbar: [
-                            {
-                              name: "basicstyles",
-                              items: ["Bold", "Italic", "Strike"],
-                            },
-                            {
-                              name: "styles",
-                              items: ["Styles", "Format"],
-                            },
-                            {
-                              name: "paragraph",
-                              items: ["NumberedList", "BulletedList"],
-                            },
-                            {
-                              name: "links",
-                              items: ["Link", "Unlink"],
-                            },
-                            {
-                              name: "insert",
-                              items: ["Image", "Table"],
-                            },
-                            {
-                              name: "editing",
-                              items: ["Scayt"],
-                            },
-                          ],
-                        }}
-                      />
-                      <img
-                        src={MinusImg}
-                        alt="Arrow"
-                        onClick={this.handleExpandedCkClose.bind(this)}
-                        className="ck-expand"
-                      />
-                      <div
-                        className="row colladrowa"
-                        style={{ bottom: "15px" }}
-                      >
-                        <div className="col-md-12 colladrow">
-                          <ul className="ticsys">
-                            <li className="diwamargin">
-                              <label>
-                              {TranslationContext !== undefined
-                              ? TranslationContext.label.to
-                              : "To"}: {this.state.customerData.customerEmailId}
-                              </label>
-                            </li>
-                            <li>
-                              <div className="filter-checkbox">
-                                <input
-                                  type="checkbox"
-                                  id="fil-open-1"
-                                  name="filter-type"
-                                  style={{ display: "none" }}
-                                  checked={this.state.InformStore}
-                                  onChange={() =>
-                                    this.showInformStoreFuncation()
-                                  }
-                                  disabled={
-                                    this.state.selectedStoreIDs.length === 0
-                                  }
+                      {this.state.file.length > 4 ? (
+                        <img
+                          src={PlusImg}
+                          alt="thumb"
+                          className="thumbtick-plus"
+                          onClick={this.handleThumbModalOpen.bind(this)}
+                        />
+                      ) : (
+                          <img
+                            style={{ display: "none" }}
+                            src={PlusImg}
+                            alt="thumb"
+                            className="thumbtick-plus"
+                            onClick={this.handleThumbModalOpen.bind(this)}
+                          />
+                        )}
+                    </div>
+                    <Modal
+                      open={this.state.Plus}
+                      onClose={this.handleThumbModalClose.bind(this)}
+                      modalId="thumb-modal-popup"
+                      overlayId="logout-ovrlykb"
+                    >
+                      <div>
+                        <div className="close">
+                          <img
+                            src={CancelImg}
+                            alt="cross-icon"
+                            onClick={this.handleThumbModalClose.bind(this)}
+                          />
+                        </div>
+                        <div className="row my-3 mx-1">
+                          {this.state.file.map((item, i) => (
+                            <div style={{ position: "relative" }} key={i}>
+                              <div>
+                                <img
+                                  src={CircleCancel}
+                                  alt="thumb"
+                                  className="circleCancle"
+                                  onClick={() => {
+                                    this.handleRemoveImage(i);
+                                  }}
                                 />
-                                <label
-                                  htmlFor="fil-open-1"
-                                  style={{ paddingLeft: "25px" }}
-                                >
-                                  <span>{TranslationContext !== undefined
-                                        ? TranslationContext.label.informstore
-                                        : "Inform Store"}</span>
-                                </label>
                               </div>
-                            </li>
-                            <li>
-                              <span>
-                                <input
-                                  id="file-upload"
-                                  className="file-upload1 d-none"
-                                  type="file"
-                                  name="file"
-                                  onChange={this.handleFileUpload.bind(this)}
-                                  multiple
+
+                              <div>
+                                <img
+                                  src={
+                                    item.Type === "docx"
+                                      ? require("./../assets/Images/word.png")
+                                      : item.Type === "xlsx"
+                                        ? require("./../assets/Images/excel.png")
+                                        : item.Type === "pdf"
+                                          ? require("./../assets/Images/pdf.png")
+                                          : item.Type === "txt"
+                                            ? require("./../assets/Images/TxtIcon.png")
+                                            : require("./../assets/Images/thumbticket.png")
+                                  }
+                                  title={item.name}
+                                  alt="thumb"
+                                  className="thumbtick"
                                 />
-                                <label
-                                  htmlFor="file-upload"
-                                  onDrop={this.fileDrop}
-                                  onDragOver={this.fileDragOver}
-                                  onDragEnter={this.fileDragEnter}
-                                >
-                                  <img
-                                    src={FileUpload}
-                                    alt="file-upload"
-                                    className="fileup"
-                                  />
-                                </label>
-                              </span>
-                              <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
-                              </label>
-                            </li>
-                            <li>
-                              <label className="">
-                                <div className="input-group">
-                                  <span className="input-group-addon inputcc">
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Modal>
+
+                    <Modal
+                      open={this.state.CkOpen}
+                      onClose={this.handleExpandedCkClose.bind(this)}
+                      modalId="thumb-modal-popup"
+                      overlayId="logout-ovrlykb"
+                      classNames={{
+                        modal: "ck-exp-width",
+                      }}
+                    >
+                      <div className="ck-det-cntr">
+                        <CKEditor
+                          data={this.state.editorTemplateDetails}
+                          onChange={this.onAddCKEditorChange}
+                          onBlur={this.onCkBlur}
+                          config={{
+                            toolbar: [
+                              {
+                                name: "basicstyles",
+                                items: ["Bold", "Italic", "Strike"],
+                              },
+                              {
+                                name: "styles",
+                                items: ["Styles", "Format"],
+                              },
+                              {
+                                name: "paragraph",
+                                items: ["NumberedList", "BulletedList"],
+                              },
+                              {
+                                name: "links",
+                                items: ["Link", "Unlink"],
+                              },
+                              {
+                                name: "insert",
+                                items: ["Image", "Table"],
+                              },
+                              {
+                                name: "editing",
+                                items: ["Scayt"],
+                              },
+                            ],
+                          }}
+                        />
+                        <img
+                          src={MinusImg}
+                          alt="Arrow"
+                          onClick={this.handleExpandedCkClose.bind(this)}
+                          className="ck-expand"
+                        />
+                        <div
+                          className="row colladrowa"
+                          style={{ bottom: "15px" }}
+                        >
+                          <div className="col-md-12 colladrow">
+                            <ul className="ticsys">
+                              <li className="diwamargin">
+                                <label>
                                   {TranslationContext !== undefined
+                                    ? TranslationContext.label.to
+                                    : "To"}: {this.state.customerData.customerEmailId}
+                                </label>
+                              </li>
+                              <li>
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id="fil-open-1"
+                                    name="filter-type"
+                                    style={{ display: "none" }}
+                                    checked={this.state.InformStore}
+                                    onChange={() =>
+                                      this.showInformStoreFuncation()
+                                    }
+                                    disabled={
+                                      this.state.selectedStoreIDs.length === 0
+                                    }
+                                  />
+                                  <label
+                                    htmlFor="fil-open-1"
+                                    style={{ paddingLeft: "25px" }}
+                                  >
+                                    <span>{TranslationContext !== undefined
+                                      ? TranslationContext.label.informstore
+                                      : "Inform Store"}</span>
+                                  </label>
+                                </div>
+                              </li>
+                              <li>
+                                <span>
+                                  <input
+                                    id="file-upload"
+                                    className="file-upload1 d-none"
+                                    type="file"
+                                    name="file"
+                                    onChange={this.handleFileUpload.bind(this)}
+                                    multiple
+                                  />
+                                  <label
+                                    htmlFor="file-upload"
+                                    onDrop={this.fileDrop}
+                                    onDragOver={this.fileDragOver}
+                                    onDragEnter={this.fileDragEnter}
+                                  >
+                                    <img
+                                      src={FileUpload}
+                                      alt="file-upload"
+                                      className="fileup"
+                                    />
+                                  </label>
+                                </span>
+                                <label style={{ color: "#2561a8" }}>
+                                  {this.state.fileText} files
+                              </label>
+                              </li>
+                              <li>
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      {TranslationContext !== undefined
                                         ? TranslationContext.label.cc
                                         : "CC"}:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi1"
-                                    name="userCC"
-                                    value={this.state.mailFiled.userCC}
-                                    autoComplete="off"
-                                    onChange={this.handleMailOnChange.bind(
-                                      this,
-                                      "userCC"
-                                    )}
-                                  />
+                                    <input
+                                      type="text"
+                                      className="CCdi1"
+                                      name="userCC"
+                                      value={this.state.mailFiled.userCC}
+                                      autoComplete="off"
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userCC"
+                                      )}
+                                    />
 
-                                  <span className="input-group-addon inputcc-one">
-                                    {this.state.userCcCount < 1
-                                      ? "+" + this.state.userCcCount
-                                      : "+" + this.state.userCcCount}
-                                  </span>
-                                </div>
-                              </label>
-                              {/* </li>
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userCcCount < 1
+                                        ? "+" + this.state.userCcCount
+                                        : "+" + this.state.userCcCount}
+                                    </span>
+                                  </div>
+                                </label>
+                                {/* </li>
 
                             <li> */}
-                              <label className="">
-                                <div className="input-group">
-                                  <span className="input-group-addon inputcc">
-                                    BCC:
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      BCC:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi1"
-                                    name="userBCC"
-                                    value={this.state.mailFiled.userBCC}
-                                    autoComplete="off"
-                                    onChange={this.handleMailOnChange.bind(
-                                      this,
-                                      "userBCC"
-                                    )}
-                                  />
-                                  <span className="input-group-addon inputcc-one">
-                                    {this.state.userBccCount < 1
-                                      ? "+" + this.state.userBccCount
-                                      : "+" + this.state.userBccCount}
-                                  </span>
-                                </div>
-                              </label>
-                            </li>
-                          </ul>
+                                    <input
+                                      type="text"
+                                      className="CCdi1"
+                                      name="userBCC"
+                                      value={this.state.mailFiled.userBCC}
+                                      autoComplete="off"
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userBCC"
+                                      )}
+                                    />
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userBccCount < 1
+                                        ? "+" + this.state.userBccCount
+                                        : "+" + this.state.userBccCount}
+                                    </span>
+                                  </div>
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                      <div
-                        className="row ck-exp-top"
-                        style={{ position: "absolute" }}
-                      >
                         <div
-                          className="dropdown collapbtn1"
-                          style={{ display: "inherit" }}
+                          className="row ck-exp-top"
+                          style={{ position: "absolute" }}
                         >
-                          <button
-                            className={
-                              this.state.CkEditorTemplateData.length > 0
-                                ? "dropdown-toggle my-tic-email1"
-                                : "dropdown-toggle my-tic-email1 disabled-link"
-                            }
-                            type="button"
-                            data-toggle="dropdown"
+                          <div
+                            className="dropdown collapbtn1"
+                            style={{ display: "inherit" }}
                           >
-                            <FontAwesomeIcon icon={faCalculator} />
-                            {this.state.tempName === ""
-                              ? "Template"
-                              : this.state.tempName}
-                          </button>
-                          <ul className="dropdown-menu">
-                            {this.state.CkEditorTemplateData !== null &&
-                              this.state.CkEditorTemplateData.map((item, i) => (
-                                <li key={i} value={item.templateID}>
-                                  <a
-                                    onClick={this.handleCkEditorTemplateData.bind(
-                                      this,
-                                      item.templateID,
-                                      item.templateName
-                                    )}
-                                    href="#!"
-                                  >
-                                    {item.templateName}
-                                  </a>
-                                </li>
-                              ))}
-                          </ul>
-                        </div>
+                            <button
+                              className={
+                                this.state.CkEditorTemplateData.length > 0
+                                  ? "dropdown-toggle my-tic-email1"
+                                  : "dropdown-toggle my-tic-email1 disabled-link"
+                              }
+                              type="button"
+                              data-toggle="dropdown"
+                            >
+                              <FontAwesomeIcon icon={faCalculator} />
+                              {this.state.tempName === ""
+                                ? "Template"
+                                : this.state.tempName}
+                            </button>
+                            <ul className="dropdown-menu">
+                              {this.state.CkEditorTemplateData !== null &&
+                                this.state.CkEditorTemplateData.map((item, i) => (
+                                  <li key={i} value={item.templateID}>
+                                    <a
+                                      onClick={this.handleCkEditorTemplateData.bind(
+                                        this,
+                                        item.templateID,
+                                        item.templateName
+                                      )}
+                                      href="#!"
+                                    >
+                                      {item.templateName}
+                                    </a>
+                                  </li>
+                                ))}
+                            </ul>
+                          </div>
 
-                        {/* {this.state.selectedBrand === "" ? (
+                          {/* {this.state.selectedBrand === "" ? (
                           <label
                             className="kblink1"
                             title="Please select brand for KB Link"
@@ -2370,99 +2379,99 @@ class TicketSystem extends Component {
                             Please select Brand
                           </label>
                         ) : ( */}
-                        <a
-                          href="#!"
-                          className="kblink1"
-                          onClick={this.HandleKbLinkModalOpen.bind(this)}
-                        >
-                          <img
-                            src={KnowledgeLogo}
-                            alt="KnowledgeLogo"
-                            className="knoim"
+                          <a
+                            href="#!"
+                            className="kblink1"
+                            onClick={this.HandleKbLinkModalOpen.bind(this)}
+                          >
+                            <img
+                              src={KnowledgeLogo}
+                              alt="KnowledgeLogo"
+                              className="knoim"
                             // onClick={this.HandleKbLinkModalOpen.bind(this)}
-                          />
-                          <label
-                          // onClick={this.HandleKbLinkModalOpen.bind(this)}
-                          >
-                            KB Link
+                            />
+                            <label
+                            // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                            >
+                              KB Link
                           </label>
-                        </a>
+                          </a>
 
-                        <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
-                          <select
-                            className="add-select-category"
-                            value="0"
-                            onChange={this.setAssignedToValue.bind(this)}
-                          >
-                            <option value="0">Users</option>
-                            {this.state.AssignToData !== null &&
-                              this.state.AssignToData.map((item, i) => (
-                                <option key={i} value={item.user_ID}>
-                                  {/* <option key={i} value={item.userID}> */}
-                                  {/* {item.fullName} */}
-                                  {item.agentName}
-                                </option>
-                              ))}
-                          </select>
-                        </div>
-                        <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
-                          <select
-                            className="add-select-category"
-                            value="0"
-                            onChange={this.setPlaceholderValue.bind(this)}
-                          >
-                            <option value="0">Placeholders</option>
-                            {this.state.placeholderData !== null &&
-                              this.state.placeholderData.map((item, i) => (
-                                <option key={i} value={item.mailParameterID}>
-                                  {item.description}
-                                </option>
-                              ))}
-                          </select>
+                          <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setAssignedToValue.bind(this)}
+                            >
+                              <option value="0">Users</option>
+                              {this.state.AssignToData !== null &&
+                                this.state.AssignToData.map((item, i) => (
+                                  <option key={i} value={item.user_ID}>
+                                    {/* <option key={i} value={item.userID}> */}
+                                    {/* {item.fullName} */}
+                                    {item.agentName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
+                            <select
+                              className="add-select-category"
+                              value="0"
+                              onChange={this.setPlaceholderValue.bind(this)}
+                            >
+                              <option value="0">Placeholders</option>
+                              {this.state.placeholderData !== null &&
+                                this.state.placeholderData.map((item, i) => (
+                                  <option key={i} value={item.mailParameterID}>
+                                    {item.description}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Modal>
+                    </Modal>
 
-                  <div className="row" style={{ position: "absolute" }}>
-                    <div
-                      className="dropdown collapbtn1"
-                      style={{ display: "inherit" }}
-                    >
-                      <button
-                        className={
-                          this.state.CkEditorTemplateData.length > 0
-                            ? "dropdown-toggle my-tic-email1"
-                            : "dropdown-toggle my-tic-email1 disabled-link"
-                        }
-                        type="button"
-                        data-toggle="dropdown"
+                    <div className="row" style={{ position: "absolute" }}>
+                      <div
+                        className="dropdown collapbtn1"
+                        style={{ display: "inherit" }}
                       >
-                        <FontAwesomeIcon icon={faCalculator} />
-                        {this.state.tempName === ""
-                          ? "Template"
-                          : this.state.tempName}
-                      </button>
-                      <ul className="dropdown-menu">
-                        {this.state.CkEditorTemplateData !== null &&
-                          this.state.CkEditorTemplateData.map((item, i) => (
-                            <li key={i} value={item.templateID}>
-                              <a
-                                onClick={this.handleCkEditorTemplateData.bind(
-                                  this,
-                                  item.templateID,
-                                  item.templateName
-                                )}
-                                href="#!"
-                              >
-                                {item.templateName}
-                              </a>
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
+                        <button
+                          className={
+                            this.state.CkEditorTemplateData.length > 0
+                              ? "dropdown-toggle my-tic-email1"
+                              : "dropdown-toggle my-tic-email1 disabled-link"
+                          }
+                          type="button"
+                          data-toggle="dropdown"
+                        >
+                          <FontAwesomeIcon icon={faCalculator} />
+                          {this.state.tempName === ""
+                            ? "Template"
+                            : this.state.tempName}
+                        </button>
+                        <ul className="dropdown-menu">
+                          {this.state.CkEditorTemplateData !== null &&
+                            this.state.CkEditorTemplateData.map((item, i) => (
+                              <li key={i} value={item.templateID}>
+                                <a
+                                  onClick={this.handleCkEditorTemplateData.bind(
+                                    this,
+                                    item.templateID,
+                                    item.templateName
+                                  )}
+                                  href="#!"
+                                >
+                                  {item.templateName}
+                                </a>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
 
-                    {/* {this.state.selectedBrand === "" ? (
+                      {/* {this.state.selectedBrand === "" ? (
                       <label
                         className="kblink1"
                         title="Please select brand for KB Link"
@@ -2470,217 +2479,217 @@ class TicketSystem extends Component {
                         Please select Brand
                       </label>
                     ) : ( */}
-                    <a
-                      href="#!"
-                      className="kblink1"
-                      onClick={this.HandleKbLinkModalOpen.bind(this)}
-                    >
-                      <img
-                        src={KnowledgeLogo}
-                        alt="KnowledgeLogo"
-                        className="knoim"
+                      <a
+                        href="#!"
+                        className="kblink1"
+                        onClick={this.HandleKbLinkModalOpen.bind(this)}
+                      >
+                        <img
+                          src={KnowledgeLogo}
+                          alt="KnowledgeLogo"
+                          className="knoim"
                         // onClick={this.HandleKbLinkModalOpen.bind(this)}
-                      />
-                      <label
-                      // onClick={this.HandleKbLinkModalOpen.bind(this)}
-                      >
-                        KB Link
+                        />
+                        <label
+                        // onClick={this.HandleKbLinkModalOpen.bind(this)}
+                        >
+                          KB Link
                       </label>
-                    </a>
-                    {/* )} */}
-                    <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
-                      <select
-                        className="add-select-category"
-                        value="0"
-                        onChange={this.setAssignedToValue.bind(this)}
-                      >
-                        <option value="0">Users</option>
-                        {this.state.AssignToData !== null &&
-                          this.state.AssignToData.map((item, i) => (
-                            <option key={i} value={item.user_ID}>
-                              {/* <option key={i} value={item.userID}> */}
-                              {/* {item.fullName} */}
-                              {item.agentName}
-                            </option>
-                          ))}
-                      </select>
+                      </a>
+                      {/* )} */}
+                      <div className="tic-det-ck-user tic-createTic myticlist-expand-sect">
+                        <select
+                          className="add-select-category"
+                          value="0"
+                          onChange={this.setAssignedToValue.bind(this)}
+                        >
+                          <option value="0">Users</option>
+                          {this.state.AssignToData !== null &&
+                            this.state.AssignToData.map((item, i) => (
+                              <option key={i} value={item.user_ID}>
+                                {/* <option key={i} value={item.userID}> */}
+                                {/* {item.fullName} */}
+                                {item.agentName}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                      <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
+                        <select
+                          className="add-select-category"
+                          value="0"
+                          onChange={this.setPlaceholderValue.bind(this)}
+                        >
+                          <option value="0">Placeholders</option>
+                          {this.state.placeholderData !== null &&
+                            this.state.placeholderData.map((item, i) => (
+                              <option key={i} value={item.mailParameterID}>
+                                {item.description}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
                     </div>
-                    <div className="tic-det-ck-user myticlist-expand-sect placeholder-dropdown-tktSys">
-                      <select
-                        className="add-select-category"
-                        value="0"
-                        onChange={this.setPlaceholderValue.bind(this)}
-                      >
-                        <option value="0">Placeholders</option>
-                        {this.state.placeholderData !== null &&
-                          this.state.placeholderData.map((item, i) => (
-                            <option key={i} value={item.mailParameterID}>
-                              {item.description}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12 ck-det-cntr">
-                      <CKEditor
-                        data={this.state.editorTemplateDetails}
-                        onChange={this.onAddCKEditorChange}
-                        onBlur={this.onCkBlur}
-                        config={{
-                          toolbar: [
-                            {
-                              name: "basicstyles",
-                              items: ["Bold", "Italic", "Strike"],
-                            },
-                            {
-                              name: "styles",
-                              items: ["Styles", "Format"],
-                            },
-                            {
-                              name: "paragraph",
-                              items: ["NumberedList", "BulletedList"],
-                            },
-                            {
-                              name: "links",
-                              items: ["Link", "Unlink"],
-                            },
-                            {
-                              name: "insert",
-                              items: ["Image", "Table"],
-                            },
-                            {
-                              name: "editing",
-                              items: ["Scayt"],
-                            },
-                            // {
-                            //   name: "tools",
-                            //   items: ["Maximize"]
-                            // },
-                          ],
-                        }}
-                      />
-                      <img
-                        src={ArrowImg}
-                        alt="Arrow"
-                        onClick={this.handleExpandedCkOpen.bind(this)}
-                        className="ck-expand"
-                      />
-                      <div
-                        className="row colladrowa"
-                        style={{ bottom: "15px" }}
-                      >
-                        <div className="col-md-12 colladrow">
-                          <ul className="ticsys">
-                            <li className="diwamargin">
-                              <label>
-                                To: {this.state.customerData.customerEmailId}
-                              </label>
-                            </li>
-                            <li>
-                              <div className="filter-checkbox">
-                                <input
-                                  type="checkbox"
-                                  id="fil-open"
-                                  name="filter-type"
-                                  style={{ display: "none" }}
-                                  checked={this.state.InformStore}
-                                  onChange={() =>
-                                    this.showInformStoreFuncation()
-                                  }
-                                  disabled={
-                                    this.state.selectedStoreIDs.length === 0
-                                  }
-                                />
-                                <label
-                                  htmlFor="fil-open"
-                                  style={{ paddingLeft: "25px" }}
-                                >
-                                  <span>Inform Store</span>
+                    <div className="row">
+                      <div className="col-md-12 ck-det-cntr">
+                        <CKEditor
+                          data={this.state.editorTemplateDetails}
+                          onChange={this.onAddCKEditorChange}
+                          onBlur={this.onCkBlur}
+                          config={{
+                            toolbar: [
+                              {
+                                name: "basicstyles",
+                                items: ["Bold", "Italic", "Strike"],
+                              },
+                              {
+                                name: "styles",
+                                items: ["Styles", "Format"],
+                              },
+                              {
+                                name: "paragraph",
+                                items: ["NumberedList", "BulletedList"],
+                              },
+                              {
+                                name: "links",
+                                items: ["Link", "Unlink"],
+                              },
+                              {
+                                name: "insert",
+                                items: ["Image", "Table"],
+                              },
+                              {
+                                name: "editing",
+                                items: ["Scayt"],
+                              },
+                              // {
+                              //   name: "tools",
+                              //   items: ["Maximize"]
+                              // },
+                            ],
+                          }}
+                        />
+                        <img
+                          src={ArrowImg}
+                          alt="Arrow"
+                          onClick={this.handleExpandedCkOpen.bind(this)}
+                          className="ck-expand"
+                        />
+                        <div
+                          className="row colladrowa"
+                          style={{ bottom: "15px" }}
+                        >
+                          <div className="col-md-12 colladrow">
+                            <ul className="ticsys">
+                              <li className="diwamargin">
+                                <label>
+                                  To: {this.state.customerData.customerEmailId}
                                 </label>
-                              </div>
-                            </li>
-                            <li>
-                              <span>
-                                <input
-                                  id="file-upload"
-                                  className="file-upload1 d-none"
-                                  type="file"
-                                  name="file"
-                                  onChange={this.handleFileUpload.bind(this)}
-                                  multiple
-                                />
-                                <label
-                                  htmlFor="file-upload"
-                                  onDrop={this.fileDrop}
-                                  onDragOver={this.fileDragOver}
-                                  onDragEnter={this.fileDragEnter}
-                                >
-                                  <img
-                                    src={FileUpload}
-                                    alt="file-upload"
-                                    className="fileup"
-                                  />
-                                </label>
-                              </span>
-                              <label style={{ color: "#2561a8" }}>
-                                {this.state.fileText} files
-                              </label>
-                            </li>
-                            <li>
-                              <label className="">
-                                <div className="input-group">
-                                  <span className="input-group-addon inputcc">
-                                    CC:
-                                  </span>
+                              </li>
+                              <li>
+                                <div className="filter-checkbox">
                                   <input
-                                    type="text"
-                                    className="CCdi1"
-                                    name="userCC"
-                                    value={this.state.mailFiled.userCC}
-                                    autoComplete="off"
-                                    onChange={this.handleMailOnChange.bind(
-                                      this,
-                                      "userCC"
-                                    )}
+                                    type="checkbox"
+                                    id="fil-open"
+                                    name="filter-type"
+                                    style={{ display: "none" }}
+                                    checked={this.state.InformStore}
+                                    onChange={() =>
+                                      this.showInformStoreFuncation()
+                                    }
+                                    disabled={
+                                      this.state.selectedStoreIDs.length === 0
+                                    }
                                   />
-
-                                  <span className="input-group-addon inputcc-one">
-                                    {this.state.userCcCount < 1
-                                      ? "+" + this.state.userCcCount
-                                      : "+" + this.state.userCcCount}
-                                  </span>
+                                  <label
+                                    htmlFor="fil-open"
+                                    style={{ paddingLeft: "25px" }}
+                                  >
+                                    <span>Inform Store</span>
+                                  </label>
                                 </div>
+                              </li>
+                              <li>
+                                <span>
+                                  <input
+                                    id="file-upload"
+                                    className="file-upload1 d-none"
+                                    type="file"
+                                    name="file"
+                                    onChange={this.handleFileUpload.bind(this)}
+                                    multiple
+                                  />
+                                  <label
+                                    htmlFor="file-upload"
+                                    onDrop={this.fileDrop}
+                                    onDragOver={this.fileDragOver}
+                                    onDragEnter={this.fileDragEnter}
+                                  >
+                                    <img
+                                      src={FileUpload}
+                                      alt="file-upload"
+                                      className="fileup"
+                                    />
+                                  </label>
+                                </span>
+                                <label style={{ color: "#2561a8" }}>
+                                  {this.state.fileText} files
                               </label>
-                              {/* </li>
+                              </li>
+                              <li>
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      CC:
+                                  </span>
+                                    <input
+                                      type="text"
+                                      className="CCdi1"
+                                      name="userCC"
+                                      value={this.state.mailFiled.userCC}
+                                      autoComplete="off"
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userCC"
+                                      )}
+                                    />
+
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userCcCount < 1
+                                        ? "+" + this.state.userCcCount
+                                        : "+" + this.state.userCcCount}
+                                    </span>
+                                  </div>
+                                </label>
+                                {/* </li>
 
                             <li> */}
-                              <label className="">
-                                <div className="input-group">
-                                  <span className="input-group-addon inputcc">
-                                    BCC:
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      BCC:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi1"
-                                    name="userBCC"
-                                    value={this.state.mailFiled.userBCC}
-                                    autoComplete="off"
-                                    onChange={this.handleMailOnChange.bind(
-                                      this,
-                                      "userBCC"
-                                    )}
-                                  />
-                                  <span className="input-group-addon inputcc-one">
-                                    {/* +{this.state.userBccCount} */}
-                                    {this.state.userBccCount < 1
-                                      ? "+" + this.state.userBccCount
-                                      : "+" + this.state.userBccCount}
-                                  </span>
-                                </div>
-                              </label>
-                            </li>
-                            {/* <li>
+                                    <input
+                                      type="text"
+                                      className="CCdi1"
+                                      name="userBCC"
+                                      value={this.state.mailFiled.userBCC}
+                                      autoComplete="off"
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userBCC"
+                                      )}
+                                    />
+                                    <span className="input-group-addon inputcc-one">
+                                      {/* +{this.state.userBccCount} */}
+                                      {this.state.userBccCount < 1
+                                        ? "+" + this.state.userBccCount
+                                        : "+" + this.state.userBccCount}
+                                    </span>
+                                  </div>
+                                </label>
+                              </li>
+                              {/* <li>
                               <button
                                 className="send1"
                                 type="button"
@@ -2689,367 +2698,367 @@ class TicketSystem extends Component {
                                 Send
                               </button>
                             </li> */}
-                          </ul>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="row m-b-10 m-t-10">
-                    <div className="col-md-4">
-                      <div
-                        className="filter-checkbox"
-                        style={{ marginLeft: "15px" }}
-                      >
-                        <input
-                          type="checkbox"
-                          id="add-Notes"
-                          name="filter-type"
-                          style={{ display: "none" }}
-                          onChange={() => this.showAddNoteFuncation()}
-                        />
-                        <label
-                          htmlFor="add-Notes"
-                          style={{ paddingLeft: "25px" }}
+                    <div className="row m-b-10 m-t-10">
+                      <div className="col-md-4">
+                        <div
+                          className="filter-checkbox"
+                          style={{ marginLeft: "15px" }}
                         >
-                          <span className="add-note">Add Note</span>
-                        </label>
+                          <input
+                            type="checkbox"
+                            id="add-Notes"
+                            name="filter-type"
+                            style={{ display: "none" }}
+                            onChange={() => this.showAddNoteFuncation()}
+                          />
+                          <label
+                            htmlFor="add-Notes"
+                            style={{ paddingLeft: "25px" }}
+                          >
+                            <span className="add-note">Add Note</span>
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-8">
-                      <div
-                        className="filter-checkbox"
-                        style={{ marginLeft: "15px" }}
-                      >
-                        <input
-                          type="checkbox"
-                          id="fil-add1"
-                          name="escalationLevel"
-                          value={this.state.escalationLevel}
-                          style={{ display: "none" }}
-                          onChange={this.handleEscalationChange.bind(this)}
-                        />
-                        <label
-                          htmlFor="fil-add1"
-                          style={{ paddingLeft: "25px" }}
+                      <div className="col-md-8">
+                        <div
+                          className="filter-checkbox"
+                          style={{ marginLeft: "15px" }}
                         >
-                          <span className="add-note">
-                            {/* Instant Escalation to High level */}
+                          <input
+                            type="checkbox"
+                            id="fil-add1"
+                            name="escalationLevel"
+                            value={this.state.escalationLevel}
+                            style={{ display: "none" }}
+                            onChange={this.handleEscalationChange.bind(this)}
+                          />
+                          <label
+                            htmlFor="fil-add1"
+                            style={{ paddingLeft: "25px" }}
+                          >
+                            <span className="add-note">
+                              {/* Instant Escalation to High level */}
                             Auto Escalate
                           </span>
-                        </label>
+                          </label>
+                        </div>
                       </div>
                     </div>
+                    {this.state.showAddNote ? (
+                      <div>
+                        <div className="row m-b-10">
+                          <div className="col-md-12">
+                            <textarea
+                              className="addNote-textarea-system-new"
+                              placeholder="Write your note here"
+                              name="ticketNote"
+                              value={this.state.ticketNote}
+                              onChange={this.handleTicketChange}
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
-                  {this.state.showAddNote ? (
-                    <div>
-                      <div className="row m-b-10">
-                        <div className="col-md-12">
-                          <textarea
-                            className="addNote-textarea-system-new"
-                            placeholder="Write your note here"
-                            name="ticketNote"
-                            value={this.state.ticketNote}
-                            onChange={this.handleTicketChange}
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
                 </div>
-              </div>
 
-              <div className="column">
-                <div className="" style={{ height: "100%" }}>
-                  <div className="tab-content tabpaddingsystem">
-                    {/* {this.state.isCustomer ? ( */}
-                    <div
-                      className="tab-pane fade show active"
-                      id="customer-tab"
-                      role="tabpanel"
-                      aria-labelledby="customer-tab"
-                      style={{ height: "100%" }}
-                    >
-                      <div className="ticketSycard">
-                        <div className="ticketSycard1">
-                          <div
-                            className="paddingsystem"
-                            style={{ borderBottom: "1px solid #EDEDED" }}
-                          >
-                            <div className="row">
-                              <div className="col-md-4">
-                                <label className="category2">
-                                {TranslationContext !== undefined
-                                ? TranslationContext.label.customername
-                                : "Customer Name"}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category2">
-                                {TranslationContext !== undefined
-                                ? TranslationContext.label.phonenumber
-                                : "Phone Number"}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category2">
-                                {TranslationContext !== undefined
-                                ? TranslationContext.label.emailid
-                                : "Email Id"}</label>
-                              </div>
-                            </div>
-
+                <div className="column">
+                  <div className="" style={{ height: "100%" }}>
+                    <div className="tab-content tabpaddingsystem">
+                      {/* {this.state.isCustomer ? ( */}
+                      <div
+                        className="tab-pane fade show active"
+                        id="customer-tab"
+                        role="tabpanel"
+                        aria-labelledby="customer-tab"
+                        style={{ height: "100%" }}
+                      >
+                        <div className="ticketSycard">
+                          <div className="ticketSycard1">
                             <div
-                              className="row"
-                              style={{ marginBottom: "20px" }}
+                              className="paddingsystem"
+                              style={{ borderBottom: "1px solid #EDEDED" }}
                             >
-                              <div className="col-md-4">
-                                <label className="category1">
-                                  {this.state.customerData.customerName}
-                                </label>
+                              <div className="row">
+                                <div className="col-md-4">
+                                  <label className="category2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.customername
+                                      : "Customer Name"}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.phonenumber
+                                      : "Phone Number"}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.emailid
+                                      : "Email Id"}</label>
+                                </div>
                               </div>
-                              <div className="col-md-4">
-                                <label className="category1">
-                                  {this.state.customerData.customerPhoneNumber}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category1">
-                                  {this.state.customerData.customerEmailId}
-                                </label>
-                              </div>
-                            </div>
 
-                            <div className="row">
-                              <div className="col-md-4">
-                                <label className="category2">
-                                {TranslationContext !== undefined
-                                ? TranslationContext.label.gender
-                                : "Gender"}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category2">
-                                {TranslationContext !== undefined
-                                ? TranslationContext.label.alternatenumber
-                                : "Alternate Number"}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category2">
-                                {TranslationContext !== undefined
-                                ? TranslationContext.label.alternateemailid
-                                : "Alternate Email Id"}
-                                </label>
-                              </div>
-                            </div>
-
-                            <div
-                              className="row"
-                              style={{ marginBottom: "20px" }}
-                            >
-                              <div className="col-md-4">
-                                <label className="category1">
-                                  {this.state.customerData.genderID === 1
-                                    ? "Male"
-                                    : "Female"}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category1">
-                                  {this.state.customerData.altNumber}
-                                </label>
-                              </div>
-                              <div className="col-md-4">
-                                <label className="category1">
-                                  {this.state.customerData.altEmailID}
-                                </label>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <button
-                                className="systemeditbutton systemeditbutton-text"
-                                onClick={this.handleGetCustomerData.bind(
-                                  this,
-                                  CustomerId,
-                                  "Edit"
-                                )}
+                              <div
+                                className="row"
+                                style={{ marginBottom: "20px" }}
                               >
-                                {TranslationContext !== undefined
-                                ? TranslationContext.button.edit
-                                : "EDIT"}
-                              </button>
+                                <div className="col-md-4">
+                                  <label className="category1">
+                                    {this.state.customerData.customerName}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category1">
+                                    {this.state.customerData.customerPhoneNumber}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category1">
+                                    {this.state.customerData.customerEmailId}
+                                  </label>
+                                </div>
+                              </div>
+
+                              <div className="row">
+                                <div className="col-md-4">
+                                  <label className="category2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.gender
+                                      : "Gender"}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.alternatenumber
+                                      : "Alternate Number"}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category2">
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.alternateemailid
+                                      : "Alternate Email Id"}
+                                  </label>
+                                </div>
+                              </div>
+
+                              <div
+                                className="row"
+                                style={{ marginBottom: "20px" }}
+                              >
+                                <div className="col-md-4">
+                                  <label className="category1">
+                                    {this.state.customerData.genderID === 1
+                                      ? "Male"
+                                      : "Female"}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category1">
+                                    {this.state.customerData.altNumber}
+                                  </label>
+                                </div>
+                                <div className="col-md-4">
+                                  <label className="category1">
+                                    {this.state.customerData.altEmailID}
+                                  </label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <button
+                                  className="systemeditbutton systemeditbutton-text"
+                                  onClick={this.handleGetCustomerData.bind(
+                                    this,
+                                    CustomerId,
+                                    "Edit"
+                                  )}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.edit
+                                    : "EDIT"}
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    {/* ) : null} */}
-                    <Modal
-                      onClose={this.handleEditCustomerClose.bind(this)}
-                      open={this.state.EditCustomer}
-                      modalId="AddSearchModel"
-                      overlayId="logout-ovrly"
-                    >
-                      <div className="pop-upAddSearchPD">
-                        <label className="lbl-popup-title">
-                          {TranslationContext !== undefined
-                          ? TranslationContext.label.editcustomer
-                          : "Edit Customer"}
-                        </label>
-                        <hr />
-                        <div className="row row-margin1">
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              className="txt-1"
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.label.fullname
-                                : "Full Name"}
-                              name="customername"
-                              value={this.state.CustData.customername}
-                              onChange={this.handleOnChangeData}
-                            />
-                            {this.validator.message(
-                              "Full Name",
-                              this.state.CustData.customername,
-                              "required|alpha_space"
-                            )}
+                      {/* ) : null} */}
+                      <Modal
+                        onClose={this.handleEditCustomerClose.bind(this)}
+                        open={this.state.EditCustomer}
+                        modalId="AddSearchModel"
+                        overlayId="logout-ovrly"
+                      >
+                        <div className="pop-upAddSearchPD">
+                          <label className="lbl-popup-title">
+                            {TranslationContext !== undefined
+                              ? TranslationContext.label.editcustomer
+                              : "Edit Customer"}
+                          </label>
+                          <hr />
+                          <div className="row row-margin1">
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="txt-1"
+                                placeholder={TranslationContext !== undefined
+                                  ? TranslationContext.label.fullname
+                                  : "Full Name"}
+                                name="customername"
+                                value={this.state.CustData.customername}
+                                onChange={this.handleOnChangeData}
+                              />
+                              {this.validator.message(
+                                "Full Name",
+                                this.state.CustData.customername,
+                                "required|alpha_space"
+                              )}
+                            </div>
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="txt-1"
+                                maxLength={10}
+                                placeholder={TranslationContext !== undefined
+                                  ? TranslationContext.label.mobilenumber
+                                  : "Mobile Number"}
+                                name="customerPhone"
+                                value={this.state.CustData.customerPhone}
+                                onChange={this.handleOnChangeData}
+                                disabled
+                              />
+                              {this.validator.message(
+                                "Mobile Number",
+                                this.state.CustData.customerPhone,
+                                "required|integer|size:10"
+                              )}
+                            </div>
                           </div>
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              className="txt-1"
-                              maxLength={10}
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.label.mobilenumber
-                                : "Mobile Number"}
-                              name="customerPhone"
-                              value={this.state.CustData.customerPhone}
-                              onChange={this.handleOnChangeData}
-                              disabled
-                            />
-                            {this.validator.message(
-                              "Mobile Number",
-                              this.state.CustData.customerPhone,
-                              "required|integer|size:10"
-                            )}
+                          <div className="row row-margin1">
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="txt-1"
+                                placeholder={TranslationContext !== undefined
+                                  ? TranslationContext.label.emailid
+                                  : "Email ID"}
+                                name="custEmailId"
+                                value={this.state.CustData.custEmailId}
+                                onChange={this.handleOnChangeData}
+                                disabled
+                              />
+                              {this.validator.message(
+                                "Email Id",
+                                this.state.CustData.custEmailId,
+                                "required|email"
+                              )}
+                            </div>
+                            <div className="col-md-6 radio-btn-margin">
+                              <Radio.Group
+                                onChange={this.GenderonChange}
+                                value={this.state.CustData.genderID}
+                                disabled
+                              >
+                                <Radio value={1}>{TranslationContext !== undefined
+                                  ? TranslationContext.label.male
+                                  : "Male"}</Radio>
+                                <Radio value={2}>{TranslationContext !== undefined
+                                  ? TranslationContext.label.female
+                                  : "Female"}</Radio>
+                              </Radio.Group>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row row-margin1">
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              className="txt-1"
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.label.emailid
-                                : "Email ID"}
-                              name="custEmailId"
-                              value={this.state.CustData.custEmailId}
-                              onChange={this.handleOnChangeData}
-                              disabled
-                            />
-                            {this.validator.message(
-                              "Email Id",
-                              this.state.CustData.custEmailId,
-                              "required|email"
-                            )}
-                          </div>
-                          <div className="col-md-6 radio-btn-margin">
-                            <Radio.Group
-                              onChange={this.GenderonChange}
-                              value={this.state.CustData.genderID}
-                              disabled
-                            >
-                              <Radio value={1}>{TranslationContext !== undefined
-                                ? TranslationContext.label.male
-                                : "Male"}</Radio>
-                              <Radio value={2}>{TranslationContext !== undefined
-                                ? TranslationContext.label.female
-                                : "Female"}</Radio>
-                            </Radio.Group>
-                          </div>
-                        </div>
-                        <div className="row row-margin1">
-                          <div className="col-md-6 addcustdate">
-                            <DatePicker
-                              className="txt-1"
-                              placeholderText={TranslationContext !== undefined
-                                ? TranslationContext.label.dateofbirth
-                                : "DOB"}
-                              name="editDOB"
-                              maxDate={new Date()}
-                              showMonthDropdown
-                              showYearDropdown
-                              selected={this.state.editDOB}
-                              value={this.state.CustData.editDOB}
-                              onChange={this.handleChange}
-                              dateFormat="dd MMM YYYY"
-                            />
-                            {/* {this.validator.message(
+                          <div className="row row-margin1">
+                            <div className="col-md-6 addcustdate">
+                              <DatePicker
+                                className="txt-1"
+                                placeholderText={TranslationContext !== undefined
+                                  ? TranslationContext.label.dateofbirth
+                                  : "DOB"}
+                                name="editDOB"
+                                maxDate={new Date()}
+                                showMonthDropdown
+                                showYearDropdown
+                                selected={this.state.editDOB}
+                                value={this.state.CustData.editDOB}
+                                onChange={this.handleChange}
+                                dateFormat="dd MMM YYYY"
+                              />
+                              {/* {this.validator.message(
                               "Date of Birth",
                               this.state.CustData.editDOB,
                               "required"
                             )} */}
+                            </div>
                           </div>
-                        </div>
-                        <hr />
-                        <div className="row row-margin1">
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              className="txt-1"
-                              maxLength={10}
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.label.alternatenumber
-                                : "Alternate Number"}
-                              name="altNo"
-                              value={this.state.CustData.altNo}
-                              onChange={this.handleOnChangeData}
-                            />
-                            {/* {this.validator.message(
+                          <hr />
+                          <div className="row row-margin1">
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="txt-1"
+                                maxLength={10}
+                                placeholder={TranslationContext !== undefined
+                                  ? TranslationContext.label.alternatenumber
+                                  : "Alternate Number"}
+                                name="altNo"
+                                value={this.state.CustData.altNo}
+                                onChange={this.handleOnChangeData}
+                              />
+                              {/* {this.validator.message(
                               "Alternate Number",
                               this.state.CustData.altNo,
                               "integer|size:10"
                             )} */}
-                          </div>
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              className="txt-1"
-                              placeholder={TranslationContext !== undefined
-                                ? TranslationContext.label.alternateemail
-                                : "Alternate Email"}
-                              name="altEmail"
-                              value={this.state.CustData.altEmail}
-                              onChange={this.handleOnChangeData}
-                            />
-                            {/* {this.validator.message(
+                            </div>
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="txt-1"
+                                placeholder={TranslationContext !== undefined
+                                  ? TranslationContext.label.alternateemail
+                                  : "Alternate Email"}
+                                name="altEmail"
+                                value={this.state.CustData.altEmail}
+                                onChange={this.handleOnChangeData}
+                              />
+                              {/* {this.validator.message(
                               "Alternate Email Id",
                               this.state.CustData.altEmail,
                               "email"
                             )} */}
+                            </div>
                           </div>
-                        </div>
-                        <div className="btn-float">
-                          <button
-                            className="cancel-btn-A"
-                            onClick={this.handleEditCustomerClose.bind(this)}
-                          >
-                            {TranslationContext !== undefined
-                            ? TranslationContext.button.cancel
-                            : "CANCEL"}
-                          </button>
-                          <button
-                            type="button"
-                            className="butn"
-                            onClick={this.handleUpdateCustomer.bind(this)}
-                          >
-                            {TranslationContext !== undefined
-                            ? TranslationContext.button.save
-                            : "SAVE"}
-                          </button>
-                          {/* <button
+                          <div className="btn-float">
+                            <button
+                              className="cancel-btn-A"
+                              onClick={this.handleEditCustomerClose.bind(this)}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.cancel
+                                : "CANCEL"}
+                            </button>
+                            <button
+                              type="button"
+                              className="butn"
+                              onClick={this.handleUpdateCustomer.bind(this)}
+                            >
+                              {TranslationContext !== undefined
+                                ? TranslationContext.button.save
+                                : "SAVE"}
+                            </button>
+                            {/* <button
                           type="button"
                           className="butn add-cust-butn"
                           onClick={this.handleUpdateCustomer.bind(this)}
@@ -3066,373 +3075,373 @@ class TicketSystem extends Component {
                             )}
                           {this.state.loading ? "Please Wait ..." : "SAVE"}
                         </button> */}
+                          </div>
                         </div>
-                      </div>
-                    </Modal>
-                    {/* {this.state.isOrder ? ( */}
-                    <div
-                      className="tab-pane fade"
-                      id="order-tab"
-                      role="tabpanel"
-                      aria-labelledby="order-tab"
-                      style={{ height: "100%" }}
+                      </Modal>
+                      {/* {this.state.isOrder ? ( */}
+                      <div
+                        className="tab-pane fade"
+                        id="order-tab"
+                        role="tabpanel"
+                        aria-labelledby="order-tab"
+                        style={{ height: "100%" }}
                       // onChange={this.hanleRedirectpage.bind(this)}
-                    >
-                      <TicketSystemOrder
-                        custDetails={CustomerId}
-                        AttachOrder={this.handleCustomerAttachamentStatus}
-                        getParentOrderData={this.handleGetOrderId}
-                        getItemOrderData={this.handleGetItemData}
-                        purchaseMode={this.state.selectedChannelOfPurchase}
-                        ticket_IDS={this.state.ticketDetailID}
-                        ShowOderdData={this.state.showOrderDetails}
-                        parentCallBackFuncation={this.parentCallBackFuncation}
-                      />
-                    </div>
-                    {/* ) : null} */}
-                    {/* {this.state.isStore ? ( */}
-                    <div
-                      className="tab-pane fade"
-                      id="store-tab"
-                      role="tabpanel"
-                      aria-labelledby="store-tab"
-                      style={{ height: "100%" }}
-                    >
-                      <TicketSystemStore
-                        CustStoreStatus={this.handleCustomerStoreStatus}
-                        getStoreID={this.handleGetStoreId}
-                        ticket_IDS={this.state.ticketDetailID}
-                        showStore_Date={this.state.showStoreData}
-                        parentCallBackFuncation={this.parentCallBackFuncation}
-                      />
-                    </div>
-                    {/* ) : null} */}
+                      >
+                        <TicketSystemOrder
+                          custDetails={CustomerId}
+                          AttachOrder={this.handleCustomerAttachamentStatus}
+                          getParentOrderData={this.handleGetOrderId}
+                          getItemOrderData={this.handleGetItemData}
+                          purchaseMode={this.state.selectedChannelOfPurchase}
+                          ticket_IDS={this.state.ticketDetailID}
+                          ShowOderdData={this.state.showOrderDetails}
+                          parentCallBackFuncation={this.parentCallBackFuncation}
+                        />
+                      </div>
+                      {/* ) : null} */}
+                      {/* {this.state.isStore ? ( */}
+                      <div
+                        className="tab-pane fade"
+                        id="store-tab"
+                        role="tabpanel"
+                        aria-labelledby="store-tab"
+                        style={{ height: "100%" }}
+                      >
+                        <TicketSystemStore
+                          CustStoreStatus={this.handleCustomerStoreStatus}
+                          getStoreID={this.handleGetStoreId}
+                          ticket_IDS={this.state.ticketDetailID}
+                          showStore_Date={this.state.showStoreData}
+                          parentCallBackFuncation={this.parentCallBackFuncation}
+                        />
+                      </div>
+                      {/* ) : null} */}
 
-                    {/* {this.state.isTask ? ( */}
-                    <div
-                      className="tab-pane fade"
-                      id="task-tab"
-                      role="tabpanel"
-                      aria-labelledby="task-tab"
-                      style={{ height: "100%" }}
-                    >
-                      <TicketSystemTask
-                        taskMasterData={this.handleTaskMasterChange}
-                        ticket_IDS={this.state.ticketDetailID}
-                        checkTask={this.state.showTaskData}
-                        parentCallBackFuncation={this.parentCallBackFuncation}
-                      />
+                      {/* {this.state.isTask ? ( */}
+                      <div
+                        className="tab-pane fade"
+                        id="task-tab"
+                        role="tabpanel"
+                        aria-labelledby="task-tab"
+                        style={{ height: "100%" }}
+                      >
+                        <TicketSystemTask
+                          taskMasterData={this.handleTaskMasterChange}
+                          ticket_IDS={this.state.ticketDetailID}
+                          checkTask={this.state.showTaskData}
+                          parentCallBackFuncation={this.parentCallBackFuncation}
+                        />
+                      </div>
+                      {/* ) : null} */}
                     </div>
-                    {/* ) : null} */}
                   </div>
                 </div>
-              </div>
-              <div className="column1">
-                <div className="myticketlist-header-system">
-                  <div className="setting-tabs system">
-                    <ul className="nav nav-tabs es" role="tablist">
-                      <li className="nav-item">
-                        <a
-                          className="nav-link active"
-                          data-toggle="tab"
-                          href="#customer-tab"
-                          role="tab"
-                          aria-controls="customer-tab"
-                          aria-selected="true"
-                          onClick={this.handlechangebtntab.bind(this)}
-                        >
-                          {this.state.TabIconColor === "nav-link active" ? (
-                            <img
-                              src={CustomreIcon}
-                              alt="customer-icon"
-                              className="customer-icon"
-                            />
-                          ) : (
-                            <img
-                              src={AvatarBlackIcon}
-                              alt="customer-icon"
-                              className="customer-icon"
-                            />
-                          )}
+                <div className="column1">
+                  <div className="myticketlist-header-system">
+                    <div className="setting-tabs system">
+                      <ul className="nav nav-tabs es" role="tablist">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#customer-tab"
+                            role="tab"
+                            aria-controls="customer-tab"
+                            aria-selected="true"
+                            onClick={this.handlechangebtntab.bind(this)}
+                          >
+                            {this.state.TabIconColor === "nav-link active" ? (
+                              <img
+                                src={CustomreIcon}
+                                alt="customer-icon"
+                                className="customer-icon"
+                              />
+                            ) : (
+                                <img
+                                  src={AvatarBlackIcon}
+                                  alt="customer-icon"
+                                  className="customer-icon"
+                                />
+                              )}
 
-                          <span className="system-tab-span">
-                            {TranslationContext !== undefined
-                            ? TranslationContext.span.customer
-                            : "CUSTOMER"}
-                          </span>
-                        </a>
-                      </li>
+                            <span className="system-tab-span">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.customer
+                                : "CUSTOMER"}
+                            </span>
+                          </a>
+                        </li>
 
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#order-tab"
-                          role="tab"
-                          aria-controls="order-tab"
-                          aria-selected="false"
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#order-tab"
+                            role="tab"
+                            aria-controls="order-tab"
+                            aria-selected="false"
                           // onClick={this.hanldeCheckTabs("order")}
-                        >
-                          <img
-                            src={OrderIcon}
-                            alt="order-icon"
-                            className="order-icon"
-                          />
-                          <span className="system-tab-span">
-                            {TranslationContext !== undefined
-                            ? TranslationContext.span.order
-                            : "ORDER"}
-                          </span>
-                        </a>
-                      </li>
+                          >
+                            <img
+                              src={OrderIcon}
+                              alt="order-icon"
+                              className="order-icon"
+                            />
+                            <span className="system-tab-span">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.order
+                                : "ORDER"}
+                            </span>
+                          </a>
+                        </li>
 
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#store-tab"
-                          role="tab"
-                          aria-controls="store-tab"
-                          aria-selected="false"
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#store-tab"
+                            role="tab"
+                            aria-controls="store-tab"
+                            aria-selected="false"
                           // onClick={this.hanldeCheckTabs("store")}
-                        >
-                          <img
-                            src={StoreIcon}
-                            alt="store-icon"
-                            className="store-icon"
-                          />
-                          <img
-                            src={TicketLogoBlue}
-                            alt="ticketlogoblue"
-                            className="store-icon"
-                            style={{ display: "none" }}
-                          />
-                          <span className="system-tab-span">
-                            {TranslationContext !== undefined
-                            ? TranslationContext.span.store
-                            : "STORE"}
-                          </span>
-                        </a>
-                      </li>
+                          >
+                            <img
+                              src={StoreIcon}
+                              alt="store-icon"
+                              className="store-icon"
+                            />
+                            <img
+                              src={TicketLogoBlue}
+                              alt="ticketlogoblue"
+                              className="store-icon"
+                              style={{ display: "none" }}
+                            />
+                            <span className="system-tab-span">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.store
+                                : "STORE"}
+                            </span>
+                          </a>
+                        </li>
 
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#task-tab"
-                          role="tab"
-                          aria-controls="task-tab"
-                          aria-selected="false"
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#task-tab"
+                            role="tab"
+                            aria-controls="task-tab"
+                            aria-selected="false"
                           // onClick={this.hanldeCheckTabs("task")}
-                        >
-                          <img
-                            src={TaskIcon}
-                            alt="task-icon"
-                            className="task-icon"
-                          />
-                          <span className="system-tab-span">
-                            {TranslationContext !== undefined
-                            ? TranslationContext.span.task
-                            : "TASK"}
-                          </span>
-                        </a>
-                      </li>
-                    </ul>
+                          >
+                            <img
+                              src={TaskIcon}
+                              alt="task-icon"
+                              className="task-icon"
+                            />
+                            <span className="system-tab-span">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.span.task
+                                : "TASK"}
+                            </span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <Modal
-                  open={this.state.KbLink}
-                  onClose={this.HandleKbLinkModalClose.bind(this)}
-                  modalId="KbLink-popup"
-                  overlayId="logout-ovrlykb"
-                >
-                  <div className="row" style={{ margin: "0" }}>
-                    <div className="col-md-7" style={{ padding: "0" }}>
-                      <div className="knokb">
-                        <h5>
-                          <img
-                            src={KnowledgeLogo}
-                            alt="KnowledgeLogo"
-                            className="knoim1"
-                          />
+                <div>
+                  <Modal
+                    open={this.state.KbLink}
+                    onClose={this.HandleKbLinkModalClose.bind(this)}
+                    modalId="KbLink-popup"
+                    overlayId="logout-ovrlykb"
+                  >
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="col-md-7" style={{ padding: "0" }}>
+                        <div className="knokb">
+                          <h5>
+                            <img
+                              src={KnowledgeLogo}
+                              alt="KnowledgeLogo"
+                              className="knoim1"
+                            />
                           KNOWLEGE BASE
                         </h5>
-                        <p>Message</p>
+                          <p>Message</p>
 
-                        <div id="kb-accordion">
-                          {this.state.KbPopupData !== null &&
-                            this.state.KbPopupData.map((item, i) => (
-                              <div key={i} className="kb-acc-cntr">
-                                <p
-                                  className="table-details-data-modal"
-                                  data-toggle="collapse"
-                                  data-target={"#collapse" + i}
-                                  aria-expanded={i === 0 ? "true" : "false"}
-                                  aria-controls={"collapse" + i}
-                                  onClick={() =>
-                                    this.setState({ copied: false })
-                                  }
-                                >
-                                  {item.subject}
-                                </p>
-                                <div
-                                  id={"collapse" + i}
-                                  className={
-                                    i === 0 ? "collapse show" : "collapse"
-                                  }
-                                  data-parent="#kb-accordion"
-                                >
-                                  <p className="mb-0">{item.description}</p>
-                                  <CopyToClipboard
-                                    text={item.description}
-                                    onCopy={() =>
-                                      this.setState({ copied: true })
+                          <div id="kb-accordion">
+                            {this.state.KbPopupData !== null &&
+                              this.state.KbPopupData.map((item, i) => (
+                                <div key={i} className="kb-acc-cntr">
+                                  <p
+                                    className="table-details-data-modal"
+                                    data-toggle="collapse"
+                                    data-target={"#collapse" + i}
+                                    aria-expanded={i === 0 ? "true" : "false"}
+                                    aria-controls={"collapse" + i}
+                                    onClick={() =>
+                                      this.setState({ copied: false })
                                     }
                                   >
-                                    <a href="#!" className="copyblue-kbtext">
-                                      <img
-                                        src={CopyBlue}
-                                        alt=""
-                                        className="copyblue-kb"
-                                      />
+                                    {item.subject}
+                                  </p>
+                                  <div
+                                    id={"collapse" + i}
+                                    className={
+                                      i === 0 ? "collapse show" : "collapse"
+                                    }
+                                    data-parent="#kb-accordion"
+                                  >
+                                    <p className="mb-0">{item.description}</p>
+                                    <CopyToClipboard
+                                      text={item.description}
+                                      onCopy={() =>
+                                        this.setState({ copied: true })
+                                      }
+                                    >
+                                      <a href="#!" className="copyblue-kbtext">
+                                        <img
+                                          src={CopyBlue}
+                                          alt=""
+                                          className="copyblue-kb"
+                                        />
                                       Copy
                                     </a>
-                                  </CopyToClipboard>
-                                  {this.state.copied ? (
-                                    <span
-                                      className="ml-2"
-                                      style={{ color: "red" }}
-                                    >
-                                      Copied.
-                                    </span>
-                                  ) : null}
+                                    </CopyToClipboard>
+                                    {this.state.copied ? (
+                                      <span
+                                        className="ml-2"
+                                        style={{ color: "red" }}
+                                      >
+                                        Copied.
+                                      </span>
+                                    ) : null}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-5 kblinkright">
-                      <div className="knokb-a">
-                        <img
-                          src={CancelImg}
-                          alt="cancelImg"
-                          className="cancalImg-kb"
-                          onClick={this.HandleKbLinkModalClose.bind(this)}
-                        />
-                        <h5>KB TEMPLATE</h5>
-                        <div className="form-group">
-                          <select
-                            value={this.state.selectedCategoryKB}
-                            onChange={this.setCategoryValueKB}
-                            className="kblinkrectangle-9 select-category-placeholderkblink"
-                          >
-                            <option value="">Category</option>
-                            {this.state.CategoryData !== null &&
-                              this.state.CategoryData.map((item, i) => (
-                                <option key={i} value={item.categoryID}>
-                                  {item.categoryName}
-                                </option>
                               ))}
-                          </select>
-                          {this.state.selectedCategoryKB.length === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.categoryKbCompulsion}
-                            </p>
-                          )}
-                        </div>
-                        <div className="form-group">
-                          <select
-                            value={this.state.selectedSubCategoryKB}
-                            onChange={this.setSubCategoryValueKB}
-                            className="kblinkrectangle-9 select-category-placeholderkblink"
-                          >
-                            <option value="">Sub-Category</option>
-                            {this.state.SubCategoryData !== null &&
-                              this.state.SubCategoryData.map((item, i) => (
-                                <option key={i} value={item.subCategoryID}>
-                                  {item.subCategoryName}
-                                </option>
-                              ))}
-                          </select>
-                          {this.state.selectedSubCategoryKB.length === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.subCategoryKbCompulsion}
-                            </p>
-                          )}
-                        </div>
-                        <div className="form-group">
-                          <select
-                            value={this.state.selectedIssueTypeKB}
-                            onChange={this.setIssueTypeValueKB}
-                            className="kblinkrectangle-9 select-category-placeholderkblink"
-                          >
-                            <option value="">Type</option>
-                            {this.state.IssueTypeData !== null &&
-                              this.state.IssueTypeData.map((item, i) => (
-                                <option key={i} value={item.issueTypeID}>
-                                  {item.issueTypeName}
-                                </option>
-                              ))}
-                          </select>
-                          {this.state.selectedIssueTypeKB.length === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.issueTypeKbCompulsion}
-                            </p>
-                          )}
-                        </div>
-                        <div>
-                          <span
-                            onClick={this.handleviewPolicyModelOpen}
-                            style={{ float: "left" }}
-                          >
-                            <a
-                              href="#!"
-                              className="copyblue-kbtext d-inline-block"
-                            >
-                              VIEW POLICY
-                              <img
-                                src={ViewBlue}
-                                alt="viewpolicy"
-                                className="viewpolicy-kb"
-                              />
-                            </a>
-                          </span>
-                        </div>
-                        <div>
-                          <button
-                            onClick={this.handleKbLinkPopupSearch}
-                            className="kblink-search"
-                          >
-                            SEARCH
-                          </button>
-                        </div>
-                        <Modal
-                          open={this.state.viewPolicyModel}
-                          onClose={this.handleviewPolicyModelClose}
-                          modalId="viewPolicyModel"
-                          classNames={{
-                            modal: "schedule-width",
-                          }}
-                          overlayId="logout-ovrly"
-                        >
-                          <div>
-                            <label>
-                              <b>View Policy</b>
-                            </label>
                           </div>
-                        </Modal>
+                        </div>
+                      </div>
+                      <div className="col-md-5 kblinkright">
+                        <div className="knokb-a">
+                          <img
+                            src={CancelImg}
+                            alt="cancelImg"
+                            className="cancalImg-kb"
+                            onClick={this.HandleKbLinkModalClose.bind(this)}
+                          />
+                          <h5>KB TEMPLATE</h5>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedCategoryKB}
+                              onChange={this.setCategoryValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option value="">Category</option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option key={i} value={item.categoryID}>
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+                            {this.state.selectedCategoryKB.length === 0 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.categoryKbCompulsion}
+                              </p>
+                            )}
+                          </div>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedSubCategoryKB}
+                              onChange={this.setSubCategoryValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option value="">Sub-Category</option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option key={i} value={item.subCategoryID}>
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
+                            {this.state.selectedSubCategoryKB.length === 0 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.subCategoryKbCompulsion}
+                              </p>
+                            )}
+                          </div>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedIssueTypeKB}
+                              onChange={this.setIssueTypeValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option value="">Type</option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option key={i} value={item.issueTypeID}>
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                            {this.state.selectedIssueTypeKB.length === 0 && (
+                              <p style={{ color: "red", marginBottom: "0px" }}>
+                                {this.state.issueTypeKbCompulsion}
+                              </p>
+                            )}
+                          </div>
+                          <div>
+                            <span
+                              onClick={this.handleviewPolicyModelOpen}
+                              style={{ float: "left" }}
+                            >
+                              <a
+                                href="#!"
+                                className="copyblue-kbtext d-inline-block"
+                              >
+                                VIEW POLICY
+                              <img
+                                  src={ViewBlue}
+                                  alt="viewpolicy"
+                                  className="viewpolicy-kb"
+                                />
+                              </a>
+                            </span>
+                          </div>
+                          <div>
+                            <button
+                              onClick={this.handleKbLinkPopupSearch}
+                              className="kblink-search"
+                            >
+                              SEARCH
+                          </button>
+                          </div>
+                          <Modal
+                            open={this.state.viewPolicyModel}
+                            onClose={this.handleviewPolicyModelClose}
+                            modalId="viewPolicyModel"
+                            classNames={{
+                              modal: "schedule-width",
+                            }}
+                            overlayId="logout-ovrly"
+                          >
+                            <div>
+                              <label>
+                                <b>View Policy</b>
+                              </label>
+                            </div>
+                          </Modal>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Modal>
-                {/* <NotificationContainer /> */}
+                  </Modal>
+                  {/* <NotificationContainer /> */}
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     );

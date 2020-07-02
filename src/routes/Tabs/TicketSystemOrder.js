@@ -448,6 +448,7 @@ class TicketSystemOrder extends Component {
   }
   hadleAddManuallyOrderData() {
     debugger;
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -502,7 +503,9 @@ class TicketSystemOrder extends Component {
               saveLoader: false,
             });
           } else {
-            NotificationManager.error("Order not added.");
+            NotificationManager.error(TranslationContext !== undefined
+              ? TranslationContext.span.ordernotadded
+              : "Order not added.");
             self.setState({
               saveLoader: false,
             });
@@ -1332,7 +1335,9 @@ class TicketSystemOrder extends Component {
                 <input
                   type="text"
                   className="searchtextpopup"
-                  placeholder="Search Order"
+                  placeholder={TranslationContext !== undefined
+                    ? TranslationContext.label.searchorder
+                    : "Search Order"}
                   name="ModalorderNumber"
                   value={this.state.ModalorderNumber}
                   autoComplete="off"
@@ -1612,7 +1617,9 @@ class TicketSystemOrder extends Component {
                       <input
                         type="text"
                         className="systemordersearch"
-                        placeholder="Search Order By Order Number"
+                        placeholder={TranslationContext !== undefined
+                          ? TranslationContext.label.searchorderbyordernumber
+                          : "Search Order By Order Number"}
                         name="orderNumber"
                         value={this.state.orderNumber}
                         autoComplete="off"

@@ -66,10 +66,13 @@ class AddSearchMyTicket extends Component {
   }
 
   handleCopyToaster() {
+    const TranslationContext = this.state.translateLanguage.default;
     //debugger;
     setTimeout(() => {
       if (this.state.copied && this.state.copied) {
-        NotificationManager.success("Copied.");
+        NotificationManager.success(TranslationContext !== undefined
+          ? TranslationContext.span.copied
+          : "Copied.");
       }
     }, 100);
   }
@@ -296,7 +299,9 @@ class AddSearchMyTicket extends Component {
                     <input
                       type="text"
                       className="search-customerAddSrch"
-                      placeholder="Enter Customer Phone Number, Email ID"
+                      placeholder={TranslationContext !== undefined
+                        ? TranslationContext.label.entercustphonenoemailid
+                        : "Enter Customer Phone Number, Email ID"}
                       name="SrchEmailPhone"
                       value={this.state.SrchEmailPhone}
                       onChange={this.addCustomerData}

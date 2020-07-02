@@ -426,7 +426,9 @@ class TicketSystemStore extends Component {
                   <input
                     type="text"
                     className="systemordersearch"
-                    placeholder="Search By Store Name, Pin Code, Store Code"
+                    placeholder={TranslationContext !== undefined
+                      ? TranslationContext.label.searchbynamepincodecode
+                      : "Search By Store Name, Pin Code, Store Code"}
                     // value={this.state.filterAll}
                     // onChange={this.filterAll}
                     name="SrchStoreNameCode"
@@ -701,7 +703,9 @@ class TicketSystemStore extends Component {
                     <input
                       type="text"
                       className="systemordersearch"
-                      placeholder="Search By Store Name, Pin Code, Store Code"
+                      placeholder={TranslationContext !== undefined
+                        ? TranslationContext.label.searchbynamepincodecode
+                        : "Search By Store Name, Pin Code, Store Code"}
                       name="SrchStoreNameCode"
                       value={this.state.SrchStoreNameCode}
                       onChange={this.handleStoreChange}

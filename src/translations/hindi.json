@@ -450,7 +450,13 @@
     "items":"आइटम",
     "details":"विवरण",
     "similartypeoftickets":"इसी प्रकार के टिकट",
-    "customerwanttoattachorder": "ग्राहक आदेश संलग्न करना चाहते हैं"
+    "customerwanttoattachorder": "ग्राहक आदेश संलग्न करना चाहते हैं",
+    "taskdescription": "कार्य विवरण",
+    "searchbynamepincodecode": "स्टोर नाम, पिन कोड, स्टोर कोड द्वारा खोजें",
+    "searchorderbyordernumber": "आदेश क्रमांक द्वारा खोज क्रम",
+    "searchorder": "आदेश खोजें",
+    "writeyourtitlehere":"अपना शीर्षक यहाँ लिखें",
+    "entercustphonenoemailid":"ग्राहक फोन नंबर, ईमेल आईडी दर्ज करें"
   },
   "text": {
     "brand": "ब्रांड :",
@@ -805,7 +811,9 @@
     "articlename": "अनुच्छेद नाम",
     "articlemrp": "लेख एम.आर.पी.",
     "reqiuredsize": "आवश्यक आकार",
-    "copied": "की नकल की",
+    "copied": "कॉपी किया गया",
+    "taskcreatedsuccfully": "टास्क सफलतापूर्वक बनाया गया",
+    "ordernotadded": "आदेश नहीं जोड़ा गया।",
     "informstore": "स्टोर सूचित करें",
     "cc": "सीसी",
     "bcc": "गुप्त प्रतिलिपि",
