@@ -116,9 +116,17 @@ class ChatSettings extends Component {
         .then((response) => {
           var message = response.data.message;
           if (message === "Success") {
-            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordupdatedsuccessfully
+                : "Record Updated Successfully"
+            );
           } else {
-            NotificationManager.console.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
+            NotificationManager.console.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordnotupdated
+                : "Record Not Updated"
+            );
           }
         })
         .catch((response) => {
@@ -229,12 +237,20 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully"
+          );
           self.setState({ isLoadingUpdate: false });
           self.handleGetCardConfiguration();
         } else {
           self.setState({ isLoadingUpdate: false });
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordnotupdated
+              : "Record Not Updated"
+          );
         }
       })
       .catch((response) => {
@@ -264,12 +280,19 @@ class ChatSettings extends Component {
           var responseData = response.data.responseData;
           if (message === "Success") {
             NotificationManager.success(
-              TranslationContext!==undefined?TranslationContext.alertmessage.carditemconfigurationaddsuccessfully:"Card item configuration add successfully!"
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage
+                    .carditemconfigurationaddsuccessfully
+                : "Card item configuration add successfully!"
             );
             self.setState({ isLoadingAdd: false });
             self.handleGetCardConfiguration();
           } else {
-            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.carditemconfigurationnotadded:"Card item configuration not add");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.carditemconfigurationnotadded
+                : "Card item configuration not add"
+            );
             self.setState({ isLoadingAdd: false });
           }
         })
@@ -349,11 +372,19 @@ class ChatSettings extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully"
+          );
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordnotupdated
+              : "Record Not Updated"
+          );
         }
       })
       .catch((response) => {
@@ -417,12 +448,21 @@ class ChatSettings extends Component {
                             className="row"
                             style={{ width: "100%", margin: "0" }}
                           >
-                            <div className="col-md-3">{TranslationContext!==undefined?TranslationContext.div.programcode:"Program Code"}</div>
+                            <div className="col-md-3">
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.programcode
+                                : "Program Code"}
+                            </div>
                             <div className="col-md-3">
                               <Select
                                 showArrow={true}
-                                style={{ width: "100%" ,marginBottom:"10px"}}
-                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.selectprogramcode:"Select program code"}
+                                style={{ width: "100%", marginBottom: "10px" }}
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder
+                                        .selectprogramcode
+                                    : "Select program code"
+                                }
                                 value={this.state.programCode}
                                 disabled={true}
                               >
@@ -441,14 +481,20 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
-                          {TranslationContext!==undefined?TranslationContext.div.chatsessiontimeout:"Chat Session Time Out"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.chatsessiontimeout
+                              : "Chat Session Time Out"}
                           </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
                                 type="text"
                                 className="chatsetngtxt"
-                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder.entervalue
+                                    : "Enter value"
+                                }
                                 name="chatSessionValue"
                                 onChange={this.handleOnChange.bind(this)}
                                 value={this.state.chatSessionValue}
@@ -508,14 +554,20 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
-                          {TranslationContext!==undefined?TranslationContext.div.historicalchattime:"Historical Chat Time"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div.historicalchattime
+                              : "Historical Chat Time"}
                           </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
                                 type="text"
                                 className="chatsetngtxt"
-                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
+                                placeholder={
+                                  TranslationContext !== undefined
+                                    ? TranslationContext.placeholder.entervalue
+                                    : "Enter value"
+                                }
                                 onChange={this.handleOnChange.bind(this)}
                                 value={this.state.chatDisplayValue}
                                 maxLength={2}
@@ -574,14 +626,20 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
-                          {TranslationContext!==undefined?TranslationContext.div.setlimittypeboxofchatwindow:"Set Limit Type box of Chat Window"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.div
+                                  .setlimittypeboxofchatwindow
+                              : "Set Limit Type box of Chat Window"}
                           </div>
                           <div className="col-md-3">
                             <input
                               type="text"
                               className="chatsetngtxt"
-                              placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
+                              placeholder={
+                                TranslationContext !== undefined
+                                  ? TranslationContext.placeholder.entervalue
+                                  : "Enter value"
+                              }
                               name="limitText"
                               onChange={this.handleOnChange.bind(this)}
                               value={this.state.limitText}
@@ -837,6 +895,25 @@ class ChatSettings extends Component {
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </Tab>
+                <Tab label={"SOUND & NOTIFICATIONS"}>
+                  <div className="row chattab-card">
+                    <div className="col-md-12">
+                      <div
+                        className="card"
+                        style={{ padding: "35px", height: "auto" }}
+                      >
+                        <label className="snlbl-nlbl">Notification</label>
+                        <hr className="sn-hr" />
+                        <p>
+                            Set your notification preference for when you are in
+                            or away from the system.You will need to configure
+                            your browser setting to allow notification
+                          </p>
+                        
                       </div>
                     </div>
                   </div>

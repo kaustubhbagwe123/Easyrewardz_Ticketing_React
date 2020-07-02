@@ -3667,3 +3667,14 @@
 .chrdioclr.switch.switch-primary input[type="checkbox"]:checked + .cr:before{
   background: #50d462;
 }
+
+.snlbl-nlbl{
+  color: #2561a8;
+    font-size: x-large;
+    font-weight: 700;
+}
+.sn-hr{
+  margin-top: 0;
+  /* margin-bottom:0 ; */
+  border-top: 1px solid #2561a8;
+}
