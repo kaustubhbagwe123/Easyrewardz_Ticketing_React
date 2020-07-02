@@ -7825,7 +7825,7 @@ class Dashboard extends Component {
                           >
                             {TranslationContext !== undefined
                               ? TranslationContext.span.priority
-                              : "Priority"}{" "}
+                              : "Priority"}
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
                         ),
