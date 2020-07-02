@@ -30,6 +30,7 @@
     "issuetype": "समस्या का प्रकार",
     "ticketpriority": "टिकट प्राथमिकता",
     "ticketactiontype": "टिकट कार्रवाई प्रकार",
+    "qc": "क्यूसी",
     "channelofpurchase": "खरीद का चैनल",
     "customername": "ग्राहक का नाम",
     "phonenumber": "फ़ोन नंबर",
