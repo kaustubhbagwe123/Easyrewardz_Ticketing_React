@@ -3,7 +3,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
 import ReactTable from "react-table";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
@@ -26,8 +26,8 @@ import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import Dropzone from "react-dropzone";
-import * as translationHI from './../../../translations/hindi'
-import * as translationMA from './../../../translations/marathi'
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 
 class StoreCRMRole extends Component {
   constructor(props) {
@@ -39,14 +39,6 @@ class StoreCRMRole extends Component {
       ModulesEnabled: "",
       ModulesDisabled: "",
       modulesList: [],
-      // modulesList: [
-      //   { moduleId: 1, moduleName: "Dashboard", isActive: true },
-      //   { moduleId: 2, moduleName: "Tasks", isActive: false },
-      //   { moduleId: 3, moduleName: "Claim", isActive: true },
-      //   { moduleId: 4, moduleName: "Notification", isActive: true },
-      //   { moduleId: 5, moduleName: "Settings", isActive: true },
-      //   { moduleId: 6, moduleName: "Reports", isActive: false },
-      // ],
       RoleName: "",
       checkRoleName: "",
       RoleisActive: 0,
@@ -84,7 +76,8 @@ class StoreCRMRole extends Component {
       isortA: false,
       isATOZ: true,
       crmData: [],
-      translateLanguage: {}
+      translateLanguage: {},
+      bulkuploadLoading: false,
     };
     this.handleGetCRMGridData = this.handleGetCRMGridData.bind(this);
     this.toggleEditModal = this.toggleEditModal.bind(this);
@@ -96,16 +89,13 @@ class StoreCRMRole extends Component {
     this.handleModulesDefault();
     this.handleGetStoreCrmModule();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
   handleTabChange(index) {
     this.setState({
@@ -288,6 +278,7 @@ class StoreCRMRole extends Component {
   };
   //// delete CRM role
   handleDeleteCrmRole(Id) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -302,9 +293,17 @@ class StoreCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record In use") {
-          NotificationManager.error("Record in use.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordinuse
+              : "Record in use."
+          );
         } else if (status === "Record deleted Successfully") {
-          NotificationManager.success("Record deleted Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recorddeletedsuccessfully
+              : "Record deleted Successfully."
+          );
           self.handleGetCRMGridData();
         }
       })
@@ -315,6 +314,7 @@ class StoreCRMRole extends Component {
 
   //// hanlde Create and Update function
   hanldeCreateUpdateCrmRole(e, addUpdate, crmRoleId) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     let RoleisActive,
@@ -390,7 +390,11 @@ class StoreCRMRole extends Component {
         let status = res.data.message;
         if (status === "Success") {
           if (e === "add") {
-            NotificationManager.success("CRM Role added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmroleaddedsuccessfully
+                : "CRM Role added successfully."
+            );
             self.setState({
               RoleName: "",
               RoleisActive: 0,
@@ -410,21 +414,41 @@ class StoreCRMRole extends Component {
               editSaveLoading: false,
               editRoleNameValidMsg: "",
             });
-            NotificationManager.success("CRM Role updated successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmroleupdatedsuccessfully
+                : "CRM Role updated successfully."
+            );
             self.handleGetCRMGridData();
           }
         } else if (status === "Record Already Exists ") {
           if (e === "add") {
-            NotificationManager.error("Record Already Exists ");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists "
+            );
           } else {
-            NotificationManager.error("Record Already Exists ");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : "Record Already Exists "
+            );
           }
         } else {
           if (e === "add") {
-            NotificationManager.error("CRM Role not added.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmrolenotadded
+                : "CRM Role not added."
+            );
           } else if (e === "update") {
             self.setState({ editSaveLoading: false });
-            NotificationManager.error("CRM Role not updated.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.crmrolenotupdated
+                : "CRM Role not updated."
+            );
           }
         }
       })
@@ -434,10 +458,13 @@ class StoreCRMRole extends Component {
   }
   //// CRM Bulk uploading
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -457,22 +484,39 @@ class StoreCRMRole extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
             self.handleGetCRMGridData();
           } else {
-            // self.setState({
-            //   showProgress: false,
-            //   isFileUploadFail: true,
-            //   progressValue: 0,
-            // });
-            NotificationManager.error("File not uploaded.");
+            self.setState({
+              bulkuploadLoading: false,
+              // isFileUploadFail: true,
+              // progressValue: 0,
+            });
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((data) => {
           debugger;
           if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true });
+            this.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              bulkuploadLoading: false,
+            });
           }
           console.log(data);
         });
@@ -980,12 +1024,17 @@ class StoreCRMRole extends Component {
   }
   /// Delete file on bulk uploading
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   handleGetStoreCrmModule() {
@@ -1029,8 +1078,9 @@ class StoreCRMRole extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1040,13 +1090,15 @@ class StoreCRMRole extends Component {
             }}
             className="header-path"
           >
-              {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-            
-            {TranslationContext!==undefined?TranslationContext.link.crmroles:"CRM Roles"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.crmroles
+              : "CRM Roles"}
           </Link>
         </div>
         <div className="container-fluid">
@@ -1071,7 +1123,9 @@ class StoreCRMRole extends Component {
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
                     <p>
-                    {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortatoz
+                        : "SORT BY A TO Z"}
                     </p>
                   </div>
                   <div className="d-flex">
@@ -1083,8 +1137,9 @@ class StoreCRMRole extends Component {
                       <img src={Sorting} alt="sorting-icon" />
                     </a>
                     <p>
-
-                    {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.p.sortztoa
+                        : "SORT BY Z TO A"}
                     </p>
                   </div>
                 </div>
@@ -1097,13 +1152,15 @@ class StoreCRMRole extends Component {
                   }}
                   onClick={this.handleClearSearch.bind(this)}
                 >
-                   {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                  
+                  {TranslationContext !== undefined
+                    ? TranslationContext.a.clearsearch
+                    : "clear search"}
                 </a>
                 <div className="filter-type">
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.a.filterbytype:"FILTER BY TYPE"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.a.filterbytype
+                      : "FILTER BY TYPE"}
                   </p>
                   <input
                     type="text"
@@ -1142,9 +1199,12 @@ class StoreCRMRole extends Component {
                               // checked={this.state.sroleNameFilterCheckbox.includes(
                               //   item.roleName
                               // )}
-                              checked={this.state.sroleNameFilterCheckbox
-                                .split(",")
-                                .find((word) => word === item.roleName)|| false}
+                              checked={
+                                this.state.sroleNameFilterCheckbox
+                                  .split(",")
+                                  .find((word) => word === item.roleName) ||
+                                false
+                              }
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "roleName",
@@ -1172,9 +1232,12 @@ class StoreCRMRole extends Component {
                               // checked={this.state.screatedByFilterCheckbox.includes(
                               //   item.createdBy
                               // )}
-                              checked={this.state.screatedByFilterCheckbox
-                                .split(",")
-                                .find((word) => word === item.createdBy)|| false}
+                              checked={
+                                this.state.screatedByFilterCheckbox
+                                  .split(",")
+                                  .find((word) => word === item.createdBy) ||
+                                false
+                              }
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "createdBy",
@@ -1202,9 +1265,12 @@ class StoreCRMRole extends Component {
                               // checked={this.state.sisRoleActiveFilterCheckbox.includes(
                               //   item.isRoleActive
                               // )}
-                              checked={this.state.sisRoleActiveFilterCheckbox
-                                .split(",")
-                                .find((word) => word === item.isRoleActive)|| false}
+                              checked={
+                                this.state.sisRoleActiveFilterCheckbox
+                                  .split(",")
+                                  .find((word) => word === item.isRoleActive) ||
+                                false
+                              }
                               onChange={this.setSortCheckStatus.bind(
                                 this,
                                 "isRoleActive",
@@ -1240,11 +1306,15 @@ class StoreCRMRole extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "roleName",
-                              TranslationContext!==undefined?TranslationContext.span.rolename:"Role Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.rolename
+                                : "Role Name"
                             )}
                           >
-                             {TranslationContext!==undefined?TranslationContext.span.rolename:"Role Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.rolename
+                              : "Role Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1305,11 +1375,15 @@ class StoreCRMRole extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created By"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.createdby
+                              : "Created By"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1334,24 +1408,33 @@ class StoreCRMRole extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                          {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createdby
+                                              : "Created By"}
+                                            : {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                        {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
-                                          {row.original.createdDate}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}
+                                          : {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                          {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:{" "}
-                                            {row.original.modifiedBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                            : {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                        {TranslationContext!==undefined?TranslationContext.p.updateddate:"Updated Date"}:{" "}
-                                          {row.original.modifiedDate}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updateddate
+                                            : "Updated Date"}
+                                          : {row.original.modifiedDate}
                                         </p>
                                       </div>
                                     </>
@@ -1381,11 +1464,15 @@ class StoreCRMRole extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isRoleActive",
-                              TranslationContext!==undefined?TranslationContext.span.status:"Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"
                             )}
                           >
-                             {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.status
+                              : "Status"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1400,9 +1487,13 @@ class StoreCRMRole extends Component {
                         accessor: "isRoleActive",
                       },
                       {
-                        Header: <span>
-                           {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
-                        </span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actiondept",
                         Cell: (row) => {
                           var ids = row.original["id"];
@@ -1417,18 +1508,24 @@ class StoreCRMRole extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file"}
+                                          ?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                          
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>
-                                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                          
-                                            
-                                            </a>
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
+                                          </a>
                                           <button
                                             className="butn"
                                             onClick={this.handleDeleteCrmRole.bind(
@@ -1436,8 +1533,9 @@ class StoreCRMRole extends Component {
                                               row.original.crmRoleID
                                             )}
                                           >
-                                             {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                          
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1462,9 +1560,9 @@ class StoreCRMRole extends Component {
                                     row.original
                                   )}
                                 >
-                                  
-                                  {TranslationContext!==undefined?TranslationContext.button.edit:"EDIT"}
-                                          
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.button.edit
+                                    : "EDIT"}
                                 </button>
                               </span>
                             </>
@@ -1521,16 +1619,24 @@ class StoreCRMRole extends Component {
                 <div className="store-col-2">
                   <div className="createSpace">
                     <label className="create-department">
-                    {TranslationContext!==undefined?TranslationContext.label.createcrmrole:"CREATE CRM ROLE"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createcrmrole
+                        : "CREATE CRM ROLE"}
                     </label>
                     <div className="div-padding-1">
                       <label className="designation-name">
-                      {TranslationContext!==undefined?TranslationContext.label.rolename:"Role Name"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.rolename
+                          : "Role Name"}
                       </label>
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder={TranslationContext!==undefined?TranslationContext.placeholder.enterrolename:"Enter Role Name"}
+                        placeholder={
+                          TranslationContext !== undefined
+                            ? TranslationContext.placeholder.enterrolename
+                            : "Enter Role Name"
+                        }
                         maxLength={25}
                         name="RoleName"
                         value={this.state.RoleName}
@@ -1579,7 +1685,9 @@ class StoreCRMRole extends Component {
 
                     <div className="dropDrownSpace">
                       <label className="reports-to">
-                      {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.status
+                          : "Status"}
                       </label>
                       <select
                         className="form-control dropdown-setting"
@@ -1587,7 +1695,9 @@ class StoreCRMRole extends Component {
                         onChange={this.handleRoleisActive}
                       >
                         <option value="0">
-                        {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.select
+                            : "select"}
                         </option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
@@ -1610,8 +1720,9 @@ class StoreCRMRole extends Component {
                           "add"
                         )}
                       >
-                           {TranslationContext!==undefined?TranslationContext.button.addrole:"ADD ROLE"}
-                      
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.addrole
+                          : "ADD ROLE"}
                       </button>
                     </div>
                   </div>
@@ -1622,12 +1733,15 @@ class StoreCRMRole extends Component {
                     <br />
                     <div className="d-flex justify-content-between align-items-center pb-2">
                       <h3 className="pb-0">
-                      {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h3.bulkupload
+                          : "Bulk Upload"}
                       </h3>
                       <div className="down-excel">
                         <p>
-
-                        {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"}
                         </p>
                         <CSVLink
                           filename={"CRM.csv"}
@@ -1641,120 +1755,158 @@ class StoreCRMRole extends Component {
                         </CSVLink>
                       </div>
                     </div>
-                    <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload.bind(this)}>
-                        {({ getRootProps, getInputProps }) => (
-                          <div {...getRootProps()}>
-                            <input
-                              {...getInputProps()}
-                              className="file-upload d-none"
-                            />
-                            <div className="file-icon">
-                              <img src={FileUpload} alt="file-upload" />
+                    <Spin
+                      tip="Please wait..."
+                      spinning={this.state.bulkuploadLoading}
+                    >
+                      <div className="mainfileUpload">
+                        <Dropzone onDrop={this.fileUpload.bind(this)}>
+                          {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                              <input
+                                {...getInputProps()}
+                                className="file-upload d-none"
+                              />
+                              <div className="file-icon">
+                                <img src={FileUpload} alt="file-upload" />
+                              </div>
+                              <span className={"fileupload-span"}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.addfile
+                                  : "Add File"}
+                              </span>{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.or
+                                : "or"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.dropfilehere
+                                : "Drop File here"}
                             </div>
-                            <span className={"fileupload-span"}>
-                              {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}
-                          </span> {TranslationContext!==undefined?TranslationContext.div.or:"or"}
-                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
-                          </div>
-                        )}
-                      </Dropzone>
-                    </div>
-                    {this.state.fileN.length === 0 && (
-                      <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.bulkuploadCompulsion}
-                      </p>
-                    )}
-                    {this.state.fileName && (
-                      <div className="file-info">
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <div className="del-file" id="del-file-1">
-                              <img src={DelBlack} alt="delete-black" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="auto"
-                              target="del-file-1"
-                              className="general-popover delete-popover"
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={DelBigIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                  {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>  {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}</a>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleDeleteBulkupload}
-                                    >
-                                        {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                    </button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                          </div>
-                          <div>
-                            <span className="file-size">
-                              {this.state.fileSize}
-                            </span>
-                          </div>
-                        </div>
-                        {this.state.fileN.length > 0 &&
-                        this.state.isFileUploadFail ? (
+                          )}
+                        </Dropzone>
+                      </div>
+                      {this.state.fileN.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.bulkuploadCompulsion}
+                        </p>
+                      )}
+                      {this.state.fileName && (
+                        <div className="file-info">
                           <div className="file-cntr">
                             <div className="file-dtls">
                               <p className="file-name">{this.state.fileName}</p>
-                              <a
-                                className="file-retry"
-                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              <div className="del-file" id="del-file-1">
+                                <img src={DelBlack} alt="delete-black" />
+                              </div>
+                              <UncontrolledPopover
+                                trigger="legacy"
+                                placement="auto"
+                                target="del-file-1"
+                                className="general-popover delete-popover"
                               >
-                                   {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
-                              </a>
+                                <PopoverBody className="d-flex">
+                                  <div className="del-big-icon">
+                                    <img src={DelBigIcon} alt="del-icon" />
+                                  </div>
+                                  <div>
+                                    <p className="font-weight-bold blak-clr">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deletefile
+                                        : "Delete file"}
+                                      ?
+                                    </p>
+                                    <p className="mt-1 fs-12">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureyouwanttodeletethisfile
+                                        : "Are you sure you want to delete this file"}
+                                      ?
+                                    </p>
+                                    <div className="del-can">
+                                      <a href={Demo.BLANK_LINK}>
+                                        {" "}
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.cancel
+                                          : "CANCEL"}
+                                      </a>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleDeleteBulkupload}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.delete
+                                          : "Delete"}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </PopoverBody>
+                              </UncontrolledPopover>
                             </div>
                             <div>
-                              <span className="file-failed">{TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}</span>
+                              <span className="file-size">
+                                {this.state.fileSize}
+                              </span>
                             </div>
                           </div>
-                        ) : null}
-                        {this.state.showProgress ? (
-                          <div className="file-cntr">
-                            <div className="file-dtls">
-                              <p className="file-name pr-0">
-                                {this.state.fileName}
-                              </p>
+                          {this.state.fileN.length > 0 &&
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.retry
+                                    : "Retry"}
+                                </a>
+                              </div>
+                              <div>
+                                <span className="file-failed">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.failed
+                                    : "Failed"}
+                                </span>
+                              </div>
                             </div>
-                            <div>
-                              <div className="d-flex align-items-center mt-2">
-                                <ProgressBar
-                                  className="file-progress"
-                                  now={this.state.progressValue}
-                                />
-                                <div className="cancel-upload">
-                                  <img src={UploadCancel} alt="upload cancel" />
+                          ) : null}
+                          {this.state.showProgress ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name pr-0">
+                                  {this.state.fileName}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="d-flex align-items-center mt-2">
+                                  <ProgressBar
+                                    className="file-progress"
+                                    now={this.state.progressValue}
+                                  />
+                                  <div className="cancel-upload">
+                                    <img
+                                      src={UploadCancel}
+                                      alt="upload cancel"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
-                    <button
-                      className="butn"
-                      onClick={this.hanldeAddBulkUpload.bind(this)}
-                    >
-                       {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                    </button>
+                          ) : null}
+                        </div>
+                      )}
+                      <button
+                        className="butn"
+                        onClick={this.hanldeAddBulkUpload.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
+                      </button>
+                    </Spin>
                     <br />
                   </div>
                 </div>
@@ -1767,17 +1919,25 @@ class StoreCRMRole extends Component {
                 <div className="edtpadding">
                   <div className="">
                     <label className="popover-header-text">
-                    {TranslationContext!==undefined?TranslationContext.label.editcrmrole:"EDIT CRM ROLE"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.editcrmrole
+                        : "EDIT CRM ROLE"}
                     </label>
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.rolename:"Role Name"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.rolename
+                        : "Role Name"}
                     </label>
                     <input
                       type="text"
                       className="txt-edit-popover"
-                      placeholder= {TranslationContext!==undefined?TranslationContext.label.enterrolename:"Enter Role Name"}
+                      placeholder={
+                        TranslationContext !== undefined
+                          ? TranslationContext.label.enterrolename
+                          : "Enter Role Name"
+                      }
                       maxLength={25}
                       name="editRoleName"
                       value={this.state.editRoleName}
@@ -1819,7 +1979,9 @@ class StoreCRMRole extends Component {
                     ))}
                   <div className="pop-over-div">
                     <label className="edit-label-1">
-                    {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.status
+                        : "Status"}
                     </label>
                     <select
                       id="inputStatus"
@@ -1829,10 +1991,14 @@ class StoreCRMRole extends Component {
                       onChange={this.handleModaleDataChange.bind(this)}
                     >
                       <option value="Active">
-                      {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.active
+                          : "Active"}
                       </option>
                       <option value="Inactive">
-                      {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.option.inactive
+                          : "Inactive"}
                       </option>
                     </select>
                   </div>
@@ -1842,8 +2008,9 @@ class StoreCRMRole extends Component {
                       className="pop-over-cancle"
                       onClick={this.toggleEditModal}
                     >
-                       {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                      
+                      {TranslationContext !== undefined
+                        ? TranslationContext.a.cancel
+                        : "CANCEL"}
                     </a>
                     <button
                       className="pop-over-button FlNone"
@@ -1864,8 +2031,10 @@ class StoreCRMRole extends Component {
                         ) : (
                           ""
                         )}
-                        
-                        {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.save
+                          : "SAVE"}
                       </label>
                     </button>
                   </div>

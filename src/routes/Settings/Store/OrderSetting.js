@@ -60,6 +60,7 @@ class OrderSetting extends Component {
   }
 
   handleUpdateModConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     axios({
       method: "post",
@@ -75,7 +76,7 @@ class OrderSetting extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Module Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.moduleupdatedsuccessfully:"Module Updated Successfully.");
         }
       })
       .catch((data) => {
@@ -126,6 +127,7 @@ class OrderSetting extends Component {
   }
 
   handleUpdateOrderConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     axios({
       method: "post",
@@ -170,9 +172,9 @@ class OrderSetting extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Order Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.orderupdatedsuccessfully:"Order Updated Successfully.");
         } else {
-          NotificationManager.error("Order Not Updated.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.ordernotupdated:"Order Not Updated.");
         }
       })
       .catch((data) => {
@@ -550,7 +552,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Store as Delivery Partner
+                                        
+                                        {TranslationContext!==undefined?TranslationContext.label.storeasdeliverypartner:"Store as Delivery Partner"}
                                       </label>
                                       <input
                                         type="checkbox"
@@ -573,7 +576,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Alert Communication via Whatsapp
+                                      {TranslationContext!==undefined?TranslationContext.label.alertcommunicationviawhatsapp:"Alert Communication via Whatsapp"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -596,7 +600,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Alert Communication via SMS
+                                        
+                                        {TranslationContext!==undefined?TranslationContext.label.alertcommunicationviasms:"Alert Communication via SMS"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -648,7 +654,7 @@ class OrderSetting extends Component {
                                           ? TranslationContext.td
                                               .clickwillbeenabledafter
                                           : "Click will be enabled after"}
-                                        <span>(Payment send link button)</span>
+                                        <span>({TranslationContext!==undefined?TranslationContext.span.paymentsendlinkbutton:"Payment send link button"})</span>
                                       </td>
                                       <td>
                                         <input
@@ -721,7 +727,7 @@ class OrderSetting extends Component {
                     </div>
                   </div>
                 </Tab>
-                <Tab label="SMS &amp; WhatsApp">
+                <Tab label={TranslationContext!==undefined?TranslationContext.label.smsandwhatsapp:"SMS & WhatsApp"}>
                   <div className="store-mdl backNone">
                     <div className="row">
                       <div className="col-md-12">
@@ -729,12 +735,13 @@ class OrderSetting extends Component {
                           <div className="row">
                             <div className="col-md-5">
                               <div className="right-sect-div">
-                                <h3>SMS &amp; WhatsApp</h3>
+                                <h3>{TranslationContext!==undefined?TranslationContext.h3.smsandwhatsapp:"SMS & WhatsApp"}</h3>
                                 <div className="module-switch-cntr">
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Shopping bag Converted to Order
+                                      {TranslationContext!==undefined?TranslationContext.label.shoppingbagconvertedtoorder:"Shopping bag Converted to Order"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -776,7 +783,9 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Awb Assigned
+                                      {TranslationContext!==undefined?TranslationContext.label.awbassigned:"Awb Assigned"}
+                                       
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -834,7 +843,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Pickup Scheduled/Generated
+                                      {TranslationContext!==undefined?TranslationContext.label.pickupscheduledgenerated:"Pickup Scheduled/Generated"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -876,7 +886,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Shipped
+                                      {TranslationContext!==undefined?TranslationContext.label.shipped:"Shipped"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -916,7 +927,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Delivered
+                                      {TranslationContext!==undefined?TranslationContext.label.delivered:"Delivered"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -956,7 +968,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Cancelled
+                                      {TranslationContext!==undefined?TranslationContext.label.cancelled:"Cancelled"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"
@@ -996,7 +1009,8 @@ class OrderSetting extends Component {
                                   <div className="module-switch ord-m-t20">
                                     <div className="switch switch-primary">
                                       <label className="storeRole-name-text m-0 ordSttd-store">
-                                        Undelivered
+                                      {TranslationContext!==undefined?TranslationContext.label.undelivered:"Undelivered"}
+                                        
                                       </label>
                                       <input
                                         type="checkbox"

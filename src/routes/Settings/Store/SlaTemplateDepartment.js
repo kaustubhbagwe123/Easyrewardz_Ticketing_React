@@ -13,7 +13,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
 import ReactTable from "react-table";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
@@ -27,8 +27,8 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import matchSorter from "match-sorter";
 import { formatSizeUnits } from "./../../../helpers/CommanFuncation";
 import Dropzone from "react-dropzone";
-import * as translationHI from './../../../translations/hindi'
-import * as translationMA from './../../../translations/marathi'
+import * as translationHI from "./../../../translations/hindi";
+import * as translationMA from "./../../../translations/marathi";
 
 class SlaTemplateDepartment extends Component {
   constructor(props) {
@@ -89,7 +89,8 @@ class SlaTemplateDepartment extends Component {
       sisSLAActiveFilterCheckbox: "",
       regexp: /^[0-9\b]+$/,
       isATOZ: true,
-      translateLanguage: {}
+      translateLanguage: {},
+      bulkuploadLoading: false,
     };
     this.handleGetSLATemplateGrid = this.handleGetSLATemplateGrid.bind(this);
     this.handleGetSLAFunctionName = this.handleGetSLAFunctionName.bind(this);
@@ -105,16 +106,13 @@ class SlaTemplateDepartment extends Component {
     this.handleGetSLAFunctionName();
     this.handleGetPriorityList();
 
-    if(window.localStorage.getItem("translateLanguage") === "hindi"){
-      this.state.translateLanguage = translationHI
-     }
-     else if(window.localStorage.getItem("translateLanguage") === 'marathi'){
-       this.state.translateLanguage = translationMA
-     }
-     else{
-       this.state.translateLanguage = {}
-     }
-
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   sortStatusAtoZ() {
@@ -898,6 +896,7 @@ class SlaTemplateDepartment extends Component {
       });
   }
   handleCreateSlaTemplate() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     var array = this.state.finalData;
     var valid = false;
@@ -951,7 +950,11 @@ class SlaTemplateDepartment extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("SLA added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.slaaddeddsuccessfully
+                : "SLA added successfully."
+            );
             self.setState({
               SlaIsActive: "true",
               SearchText: "",
@@ -963,7 +966,11 @@ class SlaTemplateDepartment extends Component {
             self.selectNoSLA();
             self.selectNoAboveSLA();
           } else {
-            NotificationManager.error(status);
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.recordalreadyexists
+                : status
+            );
           }
         })
         .catch((data) => {
@@ -978,6 +985,7 @@ class SlaTemplateDepartment extends Component {
   }
 
   handleDeleteSLA(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     axios({
@@ -992,10 +1000,18 @@ class SlaTemplateDepartment extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Record deleted Successfully") {
-          NotificationManager.success("SLA deleted successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.sladeletedsuccessfully
+              : "SLA deleted successfully."
+          );
           self.handleGetSLATemplateGrid();
         } else {
-          NotificationManager.error("SLA not deleted.");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slanotdeleted
+              : "SLA not deleted."
+          );
         }
       })
       .catch((data) => {
@@ -1069,6 +1085,7 @@ class SlaTemplateDepartment extends Component {
   }
   ////handle update slaTemplateGrid details by id
   handleUpdareSLADetails() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     var inputParamter = {};
@@ -1109,16 +1126,28 @@ class SlaTemplateDepartment extends Component {
         var statusCode = res.data.statusCode;
         if (message === "Success" && statusCode === 200) {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.success("SLA Updated Successfully");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slaupdatesuccessfully
+              : "SLA Updated Successfully."
+          );
           self.handleGetSLATemplateGrid();
         } else {
           self.setState({ editSaveLoading: false, editmodel: false });
-          NotificationManager.error("SLA Not Updated");
+          NotificationManager.error(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.slanotupdated
+              : "SLA Not Updated"
+          );
         }
       })
       .catch((response) => {
         self.setState({ editSaveLoading: false, editmodel: false });
-        NotificationManager.error("SLA Not Updated");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.slanotupdated
+            : "SLA Not Updated"
+        );
         console.log(response);
       });
   }
@@ -1172,10 +1201,13 @@ class SlaTemplateDepartment extends Component {
   }
 
   hanldeAddBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.fileN) {
       let self = this;
-
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
 
       formData.append("file", this.state.fileN);
@@ -1195,22 +1227,40 @@ class SlaTemplateDepartment extends Component {
           let status = res.data.message;
           // let data = res.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.fileuploadedsuccessfully
+                : "File uploaded successfully."
+            );
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
             self.handleGetSLATemplateGrid();
           } else {
             self.setState({
               // showProgress: false,
               // isFileUploadFail: true,
               progressValue: 0,
+              bulkuploadLoading: false,
             });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.filenotuploaded
+                : "File not uploaded."
+            );
           }
         })
         .catch((data) => {
           debugger;
           if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true });
+            this.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              bulkuploadLoading: false,
+            });
           }
           console.log(data);
         });
@@ -1225,12 +1275,17 @@ class SlaTemplateDepartment extends Component {
     this.setState({ progressValue: value });
   }
   handleDeleteBulkupload = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     this.setState({
       fileN: [],
       fileName: "",
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(
+      TranslationContext !== undefined
+        ? TranslationContext.alertmessage.filedeletedsuccessfully
+        : "File deleted successfully."
+    );
   };
 
   handleClearSearch() {
@@ -1252,8 +1307,9 @@ class SlaTemplateDepartment extends Component {
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="/store/settings" className="header-path">
-          {TranslationContext!==undefined?TranslationContext.link.setting:"Settings"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.setting
+              : "Settings"}
           </Link>
           <span>&gt;</span>
           <Link
@@ -1263,12 +1319,15 @@ class SlaTemplateDepartment extends Component {
             }}
             className="header-path"
           >
-            {TranslationContext!==undefined?TranslationContext.link.store:"Store"}
+            {TranslationContext !== undefined
+              ? TranslationContext.link.store
+              : "Store"}
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-          {TranslationContext!==undefined?TranslationContext.link.slatemplatedepartment:"SLA Template-Department"}
-            
+            {TranslationContext !== undefined
+              ? TranslationContext.link.slatemplatedepartment
+              : "SLA Template-Department"}
           </Link>
         </div>
         <div className="position-relative d-inline-block">
@@ -1292,8 +1351,9 @@ class SlaTemplateDepartment extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortatoz:"SORT BY A TO Z"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortatoz
+                      : "SORT BY A TO Z"}
                   </p>
                 </div>
                 <div className="d-flex">
@@ -1305,8 +1365,9 @@ class SlaTemplateDepartment extends Component {
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>
-
-                  {TranslationContext!==undefined?TranslationContext.p.sortztoa:"SORT BY Z TO A"}
+                    {TranslationContext !== undefined
+                      ? TranslationContext.p.sortztoa
+                      : "SORT BY Z TO A"}
                   </p>
                 </div>
               </div>
@@ -1319,12 +1380,15 @@ class SlaTemplateDepartment extends Component {
                 }}
                 onClick={this.handleClearSearch.bind(this)}
               >
-                {TranslationContext!==undefined?TranslationContext.a.clearsearch:"clear search"}
-                
+                {TranslationContext !== undefined
+                  ? TranslationContext.a.clearsearch
+                  : "clear search"}
               </a>
               <div className="filter-type">
                 <p>
-                {TranslationContext!==undefined?TranslationContext.p.filterbytype:"FILTER BY TYPE"}
+                  {TranslationContext !== undefined
+                    ? TranslationContext.p.filterbytype
+                    : "FILTER BY TYPE"}
                 </p>
                 <input
                   type="text"
@@ -1466,11 +1530,15 @@ class SlaTemplateDepartment extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "functionName",
-                              TranslationContext!==undefined?TranslationContext.span.functionname:"Function Name"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.functionname
+                                : "Function Name"
                             )}
                           >
-                             {TranslationContext!==undefined?TranslationContext.span.functionname:"Function Name"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.functionname
+                              : "Function Name"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1485,9 +1553,13 @@ class SlaTemplateDepartment extends Component {
                         accessor: "functionName",
                       },
                       {
-                        Header: <span>
-                          {TranslationContext!==undefined?TranslationContext.span.prioritytype:"Priority Type"}
-                        </span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.prioritytype
+                              : "Priority Type"}
+                          </span>
+                        ),
                         sortable: false,
                         accessor: "slaTarget",
                         Cell: (row) => {
@@ -1512,22 +1584,26 @@ class SlaTemplateDepartment extends Component {
                                       <div className="general-popover created-popover">
                                         <div>
                                           <label className="slatargettext-1">
-                                           
-                                            {TranslationContext!==undefined?TranslationContext.label.slatargets:"SLA TARGETS"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .slatargets
+                                              : "SLA TARGETS"}
                                           </label>
                                         </div>
                                         <div>
                                           <label className="createhead-text-1">
-                                            
-                                            {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label
+                                                  .priority
+                                              : "Priority"}
                                           </label>
                                           <label className="createhead-text-1">
                                             %SLA
-                                           
                                           </label>
                                           <label className="createhead-text-1">
-                                            
-                                            {TranslationContext!==undefined?TranslationContext.label.resolve:"Resolve"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.label.resolve
+                                              : "Resolve"}
                                           </label>
                                         </div>
                                         {slaTarget !== null &&
@@ -1576,11 +1652,15 @@ class SlaTemplateDepartment extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "createdBy",
-                              TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.createdby
+                                : "Created By"
                             )}
                           >
-                            {TranslationContext!==undefined?TranslationContext.span.createdby:"Created By"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.createdby
+                              : "Created By"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1605,24 +1685,33 @@ class SlaTemplateDepartment extends Component {
                                       <div>
                                         <b>
                                           <p className="title">
-                                            {TranslationContext!==undefined?TranslationContext.p.createdby:"Created By"}: {row.original.createdBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.createdby
+                                              : "Created By"}
+                                            : {row.original.createdBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                           {TranslationContext!==undefined?TranslationContext.p.createddate:"Created Date"}:{" "}
-                                          {row.original.createdDate}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.createddate
+                                            : "Created Date"}
+                                          : {row.original.createdDate}
                                         </p>
                                       </div>
                                       <div>
                                         <b>
                                           <p className="title">
-                                           {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated By"}:{" "}
-                                            {row.original.modifiedBy}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.p.updatedby
+                                              : "Updated By"}
+                                            : {row.original.modifiedBy}
                                           </p>
                                         </b>
                                         <p className="sub-title">
-                                           {TranslationContext!==undefined?TranslationContext.p.updatedby:"Updated Date"}:{" "}
-                                          {row.original.modifiedDate}
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.updatedby
+                                            : "Updated Date"}
+                                          : {row.original.modifiedDate}
                                         </p>
                                       </div>
                                     </>
@@ -1653,11 +1742,15 @@ class SlaTemplateDepartment extends Component {
                             onClick={this.StatusOpenModel.bind(
                               this,
                               "isSLAActive",
-                              TranslationContext!==undefined?TranslationContext.span.status:"Status"
+                              TranslationContext !== undefined
+                                ? TranslationContext.span.status
+                                : "Status"
                             )}
                           >
-                             {TranslationContext!==undefined?TranslationContext.span.status:"Status"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.status
+                              : "Status"}
+
                             <FontAwesomeIcon
                               icon={
                                 this.state.isATOZ == false &&
@@ -1671,9 +1764,13 @@ class SlaTemplateDepartment extends Component {
                         accessor: "isSLAActive",
                       },
                       {
-                        Header: <span>
-                          {TranslationContext!==undefined?TranslationContext.span.actions:"Actions"}
-                        </span>,
+                        Header: (
+                          <span>
+                            {TranslationContext !== undefined
+                              ? TranslationContext.span.actions
+                              : "Actions"}
+                          </span>
+                        ),
                         accessor: "actiondept",
                         Cell: (row) => {
                           return (
@@ -1687,15 +1784,23 @@ class SlaTemplateDepartment extends Component {
                                       </div>
                                       <div>
                                         <p className="font-weight-bold blak-clr">
-                                        {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p.deletefile
+                                            : "Delete file"}
+                                          ?
                                         </p>
                                         <p className="mt-1 fs-12">
-                                        {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
+                                          {TranslationContext !== undefined
+                                            ? TranslationContext.p
+                                                .areyousureyouwanttodeletethisfile
+                                            : "Are you sure you want to delete this file"}
+                                          ?
                                         </p>
                                         <div className="del-can">
                                           <a href={Demo.BLANK_LINK}>
-                                          {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.a.cancel
+                                              : "CANCEL"}
                                           </a>
                                           <button
                                             className="butn"
@@ -1704,7 +1809,9 @@ class SlaTemplateDepartment extends Component {
                                               row.original.slaid
                                             )}
                                           >
-                                              {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
+                                            {TranslationContext !== undefined
+                                              ? TranslationContext.button.delete
+                                              : "Delete"}
                                           </button>
                                         </div>
                                       </div>
@@ -1729,7 +1836,9 @@ class SlaTemplateDepartment extends Component {
                                   )}
                                 >
                                   <label className="Table-action-edit-button-text">
-                                  {TranslationContext!==undefined?TranslationContext.label.edit:"EDIT"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.label.edit
+                                      : "EDIT"}
                                   </label>
                                 </button>
                               </span>
@@ -1749,12 +1858,16 @@ class SlaTemplateDepartment extends Component {
                 <div className="store-col-2">
                   <div className="createSpace">
                     <label className="Create-store-text">
-                    {TranslationContext!==undefined?TranslationContext.label.createsla:"CREATE SLA"}
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.createsla
+                        : "CREATE SLA"}
                     </label>
                     <div className="divSpace">
                       <div className="dropDrownSpace issuetype-cusdrp">
                         <label className="reports-to">
-                        {TranslationContext!==undefined?TranslationContext.label.functiontype:"Function Type"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.functiontype
+                            : "Function Type"}
                         </label>
                         <div className="dropdown">
                           <button
@@ -1763,8 +1876,10 @@ class SlaTemplateDepartment extends Component {
                             id="issueTypeValue"
                             onClick={this.handleSlaButton}
                           >
-                            {TranslationContext!==undefined?TranslationContext.option.select:"Select"}
-                            
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.select
+                              : "Select"}
+
                             <span className="caret"></span>
                           </button>
                           {this.state.indiSla === "" && (
@@ -1784,7 +1899,11 @@ class SlaTemplateDepartment extends Component {
                                 <input
                                   type="text"
                                   className="searchf"
-                                  placeholder={TranslationContext!==undefined?TranslationContext.placeholder.search:"Search"}
+                                  placeholder={
+                                    TranslationContext !== undefined
+                                      ? TranslationContext.placeholder.search
+                                      : "Search"
+                                  }
                                   maxLength={25}
                                   name="store_code"
                                   onChange={this.handleSearchSla}
@@ -1804,16 +1923,18 @@ class SlaTemplateDepartment extends Component {
                                     <label
                                       onClick={this.selectAllSLA.bind(this)}
                                     >
-                                      
-                                      {TranslationContext!==undefined?TranslationContext.label.selectall:"Select All"}
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.selectall
+                                        : "Select All"}
                                     </label>
                                   </li>
                                   <li>
                                     <label
                                       onClick={this.selectNoSLA.bind(this)}
                                     >
-                                      {TranslationContext!==undefined?TranslationContext.label.clear:"Clear"}
-                                      
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.label.clear
+                                        : "Clear"}
                                     </label>
                                   </li>
                                 </ul>
@@ -1862,8 +1983,9 @@ class SlaTemplateDepartment extends Component {
                                     className="cancel"
                                     onClick={this.handleSlaButton}
                                   >
-                                     {TranslationContext!==undefined?TranslationContext.button.cancel:"Cancel"}
-                                    
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.cancel
+                                      : "Cancel"}
                                   </button>
                                 </li>
                                 <li style={{ float: "right" }}>
@@ -1871,8 +1993,9 @@ class SlaTemplateDepartment extends Component {
                                     className="done"
                                     onClick={this.handleSlaButton}
                                   >
-                                    
-                                    {TranslationContext!==undefined?TranslationContext.button.done:"Done"}
+                                    {TranslationContext !== undefined
+                                      ? TranslationContext.button.done
+                                      : "Done"}
                                   </button>
                                 </li>
                               </ul>
@@ -1884,13 +2007,20 @@ class SlaTemplateDepartment extends Component {
 
                     <div className="slatargetRow-3 ma">
                       <label className="createhead-text-new-1">
-                      {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.priority
+                          : "Priority"}
                       </label>
-                      <label className="createhead-text-5"> 
-                      %{TranslationContext!==undefined?TranslationContext.label.sla:"SLA"}
+                      <label className="createhead-text-5">
+                        %
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.sla
+                          : "SLA"}
                       </label>
                       <label className="createhead-text-6">
-                      {TranslationContext!==undefined?TranslationContext.label.resolve:"Resolve"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.label.resolve
+                          : "Resolve"}
                       </label>
                     </div>
                     {this.state.finalData !== null &&
@@ -1945,9 +2075,9 @@ class SlaTemplateDepartment extends Component {
                                   value={item.ResolveType}
                                   onChange={this.handleSlaTargets.bind(this, i)}
                                 >
-                                  <option value="M">M</option>
-                                  <option value="H">H</option>
-                                  <option value="D">D</option>
+                                  <option value="M">{TranslationContext!==undefined?TranslationContext.option.m:"M"}</option>
+                                  <option value="H">{TranslationContext!==undefined?TranslationContext.option.h:"H"}</option>
+                                  <option value="D">{TranslationContext!==undefined?TranslationContext.option.d:"D"}</option>
                                 </select>
                               </div>
                             </div>
@@ -1963,7 +2093,9 @@ class SlaTemplateDepartment extends Component {
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
                         <label className="reports-to">
-                        {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.label.status
+                            : "Status"}
                         </label>
                         <select
                           className="store-create-select"
@@ -1971,10 +2103,14 @@ class SlaTemplateDepartment extends Component {
                           onChange={this.handleSlaIsActive}
                         >
                           <option value="true">
-                          {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.active
+                              : "Active"}
                           </option>
                           <option value="false">
-                          {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.option.inactive
+                              : "Inactive"}
                           </option>
                         </select>
                       </div>
@@ -1985,8 +2121,9 @@ class SlaTemplateDepartment extends Component {
                         type="button"
                         onClick={this.handleCreateSlaTemplate.bind(this)}
                       >
-                        {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                        
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
                       </button>
                     </div>
                   </div>
@@ -1996,13 +2133,16 @@ class SlaTemplateDepartment extends Component {
                   <div className="right-sect-div">
                     <div className="d-flex justify-content-between align-items-center pb-2">
                       <h3 className="pb-0">
-                      {TranslationContext!==undefined?TranslationContext.h3.bulkupload:"Bulk Upload"}
+                        {TranslationContext !== undefined
+                          ? TranslationContext.h3.bulkupload
+                          : "Bulk Upload"}
                       </h3>
                       <div className="down-excel">
                         <p>
-                        {TranslationContext!==undefined?TranslationContext.p.template:"Template"}
-                          
-                          </p>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.p.template
+                            : "Template"}
+                        </p>
                         <CSVLink
                           filename={"SLA.csv"}
                           data={config.storeSlaTemplate}
@@ -2011,139 +2151,158 @@ class SlaTemplateDepartment extends Component {
                         </CSVLink>
                       </div>
                     </div>
-                    {/* <input
-                      id="file-upload"
-                      className="file-upload d-none"
-                      type="file"
-                      // value={this.state.fileN.length>0?this.state.fileN[0]:null}
-                      onChange={this.fileUpload.bind(this)}
-                    />
-                    <label htmlFor="file-upload">
-                      <div className="file-icon">
-                        <img src={FileUpload} alt="file-upload" />
+
+                    <Spin
+                      tip="Please wait..."
+                      spinning={this.state.bulkuploadLoading}
+                    >
+                      <div className="mainfileUpload">
+                        <Dropzone onDrop={this.fileUpload}>
+                          {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                              <input
+                                {...getInputProps()}
+                                className="file-upload d-none"
+                              />
+                              <div className="file-icon">
+                                <img src={FileUpload} alt="file-upload" />
+                              </div>
+                              <span className={"fileupload-span"}>
+                                {TranslationContext !== undefined
+                                  ? TranslationContext.span.addfile
+                                  : "Add File"}
+                              </span>{" "}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.or
+                                : "or"}
+                              {TranslationContext !== undefined
+                                ? TranslationContext.div.dropfilehere
+                                : "Drop File here"}
+                            </div>
+                          )}
+                        </Dropzone>
                       </div>
-                      <span>Add File</span> or Drop File here
-                    </label> */}
-                    <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload}>
-                        {({ getRootProps, getInputProps }) => (
-                          <div {...getRootProps()}>
-                            <input
-                              {...getInputProps()}
-                              className="file-upload d-none"
-                            />
-                            <div className="file-icon">
-                              <img src={FileUpload} alt="file-upload" />
-                            </div>
-                            <span className={"fileupload-span"}>
-                            {TranslationContext!==undefined?TranslationContext.span.addfile:"Add File"}</span>{" "}
-                            {TranslationContext!==undefined?TranslationContext.div.or:"or"}
-                          {TranslationContext!==undefined?TranslationContext.div.dropfilehere:"Drop File here"}
-                          </div>
-                        )}
-                      </Dropzone>
-                    </div>
-                    {this.state.fileN.length === 0 && (
-                      <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.bulkuploadCompulsion}
-                      </p>
-                    )}
-                    {this.state.fileName && (
-                      <div className="file-info">
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <div className="del-file" id="del-file-1">
-                              <img src={DelBlack} alt="delete-black" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="auto"
-                              target="del-file-1"
-                              className="general-popover delete-popover"
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={DelBigIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                  {TranslationContext!==undefined?TranslationContext.p.deletefile:"Delete file"}?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                  {TranslationContext!==undefined?TranslationContext.p.areyousureyouwanttodeletethisfile:"Are you sure you want to delete this file"}?
-                                  
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>
-                                    {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
-                                      
-                                      </a>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleDeleteBulkupload}
-                                    >
-                                      {TranslationContext!==undefined?TranslationContext.button.delete:"Delete"}
-                                    
-                                    </button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                          </div>
-                          <div>
-                            <span className="file-size">
-                              {this.state.fileSize}
-                            </span>
-                          </div>
-                        </div>
-                        {this.state.fileN.length > 0 &&
-                        this.state.isFileUploadFail ? (
+                      {this.state.fileN.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.bulkuploadCompulsion}
+                        </p>
+                      )}
+                      {this.state.fileName && (
+                        <div className="file-info">
                           <div className="file-cntr">
                             <div className="file-dtls">
                               <p className="file-name">{this.state.fileName}</p>
-                              <a
-                                className="file-retry"
-                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              <div className="del-file" id="del-file-1">
+                                <img src={DelBlack} alt="delete-black" />
+                              </div>
+                              <UncontrolledPopover
+                                trigger="legacy"
+                                placement="auto"
+                                target="del-file-1"
+                                className="general-popover delete-popover"
                               >
-                                {TranslationContext!==undefined?TranslationContext.span.retry:"Retry"}
-                              </a>
+                                <PopoverBody className="d-flex">
+                                  <div className="del-big-icon">
+                                    <img src={DelBigIcon} alt="del-icon" />
+                                  </div>
+                                  <div>
+                                    <p className="font-weight-bold blak-clr">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p.deletefile
+                                        : "Delete file"}
+                                      ?
+                                    </p>
+                                    <p className="mt-1 fs-12">
+                                      {TranslationContext !== undefined
+                                        ? TranslationContext.p
+                                            .areyousureyouwanttodeletethisfile
+                                        : "Are you sure you want to delete this file"}
+                                      ?
+                                    </p>
+                                    <div className="del-can">
+                                      <a href={Demo.BLANK_LINK}>
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.a.cancel
+                                          : "CANCEL"}
+                                      </a>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleDeleteBulkupload}
+                                      >
+                                        {TranslationContext !== undefined
+                                          ? TranslationContext.button.delete
+                                          : "Delete"}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </PopoverBody>
+                              </UncontrolledPopover>
                             </div>
                             <div>
-                              <span className="file-failed">
-                              {TranslationContext!==undefined?TranslationContext.span.failed:"Failed"}
-                                </span>
+                              <span className="file-size">
+                                {this.state.fileSize}
+                              </span>
                             </div>
                           </div>
-                        ) : null}
-                        {this.state.showProgress ? (
-                          <div className="file-cntr">
-                            <div className="file-dtls">
-                              <p className="file-name pr-0">
-                                {this.state.fileName}
-                              </p>
+                          {this.state.fileN.length > 0 &&
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.retry
+                                    : "Retry"}
+                                </a>
+                              </div>
+                              <div>
+                                <span className="file-failed">
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.span.failed
+                                    : "Failed"}
+                                </span>
+                              </div>
                             </div>
-                            <div>
-                              <div className="d-flex align-items-center mt-2">
-                                <ProgressBar
-                                  className="file-progress"
-                                  now={this.state.progressValue}
-                                />
-                                <div className="cancel-upload">
-                                  <img src={UploadCancel} alt="upload cancel" />
+                          ) : null}
+                          {this.state.showProgress ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name pr-0">
+                                  {this.state.fileName}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="d-flex align-items-center mt-2">
+                                  <ProgressBar
+                                    className="file-progress"
+                                    now={this.state.progressValue}
+                                  />
+                                  <div className="cancel-upload">
+                                    <img
+                                      src={UploadCancel}
+                                      alt="upload cancel"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
-                    <button
-                      className="butn"
-                      onClick={this.hanldeAddBulkUpload.bind(this)}
-                    >
-                          {TranslationContext!==undefined?TranslationContext.button.add:"ADD"}
-                    </button>
+                          ) : null}
+                        </div>
+                      )}
+                      <button
+                        className="butn"
+                        onClick={this.hanldeAddBulkUpload.bind(this)}
+                      >
+                        {TranslationContext !== undefined
+                          ? TranslationContext.button.add
+                          : "ADD"}
+                      </button>
+                    </Spin>
                     <br />
                   </div>
                 </div>
@@ -2165,17 +2324,20 @@ class SlaTemplateDepartment extends Component {
         >
           <div className="edtpadding">
             <label className="Create-store-text" style={{ paddingTop: "0" }}>
-              EDIT SLA
+            {TranslationContext!==undefined?TranslationContext.label.editsla:"EDIT SLA"}
+              
             </label>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Brand Name: </label>
+                <label className="createhead-text-new">
+                {TranslationContext!==undefined?TranslationContext.label.brandname:"Brand Name"}: </label>
                 <label className="createhead-text-1">
                   {this.state.brandName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Store Name: </label>
+                <label className="createhead-text-new">
+                {TranslationContext!==undefined?TranslationContext.label.StoreName:"Store Name"}: </label>
                 <label className="createhead-text-1">
                   {this.state.storeName}
                 </label>
@@ -2183,13 +2345,15 @@ class SlaTemplateDepartment extends Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <label className="createhead-text-new">Department Name:</label>
+                <label className="createhead-text-new">{TranslationContext!==undefined?TranslationContext.label.DepartmentName:"Department Name"}:</label>
                 <label className="createhead-text-1">
                   {this.state.departmentName}
                 </label>
               </div>
               <div className="col-md-6">
-                <label className="createhead-text-new">Function Name: </label>
+                <label className="createhead-text-new"> 
+                {TranslationContext!==undefined?TranslationContext.label.FunctionName:"Function Name"}:
+                </label>
                 <label className="createhead-text-1">
                   {this.state.functionName}
                 </label>
@@ -2198,9 +2362,15 @@ class SlaTemplateDepartment extends Component {
             <br />
 
             <div className="slatargetRow-3 ma">
-              <label className="createhead-text-new-1">Priority</label>
-              <label className="createhead-text-5">% SLA</label>
-              <label className="createhead-text-6">Resolve</label>
+              <label className="createhead-text-new-1">
+              {TranslationContext!==undefined?TranslationContext.label.priority:"Priority"}
+              </label>
+              <label className="createhead-text-5"> 
+              %{TranslationContext!==undefined?TranslationContext.label.sla:"SLA"}
+              </label>
+              <label className="createhead-text-6">
+              {TranslationContext!==undefined?TranslationContext.label.resolve:"Resolve"}
+              </label>
             </div>
             {this.state.finalEditData !== null &&
               this.state.finalEditData.map((item, i) => (
@@ -2254,9 +2424,15 @@ class SlaTemplateDepartment extends Component {
                           value={item.ResolveType}
                           onChange={this.handleEditSlaTargets.bind(this, i)}
                         >
-                          <option value="M">M</option>
-                          <option value="H">H</option>
-                          <option value="D">D</option>
+                          <option value="M">
+                          {TranslationContext!==undefined?TranslationContext.option.m:"M"}
+                          </option>
+                          <option value="H">
+                          {TranslationContext!==undefined?TranslationContext.option.h:"H"}
+                          </option>
+                          <option value="D">
+                          {TranslationContext!==undefined?TranslationContext.option.d:"D"}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -2271,7 +2447,9 @@ class SlaTemplateDepartment extends Component {
 
             <div className="divSpace-3">
               <div className="dropDrownSpace">
-                <label className="reports-to">Status</label>
+                <label className="reports-to">
+                {TranslationContext!==undefined?TranslationContext.label.status:"Status"}
+                </label>
                 <select
                   className="store-create-select"
                   value={
@@ -2279,8 +2457,12 @@ class SlaTemplateDepartment extends Component {
                   }
                   onChange={this.handleEditSlaIsActive}
                 >
-                  <option value={"Active"}>Active</option>
-                  <option value={"Inactive"}>Inactive</option>
+                  <option value={"Active"}>
+                  {TranslationContext!==undefined?TranslationContext.option.active:"Active"}
+                  </option>
+                  <option value={"Inactive"}>
+                  {TranslationContext!==undefined?TranslationContext.option.inactive:"Inactive"}
+                  </option>
                 </select>
               </div>
             </div>
@@ -2289,7 +2471,8 @@ class SlaTemplateDepartment extends Component {
                 className="pop-over-cancle"
                 onClick={this.toggleEditModal.bind(this)}
               >
-                CANCEL
+                 {TranslationContext!==undefined?TranslationContext.a.cancel:"CANCEL"}
+                
               </a>
               <button
                 className="pop-over-button FlNone"
@@ -2306,7 +2489,9 @@ class SlaTemplateDepartment extends Component {
                 ) : (
                   ""
                 )}
-                <label className="pop-over-btnsave-text">SAVE</label>
+                <label className="pop-over-btnsave-text">
+                {TranslationContext!==undefined?TranslationContext.label.save:"SAVE"}
+                </label>
               </button>
             </div>
           </div>

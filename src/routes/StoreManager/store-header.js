@@ -790,7 +790,12 @@ class Header extends Component {
             });
           }
         } else {
-          self.setState({ ongoingChatsData: [] });
+          self.setState({
+            ongoingChatsData: [],
+            customerName: "",
+            messageData: [],
+            isMainLoader: false,
+          });
         }
       })
       .catch((response) => {
@@ -1887,13 +1892,13 @@ class Header extends Component {
           if (self.state.storeCode !== "" && data[5] !== "") {
             if (self.state.storeCode.toLowerCase() === data[5].toLowerCase()) {
               var isMobileNoExist = self.state.ongoingChatsData.filter(
-                (x) => x.mobileNo === data[3].substring(2)
+                (x) =>
+                  x.mobileNo === data[3].substring(2) &&
+                  x.isCustEndChat === false
               );
 
               if (isMobileNoExist.length > 0) {
                 if ("91" + self.state.mobileNo === data[3]) {
-                  self.handleGetChatNotificationCount();
-                  self.handleGetOngoingChat();
                   var chatId = 0;
                   self.setState({ isCustEndChat: data[6] });
                   if (self.state.ongoingChatsData.length > 0) {
@@ -1901,12 +1906,17 @@ class Header extends Component {
                       (x) => x.mobileNo === self.state.mobileNo
                     )[0].chatID;
                   }
+                  if (data[6]) {
+                    self.handleEndCustomerChat(chatId);
+                  } else {
+                    self.handleGetOngoingChat();
+                    self.handleGetNewChat();
+                  }
+
                   self.handleGetChatMessagesList(chatId);
-                  self.handleGetNewChat();
                 } else {
                   self.handleGetOngoingChat();
                   self.handleGetNewChat();
-
                   self.handleGetChatNotificationCount();
                 }
               } else {
@@ -2046,9 +2056,36 @@ class Header extends Component {
         console.log(response, "---handleGetChatSession");
       });
   }
+  ////handle end customer chat
+  handleEndCustomerChat(chatId) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CustomerChat/EndCustomerChat",
+      headers: authHeader(),
+      params: { ChatID: chatId },
+    })
+      .then(function(response) {
+        var message = response.data.message;
+        var data = response.data.responseData;
+        if (message === "Success" && data) {
+          self.setState({
+            isCustEndChat: true,
+          });
+          self.handleGetOngoingChat();
+          self.handleGetNewChat();
+        } else {
+          self.setState({
+            isCustEndChat: false,
+          });
+        }
+      })
+      .catch((response) => {
+        console.log(response, "---handleEndCustomerChat");
+      });
+  }
   render() {
     const TranslationContext = this.state.translateLanguage.default;
-
     return (
       <React.Fragment>
         <div
@@ -2471,7 +2508,7 @@ class Header extends Component {
                   <img src={BellIcon} alt="Icon" />
                 </li>
                 <li>
-                  <h3>HomeEshop</h3>
+                  <h3>{this.state.UserName}</h3>
                   <p>{this.state.storeCode}</p>
                 </li>
               </ul>
@@ -2507,7 +2544,9 @@ class Header extends Component {
               <ul>
                 <li>
                   <img src={Logout} alt="Logout" />
-                  Logout
+                  {TranslationContext !== undefined
+                    ? TranslationContext.span.logout
+                    : "Logout"}
                 </li>
               </ul>
             </div>
@@ -2590,7 +2629,11 @@ class Header extends Component {
                         value={this.state.sAgentId}
                         onChange={this.handleChangeAgentDropdown.bind(this)}
                       >
-                        <Option value={0}>All Store Member</Option>
+                        <Option value={0}>
+                          {TranslationContext !== undefined
+                            ? TranslationContext.option.allstoremember
+                            : "All Store Member"}
+                        </Option>
                         {this.state.agentData !== null &&
                           this.state.agentData.map((item, i) => {
                             return (
@@ -2654,7 +2697,9 @@ class Header extends Component {
                                     }}
                                   >
                                     {chat.messageCount === 0
-                                      ? "No"
+                                      ? TranslationContext !== undefined
+                                      ? TranslationContext.p.No
+                                      : "No"
                                       : chat.messageCount}{" "}
                                     {TranslationContext !== undefined
                                       ? TranslationContext.p.newmessages
@@ -3072,7 +3117,15 @@ class Header extends Component {
                                   )}
                                 >
                                   {this.state.agentRecentChatData.length < 9
-                                    ? "Past Chat(0" +
+                                    ? TranslationContext !== undefined
+                                      ? TranslationContext.label.pastchat0 +
+                                        this.state.agentRecentChatData.length +
+                                        ")"
+                                      : "Past Chat(0" +
+                                        this.state.agentRecentChatData.length +
+                                        ")"
+                                    : TranslationContext !== undefined
+                                    ? TranslationContext.label.pastchat +
                                       this.state.agentRecentChatData.length +
                                       ")"
                                     : "Past Chat(" +
@@ -3090,7 +3143,9 @@ class Header extends Component {
                             onClick={this.handleActionOpen.bind(this)}
                           >
                             <label className="myticket-submit-solve-button-text">
-                              Action
+                              {TranslationContext !== undefined
+                                ? TranslationContext.label.action
+                                : "Action"}
                             </label>
                             <img
                               src={DownWhiteImg}
@@ -3191,7 +3246,10 @@ class Header extends Component {
                               {this.state.isCustEndChat &&
                               this.state.customerName !== "" ? (
                                 <label className="endchatlbl">
-                                  Customer has end chat
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.label
+                                        .customerhasendchat
+                                    : "Customer has end chat"}
                                 </label>
                               ) : null}
                             </div>
@@ -5405,7 +5463,7 @@ class Header extends Component {
                                   {
                                     title:
                                       TranslationContext !== undefined
-                                        ? TranslationContext.title.agent
+                                        ? TranslationContext.title.mobilenumber
                                         : "Mobile No",
                                     dataIndex: "customerMobile",
                                     width: "20%",
@@ -5451,7 +5509,7 @@ class Header extends Component {
                                   {
                                     title:
                                       TranslationContext !== undefined
-                                        ? TranslationContext.title.time
+                                        ? TranslationContext.title.status
                                         : "Status",
                                     dataIndex: "chatStatus",
                                     width: "20%",
@@ -5684,7 +5742,9 @@ class Header extends Component {
                                 },
                               },
                               {
-                                title: "Mobile No",
+                                title: TranslationContext !== undefined
+                                ? TranslationContext.title.mobilenumber
+                                : "Mobile No",
                                 dataIndex: "customerMobile",
                                 width: "20%",
                                 className: "textnowrap-table",
@@ -5717,7 +5777,7 @@ class Header extends Component {
                               {
                                 title:
                                   TranslationContext !== undefined
-                                    ? TranslationContext.title.time
+                                    ? TranslationContext.title.status
                                     : "Status",
                                 dataIndex: "chatStatus",
                                 width: "20%",
@@ -5902,7 +5962,7 @@ class Header extends Component {
                 disabled={this.state.isCustEndChat === false ? true : false}
                 onClick={this.handleUpdateStoreManagerChatStatus.bind(this, 3)}
               >
-                Close Chat
+                {TranslationContext!==undefined?TranslationContext.label.closechat:"Close Chat"}
               </label>
             </div>
           </div>

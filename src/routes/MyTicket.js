@@ -61,6 +61,8 @@ import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { withRouter } from "react-router";
 import ReactHtmlParser from "react-html-parser";
 import Demo from "../store/Hashtag";
+import * as translationHI from "./../translations/hindi";
+import * as translationMA from "./../translations/marathi";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -208,6 +210,7 @@ class MyTicket extends Component {
       isKB: false,
       selectedInvoiceNo: "",
       isSystemGenerated: false,
+      translateLanguage: {},
     };
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
     this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
@@ -252,8 +255,14 @@ class MyTicket extends Component {
   }
 
   componentDidMount() {
-    ////
-    debugger;
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
+
     if (this.props.location.ticketDetailID) {
       var ticketId = this.props.location.ticketDetailID;
       var isKB = false;
@@ -289,7 +298,6 @@ class MyTicket extends Component {
     });
   };
   onCkBlur = (evt) => {
-    debugger;
     var ckCusrsorPosition = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorData = evt.editor.getSelection().getRanges()[0].endContainer.$
       .wholeText;
@@ -302,7 +310,6 @@ class MyTicket extends Component {
     });
   };
   onCkBlurReply = (evt) => {
-    debugger;
     var ckCusrsorPositionReply = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataReply = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -375,7 +382,6 @@ class MyTicket extends Component {
   }
 
   handleTicketAssignFollowUp() {
-    debugger;
     let followUpIds = this.state.followUpIds.substring(
       0,
       this.state.followUpIds.length - 1
@@ -391,7 +397,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.status;
         if (status) {
           self.setState({
@@ -405,7 +410,6 @@ class MyTicket extends Component {
   }
 
   handleGetTicketDetails(ID) {
-    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -417,7 +421,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -528,13 +531,11 @@ class MyTicket extends Component {
   }
 
   setNotiCurPosiCmnt = (e) => {
-    debugger;
     this.setState({
       notiCurPosiCmnt: e.target.selectionStart,
     });
   };
   setNotiCurPosiFreeCmnt = (e) => {
-    debugger;
     this.setState({
       notiCurPosiFreeCmnt: e.target.selectionStart,
     });
@@ -552,7 +553,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let status = res.data.status;
         if (status === true) {
           if (ticStaId === 103) {
@@ -579,7 +579,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           let data = res.data.responseData;
@@ -640,7 +639,6 @@ class MyTicket extends Component {
   }
 
   handleGetOrderDetails() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -651,7 +649,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -677,7 +674,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let Msg = res.data.message;
         let data = res.data.responseData;
         if (Msg === "Success") {
@@ -752,7 +748,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketFreeTextcomment;
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
@@ -780,7 +776,7 @@ class MyTicket extends Component {
       );
       // let text = this.state.ticketcommentMSG;
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // text += "@" + userName;
@@ -834,7 +830,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -894,7 +890,7 @@ class MyTicket extends Component {
       // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
       // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
       let matchedArr = this.state.AssignToData.filter(
-        (x) => x.userID === e.currentTarget.value
+        (x) => x.userID == e.currentTarget.value
       );
       let userName = matchedArr[0].fullName;
       // ck += "@" + userName;
@@ -953,7 +949,7 @@ class MyTicket extends Component {
     // let ckTags = ckDataArrLast.match(/<[^>]+>/g);
     // let ck = ckDataArrLast.replace(/<[^>]+>/g, "");
     let matchedArr = this.state.placeholderData.filter(
-      (x) => x.mailParameterID === e.currentTarget.value
+      (x) => x.mailParameterID == e.currentTarget.value
     );
     let placeholderName = matchedArr[0].parameterName;
     // ck += placeholderName;
@@ -988,7 +984,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let data = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -1004,7 +999,6 @@ class MyTicket extends Component {
       });
   }
   handleGetCountOfTabs(ID) {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -1029,7 +1023,8 @@ class MyTicket extends Component {
   }
 
   handleUpdateTicketDetails() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
+
     if (this.state.statusValidate) {
       let self = this;
       this.setState({ KnowledgeBaseModal: false });
@@ -1056,7 +1051,11 @@ class MyTicket extends Component {
             if (self.state.isaddKnowledge) {
               self.handleAddKnwoldgeBase();
             } else {
-              NotificationManager.success("Ticket updated successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.ticketupdatedsuccessfully
+                  : "Ticket updated successfully."
+              );
               self.props.history.push("myTicketlist");
             }
           } else {
@@ -1071,7 +1070,6 @@ class MyTicket extends Component {
     }
   }
   handleRequireSize(e, rowData) {
-    debugger;
     var id = rowData.original.articleNumber;
     var value = document.getElementById("requireSizeTxt" + id).value;
     var reg = /^[0-9\b]+$/;
@@ -1100,7 +1098,6 @@ class MyTicket extends Component {
     // this.setState({ OrderSubItem });
   }
   handleOrderSearchData() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1115,7 +1112,6 @@ class MyTicket extends Component {
         debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
-
         var OrderSubItem = [];
 
         for (let i = 0; i < mainData.length; i++) {
@@ -1177,7 +1173,6 @@ class MyTicket extends Component {
     }
   }
   handleDropDownChange = (e) => {
-    ////
     let name = e.target.name;
     let Value = e.target.value;
     var data = this.state.selectetedParameters;
@@ -1247,7 +1242,6 @@ class MyTicket extends Component {
   };
 
   handleGetBrandList() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -1255,7 +1249,6 @@ class MyTicket extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1279,7 +1272,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let data = res.data;
         let CategoryData = res.data;
         if (data.length > 0) {
@@ -1297,7 +1289,6 @@ class MyTicket extends Component {
       });
   }
   handleGetTicketPriorityList() {
-    ////
     let self = this;
     axios({
       method: "get",
@@ -1305,7 +1296,6 @@ class MyTicket extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1329,7 +1319,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1353,7 +1342,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1374,7 +1362,6 @@ class MyTicket extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1401,7 +1388,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let messageData = res.data.message;
         if (messageData === "Success") {
           NotificationManager.success("Tickets assigned successfully.");
@@ -1537,7 +1523,6 @@ class MyTicket extends Component {
     this.setState({ BillInvoiceModal: true });
   }
   handleBillImgModalClose() {
-    debugger;
     this.setState({ BillInvoiceModal: !this.state.BillInvoiceModal });
   }
   handleThumbModalOpen() {
@@ -1547,7 +1532,6 @@ class MyTicket extends Component {
     this.setState({ Plus: false });
   }
   handleHasAttachmetModalOpen(msgID) {
-    ////
     var filedata = this.state.FileAttachment.filter((x) => x.id === msgID);
     // for (let i = 0; i < filedata.length; i++) {
 
@@ -1571,7 +1555,6 @@ class MyTicket extends Component {
     });
   };
   handleGetTabsName(e) {
-    debugger;
     let self = this;
     let CurrentActive = e.target.name;
     if (CurrentActive === "Task") {
@@ -1600,7 +1583,8 @@ class MyTicket extends Component {
     }, 100);
   }
   handleNoteAddComments() {
-    ////
+    const TranslationContext = this.state.translateLanguage.default;
+
     if (this.state.NoteAddComment.length > 0) {
       let self = this;
 
@@ -1615,12 +1599,15 @@ class MyTicket extends Component {
         },
       })
         .then(function(res) {
-          ////
           let status = res.data.status;
           if (status === true) {
             var id = self.state.ticket_Id;
             self.handleGetNotesTabDetails(id);
-            NotificationManager.success("Comment added successfully.");
+            NotificationManager.success(
+              TranslationContext !== undefined
+                ? TranslationContext.alertmessage.commentaddedsuccessfully
+                : "Comment added successfully."
+            );
             self.setState({
               NoteAddComment: "",
               notesCommentCompulsion: "",
@@ -1639,7 +1626,6 @@ class MyTicket extends Component {
     }
   }
   handleGetHistoricalData() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -1650,7 +1636,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let status = res.data.status;
         let details = res.data.responseData;
         self.onOpenModal();
@@ -1708,7 +1693,6 @@ class MyTicket extends Component {
   }
 
   handleAttachStoreData() {
-    debugger;
     let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
@@ -1811,7 +1795,6 @@ class MyTicket extends Component {
       data: formData,
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Store attached successfully.");
@@ -1956,7 +1939,6 @@ class MyTicket extends Component {
         data: formData,
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           // let details = res.data.responseData;
           if (status === "Success") {
@@ -1979,7 +1961,6 @@ class MyTicket extends Component {
     }
   }
   handleGetNotesTabDetails(ticket_Id) {
-    ////
     let self = this;
     // this.setState({ loading: true });
     axios({
@@ -1991,7 +1972,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let status = res.data.message;
         let details = res.data.responseData;
         if (status === "Success") {
@@ -2066,7 +2046,6 @@ class MyTicket extends Component {
   }
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
-    ////
     let self = this;
     axios({
       method: "post",
@@ -2079,7 +2058,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
           NotificationManager.error("No Record Found.");
@@ -2114,7 +2092,6 @@ class MyTicket extends Component {
 
   //Sub-Category change funcation in KB Templete Modal
   setSubCategoryValueKB = (e) => {
-    ////
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryKB: subCategoryValue });
 
@@ -2143,7 +2120,6 @@ class MyTicket extends Component {
       },
     })
       .then(function(res) {
-        ////
         let data = res.data.responseData;
         self.setState({
           CkEditorTemplateData: data,
@@ -2157,7 +2133,6 @@ class MyTicket extends Component {
 
   //get Template data for select template funcation
   handleCkEditorTemplateData(tempId, tempName, row) {
-    ////
     let self = this;
     if (row === 1) {
       axios({
@@ -2169,7 +2144,6 @@ class MyTicket extends Component {
         },
       })
         .then(function(res) {
-          ////
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -2192,7 +2166,6 @@ class MyTicket extends Component {
         },
       })
         .then(function(res) {
-          ////
           let TemplateDetails = res.data.responseData;
           let bodyData = res.data.responseData.templateBody;
           self.setState({
@@ -2208,6 +2181,7 @@ class MyTicket extends Component {
     }
   }
   handleSendMailData(isSend) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     // var str = this.state.mailBodyData;
     // var stringBody = str.replace(/<\/?p[^>]*>/g, "");
@@ -2256,7 +2230,6 @@ class MyTicket extends Component {
           data: formData,
         })
           .then(function(res) {
-            ////
             let status = res.data.message;
             if (status === "Success") {
               self.handleTicketAssignFollowUp();
@@ -2375,7 +2348,11 @@ class MyTicket extends Component {
           .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Comment Added successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.commentaddedsuccessfully
+                  : "Comment Added successfully."
+              );
               self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2471,7 +2448,11 @@ class MyTicket extends Component {
           .then(function(res) {
             let status = res.data.message;
             if (status === "Success") {
-              NotificationManager.success("Comment Added successfully.");
+              NotificationManager.success(
+                TranslationContext !== undefined
+                  ? TranslationContext.alertmessage.commentaddedsuccessfully
+                  : "Comment added successfully."
+              );
               self.handleTicketAssignFollowUp();
               self.handleGetMessageDetails(self.state.ticket_Id);
               self.handleGetCountOfTabs(self.state.ticket_Id);
@@ -2547,7 +2528,6 @@ class MyTicket extends Component {
       });
   }
   handleReplyFileUpload(e) {
-    ////
     var allFiles = [];
     var selectedFiles = e.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -2623,7 +2603,6 @@ class MyTicket extends Component {
   }
 
   handleByvisitDate(e, rowData) {
-    debugger;
     // var id = e.original.lpassStoreID;
     // var index = this.state.selectedStoreData.findIndex(
     //   x => x.lpassStoreID === id
@@ -2652,7 +2631,6 @@ class MyTicket extends Component {
     this.setState({ selectedStoreData });
   }
   handleChangeOrderItem = (e) => {
-    debugger;
     var values = e.target.checked;
     if (!this.state.selectProductOrd) {
       if (values) {
@@ -2725,7 +2703,6 @@ class MyTicket extends Component {
   }
 
   handleSetDataTab = () => {
-    debugger;
     if (this.state.OrdItmBtnStatus) {
       var x = document.getElementById("ordertbls1");
       var x1 = document.getElementById("orderitemtbl1");
@@ -2759,7 +2736,6 @@ class MyTicket extends Component {
   handleGetOderItemData(invoiceNumber, rowData, e) {
     debugger;
     if (e.target.checked) {
-      var selectproduct = [];
       this.setState({
         SelectedAllOrder: [],
         SelectedAllItem: [],
@@ -2780,7 +2756,6 @@ class MyTicket extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let Msg = res.data.message;
           let data = res.data.responseData;
           if (Msg === "Success") {
@@ -3091,7 +3066,6 @@ class MyTicket extends Component {
   // }
 
   checkIndividualItem(articleNumber, rowData) {
-    debugger;
     const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
     newSelected[articleNumber] = !this.state.CheckBoxAllItem[articleNumber];
     this.setState({
@@ -3106,8 +3080,17 @@ class MyTicket extends Component {
     } else {
       if (newSelected[articleNumber] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
-          selectedRow = this.state.SelectedAllItem;
-          selectedRow.push(rowData);
+          if (
+            this.state.SelectedAllItem[i].orderItemID !==
+            this.state.SelectedAllItem[i].orderItemID
+          ) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.push(rowData);
+          } else {
+            selectedRow = [];
+            selectedRow.push(rowData);
+          }
+
           var Order_Master = this.state.OrderSubItem.filter(
             (x) =>
               x.articleNumber === this.state.SelectedAllItem[i].articleNumber
@@ -3177,7 +3160,7 @@ class MyTicket extends Component {
     }
     this.setState({
       SelectedAllItem: selectedRow,
-      SelectedAllOrder: selectedRow,
+      // SelectedAllOrder: selectedRow,
     });
   }
   // -------------------------------Check box selected all code end-------------------------------
@@ -3266,7 +3249,6 @@ class MyTicket extends Component {
   }
 
   handleSubmitTicket() {
-    debugger;
     if (this.state.selectetedParameters.ticketStatusID === "103") {
       this.hadnleOpenKnowledage();
     } else {
@@ -3274,7 +3256,6 @@ class MyTicket extends Component {
     }
   }
   handleYesNoClick(ischeck) {
-    debugger;
     if (ischeck === true) {
       this.setState({ isaddKnowledge: true });
 
@@ -3290,11 +3271,12 @@ class MyTicket extends Component {
   }
 
   handleAddKnwoldgeBase() {
-    debugger;
+    const TranslationContext = this.state.translateLanguage.default;
+
     let self = this;
     var tempDescription = "";
     var Description = "";
-    debugger;
+
     if (this.state.messageDetails.length > 0) {
       tempDescription = this.state.messageDetails[0][
         "msgDetails"
@@ -3320,10 +3302,13 @@ class MyTicket extends Component {
       data: inputParam,
     })
       .then(function(res) {
-        debugger;
         var status = res.data.status;
         if (status) {
-          NotificationManager.success("Ticket updated successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.ticketupdatedsuccessfully
+              : "Ticket updated successfully."
+          );
           NotificationManager.success("Ticket Added in knowledgebase.");
           self.props.history.push("myTicketlist");
         } else {
@@ -4473,7 +4458,6 @@ class MyTicket extends Component {
                                         Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: (row) => {
-                                          debugger;
                                           var storeId = 0;
                                           if (row.original.lpassStoreID > 0) {
                                             storeId = row.original.lpassStoreID;
@@ -6180,7 +6164,6 @@ class MyTicket extends Component {
                     <div className="row my-3 mx-1">
                       {this.state.FinalAttachmentData !== null &&
                         this.state.FinalAttachmentData.map((item, k) => {
-                          // ////debugger
                           return (
                             <div style={{ position: "relative" }} key={k}>
                               <div>

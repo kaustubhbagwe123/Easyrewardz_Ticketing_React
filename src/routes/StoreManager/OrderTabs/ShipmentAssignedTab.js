@@ -116,25 +116,26 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateShipmentAssignedData(row, IsProceed) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (row.awbNo !== "" && row.courierPartner.toLowerCase() !== "store") {
       if (row.referenceNo === "") {
-        NotificationManager.error("Please enter POD.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterpod:"Please enter POD.");
         return false;
       }
     } else {
       if (row.storeName === "") {
-        NotificationManager.error("Please enter store name.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstorename:"Please enter store name.");
         return false;
       }
 
       if (row.staffName === "") {
-        NotificationManager.error("Please enter staff name.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseenterstaffname:"Please enter staff name.");
         return false;
       }
 
       if (row.mobileNumber === "") {
-        NotificationManager.error("Please enter mobile number.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseentermobilenumber:"Please enter mobile number.");
         return false;
       }
     }
@@ -156,7 +157,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.setState({
             orderPopoverOverlay: false,
           });
@@ -170,6 +171,7 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateDeliveredByShipAssigned(orderID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
 
     axios({
@@ -184,7 +186,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.setState({
             orderPopoverOverlay: false,
           });
@@ -198,6 +200,7 @@ class ShipmentAssignedTab extends Component {
   }
 
   handleUpdateShipmentAssignedRTO(orderID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
 
     axios({
@@ -212,7 +215,7 @@ class ShipmentAssignedTab extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetShipmentAssignedData();
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.setState({
             orderPopoverOverlay: false,
           });
@@ -322,7 +325,8 @@ class ShipmentAssignedTab extends Component {
                           item.courierPartnerOrderID
                         )}
                       >
-                        Print Manifest
+                         {TranslationContext!==undefined?TranslationContext.button.printmanifest:"Print Manifest"}
+                        
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-yellow assign-grid-btn"
@@ -331,12 +335,14 @@ class ShipmentAssignedTab extends Component {
                           item.courierPartnerShipmentID
                         )}
                       >
-                        Print Label
+                         {TranslationContext!==undefined?TranslationContext.button.printlabel:"Print Label"}
+                        
                       </button>
                       <button
                         className="butn order-grid-butn order-grid-butn-green assign-grid-btn"
                       >
-                        Print Invoice
+                        {TranslationContext!==undefined?TranslationContext.button.printinvoice:"Print Invoice"}
+                        
                       </button>
                     </div>
                   ) : (
@@ -442,7 +448,8 @@ class ShipmentAssignedTab extends Component {
                             : true
                         }
                       >
-                        RTO
+                        {TranslationContext!==undefined?TranslationContext.button.rto:"RTO"}
+                        
                       </button>
                       <button
                         className={
@@ -464,7 +471,8 @@ class ShipmentAssignedTab extends Component {
                             : true
                         }
                       >
-                        Delivered
+                         {TranslationContext!==undefined?TranslationContext.button.delivered:"Delivered"}
+                        
                       </button>
                     </div>
                   );
@@ -480,7 +488,8 @@ class ShipmentAssignedTab extends Component {
                       <tr>
                         <td>
                           <label>
-                            <b>Courier Partner</b>
+                            <b>{TranslationContext !== undefined ?
+                            TranslationContext.title.courierpartner : "Courier Partner"}</b>
                           </label>
                           <label>{row.courierPartner}</label>
                         </td>

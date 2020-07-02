@@ -771,6 +771,7 @@ class CreatePriority extends Component {
 
   ////move row info
   moveRow = (dragIndex, hoverIndex) => {
+    const TranslationContext = this.state.translateLanguage.default;
     const { priorityData } = this.state;
     const dragRow = priorityData[dragIndex];
 
@@ -797,7 +798,7 @@ class CreatePriority extends Component {
         if (res.data.responseData) {
           self.handleGetPriorityList();
         } else {
-          NotificationManager.error("Sorry we don't sort row of list");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.sorrywedontsortrowoflist:"Sorry we don't sort row of list");
         }
       })
       .catch((data) => {
@@ -919,6 +920,7 @@ class CreatePriority extends Component {
       });
   }
   handleSubmitData() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.priority_name.length > 0 &&
       this.state.selectedActiveStatus != 0
@@ -949,7 +951,7 @@ class CreatePriority extends Component {
             let status = res.data.message;
             if (status === "Success") {
               self.handleGetPriorityList();
-              NotificationManager.success("Priority Added successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.priorityaddedsuccessfully:"Priority Added successfully.");
               self.setState({
                 priority_name: "",
                 selectedActiveStatus: 0,
@@ -978,6 +980,7 @@ class CreatePriority extends Component {
     }
   }
   handleDeleteData(priority_ID) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -991,9 +994,9 @@ class CreatePriority extends Component {
         let status = res.data.statusCode;
         if (status === 1010) {
           self.handleGetPriorityList();
-          NotificationManager.success("Priority delete successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.prioritydeletesuccessfully:"Priority delete successfully.");
         } else {
-          NotificationManager.error(res.data.message);
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordinuse:res.data.message);
         }
       })
       .catch((data) => {
@@ -1069,7 +1072,7 @@ class CreatePriority extends Component {
     //   // }
     //   this.setState({ editpriorityNameCompulsion: "" });
     // }
-
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.rowData.isActive === "") {
       this.setState({ editstatusCompulsion: "Please select status" });
     } else {
@@ -1117,7 +1120,7 @@ class CreatePriority extends Component {
                 sortFilterStatus: [],
               });
               self.handleGetPriorityList();
-              NotificationManager.success("Priority updated successfully.");
+              NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.priorityupdatedsuccessfully:"Priority updated successfully.");
               self.setState({
                 rowData: {},
                 priority_name: "",
@@ -2117,7 +2120,9 @@ class CreatePriority extends Component {
                 value={this.state.rowData.isActive}
                 onChange={this.handelEditChange.bind(this)}
               >
-                <option value="">select</option>
+                <option value="">
+                {TranslationContext!==undefined?TranslationContext.option.select:"select"}
+                </option>
                 {this.state.activeData !== null &&
                   this.state.activeData.map((item, j) => (
                     <option key={j} value={item.ActiveID}>

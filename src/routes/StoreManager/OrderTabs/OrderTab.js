@@ -43,13 +43,16 @@ class OrderTab extends Component {
       orderId: 0,
       AddressConf: false,
       pincodeChecAvaibility: false,
+      orderSearchText: "",
     };
   }
 
   componentDidMount() {
+    debugger
     this.handleGetOrderTabGridData();
     this.handleGetOrderStatusFilterData();
     this.handleGetCheckServiceData();
+  
     if (window.localStorage.getItem("translateLanguage") === "hindi") {
       this.state.translateLanguage = translationHI;
     } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
@@ -62,6 +65,7 @@ class OrderTab extends Component {
   ////   -------------------API Function start-------------------------------
   /// handle Get Order Tab Grid Data
   handleGetOrderTabGridData(filter) {
+    debugger
     let self = this;
     this.setState({
       OrderTabLoading: true,
@@ -71,13 +75,13 @@ class OrderTab extends Component {
       url: config.apiUrl + "/HSOrder/GetOrdersDetails",
       headers: authHeader(),
       data: {
-        SearchText: "",
+        SearchText: this.state.orderSearchText.trim(),
         PageNo: this.state.currentPage,
         PageSize: this.state.postsPerPage,
         FilterStatus: this.state.strStatus,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (filter === "filter") {
@@ -127,7 +131,7 @@ class OrderTab extends Component {
         pageID: 2,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -146,6 +150,7 @@ class OrderTab extends Component {
   }
   /// handle Sent Payment Link
   handleSentPaymentLink(item) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -157,11 +162,15 @@ class OrderTab extends Component {
         SentPaymentLinkCount: item.countSendPaymentLink,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
-          NotificationManager.success("Link Send Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.linksendsuccessfully
+              : "Link Send Successfully."
+          );
         } else {
           NotificationManager.error(status);
         }
@@ -178,7 +187,7 @@ class OrderTab extends Component {
       url: config.apiUrl + "/HSOrder/GetStorePinCodeByUserID",
       headers: authHeader(),
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -210,7 +219,7 @@ class OrderTab extends Component {
         Delivery_postcode: parseInt(this.state.pincode),
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.responseData.available;
         if (status === "false") {
           self.setState({
@@ -238,7 +247,7 @@ class OrderTab extends Component {
         orderID: this.state.orderId,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           self.setState({
@@ -292,6 +301,7 @@ class OrderTab extends Component {
   }
 
   handleUpdateAddressPending(orderId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -307,7 +317,7 @@ class OrderTab extends Component {
         Country: this.state.country,
       },
     })
-      .then(function (res) {
+      .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetOrderTabGridData();
@@ -322,7 +332,11 @@ class OrderTab extends Component {
             country: "",
             landmark: "",
           });
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(
+            TranslationContext !== undefined
+              ? TranslationContext.alertmessage.recordupdatedsuccessfully
+              : "Record Updated Successfully."
+          );
         } else {
           NotificationManager.error(status);
         }
@@ -333,33 +347,58 @@ class OrderTab extends Component {
   }
 
   handleAddressPending(orderId) {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.shippingAddress === "") {
-      NotificationManager.error("Please enter address.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenteraddress
+          : "Please enter address."
+      );
       return false;
     }
 
     if (this.state.pincode === "") {
-      NotificationManager.error("Please enter pincode.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenterpincode
+          : "Please enter pincode."
+      );
       return false;
     } else {
       if (this.state.pincode.length < 6) {
-        NotificationManager.error("Please enter 6 digits pincode");
+        NotificationManager.error(
+          TranslationContext !== undefined
+            ? TranslationContext.alertmessage.pleaseentersixdigitpinoce
+            : "Please enter 6 digits pincode"
+        );
         return false;
       }
     }
 
     if (this.state.city === "") {
-      NotificationManager.error("Please enter city.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseentercity
+          : "Please enter city."
+      );
       return false;
     }
 
     if (this.state.state === "") {
-      NotificationManager.error("Please enter state.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseenterstate
+          : "Please enter state."
+      );
       return false;
     }
 
     if (this.state.country === "") {
-      NotificationManager.error("Please enter country.");
+      NotificationManager.error(
+        TranslationContext !== undefined
+          ? TranslationContext.alertmessage.pleaseentercountry
+          : "Please enter country."
+      );
       return false;
     }
 
@@ -435,19 +474,19 @@ class OrderTab extends Component {
                             item.sourceOfOrder === "FTP"
                               ? OrderShopingGreen
                               : item.sourceOfOrder === "POS"
-                                ? OrderBag
-                                : item.sourceOfOrder === "Wbot"
-                                  ? OrderShopingBlack
-                                  : null
+                              ? OrderBag
+                              : item.sourceOfOrder === "Wbot"
+                              ? OrderShopingBlack
+                              : null
                           }
                           className={
                             item.sourceOfOrder === "FTP"
                               ? "order-shoping"
                               : item.sourceOfOrder === "POS"
-                                ? "order-bag"
-                                : item.sourceOfOrder === "Wbot"
-                                  ? "order-shoping"
-                                  : null
+                              ? "order-bag"
+                              : item.sourceOfOrder === "Wbot"
+                              ? "order-shoping"
+                              : null
                           }
                         />
                       </div>
@@ -756,7 +795,7 @@ class OrderTab extends Component {
                                     placeholder={
                                       TranslationContext !== undefined
                                         ? TranslationContext.placeholder
-                                          .enterlandmark
+                                            .enterlandmark
                                         : "Enter Landmark"
                                     }
                                     autoComplete="off"
@@ -776,7 +815,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .enterpincode
+                                              .enterpincode
                                           : "Enter Pin Code"
                                       }
                                       name="pincode"
@@ -810,7 +849,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .entercity
+                                              .entercity
                                           : "Enter City"
                                       }
                                       autoComplete="off"
@@ -845,7 +884,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .entercountry
+                                              .entercountry
                                           : "Enter Country"
                                       }
                                       name="country"
@@ -902,12 +941,12 @@ class OrderTab extends Component {
                               <div className="pay-done">
                                 <p>
                                   {" "}
-                                  Payment Date :
+                                  {TranslationContext !== undefined
+                                    ? TranslationContext.p.viewsearch
+                                    : "Payment Date"}
+                                  :
                                 </p>
-                                <span>
-                                  {" "}
-                                  {item.paymentBillDate}
-                                </span>
+                                <span> {item.paymentBillDate}</span>
                               </div>
                               <div className="pay-done">
                                 <p>
@@ -954,7 +993,11 @@ class OrderTab extends Component {
                           icon={false}
                           okText={
                             item.countSendPaymentLink === 0
-                              ? "Send Link"
+                              ? TranslationContext !== undefined
+                                ? TranslationContext.button.sendlink
+                                : "Send Link"
+                              : TranslationContext !== undefined
+                              ? TranslationContext.button.sendlinkagain
                               : "Send Link Again"
                           }
                           onConfirm={this.handleSentPaymentLink.bind(
@@ -975,29 +1018,39 @@ class OrderTab extends Component {
                                 : "butn order-grid-butn disabled-link"
                             }
                           >
-                            {item.actionTypeName}
+                            {TranslationContext !== undefined
+                              ? TranslationContext.button.collectpayment
+                              : item.actionTypeName}
                           </button>
                         </Popconfirm>
                       )}
                       {item.actionTypeName === "Sync Order" && (
                         <button className="butn order-grid-butn order-grid-butn-yellow">
-                          {item.actionTypeName}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.syncorder
+                            : item.actionTypeName}
                         </button>
                       )}
                       {item.actionTypeName === "Get Address" && (
                         <button className="butn order-grid-butn pickedbutn">
-                          {item.actionTypeName}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.getaddress
+                            : item.actionTypeName}
                         </button>
                       )}
                       {item.actionTypeName === "Ready to Ship" && (
                         <button className="butn order-grid-butn delibutn">
-                          {item.actionTypeName}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.readytoship
+                            : item.actionTypeName}
                         </button>
                       )}
 
                       {item.actionTypeName === "Update Payment" && (
                         <button className="butn order-grid-butn order-grid-butn-yellow">
-                          {item.actionTypeName}
+                          {TranslationContext !== undefined
+                            ? TranslationContext.button.updatepayment
+                            : item.actionTypeName}
                         </button>
                       )}
                     </div>
@@ -1087,7 +1140,7 @@ class OrderTab extends Component {
                                     placeholder={
                                       TranslationContext !== undefined
                                         ? TranslationContext.placeholder
-                                          .enterlandmark
+                                            .enterlandmark
                                         : "Enter Landmark"
                                     }
                                     name="landmark"
@@ -1106,7 +1159,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .enterpincode
+                                              .enterpincode
                                           : "Enter Pin Code"
                                       }
                                       name="pincode"
@@ -1130,7 +1183,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .entercity
+                                              .entercity
                                           : "Enter City"
                                       }
                                       name="city"
@@ -1150,7 +1203,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .enterstate
+                                              .enterstate
                                           : "Enter State"
                                       }
                                       name="state"
@@ -1168,7 +1221,7 @@ class OrderTab extends Component {
                                       placeholder={
                                         TranslationContext !== undefined
                                           ? TranslationContext.placeholder
-                                            .entercountry
+                                              .entercountry
                                           : "Enter Country"
                                       }
                                       name="country"

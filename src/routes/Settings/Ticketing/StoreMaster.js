@@ -12,13 +12,12 @@ import Demo from "./../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Popover } from "antd";
+import { Popover ,Spin} from "antd";
 import ReactTable from "react-table";
 import config from "../../../helpers/config";
 import axios from "axios";
 import Select from "react-select";
 import {
-  NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
@@ -151,6 +150,7 @@ class StoreMaster extends Component {
       semailFilterCheckbox: "",
       sphoneNumberFilterCheckbox: "",
       sstatusFilterCheckbox: "",
+      bulkuploadLoading: false,
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -176,7 +176,9 @@ class StoreMaster extends Component {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -197,10 +199,11 @@ class StoreMaster extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.setState({ fileName: "", fileSize: "", fileN: [],bulkuploadLoading: false, });
             self.handleGetStoreMasterData();
           } else {
             self.setState({
+              bulkuploadLoading: false,
               // showProgress: false,
               // isFileUploadFail: true,
               // progressValue: 0
@@ -211,7 +214,7 @@ class StoreMaster extends Component {
         .catch((data) => {
           debugger;
           if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true });
+            this.setState({ showProgress: false, isFileUploadFail: true,bulkuploadLoading: false });
           }
           console.log(data);
         });
@@ -2631,7 +2634,6 @@ class StoreMaster extends Component {
     const { storeData } = this.state;
     return (
       <React.Fragment>
-        {/* <NotificationContainer /> */}
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -3742,6 +3744,10 @@ class StoreMaster extends Component {
                       </CSVLink>
                     </div>
                   </div>
+                  <Spin
+                    tip="Please wait..."
+                    spinning={this.state.bulkuploadLoading}
+                  >
                   <div className="mainfileUpload">
                     <Dropzone onDrop={this.fileUpload.bind(this)}>
                       {({ getRootProps, getInputProps }) => (
@@ -3853,6 +3859,7 @@ class StoreMaster extends Component {
                   >
                     ADD
                   </button>
+                  </Spin>
                 </div>
               </div>
             </div>

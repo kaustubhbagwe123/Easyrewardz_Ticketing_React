@@ -11,8 +11,8 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
 import { authHeader } from "../../helpers/authHeader";
 import StoreMyTicketStatus from "./StoreMyTicketStatus";
-import * as translationHI from '../../translations/hindi';
-import * as translationMA from '../../translations/marathi';
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class storeMyTicketList extends Component {
   constructor(props) {
@@ -684,7 +684,7 @@ class storeMyTicketList extends Component {
                                 <div className="row common-adv-padd justify-content-between">
                                   <div className="col-auto d-flex align-items-center">
                                     <p className="font-weight-bold mr-3">
-                                      <span className="blue-clr">
+                                      <span className="blue-clr" style={{cursor:"default"}}>
                                         {this.state.TicketSearchCount < 10
                                           ? "0" + this.state.TicketSearchCount
                                           : this.state.TicketSearchCount}
@@ -949,6 +949,7 @@ class storeMyTicketList extends Component {
                                         {row.original.createdOn}
                                       </label>
                                       <Popover
+                                      
                                         content={
                                           <div className="insertpop1">
                                             <ul className="dash-creation-popup">
@@ -960,32 +961,34 @@ class storeMyTicketList extends Component {
                                                   : "Creation details"}
                                               </li>
                                               <li>
-                                                <p>
-                                                  {row.original.createdBy}
-                                                  &nbsp;{" "}
+                                              <p style={{flex:"0 0 0"}}>
+                                                  
+                                                  {/* &nbsp; */}
                                                   {TranslationContext !==
                                                   undefined
                                                     ? TranslationContext.p
-                                                        .created
-                                                    : "Created"}
+                                                        .createdby
+                                                    : "Created Date"}
                                                 </p>
-                                                <p>
-                                                  {row.original.createdDate}
+                                                <p style={{textAlign:"right"}} >
+                                                {row.original.createdBy}{row.original.createdBy?row.original.createdDate?" ("+row.original.createdDate+")":null:row.original.createdDate}
                                                 </p>
                                               </li>
 
                                               <li>
-                                                <p>
-                                                  {row.original.updatedBy}
-                                                  &nbsp;
+                                                <p style={{flex:"0"}}>
+                                                  {/* &nbsp; */}
                                                   {TranslationContext !==
                                                   undefined
                                                     ? TranslationContext.p
-                                                        .updated
-                                                    : "Updated"}
+                                                        .updatedby
+                                                    : "Updated Date"}
                                                 </p>
-                                                <p>
-                                                  {row.original.updatedDate}
+                                                <p style={{textAlign:"right"}} >
+                                                  {row.original.updatedBy}
+                                                  {row.original.updatedDate?" (" +
+                                                    row.original.updatedDate +
+                                                    ")":null}
                                                 </p>
                                               </li>
                                             </ul>

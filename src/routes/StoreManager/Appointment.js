@@ -136,6 +136,7 @@ class Appointment extends Component {
   }
 
   handleUpdateAppointment(appointmentID) {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (
@@ -155,7 +156,7 @@ class Appointment extends Component {
           debugger;
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Record updated successFully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record updated successFully.");
           } else {
             NotificationManager.error(status);
           }
@@ -165,7 +166,7 @@ class Appointment extends Component {
           console.log(data);
         });
     } else {
-      NotificationManager.error("Please select status.");
+      NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.pleaseselectstatus:"Please select status.");
     }
   }
 
@@ -360,7 +361,7 @@ class Appointment extends Component {
                           return (
                             <div className="appt-status">
                               <Select
-                                placeholder="Select Status"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.selectstatus:"Select Status"}
                                 onChange={(e) =>
                                   this.handleOnChange(e, row.appointmentID)
                                 }

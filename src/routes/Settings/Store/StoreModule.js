@@ -33,8 +33,6 @@ import * as translationMA from "./../../../translations/marathi";
 import { Table, Select } from "antd";
 import "antd/dist/antd.css";
 
- 
-
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 // import { ProgressBar } from "react-bootstrap";
 // import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -206,6 +204,7 @@ class StoreModule extends Component {
   }
 
   handleBulkUpload() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (this.state.fileName) {
       const formData = new FormData();
@@ -225,13 +224,13 @@ class StoreModule extends Component {
           var status = response.data.message;
           var itemData = response.data.responseData;
           if (status === "Success") {
-            NotificationManager.success("File uploaded successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.fileuploadedsuccessfully:"File uploaded successfully.");
             self.setState({ fileName: "", fileSize: "", fileN: [] });
             self.handleCampaignScriptGridData();
             self.setState({ isErrorBulkUpload: false, isShowProgress: false });
           } else {
             self.setState({ isErrorBulkUpload: true, isShowProgress: false });
-            NotificationManager.error("File not uploaded.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.filenotuploaded:"File not uploaded.");
           }
         })
         .catch((response) => {
@@ -244,6 +243,7 @@ class StoreModule extends Component {
   }
 
   DeleteBulkUploadFile = () => {
+    const TranslationContext = this.state.translateLanguage.default;
     this.setState({
       file: {},
       fileName: "",
@@ -251,7 +251,7 @@ class StoreModule extends Component {
       isErrorBulkUpload: false,
       isShowProgress: false,
     });
-    NotificationManager.success("File deleted successfully.");
+    NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.filedeletedsuccessfully:"File deleted successfully.");
   };
 
   handleEditModal() {
@@ -274,6 +274,7 @@ class StoreModule extends Component {
   }
 
   deleteCampaign(deleteId) {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -286,10 +287,10 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Campaign deleted successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaigndeletedsuccessfully:"Campaign deleted successfully.");
           self.handleCampaignScriptGridData();
         } else {
-          NotificationManager.error("Campaign not deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.campaignnotdeleted:"Campaign not deleted.");
         }
       })
       .catch((data) => {
@@ -684,6 +685,7 @@ class StoreModule extends Component {
   }
   //// handle table record deleted
   handleDeleteTimeSlot(slotId) {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     axios({
       method: "post",
@@ -696,10 +698,10 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Record Deleted Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recorddeletedsuccessfully:"Record Deleted Successfully.");
           self.handleGetTimeslotGridData();
         } else {
-          NotificationManager.error("Record Not Deleted.");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotdeleted:"Record Not Deleted.");
         }
       })
       .catch((data) => {
@@ -708,6 +710,7 @@ class StoreModule extends Component {
   }
   /// handle Delete Language record
   handleDeleteLanguage = (row, type) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let languageGridData = [...this.state.languageGridData],
       isActive;
@@ -736,10 +739,10 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Record Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully.");
           self.handleGetLanguageGridData();
         } else {
-          NotificationManager.error(status);
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:status);
         }
       })
       .catch((data) => {
@@ -898,6 +901,7 @@ class StoreModule extends Component {
   }
 
   handleAttachmentSave() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       parseInt(this.state.selectedMaxAttachSize) != 0 &&
       parseInt(this.state.selectedFileFormat) != 0
@@ -920,7 +924,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Attachment saved successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.attachmentsavesuccessfully:"Attachment saved successfully.");
             self.setState({
               selectedMaxAttachSize: "0",
               selectedFileFormat: "0",
@@ -942,6 +946,7 @@ class StoreModule extends Component {
   }
 
   handleCreateCampaignScript() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.indiCampaign.length != 0 &&
       this.state.scriptDetails.length != 0
@@ -970,7 +975,7 @@ class StoreModule extends Component {
           if (status === "Success") {
             self.handleCampaignScriptGridData();
             self.selectNoCampaign();
-            NotificationManager.success("Campaign saved successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignsavedsuccessfully:"Campaign saved successfully.");
             document.getElementById("campaignNameValue").textContent = "Select";
             self.setState({
               indiCampaign: "",
@@ -980,7 +985,7 @@ class StoreModule extends Component {
               addCampaignLoading: false,
             });
           } else {
-            NotificationManager.error("Campaign not saved.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.campaignnotsaved:"Campaign not saved.");
             self.setState({
               addCampaignLoading: false,
             });
@@ -998,6 +1003,7 @@ class StoreModule extends Component {
   }
 
   handleUpdateCampaignScript() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.updateScriptDetails.length != 0) {
       let self = this;
       this.setState({
@@ -1019,7 +1025,7 @@ class StoreModule extends Component {
           let status = res.data.message;
           if (status === "Success") {
             self.handleCampaignScriptGridData();
-            NotificationManager.success("Campaign updated successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignupdatedsuccessfully:"Campaign updated successfully.");
             self.setState({
               // campaignCompulsion: "",
               updateScriptDetailsCompulsion: "",
@@ -1595,6 +1601,7 @@ class StoreModule extends Component {
   }
   /// handle Campaign Channerl update data
   handleUpdateCampChannelData() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.campaignChannelData.maxClickAllowed !== "" &&
       this.state.campaignChannelData.enableClickAfterValue !== ""
@@ -1623,7 +1630,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Campaign Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.campaignupdatedsuccessfully:"Campaign Updated Successfully.");
           }
         })
         .catch((data) => {
@@ -1638,6 +1645,7 @@ class StoreModule extends Component {
   }
   /// handle Appointment Configuration update data
   handleUpdateAppointmentConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     axios({
       method: "post",
       url: config.apiUrl + "/StoreCampaign/UpdateAppointmentConfiguration",
@@ -1653,7 +1661,7 @@ class StoreModule extends Component {
       .then(function(res) {
         let status = res.data.message;
         if (status === "Success") {
-          NotificationManager.success("Appointment Updated Successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.appointmentupdatedsuccessfully:"Appointment Updated Successfully.");
         }
       })
       .catch((data) => {
@@ -1675,6 +1683,7 @@ class StoreModule extends Component {
   }
   /// handle Broad cast Configuration update data
   handleUpdateBroadCastConfigData() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (
       this.state.BroadCastConfigData.maxClickAllowed !== "" &&
       this.state.BroadCastConfigData.enableClickAfterValue !== ""
@@ -1699,7 +1708,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Broadcast Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.broadcastupdatedsuccessfully:"Broadcast Updated Successfully.");
           }
         })
         .catch((data) => {
@@ -1715,6 +1724,7 @@ class StoreModule extends Component {
 
   /// handle Timeslot add data
   handleSubmitTimeSlotDate() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (
       this.state.selectedStoreCode.length > 0 &&
@@ -1761,10 +1771,10 @@ class StoreModule extends Component {
               slotduration: "0.5",
               maxCapacity: "",
             });
-            NotificationManager.success("Time Slot Added Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotaddedsuccessfully:"Time Slot Added Successfully.");
             self.handleGetTimeslotGridData();
           } else {
-            NotificationManager.error("Time Slot Not Added.");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotnotadded:"Time Slot Not Added.");
           }
         })
         .catch((data) => {
@@ -1780,6 +1790,7 @@ class StoreModule extends Component {
 
   /// Handle Update TimeSlot data
   handleUpdateTimeSlotData() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (this.state.editstoreCode !== "0" && this.state.editmaxCapacity !== "") {
       debugger;
@@ -1806,7 +1817,7 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Time Slot Updated Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotupdatesuccessfully:"Time Slot Updated Successfully.");
             self.handleGetTimeslotGridData();
             self.setState({
               editSlotModal: false,
@@ -1824,15 +1835,14 @@ class StoreModule extends Component {
             });
           } else {
             debugger;
-            if(status.trim().toLowerCase()==="Record Already Exists".trim().toLowerCase())
-            {
-              NotificationManager.error("Appointment Record Already Exists");
+            if (
+              status.trim().toLowerCase() ===
+              "Record Already Exists".trim().toLowerCase()
+            ) {
+              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.appointmentrecordalreadyexists:"Appointment Record Already Exists");
+            } else {
+              NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.timeslotnotupdated:"Time Slot Not Updated.");
             }
-            else
-            {
-              NotificationManager.error("Time Slot Not Updated.");
-            }
-            
           }
         })
         .catch((data) => {
@@ -1848,6 +1858,7 @@ class StoreModule extends Component {
   }
 
   handleSubmitLanguageDate() {
+    const TranslationContext = this.state.translateLanguage.default;
     var self = this;
     if (parseInt(this.state.selectLanguage) !== 0) {
       axios({
@@ -1861,13 +1872,13 @@ class StoreModule extends Component {
         .then(function(res) {
           let status = res.data.message;
           if (status === "Success") {
-            NotificationManager.success("Language Added Successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.languageaddedsuccessfully:"Language Added Successfully.");
             self.handleGetLanguageGridData();
             self.setState({
               selectLanguage: 0,
             });
           } else {
-            NotificationManager.error(status);
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.languagenotadded:status);
           }
         })
         .catch((data) => {
@@ -1949,13 +1960,14 @@ class StoreModule extends Component {
     this.handleGetTimeslotGridData(0, e.target.value);
   }
   handleStoreChangeChange = (e) => {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     if (this.state.TimeSlotGridData.length > 0) {
       var isExits = this.state.TimeSlotGridData.filter(
         (x) => x.storeId === e[e.length - 1]
       );
       if (isExits.length > 0) {
-        NotificationManager.error("Slot already created of this store code.");
+        NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.slotalreadycreatedofthisstorecode:"Slot already created of this store code.");
       } else {
         if (e.length > 0) {
           this.setState({
@@ -1969,7 +1981,7 @@ class StoreModule extends Component {
           });
         }
       }
-    }else{
+    } else {
       if (e.length > 0) {
         this.setState({
           selectedStoreCode: e,
@@ -2365,7 +2377,9 @@ class StoreModule extends Component {
                           value={this.state.selectedFileFormat}
                           onChange={this.setClaimTabData}
                         >
-                          <option value={0}>Select File Format</option>
+                          <option value={0}>
+                          {TranslationContext!==undefined?TranslationContext.option.selectfileformat:"Select File Format"}
+                          </option>
                           {this.state.fileFormat !== null &&
                             this.state.fileFormat.map((item, i) => (
                               <option key={i} value={item.formatID}>
@@ -3701,9 +3715,9 @@ class StoreModule extends Component {
                                 >
                                   <div
                                     className="strdrp-dwn"
-                                    style={{ width: "15%", padding: "0" }}
+                                    style={{ width: "15%", padding: "0",marginTop:"20px" }}
                                   >
-                                    <label>
+                                    <label style={{marginBottom:"10px"}}>
                                       {TranslationContext !== undefined
                                         ? TranslationContext.label.selectstore
                                         : "Select Store"}
@@ -3711,7 +3725,9 @@ class StoreModule extends Component {
                                     <Select
                                       mode="multiple"
                                       style={{ width: "100%" }}
-                                      placeholder="Select store Code"
+                                      placeholder={TranslationContext !== undefined
+                                        ? TranslationContext.label.selectstorecode
+                                        : "Select Store Code"}
                                       onChange={this.handleStoreChangeChange.bind(
                                         this
                                       )}
@@ -3785,8 +3801,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                           <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                       <span className="slot-to">
@@ -3823,8 +3843,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                          <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                     </div>
@@ -3856,7 +3880,7 @@ class StoreModule extends Component {
                                           style={{ width: "30px !important" }}
                                           disabled={true}
                                         >
-                                          <option value="H">Hr</option>
+                                          <option value="H"> {TranslationContext!==undefined?TranslationContext.option.h:"Hr"}</option>
                                         </select>
                                       </div>
                                     </div>
@@ -3871,7 +3895,7 @@ class StoreModule extends Component {
                                     <input
                                       className="mx-slt-txt"
                                       type="text"
-                                      placeholder="Max Cpty"
+                                      placeholder={TranslationContext!==undefined?TranslationContext.placeholder.maxcpty:"Max Cpty"}
                                       name="maxCapacity"
                                       autoComplete="off"
                                       maxLength={2}
@@ -3890,7 +3914,7 @@ class StoreModule extends Component {
                                     )}
                                   </div>
                                 </div>
-                                <label className="slt-non-op-hr-lbl">
+                                <label className="slt-non-op-hr-lbl" style={{fontWeight:"400",marginLeft:"30px"}}>
                                   {TranslationContext !== undefined
                                     ? TranslationContext.label
                                         .storenonoperationalhours
@@ -3899,7 +3923,7 @@ class StoreModule extends Component {
 
                                 <div
                                   className="row cmpaign-channel-table lbl-fnt-w-400"
-                                  style={{ margin: "0px", marginLeft: "30px" }}
+                                  style={{ margin: "0px", marginLeft: "15px" }}
                                 >
                                   <div>
                                     <label
@@ -3912,7 +3936,7 @@ class StoreModule extends Component {
                                     </label>
                                     <label style={{ marginLeft: "80px" }}>
                                       {TranslationContext !== undefined
-                                        ? TranslationContext.label.to
+                                        ? TranslationContext.label.ToTime
                                         : "To"}
                                     </label>
                                     <div className="slot-timings">
@@ -3945,8 +3969,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                       <span className="slot-to">
@@ -3983,8 +4011,12 @@ class StoreModule extends Component {
                                             this.handleDrop_downOnchange
                                           }
                                         >
-                                          <option value="AM">AM</option>
-                                          <option value="PM">PM</option>
+                                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                                         </select>
                                       </div>
                                     </div>
@@ -4026,7 +4058,7 @@ class StoreModule extends Component {
                                           disabled={true}
                                           style={{ width: "50px" }}
                                         >
-                                          <option value="D">Days</option>
+                                          <option value="D"> {TranslationContext!==undefined?TranslationContext.option.days:"Days"}</option>
                                         </select>
                                       </div>
                                     </div>
@@ -4063,7 +4095,7 @@ class StoreModule extends Component {
                                       this
                                     )}
                                   >
-                                    <option value={0}>All</option>
+                                    <option value={0}>{TranslationContext!==undefined?TranslationContext.option.all:"All"}</option>
                                     {this.state.storeCodeData !== null &&
                                       this.state.storeCodeData.map(
                                         (item, s) => (
@@ -4104,27 +4136,39 @@ class StoreModule extends Component {
                                     dataIndex: "storeCode",
                                   },
                                   {
-                                    title: "Store Timing",
+                                    title:  TranslationContext !== undefined
+                                    ? TranslationContext.header.storetiming
+                                    : "Store Timing",
                                     dataIndex: "storeTimimg",
                                   },
                                   {
-                                    title: "Non Operational Hour",
+                                    title:TranslationContext !== undefined
+                                    ? TranslationContext.header.nonoperationalhours
+                                    : "Non Operational Hour",
                                     dataIndex: "nonOperationalTimimg",
                                   },
                                   {
-                                    title: "Slot Duration",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.slotduration
+                                    : "Slot Duration",
                                     dataIndex: "storeSlotDuration",
                                   },
                                   {
-                                    title: "Max Capacity",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.maxcapacity
+                                    : "Max Capacity",
                                     dataIndex: "maxCapacity",
                                   },
                                   {
-                                    title: "Total Slot",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.totalslot
+                                    : "Total Slot",
                                     dataIndex: "totalSlot",
                                   },
                                   {
-                                    title: "Appointment Days",
+                                    title: TranslationContext !== undefined
+                                    ? TranslationContext.header.appointmentdays
+                                    : "Appointment Days",
                                     dataIndex: "appointmentDays",
                                   },
                                   {
@@ -4310,7 +4354,93 @@ class StoreModule extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12">
-                              <ReactTable
+                              <Table
+                                loading={this.state.loading}
+                                noDataContent="No Record Found"
+                                className="components-table-demo-nested antd-table-campaign custom-antd-table"
+                                columns={[
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.languagename
+                                        : "Language Name",
+                                    dataIndex: "language",
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.status
+                                        : "Status",
+                                    dataIndex: "isActive",
+                                    render: (row) => {
+                                      debugger;
+                                      return (
+                                        <>
+                                          {row===true ? "Active" : "Inactive"}
+                                        </>
+                                      );
+                                    },
+                                  },
+                                  {
+                                    title:
+                                      TranslationContext !== undefined
+                                        ? TranslationContext.header.actions
+                                        : "Actions",
+                                    render: (row, rowData) => {
+                                      debugger;
+                                      var ids = rowData["slotId"];
+
+                                      if (rowData.language) {
+                                        var langage = rowData.language.split(
+                                          " "
+                                        )[0];
+                                        if (
+                                          langage.toLowerCase() ==
+                                          "English".toLowerCase()
+                                        ) {
+                                          return <></>;
+                                        } else {
+                                          return (
+                                            <div className="chrdioclr switch switch-primary d-inline m-r-10">
+                                              <input
+                                                type="checkbox"
+                                                id={"lang" + rowData.id}
+                                                name="allModules"
+                                                checked={row.isActive}
+                                                onClick={this.handleDeleteLanguage.bind(
+                                                  this,
+                                                  rowData
+                                                )}
+                                              />
+                                              <label
+                                                htmlFor={"lang" + row.id}
+                                                className="cr cr-float-auto"
+                                                style={{
+                                                  float: "inherit",
+                                                }}
+                                              ></label>
+                                            </div>
+                                          );
+                                        }
+                                      } else {
+                                        return <></>;
+                                      }
+                                    },
+                                  },
+                                ]}
+                                rowKey={(record) => {
+                                  if (record.id) {
+                                    uid = uid + 1;
+                                    return record.id + "l" + uid;
+                                  } else {
+                                    uid = uid + 1;
+                                    return "l" + uid;
+                                  }
+                                }}
+                                pagination={{ defaultPageSize: 10 }}
+                                dataSource={this.state.languageGridData}
+                              ></Table>
+                              {/* <ReactTable
                                 data={this.state.languageGridData}
                                 columns={[
                                   {
@@ -4348,58 +4478,7 @@ class StoreModule extends Component {
                                     sortable: false,
                                     Cell: (row) => {
                                       var ids = row.original["slotId"];
-                                      // return (
-                                      //   <>
-                                      //     <span>
-                                      //       <Popover
-                                      //         content={
-                                      //           <div className="d-flex general-popover popover-body">
-                                      //             <div className="del-big-icon">
-                                      //               <img
-                                      //                 src={DelBigIcon}
-                                      //                 alt="del-icon"
-                                      //               />
-                                      //             </div>
-                                      //             <div>
-                                      //               <p className="font-weight-bold blak-clr">
-                                      //                 Delete file?
-                                      //               </p>
-                                      //               <p className="mt-1 fs-12">
-                                      //                 Are you sure you want to
-                                      //                 delete this file?
-                                      //               </p>
-                                      //               <div className="del-can">
-                                      //                 <a href={Demo.BLANK_LINK}>
-                                      //                   CANCEL
-                                      //                 </a>
-                                      //                 <button
-                                      //                   className="butn"
-                                      //                   onClick={this.handleDeleteLanguage.bind(
-                                      //                     this,
-                                      //                     row.original.id
-                                      //                   )}
-                                      //                 >
-                                      //                   Delete
-                                      //                 </button>
-                                      //               </div>
-                                      //             </div>
-                                      //           </div>
-                                      //         }
-                                      //         placement="bottom"
-                                      //         trigger="click"
-                                      //       >
-                                      //         <img
-                                      //           src={RedDeleteIcon}
-                                      //           alt="del-icon"
-                                      //           className="del-btn"
-                                      //           id={ids}
-                                      //         />
-                                      //       </Popover>
-                                      //     </span>
-                                      //   </>
-                                      // );
-                                      // debugger;
-                                      // var isDisable = false;
+
                                       if (row.original.language) {
                                         var langage = row.original.language.split(
                                           " "
@@ -4416,13 +4495,6 @@ class StoreModule extends Component {
                                                 type="checkbox"
                                                 id={"lang" + row.index}
                                                 name="allModules"
-                                                //attrIds={item.moduleId}
-                                                // checked={
-                                                //   row.original.isActive ===
-                                                //   false
-                                                //     ? true
-                                                //     : false
-                                                // }
                                                 onClick={this.handleDeleteLanguage.bind(
                                                   this,
                                                   row.original
@@ -4442,11 +4514,11 @@ class StoreModule extends Component {
                                     },
                                   },
                                 ]}
-                                // resizable={false}
+                                
                                 minRows={2}
                                 defaultPageSize={10}
                                 showPagination={true}
-                              />
+                              /> */}
                             </div>
                           </div>
                         </div>
@@ -4536,8 +4608,12 @@ class StoreModule extends Component {
                           value={this.state.editSelectAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
                       <span className="slot-to">TO</span>
@@ -4561,17 +4637,24 @@ class StoreModule extends Component {
                           value={this.state.editSelectAmPm2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                          <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Slot Duration</label>
+                    <label className="edit-slot-lbl">
+                    {TranslationContext!==undefined?TranslationContext.label.slotduration:"Slot Duration"}
+                    </label>
                     <label
                       className="edit-slot-lbl"
                       style={{ marginLeft: "48px" }}
                     >
-                      Maximum Capacity
+                      {TranslationContext!==undefined?TranslationContext.label.maximumcapacity:"Maximum Capacity"}
+                      
                     </label>
                     <div className="slot-timings">
                       <div className="d-flex">
@@ -4591,14 +4674,16 @@ class StoreModule extends Component {
                           style={{ background: "none" }}
                           disabled={true}
                         >
-                          <option value="H">Hr</option>
+                          <option value="H">
+                          {TranslationContext!==undefined?TranslationContext.option.h:"Hr"}
+                          </option>
                         </select>
                       </div>
 
                       <input
                         style={{ width: "93px", marginLeft: "34px" }}
                         type="text"
-                        placeholder="Max Cpty"
+                        placeholder= {TranslationContext!==undefined?TranslationContext.placeholder.maxcpty:"Max Cpty"}
                         name="editmaxCapacity"
                         autoComplete="off"
                         maxLength={2}
@@ -4617,11 +4702,16 @@ class StoreModule extends Component {
                       )}
                     </div>
                     <label className="edit-slot-lbl">
-                      Store Non-Oprational Hours
+                    {TranslationContext!==undefined?TranslationContext.label.storenonoperationalhours:"Store Non-Oprational Hours"}
+                      
                     </label>
                     <br />
-                    <label className="edit-slot-lbl edit-slot-lbl2">From</label>
-                    <label className="edit-slot-lbl edit-slot-lbl1">To</label>
+                    <label className="edit-slot-lbl edit-slot-lbl2">
+                    {TranslationContext!==undefined?TranslationContext.label.from:"From"}
+                    </label>
+                    <label className="edit-slot-lbl edit-slot-lbl1">
+                    {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <select
@@ -4643,11 +4733,17 @@ class StoreModule extends Component {
                           value={this.state.editSelectNOAmPm1}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
-                      <span className="slot-to">TO</span>
+                      <span className="slot-to">
+                      {TranslationContext!==undefined?TranslationContext.label.to:"To"}
+                      </span>
                       <div className="d-flex">
                         <select
                           className="slot-hour"
@@ -4668,12 +4764,18 @@ class StoreModule extends Component {
                           value={this.state.editSelectNOAmPm2}
                           onChange={this.handleEditDrop_downOnchange}
                         >
-                          <option value="AM">AM</option>
-                          <option value="PM">PM</option>
+                         <option value="AM">
+                          {TranslationContext!==undefined?TranslationContext.option.am:"AM"}
+                          </option>
+                          <option value="PM">
+                          {TranslationContext!==undefined?TranslationContext.option.pm:"PM"}
+                          </option>
                         </select>
                       </div>
                     </div>
-                    <label className="edit-slot-lbl">Appointment Days</label>
+                    <label className="edit-slot-lbl">
+                    {TranslationContext!==undefined?TranslationContext.label.appointmentdays:"Appointment Days"}
+                    </label>
                     <div className="slot-timings">
                       <div className="d-flex">
                         <select
@@ -4696,7 +4798,9 @@ class StoreModule extends Component {
                           style={{ background: "none", padding: "5px 7px" }}
                           disabled={true}
                         >
-                          <option value="D">Days</option>
+                          <option value="D">
+                          {TranslationContext!==undefined?TranslationContext.option.days:"Days"}
+                          </option>
                         </select>
                       </div>
                     </div>

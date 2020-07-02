@@ -112,6 +112,7 @@ class Alerts extends Component {
       editcommunicationModeCompulsion: "",
       AssignToData: [],
       isExitsType: "",
+      checkIsExistType: false,
       placeholderData: [],
       cAlertTypeId: 0,
       sAlertTypeId: 0,
@@ -174,7 +175,6 @@ class Alerts extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -194,7 +194,6 @@ class Alerts extends Component {
       });
   }
   setPlaceholderValue(type, e) {
-    debugger;
     let matchedArr = this.state.placeholderData.filter(
       (x) => x.mailParameterID == e.currentTarget.value
     );
@@ -394,7 +393,6 @@ class Alerts extends Component {
   }
 
   sortStatusZtoA() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.alert;
 
@@ -430,7 +428,6 @@ class Alerts extends Component {
   }
 
   sortStatusAtoZ() {
-    debugger;
     var itemsArray = [];
     itemsArray = this.state.alert;
 
@@ -465,8 +462,6 @@ class Alerts extends Component {
     }, 10);
   }
   StatusOpenModel(data, header) {
-    debugger;
-
     // this.setState({ StatusModel: true, sortColumn: data, sortHeader: header });
     if (
       this.state.sortFilterAlertType.length === 0 ||
@@ -537,7 +532,6 @@ class Alerts extends Component {
     }
   }
   onCkBlurCustomer = (evt) => {
-    debugger;
     var ckCusrsorPositionCustomer = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataCustomer = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -550,7 +544,6 @@ class Alerts extends Component {
     });
   };
   onCkBlurInternal = (evt) => {
-    debugger;
     var ckCusrsorPositionInternal = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataInternal = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -563,7 +556,6 @@ class Alerts extends Component {
     });
   };
   onCkBlurStore = (evt) => {
-    debugger;
     var ckCusrsorPositionStore = evt.editor.getSelection().getRanges()[0];
     var ckCusrsorDataStore = evt.editor.getSelection().getRanges()[0]
       .endContainer.$.wholeText;
@@ -625,8 +617,6 @@ class Alerts extends Component {
   };
 
   setSortCheckStatus = (column, type, e) => {
-    debugger;
-
     var itemsArray = [];
 
     var salertTypeNameFilterCheckbox = this.state.salertTypeNameFilterCheckbox;
@@ -802,20 +792,16 @@ class Alerts extends Component {
   };
 
   callBackEdit = (alertTypeName, isAlertActive, rowData) => {
-    debugger;
-
     this.state.updateAlertTypeName = alertTypeName;
     this.state.updateAlertisActive = isAlertActive;
     this.state.rowData = rowData;
   };
   setNotiCurPosi = (e) => {
-    debugger;
     this.setState({
       notiCurPosi: e.target.selectionStart,
     });
   };
   setDataOnChangeAlert = (e) => {
-    // debugger;
     if (e.target.name == "selectedAlertType") {
       if (e.target.value !== "0") {
         this.setState({
@@ -836,19 +822,23 @@ class Alerts extends Component {
             var status = res.data.status;
             if (msg === "Success" && status == true) {
               if (data !== "Not Exist") {
-                self.setState({ isExitsType: data });
+                self.setState({ isExitsType: data, checkIsExistType: true });
               } else {
-                self.setState({ isExitsType: "" });
+                self.setState({ isExitsType: "", checkIsExistType: false });
               }
             } else {
-              self.setState({ isExitsType: "" });
+              self.setState({ isExitsType: "", checkIsExistType: false });
             }
           })
           .catch((response) => {
             console.log(response);
           });
       } else {
-        this.setState({ isExitsType: "", [e.target.name]: e.target.value });
+        this.setState({
+          isExitsType: "",
+          [e.target.name]: e.target.value,
+          checkIsExistType: false,
+        });
       }
     } else {
       this.setState({
@@ -864,21 +854,18 @@ class Alerts extends Component {
   };
 
   setCKEditorCustomer = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKCustomer: newContent,
     });
   };
   setCKEditorInternal = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKInternal: newContent,
     });
   };
   setCKEditorStore = (evt) => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKStore: newContent,
@@ -886,16 +873,13 @@ class Alerts extends Component {
   };
 
   handleAlertData() {
-    debugger;
     let self = this;
-
     axios({
       method: "post",
       url: config.apiUrl + "/Alert/BindAlerts",
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         var data = res.data.responseData;
         var msg = res.data.message;
         if (msg === "Success") {
@@ -914,7 +898,6 @@ class Alerts extends Component {
   }
 
   handleAlertTabs = (e) => {
-    debugger;
     let check = e.target.checked;
     let val = e.target.value;
     if (check === true) {
@@ -994,7 +977,6 @@ class Alerts extends Component {
       alertId = 0;
     }
     this.handlePlaceholderList(alertId);
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1003,7 +985,6 @@ class Alerts extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let alert = res.data.responseData;
         var data = res.data.responseData;
         if (id) {
@@ -1140,7 +1121,6 @@ class Alerts extends Component {
       });
   }
   deleteAlert(deleteId) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1151,7 +1131,6 @@ class Alerts extends Component {
       },
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         if (status === "Success") {
           NotificationManager.success("Alert deleted successfully.");
@@ -1165,7 +1144,6 @@ class Alerts extends Component {
       });
   }
   handleUpdateAlert() {
-    debugger;
     if (this.state.alertEdit.selectedAlertType) {
       let AlertisActive;
       if (this.state.alertEdit.alertIsActive === "Active") {
@@ -1320,7 +1298,6 @@ class Alerts extends Component {
         },
       })
         .then((res) => {
-          debugger;
           let status = res.data.message;
           if (status === "Success") {
             NotificationManager.success("Alert updated successfully.");
@@ -1353,12 +1330,10 @@ class Alerts extends Component {
   }
 
   updateAlert(individualData) {
-    debugger;
     this.handleGetAlert(individualData.alertID || 0);
   }
 
   handleUpdateAlertTypeName(e) {
-    debugger;
     this.setState({
       updateAlertTypeName: e.target.value,
     });
@@ -1381,7 +1356,6 @@ class Alerts extends Component {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
-    debugger;
     if (
       (this.state.selectedAlertType > 0 &&
         this.state.selectedStatus !== "" &&
@@ -1391,7 +1365,12 @@ class Alerts extends Component {
       this.state.selectedSMSCustomer === true ||
       this.state.selectedNotifInternal === true
     ) {
-      this.setState({ AddAlertTabsPopup: true });
+      if (this.state.checkIsExistType) {
+        NotificationManager.error("Alert already exist!");
+      } else {
+        this.setState({ AddAlertTabsPopup: true });
+      }
+
       // this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
     } else {
       this.setState({
@@ -1440,13 +1419,11 @@ class Alerts extends Component {
     });
   }
   handleTabChange(index) {
-    debugger;
     this.setState({
       tabIndex: index,
     });
   }
   validationInsertAlert() {
-    debugger;
     var checkboxvalue = [];
     var validation = [];
     if (this.state.selectedEmailCustomer === true) {
@@ -1512,8 +1489,6 @@ class Alerts extends Component {
     }
   }
   handleInsertAlert() {
-    debugger;
-
     let self = this;
     var setstatus = false;
     var status = this.state.selectedStatus;
@@ -1592,7 +1567,6 @@ class Alerts extends Component {
       data: json,
     })
       .then(function(res) {
-        debugger;
         let id = res.data.responseData;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -1611,7 +1585,6 @@ class Alerts extends Component {
   }
 
   editAlertModalData(e) {
-    debugger;
     const { name, value } = e.target;
 
     var data = this.state.alertEdit;
@@ -1636,7 +1609,6 @@ class Alerts extends Component {
     }
   }
   handleOpenAdd() {
-    debugger;
     if (this.state.alertEdit.AlertTypeName == "Select Alert") {
       this.setState({ editalertTypeCompulsion: "Please Enter Alert Type" });
     } else if (
@@ -1669,7 +1641,6 @@ class Alerts extends Component {
 
   ///handle get agent list
   handleGetAgentList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -1677,7 +1648,6 @@ class Alerts extends Component {
       headers: authHeader(),
     })
       .then(function(res) {
-        debugger;
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -1698,7 +1668,6 @@ class Alerts extends Component {
 
   ///handle on change
   setAssignedToValue(type, e) {
-    debugger;
     if (type === "Customer") {
       let ckData = this.state.selectedCKCustomer;
       let matchedArr = this.state.AssignToData.filter(
@@ -1728,7 +1697,6 @@ class Alerts extends Component {
     }
   }
   filteTextChange(e) {
-    debugger;
     this.setState({ filterTxtValue: e.target.value });
 
     if (this.state.sortColumn === "alertTypeName") {
@@ -1775,7 +1743,6 @@ class Alerts extends Component {
     }
   }
   hanldeAddBulkUpload() {
-    debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
 
@@ -1794,7 +1761,6 @@ class Alerts extends Component {
         },
       })
         .then(function(res) {
-          debugger;
           let status = res.data.message;
           let data = res.data.responseData;
           if (status === "Success") {
@@ -1811,7 +1777,6 @@ class Alerts extends Component {
           }
         })
         .catch((data) => {
-          debugger;
           if (data.message) {
             this.setState({ showProgress: false, isFileUploadFail: true });
           }
@@ -1827,7 +1792,6 @@ class Alerts extends Component {
     this.setState({ progressValue: value });
   }
   handleDeleteBulkupload = (e) => {
-    debugger;
     this.setState({
       fileN: [],
       fileName: "",

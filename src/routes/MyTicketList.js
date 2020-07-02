@@ -800,6 +800,7 @@ class MyTicketList extends Component {
   }
   ////handle search clear follow up data
   handleSearchClearFollowUp() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -814,7 +815,7 @@ class MyTicketList extends Component {
         let data = res.data.responseData;
         if (status === "Success") {
           NotificationManager.success(
-            "Clear Follow up notification successfully."
+            TranslationContext!==undefined?TranslationContext.alertmessage.clearfollowupnotificationsuccessfully:"Clear Follow up notification successfully."
           );
           self.handleSearchTicketAllTabCount();
           self.handleSearchTicket(1003);
@@ -915,6 +916,7 @@ class MyTicketList extends Component {
   }
   ////handle Schedule Popup Success
   handleSchedulePopupSuccess() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     axios({
       method: "post",
@@ -952,7 +954,7 @@ class MyTicketList extends Component {
         let messageData = res.data.message;
         if (messageData === "Success") {
           self.ScheduleCloseModel();
-          NotificationManager.success("Scheduled successfully.");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.scheduledsuccessfully:"Scheduled successfully.");
           self.setState({
             scheduleRequired: "",
           });
@@ -1114,6 +1116,7 @@ class MyTicketList extends Component {
     });
   }
   handleAssignTickets() {
+    const TranslationContext = this.state.translateLanguage.default;
     if (this.state.agentId !== 0) {
       let self = this;
       var ticketIdsComma = this.state.ticketIds;
@@ -1134,7 +1137,7 @@ class MyTicketList extends Component {
           let messageData = res.data.message;
           if (messageData === "Success") {
             self.handleAssignModalClose();
-            NotificationManager.success("Tickets assigned successfully.");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.ticketsassignedsuccessfully:"Tickets assigned successfully.");
             self.handleSearchTicket();
           }
         })
@@ -1721,6 +1724,7 @@ class MyTicketList extends Component {
   }
 
   SaveSearchData() {
+    const TranslationContext = this.state.translateLanguage.default;
     debugger;
     let self = this;
     if (this.state.SearchName.length > 0) {
@@ -1738,7 +1742,8 @@ class MyTicketList extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             NotificationManager.success(
-              "Your search has been saved successfully."
+              TranslationContext!==undefined?TranslationContext.alertmessage.yoursearchhasbeensavedsuccessfully:"Your search has been saved successfully."
+              
             );
             self.handleGetSaveSearchList();
             self.setState({
@@ -1773,6 +1778,7 @@ class MyTicketList extends Component {
       });
   }
   hadleSearchDeleteData(searchDeletId) {
+    const TranslationContext = this.state.translateLanguage.default;
     //debugger;
     let self = this;
 
@@ -1789,7 +1795,7 @@ class MyTicketList extends Component {
         let Msg = res.data.message;
         if (Msg === "Success") {
           NotificationManager.success(
-            "Saved search data deleted successfully."
+            TranslationContext!==undefined?TranslationContext.alertmessage.savedsearchdatadeletedsuccessfully:"Saved search data deleted successfully."
           );
           self.handleGetSaveSearchList();
         }

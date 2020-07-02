@@ -3,7 +3,7 @@ import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import Sorting from "./../../../assets/Images/sorting.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
 import ReactTable from "react-table";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
@@ -93,6 +93,7 @@ class TicketCRMRole extends Component {
       screatedByFilterCheckbox: "",
       sisRoleActiveFilterCheckbox: "",
       isortA: false,
+      bulkuploadLoading: false,
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
@@ -912,7 +913,9 @@ class TicketCRMRole extends Component {
     debugger;
     if (this.state.fileN.length > 0 && this.state.fileN !== []) {
       let self = this;
-
+      this.setState({
+        bulkuploadLoading: true,
+      });
       const formData = new FormData();
 
       formData.append("file", this.state.fileN[0]);
@@ -933,11 +936,17 @@ class TicketCRMRole extends Component {
           let data = res.data.responseData;
           if (status === "Success") {
             NotificationManager.success("File uploaded successfully.");
-            self.setState({ fileName: "", fileSize: "", fileN: [] });
+            self.setState({
+              fileName: "",
+              fileSize: "",
+              fileN: [],
+              bulkuploadLoading: false,
+            });
             self.handleGetCRMRoles();
           } else {
             self.setState({
               showProgress: false,
+              bulkuploadLoading: false,
               // isFileUploadFail: true,
               progressValue: 0,
             });
@@ -947,7 +956,11 @@ class TicketCRMRole extends Component {
         .catch((data) => {
           debugger;
           if (data.message) {
-            this.setState({ showProgress: false, isFileUploadFail: true });
+            this.setState({
+              showProgress: false,
+              isFileUploadFail: true,
+              bulkuploadLoading: false,
+            });
           }
           console.log(data);
         });
@@ -1474,117 +1487,129 @@ class TicketCRMRole extends Component {
                         </CSVLink>
                       </div>
                     </div>
-                    <div className="mainfileUpload">
-                      <Dropzone onDrop={this.fileUpload.bind(this)}>
-                        {({ getRootProps, getInputProps }) => (
-                          <div {...getRootProps()}>
-                            <input
-                              {...getInputProps()}
-                              className="file-upload d-none"
-                            />
-                            <div className="file-icon">
-                              <img src={FileUpload} alt="file-upload" />
+                    <Spin
+                      tip="Please wait..."
+                      spinning={this.state.bulkuploadLoading}
+                    >
+                      <div className="mainfileUpload">
+                        <Dropzone onDrop={this.fileUpload.bind(this)}>
+                          {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                              <input
+                                {...getInputProps()}
+                                className="file-upload d-none"
+                              />
+                              <div className="file-icon">
+                                <img src={FileUpload} alt="file-upload" />
+                              </div>
+                              <span className={"fileupload-span"}>
+                                Add File
+                              </span>{" "}
+                              or Drop File here
                             </div>
-                            <span className={"fileupload-span"}>Add File</span>{" "}
-                            or Drop File here
-                          </div>
-                        )}
-                      </Dropzone>
-                    </div>
-                    {this.state.fileN.length === 0 && (
-                      <p style={{ color: "red", marginBottom: "0px" }}>
-                        {this.state.bulkuploadCompulsion}
-                      </p>
-                    )}
-                    {this.state.fileName && (
-                      <div className="file-info">
-                        <div className="file-cntr">
-                          <div className="file-dtls">
-                            <p className="file-name">{this.state.fileName}</p>
-                            <div className="del-file" id="del-file-1">
-                              <img src={DelBlack} alt="delete-black" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="auto"
-                              target="del-file-1"
-                              className="general-popover delete-popover"
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={DelBigIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    Delete file?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button
-                                      className="butn"
-                                      onClick={this.handleDeleteBulkupload}
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                          </div>
-                          <div>
-                            <span className="file-size">
-                              {this.state.fileSize}
-                            </span>
-                          </div>
-                        </div>
-                        {this.state.fileN.length > 0 &&
-                        this.state.isFileUploadFail ? (
+                          )}
+                        </Dropzone>
+                      </div>
+                      {this.state.fileN.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.bulkuploadCompulsion}
+                        </p>
+                      )}
+                      {this.state.fileName && (
+                        <div className="file-info">
                           <div className="file-cntr">
                             <div className="file-dtls">
                               <p className="file-name">{this.state.fileName}</p>
-                              <a
-                                className="file-retry"
-                                onClick={this.hanldeAddBulkUpload.bind(this)}
+                              <div className="del-file" id="del-file-1">
+                                <img src={DelBlack} alt="delete-black" />
+                              </div>
+                              <UncontrolledPopover
+                                trigger="legacy"
+                                placement="auto"
+                                target="del-file-1"
+                                className="general-popover delete-popover"
                               >
-                                Retry
-                              </a>
+                                <PopoverBody className="d-flex">
+                                  <div className="del-big-icon">
+                                    <img src={DelBigIcon} alt="del-icon" />
+                                  </div>
+                                  <div>
+                                    <p className="font-weight-bold blak-clr">
+                                      Delete file?
+                                    </p>
+                                    <p className="mt-1 fs-12">
+                                      Are you sure you want to delete this file?
+                                    </p>
+                                    <div className="del-can">
+                                      <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                      <button
+                                        className="butn"
+                                        onClick={this.handleDeleteBulkupload}
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  </div>
+                                </PopoverBody>
+                              </UncontrolledPopover>
                             </div>
                             <div>
-                              <span className="file-failed">Failed</span>
+                              <span className="file-size">
+                                {this.state.fileSize}
+                              </span>
                             </div>
                           </div>
-                        ) : null}
-                        {this.state.showProgress ? (
-                          <div className="file-cntr">
-                            <div className="file-dtls">
-                              <p className="file-name pr-0">
-                                {this.state.fileName}
-                              </p>
+                          {this.state.fileN.length > 0 &&
+                          this.state.isFileUploadFail ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name">
+                                  {this.state.fileName}
+                                </p>
+                                <a
+                                  className="file-retry"
+                                  onClick={this.hanldeAddBulkUpload.bind(this)}
+                                >
+                                  Retry
+                                </a>
+                              </div>
+                              <div>
+                                <span className="file-failed">Failed</span>
+                              </div>
                             </div>
-                            <div>
-                              <div className="d-flex align-items-center mt-2">
-                                <ProgressBar
-                                  className="file-progress"
-                                  now={this.state.progressValue}
-                                />
-                                <div className="cancel-upload">
-                                  <img src={UploadCancel} alt="upload cancel" />
+                          ) : null}
+                          {this.state.showProgress ? (
+                            <div className="file-cntr">
+                              <div className="file-dtls">
+                                <p className="file-name pr-0">
+                                  {this.state.fileName}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="d-flex align-items-center mt-2">
+                                  <ProgressBar
+                                    className="file-progress"
+                                    now={this.state.progressValue}
+                                  />
+                                  <div className="cancel-upload">
+                                    <img
+                                      src={UploadCancel}
+                                      alt="upload cancel"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
-                    <button
-                      className="butn"
-                      onClick={this.hanldeAddBulkUpload.bind(this)}
-                    >
-                      ADD
-                    </button>
+                          ) : null}
+                        </div>
+                      )}
+                      <button
+                        className="butn"
+                        onClick={this.hanldeAddBulkUpload.bind(this)}
+                      >
+                        ADD
+                      </button>
+                    </Spin>
                     <br />
                   </div>
                 </div>

@@ -95,6 +95,7 @@ class ChatSettings extends Component {
 
   ////handle update chate session
   handleUpdateChatSession() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     if (
       this.state.isChatDisplayValue === "" &&
@@ -115,9 +116,9 @@ class ChatSettings extends Component {
         .then((response) => {
           var message = response.data.message;
           if (message === "Success") {
-            NotificationManager.success("Recode update successfully!");
+            NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
           } else {
-            NotificationManager.console.error("Recode not update!");
+            NotificationManager.console.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
           }
         })
         .catch((response) => {
@@ -203,6 +204,7 @@ class ChatSettings extends Component {
   }
   ////handle update card item configuration
   handleUpdateCardItemConfiguration() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var enabledCardItems = "";
     var disabledCardItems = "";
@@ -227,12 +229,12 @@ class ChatSettings extends Component {
         var message = response.data.message;
         var responseData = response.data.responseData;
         if (message === "Success") {
-          NotificationManager.success("Update successfully!");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
           self.setState({ isLoadingUpdate: false });
           self.handleGetCardConfiguration();
         } else {
           self.setState({ isLoadingUpdate: false });
-          NotificationManager.error("Not update successfully!");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
         }
       })
       .catch((response) => {
@@ -242,6 +244,7 @@ class ChatSettings extends Component {
 
   ////handle card item insert configuration
   handleInsertCardItemConfiguration() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var cardItem = this.state.cardConfigName;
     var isEnabled = this.state.cardConfigStatus;
@@ -261,12 +264,12 @@ class ChatSettings extends Component {
           var responseData = response.data.responseData;
           if (message === "Success") {
             NotificationManager.success(
-              "Card item configuration add successfully!"
+              TranslationContext!==undefined?TranslationContext.alertmessage.carditemconfigurationaddsuccessfully:"Card item configuration add successfully!"
             );
             self.setState({ isLoadingAdd: false });
             self.handleGetCardConfiguration();
           } else {
-            NotificationManager.error("Card item configuration not add");
+            NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.carditemconfigurationnotadded:"Card item configuration not add");
             self.setState({ isLoadingAdd: false });
           }
         })
@@ -329,6 +332,7 @@ class ChatSettings extends Component {
 
   ////handle update card image approval
   handleUpdateCardImageApproval() {
+    const TranslationContext = this.state.translateLanguage.default;
     let self = this;
     var id = this.state.approvalTypeData.filter((x) => x.isEnabled === true)[0]
       .id;
@@ -345,11 +349,11 @@ class ChatSettings extends Component {
         var responseData = response.data.responseData;
         if (message === "Success") {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.success("Update successfully!");
+          NotificationManager.success(TranslationContext!==undefined?TranslationContext.alertmessage.recordupdatedsuccessfully:"Record Updated Successfully");
           self.handleGetCardImageApproval();
         } else {
           self.setState({ isLoadingAdd: false });
-          NotificationManager.error("Not update successfully!");
+          NotificationManager.error(TranslationContext!==undefined?TranslationContext.alertmessage.recordnotupdated:"Record Not Updated");
         }
       })
       .catch((response) => {
@@ -413,12 +417,12 @@ class ChatSettings extends Component {
                             className="row"
                             style={{ width: "100%", margin: "0" }}
                           >
-                            <div className="col-md-3">Program Code</div>
+                            <div className="col-md-3">{TranslationContext!==undefined?TranslationContext.div.programcode:"Program Code"}</div>
                             <div className="col-md-3">
                               <Select
                                 showArrow={true}
                                 style={{ width: "100%" ,marginBottom:"10px"}}
-                                placeholder="Select program code"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.selectprogramcode:"Select program code"}
                                 value={this.state.programCode}
                                 disabled={true}
                               >
@@ -436,13 +440,15 @@ class ChatSettings extends Component {
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
-                          <div className="col-md-3">Chat Session Time Out</div>
+                          <div className="col-md-3">
+                          {TranslationContext!==undefined?TranslationContext.div.chatsessiontimeout:"Chat Session Time Out"}
+                          </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
                                 type="text"
                                 className="chatsetngtxt"
-                                placeholder="Enter value"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
                                 name="chatSessionValue"
                                 onChange={this.handleOnChange.bind(this)}
                                 value={this.state.chatSessionValue}
@@ -501,13 +507,15 @@ class ChatSettings extends Component {
                           className="row"
                           style={{ width: "100%", margin: "0" }}
                         >
-                          <div className="col-md-3">Historical Chat Time</div>
+                          <div className="col-md-3">
+                          {TranslationContext!==undefined?TranslationContext.div.historicalchattime:"Historical Chat Time"}
+                          </div>
                           <div className="col-md-3">
                             <div className="chattxtdivcus">
                               <input
                                 type="text"
                                 className="chatsetngtxt"
-                                placeholder="Enter value"
+                                placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
                                 onChange={this.handleOnChange.bind(this)}
                                 value={this.state.chatDisplayValue}
                                 maxLength={2}
@@ -566,13 +574,14 @@ class ChatSettings extends Component {
                           style={{ width: "100%", margin: "0" }}
                         >
                           <div className="col-md-3">
-                            Set Limit Type box of Chat Window
+                          {TranslationContext!==undefined?TranslationContext.div.setlimittypeboxofchatwindow:"Set Limit Type box of Chat Window"}
+                            
                           </div>
                           <div className="col-md-3">
                             <input
                               type="text"
                               className="chatsetngtxt"
-                              placeholder="Enter value"
+                              placeholder={TranslationContext!==undefined?TranslationContext.placeholder.entervalue:"Enter value"}
                               name="limitText"
                               onChange={this.handleOnChange.bind(this)}
                               value={this.state.limitText}

@@ -315,7 +315,7 @@ class TicketSystemStore extends Component {
                       />
                       <label
                         htmlFor="editDashboard-p-18"
-                        className="cr"
+                        className="cr cr-tick"
                       ></label>
                     </div>
                   </div>
@@ -367,7 +367,7 @@ class TicketSystemStore extends Component {
                         />
                         <label
                           htmlFor="editDashboard-p-12"
-                          className="cr"
+                          className="cr cr-tick"
                         ></label>
                       </div>
                     </div>

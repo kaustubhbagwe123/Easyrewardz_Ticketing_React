@@ -2888,7 +2888,7 @@ table tr th:last-child {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 60px;
-  margin-left: -18px;
+  margin-left: 0px;
   padding: 0 !important;
   margin-top: -2px;
 }
@@ -5112,7 +5112,7 @@ progress::-webkit-progress-bar {
 }
 
 .obpml {
-  margin-left: -36px;
+  margin-left: 0px;
 }
 .textbhead {
   display: inline;
@@ -6344,6 +6344,9 @@ progress::-webkit-progress-bar {
   /* top: 10px; */
   top: 2px;
   margin-left: 115px;
+}
+.cr-tick {
+  top: 10px !important;
 }
 .switch input[type="checkbox"] + .cr:after,
 .switch input[type="checkbox"] + .cr:before {
@@ -8680,7 +8683,7 @@ table tr th:last-child {
   cursor: pointer;
 }
 .orderswitchitem {
-  margin-top: 0px;
+  margin-top: 7px;
   margin-left: -106px;
   margin-right: 8px;
 }
@@ -12369,7 +12372,8 @@ table tr th:last-child {
 /* Responsive ends */
 
 #DateTimeRangeContainerNoMobileMode .ant-calendar-range-picker-input {
-  width: 40%;
+  width: 41%;
+  /* width: 40%; */
   height: 99%;
   text-align: left;
   float: left;

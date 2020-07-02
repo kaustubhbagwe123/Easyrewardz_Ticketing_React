@@ -513,8 +513,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingitemmasterdetails
+                              : "An item master is a record that lists key information about an inventory item. This information may include the description, unit of measure, weight, dimensions, ordering quantity, and so forth for an item"}
                           </p>
                         </div>
                       </Link>
@@ -534,8 +534,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingdepartmentdetails
+                              : "In summary, departments are important because they make it easier for the organization to undertake its numerous and complex activities simultaneously and thereby achieve its common objectives and goals."}
                           </p>
                         </div>
                       </Link>
@@ -556,8 +556,8 @@ class Settings extends Component {
                             <p>
                               {TranslationContext !== undefined
                                 ? TranslationContext.p
-                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                    .settinghomeshopdetials
+                                : "Settings which will allow us to choose to which user need to give permission for freely type a message & to whom permission need to give where they can only send canned responses."}
                             </p>
                           </div>
                         </Link>
@@ -579,8 +579,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingprioritymasterdestails
+                              : "An Incident's priority is usually determined by assessing its impact and urgency: 'Urgency' is a measure how quickly a resolution of the Incident is required. 'Impact' is measure of the extent of the Incident and of the potential damage caused by the Incident before it can be resolved."}
                           </p>
                         </div>
                       </Link>
@@ -600,8 +600,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingslatemplatedepartdetails
+                              : "A resolution or response time refers to how long it takes from the time an issue is logged until it is fully resolved. The usual practice is to establish a range of job priorities and assign a target resolution time to each logged issue."}
                           </p>
                         </div>
                       </Link>
@@ -621,8 +621,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingclaimcategorydetails
+                              : "Category master where we can setup list of categories where support need to provide in terms of excahnge, refund or in modification of product."}
                           </p>
                         </div>
                       </Link>
@@ -640,8 +640,8 @@ class Settings extends Component {
                             <p>
                               {TranslationContext !== undefined
                                 ? TranslationContext.p
-                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                    .settingchatsettingdetails
+                                : "Configuration related to chat which can be setup or can be changed any time related to Chat session timeout, Card paramters etc…"}
                             </p>
                           </div>
                         </Link>
@@ -663,8 +663,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingcrmroledetails
+                              : "Setup a CRM Role & then which user has to give permission to the page, all will be controlled from here only."}
                           </p>
                         </div>
                       </Link>
@@ -681,8 +681,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingusersdetails
+                              : "Master to manage all users and add new users as well."}
                           </p>
                         </div>
                       </Link>
@@ -699,8 +699,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingalertdetails
+                              : "Setup all the alerts against pre-defined business cases & manage them from single point."}
                           </p>
                         </div>
                       </Link>
@@ -712,14 +712,14 @@ class Settings extends Component {
                           <div className="setting-desc">
                             <strong>
                               {TranslationContext !== undefined
-                                ? TranslationContext.strong.chatsetting
+                                ? TranslationContext.strong.cardassets
                                 : "Card Assets"}
                             </strong>
                             <p>
                               {TranslationContext !== undefined
                                 ? TranslationContext.p
-                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                    .settingcardassetsdetails
+                                : "Logs to check & approve moderated image against inventory. Logs to check all moderated images & approval also from single screen."}
                             </p>
                           </div>
                         </Link>
@@ -761,8 +761,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingmodulesettingdetails
+                              : "Own your configuration based on module & ease your business & ease the life of user."}
                           </p>
                         </div>
                       </Link>
@@ -782,8 +782,8 @@ class Settings extends Component {
                           <p>
                             {TranslationContext !== undefined
                               ? TranslationContext.p
-                                  .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                              : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                  .settingfileuploaddetails
+                              : "Single place to analyze what all files we have uploaded from different section."}
                           </p>
                         </div>
                       </Link>
@@ -801,8 +801,8 @@ class Settings extends Component {
                             <p>
                               {TranslationContext !== undefined
                                 ? TranslationContext.p
-                                    .asysteminwhichmembersofanorganizationorsocietyarerankedaccordingtorelativestatusorauthority
-                                : "A system in which members of an organization or society are ranked according to relative status or authority."}
+                                    .settingordersettingdetails
+                                : "Configuration related to Phyigital Flow will make you  enable where you can manage order flow."}
                             </p>
                           </div>
                         </Link>
