@@ -1668,7 +1668,13 @@
     "WithClaimyes":"दावे के साथ: हाँ",
     "claimstatus":"दावा की स्थिति",
     "claimcategory":"दावा श्रेणी",
-    "claimsubcategory":"दावा उप श्रेणी"
+    "claimsubcategory":"दावा उप श्रेणी",
+    "claimissueType":"दावा जारी करने का प्रकार",
+    "withtaskno":"टास्क के साथ: नहीं",
+    "withtaskyes":"टास्क के साथ: हाँ",
+    "csv":"सीएसवी",
+    "purchasestorecodeaddress":"खरीद स्टोर कोड / पता",
+    "addremarks":"टिप्पणी जोड़ें"
   },
   "tip":{
     "pleasewait":"कृपया प्रतीक्षा करें..."
