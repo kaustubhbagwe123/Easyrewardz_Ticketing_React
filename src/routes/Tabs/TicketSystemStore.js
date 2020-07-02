@@ -9,6 +9,8 @@ import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import { Table } from "antd";
+import * as translationHI from "../../translations/hindi";
+import * as translationMA from "../../translations/marathi";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -32,6 +34,7 @@ class TicketSystemStore extends Component {
       byValideStoreData: "",
       modifiedDate: "",
       CustStoreStatusDrop: "0",
+      translateLanguage: {}
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
@@ -51,6 +54,14 @@ class TicketSystemStore extends Component {
         this.handleGetStoreData(ticket_Id);
       }
     }
+
+    if (window.localStorage.getItem("translateLanguage") === "hindi") {
+      this.state.translateLanguage = translationHI;
+    } else if (window.localStorage.getItem("translateLanguage") === "marathi") {
+      this.state.translateLanguage = translationMA;
+    } else {
+      this.state.translateLanguage = {};
+    }
   }
 
   ////handle Get Store Details
@@ -67,7 +78,7 @@ class TicketSystemStore extends Component {
         TicketID: ID,
       },
     })
-      .then(function(res) {
+      .then(function (res) {
         let status = res.data.message;
         let data = res.data.responseData;
         if (status === "Success") {
@@ -161,7 +172,7 @@ class TicketSystemStore extends Component {
             SearchText: this.state.SrchStoreNameCode.trim(),
           },
         })
-          .then(function(res) {
+          .then(function (res) {
             debugger;
             let data = res.data.responseData;
             let Msg = res.data.message;
@@ -284,6 +295,7 @@ class TicketSystemStore extends Component {
   };
 
   render() {
+    const TranslationContext = this.state.translateLanguage.default;
     const { SearchData, selectedStoreData } = this.state;
 
     return (
@@ -304,7 +316,11 @@ class TicketSystemStore extends Component {
               </div>
               <div className="col-12 col-lg-3 col-xl-3">
                 <div style={{ display: "flex", marginTop: "7px" }}>
-                  <label className="orderdetailpopup">Yes</label>
+                  <label className="orderdetailpopup">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.yes
+                      : "Yes"}
+                  </label>
                   <div className="switchmargin">
                     <div className="switch switch-primary d-inline m-r-10">
                       <input
@@ -319,7 +335,11 @@ class TicketSystemStore extends Component {
                       ></label>
                     </div>
                   </div>
-                  <label className="orderdetailpopup">No</label>
+                  <label className="orderdetailpopup">
+                    {TranslationContext !== undefined
+                      ? TranslationContext.label.no
+                      : "No"}
+                  </label>
                 </div>
               </div>
               <div className="col-12 col-lg-2 col-xl-1">
@@ -356,7 +376,11 @@ class TicketSystemStore extends Component {
                       float: "right",
                     }}
                   >
-                    <label className="orderdetailpopup">Yes</label>
+                    <label className="orderdetailpopup">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.yes
+                        : "Yes"}
+                    </label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
                         <input
@@ -371,7 +395,11 @@ class TicketSystemStore extends Component {
                         ></label>
                       </div>
                     </div>
-                    <label className="orderdetailpopup">No</label>
+                    <label className="orderdetailpopup">
+                      {TranslationContext !== undefined
+                        ? TranslationContext.label.no
+                        : "No"}
+                    </label>
                     <div
                       className="storeplusline13"
                       onClick={this.handleOrderStoreTableClose}
@@ -441,7 +469,9 @@ class TicketSystemStore extends Component {
                           aria-controls="storedetail-tab"
                           aria-selected="true"
                         >
-                          Store Details
+                          {TranslationContext !== undefined
+                            ? TranslationContext.a.storedetails
+                            : "Store Details"}
                         </a>
                       </li>
                       {this.state.selectedStoreData.length !== 0 ? (
@@ -506,23 +536,33 @@ class TicketSystemStore extends Component {
                           },
                         },
                         {
-                          title: "Store Codeee",
+                          title: TranslationContext !== undefined
+                            ? TranslationContext.label.storecode
+                            : "Store Code",
                           dataIndex: "storeCode",
                         },
                         {
-                          title: "Store Name",
+                          title: TranslationContext !== undefined
+                            ? TranslationContext.label.storename
+                            : "Store Name",
                           dataIndex: "storeName",
                         },
                         {
-                          title: "Store Pin Code",
+                          title: TranslationContext !== undefined
+                            ? TranslationContext.label.storepincode
+                            : "Store Pin Code",
                           dataIndex: "pincode",
                         },
                         {
-                          title: "Store Email ID",
+                          title: TranslationContext !== undefined
+                            ? TranslationContext.span.storeemailid
+                            : "Store Email ID",
                           dataIndex: "storeEmailID",
                         },
                         {
-                          title: "Store Addres",
+                          title: TranslationContext !== undefined
+                            ? TranslationContext.label.storeaddress
+                            : "Store Address",
                           dataIndex: "address",
                         },
                       ]}
